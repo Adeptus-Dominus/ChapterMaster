@@ -34,6 +34,31 @@ function sector_directive_ensure() {
 /// Player points the Guard offensive at a specific world (or clears it with ""). The
 /// strike still only fires on its own interval and only while a contain directive is
 /// active; this just steers WHERE it lands.
+/// @function sector_faction_has_presence
+/// @description True if the given faction currently holds at least one planet in the sector.
+///              Used to decide which threats the Sector Governor will offer to grind down:
+///              a faction actively present is a valid containment target even if the Chapter
+///              has not formally "discovered" it (the Governor commands the sector and knows
+///              what is loose in it), which is why the containment menu gates on this rather
+///              than on the player's known[] awareness flag.
+/// @param {Real} _faction
+/// @returns {Bool}
+function sector_faction_has_presence(_faction) {
+    var _found = false;
+    with (obj_star) {
+        for (var p = 1; p <= planets; p++) {
+            if (p_owner[p] == _faction) {
+                _found = true;
+                break;
+            }
+        }
+        if (_found) {
+            break;
+        }
+    }
+    return _found;
+}
+
 function sector_directive_set_target(_star_name, _planet) {
     sector_directive_ensure();
     obj_controller.sector_directive_target_star = _star_name;

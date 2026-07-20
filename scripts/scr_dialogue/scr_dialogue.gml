@@ -1034,6 +1034,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                         add_diplomacy_option({option_text: "Stand in defense of the core worlds.", goto: "directive_defend"});
                         add_diplomacy_option({option_text: "Reclaim the worlds the Imperium has lost.", goto: "directive_reclaim"});
                         add_diplomacy_option({option_text: "Concentrate on containing a threat...", goto: "directive_contain_menu"});
+                        add_diplomacy_option({option_text: "Send a fleet to support my forces...", goto: "fleet_support_menu"});
                         add_diplomacy_option({option_text: "[Leave the strategy as it stands]", goto: "directive_close"});
                     } else {
                         diplo_text += $" My regiments are still redeploying; I will hear new orders in {max(1, sector_directive_turn + SECTOR_DIRECTIVE_COOLDOWN - turn)} turns.";
@@ -1081,6 +1082,44 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             }
             if (diplo_keyphrase == "directive_close") {
                 diplo_text = "As you say. My staff will keep you appraised, Chapter Master.";
+            }
+            // ---- Imperial Navy fleet support (War Room) ----
+            // Ask the Governor to send an Imperial Navy fleet to shadow one of the player's
+            // fleets and join its attacks. Replaces the old click-on-fleet interaction.
+            if (diplo_keyphrase == "fleet_support_menu") {
+                if (disposition[eFACTION.IMPERIUM] <= NAVY_ORDER_MIN_DISPOSITION) {
+                    diplo_text = "My ships answer to the Emperor and to me, Chapter Master. When I have more cause to trust your judgement, perhaps I shall heed your counsel. For now... I don't think I will.";
+                    add_diplomacy_option({option_text: "[As you wish]", goto: "directive_close"});
+                } else {
+                    diplo_text = "Which of your fleets shall my ships support?";
+                    add_diplomacy_option({option_text: "My largest fleet.", goto: "fleet_support_largest"});
+                    add_diplomacy_option({option_text: "My fleet nearest yours.", goto: "fleet_support_closest"});
+                    add_diplomacy_option({option_text: "The fleet bearing my Chapter Master.", goto: "fleet_support_master"});
+                    add_diplomacy_option({option_text: "[Nothing for now]", goto: "directive_close"});
+                }
+            }
+            if ((diplo_keyphrase == "fleet_support_largest") || (diplo_keyphrase == "fleet_support_closest") || (diplo_keyphrase == "fleet_support_master")) {
+                var _fs_rule = "largest";
+                if (diplo_keyphrase == "fleet_support_closest") { _fs_rule = "closest"; }
+                if (diplo_keyphrase == "fleet_support_master") { _fs_rule = "chapter_master"; }
+                var _fs_result = navy_war_room_follow(_fs_rule);
+                switch (_fs_result) {
+                    case "ok":
+                        diplo_text = "It shall be done. My ships will shadow your fleet and lend their guns where you make war, until the battle is won or I have need of them elsewhere.";
+                        break;
+                    case "no_player_fleet":
+                        diplo_text = (_fs_rule == "chapter_master")
+                            ? "Your Chapter Master commands no fleet in the void that I can see, Chapter Master."
+                            : "I see no fleet of yours at void for my ships to join.";
+                        break;
+                    case "no_navy_fleet":
+                        diplo_text = "I have no fleet at liberty to send just now. They are all committed. Return when the situation has changed.";
+                        break;
+                    default:
+                        diplo_text = "I don't think I will.";
+                        break;
+                }
+                add_diplomacy_option({option_text: "[My thanks]", goto: "directive_close"});
             }
             // ---- Imperial Navy fleet suggestions (opened by clicking a Navy fleet) ----
             if (diplo_keyphrase == "fleet_orders") {

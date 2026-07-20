@@ -1363,3 +1363,102 @@ function navy_open_fleet_orders(_fleet) {
         scr_dialogue("fleet_orders");
     }
 }
+
+
+/// @function player_fleet_with_chapter_master
+/// @description The player fleet that currently bears the Chapter Master, or noone. The Chapter
+///              Master is the unit at [0,0] (fetch_unit); their ship_location gives the ship,
+///              and find_ships_fleet maps that ship to its fleet.
+/// @returns {Id.Instance.obj_p_fleet|Real}
+function player_fleet_with_chapter_master() {
+    var _cm = fetch_unit([0, 0]);
+    if (!is_struct(_cm)) {
+        return noone;
+    }
+    if (!variable_struct_exists(_cm, "ship_location") || (_cm.ship_location < 0)) {
+        return noone; // Chapter Master is planetside or not embarked
+    }
+    return find_ships_fleet(_cm.ship_location);
+}
+
+/// @function navy_nearest_fleet_to
+/// @description The Imperial Navy fleet (owner IMPERIUM, navy == 1) nearest to a point, or noone.
+///              Used to pick WHICH Navy fleet answers a War Room follow request.
+/// @param {Real} _x
+/// @param {Real} _y
+/// @returns {Id.Instance.obj_en_fleet|Real}
+function navy_nearest_fleet_to(_x, _y) {
+    var _best = noone;
+    var _best_d = -1;
+    with (obj_en_fleet) {
+        if ((owner != eFACTION.IMPERIUM) || (navy != 1)) {
+            continue;
+        }
+        var _d = point_distance(_x, _y, x, y);
+        if ((_best == noone) || (_d < _best_d)) {
+            _best = id;
+            _best_d = _d;
+        }
+    }
+    return _best;
+}
+
+/// @function navy_war_room_follow
+/// @description War Room entry point: ask the Governor to send an Imperial Navy fleet to follow
+///              one of the player's fleets. _rule picks the TARGET player fleet: "largest",
+///              "closest" (to the nearest Navy fleet), or "chapter_master". The nearest Navy
+///              fleet to that target is assigned the follow order (locked to its flagship uid,
+///              disposition-gated and charged inside navy_order_give). Returns a status string:
+///              "ok", "no_player_fleet", "no_navy_fleet", or "refused".
+/// @param {String} _rule
+/// @returns {String}
+function navy_war_room_follow(_rule) {
+    if (obj_controller.disposition[eFACTION.IMPERIUM] <= NAVY_ORDER_MIN_DISPOSITION) {
+        return "refused";
+    }
+
+    // Resolve the target player fleet.
+    var _target = noone;
+    if (_rule == "chapter_master") {
+        _target = player_fleet_with_chapter_master();
+    } else if (_rule == "closest") {
+        // The player fleet nearest to ANY Navy fleet: find the nearest Navy fleet to each
+        // player fleet and keep the closest pairing.
+        var _best_pf = noone;
+        var _best_d = -1;
+        with (obj_p_fleet) {
+            if (player_fleet_ship_count(id) <= 0) { continue; }
+            var _nf = navy_nearest_fleet_to(x, y);
+            if (!instance_exists(_nf)) { continue; }
+            var _d = point_distance(x, y, _nf.x, _nf.y);
+            if ((_best_pf == noone) || (_d < _best_d)) {
+                _best_pf = id;
+                _best_d = _d;
+            }
+        }
+        _target = _best_pf;
+    } else {
+        _target = player_fleet_pick("largest", 0, 0);
+    }
+
+    if (!instance_exists(_target)) {
+        return "no_player_fleet";
+    }
+
+    // Assign the nearest Navy fleet to that target to follow it.
+    var _navy = navy_nearest_fleet_to(_target.x, _target.y);
+    if (!instance_exists(_navy)) {
+        return "no_navy_fleet";
+    }
+    navy_order_ensure(_navy);
+    _navy.navy_order = "follow";
+    _navy.navy_follow_uid = player_fleet_flagship_uid(_target);
+    _navy.navy_order_turns = 0;
+    if (_navy.navy_follow_uid == "") {
+        _navy.navy_order = "";
+        return "no_player_fleet";
+    }
+    // Charge the disposition cost (same as a direct order).
+    obj_controller.disposition[eFACTION.IMPERIUM] = max(0, obj_controller.disposition[eFACTION.IMPERIUM] - NAVY_ORDER_DISPOSITION_COST);
+    return "ok";
+}
