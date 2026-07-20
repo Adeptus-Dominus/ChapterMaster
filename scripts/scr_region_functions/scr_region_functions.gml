@@ -559,7 +559,14 @@ function regions_sync(_star, _planet) {
     // first (a concentrated assault), and the remaining regions fall weakest-fortification-first so
     // heavily defended regions hold out longer. See regions_contest_order.
     var _outlying = _n - 1;
-    var _contest_regions = clamp(round(_contest_ratio * _outlying), 0, _outlying);
+    // Foothold + earlier ramp: a contester with a force on the ground holds at least one
+    // outlying region from the moment they land, and additional regions surface as the enemy
+    // is ground down (ceil, so progress is visible across the grind rather than only near the
+    // end). Zero outlying regions on a single-region world leaves this at 0.
+    var _contest_regions = clamp(ceil(_contest_ratio * _outlying), 0, _outlying);
+    if (_outlying > 0) {
+        _contest_regions = max(1, _contest_regions);
+    }
 
     var _focus = (_contester == eFACTION.PLAYER) ? region_focus_get(_star, _planet) : 0;
     var _order = regions_contest_order(_regions, _focus);

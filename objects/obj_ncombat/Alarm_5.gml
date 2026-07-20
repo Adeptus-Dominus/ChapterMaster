@@ -448,11 +448,12 @@ if (defeat == 0 && _reduce_power) {
         } else {
             power_reduction = 2;
         }
-        // Outlying-sector assault: only part of the enemy force met you, so the
-        // victory bites less of their strategic level. The pop clamp below then
-        // culls proportionally to this smaller cut.
-        if (region_partial && (power_reduction > 1)) {
-            power_reduction = 1;
+        // Outlying-sector assault: clearing an outlying region's (capped) garrison drops the
+        // enemy's strategic level at the FULL rate, so regions fall responsively as the player
+        // grinds forward rather than crawling one notch at a time. (Previously this was halved
+        // to 1, which made outlying pushes feel like they achieved nothing.)
+        if (region_partial && (power_reduction < 2)) {
+            power_reduction = 2;
         }
         new_power = enemy_power - power_reduction;
         new_power = max(new_power, 0);
