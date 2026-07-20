@@ -1928,6 +1928,14 @@ global.modular_drawing_items = [
         sprite: spr_mk4_complex_backpack,
         shadows: spr_mk4_complex_backpack_shadow,
     },
+	{
+        position: "right_trim",
+        armours: ["MK4 Maximus"],
+        body_types: [0],
+        sprite: spr_mk4_right_trim,
+        shadows: spr_mk4_right_trim_shadow,
+		flip: true,
+    },
     //Artificer Sprites
     {
         position: "chest_variants",

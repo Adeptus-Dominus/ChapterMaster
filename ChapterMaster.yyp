@@ -1422,6 +1422,7 @@
     {"id":{"name":"spr_mk4_mouth_variants","path":"sprites/spr_mk4_mouth_variants/spr_mk4_mouth_variants.yy",},},
     {"id":{"name":"spr_mk4_right_arm_shadow","path":"sprites/spr_mk4_right_arm_shadow/spr_mk4_right_arm_shadow.yy",},},
     {"id":{"name":"spr_mk4_right_arm","path":"sprites/spr_mk4_right_arm/spr_mk4_right_arm.yy",},},
+    {"id":{"name":"spr_mk4_right_trim_shadow","path":"sprites/spr_mk4_right_trim_shadow/spr_mk4_right_trim_shadow.yy",},},
     {"id":{"name":"spr_mk4_right_trim","path":"sprites/spr_mk4_right_trim/spr_mk4_right_trim.yy",},},
     {"id":{"name":"spr_mk5_chest_variants","path":"sprites/spr_mk5_chest_variants/spr_mk5_chest_variants.yy",},},
     {"id":{"name":"spr_mk5_colors","path":"sprites/spr_mk5_colors/spr_mk5_colors.yy",},},
