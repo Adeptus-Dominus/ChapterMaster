@@ -832,6 +832,19 @@ function draw_regions_panel(_star, _planet, _px, _py) {
         draw_text(_row_x2 - 2, _gar_y1, _gar_str);
         draw_set_halign(fa_left);
 
+        // Hover the forces label on a hostile region to read the FIXED slice it commits to
+        // a battle fought here: the region's combat width. The capital commits the whole
+        // force; outlying regions commit a fixed fraction, independent of what the Chapter
+        // brings. This is the readout that tells the player where to strike for a smaller
+        // fight.
+        if (!_f_imperial && scr_hit(_gar_x1, _gar_y1, _gar_x2, _gar_y2)) {
+            var _slice = region_field_slice(_star, _planet, i, _region.owner);
+            var _slice_txt = _region.is_capital
+                ? $"Capital: fields the whole force here (~{scr_display_number(_slice)}). The full battle."
+                : $"Fields ~{scr_display_number(_slice)} in a battle here, a fixed slice of the world's force. Bringing more troops clears it faster, not fights more.";
+            tooltip_draw(_slice_txt, 320);
+        }
+
         // Clicking the garrison figure opens its breakdown (and focuses the region); clicking
         // elsewhere on the row just focuses it. The garrison check runs first — point_and_click sets a
         // click cooldown on success, so the row check is naturally suppressed the same frame.
@@ -4595,6 +4608,31 @@ function beacon_teardown_if_cleansed(_star, _planet) {
             scr_event_log("green", $"The Ascension Beacon on {_star.name} {scr_roman(_planet)} is torn down.", _star.name);
         }
     } catch (_e) {}
+}
+
+/// @function region_field_slice
+/// @description The FIXED headcount a region throws into a battle fought for it: the capital
+///              fields the planet's whole enemy force, an outlying region fields
+///              REGION_WIDTH_SLICE_FRACTION of it. This is set by the region (geography),
+///              NOT by the size of the attacking Chapter force, so bringing more troops
+///              clears the slice faster but never makes the enemy field more (see the
+///              Final Liberation note in macros). Returns 0 for a region the faction does
+///              not hold. Used for display; the assault path applies the same fraction.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _index
+/// @param {Real} _faction
+/// @returns {Real}
+function region_field_slice(_star, _planet, _index, _faction) {
+    var _region = region_get(_star, _planet, _index);
+    if (!is_struct(_region) || (_region.owner != _faction)) {
+        return 0;
+    }
+    var _planet_force = planet_faction_pop(_star, _planet, _faction);
+    if (_region.is_capital) {
+        return _planet_force;
+    }
+    return round(_planet_force * REGION_WIDTH_SLICE_FRACTION);
 }
 
 /// @function region_is_licensed

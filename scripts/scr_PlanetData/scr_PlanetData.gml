@@ -1631,14 +1631,35 @@ function PlanetData(_planet, _system) constructor {
                 // is empty only for out-of-range levels, in which case fall back to the count.
                 var _tier_txt = (blurb != "") ? $"{faction}: {blurb}" : $"{faction} Forces: {scr_display_number(_p_total)}";
                 var _p_lbl = (blurb != "") ? $"{_tier_txt}  (~{scr_display_number(_p_total)})" : _tier_txt;
+                // Guard-offensive target marker: when a matching contain directive is
+                // active, this world's line can be pinned so the sector Guard concentrate
+                // their background attrition here. A leading > marks the current target.
+                var _dir_faction = faction_efaction[t];
+                var _can_direct = (sector_directive_for_faction(_dir_faction) != "")
+                    && (sector_directive_get() == sector_directive_for_faction(_dir_faction));
+                var _is_dir_target = _can_direct && sector_directive_is_target(system, current_planet, _dir_faction);
+                if (_is_dir_target) {
+                    _p_lbl = "> " + _p_lbl;
+                }
                 var _p_ly = _pres_y + (_pres_row * 16);
                 var _p_hover = scr_hit(_pres_x, _p_ly, _pres_x + string_width(_p_lbl), _p_ly + 15);
-                draw_set_color(_p_hover ? c_yellow : c_white);
+                draw_set_color(_is_dir_target ? c_lime : (_p_hover ? c_yellow : c_white));
                 draw_text(_pres_x, _p_ly, _p_lbl);
+                if (_p_hover && _can_direct) {
+                    tooltip_draw("Right-click: direct the sector Guard offensive to concentrate on this world.");
+                }
                 if (_p_hover && mouse_button_clicked()) {
                     obj_star_select.region_force_open = true;
                     obj_star_select.region_force_faction = faction_efaction[t];
                     obj_star_select.region_force_view = -1;
+                }
+                // Right-click pins/unpins this world as the Guard offensive target.
+                if (_p_hover && _can_direct && mouse_check_button_pressed(mb_right)) {
+                    if (sector_directive_is_target(system, current_planet, _dir_faction)) {
+                        sector_directive_set_target("", -1);
+                    } else {
+                        sector_directive_set_target(system.name, current_planet);
+                    }
                 }
                 _pres_row++;
             }

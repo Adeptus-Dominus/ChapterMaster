@@ -70,6 +70,29 @@
 // Alarm_5), so chipping outlying sectors is safer but slower than a
 // decapitation strike.
 #macro REGION_ASSAULT_COMMIT_FRACTION 0.35
+
+// ---- Background sector war (Guard vs xenos/heretic attrition) ----
+// Each turn, on every world where the Imperium (Guard/PDF) and a level-modelled enemy
+// both have a presence, the off-screen war grinds the enemy down: the bulk of the enemy
+// fights the sector's Guard while the player's marines mop up the elite. This is what
+// erodes a 100k-Ork world over turns instead of leaving it a static stronghold. The
+// player's own force is NEVER an input to this (see the Final Liberation note on region
+// width): geography and the Guard presence decide it, not what the Chapter brings.
+//   SECTOR_BACKGROUND_WAR_INTERVAL : turns between background attrition passes.
+//   SECTOR_BACKGROUND_GUARD_TIER_*  : the p_guardsmen headcount bands that map to a 1-6
+//                                     "Guard strength tier" for the attrition roll.
+#macro SECTOR_BACKGROUND_WAR_INTERVAL 2
+#macro SECTOR_BACKGROUND_GUARD_MIN 5000
+
+// ---- Region width (fixed slice per region) ----
+// A region fields a FIXED slice of the planet's enemy force, set by the region itself,
+// not by the size of the attacking Chapter force. The capital fields the whole force;
+// each outlying region fields REGION_WIDTH_SLICE_FRACTION of it. Bringing a larger
+// tailored force clears the slice faster and safer but NEVER makes the enemy field more
+// (the Final Liberation failure mode: scaling enemy width to player commitment punishes
+// bringing force and collapses into min-maxing a tiny stack). This reuses the assault
+// commitment fraction so the two stay identical.
+#macro REGION_WIDTH_SLICE_FRACTION REGION_ASSAULT_COMMIT_FRACTION
 // Imperial worlds pass their raw Guard garrison through threat (population-scaled,
 // sanity-capped at 1M strategically). A tactical battle fields at most this many of
 // them; the rest are the garrison you are NOT fighting today.

@@ -20,6 +20,24 @@ function sector_directive_ensure() {
     if (!variable_instance_exists(obj_controller, "sector_directive_turn")) {
         obj_controller.sector_directive_turn = -SECTOR_DIRECTIVE_COOLDOWN;
     }
+    // Optional planet the player has asked the Guard offensive to prioritise. "" name
+    // means "no preference": the strike falls back to the strongest enemy world, as
+    // before. Backfilled here so pre-feature saves load clean.
+    if (!variable_instance_exists(obj_controller, "sector_directive_target_star")) {
+        obj_controller.sector_directive_target_star = "";
+    }
+    if (!variable_instance_exists(obj_controller, "sector_directive_target_planet")) {
+        obj_controller.sector_directive_target_planet = -1;
+    }
+}
+
+/// Player points the Guard offensive at a specific world (or clears it with ""). The
+/// strike still only fires on its own interval and only while a contain directive is
+/// active; this just steers WHERE it lands.
+function sector_directive_set_target(_star_name, _planet) {
+    sector_directive_ensure();
+    obj_controller.sector_directive_target_star = _star_name;
+    obj_controller.sector_directive_target_planet = _planet;
 }
 
 function sector_directive_get() {
@@ -83,6 +101,26 @@ function sector_directive_apply_choice(_directive) {
     }
 }
 
+/// The contain-directive string that campaigns against a faction, or "" if none does.
+function sector_directive_for_faction(_faction) {
+    switch (_faction) {
+        case eFACTION.ORK:   return "contain_ork";
+        case eFACTION.TAU:   return "contain_tau";
+        case eFACTION.ELDAR: return "contain_eldar";
+        case eFACTION.CHAOS:
+        case eFACTION.HERETICS: return "contain_chaos";
+    }
+    return "";
+}
+
+/// True if this world+faction is the Guard offensive's current directed target.
+function sector_directive_is_target(_star, _planet, _faction) {
+    sector_directive_ensure();
+    return (obj_controller.sector_directive_target_star == _star.name)
+        && (obj_controller.sector_directive_target_planet == _planet)
+        && (sector_directive_get() == sector_directive_for_faction(_faction));
+}
+
 /// Force level a faction holds on a planet. Explicit per-array mapping: Chaos and
 /// Heretics read whichever of p_chaos / p_traitors is larger, keeping this clear of
 /// the 10/11 read/write inversion that bites eFACTION-keyed helpers in combat code.
@@ -129,13 +167,31 @@ function sector_directive_strike(_faction) {
     var _best_star = noone;
     var _best_planet = -1;
     var _best_force = 0;
-    with (obj_star) {
-        for (var p = 1; p <= planets; p++) {
-            var _f = sector_directive_force_get(id, p, _faction);
-            if (_f > _best_force) {
-                _best_force = _f;
-                _best_star = id;
-                _best_planet = p;
+
+    // Player-directed target takes priority: if the world the player pinned still has
+    // this faction on it, the Guard offensive lands there instead of auto-picking the
+    // strongest world. This is how the player concentrates the background war on the
+    // planet they are personally fighting for.
+    var _tgt_name = obj_controller.sector_directive_target_star;
+    var _tgt_planet = obj_controller.sector_directive_target_planet;
+    if ((_tgt_name != "") && (_tgt_planet > 0)) {
+        var _tgt_star = find_star_by_name(_tgt_name);
+        if (instance_exists(_tgt_star) && (_tgt_planet <= _tgt_star.planets)
+        && (sector_directive_force_get(_tgt_star, _tgt_planet, _faction) > 0)) {
+            _best_star = _tgt_star;
+            _best_planet = _tgt_planet;
+        }
+    }
+
+    if (_best_planet < 0) {
+        with (obj_star) {
+            for (var p = 1; p <= planets; p++) {
+                var _f = sector_directive_force_get(id, p, _faction);
+                if (_f > _best_force) {
+                    _best_force = _f;
+                    _best_star = id;
+                    _best_planet = p;
+                }
             }
         }
     }
@@ -230,5 +286,86 @@ function sector_directive_tick() {
     }
     if ((obj_controller.turn % SECTOR_DIRECTIVE_STRIKE_INTERVAL) == 0) {
         sector_directive_strike(_faction);
+    }
+}
+
+/// Maps a world's Guard/PDF headcount to a 1-6 strength tier for the background war roll.
+/// Mirrors the coarse banding the PDF defence readout uses, so "a lot of Guard" reads as
+/// a high tier without needing the full determine_pdf_defence machinery here.
+function sector_background_guard_tier(_star, _planet) {
+    var _g = 0;
+    if (variable_instance_exists(_star, "p_guardsmen")) { _g += _star.p_guardsmen[_planet]; }
+    if (variable_instance_exists(_star, "p_pdf")) { _g += _star.p_pdf[_planet] * 0.05; }
+    if (_g < SECTOR_BACKGROUND_GUARD_MIN) { return 0; }
+    if (_g >= 50000000) { return 6; }
+    if (_g >= 15000000) { return 5; }
+    if (_g >= 6000000)  { return 4; }
+    if (_g >= 1000000)  { return 3; }
+    if (_g >= 100000)   { return 2; }
+    return 1;
+}
+
+/// One planet's background attrition step: the Guard grind a level-modelled enemy the
+/// player is NOT the sole answer to. Returns true if the enemy lost ground. The roll
+/// favours whichever side has the higher tier, with a swing, so a strong Guard presence
+/// reliably erodes a weak enemy and a token garrison rarely dents a horde. The player's
+/// own forces are not consulted anywhere here.
+function sector_background_war_planet(_star, _planet, _faction) {
+    if (count_to_level_anchors(_faction) == -1) { return false; }
+    var _enemy_tier = faction_planet_level(_star, _planet, _faction);
+    if (_enemy_tier <= 0) { return false; }
+    var _guard_tier = sector_background_guard_tier(_star, _planet);
+    if (_guard_tier <= 0) { return false; }
+
+    // HoI4-flavoured resolution: strength difference sets the base odds, plus a swing.
+    // Positive means the Guard press their advantage this pass.
+    var _delta = _guard_tier - _enemy_tier;
+    var _roll = _delta * 20 + irandom(100) - 50;
+    if (_roll <= 0) { return false; }
+
+    // The enemy headcount falls toward the next tier down; the clamp re-tiers it. A big
+    // Guard edge can knock a whole level, a marginal one shaves the population.
+    var _pop = planet_faction_pop(_star, _planet, _faction);
+    var _cut = (_delta >= 2) ? 0.5 : 0.2;
+    var _new_pop = max(0, round(_pop * (1 - _cut)));
+    sector_background_apply_pop(_star, _planet, _faction, _new_pop);
+    return true;
+}
+
+/// Writes a reduced headcount back to the faction's level, using the same conversion the
+/// battle-victory path uses so the two stay consistent (level array is authoritative for
+/// combat sizing; the clamp trims p_race_pop into the new band).
+function sector_background_apply_pop(_star, _planet, _faction, _new_pop) {
+    var _new_lvl = count_to_level(_faction, _new_pop);
+    with (_star) {
+        switch (_faction) {
+            case eFACTION.ORK:      p_orks[_planet] = _new_lvl; break;
+            case eFACTION.TAU:      p_tau[_planet] = _new_lvl; break;
+            case eFACTION.ELDAR:    p_eldar[_planet] = _new_lvl; break;
+            case eFACTION.TYRANIDS: p_tyranids[_planet] = _new_lvl; break;
+            case eFACTION.NECRONS:  p_necrons[_planet] = _new_lvl; break;
+            case eFACTION.HERETICS: p_traitors[_planet] = _new_lvl; break;
+        }
+    }
+    if (variable_instance_exists(_star, "p_race_pop")) {
+        _star.p_race_pop[_planet][_faction] = _new_pop;
+    }
+    faction_pop_clamp_to_level(_star, _planet, _faction);
+}
+
+/// Sector-wide background war pass: runs every SECTOR_BACKGROUND_WAR_INTERVAL turns.
+/// For each world, the Guard grind whichever level-modelled enemy is present. Logs a
+/// concise notice per world that lost ground so the player sees the tide moving.
+function sector_background_war_tick() {
+    if ((obj_controller.turn % SECTOR_BACKGROUND_WAR_INTERVAL) != 0) { return; }
+    var _factions = [eFACTION.ORK, eFACTION.TAU, eFACTION.ELDAR, eFACTION.TYRANIDS, eFACTION.NECRONS, eFACTION.HERETICS];
+    with (obj_star) {
+        for (var p = 1; p <= planets; p++) {
+            for (var f = 0; f < array_length(_factions); f++) {
+                if (sector_background_war_planet(id, p, _factions[f])) {
+                    scr_event_log("c_gray", $"Sector Guard grind the {region_faction_name(_factions[f])} on {name} {scr_roman(p)}.", name);
+                }
+            }
+        }
     }
 }
