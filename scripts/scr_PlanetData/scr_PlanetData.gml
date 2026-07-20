@@ -2014,6 +2014,15 @@ function PlanetData(_planet, _system) constructor {
                     _lic_button.draw(region_can_license(system, planet, region_focus_get(system, planet)));
                 }
 
+                // Recall Forces: appears whenever the player has a foothold (forces planetside)
+                // on this world, letting them re-embark those units onto the ships they came
+                // from. Sits one row below the Recruit Guard / License slot.
+                if (system.p_player[planet] > 0) {
+                    var _recall_button = obj_star_select.recall_forces_button;
+                    _recall_button.update({x1: xx + 35, y1: _half_way + (spacing_y * 2), allow_click: true});
+                    _recall_button.draw(true);
+                }
+
                 var _recruit_button = obj_star_select.recruiting_button;
 
                 _recruit_button.update({x1: xx + (spacing_x * 2) + 15, y1: _half_way, allow_click: true});

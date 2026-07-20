@@ -103,6 +103,20 @@ function drop_select_unit_selection() {
         _local_button.y1 = _buttons_y;
         _local_button.update();
         _local_button.draw();
+
+        // Hold Ground toggle sits just below Local Forces (ground assaults only). When
+        // active, survivors stay planetside as a foothold after the battle.
+        if (attack == 1) {
+            var _hg_button = roster.hold_ground_button;
+            _hg_button.x1 = _buttons_x;
+            _hg_button.y1 = _buttons_y + 26;
+            _hg_button.tooltip = "Keep the surviving attackers on the surface after the battle instead of returning them to orbit. They hold a foothold and fight the world's defenders each turn until you Recall them.";
+            _hg_button.update();
+            _hg_button.draw();
+            if (_hg_button.clicked()) {
+                _hg_button.active = !_hg_button.active;
+            }
+        }
         if (_local_button.clicked()) {
             if (_locals_spent) {
                 _local_button.active = false;
@@ -395,6 +409,9 @@ function drop_select_unit_selection() {
             obj_ncombat.formation_set = _chosen_form;
             obj_ncombat.defending = false;
             obj_ncombat.local_forces = roster.local_button.active;
+            // Foothold: only a ship-launched ground assault (attack, fleet present) can hold
+            // ground; local-only or reinforcement battles do not embark/disembark here.
+            obj_ncombat.hold_ground = ((attack == 1) && instance_exists(sh_target) && roster.hold_ground_button.active) ? 1 : 0;
 
             // Orbital Gun Array toll: a ship-launched assault against a gun-world provokes
             // the guns unless it targets the safe landing region. Only applies when a fleet

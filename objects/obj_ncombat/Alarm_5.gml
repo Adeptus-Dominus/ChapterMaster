@@ -25,6 +25,8 @@ if (defeat == 0) {
     with (obj_pnunit) {
         add_marines_to_recovery();
         add_vehicles_to_recovery();
+        // Hold Ground: keep surviving attackers planetside as a foothold (opt-in at launch).
+        hold_ground_disembark();
     }
 
     while (!ds_priority_empty(marines_to_recover)) {

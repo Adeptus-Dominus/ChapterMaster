@@ -418,3 +418,41 @@ function after_combat_dead_marine_equipment_recovered(unit) {
         }
     }
 }
+
+/// @self Asset.GMObject.obj_pnunit
+/// @function hold_ground_disembark
+/// @description When the assault was launched with Hold Ground set, the surviving attackers
+///              (non-ally, non-local, still alive) STAY planetside as a foothold instead of
+///              returning to orbit: each is unloaded onto the battle world (ship_location -1,
+///              added to p_player), so the world's contested auto-battle engages them each
+///              turn until the player Recalls them. Local forces were already planetside and
+///              are untouched. Runs only on a won or survived ground battle.
+function hold_ground_disembark() {
+    if (!instance_exists(obj_ncombat) || (obj_ncombat.hold_ground != 1)) {
+        return;
+    }
+    var _star = obj_ncombat.battle_object;
+    var _planet = obj_ncombat.battle_id;
+    if (!instance_exists(_star)) {
+        return;
+    }
+    for (var i = 0; i < array_length(unit_struct); i++) {
+        var _unit = unit_struct[i];
+        if (!is_struct(_unit)) {
+            continue;
+        }
+        // Skip allies, local (already planetside) forces, and the dead.
+        if (ally[i] == true) {
+            continue;
+        }
+        if (marine_local[i] == true) {
+            continue;
+        }
+        if (marine_dead[i] == 1) {
+            continue;
+        }
+        // Only units actually embarked on a ship can disembark (a unit already planetside
+        // has ship_location -1 and unload() no-ops for it anyway).
+        _unit.unload(_planet, _star);
+    }
+}

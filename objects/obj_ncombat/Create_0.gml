@@ -60,6 +60,7 @@ instance_activate_object(obj_img);
 instance_create(0, 0, obj_centerline);
 
 local_forces = 0;
+hold_ground = 0; // when set, surviving player attackers stay planetside as a foothold after this battle
 battle_loc = "";
 battle_climate = "";
 if (instance_exists(obj_star)) {

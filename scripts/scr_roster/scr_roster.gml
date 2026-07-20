@@ -21,6 +21,17 @@ function Roster() constructor {
         active: false,
     });
 
+    // Hold Ground: when active, the surviving attackers STAY planetside after the assault
+    // (a foothold) instead of returning to orbit, so the world's contested auto-battle
+    // engages them each turn until they are recalled. Opt-in per assault.
+    hold_ground_button = new ToggleButton({
+        str1: "Hold Ground",
+        text_halign: fa_center,
+        text_color: CM_GREEN_COLOR,
+        button_color: CM_GREEN_COLOR,
+        active: false,
+    });
+
     select_all_ships = new UnitButtonObject({
         x1: 700,
         y1: 299,

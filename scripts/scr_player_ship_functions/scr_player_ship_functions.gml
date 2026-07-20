@@ -788,3 +788,67 @@ function ship_bombard_spend(ship_index) {
     }
     ship_action_spend(ship_index, "bombard");
 }
+
+/// @function recall_forces_at_world
+/// @description "Recall Forces": re-embarks the player's planetside units on a world back
+///              onto the SAME ship each came from (matched by the ship uid each unit recorded
+///              when it disembarked). A unit whose origin ship is gone, not at this world, or
+///              full is LEFT planetside and counted for a warning, so nothing is silently
+///              lost or mixed onto the wrong hull. Returns a struct {recalled, stranded}.
+/// @param {Id.Instance.obj_star} _star  the world to recall from
+/// @returns {Struct}
+function recall_forces_at_world(_star) {
+    var _recalled = 0;
+    var _stranded = 0;
+    if (!instance_exists(_star)) {
+        return { recalled: 0, stranded: 0 };
+    }
+    var _star_name = _star.name;
+
+    // Map ship uid -> ship id for ships currently AT this world (so we only board ships in orbit).
+    var _uid_to_id = {};
+    for (var s = 0; s < array_length(obj_ini.ship); s++) {
+        if (obj_ini.ship[s] == "") {
+            continue;
+        }
+        if (obj_ini.ship_location[s] == _star_name) {
+            _uid_to_id[$ string(obj_ini.ship_uid[s])] = s;
+        }
+    }
+
+    // Walk every player unit; re-embark the planetside ones on this world.
+    for (var _co = 0; _co <= obj_ini.companies; _co++) {
+        var _names = obj_ini.name[_co];
+        for (var _mi = 0; _mi < array_length(_names); _mi++) {
+            var _unit = fetch_unit([_co, _mi]);
+            if (!is_struct(_unit)) {
+                continue;
+            }
+            // Planetside (not on a ship) AND on this world.
+            if (_unit.ship_location != -1) {
+                continue;
+            }
+            if (_unit.location_string != _star_name) {
+                continue;
+            }
+            if (!_unit.controllable()) {
+                continue;
+            }
+            var _uid_key = string(_unit.last_ship.uid);
+            if ((_unit.last_ship.uid == "") || !variable_struct_exists(_uid_to_id, _uid_key)) {
+                _stranded++; // origin ship gone or not here
+                continue;
+            }
+            var _ship = _uid_to_id[$ _uid_key];
+            _unit.get_unit_size();
+            // Capacity check: the ship must have room for this unit.
+            if ((obj_ini.ship_carrying[_ship] + _unit.size) > obj_ini.ship_capacity[_ship]) {
+                _stranded++; // ship full
+                continue;
+            }
+            _unit.load_marine(_ship, _star);
+            _recalled++;
+        }
+    }
+    return { recalled: _recalled, stranded: _stranded };
+}

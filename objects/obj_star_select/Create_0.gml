@@ -124,6 +124,17 @@ build_license_button.bind_method = function() {
     region_grant_license(target, _p, _focus);
 };
 
+recall_forces_button = new PurchaseButton(0);
+recall_forces_button.update({tooltip: "Recall your forces holding a foothold on this world back to orbit, re-embarking each onto the same ship it landed from. Any unit whose ship is gone or full is left on the surface and reported.", label: "Recall Forces", target: target});
+recall_forces_button.bind_method = function() {
+    var _res = recall_forces_at_world(target);
+    var _msg = $"Recalled {_res.recalled} unit(s) to orbit.";
+    if (_res.stranded > 0) {
+        _msg += $" {_res.stranded} unit(s) had no ship with room at this world and remain on the surface.";
+    }
+    scr_popup("Recall Forces", _msg, "");
+};
+
 recruiting_button = new PurchaseButton(0);
 recruiting_button.update({tooltip: "Enable recruiting", label: "Recruiting", target: target});
 recruiting_button.bind_method = function() {
