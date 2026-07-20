@@ -11,7 +11,11 @@
 /// @returns {bool}
 function guard_weapon_permitted(_role, _weapon) {
     static _guard_infantry_weapons = ["Lasgun", "Autogun", "Hellgun", "Bayonet", "Guard Chainsword", "Laspistol"];
-    static _guard_heavy_weapons = ["Heavy Bolter"];
+    // Crewed heavy weapons a Heavy Weapons Team may field. The team's template
+    // spawns with a Heavy Bolter; the rest are Guard-pattern crew weapons the
+    // armoury may issue. Any weapon named in unit_stats.json guard templates
+    // MUST stay on these lists (see the docstring above).
+    static _guard_heavy_weapons = ["Heavy Bolter", "Lascannon", "Autocannon", "Missile Launcher"];
     if (_role == "Guardsman" || _role == "Veteran Guard" || _role == "Guard Sergeant") {
         return array_contains(_guard_infantry_weapons, _weapon);
     }
