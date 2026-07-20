@@ -75,6 +75,11 @@ p_feature = array_create_advanced(_planet_array_size, []);
 p_upgrades = array_create_advanced(_planet_array_size, []);
 // Multi-region layer: array of Region records per planet. MUST be declared here or deserialize crashes on load.
 p_regions = array_create_advanced(_planet_array_size, []);
+// Heretic-revolt peace cooldown (turn a planet was last cleansed). Was lazily
+// created in scr_region_functions on first cleanse; serialize sweeps every p_*
+// instance var into planet_data, so a fresh instance MUST declare it or loading
+// a save that captured it crashes at deserialize (array write into undefined).
+p_heresy_cleansed_turn = array_create(_planet_array_size, -9999);
 p_region_focus = array_create_advanced(_planet_array_size, 0); // player's conquest-focus region index
 p_influence = array_create_advanced(_planet_array_size, array_create(15, 0));
 p_problem = array_create_advanced(_planet_array_size, array_create(8, ""));
@@ -261,6 +266,13 @@ function deserialize(save_data) {
                     continue;
                 }
                 var val = planet[$ var_name];
+                // Sanitize on load: a p_ field the save captured but this build does
+                // not declare (lazily-added or legacy) leaves self[$ var_name]
+                // undefined, and the array write below kills the whole load.
+                // Materialize an array instead of dying.
+                if (!variable_instance_exists(id, var_name) || !is_array(self[$ var_name])) {
+                    self[$ var_name] = array_create(array_length(planet_arr), 0);
+                }
                 self[$ var_name][p] = val;
             }
         }
