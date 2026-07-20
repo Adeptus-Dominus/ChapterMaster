@@ -396,6 +396,16 @@ function drop_select_unit_selection() {
             obj_ncombat.defending = false;
             obj_ncombat.local_forces = roster.local_button.active;
 
+            // Orbital Gun Array toll: a ship-launched assault against a gun-world provokes
+            // the guns unless it targets the safe landing region. Only applies when a fleet
+            // is actually in orbit (a purely planetside local-forces attack risks no ship).
+            // The toll is charged once per launch on the region the assault is aimed at.
+            if (instance_exists(sh_target)) {
+                var _og_region = (planet_region_count(p_target, planet_number) > 1)
+                    ? region_focus_get(p_target, planet_number) : -1;
+                orbital_gun_ship_toll(p_target, planet_number, _og_region);
+            }
+
             // (Imperial Guard assault bring-along disabled for now: the player-side
             //  battlefield unit needs real per-model data, so this is being rebuilt.
             //  Until then we do not touch the embarked Guard, so attacks cost nothing.)

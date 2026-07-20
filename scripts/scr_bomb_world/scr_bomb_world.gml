@@ -96,6 +96,15 @@ function bombard_population_kill(_planet, _enemy_tier, _bomb_power) {
 function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_strength) {
     var pop_after = 0, reduced_bombard_score = 0, strength_reduction = 0, txt2 = "", txt3 = "", txt4 = "", max_kill, overkill, roll, kill;
 
+    // Orbital Gun Array toll: bombarding a gun-world from orbit provokes the guns unless
+    // the bombardment is aimed at the safe landing region (which you may clear to land in).
+    // Charged once per bombardment on the focused region.
+    if (instance_exists(system)) {
+        var _og_region = (planet_region_count(system, planet) > 1)
+            ? region_focus_get(system, planet) : -1;
+        orbital_gun_ship_toll(system, planet, _og_region);
+    }
+
     var score_before = population;
 
     // TODO - update descriptions below, once we get Surface to Orbit weaponry into the game

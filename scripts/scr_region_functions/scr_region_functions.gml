@@ -3844,8 +3844,8 @@ function region_building_catalogue() {
             on_turn: undefined,
         },
         {
-            id: "anti_orbital_gun", name: "Anti-Orbital Gun", sprite: spr_holo_pad, cost: 8000, max: 1, types: "all",
-            desc: "Orbital defence battery. Each turn it fires on fleets hostile to whoever holds THIS region, destroying a ship in orbit. A double-edged sword: if the enemy takes the region the gun turns on your fleet -- though mindless Tyranids can't operate it (only a Genestealer Cult might, and only sometimes). (Handled by regions_orbital_guns_tick.)",
+            id: "anti_orbital_gun", name: "Orbital Gun Array", sprite: spr_holo_pad, cost: 8000, max: 1, types: "all",
+            desc: "A battery of phase-lance defence guns ringing the capital, fed by its power generators (CAPITAL ONLY). Each turn it fires on fleets hostile to whoever holds the capital, destroying a ship in orbit. Attacking this world from orbit -- bombard, raid, or a ship-launched assault -- against any region except the farthest outlying zone risks a ship each time: land there and advance overland instead. A double-edged sword: if the enemy takes the capital the array turns on your fleet (though mindless Tyranids can't operate it; only a Genestealer Cult might, and only sometimes). Does not occupy the region's improvement slot. (Handled by regions_orbital_guns_tick / orbital_gun_ship_toll.)",
             apply: undefined,
             on_turn: undefined,
         },
@@ -4124,8 +4124,12 @@ function region_building_can_build(_star, _planet, _region, _def) {
         return false;
     }
 
-    // Cap: the Anti-Orbital Gun is one per planet; everything else is per region.
+    // Cap: the Orbital Gun Array is CAPITAL ONLY (its phase lances need the capital's
+    // power generators) and one per planet; everything else is per region.
     if (_def.id == "anti_orbital_gun") {
+        if (!_region.is_capital) {
+            return false;
+        }
         if (region_planet_building_count(_star, _planet, _def.id) >= _def.max) {
             return false;
         }
@@ -4256,6 +4260,145 @@ function region_player_fleet_lose_ship(_fleet) {
         }
     }
     return false;
+}
+
+/// @function planet_has_active_orbital_gun
+/// @description True if this planet has an Orbital Gun Array on a region held by a faction
+///              that can actually fire it (not a fallen/pure-Tyranid region). The array is
+///              capital-only, so in practice this is "the capital has a working gun".
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @returns {Bool}
+function planet_has_active_orbital_gun(_star, _planet) {
+    var _regions = regions_ensure(_star, _planet);
+    for (var r = 0, rl = array_length(_regions); r < rl; r++) {
+        var _region = _regions[r];
+        if (region_building_count(_region, "anti_orbital_gun") <= 0) {
+            continue;
+        }
+        // A pure-Tyranid holder can't work the guns; everyone else can.
+        var _owner = _region.owner;
+        var _pure_nid = (_owner == eFACTION.TYRANIDS)
+            && !planet_feature_bool(_star.p_feature[_planet], eP_FEATURES.GENE_STEALER_CULT);
+        if (!_pure_nid) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/// @function planet_safe_landing_region
+/// @description The one region an attacker can strike / land in WITHOUT provoking the
+///              Orbital Gun Array: the outlying zone farthest from the capital (highest
+///              region index). Land here under the guns' blind spot, then advance overland
+///              toward the capital (Vraks-style). Returns the region index, or 0 (the
+///              capital) if the planet somehow has no outlying region.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @returns {Real}
+function planet_safe_landing_region(_star, _planet) {
+    var _n = planet_region_count(_star, _planet);
+    return (_n > 1) ? (_n - 1) : 0;
+}
+
+/// @function orbital_gun_ship_toll
+/// @description Applies the Orbital Gun Array's toll for a hostile orbital action (bombard,
+///              raid, or ship-launched assault) against a gun-world. No toll if the world
+///              has no working gun, or if the action targets the safe landing region. On a
+///              provoked shot: ORBITAL_GUN_SHIP_LOSS_CHANCE to hit one of the player's ships
+///              in orbit; on a hit, 50% destroyed / 50% badly damaged. Target priority
+///              frigate > capital > escort. Logs the result. Returns true if a ship was
+///              lost or damaged.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _target_region  the region index the action is aimed at (-1 = whole planet)
+/// @returns {Bool}
+function orbital_gun_ship_toll(_star, _planet, _target_region) {
+    if (!planet_has_active_orbital_gun(_star, _planet)) {
+        return false;
+    }
+    // Safe landing zone is exempt: this is the whole point of landing there.
+    if (_target_region == planet_safe_landing_region(_star, _planet)) {
+        return false;
+    }
+    if (random(1) >= ORBITAL_GUN_SHIP_LOSS_CHANCE) {
+        return false; // the guns miss / are evaded this time
+    }
+
+    // Pick a ship in orbit by priority: frigate > capital > escort.
+    var _ships = get_player_ships(_star.name);
+    if (array_length(_ships) <= 0) {
+        return false; // no ships present to lose (e.g. a purely planetside action)
+    }
+    // Priority frigate > capital > escort maps to ship_size 2 > 3 > 1 (Strike Cruiser >
+    // Battle Barge/Gloriana > Gladius/Hunter): the guns favour the valuable, killable
+    // target over both the smallest hull and the most heavily armoured.
+    var _pick = -1;
+    var _priorities = [2, 3, 1];
+    for (var _pr = 0; _pr < array_length(_priorities); _pr++) {
+        for (var s = 0; s < array_length(_ships); s++) {
+            var _sid = _ships[s];
+            if (_sid >= 0 && _sid < array_length(obj_ini.ship_size)
+            && obj_ini.ship_size[_sid] == _priorities[_pr] && obj_ini.ship_hp[_sid] > 0) {
+                _pick = _sid;
+                break;
+            }
+        }
+        if (_pick != -1) { break; }
+    }
+    if (_pick == -1) {
+        // Fallback: any live ship present.
+        for (var s = 0; s < array_length(_ships); s++) {
+            if (_ships[s] >= 0 && _ships[s] < array_length(obj_ini.ship_hp) && obj_ini.ship_hp[_ships[s]] > 0) { _pick = _ships[s]; break; }
+        }
+    }
+    if (_pick == -1) {
+        return false;
+    }
+
+    var _name = obj_ini.ship[_pick];
+    if (random(1) < 0.5) {
+        // Destroyed with all crew.
+        obj_ini.ship_hp[_pick] = 0;
+        scr_event_log("red", $"The Orbital Gun Array over {_star.name} {scr_roman(_planet)} tears the {_name} apart on approach; all hands lost.", _star.name);
+    } else {
+        // Badly damaged.
+        obj_ini.ship_hp[_pick] = max(1, floor(obj_ini.ship_hp[_pick] * random_range(ORBITAL_GUN_DAMAGE_MIN, ORBITAL_GUN_DAMAGE_MAX)));
+        scr_event_log("yellow", $"The Orbital Gun Array over {_star.name} {scr_roman(_planet)} rakes the {_name}, leaving it crippled.", _star.name);
+    }
+    return true;
+}
+
+/// @function region_ground_position_ensure / _get / _set
+/// @description STUB for the future Vraks-style overland advance (#5). Tracks which region
+///              the player's landed ground force currently occupies on a planet, so a later
+///              build can require moving from the safe landing zone toward the capital one
+///              region per turn. Stored on obj_star as p_ground_position[planet]; defaults
+///              to -1 (no force landed). Nothing consumes this yet; it exists so the state
+///              is saved from now on and the movement feature can be added without a
+///              save-breaking migration later.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @returns {Real}
+function region_ground_position_ensure(_star, _planet) {
+    if (!variable_instance_exists(_star, "p_ground_position")) {
+        _star.p_ground_position = array_create(_star.planets + 1, -1);
+    }
+    if (_planet >= array_length(_star.p_ground_position)) {
+        var _old = _star.p_ground_position;
+        _star.p_ground_position = array_create(_planet + 1, -1);
+        array_copy(_star.p_ground_position, 0, _old, 0, array_length(_old));
+    }
+    return _star.p_ground_position[_planet];
+}
+
+function region_ground_position_get(_star, _planet) {
+    return region_ground_position_ensure(_star, _planet);
+}
+
+function region_ground_position_set(_star, _planet, _region_index) {
+    region_ground_position_ensure(_star, _planet);
+    _star.p_ground_position[_planet] = _region_index;
 }
 
 /// @function regions_orbital_guns_tick

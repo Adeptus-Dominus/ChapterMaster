@@ -93,6 +93,20 @@
 // bringing force and collapses into min-maxing a tiny stack). This reuses the assault
 // commitment fraction so the two stay identical.
 #macro REGION_WIDTH_SLICE_FRACTION REGION_ASSAULT_COMMIT_FRACTION
+
+// ---- Orbital Gun Array (capital planetary defence) ----
+// The gun array watches the approaches: attacking a gun-world from orbit (bombard, raid,
+// or a ship-launched ground assault) against ANY region except the designated safe
+// landing zone risks a ship each time. The safe zone is the outlying region farthest
+// from the capital (highest region index): you can bombard it to clear it, then land
+// there and advance overland toward the capital (Vraks-style). Landing on the safe zone,
+// or acting once your troops are already planetside, never triggers the guns.
+//   ORBITAL_GUN_SHIP_LOSS_CHANCE : chance a hostile orbital action provokes the guns.
+//   On a hit: 50% the ship is destroyed, 50% badly damaged. Target priority
+//   frigate > capital > escort (the guns pick the valuable, killable target).
+#macro ORBITAL_GUN_SHIP_LOSS_CHANCE 0.9
+#macro ORBITAL_GUN_DAMAGE_MIN 0.2
+#macro ORBITAL_GUN_DAMAGE_MAX 0.6
 // Imperial worlds pass their raw Guard garrison through threat (population-scaled,
 // sanity-capped at 1M strategically). A tactical battle fields at most this many of
 // them; the rest are the garrison you are NOT fighting today.
