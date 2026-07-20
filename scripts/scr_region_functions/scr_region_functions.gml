@@ -4246,7 +4246,8 @@ function regions_buildings_tick(_star, _planet) {
     var _regions = regions_ensure(_star, _planet);
     for (var r = 0, rl = array_length(_regions); r < rl; r++) {
         var _region = _regions[r];
-        if (_region.owner != eFACTION.PLAYER) {
+        // Player-held OR licensed (Chapter-funded on a world you do not own): both earn.
+        if ((_region.owner != eFACTION.PLAYER) && !region_is_licensed(_region)) {
             continue;
         }
         region_buildings_ensure(_region);
@@ -4273,7 +4274,8 @@ function regions_player_requisition_income() {
             var _regions = regions_ensure(id, _p);
             for (var r = 0, rl = array_length(_regions); r < rl; r++) {
                 var _region = _regions[r];
-                if (_region.owner != eFACTION.PLAYER) {
+                // Player-held OR licensed (Chapter-funded on a world you do not own): both earn.
+                if ((_region.owner != eFACTION.PLAYER) && !region_is_licensed(_region)) {
                     continue;
                 }
                 region_buildings_ensure(_region);

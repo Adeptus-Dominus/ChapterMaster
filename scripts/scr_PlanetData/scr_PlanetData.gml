@@ -228,7 +228,7 @@ function PlanetData(_planet, _system) constructor {
         // spreads on ANY world it has taken root on — including an Imperial world it is infesting, NOT
         // just Ork-owned ones — so the green tide keeps swelling even while the garrison fights it.
         // The 0-6 p_orks scalar is kept in sync (count_to_level) for legacy readers.
-        if (system.p_race_pop[planet][eFACTION.ORK] > 0 && has_feature(eP_FEATURES.FUNGAL_BLOOM)) {
+        if (system.p_race_pop[planet][eFACTION.ORK] > 0 && has_feature(eP_FEATURES.FUNGAL_BLOOM) && !system.space_hulk) {
             var _ork = system.p_race_pop[planet][eFACTION.ORK];
             // SLAVE LABOUR: Orks enslave captured human populations (grot-herds, ammo-runners, forced
             // labour), which accelerates the bloom. The more human heads per ork, the bigger the boost —
