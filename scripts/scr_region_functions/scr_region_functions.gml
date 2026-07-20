@@ -569,6 +569,12 @@ function regions_sync(_star, _planet) {
     }
 
     var _focus = (_contester == eFACTION.PLAYER) ? region_focus_get(_star, _planet) : 0;
+    // On a siege world the player's foothold must be the safe landing zone (the only legal
+    // landing under the guns), so the front/beachhead advance stays intact regardless of where
+    // the Sector selector points.
+    if ((_contester == eFACTION.PLAYER) && planet_is_positional_siege(_star, _planet)) {
+        _focus = planet_safe_landing_region(_star, _planet);
+    }
     var _order = regions_contest_order(_regions, _focus);
 
     var _falls = array_create(_n, false);

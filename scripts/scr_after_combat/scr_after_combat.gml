@@ -436,6 +436,8 @@ function hold_ground_disembark() {
     if (!instance_exists(_star)) {
         return;
     }
+    var _landed = 0;
+    var _p_before = _star.p_player[_planet];
     for (var i = 0; i < array_length(unit_struct); i++) {
         var _unit = unit_struct[i];
         if (!is_struct(_unit)) {
@@ -451,8 +453,19 @@ function hold_ground_disembark() {
         if (marine_dead[i] == 1) {
             continue;
         }
-        // Only units actually embarked on a ship can disembark (a unit already planetside
-        // has ship_location -1 and unload() no-ops for it anyway).
+        // Try the normal disembark first (handles ship_carrying bookkeeping).
         _unit.unload(_planet, _star);
+        // ROBUSTNESS: if unload's conditional ship-branch did not actually land the unit
+        // (e.g. its recorded ship system did not match the battle star's name), place it
+        // planetside directly so a won Hold Ground assault always forms the foothold.
+        if (_unit.planet_location != _planet || _unit.ship_location != -1) {
+            _unit.ship_location = -1;
+            _unit.location_string = _star.name;
+            _unit.planet_location = _planet;
+            _unit.get_unit_size();
+            _star.p_player[_planet] += _unit.size;
+        }
+        _landed++;
     }
+    LOGGER.info($"HOLD GROUND disembark on {_star.name} {_planet}: {_landed} units landed, p_player {_p_before} -> {_star.p_player[_planet]}");
 }
