@@ -173,7 +173,7 @@ try {
                     if (p_data.player_forces > 0) {
                         if (is_enemy) {
                             button1 = "Attack";
-                            if (p_data.population) {
+                            if (p_data.population || p_data.has_feature(eP_FEATURES.FUNGAL_BLOOM) || p_data.has_feature(eP_FEATURES.ORKSTRONGHOLD)) {
                                 button2 = "Purge";
                             }
                         }
@@ -201,7 +201,11 @@ try {
                             if (p_data.planet_type == "Dead") {
                                 button3 = "Bombard";
                             }
-                        } else if (p_data.population) {
+                        } else if (p_data.population || p_data.has_feature(eP_FEATURES.FUNGAL_BLOOM) || p_data.has_feature(eP_FEATURES.ORKSTRONGHOLD)) {
+                            // Population OR a leftover ork infestation feature makes the
+                            // world purgeable: Cleanse by Fire scours a Fungal Bloom even
+                            // on a depopulated world the Imperium has just reclaimed, so a
+                            // cleared-but-still-blooming world is not left unpurgeable.
                             button2 = "Purge";
                         } else {
                             button2 = "Raid";
