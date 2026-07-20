@@ -213,7 +213,7 @@ function ComplexSet(_unit) constructor {
     if (unit.IsSpecialist(SPECIALISTS_TECHS)) {
         if (array_contains(["MK5 Heresy", "MK6 Corvus", "MK7 Aquila", "MK8 Errant", "Artificer Armour"], unit_armour)) {
             if (unit.has_trait("tinkerer")) {
-                add_group({"armour": spr_techmarine_complex, "right_trim": spr_techmarine_right_trim, "left_trim": spr_techmarine_left_trim});
+                add_group({"armour": spr_techmarine_complex});
             }
         }
     }
@@ -224,7 +224,6 @@ function ComplexSet(_unit) constructor {
         right_trim: spr_mk7_right_trim,
         mouth_variants: spr_mk7_mouth_variants,
         thorax_variants: spr_mk7_thorax_variants,
-        chest_variants: spr_mk7_chest_variants,
         head: spr_mk7_head_variants,
         right_knee: spr_mk7_complex_knees,
     };
@@ -1629,7 +1628,7 @@ function ComplexSet(_unit) constructor {
                 armour_type = eARMOUR_TYPE.NORMAL;
                 break;
             case "MK4 Maximus":
-                add_group({chest_variants: spr_mk4_chest_variants, leg_variants: spr_mk4_leg_variants, left_trim: spr_mk4_left_trim, right_trim: spr_mk4_right_trim, mouth_variants: spr_mk4_mouth_variants, head: spr_mk4_head_variants});
+                add_group({chest_variants: spr_mk4_chest_variants, leg_variants: spr_mk4_leg_variants, mouth_variants: spr_mk4_mouth_variants, head: spr_mk4_head_variants});
                 armour_type = eARMOUR_TYPE.NORMAL;
                 break;
             case "MK3 Iron Armour":

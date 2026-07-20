@@ -352,6 +352,18 @@ function set_up_visual_overides() {
 }
 
 global.modular_drawing_items = [
+	// MK7 Aquila Sprites
+	{
+        position: "chest_variants",
+        armours: ["MK7 Aquila",
+				  "MK8 Errant",
+				  "Artificer Armour"
+		],
+        body_types: [0],
+        sprite: spr_mk7_chest_variants,
+        shadows: spr_mk7_chest_variants_shadow,
+    },
+	// Other Stuff
     {
         sprite: spr_purity_seal,
         body_types: [
@@ -957,7 +969,7 @@ global.modular_drawing_items = [
         assign_by_rank: 2,
         position: "mouth_variants",
         armours: [
-            "MK7 Aquila",
+
             "Artificer Armour",
         ],
     },
@@ -1928,6 +1940,14 @@ global.modular_drawing_items = [
         sprite: spr_mk4_complex_backpack,
         shadows: spr_mk4_complex_backpack_shadow,
     },
+	{
+        position: "right_trim",
+        armours: ["MK4 Maximus"],
+        body_types: [0],
+        sprite: spr_mk4_right_trim,
+        shadows: spr_mk4_right_trim_shadow,
+		flip: true,
+    },
     //Artificer Sprites
     {
         position: "chest_variants",
@@ -1944,6 +1964,23 @@ global.modular_drawing_items = [
         body_types: [0],
         sprite: spr_artificer_thorax,
         shadows: spr_artificer_thorax_shadow,
+    },
+	//Techmarine Sprites
+	{
+        sprite: spr_techmarine_right_trim,
+	//	shadows: spr_techmarine_right_trim_shadow, // doesn't do anything while prevent_others is true, existing two sprites are hard-colored but this is here just to be filled ou
+        body_types: [0],
+        position: "right_trim",
+        prevent_others: true,
+		ban: ["right_pauldron_embeleshments"],
+        role_type: [SPECIALISTS_TECHS],
+    },
+	{
+        sprite: spr_techmarine_left_trim,
+		shadows: spr_techmarine_left_trim_shadow,
+        body_types: [0],
+        position: "left_trim",
+        role_type: [SPECIALISTS_TECHS],
     },
     //Dreadnought Sprites
     {
