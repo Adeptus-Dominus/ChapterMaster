@@ -1953,6 +1953,23 @@ global.modular_drawing_items = [
         sprite: spr_artificer_thorax,
         shadows: spr_artificer_thorax_shadow,
     },
+	//Techmarine Sprites
+	{
+        sprite: spr_techmarine_right_trim,
+	//	shadows: spr_techmarine_right_trim_shadow, // doesn't do anything while prevent_others is true, existing two sprites are hard-colored but this is here just to be filled ou
+        body_types: [0],
+        position: "right_trim",
+        prevent_others: true,
+		ban: ["right_pauldron_embeleshments"],
+        role_type: [SPECIALISTS_TECHS],
+    },
+	{
+        sprite: spr_techmarine_left_trim,
+		shadows: spr_techmarine_left_trim_shadow,
+        body_types: [0],
+        position: "left_trim",
+        role_type: [SPECIALISTS_TECHS],
+    },
     //Dreadnought Sprites
     {
         position: "armour",

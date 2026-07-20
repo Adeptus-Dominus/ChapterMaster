@@ -213,7 +213,7 @@ function ComplexSet(_unit) constructor {
     if (unit.IsSpecialist(SPECIALISTS_TECHS)) {
         if (array_contains(["MK5 Heresy", "MK6 Corvus", "MK7 Aquila", "MK8 Errant", "Artificer Armour"], unit_armour)) {
             if (unit.has_trait("tinkerer")) {
-                add_group({"armour": spr_techmarine_complex, "right_trim": spr_techmarine_right_trim, "left_trim": spr_techmarine_left_trim});
+                add_group({"armour": spr_techmarine_complex});
             }
         }
     }
