@@ -3851,10 +3851,15 @@ function region_building_catalogue() {
         },
         {
             id: "manufactorum", name: "Manufactorum", sprite: spr_forge_holo, cost: 10000, max: 1, types: ["Hive", "Forge", "Desert"],
-            desc: "Major industrial complex feeding the Chapter's war production. Adds ~100 forge / industry points each turn while you hold this region.",
+            desc: "Major industrial complex feeding the Chapter's war production. Adds ~150 forge / industry points and +15 requisition each turn while you hold this region.",
             apply: undefined,
-            // Forge points produced = 5 x player_forges (scr_specialist_point_handler), so +20 forges ~= +100 points/turn.
-            on_turn: function(_star, _planet, _region) { obj_controller.player_forge_data.player_forges += 20; },
+            // Dual producer. Requisition (+15) comes through the income system
+            // (regions_player_requisition_income -> income_regions in scr_income), same as
+            // the Factory, so it shows in the Requisition counter breakdown. Forge points
+            // are added here via on_turn: produced = 5 x player_forges
+            // (scr_specialist_point_handler), so +30 forges ~= +150 points/turn.
+            req: 15,
+            on_turn: function(_star, _planet, _region) { obj_controller.player_forge_data.player_forges += 30; },
         },
         {
             id: "factory", name: "Factory", sprite: spr_forge_holo, cost: 2000, max: 1, types: ["Hive", "Forge", "Temperate"],
