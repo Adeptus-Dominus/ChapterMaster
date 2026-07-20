@@ -1994,15 +1994,18 @@ function PlanetData(_planet, _system) constructor {
                 _col_button.draw(array_length(obj_star_select.potential_donors));
 
                 // Recruit Guard sits directly below Request Colonists (same column, one
-                // row down). Player worlds only, since you can only mobilise your own PDF.
-                // Clicking is gated on the PDF holding at least 1000 (here) and on having
-                // the 50 requisition (the PurchaseButton's own check), so a click can never
-                // spend the 50 without actually raising the 1000.
-                if (current_owner == eFACTION.PLAYER) {
+                // row down). It ONLY appears once a Guard Barracks is built on this world:
+                // the barracks raises the Guardsmen pool (p_guardsmen, +100/turn) and this
+                // button draws 200 of them out per click for 50 req. Player worlds only.
+                // The draw() gate (barracks present AND >=200 in the pool) mirrors the
+                // bind_method check, so a click can never spend the 50 with no pool to draw.
+                var _has_guard_barracks = (current_owner == eFACTION.PLAYER)
+                    && (region_planet_building_count(system, planet, "guard_barracks") > 0);
+                if (_has_guard_barracks) {
                     var _guard_button = obj_star_select.guard_recruit_button;
                     _guard_button.update({x1: xx + 35, y1: _half_way + spacing_y, allow_click: true});
-                    _guard_button.draw(pdf >= 1000);
-                } else if (planet_region_count(system, planet) > 1) {
+                    _guard_button.draw(system.p_guardsmen[planet] >= 200);
+                } else if (current_owner != eFACTION.PLAYER && planet_region_count(system, planet) > 1) {
                     // Non-owned world with outlying regions: offer the Construction License
                     // in the same slot. allow_click mirrors region_can_license so it greys
                     // out unless the currently-focused region is a licensable outlying one.

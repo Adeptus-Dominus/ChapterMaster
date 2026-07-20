@@ -94,14 +94,18 @@ colonist_button.bind_method = function() {
 // Each PDF trooper raised joins the chapter as an individual Guardsman unit mustering at
 // the home planet, the same singular Guardsmen the Sector Governor supplies. Guardsmen
 // only: no Sergeants, Heavy Weapons Teams or vehicles.
-guard_recruit_button = new PurchaseButton(100);
-guard_recruit_button.update({tooltip: "Levy 1000 Imperial Guard from this world's PDF. Each joins your chapter as an individual Guardsman, mustering at your home planet. Drawn in fixed elements of 1000. /n Costs 50 requisition, requires personal control of the planet and at least 1000 PDF", label: "Recruit Guard", target: target});
+guard_recruit_button = new PurchaseButton(50);
+guard_recruit_button.update({tooltip: "Draw 200 Astra Militarum from this world's Guardsmen pool. Each joins your chapter as an individual Guardsman, mustering at your home planet. Drawn in fixed elements of 200. /n Costs 50 requisition. Requires a Guard Barracks on this world (which raises the Guardsmen pool) and at least 200 Guardsmen available.", label: "Recruit Guard", target: target});
 guard_recruit_button.bind_method = function() {
     var _p = obj_controller.selecting_planet;
-    if (target.p_owner[_p] == eFACTION.PLAYER && target.p_pdf[_p] >= 1000) {
-        target.p_pdf[_p] -= 1000;
+    // Draw from the world's Guardsmen POOL (p_guardsmen), the same pool the Guard
+    // Barracks fills, not the PDF. Fixed element of 200 per click for 50 req.
+    if (target.p_owner[_p] == eFACTION.PLAYER
+    && (region_planet_building_count(target, _p, "guard_barracks") > 0)
+    && target.p_guardsmen[_p] >= 200) {
+        target.p_guardsmen[_p] -= 200;
         with (obj_controller) {
-            repeat (1000) {
+            repeat (200) {
                 scr_add_man("Guardsman", 0, "", "", 0, true, "home_planet", {skip_company_order: true});
             }
         }
