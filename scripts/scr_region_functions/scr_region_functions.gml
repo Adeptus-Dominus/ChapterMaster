@@ -847,15 +847,15 @@ function draw_regions_panel(_star, _planet, _px, _py) {
         draw_set_halign(fa_left);
 
         // Hover the forces label on a hostile region to read the FIXED slice it commits to
-        // a battle fought here: the region's combat width. The capital commits the whole
-        // force; outlying regions commit a fixed fraction, independent of what the Chapter
-        // brings. This is the readout that tells the player where to strike for a smaller
-        // fight.
+        // a battle fought here: the region's stationed GARRISON. The enemy force is divided
+        // across regions, the capital holding the reserve (the bulk) and each outlying region
+        // a capped slice. Striking an outlying region is a smaller, bounded fight; the capital
+        // is where the reserve waits.
         if (!_f_imperial && scr_hit(_gar_x1, _gar_y1, _gar_x2, _gar_y2)) {
-            var _slice = region_field_slice(_star, _planet, i, _region.owner);
+            var _slice = region_garrison(_star, _planet, i, _region.owner);
             var _slice_txt = _region.is_capital
-                ? $"Capital: fields the whole force here (~{scr_display_number(_slice)}). The full battle."
-                : $"Fields ~{scr_display_number(_slice)} in a battle here, a fixed slice of the world's force. Bringing more troops clears it faster, not fights more.";
+                ? $"Capital: holds the reserve, the bulk of the force (~{scr_display_number(_slice)}). The strongpoint."
+                : $"Garrison here: ~{scr_display_number(_slice)}, a capped slice of the world's force. A smaller, bounded fight than the capital.";
             tooltip_draw(_slice_txt, 320);
         }
 
@@ -5137,29 +5137,61 @@ function beacon_teardown_if_cleansed(_star, _planet) {
     } catch (_e) {}
 }
 
+/// @function region_garrison
+/// @description The per-region GARRISON: how much of a faction's total headcount on a world
+///              is stationed in one region. The enemy force is DIVIDED across regions rather
+///              than the capital holding everything: each OUTLYING region holds up to a capped
+///              share (min(REGION_GARRISON_CEILING, total * REGION_GARRISON_FRACTION)), and the
+///              CAPITAL holds the remainder (total minus every outlying region the faction still
+///              holds), so it is always the strongpoint and its reserve is visible. On a
+///              single-region world the capital holds the lot. Returns 0 for a region the
+///              faction does not hold. Coexists with the tier system: this is derived from the
+///              planet total each call, not a stored scalar, so there is no dual source of truth.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _index
+/// @param {Real} _faction
+/// @returns {Real}
+function region_garrison(_star, _planet, _index, _faction) {
+    var _region = region_get(_star, _planet, _index);
+    if (!is_struct(_region) || (_region.owner != _faction)) {
+        return 0;
+    }
+    var _total = planet_faction_pop(_star, _planet, _faction);
+    if (_total <= 0) {
+        return 0;
+    }
+    var _regions = regions_ensure(_star, _planet);
+    var _n = array_length(_regions);
+    if (_n <= 1) {
+        return _total; // single-region world: the capital holds everything
+    }
+    // Per-outlying cap: a size-scaled share, ceilinged.
+    var _cap = min(REGION_GARRISON_CEILING, round(_total * REGION_GARRISON_FRACTION));
+    if (!_region.is_capital) {
+        return min(_cap, _total);
+    }
+    // Capital holds the remainder after every OUTLYING region THIS faction still holds takes
+    // its capped share. Regions the faction has lost do not draw from the capital's reserve.
+    var _outlying_held = 0;
+    for (var r = 0; r < _n; r++) {
+        if (!_regions[r].is_capital && (_regions[r].owner == _faction)) {
+            _outlying_held += min(_cap, _total);
+        }
+    }
+    return max(0, _total - _outlying_held);
+}
+
 /// @function region_field_slice
-/// @description The FIXED headcount a region throws into a battle fought for it: the capital
-///              fields the planet's whole enemy force, an outlying region fields
-///              REGION_WIDTH_SLICE_FRACTION of it. This is set by the region (geography),
-///              NOT by the size of the attacking Chapter force, so bringing more troops
-///              clears the slice faster but never makes the enemy field more (see the
-///              Final Liberation note in macros). Returns 0 for a region the faction does
-///              not hold. Used for display; the assault path applies the same fraction.
+/// @description The headcount a region throws into a battle fought for it, i.e. its garrison
+///              (see region_garrison). Retained as the name the display and assault paths call.
 /// @param {Id.Instance.obj_star} _star
 /// @param {Real} _planet
 /// @param {Real} _index
 /// @param {Real} _faction
 /// @returns {Real}
 function region_field_slice(_star, _planet, _index, _faction) {
-    var _region = region_get(_star, _planet, _index);
-    if (!is_struct(_region) || (_region.owner != _faction)) {
-        return 0;
-    }
-    var _planet_force = planet_faction_pop(_star, _planet, _faction);
-    if (_region.is_capital) {
-        return _planet_force;
-    }
-    return round(_planet_force * REGION_WIDTH_SLICE_FRACTION);
+    return region_garrison(_star, _planet, _index, _faction);
 }
 
 /// @function region_is_licensed

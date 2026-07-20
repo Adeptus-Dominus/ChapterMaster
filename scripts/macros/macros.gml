@@ -94,6 +94,17 @@
 // commitment fraction so the two stay identical.
 #macro REGION_WIDTH_SLICE_FRACTION REGION_ASSAULT_COMMIT_FRACTION
 
+// ---- Per-region garrison (combat width) ----
+// The enemy's total headcount on a world is divided across its regions instead of the
+// capital fielding everything: each OUTLYING region holds up to a capped share, and the
+// CAPITAL holds the remainder (so it is always the strongpoint). The cap scales with world
+// size (a fraction of the total) but never exceeds REGION_GARRISON_CEILING, so a small
+// world's outlying regions hold a modest slice and a huge world's are capped at the ceiling.
+// This makes clearing an outlying region a bounded objective and leaves the bulk in the
+// capital as a visible reserve. See region_garrison.
+#macro REGION_GARRISON_CEILING 10000
+#macro REGION_GARRISON_FRACTION REGION_ASSAULT_COMMIT_FRACTION
+
 // ---- Orbital Gun Array (capital planetary defence) ----
 // The gun array watches the approaches: attacking a gun-world from orbit (bombard, raid,
 // or a ship-launched ground assault) against ANY region except the designated safe

@@ -104,19 +104,6 @@ function drop_select_unit_selection() {
         _local_button.update();
         _local_button.draw();
 
-        // Hold Ground toggle sits just below Local Forces (ground assaults only). When
-        // active, survivors stay planetside as a foothold after the battle.
-        if (attack == 1) {
-            var _hg_button = roster.hold_ground_button;
-            _hg_button.x1 = _buttons_x;
-            _hg_button.y1 = _buttons_y + 26;
-            _hg_button.tooltip = "Keep the surviving attackers on the surface after the battle instead of returning them to orbit. They hold a foothold and fight the world's defenders each turn until you Recall them.";
-            _hg_button.update();
-            _hg_button.draw();
-            if (_hg_button.clicked()) {
-                _hg_button.active = !_hg_button.active;
-            }
-        }
         if (_local_button.clicked()) {
             if (_locals_spent) {
                 _local_button.active = false;
@@ -219,6 +206,23 @@ function drop_select_unit_selection() {
         btn_target.update({str1: _target_str});
         btn_target.draw();
         btn_target.active = force_present[1] != 0;
+
+        // Hold Ground toggle (ground assaults only): placed to the LEFT of the enemy
+        // faction/threat label on the same row, out of the ship-selection column where it
+        // used to overlap the ship names. When active, survivors stay planetside as a
+        // foothold after the battle.
+        if (attack == 1) {
+            var _hg_button = roster.hold_ground_button;
+            _hg_button.update({str1: "Hold Ground"});
+            _hg_button.x1 = btn_target.x1 - _hg_button.w - 20;
+            _hg_button.y1 = btn_target.y1;
+            _hg_button.tooltip = "Keep the surviving attackers on the surface after the battle instead of returning them to orbit. They hold a foothold and fight the world's defenders each turn until you Recall them.";
+            _hg_button.update();
+            _hg_button.draw();
+            if (_hg_button.clicked()) {
+                _hg_button.active = !_hg_button.active;
+            }
+        }
 
         if (btn_target.clicked()) {
             var _current_i = 0;
@@ -438,9 +442,9 @@ function drop_select_unit_selection() {
             // alone here; making the battle screen itself region-aware is the deferred Option B.
 
             // Region commitment: assaulting an OUTLYING sector of a multi-region world
-            // meets only part of the enemy force (REGION_ASSAULT_COMMIT_FRACTION of
-            // their real headcount); the capital, or a foe squeezed into one region,
-            // meets everything. Leaders (Warboss, Farseer) only defend the capital.
+            // meets only that region's GARRISON (its capped slice, see region_garrison);
+            // the capital, or a foe squeezed into one region, meets the reserve/whole
+            // force. Leaders (Warboss, Farseer) only defend the capital.
             var _region_partial = false;
             if ((attack == 1) && (planet_region_count(p_target, planet_number) > 1)) {
                 var _rp_focus = region_focus_get(p_target, planet_number);
@@ -535,9 +539,13 @@ function drop_select_unit_selection() {
             // modelled; otherwise knock two levels off. Only level-scale battles
             // (1-6) qualify; Enormicus (7) and Imperium headcount battles pass.
             if (_region_partial && (obj_ncombat.threat >= 1) && (obj_ncombat.threat <= 6)) {
-                var _rp_pop = planet_faction_pop(p_target, planet_number, attacking);
-                if ((count_to_level_anchors(attacking) != -1) && (_rp_pop > 0)) {
-                    obj_ncombat.threat = max(1, count_to_level(attacking, round(_rp_pop * REGION_ASSAULT_COMMIT_FRACTION)));
+                // Engage the focused region's actual GARRISON (capped per-region force),
+                // not a flat fraction of the planet total, so an outlying region fields its
+                // stationed slice and the capital its reserve. See region_garrison.
+                var _rp_focus2 = region_focus_get(p_target, planet_number);
+                var _rp_garrison = region_garrison(p_target, planet_number, _rp_focus2, attacking);
+                if ((count_to_level_anchors(attacking) != -1) && (_rp_garrison > 0)) {
+                    obj_ncombat.threat = max(1, count_to_level(attacking, _rp_garrison));
                 } else {
                     obj_ncombat.threat = max(1, obj_ncombat.threat - 2);
                 }
