@@ -268,9 +268,12 @@ function drop_select_unit_selection() {
             var _ssw = string_width(_sector_str);
             var _ssh = string_height(_sector_str);
             var _ssx1 = x3 - (_ssw / 2) - 8;
-            var _ssy1 = y1 + 150;
+            // Sit in the empty band between the ship list above and the "Selected Squads:"
+            // header below (which is at y2 - 220), rather than up in the ship area. Anchored
+            // off y2 so it tracks the squads header and never overlaps the ships.
+            var _ssy2 = (y2 - 220) - 14;
+            var _ssy1 = _ssy2 - _ssh - 8;
             var _ssx2 = x3 + (_ssw / 2) + 8;
-            var _ssy2 = _ssy1 + _ssh + 8;
             draw_set_color(CM_GREEN_COLOR);
             draw_rectangle(_ssx1, _ssy1, _ssx2, _ssy2, true);
             draw_set_halign(fa_center);
