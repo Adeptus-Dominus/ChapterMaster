@@ -166,8 +166,11 @@ tick_psychic_buffs = function() {
         for (var i = 0; i < array_length(unit_struct); i++) {
             for (var b = 0; b < array_length(_buffs); b++) {
                 var _name = _buffs[b];
-                if (self[$ _name][i] > 0) {
-                    self[$ _name][i] -= 1;
+                // LTS compat: the compiler rejects assignment through self[$ ...]
+                // (GM1031), so mutate via a local array reference instead.
+                var _arr = self[$ _name];
+                if (_arr[i] > 0) {
+                    _arr[i] -= 1;
                 }
             }
         }
