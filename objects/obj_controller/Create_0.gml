@@ -104,6 +104,10 @@ display_unit = undefined;
 
 diplo_buttons = {};
 diplomacy_pathway = "";
+// Which Imperial Navy fleet the player clicked to open the Sector Governor's fleet-order
+// audience (noone when not commanding a fleet). Read by the fleet_orders dialogue branch so
+// the chosen suggestion applies to that specific fleet. See scr_imperial_navy_functions.
+navy_order_target_fleet = noone;
 option_selections = [];
 ready = false;
 

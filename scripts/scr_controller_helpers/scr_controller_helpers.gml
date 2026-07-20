@@ -455,6 +455,10 @@ function scr_end_turn() {
                     sector_directive_tick();
                     sector_background_war_tick();
                     tau_orbital_gun_tick();
+                    // Imperial Navy fleets under a Governor suggestion (hold / follow) advance
+                    // their orders: trail the locked player fleet, join its attack, or lapse
+                    // back to autonomy. Gated on disposition inside. See scr_imperial_navy_functions.
+                    navy_orders_tick();
                     with (obj_star) {
                         present_fleet[20] = 0;
                     }

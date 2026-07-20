@@ -62,6 +62,14 @@ action_y = 0;
 target = noone;
 target_x = 0;
 target_y = 0;
+
+// Imperial Navy fleet-suggestion state (Sector Governor orders). "" = autonomous AI;
+// "hold" = stay put; "follow" = trail the locked player fleet. navy_follow_uid is that
+// fleet's flagship uid; navy_order_turns counts the follow window. Declared here so the
+// serializer saves them and deserialize does not crash on load. See scr_imperial_navy_functions.
+navy_order = "";
+navy_follow_uid = "";
+navy_order_turns = 0;
 // A Tyranid fleet is invisible fog-of-war by default (see Step_0). A beacon-summoned Hive Fleet sets this
 // true so it stays VISIBLE as it screams across the map to answer the Ascension Beacon (§16n).
 revealed = false;

@@ -127,6 +127,17 @@
 // rebuild on their highest-ranked gun-less qualifying world. See tau_orbital_gun_tick.
 #macro TAU_ORBITAL_GUN_CAP 3
 #macro TAU_ORBITAL_GUN_BUILD_TURNS 30
+// Necrons entomb a gauss-silo battery over NECRON_ORBITAL_GUN_BUILD_TURNS turns on each
+// world they hold: slow to wake, but relentless once built. Ad Mech forge worlds are
+// pre-fortified and always mount one. See tau_orbital_gun_tick.
+#macro NECRON_ORBITAL_GUN_BUILD_TURNS 50
+
+// ---- Imperial Navy fleet suggestions (Sector Governor) ----
+// The Governor only takes fleet suggestions from a Chapter he trusts: his disposition must
+// be ABOVE this to accept "hold / follow" orders (otherwise he politely refuses). A follow
+// order lapses on its own after this many turns, returning the fleet to autonomous AI.
+#macro NAVY_ORDER_MIN_DISPOSITION 50
+#macro NAVY_FOLLOW_MAX_TURNS 40
 
 // ---- Dig In ----
 // A force (player OR enemy) that holds a region for DIG_IN_TURNS consecutive turns without
