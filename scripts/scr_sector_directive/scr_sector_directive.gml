@@ -293,15 +293,20 @@ function sector_directive_tick() {
 /// Mirrors the coarse banding the PDF defence readout uses, so "a lot of Guard" reads as
 /// a high tier without needing the full determine_pdf_defence machinery here.
 function sector_background_guard_tier(_star, _planet) {
+    // PDF are counted at a fraction of guardsmen: PDF are a defensive militia, not line
+    // troops, so a large PDF is worth a modest number of Guard for offensive attrition.
     var _g = 0;
     if (variable_instance_exists(_star, "p_guardsmen")) { _g += _star.p_guardsmen[_planet]; }
-    if (variable_instance_exists(_star, "p_pdf")) { _g += _star.p_pdf[_planet] * 0.05; }
+    if (variable_instance_exists(_star, "p_pdf")) { _g += _star.p_pdf[_planet] * 0.1; }
     if (_g < SECTOR_BACKGROUND_GUARD_MIN) { return 0; }
-    if (_g >= 50000000) { return 6; }
-    if (_g >= 15000000) { return 5; }
-    if (_g >= 6000000)  { return 4; }
-    if (_g >= 1000000)  { return 3; }
-    if (_g >= 100000)   { return 2; }
+    // Bands calibrated to real garrison numbers (thousands to hundreds of thousands when
+    // reinforced from orbit), NOT the PDF-defence score table. This is what lets a
+    // properly reinforced sector actually grind a bloom down over time.
+    if (_g >= 500000) { return 6; }
+    if (_g >= 150000) { return 5; }
+    if (_g >= 50000)  { return 4; }
+    if (_g >= 20000)  { return 3; }
+    if (_g >= 8000)   { return 2; }
     return 1;
 }
 
@@ -318,9 +323,12 @@ function sector_background_war_planet(_star, _planet, _faction) {
     if (_guard_tier <= 0) { return false; }
 
     // HoI4-flavoured resolution: strength difference sets the base odds, plus a swing.
-    // Positive means the Guard press their advantage this pass.
+    // Positive means the Guard press their advantage this pass. The +15 bias means an
+    // even matchup still grinds the enemy down roughly a third of the time (the Guard's
+    // industry and numbers slowly tell), while a Guard deficit makes it rare but not
+    // impossible. A clear Guard edge grinds reliably.
     var _delta = _guard_tier - _enemy_tier;
-    var _roll = _delta * 20 + irandom(100) - 50;
+    var _roll = _delta * 25 + irandom(100) - 50 + 15;
     if (_roll <= 0) { return false; }
 
     // The enemy headcount falls toward the next tier down; the clamp re-tiers it. A big

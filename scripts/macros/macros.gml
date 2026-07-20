@@ -82,7 +82,7 @@
 //   SECTOR_BACKGROUND_GUARD_TIER_*  : the p_guardsmen headcount bands that map to a 1-6
 //                                     "Guard strength tier" for the attrition roll.
 #macro SECTOR_BACKGROUND_WAR_INTERVAL 2
-#macro SECTOR_BACKGROUND_GUARD_MIN 5000
+#macro SECTOR_BACKGROUND_GUARD_MIN 4000
 
 // ---- Region width (fixed slice per region) ----
 // A region fields a FIXED slice of the planet's enemy force, set by the region itself,
