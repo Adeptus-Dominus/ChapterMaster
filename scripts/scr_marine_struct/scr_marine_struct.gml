@@ -757,11 +757,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         var weapon_one_data = get_weapon_one_data();
         var weapon_two_data = get_weapon_two_data();
         var equip_data = {
-            armour_data: armour_data,
-            gear_data: gear_data,
-            mobility_data: mobility_data,
-            weapon_one_data: weapon_one_data,
-            weapon_two_data: weapon_two_data,
+            armour: armour_data,
+            gear: gear_data,
+            mobi: mobility_data,
+            wep1: weapon_one_data,
+            wep2: weapon_two_data,
         };
         return equip_data;
     };
@@ -1300,6 +1300,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             ranged_hands_limit += 0.25;
             carry_string += "BS: +0.25#";
         }
+        if (has_trait("marksman") || has_trait("paragon")) {
+            ranged_hands_limit += 0.25;
+            carry_string += "Traits: +0.25#";
+        }
+
         var armour_carry = get_armour_data("ranged_hands");
         if (armour_carry != 0) {
             ranged_hands_limit += armour_carry;
@@ -1527,9 +1532,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             melee_hands_limit += 0.25;
             carry_string += "WS: +0.25#";
         }
-        if (has_trait("champion")) {
+        if (has_trait("champion") || has_trait("paragon")) {
             melee_hands_limit += 0.25;
-            carry_string += "Champion: +0.25#";
+            carry_string += "Traits: +0.25#";
         }
         var armour_carry = get_armour_data("melee_hands");
         if (armour_carry != 0) {

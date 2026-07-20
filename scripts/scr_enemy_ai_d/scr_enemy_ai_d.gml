@@ -72,7 +72,7 @@ function scr_enemy_ai_d() {
 
             if (enemies == 1) {
                 p_halp[i] = 1;
-                tx = $"The Planetary Governor of {planet_numeral_name(i)} requests help against {enemy1} forces!";
+                tx = $"The Planetary Governor of {planet_numeral_name(i, id)} requests help against {enemy1} forces!";
                 scr_alert("green", "halp", string(tx), x, y);
                 scr_event_log("", string(tx), name);
             }

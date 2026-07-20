@@ -657,11 +657,12 @@ if ((leader || ((battle_special == "ChaosWarband") && (!obj_controller.faction_d
         scr_event_log("", "Enemy Leader Assassinated: Eldar Farseer");
     }
     if (enemy == eFACTION.ORK) {
-        scr_event_log("", "Enemy Leader Assassinated: Ork Warboss");
-        if (instance_exists(Warlord)) {
-            with (Warlord) {
+        if (is_struct(ork_warboss)) {
+            with (ork_warboss) {
                 kill_warboss();
             }
+            obj_controller.faction_defeated[7] = 1;
+            scr_event_log("", "Enemy Leader Assassinated: Ork Warboss");
         }
     }
     if (enemy == eFACTION.TAU) {

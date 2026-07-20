@@ -158,11 +158,13 @@ if ((menu == eMENU.DIPLOMACY) && (diplomacy > 0) || ((diplomacy < -5) && (diplom
                     instance_destroy();
                 }
                 if (trading_artifact != 2) {
-                    obj_ground_mission.alarm[1] = 1;
+                    with (obj_ground_mission) {
+                        instance_destroy();
+                    }
                 }
                 if (trading_artifact == 2 && instance_exists(obj_ground_mission)) {
                     with (obj_ground_mission) {
-                        recieve_artifact_in_discussion();
+                        receive_artifact_in_discussion();
                     }
                 }
                 exit;

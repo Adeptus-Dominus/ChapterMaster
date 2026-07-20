@@ -30,6 +30,8 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          add-paths: |
+            **/*.gml
           commit-message: "style: Automated Gobo format"
           title: "style: Automated Gobo format"
           body: "This is an automated PR containing formatting updates for all .gml files."

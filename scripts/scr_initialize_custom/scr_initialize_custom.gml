@@ -2040,11 +2040,12 @@ function scr_initialize_custom() {
         case 1:
             chapter_master.add_exp(550);
             spe[_company_i][_marine_i] += "$";
+            chapter_master.add_trait("charismatic");
             break;
         case 2:
             chapter_master.add_exp(650);
             spe[_company_i][_marine_i] += "@";
-            chapter_master.add_trait("champion");
+            chapter_master.add_trait("paragon");
             break;
         case 3:
             //TODO phychic powers need a redo but after weapon refactor
@@ -2055,9 +2056,6 @@ function scr_initialize_custom() {
             chapter_master.update_powers();
     }
     chapter_master.alter_equipment(cm_equip, false, false, "master_crafted");
-    if (scr_has_adv("Paragon")) {
-        chapter_master.add_trait("paragon");
-    }
     chapter_master.marine_assembling();
 
     var _hq_armour = "Artificer Armour";
@@ -3091,7 +3089,7 @@ function add_unit_to_company(ttrpg_name, company, slot, role_name, role_id, wep1
         spawn_unit.roll_experience();
     }
     if (role_id == eROLE.HONOURGUARD) {
-        spawn_unit.add_trait(choose("guardian", "champion", "observant", "perfectionist", "natural_leader"));
+        spawn_unit.add_trait(choose("guardian", "champion", "marksman", "observant", "perfectionist", "natural_leader"));
     }
     if (role_id == eROLE.CHAMPION) {
         spawn_unit.add_trait("champion");

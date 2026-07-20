@@ -929,7 +929,7 @@ function HelpfulPlaces() constructor {
             var _data = {
                 system: id,
                 planet: _forge,
-                name: planet_numeral_name(_forge),
+                name: planet_numeral_name(_forge, id),
                 owner_name: obj_controller.faction[p_owner[_forge]],
                 owner: p_owner[_forge],
                 owner_status: obj_controller.faction_status[p_owner[_forge]],

@@ -35,8 +35,8 @@
         "", //first blank cause reasons
         "Enemy: Fallen",
         "Ancient Armoury",
-        "Paragon",
         "Retinue of Renown",
+        "",
         "",
         "",
         "",
@@ -101,9 +101,10 @@
         "name": "Azrael", //name for your chapter master, leave blank for random
         "traits": //currently kinda not working, he's guaranteed to have Lead by Example though
         [
+          "paragon",
           "old_guard"
         ],
-        "specialty": 1, //1 Leader, 2 Champion, 3 Psyker
+        "specialty": 2, //1 Leader, 2 Champion, 3 Psyker
         "melee": 1, //[1]twin power fists [2]twin lighting claws [3]Relic blade [4]Thunder Hammer [5]Power Sword [6]Power axe [7]Eviscerator [8]Force staff
         "ranged": 1, //[1]boltstorm gauntlet [2]Infernus pistol [3]Plasma pistol [4]Plasma gun [5]MC Heavy Bolter [6]Mc Meltagun [7]Storm Shield
         "armour": "", //default is Artificer, dont' need to put anything unless you want something different

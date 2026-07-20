@@ -591,12 +591,6 @@ function scr_restart_variables(saved_game) {
 
 /// @self Asset.GMObject.obj_creation
 function reset_creation_variables() {
-    for (var i = 0; i < 21; i++) {
-        world[i] = "";
-        world_type[i] = "";
-        world_feature[i] = "";
-    }
-
     points = 100;
     maxpoints = 100;
     custom = eCHAPTER_TYPE.PREMADE;

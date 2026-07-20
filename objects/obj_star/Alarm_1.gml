@@ -340,11 +340,10 @@ if (owner == eFACTION.TYRANIDS) {
                     break;
             }
         }
-        p_owner[i] = eFACTION.IMPERIUM;
     }
 }
 
-if (owner > 20) {
+if (owner == eFACTION.GENESTEALER) {
     for (var i = 1; i <= planets; i++) {
         if (p_population[i] > 0) {
             var new_cult = new NewPlanetFeature(eP_FEATURES.GENE_STEALER_CULT);

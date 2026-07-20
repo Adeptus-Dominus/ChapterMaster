@@ -664,7 +664,7 @@ function setup_necron_tomb_raid(planet) {
     LOGGER.info($"have bomb? {have_bomb} ");
     if (have_bomb > 0) {
         var tixt;
-        tixt = $"Your marines on {planet_numeral_name(planet)}";
+        tixt = $"Your marines on {planet_numeral_name(planet, id)}";
         tixt += " are prepared and ready to enter the Necron Tombs.  A Plasma Bomb is in tow.";
         var _number = instance_exists(obj_turn_end) ? obj_turn_end.current_popup : 0;
         var _pop_data = {

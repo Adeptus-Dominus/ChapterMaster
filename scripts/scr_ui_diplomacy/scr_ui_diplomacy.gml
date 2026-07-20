@@ -70,12 +70,14 @@ function exit_diplomacy_dialogue() {
         cooldown = 8;
         if (trading_artifact == 2 && instance_exists(obj_ground_mission)) {
             with (obj_ground_mission) {
-                recieve_artifact_in_discussion();
+                receive_artifact_in_discussion();
             }
         }
         trading_artifact = 0;
+        with (obj_ground_mission) {
+            instance_destroy();
+        }
         with (obj_popup) {
-            obj_ground_mission.alarm[1] = 1;
             instance_destroy();
         }
     }
@@ -162,11 +164,7 @@ function set_up_diplomacy_buttons() {
     });
     diplo_buttons.trade.bind_method = function() {
         if ((audience == 0) && (force_goodbye == 0)) {
-            trading = 1;
-            scr_dialogue("open_trade");
-            cooldown = 8;
-            click2 = 1;
-            trade_attempt = new TradeAttempt(diplomacy);
+            open_trade_screen();
         }
     };
 

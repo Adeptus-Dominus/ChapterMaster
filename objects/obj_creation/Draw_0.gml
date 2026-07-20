@@ -592,8 +592,8 @@ try {
                 "You always know the right words to inspire your men or strike doubt in the hearts of the enemy.  Increases Disposition and Grants a +10% Requisition Income Bonus.",
             ],
             [
-                "Champion",
-                "Even before your rise to Chapter Master you were a renowned warrior, nearly without compare.  Increases Chapter Master Experience, Melee Damage, and Ranged Damage.",
+                "Paragon",
+                "Even before your rise to Chapter Master you were a renowned warrior, nearly without compare.  Increases Chapter Master Experience and all stats.",
             ],
             [
                 "Psyker",

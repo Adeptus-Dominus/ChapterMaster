@@ -1673,8 +1673,8 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             }
             if (diplo_keyphrase == "artifact") {
                 if (rela != "hostile") {
-                    add_diplomacy_option({option_text: "Propose a trade for the Artifact."});
-                    add_diplomacy_option({option_text: "Leave it be; Exit.", is_exit: true});
+                    add_diplomacy_option({option_text: "Propose a trade for the Artifact.", choice_func: open_trade_screen});
+                    add_diplomacy_option({option_text: "Leave it be; Exit.", choice_func: leave_artifact_negotiation, is_exit: true});
                     diplo_text = "The Adeptus Mechanicus is aware of the Artifact.  Do not concern yourself with that which is rightly within our territory.";
                 }
                 if (rela == "hostile") {
@@ -2071,8 +2071,8 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                 diplo_text = "Make me an offer and I shall consider it, both for its value and its potential heresy.";
             }
             if (diplo_keyphrase == "artifact") {
-                add_diplomacy_option({option_text: "Propose a trade for the Artifact."});
-                add_diplomacy_option({option_text: "Leave it be; Exit."});
+                add_diplomacy_option({option_text: "Propose a trade for the Artifact.", choice_func: open_trade_screen});
+                add_diplomacy_option({option_text: "Leave it be; Exit.", choice_func: leave_artifact_negotiation, is_exit: true});
                 diplo_text = "The Inquisition is, of course, aware of the artifact in question. What, precisely, are you offering for it?";
             }
             if (diplo_keyphrase == "artifact_thanks") {
@@ -2441,8 +2441,8 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             }
 
             if (diplo_keyphrase == "artifact") {
-                add_diplomacy_option({option_text: create_dialogue_string(_diag_set, "propose_arti_trade", _diag_data)});
-                add_diplomacy_option({option_text: create_dialogue_string(_diag_set, "leave_it", _diag_data)});
+                add_diplomacy_option({option_text: create_dialogue_string(_diag_set, "propose_arti_trade", _diag_data), choice_func: open_trade_screen});
+                add_diplomacy_option({option_text: create_dialogue_string(_diag_set, "leave_it", _diag_data), choice_func: leave_artifact_negotiation, is_exit: true});
             }
 
             if (diplo_keyphrase == "artifact_daemon") {
@@ -3175,7 +3175,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                                             }
                                             if (onceh != 0) {
                                                 array_push(p_feature[onceh], new NewPlanetFeature(eP_FEATURES.WEBWAY));
-                                                obj_controller.temp[90] = planet_numeral_name(onceh);
+                                                obj_controller.temp[90] = planet_numeral_name(onceh, that);
                                             }
                                         }
                                     }
@@ -3236,7 +3236,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                                             }
                                             if (onceh != 0) {
                                                 array_push(p_feature[onceh], new NewPlanetFeature(eP_FEATURES.WEBWAY));
-                                                obj_controller.temp[90] = planet_numeral_name(onceh);
+                                                obj_controller.temp[90] = planet_numeral_name(onceh, that);
                                             }
                                         }
                                     }

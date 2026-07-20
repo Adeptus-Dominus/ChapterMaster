@@ -308,6 +308,17 @@ function init_ork_waagh(override = false) {
             _pstar.p_orks[_pplan] = count_to_level(eFACTION.ORK, _pstar.p_race_pop[_pplan][eFACTION.ORK]);
         }
         var _lead_wb = ork_leading_warband(_pstar, _pplan);
+        // Upstream (3f12e177d): a fresh Warboss revives a defeated ork faction.
+        // Adapted to the fork's warband system: the faction leader takes the leading
+        // warband boss's name so it matches the announcement below.
+        with (obj_controller) {
+            if (faction_defeated[7] == 1) {
+                faction_leader[eFACTION.ORK] = ork_wb_boss(_lead_wb);
+                faction_title[7] = "Warboss";
+                faction_status[eFACTION.ORK] = "War";
+                scr_audience(eFACTION.ORK, "new_warboss", -40, "War", 0, 2);
+            }
+        }
         scr_popup("WAAAAGH!", "My lord, our Auspex scans indicate that Warboss " + ork_wb_boss(_lead_wb) + " leading " + _lead_wb.name + " is rallying a WAAAGH within the " + string(_pdata.system.name) + " system. We must strike swiftly before he relocates.", "waaagh", "");
         scr_event_log("red", $"Warboss {ork_wb_boss(_lead_wb)} ({_lead_wb.name}) on {_pdata.name()}", _pdata.system.name);
     } else {

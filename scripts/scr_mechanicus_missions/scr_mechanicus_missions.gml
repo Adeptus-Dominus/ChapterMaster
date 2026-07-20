@@ -6,7 +6,7 @@ function mechanicus_missions_end_turn(planet) {
         if ((array_length(_techs) >= 6) && (_lr_count >= 1)) {
             var _prob_data = p_problem_other_data[planet][raider_planet_slot];
             var percent_complete = increment_mission_completion(_prob_data);
-            scr_alert("", $"mission", $"Mechanicus Mission on {planet_numeral_name(planet)} is {floor(percent_complete)}% complete.", 0, 0);
+            scr_alert("", $"mission", $"Mechanicus Mission on {planet_numeral_name(planet, id)} is {floor(percent_complete)}% complete.", 0, 0);
             if (percent_complete >= 100) {
                 remove_planet_problem(planet, "mech_raider");
                 scr_mission_reward("mech_raider", id, planet);
@@ -19,7 +19,7 @@ function mechanicus_missions_end_turn(planet) {
         if (check1 >= 10) {
             var _prob_data = p_problem_other_data[planet][bionics_planet_slot];
             var percent_complete = increment_mission_completion(_prob_data);
-            scr_alert("", $"mission", $"Mechanicus Mission on {planet_numeral_name(planet)} is {floor(percent_complete)}% complete.", 0, 0);
+            scr_alert("", $"mission", $"Mechanicus Mission on {planet_numeral_name(planet, id)} is {floor(percent_complete)}% complete.", 0, 0);
             if (percent_complete >= 100) {
                 remove_planet_problem(planet, "mech_bionics");
                 scr_mission_reward("mech_bionics", id, planet);
@@ -412,7 +412,7 @@ function mechanicus_mars_mission_target_time_elapsed(planet) {
         }
     }
     if (techs_taken == 0) {
-        var alert_text = "Mechanicus Mission Failed: Journey to Mars Catacombs at {planet_numeral_name(planet)}.";
+        var alert_text = $"Mechanicus Mission Failed: Journey to Mars Catacombs at {planet_numeral_name(planet, id)}.";
         scr_alert("red", "mission_failed", alert_text, 0, 0);
         scr_event_log("red", alert_text);
         obj_controller.disposition[3] -= 10;

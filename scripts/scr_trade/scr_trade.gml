@@ -8,6 +8,7 @@ function TradeAttempt(diplomacy) constructor {
         "License: Crusade": 1500,
         "Castellax Battle Automata": 1200,
         "Minor Artifact": 250,
+        "Artifact": 0, // For planetary artifacts
         "Skitarii": 15,
         "Techpriest": 450,
         //"Condemnor Boltgun" : 20,
@@ -175,6 +176,12 @@ function TradeAttempt(diplomacy) constructor {
                 }
             } else if (_opt.trade_type == "arti") {
                 scr_add_artifact("random", "minor", true);
+            } else if (_opt.trade_type == "planet_arti") {
+                if (instance_exists(obj_ground_mission)) {
+                    with (obj_ground_mission) {
+                        receive_artifact_in_discussion();
+                    }
+                }
             } else if (_opt.trade_type == "vehic") {
                 if (!struct_exists(trading_object, "vehicles")) {
                     trading_object.vehicles = {};
@@ -243,15 +250,18 @@ function TradeAttempt(diplomacy) constructor {
             }
         }
 
-        var flit = setup_ai_trade_fleet(trade_from_star, diplomacy_faction);
+        var _has_cargo = array_length(struct_get_names(trading_object)) > 0;
+        if (_has_cargo) {
+            var flit = setup_ai_trade_fleet(trade_from_star, diplomacy_faction);
 
-        flit.cargo_data.player_goods = trading_object;
+            flit.cargo_data.player_goods = trading_object;
 
-        flit.target = trade_to_obj;
-        with (flit) {
-            action_x = target.x;
-            action_y = target.y;
-            set_fleet_movement();
+            flit.target = trade_to_obj;
+            with (flit) {
+                action_x = target.x;
+                action_y = target.y;
+                set_fleet_movement();
+            }
         }
     };
 
@@ -423,14 +433,6 @@ function TradeAttempt(diplomacy) constructor {
             trading = 0;
             scr_dialogue("trade_close");
             click2 = 1;
-            if (trading_artifact != 0) {
-                scr_toggle_diplomacy();
-                with (obj_popup) {
-                    instance_destroy();
-                }
-                obj_ground_mission.alarm[1] = 1;
-                exit;
-            }
         }
     };
     exit_button.bind_scope = self;
@@ -503,6 +505,11 @@ function TradeAttempt(diplomacy) constructor {
             new_demand_buttons(-100, "Ork Sniper", "merc", 50);
             new_demand_buttons(-100, "Flash Git", "merc", 50);
             break;
+    }
+
+    if (obj_controller.trading_artifact == 1 && instance_exists(obj_ground_mission)) {
+        new_demand_buttons(-100, "Artifact", "planet_arti", 1);
+        demand_options[array_length(demand_options) - 1].number = 1;
     }
 
     static new_offer_option = function(trade_disp = -100, name, trade_type, max_count = 1) {

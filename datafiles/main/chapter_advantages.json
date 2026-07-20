@@ -106,12 +106,6 @@
     "meta": ["Doctrine"]
   },
   {
-    "name": "Paragon",
-    "description": "You are a pale shadow of the Primarchs. Larger, stronger, faster, your Chapter Master is on a higher level than most, gaining additional health and combat effectiveness.",
-    "points": 10,
-    "meta": ["Chapter Master"]
-  },
-  {
     "name": "Warp Touched",
     "description": "Psychic mutations run rampant in your Chapter. You have more Marines with high psychic rating and Aspirants are also more likely to be capable of harnessing powers of the Warp.",
     "points": 20,

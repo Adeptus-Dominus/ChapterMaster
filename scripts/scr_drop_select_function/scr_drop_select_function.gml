@@ -406,11 +406,9 @@ function drop_select_unit_selection() {
             if ((planet_feature_bool(_planet, eP_FEATURES.WARLORD6) == 1) && (obj_ncombat.enemy == eFACTION.ELDAR) && (obj_controller.faction_defeated[6] == 0)) {
                 obj_ncombat.leader = 1;
             }
-            if ((obj_ncombat.enemy == eFACTION.ORK) && (obj_controller.faction_defeated[7] <= 0)) {
-                if (planet_feature_bool(_planet, eP_FEATURES.ORKWARBOSS)) {
-                    obj_ncombat.leader = 1;
-                    obj_ncombat.Warlord = _planet[search_planet_features(_planet, eP_FEATURES.ORKWARBOSS)[0]];
-                }
+            if (obj_ncombat.enemy == eFACTION.ORK && planet_feature_bool(_planet, eP_FEATURES.ORKWARBOSS)) {
+                obj_ncombat.leader = 1;
+                obj_ncombat.ork_warboss = _planet[search_planet_features(_planet, eP_FEATURES.ORKWARBOSS)[0]];
             }
 
             if ((obj_ncombat.enemy == eFACTION.TYRANIDS) && (obj_ncombat.battle_object.space_hulk == 0)) {
