@@ -917,6 +917,7 @@ function group_selection(group, selection_data = {}) {
             // Resets selections for next turn
             scr_ui_refresh();
             managing = -1;
+            manage_company_filter = -1; // company cycle filter starts at All Companies
             new_company_struct();
             var vehicles = [];
             for (var i = 0; i < array_length(group); i++) {

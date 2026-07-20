@@ -1114,13 +1114,14 @@ function scr_ui_manage() {
             if (!variable_instance_exists(id, "marine_squad_collapse")) {
                 marine_squad_collapse = true;
             }
-            // Ship Management runs as a selection screen (managing -1, purpose set);
-            // the squad collapse machinery is list-driven (groups display_unit by
-            // unit.squad), so it works there unchanged. It was only ever gated to
-            // company/Auxilia contexts.
+            // Management runs as a selection screen (managing -1); the squad collapse
+            // machinery is list-driven (groups display_unit by unit.squad), so it works
+            // there unchanged. Gate on purpose_code "manage" so every Manage Units entry
+            // (fleet Ship Management, system view, planet view) gets the same list,
+            // instead of matching one screen's purpose string.
             var _ship_mgmt_list = (managing < 0) && is_struct(selection_data)
-                && struct_exists(selection_data, "purpose")
-                && (selection_data.purpose == "Ship Management");
+                && struct_exists(selection_data, "purpose_code")
+                && (selection_data.purpose_code == "manage");
             if ((managing == 16) && auxilia_squad_collapse) {
                 draw_auxilia_squad_rows(xx, yy, stats_displayed);
             } else if ((((managing >= 1) && (managing <= 10)) || _ship_mgmt_list) && marine_squad_collapse) {
@@ -1137,7 +1138,11 @@ function scr_ui_manage() {
                 // way company command-slot prompts do. "Squad List" for marines to avoid
                 // clashing with the existing Squad View button in the unit panel.
                 var _sq_label = (managing == 16) ? "Switch to Squad View" : "Switch to Squad List View";
-                var _sq_btn = draw_unit_buttons([xx + 25, yy + 64, xx + 974, yy + 85], _sq_label, [1, 1], CM_GREEN_COLOR, fa_center, fnt_40k_14b);
+                var _flat_filter_here = manage_filter_context();
+                if (_flat_filter_here) {
+                    manage_company_filter_button(xx + 684, yy + 64, xx + 974, yy + 85);
+                }
+                var _sq_btn = draw_unit_buttons([xx + 25, yy + 64, _flat_filter_here ? (xx + 680) : (xx + 974), yy + 85], _sq_label, [1, 1], CM_GREEN_COLOR, fa_center, fnt_40k_14b);
                 draw_set_halign(fa_left);
                 draw_set_valign(fa_top);
                 if (point_and_click(_sq_btn)) {
@@ -1178,7 +1183,7 @@ function scr_ui_manage() {
                     break;
                 }
 
-                while ((sel <= array_length(display_unit) - 1) && (man[sel] == "hide" || (man_sel[sel] != 1 && _only_display_selected))) {
+                while ((sel <= array_length(display_unit) - 1) && (man[sel] == "hide" || (man_sel[sel] != 1 && _only_display_selected) || manage_company_filter_skip(sel))) {
                     sel += 1;
                 }
                 if (sel >= array_length(display_unit)) {
@@ -1811,9 +1816,14 @@ function draw_auxilia_squad_rows(xx, yy, _stats_displayed = false) {
     man_max = _row_max; // scrollbar drag math reads obj_controller.man_max directly
     man_current = clamp(man_current, 0, max(0, _row_max - MANAGE_MAN_SEE));
 
-    // ---- Toggle row ----
+    // ---- Toggle row (+ company cycle filter on management screens) ----
     var _yy = yy;
-    var _sq_btn = draw_unit_buttons([xx + 25, _yy + 64, xx + 974, _yy + 85], "Switch to Individual View", [1, 1], CM_GREEN_COLOR, fa_center, fnt_40k_14b);
+    var _filter_here = manage_filter_context();
+    var _tog_x2 = _filter_here ? (xx + 680) : (xx + 974);
+    if (_filter_here) {
+        manage_company_filter_button(xx + 684, _yy + 64, xx + 974, _yy + 85);
+    }
+    var _sq_btn = draw_unit_buttons([xx + 25, _yy + 64, _tog_x2, _yy + 85], "Switch to Individual View", [1, 1], CM_GREEN_COLOR, fa_center, fnt_40k_14b);
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
     if (point_and_click(_sq_btn)) {
@@ -1985,6 +1995,116 @@ function draw_auxilia_squad_rows(xx, yy, _stats_displayed = false) {
 /// A squad split across locations shows one row per location so a row is always fully
 /// loadable. _stats_displayed is passed in because it is a function-scoped static of
 /// the manage draw function (see draw_auxilia_squad_rows).
+/// Company cycle filter for management selection screens (Manage Units from
+/// fleet / system / planet). Left-click the button cycles to the next company
+/// PRESENT in the current list, right-click cycles back, wrapping through
+/// "All Companies". State is session-scoped on obj_controller and reset every
+/// time a manage screen opens (group_selection).
+/// @self Asset.GMObject.obj_controller
+function manage_filter_context() {
+    return (managing < 0) && is_struct(selection_data)
+        && struct_exists(selection_data, "purpose_code")
+        && (selection_data.purpose_code == "manage");
+}
+
+/// Company of a display index; -100 buckets vehicles and anything without one.
+function manage_unit_company(_i) {
+    if ((man[_i] == "man") && is_struct(display_unit[_i])
+    && variable_struct_exists(display_unit[_i], "company")
+    && is_real(display_unit[_i].company)) {
+        return display_unit[_i].company;
+    }
+    return -100;
+}
+
+function manage_company_filter_value() {
+    if (!variable_instance_exists(obj_controller, "manage_company_filter")) {
+        obj_controller.manage_company_filter = -1;
+    }
+    return obj_controller.manage_company_filter;
+}
+
+/// True when the row at display index _i should be hidden by the active filter.
+function manage_company_filter_skip(_i) {
+    if (!manage_filter_context()) {
+        return false;
+    }
+    var _f = manage_company_filter_value();
+    if (_f == -1) {
+        return false;
+    }
+    return manage_unit_company(_i) != _f;
+}
+
+/// Distinct companies present in the list, ascending (HQ 0 first, Auxilia and
+/// the -100 bucket last), so the cycle only visits what is actually here.
+function manage_companies_present() {
+    var _seen = {};
+    var _out = [];
+    for (var _i = 0; _i < array_length(display_unit); _i++) {
+        if (man[_i] == "hide") {
+            continue;
+        }
+        var _c = manage_unit_company(_i);
+        var _k = string(_c);
+        if (!struct_exists(_seen, _k)) {
+            _seen[$ _k] = true;
+            array_push(_out, _c);
+        }
+    }
+    array_sort(_out, function(_a, _b) {
+        var _av = (_a == -100) ? 9999 : _a;
+        var _bv = (_b == -100) ? 9999 : _b;
+        return _av - _bv;
+    });
+    return _out;
+}
+
+function manage_company_filter_label(_c) {
+    if (_c == -1) { return "All Companies"; }
+    if (_c == 0) { return "HQ / Unassigned"; }
+    if (_c == 16) { return "Auxilia"; }
+    if (_c == -100) { return "Vehicles & Others"; }
+    return $"{int_to_roman(_c)} Company";
+}
+
+/// Advance (+1) or rewind (-1) the filter through [All, ...present].
+function manage_company_filter_cycle(_dir) {
+    var _present = manage_companies_present();
+    var _cycle = [-1];
+    for (var _i = 0; _i < array_length(_present); _i++) {
+        array_push(_cycle, _present[_i]);
+    }
+    var _cur = manage_company_filter_value();
+    var _idx = 0;
+    for (var _i = 0; _i < array_length(_cycle); _i++) {
+        if (_cycle[_i] == _cur) {
+            _idx = _i;
+            break;
+        }
+    }
+    var _len = array_length(_cycle);
+    _idx = ((_idx + _dir) % _len + _len) % _len;
+    obj_controller.manage_company_filter = _cycle[_idx];
+    man_current = 0;
+}
+
+/// Draws the filter button on the right end of a view-toggle row and handles
+/// both click directions. Returns nothing; safe to call only in filter context.
+function manage_company_filter_button(_x1, _y1, _x2, _y2) {
+    var _label = $"Company: {manage_company_filter_label(manage_company_filter_value())}";
+    var _btn = draw_unit_buttons([_x1, _y1, _x2, _y2], _label, [1, 1], c_yellow, fa_center, fnt_40k_14b);
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    if (point_and_click(_btn) && (scrollbar_engaged == 0)) {
+        manage_company_filter_cycle(1);
+    } else if (mouse_check_button_pressed(mb_right)
+    && point_in_rectangle(mouse_x, mouse_y, _x1, _y1, _x2, _y2)
+    && (scrollbar_engaged == 0)) {
+        manage_company_filter_cycle(-1);
+    }
+}
+
 function draw_marine_squad_rows(xx, yy, _stats_displayed = false, _command_slots = []) {
     // Select-all buttons still work through the standard per-unit path.
     if (sel_all != "" || squad_sel_count > 0) {
@@ -2001,6 +2121,9 @@ function draw_marine_squad_rows(xx, yy, _stats_displayed = false, _command_slots
     var _type_counts = {}; // display_name -> squads seen so far
     for (var i = 0; i < array_length(display_unit); i++) {
         if (man[i] == "hide") {
+            continue;
+        }
+        if (manage_company_filter_skip(i)) {
             continue;
         }
         var _is_unit = (man[i] == "man") && is_struct(display_unit[i]);
