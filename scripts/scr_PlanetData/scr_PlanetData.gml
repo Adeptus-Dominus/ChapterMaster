@@ -1975,6 +1975,13 @@ function PlanetData(_planet, _system) constructor {
                     var _guard_button = obj_star_select.guard_recruit_button;
                     _guard_button.update({x1: xx + 35, y1: _half_way + spacing_y, allow_click: true});
                     _guard_button.draw(pdf >= 1000);
+                } else if (planet_region_count(system, planet) > 1) {
+                    // Non-owned world with outlying regions: offer the Construction License
+                    // in the same slot. allow_click mirrors region_can_license so it greys
+                    // out unless the currently-focused region is a licensable outlying one.
+                    var _lic_button = obj_star_select.build_license_button;
+                    _lic_button.update({x1: xx + 35, y1: _half_way + spacing_y, allow_click: true});
+                    _lic_button.draw(region_can_license(system, planet, region_focus_get(system, planet)));
                 }
 
                 var _recruit_button = obj_star_select.recruiting_button;

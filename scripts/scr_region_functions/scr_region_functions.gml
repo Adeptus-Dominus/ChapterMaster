@@ -4072,18 +4072,22 @@ function region_planet_building_count(_star, _planet, _id) {
 /// @returns {Bool}
 function region_building_can_build(_star, _planet, _region, _def) {
     if (_region.owner != eFACTION.PLAYER) {
-        // Allied worlds accept Chapter-funded DEFENSES and barracks when the world's
-        // DISPOSITION toward the Chapter is positive: standing is the permission,
-        // influence is the leverage (it discounts the price, see
-        // region_building_price). Without this, every player tool sat behind the
-        // 100-influence world flip (~20+ turns) while the new enemy pressure
-        // arrives from turn one. Economic improvements still require the flip.
-        var _allied_owner = array_contains(global.SystemHelps.default_allies, _region.owner);
-        var _fundable = region_building_is_defence(_def)
-            || (_def.id == "pdf_barracks")
-            || (_def.id == "guard_barracks");
-        if (!_allied_owner || !_fundable || (_star.dispo[_planet] <= 0)) {
-            return false;
+        // A CONSTRUCTION LICENSE bought for this region unlocks the FULL building set
+        // here without ownership (the partial game-starter): skip the allied-only
+        // restriction below. The capital can never be licensed (see
+        // region_can_license), so this only ever opens outlying regions.
+        if (!region_is_licensed(_region)) {
+            // Unlicensed non-owned worlds: allied worlds still accept Chapter-funded
+            // DEFENSES and barracks when the world's DISPOSITION toward the Chapter is
+            // positive (standing is the permission, influence discounts the price, see
+            // region_building_price). Economic improvements require a license or the flip.
+            var _allied_owner = array_contains(global.SystemHelps.default_allies, _region.owner);
+            var _fundable = region_building_is_defence(_def)
+                || (_def.id == "pdf_barracks")
+                || (_def.id == "guard_barracks");
+            if (!_allied_owner || !_fundable || (_star.dispo[_planet] <= 0)) {
+                return false;
+            }
         }
     }
     // AI-only structures (e.g. the Ork Stronghold) never appear in the player build menu.
@@ -4436,7 +4440,10 @@ function draw_region_build_widget(_cx, _cy, _cell_w, _def, _star, _planet) {
 function draw_region_construction_panel(_star, _planet, _px, _py) {
     var _focus = region_focus_get(_star, _planet);
     var _region = region_get(_star, _planet, _focus);
-    var _owned = (_region.owner == eFACTION.PLAYER);
+    // Licensed regions build exactly like owned ones (the can-build gate already lets
+    // the full set through); the panel treats both as buildable.
+    var _licensed = (!_region.is_capital) && region_is_licensed(_region);
+    var _owned = (_region.owner == eFACTION.PLAYER) || _licensed;
 
     var _w = 300;
     var _cols = 3;
@@ -4472,14 +4479,22 @@ function draw_region_construction_panel(_star, _planet, _px, _py) {
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
     draw_set_color(c_white);
-    draw_text(_px + 10, _py + 6, "Construction - " + _region.name);
+    var _hdr = "Construction - " + _region.name;
+    if (_licensed && (_region.owner != eFACTION.PLAYER)) {
+        _hdr += " [Licensed]";
+    }
+    draw_text(_px + 10, _py + 6, _hdr);
     draw_set_color(c_dkgray);
     draw_line(_px + 6, _py + 26, _px + _w - 6, _py + 26);
     draw_set_font(fnt_40k_14);
 
     if (!_owned) {
         draw_set_color(c_ltgray);
-        draw_text_ext(_px + 10, _py + 32, "Control this region to build here.", -1, _w - 20);
+        if (region_can_license(_star, _planet, _focus)) {
+            draw_text_ext(_px + 10, _py + 32, $"Buy a Construction License ({REGION_BUILD_LICENSE_COST} req, Population screen) to build here before you own it.", -1, _w - 20);
+        } else {
+            draw_text_ext(_px + 10, _py + 32, "Control this region to build here.", -1, _w - 20);
+        }
         draw_set_color(c_black);
         draw_set_font(fnt_40k_14b);
         return;
@@ -4580,6 +4595,58 @@ function beacon_teardown_if_cleansed(_star, _planet) {
             scr_event_log("green", $"The Ascension Beacon on {_star.name} {scr_roman(_planet)} is torn down.", _star.name);
         }
     } catch (_e) {}
+}
+
+/// @function region_is_licensed
+/// @description Reads a region's Construction License flag, tolerating region structs
+///              deserialized from saves made before the field existed (plain-data structs
+///              restore without it, and reading a missing key returns undefined, which is
+///              not a valid boolean in GML). Missing = not licensed.
+/// @param {Struct.Region} _region
+/// @returns {Bool}
+function region_is_licensed(_region) {
+    return is_struct(_region) && variable_struct_exists(_region, "build_licensed") && _region.build_licensed;
+}
+
+/// @function region_can_license
+/// @description Whether the focused region may have a Construction License bought for it:
+///              an OUTLYING region (never the capital) that the player does not already
+///              own and has not already licensed. The capital stays locked until conquest.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _index
+/// @returns {Bool}
+function region_can_license(_star, _planet, _index) {
+    var _region = region_get(_star, _planet, _index);
+    if (!is_struct(_region)) {
+        return false;
+    }
+    if (_region.is_capital) {
+        return false;
+    }
+    if (_region.owner == eFACTION.PLAYER) {
+        return false;
+    }
+    if (region_is_licensed(_region)) {
+        return false;
+    }
+    return true;
+}
+
+/// @function region_grant_license
+/// @description Marks the focused region as licensed for construction. Caller charges the
+///              requisition (the population-screen PurchaseButton does). Returns true on
+///              success, false if the region cannot be licensed.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _index
+/// @returns {Bool}
+function region_grant_license(_star, _planet, _index) {
+    if (!region_can_license(_star, _planet, _index)) {
+        return false;
+    }
+    region_get(_star, _planet, _index).build_licensed = true;
+    return true;
 }
 
 /// @function region_building_price

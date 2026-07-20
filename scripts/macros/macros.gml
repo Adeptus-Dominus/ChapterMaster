@@ -88,6 +88,11 @@
 // (they let the Chapter fortify) and also the leverage: at 100 disposition the
 // locals cover this fraction of the construction bill.
 #macro REGION_BUILD_INFLUENCE_DISCOUNT_MAX 0.5
+// Construction License price: what the player pays the Sector Governor for build rights
+// on ONE outlying region they do not yet own. Bought per region from the population
+// screen; the full building set then unlocks there at the normal disposition-discounted
+// price (see region_building_can_build / region_building_price).
+#macro REGION_BUILD_LICENSE_COST 500
 // Putting down a heretic revolt buys real peace: the world's corruption takes
 // this cut, and no new cult can seed there for the cooldown, giving purge fleets
 // their window instead of a fresh revolt every turn.

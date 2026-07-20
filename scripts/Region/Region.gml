@@ -45,4 +45,11 @@ function Region(_name = "Region", _is_capital = false, _owner = eFACTION.IMPERIU
     // Whether the current occupier has worked out how to fire a captured Anti-Orbital Gun here.
     // Only Genestealer Cults ever set this; it is cleared when the region leaves cult hands.
     gun_mastered = false;
+
+    // Construction License (Sector Governor): when true, the player may build the full
+    // region building set here even though they do NOT own the region yet, at the normal
+    // disposition-discounted price. Bought per region from the population screen (500 req,
+    // outlying regions only). A partial game-starter: raise a factory or barracks on a
+    // world before you have conquered it. Persists as part of this struct in p_regions.
+    build_licensed = false;
 }

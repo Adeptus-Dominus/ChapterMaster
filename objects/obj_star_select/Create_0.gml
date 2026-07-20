@@ -108,6 +108,18 @@ guard_recruit_button.bind_method = function() {
     }
 };
 
+// Construction License: buys build rights on the FOCUSED outlying region (population
+// screen). The bind_method only stamps the flag when the region is licensable, so a
+// wasted 500 can never mark nothing. The draw-time allow_click gate below mirrors
+// region_can_license so the button greys out on the capital / owned / already-licensed.
+build_license_button = new PurchaseButton(REGION_BUILD_LICENSE_COST);
+build_license_button.update({tooltip: $"Petition the Sector Governor for permission to build on ONE region of this world before you conquer it. Licenses the currently-selected outlying region (pick it in the regions panel). The full building set unlocks there at the usual price. /n Costs {REGION_BUILD_LICENSE_COST} requisition. Cannot license the capital or a region you already hold.", label: "Buy Build License", target: target});
+build_license_button.bind_method = function() {
+    var _p = obj_controller.selecting_planet;
+    var _focus = region_focus_get(target, _p);
+    region_grant_license(target, _p, _focus);
+};
+
 recruiting_button = new PurchaseButton(0);
 recruiting_button.update({tooltip: "Enable recruiting", label: "Recruiting", target: target});
 recruiting_button.bind_method = function() {
