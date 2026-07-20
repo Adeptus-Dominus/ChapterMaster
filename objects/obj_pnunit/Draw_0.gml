@@ -1,4 +1,4 @@
-draw_size = min(400, column_size);
+draw_size = min(BATTLE_SEG_MAX, column_size);
 
 if (draw_size > 0) {
     draw_set_alpha(1);
@@ -22,8 +22,8 @@ if (draw_size > 0) {
 
     var _stack_before = 0;
     if (veh_type[1] == "Defenses") {
-        y1 = 450 - (draw_size / 2);
-        y2 = 450 + (draw_size / 2);
+        y1 = BATTLE_FIELD_CY - (draw_size / 2);
+        y2 = BATTLE_FIELD_CY + (draw_size / 2);
     } else {
         // Formations sharing a column draw as stacked segments of one line, separated by
         // small gaps, instead of on top of each other, so each stays visible and
@@ -35,7 +35,7 @@ if (draw_size > 0) {
         var _self_id = id;
         with (obj_pnunit) {
             if ((veh_type[1] != "Defenses") && (x == _col_x)) {
-                var _seg = min(400, column_size);
+                var _seg = min(BATTLE_SEG_MAX, column_size);
                 if (_seg > 0) {
                     _stack_total += _seg + _seg_gap;
                     if (id < _self_id) {
@@ -45,7 +45,13 @@ if (draw_size > 0) {
             }
         }
         _stack_total -= _seg_gap;
-        y1 = 450 - (_stack_total / 2) + _stack_before;
+        // Compress a stack taller than the field so every segment stays inside the frame
+        // and clickable, instead of spilling past the top and bottom edges (the overflow
+        // in the tester screenshot). A stack that already fits is untouched, so the common
+        // single-formation column reduces exactly to the old centered layout.
+        var _fit = (_stack_total > BATTLE_FIELD_H) ? (BATTLE_FIELD_H / _stack_total) : 1;
+        draw_size *= _fit;
+        y1 = BATTLE_FIELD_CY - ((_stack_total * _fit) / 2) + (_stack_before * _fit);
         y2 = y1 + draw_size;
     }
 

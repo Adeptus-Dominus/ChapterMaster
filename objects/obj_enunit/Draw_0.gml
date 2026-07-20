@@ -1,4 +1,4 @@
-draw_size = min(400, column_size);
+draw_size = min(BATTLE_SEG_MAX, column_size);
 
 if (draw_size > 0) {
     draw_set_alpha(1);
@@ -9,9 +9,9 @@ if (draw_size > 0) {
     }
 
     x1 = pos + (centerline_offset * 2);
-    y1 = 450 - (draw_size / 2);
+    y1 = BATTLE_FIELD_CY - (draw_size / 2);
     x2 = pos + (centerline_offset * 2) + 10;
-    y2 = 450 + (draw_size / 2);
+    y2 = BATTLE_FIELD_CY + (draw_size / 2);
 
     if (hit()) {
         draw_set_alpha(0.8);

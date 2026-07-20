@@ -424,3 +424,20 @@ enum eIN_GAME_MENU_EFFECT {
 // air gap stops the spill: neither hammer blows nor the torrent of fire leap across
 // open ground to a formation two rows back.
 #macro OVERKILL_SPILL_MAX_GAP 15
+
+// Battle formation box (the green-framed battlefield on the right half of the combat
+// screen) and the vertical center the formation columns build around. The box was a
+// fixed 235..666 (431 tall) while a single column is 400 tall centered on 450 and a
+// STACK of formations in one column sums all its segments, so multi-segment stacks
+// overflowed the frame top and bottom (tester screenshot). Enlarged to use nearly the
+// full 900-tall screen, and columns/stacks now build around BATTLE_FIELD_CY and clamp
+// to BATTLE_FIELD_H (see obj_pnunit / obj_enunit Draw, and the frame in Draw_0).
+#macro BATTLE_FIELD_X1 818
+#macro BATTLE_FIELD_X2 1578
+#macro BATTLE_FIELD_Y1 40
+#macro BATTLE_FIELD_Y2 838
+#macro BATTLE_FIELD_CY 439
+#macro BATTLE_FIELD_H  798
+// Largest a single formation segment draws; a stack taller than the field is scaled to
+// fit so every segment stays visible and clickable instead of spilling past the frame.
+#macro BATTLE_SEG_MAX 400
