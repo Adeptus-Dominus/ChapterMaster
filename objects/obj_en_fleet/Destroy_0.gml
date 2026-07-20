@@ -1,6 +1,4 @@
-if ((action == "") && instance_exists(orbiting)) {
-    fleet_unregister_from_star(id);
-}
+fleet_unregister_from_star(id);
 
 if (instance_exists(obj_controller)) {
     if (fleet_has_cargo("warband") && (obj_controller.faction_defeated[10] == 0)) {
