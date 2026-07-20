@@ -89,7 +89,7 @@ function drop_select_unit_selection() {
         // SHIP_ASSAULTS_PER_TURN ground assaults per turn, closing the loop of
         // deploying troops to the surface and attacking endlessly for free. When
         // spent, the button locks red like an exhausted ship. Attacks only.
-        var _locals_spent = (attack == 1) && (local_assaults_used(p_target, planet_number) >= SHIP_ASSAULTS_PER_TURN);
+        var _locals_spent = (attack == 1) && (local_assaults_used(p_target, planet_number) >= GROUND_ASSAULTS_PER_TURN);
         if (_locals_spent) {
             if (_local_button.active) {
                 _local_button.active = false;

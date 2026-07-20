@@ -263,7 +263,15 @@
 // assaults per turn, one use spent per assault it contributes units to; bigger fleets
 // can clear a system in one turn, but every launch spends real capacity. Raids, purges,
 // and bombardment keep their old fleet-level rules.
-#macro SHIP_ASSAULTS_PER_TURN 2
+// Assault economy, split by APPROACH so a gun-world landing is a real phase:
+//  - ORBITAL (dropping troops from ships, under the guns) is limited to one strike per turn,
+//    so you cannot spam landings from orbit.
+//  - GROUND (fighting from an established foothold; see Hold Ground) allows several strikes
+//    per turn, rewarding a beachhead: land once, then grind forward on the ground.
+// SHIP_ASSAULTS_PER_TURN is kept as an alias of the ORBITAL cap for any legacy call site.
+#macro ORBITAL_ASSAULTS_PER_TURN 1
+#macro GROUND_ASSAULTS_PER_TURN 3
+#macro SHIP_ASSAULTS_PER_TURN ORBITAL_ASSAULTS_PER_TURN
 // Disposition drop a full indiscriminate fire purge (100% of the population burned)
 // inflicts on a world's regard for the Chapter. Scaled down by the actual share killed
 // per purge, so a light burn costs a little and a total one costs this much. Selective

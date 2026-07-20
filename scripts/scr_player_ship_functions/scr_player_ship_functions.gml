@@ -757,11 +757,11 @@ function can_ground_deploy(star_object, planet_number) {
     }
     var _ships = get_player_ships(star_object.name);
     for (var i = 0; i < array_length(_ships); i++) {
-        if ((obj_ini.ship_carrying[_ships[i]] > 0) && (ship_raids_used(_ships[i]) < SHIP_ASSAULTS_PER_TURN)) {
+        if ((obj_ini.ship_carrying[_ships[i]] > 0) && (ship_raids_used(_ships[i]) < ORBITAL_ASSAULTS_PER_TURN)) {
             return true;
         }
     }
-    if ((star_object.p_player[planet_number] > 0) && (local_assaults_used(star_object, planet_number) < SHIP_ASSAULTS_PER_TURN)) {
+    if ((star_object.p_player[planet_number] > 0) && (local_assaults_used(star_object, planet_number) < GROUND_ASSAULTS_PER_TURN)) {
         return true;
     }
     return false;

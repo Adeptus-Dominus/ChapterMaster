@@ -436,13 +436,13 @@ try {
                 if (instance_exists(_targ)) {
                     var _gate_ships = get_player_ships(target.name);
                     for (var _gs = 0; _gs < array_length(_gate_ships); _gs++) {
-                        if ((obj_ini.ship_carrying[_gate_ships[_gs]] > 0) && (ship_assaults_used(_gate_ships[_gs]) < SHIP_ASSAULTS_PER_TURN)) {
+                        if ((obj_ini.ship_carrying[_gate_ships[_gs]] > 0) && (ship_assaults_used(_gate_ships[_gs]) < ORBITAL_ASSAULTS_PER_TURN)) {
                             _ship_available = true;
                             break;
                         }
                     }
                 }
-                var _local_available = (p_data.player_forces > 0) && (local_assaults_used(target, obj_controller.selecting_planet) < SHIP_ASSAULTS_PER_TURN);
+                var _local_available = (p_data.player_forces > 0) && (local_assaults_used(target, obj_controller.selecting_planet) < GROUND_ASSAULTS_PER_TURN);
                 if (!_ship_available && !_local_available) {
                     _allow_attack = false;
                     scr_popup("Ground Assault", "Your forces at this world have already supported the maximum number of ground assaults this turn.", "");

@@ -416,7 +416,7 @@ function Roster() constructor {
                     // its raid counter (each independent), so a ship spent on one action
                     // still shows available for the other.
                     var _dr_used = obj_drop_select.attack ? ship_assaults_used(_ship_index) : ship_raids_used(_ship_index);
-                    if (_dr_used >= SHIP_ASSAULTS_PER_TURN) {
+                    if (_dr_used >= ORBITAL_ASSAULTS_PER_TURN) {
                         var _spent_btn = ships[array_length(ships) - 1];
                         _spent_btn.assault_locked = true;
                         _spent_btn.active = false;
