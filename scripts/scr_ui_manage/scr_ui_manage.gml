@@ -2031,6 +2031,27 @@ function draw_marine_squad_rows(xx, yy, _stats_displayed = false, _command_slots
         }
     }
 
+    // ---- Per-squad expansion (FatKevin): a squad row can be opened individually,
+    // injecting its members as REAL unit rows (scr_draw_management_unit) directly
+    // beneath it, while other squads stay collapsed. Session-scoped view state on
+    // obj_controller (a struct, so the reflective serializer ignores it).
+    if (!variable_instance_exists(obj_controller, "squad_view_expanded")) {
+        obj_controller.squad_view_expanded = {};
+    }
+    var _expanded_rows = [];
+    for (var _er = 0; _er < array_length(_rows); _er++) {
+        var _erow = _rows[_er];
+        array_push(_expanded_rows, _erow);
+        if (!struct_exists(_erow, "unit_row")
+        && struct_exists(obj_controller.squad_view_expanded, _erow.squad_id)
+        && obj_controller.squad_view_expanded[$ _erow.squad_id]) {
+            for (var _em = 0; _em < array_length(_erow.squad_members); _em++) {
+                array_push(_expanded_rows, {unit_row: _erow.squad_members[_em]});
+            }
+        }
+    }
+    _rows = _expanded_rows;
+
     // ---- Fixed rows: toggle + any open command-slot prompts ----
     var _empty_slots = [];
     for (var r = 0; r < array_length(_command_slots); r++) {
@@ -2129,6 +2150,15 @@ function draw_marine_squad_rows(xx, yy, _stats_displayed = false, _command_slots
         }
 
         var _rect = [xx + 25, _yy + 64, xx + 974, _yy + 85];
+        // Per-squad expander: its own hitbox, consumed before the select-all click.
+        var _is_open = struct_exists(obj_controller.squad_view_expanded, _row.squad_id)
+            && obj_controller.squad_view_expanded[$ _row.squad_id];
+        var _glyph_rect = [xx + 27, _yy + 65, xx + 55, _yy + 84];
+        var _glyph_hit = point_and_click(_glyph_rect) && (scrollbar_engaged == 0);
+        if (_glyph_hit) {
+            obj_controller.squad_view_expanded[$ _row.squad_id] = !_is_open;
+            _is_open = !_is_open;
+        }
         draw_set_color(c_black);
         draw_rectangle(_rect[0], _rect[1], _rect[2], _rect[3], 0);
         if (_sel_count > 0) {
@@ -2140,7 +2170,10 @@ function draw_marine_squad_rows(xx, yy, _stats_displayed = false, _command_slots
         draw_set_color(_all_sel ? CM_GREEN_COLOR : c_gray);
         draw_rectangle(_rect[0], _rect[1], _rect[2], _rect[3], 1);
         draw_set_color(CM_GREEN_COLOR);
-        draw_text(xx + 35, _yy + 66, _label);
+        draw_set_color(c_yellow);
+        draw_text(xx + 31, _yy + 66, _is_open ? "[-]" : "[+]");
+        draw_set_color(CM_GREEN_COLOR);
+        draw_text(xx + 60, _yy + 66, _label);
 
         // Hover focus so the Load / selection buttons render, like unit rows do.
         if ((mouse_x >= _rect[0]) && (mouse_y >= _rect[1]) && (mouse_x < _rect[2]) && (mouse_y < _rect[3]) && is_struct(_lead)) {
@@ -2149,7 +2182,7 @@ function draw_marine_squad_rows(xx, yy, _stats_displayed = false, _command_slots
 
         // Click toggles the whole squad, mirroring scr_draw_management_unit's gates
         // and side effects per member.
-        if (point_and_click(_rect) && (scrollbar_engaged == 0) && !instance_exists(obj_star_select)) {
+        if (point_and_click(_rect) && !_glyph_hit && (scrollbar_engaged == 0) && !instance_exists(obj_star_select)) {
             var _target = _all_sel ? 0 : 1;
             for (var m = 0; m < _count; m++) {
                 var _idx = _members[m];
