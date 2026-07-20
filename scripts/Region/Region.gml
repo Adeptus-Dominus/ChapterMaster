@@ -34,6 +34,13 @@ function Region(_name = "Region", _is_capital = false, _owner = eFACTION.IMPERIU
     fortification = 0;
     defences = 0;
 
+    // Adjacency graph: indices of the regions this one borders (a real map, not just the
+    // capital-inward line). Built at worldgen (see regions_build_adjacency) as a hub-and-ring:
+    // the capital borders every outlying region, and outlying regions form a ring among
+    // themselves, so there are multiple fronts and flanking routes. Drives which regions can
+    // be assaulted from a held region (region_can_assault_index). Guarded for old saves.
+    neighbors = [];
+
     // Dig-In tracking: how many consecutive turns the CURRENT owner has held this region
     // without it changing hands. After DIG_IN_TURNS turns held, the occupier entrenches
     // (+1 fortification, capped at DIG_IN_FORT_CAP), representing field works and light

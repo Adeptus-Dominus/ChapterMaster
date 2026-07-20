@@ -207,6 +207,10 @@ function regions_generate(_star, _planet) {
         _regions[i].defences = _regions[i].is_capital ? _defences : 0;
     }
 
+    // Build the adjacency graph (hub-and-ring): capital borders every outlying region, and
+    // outlying regions form a ring among themselves for flanking.
+    regions_build_adjacency(_regions);
+
     // Existing planet buildings default to the capital.
     if (is_array(_star.p_upgrades[_planet]) && (array_length(_star.p_upgrades[_planet]) > 0)) {
         _regions[0].upgrades = variable_clone(_star.p_upgrades[_planet]);
@@ -825,9 +829,14 @@ function draw_regions_panel(_star, _planet, _px, _py) {
 
         // Region name, numbered from the capital (1) outward to the farthest region (N), so
         // the player can read the assault order at a glance. Capital keeps its * marker.
+        // A ">" marks a region the player can push into RIGHT NOW (enemy-held and, on a
+        // siege world, bordering a region the player holds) so the attack path is legible.
         draw_set_color(c_white);
         var _num = string(i + 1) + ". ";
-        var _name = _region.is_capital ? (_num + "* " + _region.name) : (_num + _region.name);
+        var _hostile_here = (_region.owner != eFACTION.PLAYER) && (_region.owner != eFACTION.IMPERIUM) && (_region.owner != eFACTION.MECHANICUS) && (_region.owner != eFACTION.INQUISITION) && (_region.owner != eFACTION.ECCLESIARCHY);
+        var _attackable = _hostile_here && region_can_assault_index(_star, _planet, i);
+        var _mark = _attackable ? "> " : "";
+        var _name = _region.is_capital ? (_mark + _num + "* " + _region.name) : (_mark + _num + _region.name);
         draw_text(_rx + 18, _ry, _name);
         draw_set_color(_col);
         draw_text(_rx + 18, _ry + 16, region_faction_name(_region.owner));
@@ -4614,6 +4623,127 @@ function region_enemy_gun_progress_ensure(_star, _planet) {
     return _star.p_enemy_gun_progress[_planet];
 }
 
+/// @function regions_build_adjacency
+/// @description Populate each region's `neighbors` list as a hub-and-ring graph: the CAPITAL
+///              (index 0) borders every outlying region (it is the core, reachable from any
+///              front), and the OUTLYING regions form a ring among themselves (1-2-3-...-1) so
+///              there are flanking routes rather than a single line. Edges are undirected
+///              (stored on both endpoints). Degenerate small cases: 1 region has no neighbours;
+///              2 regions border each other.
+/// @param {Array<Struct.Region>} _regions
+/// @returns {Undefined}
+function regions_build_adjacency(_regions) {
+    var _n = array_length(_regions);
+    for (var i = 0; i < _n; i++) {
+        _regions[i].neighbors = [];
+    }
+    if (_n <= 1) {
+        return;
+    }
+    if (_n == 2) {
+        _regions[0].neighbors = [1];
+        _regions[1].neighbors = [0];
+        return;
+    }
+
+    // Identify the capital index (normally 0) and the list of outlying indices.
+    var _cap = 0;
+    var _outlying = [];
+    for (var i = 0; i < _n; i++) {
+        if (_regions[i].is_capital) {
+            _cap = i;
+        } else {
+            array_push(_outlying, i);
+        }
+    }
+
+    var _add_edge = function(_regions, _a, _b) {
+        if (_a == _b) { return; }
+        if (!array_contains(_regions[_a].neighbors, _b)) { array_push(_regions[_a].neighbors, _b); }
+        if (!array_contains(_regions[_b].neighbors, _a)) { array_push(_regions[_b].neighbors, _a); }
+    };
+
+    // Hub: capital borders every outlying region.
+    for (var o = 0; o < array_length(_outlying); o++) {
+        _add_edge(_regions, _cap, _outlying[o]);
+    }
+    // Ring: outlying regions border their neighbours in the ring (only meaningful for >= 2 outlying).
+    var _ol = array_length(_outlying);
+    if (_ol >= 2) {
+        for (var o = 0; o < _ol; o++) {
+            _add_edge(_regions, _outlying[o], _outlying[(o + 1) mod _ol]);
+        }
+    }
+}
+
+/// @function region_neighbors_ensure
+/// @description Old-save safety for the adjacency graph. A Region restored from a save made
+///              before `neighbors` existed will lack it; rebuild the whole planet's graph on
+///              first access so every region gets a consistent neighbour list.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @returns {Undefined}
+function region_neighbors_ensure(_star, _planet) {
+    var _regions = regions_ensure(_star, _planet);
+    var _missing = false;
+    for (var i = 0; i < array_length(_regions); i++) {
+        if (!variable_struct_exists(_regions[i], "neighbors") || !is_array(_regions[i].neighbors)) {
+            _missing = true;
+            break;
+        }
+    }
+    if (_missing) {
+        regions_build_adjacency(_regions);
+    }
+}
+
+/// @function region_neighbors
+/// @description The list of region indices bordering region _index (its neighbours in the
+///              adjacency graph). Old-save safe.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _index
+/// @returns {Array<Real>}
+function region_neighbors(_star, _planet, _index) {
+    region_neighbors_ensure(_star, _planet);
+    var _regions = regions_ensure(_star, _planet);
+    if ((_index < 0) || (_index >= array_length(_regions))) {
+        return [];
+    }
+    return _regions[_index].neighbors;
+}
+
+/// @function region_is_adjacent
+/// @description True if regions _a and _b border each other in the adjacency graph.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _a
+/// @param {Real} _b
+/// @returns {Bool}
+function region_is_adjacent(_star, _planet, _a, _b) {
+    return array_contains(region_neighbors(_star, _planet, _a), _b);
+}
+
+/// @function region_adjacent_to_player_hold
+/// @description True if region _index borders ANY region the player currently holds (i.e. the
+///              player has a foothold next to it and could push into it). Used to gate
+///              graph-based region assaults.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _index
+/// @returns {Bool}
+function region_adjacent_to_player_hold(_star, _planet, _index) {
+    var _nb = region_neighbors(_star, _planet, _index);
+    var _regions = regions_ensure(_star, _planet);
+    for (var i = 0; i < array_length(_nb); i++) {
+        var _ni = _nb[i];
+        if ((_ni >= 0) && (_ni < array_length(_regions)) && (_regions[_ni].owner == eFACTION.PLAYER)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 /// @function region_hold_ensure
 /// @description Old-save safety for the Dig-In hold-tracking fields. A Region struct
 ///              restored from a save made before these fields existed will lack them (regions
@@ -4695,9 +4825,10 @@ function region_ground_front(_star, _planet) {
 
 /// @function region_can_assault_index
 /// @description Whether the player may launch a ground assault at region _index on this world
-///              right now. On a non-siege world: always (free assault). On a siege world:
-///              only the safe landing zone until a force has landed, then only the region the
-///              force currently occupies (you fight your way forward one region at a time).
+///              right now. On a non-siege world: always (free assault). On a siege world: only
+///              the safe landing zone until a force has landed, then any enemy region that
+///              BORDERS a region the player holds (adjacency graph; flanking possible). A
+///              region the player already holds is never assaultable.
 /// @param {Id.Instance.obj_star} _star
 /// @param {Real} _planet
 /// @param {Real} _index
@@ -4706,13 +4837,19 @@ function region_can_assault_index(_star, _planet, _index) {
     if (!planet_is_positional_siege(_star, _planet)) {
         return true;
     }
+    // Already holding this region? Nothing to assault here.
+    var _regions = regions_ensure(_star, _planet);
+    if ((_index >= 0) && (_index < array_length(_regions)) && (_regions[_index].owner == eFACTION.PLAYER)) {
+        return false;
+    }
     var _front = region_ground_front(_star, _planet);
     if (_front < 0) {
         // No landing yet: only the safe landing zone can be assaulted (or bombarded clear).
         return (_index == planet_safe_landing_region(_star, _planet));
     }
-    // Landed: you can only assault the region you currently hold the line at.
-    return (_index == _front);
+    // Landed: graph-based advance. You may assault any region that BORDERS a region you already
+    // hold (the adjacency graph replaces the old single-file line, so flanking is possible).
+    return region_adjacent_to_player_hold(_star, _planet, _index);
 }
 
 /// @function region_ground_land
