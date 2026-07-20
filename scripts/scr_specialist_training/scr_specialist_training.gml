@@ -113,7 +113,7 @@ function spec_data_set(specialist) {
         // TODO LOW SEARCH_OPTIONAL // Make this function handle optional search_params
         [obj_ini.role[100][8], obj_ini.role[100][18], obj_ini.role[100][10], obj_ini.role[100][9]],
         _data.min_exp,
-        _search,
+        _search
     );
     return random_marine;
 }

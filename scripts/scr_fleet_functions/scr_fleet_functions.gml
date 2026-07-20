@@ -1201,7 +1201,7 @@ function fleet_respond_crusade() {
                 function(prev, curr) {
                     return prev || curr > 3;
                 },
-                false,
+                false
             );
 
             var tau = array_reduce(
@@ -1209,7 +1209,7 @@ function fleet_respond_crusade() {
                 function(prev, curr) {
                     return prev || curr > 0;
                 },
-                false,
+                false
             );
 
             enemu += nids + tau;

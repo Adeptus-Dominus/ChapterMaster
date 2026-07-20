@@ -200,7 +200,7 @@ try {
             target_gear, // slot
             tab, // eEngagement
             false, // no company standard
-            false, // don't limit to available items
+            false // don't limit to available items
         );
 
         draw_set_color(0);
@@ -264,7 +264,7 @@ try {
                 target_gear, // slot
                 tab, // eEngagement
                 false, // no company standard
-                false, // don't limit to available items
+                false // don't limit to available items
             );
 
             x3 = 862 + 146;

@@ -373,7 +373,7 @@ function mission_hunt_inquisitor_hear_out_radical_inquisitor() {
                     str1: "Search their ship", //choice_func : instance_destroy, // TODO: Implement proper ship search logic
                 },
                 {str1: "Spare them", choice_func: mission_hunt_inquisitor_show_mercy},
-            ],
+            ]
         );
         title = "Mercy Plea";
         text = $"The Inquisitor claims that {_gender_third} has key knowledge that would grant the Imperium vital power over the forces of Chaos.  If {global.chapter_name} allow {gender_pronoun} ship to leave the forces of Chaos within this sector will be weakened.";

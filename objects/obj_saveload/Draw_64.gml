@@ -185,7 +185,7 @@ if (!hide) {
                                     },
                                 },
                                 {str1: "No"},
-                            ],
+                            ]
                         );
                         com.save = slot_index;
                         com.woopwoopwoop = menu;

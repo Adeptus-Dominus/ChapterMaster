@@ -759,7 +759,7 @@ function scr_draw_mass_equip_gui() {
                 0, // slot
                 eENGAGEMENT.ANY,
                 true, // include the company standard
-                false, // do not limit to available items
+                false // do not limit to available items
             );
             scr_get_item_names(
                 item_name,
@@ -769,7 +769,7 @@ function scr_draw_mass_equip_gui() {
                 false, // include the company standard
                 false, // do not limit to available items
                 false, // not only mastercrafted
-                true, // put none in the list only once
+                true // put none in the list only once
             );
             array_resize(item_name, array_unique_ext(item_name));
         } else {
@@ -779,7 +779,7 @@ function scr_draw_mass_equip_gui() {
                 tab, // slot
                 eENGAGEMENT.NONE, // doesn't matter to non infantry/non hand slots
                 true, // include the company standard
-                false, // do not limit to available items
+                false // do not limit to available items
             );
         }
 
@@ -926,7 +926,7 @@ function scr_draw_role_settings_ui() {
                 _slot_clicked, // slot
                 is_hand_slot ? (obj_mass_equip.tab == 0 ? eENGAGEMENT.RANGED : eENGAGEMENT.MELEE) : eENGAGEMENT.NONE,
                 true, // include company standard
-                false, // show all regardless of inventory
+                false // show all regardless of inventory
             );
         }
     }

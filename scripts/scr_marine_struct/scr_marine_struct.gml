@@ -1766,7 +1766,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 spli: _melee_weapon.spli,
                 arp: _melee_weapon.arp,
             },
-            "weapon",
+            "weapon"
         );
 
         var wrath_melee = new EquipmentStruct(
@@ -1778,7 +1778,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 spli: _melee_weapon.spli,
                 arp: _melee_weapon.arp,
             },
-            "weapon",
+            "weapon"
         );
 
         wrath.second_profiles = [wrath_melee];

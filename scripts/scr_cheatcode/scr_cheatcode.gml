@@ -794,7 +794,7 @@ function system_debug_enemy_invasion() {
                     system_debug_enemy_invasion_spawn();
                 },
             },
-        ],
+        ]
     );
 }
 

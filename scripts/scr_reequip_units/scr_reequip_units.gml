@@ -261,7 +261,7 @@ function reload_items() {
         range_melee_radio.selection_val("val"),
         false, // include company standard
         true, // limit to available equipment
-        quality_radio.selection_val("val"),
+        quality_radio.selection_val("val")
     );
 }
 

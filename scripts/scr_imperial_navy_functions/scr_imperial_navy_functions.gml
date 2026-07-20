@@ -420,7 +420,7 @@ function navy_finish_destroying_player_world() {
         function(prev, _curr, idx) {
             return _curr > 0 ? idx : prev;
         },
-        0,
+        0
     );
 
     if (tar == 0) {
