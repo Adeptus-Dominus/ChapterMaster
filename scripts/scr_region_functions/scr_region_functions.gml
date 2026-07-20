@@ -3858,21 +3858,26 @@ function region_building_catalogue() {
         },
         {
             id: "factory", name: "Factory", sprite: spr_forge_holo, cost: 2000, max: 1, types: ["Hive", "Forge", "Temperate"],
-            desc: "War materiel factory. +4 requisition each turn while you hold this region.",
+            desc: "War materiel factory. +15 requisition each turn while you hold this region.",
             apply: undefined,
             // Requisition is produced via the income system
             // (regions_player_requisition_income -> income_regions in scr_income), NOT
             // added here, so it shows in the Requisition counter breakdown and is paid
-            // together with the rest of the turn's income.
-            req: 4,
+            // together with the rest of the turn's income. The Factory produces requisition
+            // ONLY (no forge points, unlike the Manufactorum), so at +15/turn it pays back
+            // its 2000 cost in ~130 turns for a permanent, region-hold-gated income source.
+            req: 15,
             on_turn: undefined,
         },
         {
             id: "mine", name: "Mine", sprite: spr_def_mine, cost: 1500, max: 1, types: ["Desert", "Ice", "Lava", "Dead", "Death"],
-            desc: "Resource extraction. +3 requisition each turn while you hold this region.",
+            desc: "Resource extraction. +12 requisition each turn while you hold this region.",
             apply: undefined,
-            // Requisition produced via the income system (see Factory note above).
-            req: 3,
+            // Requisition produced via the income system (see Factory note above). At
+            // +12/turn a Mine pays back its 1500 cost in 125 turns, the cheaper building
+            // paying back a little slower than the Factory (the pricier building breaks
+            // even sooner).
+            req: 12,
             on_turn: undefined,
         },
         {
