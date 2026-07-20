@@ -414,7 +414,11 @@ function player_retreat_from_fleet_combat(destination_star = noone) {
 
         var _total_remaining = _p_fleet.escort_number + _p_fleet.frigate_number + _p_fleet.capital_number;
 
-        var _text = $"Your fleet is given the command to fall back to {destination_star.name ?? "outer space"}. The vessels turn and prepare to enter the Warp, constantly under a hail of enemy fire.";
+        // Enter/Space/click releases the fleeing prompt with no destination
+        // (noone); dereferencing .name on noone throws before ?? can catch it,
+        // and the swallowed exception left the battle popup dangling forever.
+        var _dest_name = instance_exists(destination_star) ? destination_star.name : "the void between systems";
+        var _text = $"Your fleet is given the command to fall back to {_dest_name}. The vessels turn and prepare to enter the Warp, constantly under a hail of enemy fire.";
         if (_total_lost > 0 && _total_remaining > 0) {
             _text += "\n\nSome of your ships remain behind to draw off the attack and give the rest of your fleet a chance to escape.";
             for (var t = 0; t < array_length(_tiers); t++) {
@@ -445,6 +449,17 @@ function player_retreat_from_fleet_combat(destination_star = noone) {
         }
     } catch (_exception) {
         ERROR_HANDLER.handle_exception(_exception);
+        // Never leave the battle sequence dangling: the BATTLE_OPTIONS popup is
+        // what advances obj_turn_end past this battle (its cooldown handler does
+        // current_battle += 1). If anything above threw, arm a minimal popup so
+        // the turn can continue instead of soft-locking with every menu dead.
+        if (instance_exists(obj_popup)) {
+            obj_popup.type = ePOPUP_TYPE.BATTLE_OPTIONS;
+            obj_popup.title = "Fleet Retreating";
+            obj_popup.text = "Your fleet breaks off and runs for the system's edge.";
+            obj_popup.cooldown = 15;
+        }
+        obj_controller.menu = 0;
     }
 }
 
