@@ -239,6 +239,14 @@ function drop_select_unit_selection() {
             var _secr = region_get(p_target, planet_number, _seci);
             var _forti_n = ["None", "Sparse", "Light", "Moderate", "Heavy", "Major", "Extreme"];
             var _sector_str = $"Sector: {_secr.name} ({region_faction_name(_secr.owner)}, Fort {_forti_n[clamp(_secr.fortification, 0, 6)]}, Def {_secr.defences})";
+            // Show the commitment tradeoff while cycling: outlying sectors of a foe
+            // holding several regions meet a partial force; the capital (or a foe
+            // in a single region) meets everything, leaders included.
+            if (_secr.is_capital || (array_length(regions_owned_by(p_target, planet_number, attacking)) <= 1)) {
+                _sector_str += " [full enemy force]";
+            } else {
+                _sector_str += " [partial enemy force]";
+            }
             // Drawn directly (not via InteractiveButton, whose width-based text padding pushes a
             // wide label to the box bottom): a centred box with the text centred both ways inside it.
             // Click cycles the conquest focus (shared with the system-view regions panel).
@@ -399,14 +407,32 @@ function drop_select_unit_selection() {
             // obj_ncombat fortification system assumes the PLAYER is the defender, so it is left
             // alone here; making the battle screen itself region-aware is the deferred Option B.
 
+            // Region commitment: assaulting an OUTLYING sector of a multi-region world
+            // meets only part of the enemy force (REGION_ASSAULT_COMMIT_FRACTION of
+            // their real headcount); the capital, or a foe squeezed into one region,
+            // meets everything. Leaders (Warboss, Farseer) only defend the capital.
+            var _region_partial = false;
+            if ((attack == 1) && (planet_region_count(p_target, planet_number) > 1)) {
+                var _rp_focus = region_focus_get(p_target, planet_number);
+                var _rp_region = region_get(p_target, planet_number, _rp_focus);
+                var _rp_is_capital = is_struct(_rp_region) && _rp_region.is_capital;
+                if (!_rp_is_capital) {
+                    var _rp_held = array_length(regions_owned_by(p_target, planet_number, attacking));
+                    if (_rp_held > 1) {
+                        _region_partial = true;
+                    }
+                }
+            }
+            obj_ncombat.region_partial = _region_partial;
+
             var _planet = obj_ncombat.battle_object.p_feature[obj_ncombat.battle_id];
             if (obj_ncombat.battle_object.space_hulk == 1) {
                 obj_ncombat.battle_special = "space_hulk";
             }
-            if ((planet_feature_bool(_planet, eP_FEATURES.WARLORD6) == 1) && (obj_ncombat.enemy == eFACTION.ELDAR) && (obj_controller.faction_defeated[6] == 0)) {
+            if ((planet_feature_bool(_planet, eP_FEATURES.WARLORD6) == 1) && (obj_ncombat.enemy == eFACTION.ELDAR) && (obj_controller.faction_defeated[6] == 0) && !_region_partial) {
                 obj_ncombat.leader = 1;
             }
-            if (obj_ncombat.enemy == eFACTION.ORK && planet_feature_bool(_planet, eP_FEATURES.ORKWARBOSS)) {
+            if (obj_ncombat.enemy == eFACTION.ORK && planet_feature_bool(_planet, eP_FEATURES.ORKWARBOSS) && !_region_partial) {
                 obj_ncombat.leader = 1;
                 obj_ncombat.ork_warboss = _planet[search_planet_features(_planet, eP_FEATURES.ORKWARBOSS)[0]];
             }
@@ -472,6 +498,19 @@ function drop_select_unit_selection() {
             }
             if ((obj_ncombat.enemy == eFACTION.CHAOS) && (obj_ncombat.battle_object.p_type[obj_ncombat.battle_id] == "Daemon")) {
                 obj_ncombat.threat = 7;
+            }
+
+            // Outlying-sector commitment: derive the engaged force level from the
+            // committed share of the real headcount where the population is
+            // modelled; otherwise knock two levels off. Only level-scale battles
+            // (1-6) qualify; Enormicus (7) and Imperium headcount battles pass.
+            if (_region_partial && (obj_ncombat.threat >= 1) && (obj_ncombat.threat <= 6)) {
+                var _rp_pop = planet_faction_pop(p_target, planet_number, attacking);
+                if ((count_to_level_anchors(attacking) != -1) && (_rp_pop > 0)) {
+                    obj_ncombat.threat = max(1, count_to_level(attacking, round(_rp_pop * REGION_ASSAULT_COMMIT_FRACTION)));
+                } else {
+                    obj_ncombat.threat = max(1, obj_ncombat.threat - 2);
+                }
             }
 
             var _battle_place = obj_ncombat.battle_object;

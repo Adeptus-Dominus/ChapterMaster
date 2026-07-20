@@ -61,6 +61,15 @@
 // spawns far past the old "single engagement" scale (~1000 men). Clamp the level
 // used for battle sizing; 7 (Enormicus) and raw garrison counts are untouched.
 #macro ENEMY_BATTLE_THREAT_CAP 4
+// Region commitment (assault balance): attacking an OUTLYING sector of a
+// multi-region world engages only this share of the enemy's real headcount;
+// they hold the rest back to garrison their other ground. Assaulting the
+// CAPITAL, or a foe squeezed into a single region, meets the full force (and
+// only there do enemy leaders such as an Ork Warboss take the field). Partial
+// victories also cut the strategic level by 1 instead of 2 (obj_ncombat
+// Alarm_5), so chipping outlying sectors is safer but slower than a
+// decapitation strike.
+#macro REGION_ASSAULT_COMMIT_FRACTION 0.35
 // Imperial worlds pass their raw Guard garrison through threat (population-scaled,
 // sanity-capped at 1M strategically). A tactical battle fields at most this many of
 // them; the rest are the garrison you are NOT fighting today.

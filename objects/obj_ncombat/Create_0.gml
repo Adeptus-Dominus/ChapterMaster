@@ -139,6 +139,11 @@ enem_sing = "Ork";
 threat = 0;
 fortified = 0;
 enemy_fortified = 0;
+// Set by scr_drop_select_function when the assault targets an outlying sector
+// of a multi-region world: the enemy commits only part of its force, and the
+// victory cuts their strategic level by 1 instead of 2 (Alarm_5). Declared here
+// or the Alarm_5 read crashes (no default-zero in this codebase).
+region_partial = false;
 bastion_bonus = 0;   // §16h: distinct Bastion fortress reinforcement (set at defend-setup; save-safe default 0)
 wall_destroyed = 0;
 flank_x = 0;

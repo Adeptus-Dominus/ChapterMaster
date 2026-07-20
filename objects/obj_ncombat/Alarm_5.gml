@@ -446,6 +446,12 @@ if (defeat == 0 && _reduce_power) {
         } else {
             power_reduction = 2;
         }
+        // Outlying-sector assault: only part of the enemy force met you, so the
+        // victory bites less of their strategic level. The pop clamp below then
+        // culls proportionally to this smaller cut.
+        if (region_partial && (power_reduction > 1)) {
+            power_reduction = 1;
+        }
         new_power = enemy_power - power_reduction;
         new_power = max(new_power, 0);
 
