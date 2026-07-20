@@ -256,7 +256,7 @@ function drop_select_unit_selection() {
             var _seci = region_focus_get(p_target, planet_number);
             var _secr = region_get(p_target, planet_number, _seci);
             var _forti_n = ["None", "Sparse", "Light", "Moderate", "Heavy", "Major", "Extreme"];
-            var _sector_str = $"Sector: {_secr.name} ({region_faction_name(_secr.owner)}, Fort {_forti_n[clamp(_secr.fortification, 0, 6)]}, Def {_secr.defences})";
+            var _sector_str = $"Sector {_seci + 1}: {_secr.name} ({region_faction_name(_secr.owner)}, Fort {_forti_n[clamp(_secr.fortification, 0, 6)]}, Def {_secr.defences})";
             // Show the commitment tradeoff while cycling: outlying sectors of a foe
             // holding several regions meet a partial force; the capital (or a foe
             // in a single region) meets everything, leaders included.
@@ -419,7 +419,6 @@ function drop_select_unit_selection() {
             // Foothold: only a ship-launched ground assault (attack, fleet present) can hold
             // ground; local-only or reinforcement battles do not embark/disembark here.
             obj_ncombat.hold_ground = ((attack == 1) && instance_exists(sh_target) && roster.hold_ground_button.active) ? 1 : 0;
-            LOGGER.info($"HOLD GROUND launch: attack={attack} sh_target={instance_exists(sh_target)} button_active={roster.hold_ground_button.active} -> hold_ground={obj_ncombat.hold_ground}");
 
             // Orbital Gun Array toll: a ship-launched assault against a gun-world provokes
             // the guns unless it targets the safe landing region. Only applies when a fleet
@@ -710,7 +709,7 @@ function drop_select_draw() {
                     var _bseci = region_focus_get(p_target, planet_number);
                     var _bsecr = region_get(p_target, planet_number, _bseci);
                     var _bforti_n = ["None", "Sparse", "Light", "Moderate", "Heavy", "Major", "Extreme"];
-                    var _bsector_str = $"Sector: {_bsecr.name} ({region_faction_name(_bsecr.owner)}, Fort {_bforti_n[clamp(_bsecr.fortification, 0, 6)]}, Def {_bsecr.defences})";
+                    var _bsector_str = $"Sector {_bseci + 1}: {_bsecr.name} ({region_faction_name(_bsecr.owner)}, Fort {_bforti_n[clamp(_bsecr.fortification, 0, 6)]}, Def {_bsecr.defences})";
                     // Drawn directly (centred both ways), below the purge option buttons.
                     draw_set_font(fnt_40k_14);
                     var _bcx = x2 + 230;
