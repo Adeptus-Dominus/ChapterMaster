@@ -454,6 +454,7 @@ function scr_end_turn() {
                     eldar_incursion_tick();
                     sector_directive_tick();
                     sector_background_war_tick();
+                    tau_orbital_gun_tick();
                     with (obj_star) {
                         present_fleet[20] = 0;
                     }

@@ -107,6 +107,14 @@
 #macro ORBITAL_GUN_SHIP_LOSS_CHANCE 0.9
 #macro ORBITAL_GUN_DAMAGE_MIN 0.2
 #macro ORBITAL_GUN_DAMAGE_MAX 0.6
+
+// ---- Enemy (Tau) Orbital Gun Array doctrine ----
+// The Tau defend their most populous worlds with orbital batteries (greater good): their
+// highest-pop Hive/Forge world always has one, and they maintain up to CAP total, the rest
+// built over BUILD_TURNS on the next highest-pop qualifying worlds. Lose one and they
+// rebuild on their next most populous gun-less qualifying world. See tau_orbital_gun_tick.
+#macro TAU_ORBITAL_GUN_CAP 3
+#macro TAU_ORBITAL_GUN_BUILD_TURNS 30
 // Imperial worlds pass their raw Guard garrison through threat (population-scaled,
 // sanity-capped at 1M strategically). A tactical battle fields at most this many of
 // them; the rest are the garrison you are NOT fighting today.

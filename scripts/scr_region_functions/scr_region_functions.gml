@@ -584,20 +584,6 @@ function regions_sync(_star, _planet) {
             _regions[i].owner = _new_owner;
         }
     }
-
-    // Positional siege bookkeeping (gun-worlds only). Establish the beachhead the moment
-    // the player holds the safe landing zone, and end the siege when the capital falls.
-    // The per-turn regions_ground_advance_tick moves the front inward from here.
-    if (planet_is_positional_siege(_star, _planet)) {
-        var _safe = planet_safe_landing_region(_star, _planet);
-        if ((_regions[_safe].owner == eFACTION.PLAYER) && (region_ground_front(_star, _planet) < 0)) {
-            region_ground_land(_star, _planet);
-            scr_event_log("c_aqua", $"Your forces establish a beachhead on {_star.name} {scr_roman(_planet)}, beneath the guns' arc. The advance to the capital begins.", _star.name);
-        }
-        if (_regions[0].is_capital && (_regions[0].owner == eFACTION.PLAYER) && (region_ground_front(_star, _planet) != -1)) {
-            region_ground_position_set(_star, _planet, -1);
-        }
-    }
 }
 
 /// @function regions_contest_order
@@ -823,19 +809,9 @@ function draw_regions_panel(_star, _planet, _px, _py) {
         draw_set_color(c_dkgray);
         draw_rectangle(_rx, _ry + 2, _rx + 10, _ry + 14, true);
 
-        // Region name (capital marked) + owner. On a siege world, tag the region the
-        // player's advance currently holds the line at (the only one they can assault).
+        // Region name (capital marked) + owner.
         draw_set_color(c_white);
         var _name = _region.is_capital ? ("* " + _region.name) : _region.name;
-        if (planet_is_positional_siege(_star, _planet)) {
-            var _front_idx = region_ground_front(_star, _planet);
-            if ((_front_idx < 0) && (i == planet_safe_landing_region(_star, _planet))) {
-                _name += "  <LAND HERE>";
-            } else if ((_front_idx >= 0) && (i == _front_idx)) {
-                _name += "  <FRONT>";
-                draw_set_color(c_lime);
-            }
-        }
         draw_text(_rx + 18, _ry, _name);
         draw_set_color(_col);
         draw_text(_rx + 18, _ry + 16, region_faction_name(_region.owner));
@@ -4425,149 +4401,165 @@ function region_ground_position_set(_star, _planet, _region_index) {
     _star.p_ground_position[_planet] = _region_index;
 }
 
-/// @description True if this world runs the Vraks-style POSITIONAL siege: a working Orbital
-///              Gun Array is present, so the attacker cannot free-strike any region but must
-///              land in the safe zone and advance overland toward the capital. Worlds with no
-///              gun keep the old free-assault behaviour (no forced landing, no advance).
-/// @param {Id.Instance.obj_star} _star
-/// @param {Real} _planet
-/// @returns {Bool}
-function planet_is_positional_siege(_star, _planet) {
-    return planet_has_active_orbital_gun(_star, _planet) && (planet_region_count(_star, _planet) > 1);
-}
-
-/// @function region_ground_front
-/// @description The region index the player's landed force currently occupies on a siege
-///              world: -1 if no force has landed yet (must land in the safe zone first),
-///              else the region it has advanced to. On a non-siege world returns -1
-///              (irrelevant there).
-/// @param {Id.Instance.obj_star} _star
-/// @param {Real} _planet
-/// @returns {Real}
-function region_ground_front(_star, _planet) {
-    if (!planet_is_positional_siege(_star, _planet)) {
-        return -1;
-    }
-    return region_ground_position_get(_star, _planet);
-}
-
-/// @function region_can_assault_index
-/// @description Whether the player may launch a ground assault at region _index on this world
-///              right now. On a non-siege world: always (free assault). On a siege world:
-///              only the safe landing zone until a force has landed, then only the region the
-///              force currently occupies (you fight your way forward one region at a time).
-/// @param {Id.Instance.obj_star} _star
-/// @param {Real} _planet
-/// @param {Real} _index
-/// @returns {Bool}
-function region_can_assault_index(_star, _planet, _index) {
-    if (!planet_is_positional_siege(_star, _planet)) {
-        return true;
-    }
-    var _front = region_ground_front(_star, _planet);
-    if (_front < 0) {
-        // No landing yet: only the safe landing zone can be assaulted (or bombarded clear).
-        return (_index == planet_safe_landing_region(_star, _planet));
-    }
-    // Landed: you can only assault the region you currently hold the line at.
-    return (_index == _front);
-}
-
-/// @function region_ground_land
-/// @description Records that the player's ground force has taken the safe landing zone: sets
-///              the front there. Called when an assault on the safe zone succeeds (the region
-///              flips to the player). Idempotent.
+/// @function region_enemy_gun_add
+/// @description Places the Orbital Gun Array structure on a planet's capital region for an
+///              enemy owner (mirrors how the Ork Stronghold is represented as a built
+///              structure on the capital region). Idempotent.
 /// @param {Id.Instance.obj_star} _star
 /// @param {Real} _planet
 /// @returns {Undefined}
-function region_ground_land(_star, _planet) {
-    if (!planet_is_positional_siege(_star, _planet)) {
-        return;
+function region_enemy_gun_add(_star, _planet) {
+    var _cap = planet_capital_region(_star, _planet);
+    region_buildings_ensure(_cap);
+    if (region_building_count(_cap, "anti_orbital_gun") == 0) {
+        array_push(_cap.buildings, "anti_orbital_gun");
     }
-    region_ground_position_set(_star, _planet, planet_safe_landing_region(_star, _planet));
 }
 
-/// @function region_player_deepest_hold
-/// @description The lowest-index region (closest to the capital, capital = 0) the player
-///              currently holds on this planet, or the safe landing zone if they hold no
-///              region yet. This is where the spearhead has reached. Returns -1 if the
-///              player holds nothing and hasn't landed.
+/// @function region_planet_has_gun_building
+/// @description True if the planet's capital region carries the Orbital Gun Array structure,
+///              regardless of who owns it (used to count guns without the fire-capability
+///              check that planet_has_active_orbital_gun applies).
 /// @param {Id.Instance.obj_star} _star
 /// @param {Real} _planet
-/// @returns {Real}
-function region_player_deepest_hold(_star, _planet) {
-    var _regions = regions_ensure(_star, _planet);
-    var _deepest = -1;
-    for (var i = 0; i < array_length(_regions); i++) {
-        if (_regions[i].owner == eFACTION.PLAYER) {
-            if ((_deepest < 0) || (i < _deepest)) {
-                _deepest = i;
+/// @returns {Bool}
+function region_planet_has_gun_building(_star, _planet) {
+    var _cap = planet_capital_region(_star, _planet);
+    region_buildings_ensure(_cap);
+    return region_building_count(_cap, "anti_orbital_gun") > 0;
+}
+
+/// @function TAU_ORBITAL_GUN management
+/// @description Per-turn upkeep of the Tau's Orbital Gun Arrays across the sector, expressing
+///              their "protect the civilians / greater good" doctrine:
+///                * Only HIVE and FORGE worlds they hold with real Tau strength qualify.
+///                * Their highest-population qualifying world always has a gun (their capital
+///                  battery) and it is present from the start.
+///                * They maintain up to TAU_ORBITAL_GUN_CAP (3) guns total. The 2nd and 3rd
+///                  are BUILT over TAU_ORBITAL_GUN_BUILD_TURNS (30) turns on the next
+///                  highest-population qualifying worlds (the blitz-vs-trench window: rush
+///                  them before the secondary batteries come online).
+///                * If a gun-world is lost, the count drops and the highest-population
+///                  qualifying world without a gun begins building a replacement.
+///              The Eldar craftworld (their single world) simply always has one.
+///              Build progress is stored on obj_star as p_enemy_gun_progress[planet] (turns
+///              accumulated), declared in obj_star Create for save safety.
+/// @returns {Undefined}
+function tau_orbital_gun_tick() {
+    // ---- Eldar craftworld: always has its gun. ----
+    with (obj_star) {
+        if (craftworld == 1) {
+            // The craftworld world is planet index 1 (see obj_controller Alarm_1 worldgen).
+            if (p_owner[1] == eFACTION.ELDAR) {
+                region_enemy_gun_add(id, 1);
             }
         }
     }
-    return _deepest;
-}
 
-/// @function region_ground_advance
-/// @description Moves the front to the DEEPEST region the player now holds (closest to the
-///              capital). Composes with regions_sync, which flips the player's focused region
-///              first (safe zone inward), so the front tracks the real spearhead and never
-///              lags even if a large enemy collapse flips two regions in one turn. Returns
-///              true if the front moved inward. Called from the per-turn tick.
-/// @param {Id.Instance.obj_star} _star
-/// @param {Real} _planet
-/// @returns {Bool}
-function region_ground_advance(_star, _planet) {
-    if (!planet_is_positional_siege(_star, _planet)) {
-        return false;
-    }
-    var _front = region_ground_front(_star, _planet);
-    if (_front < 0) {
-        return false; // no landing yet
-    }
-    var _deepest = region_player_deepest_hold(_star, _planet);
-    if ((_deepest >= 0) && (_deepest < _front)) {
-        region_ground_position_set(_star, _planet, _deepest);
-        return true;
-    }
-    return false;
-}
-
-/// @function regions_ground_advance_tick
-/// @description Per-turn: advance the player's landed force one region on every siege world
-///              where they hold the current front, and reset the front on worlds where the
-///              player has been pushed entirely off the ground (holds no region). Logs the
-///              advance so the player sees the push. Also clears the front once the capital
-///              falls (siege over).
-/// @param {Id.Instance.obj_star} _star
-/// @param {Real} _planet
-/// @returns {Undefined}
-function regions_ground_advance_tick(_star, _planet) {
-    if (!planet_is_positional_siege(_star, _planet)) {
-        // Not (or no longer) a siege world: clear any stale front so a future gun starts fresh.
-        if (region_ground_position_get(_star, _planet) != -1) {
-            region_ground_position_set(_star, _planet, -1);
+    // ---- Tau: gather every qualifying world, sorted by population. ----
+    var _qualifying = []; // each: { star, planet, pop, has_gun }
+    with (obj_star) {
+        for (var _pl = 1; _pl <= planets; _pl++) {
+            if (p_owner[_pl] != eFACTION.TAU) {
+                continue;
+            }
+            // Qualifying world type: Hive or Forge only.
+            var _ty = p_type[_pl];
+            if ((_ty != "Hive") && (_ty != "Forge")) {
+                continue;
+            }
+            // Real Tau strength present (any tier above zero).
+            if (p_tau[_pl] <= 0) {
+                continue;
+            }
+            array_push(_qualifying, {
+                star: id,
+                planet: _pl,
+                pop: p_population[_pl],
+                has_gun: region_planet_has_gun_building(id, _pl),
+            });
         }
-        return;
     }
-    var _front = region_ground_front(_star, _planet);
-    if (_front < 0) {
-        return; // nothing landed yet
+
+    // Sort by population, highest first (greater good: defend the most civilians). Explicit
+    // selection sort rather than a comparator lambda, to match this codebase's array_sort
+    // usage (which only ever passes true/false, so lambda support is not relied on here).
+    for (var _si = 0; _si < array_length(_qualifying); _si++) {
+        var _max_i = _si;
+        for (var _sj = _si + 1; _sj < array_length(_qualifying); _sj++) {
+            if (_qualifying[_sj].pop > _qualifying[_max_i].pop) {
+                _max_i = _sj;
+            }
+        }
+        if (_max_i != _si) {
+            var _tmp = _qualifying[_si];
+            _qualifying[_si] = _qualifying[_max_i];
+            _qualifying[_max_i] = _tmp;
+        }
     }
-    // Lost the foothold entirely? Reset to "must land again".
-    if (array_length(regions_owned_by(_star, _planet, eFACTION.PLAYER)) == 0) {
-        region_ground_position_set(_star, _planet, -1);
-        scr_event_log("yellow", $"Your beachhead on {_star.name} {scr_roman(_planet)} has been thrown back into the sea. The advance must begin again.", _star.name);
-        return;
+
+    // Count guns the Tau already hold.
+    var _gun_count = 0;
+    for (var i = 0; i < array_length(_qualifying); i++) {
+        if (_qualifying[i].has_gun) {
+            _gun_count++;
+        }
     }
-    if (region_ground_advance(_star, _planet)) {
-        var _new = region_ground_front(_star, _planet);
-        var _r = region_get(_star, _planet, _new);
-        var _rn = is_struct(_r) ? _r.name : "the next line";
-        scr_event_log("c_aqua", $"Your forces on {_star.name} {scr_roman(_planet)} advance to {_rn}.", _star.name);
+
+    // The single highest-population qualifying world is the capital battery: it always has a
+    // gun immediately (no build timer).
+    if (array_length(_qualifying) > 0) {
+        var _top = _qualifying[0];
+        if (!_top.has_gun) {
+            region_enemy_gun_add(_top.star, _top.planet);
+            _top.has_gun = true;
+            _gun_count++;
+        }
+    }
+
+    // Fill remaining slots up to the cap by BUILDING on the next highest-pop gun-less worlds
+    // over TAU_ORBITAL_GUN_BUILD_TURNS. Only one build advances per world per turn.
+    for (var i = 1; i < array_length(_qualifying); i++) {
+        if (_gun_count >= TAU_ORBITAL_GUN_CAP) {
+            break;
+        }
+        var _w = _qualifying[i];
+        if (_w.has_gun) {
+            continue;
+        }
+        var _star = _w.star;
+        var _pl = _w.planet;
+        // Advance this world's build timer.
+        region_enemy_gun_progress_ensure(_star, _pl);
+        _star.p_enemy_gun_progress[_pl] += 1;
+        if (_star.p_enemy_gun_progress[_pl] >= TAU_ORBITAL_GUN_BUILD_TURNS) {
+            region_enemy_gun_add(_star, _pl);
+            _star.p_enemy_gun_progress[_pl] = 0;
+            _gun_count++;
+        }
+        // Only progress ONE build at a time (the next-highest world), so the batteries come
+        // online one after another, not all at once.
+        break;
     }
 }
 
+/// @function region_enemy_gun_progress_ensure
+/// @description Guarantees the per-planet enemy gun BUILD PROGRESS store exists (turns
+///              accumulated toward a new enemy Orbital Gun Array). Save-safe for old saves.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @returns {Real}
+function region_enemy_gun_progress_ensure(_star, _planet) {
+    if (!variable_instance_exists(_star, "p_enemy_gun_progress")) {
+        _star.p_enemy_gun_progress = array_create(_star.planets + 1, 0);
+    }
+    if (_planet >= array_length(_star.p_enemy_gun_progress)) {
+        var _old = _star.p_enemy_gun_progress;
+        _star.p_enemy_gun_progress = array_create(_planet + 1, 0);
+        array_copy(_star.p_enemy_gun_progress, 0, _old, 0, array_length(_old));
+    }
+    return _star.p_enemy_gun_progress[_planet];
+}
 
 /// @function regions_orbital_guns_tick
 /// @description Fires every Anti-Orbital Gun on the planet once per turn. The gun serves WHOEVER
