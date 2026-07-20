@@ -692,6 +692,7 @@ function fleet_arrival_logic() {
     x = _dest_star.x;
     y = _dest_star.y;
     var sta = _dest_star;
+    action = "";
     fleet_register_at_star(id, _dest_star);
 
     if (owner == eFACTION.MECHANICUS) {
