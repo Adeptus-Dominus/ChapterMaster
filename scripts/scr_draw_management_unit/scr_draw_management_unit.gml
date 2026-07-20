@@ -508,7 +508,9 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
     if (!unclickable && !click_lock) {
         var changed = false;
 
-        if (sel_all != "") {
+        // Select All means "all of what the company filter shows": with a company
+        // filtered in, hidden companies stay untouched.
+        if (sel_all != "" && !manage_company_filter_skip(selected)) {
             if (sel_all == "all") {
                 changed = true;
             } else if (sel_all == "vehicle" && !is_man) {

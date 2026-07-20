@@ -1816,14 +1816,9 @@ function draw_auxilia_squad_rows(xx, yy, _stats_displayed = false) {
     man_max = _row_max; // scrollbar drag math reads obj_controller.man_max directly
     man_current = clamp(man_current, 0, max(0, _row_max - MANAGE_MAN_SEE));
 
-    // ---- Toggle row (+ company cycle filter on management screens) ----
+    // ---- Toggle row ----
     var _yy = yy;
-    var _filter_here = manage_filter_context();
-    var _tog_x2 = _filter_here ? (xx + 680) : (xx + 974);
-    if (_filter_here) {
-        manage_company_filter_button(xx + 684, _yy + 64, xx + 974, _yy + 85);
-    }
-    var _sq_btn = draw_unit_buttons([xx + 25, _yy + 64, _tog_x2, _yy + 85], "Switch to Individual View", [1, 1], CM_GREEN_COLOR, fa_center, fnt_40k_14b);
+    var _sq_btn = draw_unit_buttons([xx + 25, _yy + 64, xx + 974, _yy + 85], "Switch to Individual View", [1, 1], CM_GREEN_COLOR, fa_center, fnt_40k_14b);
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
     if (point_and_click(_sq_btn)) {
@@ -2087,6 +2082,13 @@ function manage_company_filter_cycle(_dir) {
     _idx = ((_idx + _dir) % _len + _len) % _len;
     obj_controller.manage_company_filter = _cycle[_idx];
     man_current = 0;
+    // Changing the filter clears every selection: what you see is what you have
+    // selected. Ghost selections from other companies otherwise ride invisibly
+    // into Proceed and ship loading.
+    for (var _i = 0; _i < array_length(man_sel); _i++) {
+        man_sel[_i] = 0;
+    }
+    squad_sel_count = 0;
 }
 
 /// Draws the filter button on the right end of a view-toggle row and handles
@@ -2189,9 +2191,17 @@ function draw_marine_squad_rows(xx, yy, _stats_displayed = false, _command_slots
     man_max = _row_max; // scrollbar drag math reads obj_controller.man_max directly
     man_current = clamp(man_current, 0, max(0, _row_max - MANAGE_MAN_SEE));
 
-    // ---- Toggle row ----
+    // ---- Toggle row (+ company cycle filter on management screens) ----
+    // NOTE: draw_auxilia_squad_rows has a byte-identical toggle row above; any
+    // anchored edit here must include the marine_squad_collapse line below or it
+    // lands in the wrong function (that is exactly what happened once).
     var _yy = yy;
-    var _sq_btn = draw_unit_buttons([xx + 25, _yy + 64, xx + 974, _yy + 85], "Switch to Individual View", [1, 1], CM_GREEN_COLOR, fa_center, fnt_40k_14b);
+    var _filter_here = manage_filter_context();
+    var _tog_x2 = _filter_here ? (xx + 680) : (xx + 974);
+    if (_filter_here) {
+        manage_company_filter_button(xx + 684, _yy + 64, xx + 974, _yy + 85);
+    }
+    var _sq_btn = draw_unit_buttons([xx + 25, _yy + 64, _tog_x2, _yy + 85], "Switch to Individual View", [1, 1], CM_GREEN_COLOR, fa_center, fnt_40k_14b);
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
     if (point_and_click(_sq_btn)) {
