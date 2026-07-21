@@ -132,7 +132,6 @@ function reset_manage_unit_constants(unit) {
 
         unit_manage_constants = {};
 
-        marine_armour[0] = unit.armour();
         fix_right = 0;
 
         var _equip_data = unit.unit_equipment_data();
@@ -145,8 +144,8 @@ function reset_manage_unit_constants(unit) {
 
         var _slot_defs = UNIT_EQUIP_SLOTS;
 
-        for (var i = 0; i < array_length(_slot_defs); i++) {
-            var _slot = _slot_defs[0];
+        for (var i = 0; i < 5; i++) {
+            var _slot = _slot_defs[i];
             var _const_key = $"{_slot}_string";
             unit_manage_constants[$ _const_key] = _equip_data.equipment_ReactiveString(_slot);
         }
@@ -402,6 +401,7 @@ function reset_manage_unit_constants(unit) {
             }
             delete unit_manage_image;
         }
+
 
         unit_manage_image = unit.draw_unit_image();
 

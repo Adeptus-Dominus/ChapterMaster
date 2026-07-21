@@ -99,7 +99,7 @@ function ComplexSet(_unit) constructor {
     unit = _unit;
     draw_helms = instance_exists(obj_creation) ? obj_creation.draw_helms : obj_controller.draw_helms;
 
-    unit_equipment_data = unit.unit_equipment_data();
+    //unit_equipment_data = unit.unit_equipment_data();
 
     current_texture_draws = {};
     _has_exceptions = false;

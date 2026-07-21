@@ -568,7 +568,8 @@ function UnitEquipment(equipment_set, unit = noone) constructor{
     }
 
     for (var i = 0;i<array_length(UNIT_EQUIP_SLOTS)-1;i++){
-        if (is_struct(self.equipment[$UNIT_EQUIP_SLOTS[i]])){
+        var _item = self.equipment[$UNIT_EQUIP_SLOTS[i]];
+        if (_item.name != ""){
             array_push(present_items, UNIT_EQUIP_SLOTS[i]);
         }
     }
