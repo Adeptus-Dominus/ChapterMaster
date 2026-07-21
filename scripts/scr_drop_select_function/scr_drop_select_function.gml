@@ -459,6 +459,9 @@ function drop_select_unit_selection() {
                 }
             }
             obj_ncombat.region_partial = _region_partial;
+            // Capture the exact region the assault targets, so the foothold lands there regardless
+            // of any later focus change. -1 on a single-region world (whole-planet battle).
+            obj_ncombat.battle_region = (planet_region_count(p_target, planet_number) > 1) ? region_focus_get(p_target, planet_number) : -1;
 
             var _planet = obj_ncombat.battle_object.p_feature[obj_ncombat.battle_id];
             if (obj_ncombat.battle_object.space_hulk == 1) {

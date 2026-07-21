@@ -103,6 +103,10 @@
 // This makes clearing an outlying region a bounded objective and leaves the bulk in the
 // capital as a visible reserve. See region_garrison.
 #macro REGION_GARRISON_CEILING 10000
+// Max enemy force that can move INTO one region per turn (a transport-throughput ceiling), so the
+// enemy trickles reinforcements up the line instead of teleporting a full garrison in one turn.
+// A region farther from the capital reinforces even slower (the cap is divided by hop distance).
+#macro REGION_REINFORCE_CAP 500
 #macro REGION_GARRISON_FRACTION REGION_ASSAULT_COMMIT_FRACTION
 
 // ---- Orbital Gun Array (capital planetary defence) ----

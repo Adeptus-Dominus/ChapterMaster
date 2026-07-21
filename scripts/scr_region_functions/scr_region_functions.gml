@@ -774,7 +774,7 @@ function draw_regions_panel(_star, _planet, _px, _py) {
     }
 
     var _w = 300;
-    var _head_h = 30;
+    var _head_h = 42; // room for the CONTESTED tug-of-war bar
     var _row_h = 46;
     var _h = _head_h + (_n * _row_h) + 12;
 
@@ -801,6 +801,37 @@ function draw_regions_panel(_star, _planet, _px, _py) {
         draw_set_halign(fa_right);
         draw_text(_px + _w - 10, _py + 8, "CONTESTED");
         draw_set_halign(fa_left);
+
+        // Tug-of-war bar: your total foothold vs the enemy garrison on this world, so the player can
+        // see at a glance who is winning the ground fight. Arrows push toward the middle from each side.
+        var _mine = regions_player_force_total(_star, _planet);
+        var _theirs = 0;
+        for (var _ei = 0; _ei < _n; _ei++) {
+            if (_regions[_ei].owner != eFACTION.PLAYER) {
+                _theirs += region_enemy_force(_star, _planet, _ei);
+            }
+        }
+        var _tot = max(1, _mine + _theirs);
+        var _bx1 = _px + 10;
+        var _bx2 = _px + _w - 10;
+        var _by = _py + 26;
+        var _bh = 8;
+        var _split = _bx1 + round((_bx2 - _bx1) * (_mine / _tot));
+        // Your share (aqua) from the left, enemy share (red) from the right.
+        draw_set_alpha(0.9);
+        draw_set_color(c_aqua);
+        draw_rectangle(_bx1, _by, _split, _by + _bh, false);
+        draw_set_color(c_red);
+        draw_rectangle(_split, _by, _bx2, _by + _bh, false);
+        draw_set_alpha(1);
+        draw_set_color(c_white);
+        draw_rectangle(_bx1, _by, _bx2, _by + _bh, true);
+        // Pushing arrows at the boundary.
+        draw_set_color(c_aqua);
+        draw_text(_split - 12, _by - 4, ">");
+        draw_set_color(c_red);
+        draw_text(_split + 4, _by - 4, "<");
+        draw_set_color(c_white);
     }
     draw_set_color(c_dkgray);
     draw_line(_px + 6, _py + _head_h, _px + _w - 6, _py + _head_h);
@@ -3688,6 +3719,42 @@ function region_enemy_force_deplete(_star, _planet, _region_index, _amount) {
     _rg.enemy_force = max(0, _rg.enemy_force - max(0, _amount));
 }
 
+/// @function region_hops_from_capital
+/// @description Shortest hop distance from the capital to a region along the adjacency graph (BFS).
+///              Used to slow reinforcement to regions far from the capital (the throughput cap is
+///              divided by this distance). Capital = 0; unreachable = a large number.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _region_index
+/// @returns {Real}
+function region_hops_from_capital(_star, _planet, _region_index) {
+    var _regions = regions_ensure(_star, _planet);
+    var _n = array_length(_regions);
+    region_neighbors_ensure(_star, _planet);
+    // Find the capital.
+    var _cap_idx = -1;
+    for (var i = 0; i < _n; i++) { if (_regions[i].is_capital) { _cap_idx = i; break; } }
+    if (_cap_idx < 0) { return 1; }
+    if (_region_index == _cap_idx) { return 0; }
+    // BFS.
+    var _dist = array_create(_n, -1);
+    _dist[_cap_idx] = 0;
+    var _queue = [_cap_idx];
+    var _head = 0;
+    while (_head < array_length(_queue)) {
+        var _cur = _queue[_head]; _head += 1;
+        var _nbs = _regions[_cur].neighbors;
+        for (var k = 0; k < array_length(_nbs); k++) {
+            var _ni = _nbs[k];
+            if ((_ni >= 0) && (_ni < _n) && (_dist[_ni] < 0)) {
+                _dist[_ni] = _dist[_cur] + 1;
+                array_push(_queue, _ni);
+            }
+        }
+    }
+    return (_dist[_region_index] >= 0) ? _dist[_region_index] : 999;
+}
+
 /// @function regions_reinforce_tick
 /// @description Once-per-turn enemy reinforcement between regions, WITH A ONE-TURN DELAY. A region
 ///              that is below its garrison cap and holds no cooldown pulls a bounded amount of force
@@ -3746,8 +3813,12 @@ function regions_reinforce_tick(_star, _planet) {
         }
         if (_best < 0) { continue; }
 
-        // Move a bounded slice (the smaller of the deficit and the giver's surplus).
-        var _move = max(0, min(_deficit, _best_surplus));
+        // Move a bounded slice: the smaller of the deficit and the giver's surplus, CAPPED by the
+        // per-turn reinforcement throughput, which shrinks the farther the region is from the
+        // capital (a distant region takes several turns to build back up).
+        var _hops = max(1, region_hops_from_capital(_star, _planet, i));
+        var _turn_cap = max(1, floor(REGION_REINFORCE_CAP / _hops));
+        var _move = max(0, min(min(_deficit, _best_surplus), _turn_cap));
         if (_move <= 0) { continue; }
         _regions[_best].enemy_force -= _move;
         _rg.enemy_force += _move;

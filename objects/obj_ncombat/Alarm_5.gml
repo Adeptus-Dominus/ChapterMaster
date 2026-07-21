@@ -463,7 +463,10 @@ if (defeat == 0 && _reduce_power) {
         // turn (regions_reinforce_tick). Without this the per-region split just recomputed from the
         // planet pool and read as instant reinforcement.
         if (instance_exists(battle_object) && (planet_region_count(battle_object, battle_id) > 1)) {
-            var _atk_region = region_focus_get(battle_object, battle_id);
+            var _atk_region = battle_region;
+            if (!is_real(_atk_region) || (_atk_region < 0) || (_atk_region >= planet_region_count(battle_object, battle_id))) {
+                _atk_region = region_focus_get(battle_object, battle_id);
+            }
             var _here = region_enemy_force(battle_object, battle_id, _atk_region);
             if (new_power <= 0) {
                 region_enemy_force_deplete(battle_object, battle_id, _atk_region, _here); // enemy wiped: clear region

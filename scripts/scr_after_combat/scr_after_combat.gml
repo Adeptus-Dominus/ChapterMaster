@@ -438,8 +438,12 @@ function hold_ground_disembark() {
     }
     var _landed = 0;
     var _p_before = _star.p_player[_planet];
-    // The region that was assaulted is where the foothold forms (the world's stored focus).
-    var _land_region = region_focus_get(_star, _planet);
+    // The region that was assaulted is where the foothold forms. Use the region captured at battle
+    // launch (obj_ncombat.battle_region); fall back to the live focus only if it was not set.
+    var _land_region = obj_ncombat.battle_region;
+    if (!is_real(_land_region) || (_land_region < 0) || (_land_region >= planet_region_count(_star, _planet))) {
+        _land_region = region_focus_get(_star, _planet);
+    }
     var _region_force_added = 0;
     var _n_us = array_length(unit_struct);
     var _skip_notstruct = 0, _skip_ally = 0, _skip_local = 0, _skip_dead = 0, _considered = 0;
