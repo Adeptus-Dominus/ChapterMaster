@@ -418,7 +418,8 @@ function drop_select_unit_selection() {
             obj_ncombat.local_forces = roster.local_button.active;
             // Foothold: only a ship-launched ground assault (attack, fleet present) can hold
             // ground; local-only or reinforcement battles do not embark/disembark here.
-            obj_ncombat.hold_ground = ((attack == 1) && instance_exists(sh_target) && roster.hold_ground_button.active) ? 1 : 0;
+            obj_ncombat.hold_ground = ((attack == 1) && (sh_target != noone) && roster.hold_ground_button.active) ? 1 : 0;
+            LOGGER.info($"HOLD GROUND launch: attack={attack} sh_target_ok={(sh_target != noone)} button_active={roster.hold_ground_button.active} -> hold_ground={obj_ncombat.hold_ground}");
 
             // Orbital Gun Array toll: a ship-launched assault against a gun-world provokes
             // the guns unless it targets the safe landing region. Only applies when a fleet
