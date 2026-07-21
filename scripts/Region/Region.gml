@@ -38,6 +38,14 @@ function Region(_name = "Region", _is_capital = false, _owner = eFACTION.IMPERIU
     // into a specific region. -1 = unseeded (old save) -> seeded on first access.
     force_weight = -1;
 
+    // STEP 2 of the "planets within a planet" rework: the PLAYER'S own force stationed in THIS
+    // region (a foothold headcount), the mirror of the enemy garrison. Troops unloaded via a won
+    // Hold Ground assault land in the region that was targeted, so the player can hold and fight
+    // for specific regions rather than a single planet-wide blob. p_player[planet] is kept as the
+    // SUM of these per-region forces so the rest of the game (contest, enemy AI, auto-battle)
+    // keeps working unchanged. Defaults to 0; old saves simply start with no per-region record.
+    player_force = 0;
+
     // Defensive depth. fortification 0-5 (walls/bunkers), defences = ground turret batteries.
     fortification = 0;
     defences = 0;

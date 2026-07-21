@@ -874,6 +874,15 @@ function draw_regions_panel(_star, _planet, _px, _py) {
         var _gar_y2 = _ry + 30;
         draw_set_color(scr_hit(_gar_x1, _gar_y1, _gar_x2, _gar_y2) ? c_yellow : c_ltgray);
         draw_text(_row_x2 - 2, _gar_y1, _gar_str);
+
+        // Player foothold in this region (Step 2): show your own landed force, if any, in aqua
+        // beneath the enemy garrison line.
+        var _pf = region_player_force(_star, _planet, i);
+        if (_pf > 0) {
+            draw_set_color(c_aqua);
+            draw_text(_row_x2 - 2, _ry + 30, "Your Force " + scr_display_number(_pf));
+            draw_set_color(c_ltgray);
+        }
         draw_set_halign(fa_left);
 
         // Hover the forces label on a hostile region to read the FIXED slice it commits to
@@ -3436,6 +3445,113 @@ function faction_ladder_composition(_faction, _level, _infra_turns = 32) {
         }
     }
     return _lines;
+}
+
+/// @function region_player_force_ensure
+/// @description Old-save safety: a Region from a save before player_force existed lacks the field.
+///              Default any missing player_force to 0 (no foothold recorded) on first access.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @returns {Undefined}
+function region_player_force_ensure(_star, _planet) {
+    var _regions = regions_ensure(_star, _planet);
+    for (var i = 0, l = array_length(_regions); i < l; i++) {
+        if (!variable_struct_exists(_regions[i], "player_force") || !is_real(_regions[i].player_force)) {
+            _regions[i].player_force = 0;
+        }
+    }
+}
+
+/// @function region_player_force
+/// @description The player's own force stationed in one region (a foothold headcount). Old-save safe.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _region_index
+/// @returns {Real}
+function region_player_force(_star, _planet, _region_index) {
+    region_player_force_ensure(_star, _planet);
+    var _region = region_get(_star, _planet, _region_index);
+    if (!is_struct(_region)) { return 0; }
+    return _region.player_force;
+}
+
+/// @function regions_player_force_total
+/// @description Sum of the player's per-region forces on a world - the planet-wide foothold total.
+///              This is the value mirrored into p_player[planet] so existing planet-level readers
+///              (contest, enemy AI, auto-battle) stay correct.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @returns {Real}
+function regions_player_force_total(_star, _planet) {
+    region_player_force_ensure(_star, _planet);
+    var _regions = regions_ensure(_star, _planet);
+    var _sum = 0;
+    for (var i = 0, l = array_length(_regions); i < l; i++) {
+        _sum += _regions[i].player_force;
+    }
+    return _sum;
+}
+
+/// @function region_player_force_sync
+/// @description Re-derive p_player[planet] from the per-region player forces, keeping the
+///              planet-level total (read across the codebase) exactly equal to the sum of the
+///              per-region footholds. Call after any change to a region's player_force.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @returns {Undefined}
+function region_player_force_sync(_star, _planet) {
+    _star.p_player[_planet] = regions_player_force_total(_star, _planet);
+}
+
+/// @function region_player_force_add
+/// @description Add (or remove, if negative) player force to a specific region's foothold, then
+///              re-sync the planet total. Clamped at 0. This is how troops are placed INTO a
+///              region (a won Hold Ground assault deposits its survivors into the targeted region).
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _region_index
+/// @param {Real} _amount
+/// @returns {Undefined}
+function region_player_force_add(_star, _planet, _region_index, _amount) {
+    region_player_force_ensure(_star, _planet);
+    var _region = region_get(_star, _planet, _region_index);
+    if (!is_struct(_region)) { return; }
+    _region.player_force = max(0, _region.player_force + _amount);
+    region_player_force_sync(_star, _planet);
+}
+
+/// @function region_player_force_scale_to_total
+/// @description Proportionally rescale the per-region player forces so they sum to _new_total,
+///              preserving how the foothold is distributed across regions. Used when combat
+///              reduces the planet-level force but does not wipe it, keeping the per-region record
+///              consistent with p_player. If there is no existing record, drops it all in the
+///              currently focused region.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _new_total
+/// @returns {Undefined}
+function region_player_force_scale_to_total(_star, _planet, _new_total) {
+    region_player_force_ensure(_star, _planet);
+    var _regions = regions_ensure(_star, _planet);
+    var _old_total = regions_player_force_total(_star, _planet);
+    if (_new_total <= 0) {
+        for (var i = 0, l = array_length(_regions); i < l; i++) { _regions[i].player_force = 0; }
+        region_player_force_sync(_star, _planet);
+        return;
+    }
+    if (_old_total <= 0) {
+        // No prior distribution: put it all in the focused region.
+        var _f = region_focus_get(_star, _planet);
+        var _fr = region_get(_star, _planet, _f);
+        if (is_struct(_fr)) { _fr.player_force = _new_total; }
+        region_player_force_sync(_star, _planet);
+        return;
+    }
+    var _scale = _new_total / _old_total;
+    for (var i = 0, l = array_length(_regions); i < l; i++) {
+        _regions[i].player_force = max(0, round(_regions[i].player_force * _scale));
+    }
+    region_player_force_sync(_star, _planet);
 }
 
 /// @function region_force_count

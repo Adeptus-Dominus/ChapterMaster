@@ -438,6 +438,9 @@ function hold_ground_disembark() {
     }
     var _landed = 0;
     var _p_before = _star.p_player[_planet];
+    // The region that was assaulted is where the foothold forms (the world's stored focus).
+    var _land_region = region_focus_get(_star, _planet);
+    var _region_force_added = 0;
     for (var i = 0; i < array_length(unit_struct); i++) {
         var _unit = unit_struct[i];
         if (!is_struct(_unit)) {
@@ -453,19 +456,22 @@ function hold_ground_disembark() {
         if (marine_dead[i] == 1) {
             continue;
         }
-        // Try the normal disembark first (handles ship_carrying bookkeeping).
+        // Land the unit planetside (unload handles ship_carrying bookkeeping; force the location
+        // if its conditional ship-branch did not fire, so a won Hold Ground assault always lands).
         _unit.unload(_planet, _star);
-        // ROBUSTNESS: if unload's conditional ship-branch did not actually land the unit
-        // (e.g. its recorded ship system did not match the battle star's name), place it
-        // planetside directly so a won Hold Ground assault always forms the foothold.
         if (_unit.planet_location != _planet || _unit.ship_location != -1) {
             _unit.ship_location = -1;
             _unit.location_string = _star.name;
             _unit.planet_location = _planet;
-            _unit.get_unit_size();
-            _star.p_player[_planet] += _unit.size;
         }
+        _unit.get_unit_size();
+        _region_force_added += _unit.size;
         _landed++;
     }
-    LOGGER.info($"HOLD GROUND disembark on {_star.name} {_planet}: {_landed} units landed, p_player {_p_before} -> {_star.p_player[_planet]}");
+    // Deposit the whole landed force into the TARGETED region, then set p_player from the
+    // per-region sum. region_player_force_add re-syncs p_player to the sum of footholds, which
+    // becomes the authoritative planet total and supersedes the per-unit p_player writes unload()
+    // may have made (so the force is counted once, and now has a region location).
+    region_player_force_add(_star, _planet, _land_region, _region_force_added);
+    LOGGER.info($"HOLD GROUND disembark on {_star.name} {_planet}: {_landed} units landed into region {_land_region}, region force +{_region_force_added}, p_player {_p_before} -> {_star.p_player[_planet]}");
 }

@@ -333,6 +333,17 @@ try {
                     if (defeat == 1) {
                         _battle_object.p_player[_planet] = 0;
                     }
+                    // Keep the per-region player record in step with the planet total: clear the
+                    // regional footholds when the force is wiped, else scale them to the survivors.
+                    if (_battle_object.p_player[_planet] <= 0) {
+                        _battle_object.p_player[_planet] = 0;
+                        var _rgns = regions_ensure(_battle_object, _planet);
+                        for (var _ri = 0; _ri < array_length(_rgns); _ri++) {
+                            _rgns[_ri].player_force = 0;
+                        }
+                    } else {
+                        region_player_force_scale_to_total(_battle_object, _planet, _battle_object.p_player[_planet]);
+                    }
                 }
             }
             obj_controller.combat = 0;
