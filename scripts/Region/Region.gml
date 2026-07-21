@@ -46,6 +46,15 @@ function Region(_name = "Region", _is_capital = false, _owner = eFACTION.IMPERIU
     // keeps working unchanged. Defaults to 0; old saves simply start with no per-region record.
     player_force = 0;
 
+    // STEP 3 (regional combat): the enemy garrison actually STATIONED in this region, stored and
+    // depletable, so clearing a region reduces IT rather than the split recomputing from the planet
+    // pool (which read as instant reinforcement). -1 = unseeded (old save / not yet initialised) ->
+    // seeded on first access from the live region_garrison. reinforce_cooldown gates cross-region
+    // reinforcement to ONE HOP PER TURN: a region that received (or sent) reinforcements this turn
+    // waits a turn before moving force again, so the enemy cannot instantly rebalance the planet.
+    enemy_force = -1;
+    reinforce_cooldown = 0;
+
     // Defensive depth. fortification 0-5 (walls/bunkers), defences = ground turret batteries.
     fortification = 0;
     defences = 0;

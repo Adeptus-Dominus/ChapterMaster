@@ -117,6 +117,10 @@ function scr_star_ownership(argument0) {
         regions_sync(id, run);
 
         if (argument0 != false) {
+            // Enemy reinforcement between regions, ONE HOP PER TURN: a thinned enemy region pulls
+            // force from an adjacent same-owner region (capital first) instead of the split instantly
+            // rebalancing, so attacking a single region can no longer bleed the whole planet at once.
+            regions_reinforce_tick(id, run);
             // Dig In: a force that has held a region for a couple of turns entrenches (+1
             // fortification, capped). Runs right after regions_sync so ownership for the turn
             // is settled and a region only captured this turn is not credited a hold turn.

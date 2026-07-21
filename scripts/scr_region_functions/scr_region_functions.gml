@@ -875,7 +875,7 @@ function draw_regions_panel(_star, _planet, _px, _py) {
 
         var _f_imperial = (_region.owner == eFACTION.PLAYER) || (_region.owner == eFACTION.IMPERIUM) || (_region.owner == eFACTION.MECHANICUS) || (_region.owner == eFACTION.INQUISITION) || (_region.owner == eFACTION.ECCLESIARCHY);
         var _gar_faction_name = _f_imperial ? "Imperium" : region_faction_name(_region.owner);
-        var _gar_count = region_garrison(_star, _planet, i, _region.owner);
+        var _gar_count = region_enemy_force(_star, _planet, i);
         var _gar_str = (_gar_count > 0) ? (_gar_faction_name + " " + scr_display_number(_gar_count)) : (_gar_faction_name + " Forces");
         var _gar_x1 = _row_x2 - 2 - string_width(_gar_str);
         var _gar_y1 = _ry + 16;
@@ -3636,6 +3636,125 @@ function region_force_count(_star, _planet, _region_index) {
     var _planet_total = planet_faction_force_total(_star, _planet, _owner);
     var _share = region_faction_share(_star, _planet, _region_index, _owner);
     return round(_planet_total * _share);
+}
+
+/// @function region_enemy_force_ensure
+/// @description Seed each region's stored enemy_force from the live per-region garrison the first
+///              time it is needed (old saves, or regions never initialised). After seeding, the
+///              stored value is authoritative and is depleted by combat / moved by reinforcement,
+///              so it no longer snaps back to a recomputed split.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @returns {Undefined}
+function region_enemy_force_ensure(_star, _planet) {
+    var _regions = regions_ensure(_star, _planet);
+    for (var i = 0, l = array_length(_regions); i < l; i++) {
+        var _rg = _regions[i];
+        if (!variable_struct_exists(_rg, "enemy_force") || !is_real(_rg.enemy_force) || (_rg.enemy_force < 0)) {
+            _rg.enemy_force = region_garrison(_star, _planet, i, _rg.owner);
+        }
+        if (!variable_struct_exists(_rg, "reinforce_cooldown") || !is_real(_rg.reinforce_cooldown)) {
+            _rg.reinforce_cooldown = 0;
+        }
+    }
+}
+
+/// @function region_enemy_force
+/// @description The enemy garrison stationed in a region (stored, depletable). Old-save safe.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _region_index
+/// @returns {Real}
+function region_enemy_force(_star, _planet, _region_index) {
+    region_enemy_force_ensure(_star, _planet);
+    var _rg = region_get(_star, _planet, _region_index);
+    if (!is_struct(_rg)) { return 0; }
+    return max(0, _rg.enemy_force);
+}
+
+/// @function region_enemy_force_deplete
+/// @description Remove enemy force from a SPECIFIC region (a battle fought there), clamped at 0.
+///              This is what makes a region actually clearable: the force taken off here does not
+///              come back unless a neighbour reinforces it on a LATER turn.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _region_index
+/// @param {Real} _amount
+/// @returns {Undefined}
+function region_enemy_force_deplete(_star, _planet, _region_index, _amount) {
+    region_enemy_force_ensure(_star, _planet);
+    var _rg = region_get(_star, _planet, _region_index);
+    if (!is_struct(_rg)) { return; }
+    _rg.enemy_force = max(0, _rg.enemy_force - max(0, _amount));
+}
+
+/// @function regions_reinforce_tick
+/// @description Once-per-turn enemy reinforcement between regions, WITH A ONE-TURN DELAY. A region
+///              that is below its garrison cap and holds no cooldown pulls a bounded amount of force
+///              from an adjacent, same-owner region that has a surplus (capital first, as the
+///              staging point). Both the giver and receiver then hold a cooldown, so force advances
+///              at most one hop per turn - the enemy can no longer instantly rebalance the planet in
+///              the same turn you thin a region. Player-held and empty regions are ignored.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @returns {Undefined}
+function regions_reinforce_tick(_star, _planet) {
+    var _regions = regions_ensure(_star, _planet);
+    var _n = array_length(_regions);
+    if (_n <= 1) { return; }
+    region_enemy_force_ensure(_star, _planet);
+    region_neighbors_ensure(_star, _planet);
+
+    // Tick down cooldowns first (a region that moved force last turn is free again this turn).
+    for (var i = 0; i < _n; i++) {
+        if (_regions[i].reinforce_cooldown > 0) {
+            _regions[i].reinforce_cooldown -= 1;
+        }
+    }
+
+    // Each depleted enemy region tries to draw from ONE adjacent same-owner region with a surplus.
+    // A region's "cap" is the live garrison target (region_garrison), so reinforcement refills toward
+    // what that region should hold without exceeding it.
+    for (var i = 0; i < _n; i++) {
+        var _rg = _regions[i];
+        var _owner = _rg.owner;
+        // Only hostile-held regions reinforce (skip player / allied / empty).
+        var _hostile = (_owner != eFACTION.NONE) && (_owner != eFACTION.PLAYER) && (_owner != eFACTION.IMPERIUM) && (_owner != eFACTION.MECHANICUS) && (_owner != eFACTION.INQUISITION) && (_owner != eFACTION.ECCLESIARCHY);
+        if (!_hostile) { continue; }
+        if (_rg.reinforce_cooldown > 0) { continue; }
+        var _cap = region_garrison(_star, _planet, i, _owner);
+        var _deficit = _cap - _rg.enemy_force;
+        if (_deficit <= 0) { continue; }
+
+        // Find an adjacent same-owner region with spare force and no cooldown (prefer the capital).
+        var _neighbors = _rg.neighbors;
+        var _best = -1;
+        var _best_surplus = 0;
+        for (var k = 0; k < array_length(_neighbors); k++) {
+            var _ni = _neighbors[k];
+            if ((_ni < 0) || (_ni >= _n) || (_ni == i)) { continue; }
+            var _nb = _regions[_ni];
+            if (_nb.owner != _owner) { continue; }
+            if (_nb.reinforce_cooldown > 0) { continue; }
+            var _nb_cap = region_garrison(_star, _planet, _ni, _owner);
+            var _surplus = _nb.enemy_force - max(1, floor(_nb_cap * 0.5)); // keep a garrison behind
+            if (_nb.is_capital) { _surplus = _nb.enemy_force - 1; }        // capital is the staging reserve
+            if (_surplus > _best_surplus) {
+                _best_surplus = _surplus;
+                _best = _ni;
+            }
+        }
+        if (_best < 0) { continue; }
+
+        // Move a bounded slice (the smaller of the deficit and the giver's surplus).
+        var _move = max(0, min(_deficit, _best_surplus));
+        if (_move <= 0) { continue; }
+        _regions[_best].enemy_force -= _move;
+        _rg.enemy_force += _move;
+        // Both ends spent their move for the turn: one hop per turn.
+        _regions[_best].reinforce_cooldown = 1;
+        _rg.reinforce_cooldown = 1;
+    }
 }
 
 /// @function region_player_force_breakdown

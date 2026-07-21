@@ -458,6 +458,22 @@ if (defeat == 0 && _reduce_power) {
         new_power = enemy_power - power_reduction;
         new_power = max(new_power, 0);
 
+        // Per-region attrition: reduce the STORED enemy garrison in the region that was actually
+        // fought over, so a cleared region stays cleared until a neighbour reinforces it on a later
+        // turn (regions_reinforce_tick). Without this the per-region split just recomputed from the
+        // planet pool and read as instant reinforcement.
+        if (instance_exists(battle_object) && (planet_region_count(battle_object, battle_id) > 1)) {
+            var _atk_region = region_focus_get(battle_object, battle_id);
+            var _here = region_enemy_force(battle_object, battle_id, _atk_region);
+            if (new_power <= 0) {
+                region_enemy_force_deplete(battle_object, battle_id, _atk_region, _here); // enemy wiped: clear region
+            } else if (enemy_power > 0) {
+                // Take off the same fraction of this region's garrison as the tier reduction represents.
+                var _frac = clamp(power_reduction / enemy_power, 0, 1);
+                region_enemy_force_deplete(battle_object, battle_id, _atk_region, ceil(_here * _frac));
+            }
+        }
+
         // Eldar craftworld hunt: intelligence is recovered only when the warhost is
         // wiped from the planet entirely (its force reaches zero), never per battle,
         // so repeated raids against the same warhost cannot farm clues (tester found
