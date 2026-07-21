@@ -7,7 +7,7 @@ function compress_enemy_array(_target_column) {
         return;
     }
 
-    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.CLEANUP, $"compress_enemy_array column={obj_ncombat.combat_debugger.resolve_label(_target_column)}");
+    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.CLEANUP, $"compress_enemy_array column={resolve_block_label(_target_column)}");
 
     with (_target_column) {
         // Define all data arrays to be processed with their default values
@@ -90,7 +90,7 @@ function destroy_empty_column(_target_column) {
             }
         }
         if ((_alive == 0) && (owner != 1)) {
-            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.CLEANUP, $"destroy_empty_column column={obj_ncombat.combat_debugger.resolve_label(_target_column)} destroyed");
+            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.CLEANUP, $"destroy_empty_column column={resolve_block_label(_target_column)} destroyed");
             instance_destroy();
         }
     }
@@ -146,7 +146,7 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
     // hostile_splash: The splash damage modifier. Indicates if the weapon affects multiple targets or has an area-of-effect component.
 
     try {
-        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.SHOOTING, $"scr_clean target={obj_ncombat.combat_debugger.resolve_label(target_object)} is_infantry={target_is_infantry} shots={hostile_shots} dmg={hostile_damage} weapon={hostile_weapon} range={hostile_range} splash={hostile_splash} ap={hostile_armour_pierce}");
+        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.SHOOTING, $"scr_clean target={resolve_block_label(target_object)} is_infantry={target_is_infantry} shots={hostile_shots} dmg={hostile_damage} weapon={hostile_weapon} range={hostile_range} splash={hostile_splash} ap={hostile_armour_pierce}");
 
         with (target_object) {
             if (obj_ncombat.wall_destroyed == 1) {
