@@ -446,27 +446,20 @@ function hold_ground_disembark() {
     }
     var _region_force_added = 0;
     var _n_us = array_length(unit_struct);
-    var _skip_notstruct = 0, _skip_ally = 0, _skip_local = 0, _skip_dead = 0, _considered = 0;
     for (var i = 0; i < _n_us; i++) {
         var _unit = unit_struct[i];
         if (!is_struct(_unit)) {
-            _skip_notstruct++;
             continue;
         }
-        // Skip allies, local (already planetside) forces, and the dead.
+        // Land every surviving attacker that is not an ally and not dead. marine_local is NOT a
+        // filter here: both add_unit_to_battle call sites pass is_local=true, so it is true for
+        // every battle unit and never meant "already planetside" - skipping on it lands nobody.
         if (ally[i] == true) {
-            _skip_ally++;
-            continue;
-        }
-        if (marine_local[i] == true) {
-            _skip_local++;
             continue;
         }
         if (marine_dead[i] == 1) {
-            _skip_dead++;
             continue;
         }
-        _considered++;
         // Opposed landing: place the unit planetside DIRECTLY (bypassing the gated regular
         // unload(), since Hold Ground is precisely how you land under fire on enemy soil). Handle
         // the ship_carrying bookkeeping ourselves so nothing is lost.
@@ -489,5 +482,5 @@ function hold_ground_disembark() {
     // becomes the authoritative planet total and supersedes the per-unit p_player writes unload()
     // may have made (so the force is counted once, and now has a region location).
     region_player_force_add(_star, _planet, _land_region, _region_force_added);
-    LOGGER.info($"HOLD GROUND disembark on {_star.name} {_planet}: unit_struct_len={_n_us} considered={_considered} landed={_landed} | skips: notstruct={_skip_notstruct} ally={_skip_ally} local={_skip_local} dead={_skip_dead} | region force +{_region_force_added}, p_player {_p_before} -> {_star.p_player[_planet]}");
+    LOGGER.info($"HOLD GROUND disembark on {_star.name} {_planet}: {_landed} of {_n_us} landed into region {_land_region}, region force +{_region_force_added}, p_player {_p_before} -> {_star.p_player[_planet]}");
 }
