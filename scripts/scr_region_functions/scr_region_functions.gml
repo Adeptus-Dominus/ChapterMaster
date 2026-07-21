@@ -832,6 +832,10 @@ function draw_regions_panel(_star, _planet, _px, _py) {
         draw_set_color(c_red);
         draw_text(_split + 4, _by - 4, "<");
         draw_set_color(c_white);
+        // Explain the contested fight on hover.
+        if (scr_hit(_bx1, _by - 4, _bx2, _by + _bh + 4)) {
+            tooltip_draw("This world is CONTESTED: you and the enemy both hold ground here. The bar shows the balance - your force (aqua) versus the enemy garrison (red). Each turn a battle is fought in every region you contest until one side clears it. Take every region to conquer the world; lose your last foothold and you are thrown back to orbit.", 300);
+        }
     }
     draw_set_color(c_dkgray);
     draw_line(_px + 6, _py + _head_h, _px + _w - 6, _py + _head_h);
@@ -895,6 +899,18 @@ function draw_regions_panel(_star, _planet, _px, _py) {
         }
         var _name = _region.is_capital ? (_mark + _num + "* " + _region.name) : (_mark + _num + _region.name);
         draw_text(_rx + 18, _ry, _name);
+        // Explain the landing / assault rules for this region on hover.
+        if (scr_hit(_rx + 18, _ry, _rx + 18 + string_width(_name), _ry + 14)) {
+            if (_unloading) {
+                if (region_allows_regular_unload(_star, _planet, i)) {
+                    tooltip_draw("You can land troops here (this region is empty, yours, or allied). Left-click the planet to unload the selected units into this region. Right-click the planet to choose a different region.", 280);
+                } else {
+                    tooltip_draw("You CANNOT peacefully land here - this region is held or contested by the enemy. To take it, launch an Attack with HOLD GROUND on: your troops land under fire and fight for the territory each turn.", 280);
+                }
+            } else if (_hostile_here && region_can_assault_index(_star, _planet, i)) {
+                tooltip_draw("Enemy-held region you can assault right now. Attack it with HOLD GROUND on to land troops and contest the territory. A '>' marks regions you can push into.", 280);
+            }
+        }
         draw_set_color(_col);
         draw_text(_rx + 18, _ry + 16, region_faction_name(_region.owner));
 
