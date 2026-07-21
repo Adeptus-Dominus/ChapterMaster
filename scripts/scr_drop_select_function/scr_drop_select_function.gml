@@ -286,7 +286,9 @@ function drop_select_unit_selection() {
             draw_set_halign(fa_left);
             draw_set_valign(fa_top);
             if (scr_hit(_ssx1, _ssy1, _ssx2, _ssy2) && mouse_button_clicked()) {
-                region_focus_set(p_target, planet_number, (_seci + 1) mod planet_region_count(p_target, planet_number));
+                var _new_focus = (_seci + 1) mod planet_region_count(p_target, planet_number);
+                region_focus_set(p_target, planet_number, _new_focus);
+                LOGGER.info($"SECTOR SELECTOR click: was {_seci} -> set {_new_focus}, now reads {region_focus_get(p_target, planet_number)} (planet {planet_number})");
             }
         }
     }
@@ -462,6 +464,7 @@ function drop_select_unit_selection() {
             // Capture the exact region the assault targets, so the foothold lands there regardless
             // of any later focus change. -1 on a single-region world (whole-planet battle).
             obj_ncombat.battle_region = (planet_region_count(p_target, planet_number) > 1) ? region_focus_get(p_target, planet_number) : -1;
+            LOGGER.info($"BATTLE_REGION captured: {obj_ncombat.battle_region} (focus={region_focus_get(p_target, planet_number)}, planet={planet_number}, regions={planet_region_count(p_target, planet_number)})");
 
             var _planet = obj_ncombat.battle_object.p_feature[obj_ncombat.battle_id];
             if (obj_ncombat.battle_object.space_hulk == 1) {
