@@ -521,6 +521,11 @@ tagged_training = 0;
 
 // ** Default menu items **
 selecting_planet = 0;
+// The region a ground assault is aimed at, stashed here (on the persistent controller) when the
+// player picks it on the Attack screen's Sector selector, so it survives until launch even if the
+// star's per-region state is rebuilt in between. -1 = none / whole-planet. Read at launch into
+// obj_ncombat.battle_region.
+pending_battle_region = -1;
 selecting_ship = -1;
 fleet_minimized = 0;
 fleet_all = 1;

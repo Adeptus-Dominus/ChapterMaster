@@ -83,6 +83,8 @@ if (!instance_exists(obj_saveload)) {
     roster = new Roster();
     if (instance_exists(p_target)) {
         roster.roster_location = p_target.name;
+        // Seed the persistent pending-battle-region from this planet's current focus.
+        obj_controller.pending_battle_region = (planet_region_count(p_target, planet_number) > 1) ? region_focus_get(p_target, planet_number) : -1;
     }
 
     roster.roster_planet = planet_number;

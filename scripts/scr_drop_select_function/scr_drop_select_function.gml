@@ -288,7 +288,11 @@ function drop_select_unit_selection() {
             if (scr_hit(_ssx1, _ssy1, _ssx2, _ssy2) && mouse_button_clicked()) {
                 var _new_focus = (_seci + 1) mod planet_region_count(p_target, planet_number);
                 region_focus_set(p_target, planet_number, _new_focus);
-                LOGGER.info($"SECTOR SELECTOR click: was {_seci} -> set {_new_focus}, now reads {region_focus_get(p_target, planet_number)} (planet {planet_number})");
+                // Stash on the persistent controller too, so the choice survives to launch even if
+                // the star's focus is rebuilt in between (the star-state churn that landed troops
+                // in the capital regardless of selection).
+                obj_controller.pending_battle_region = _new_focus;
+                LOGGER.info($"SECTOR SELECTOR click: was {_seci} -> set {_new_focus} (stashed on controller)");
             }
         }
     }
@@ -463,8 +467,16 @@ function drop_select_unit_selection() {
             obj_ncombat.region_partial = _region_partial;
             // Capture the exact region the assault targets, so the foothold lands there regardless
             // of any later focus change. -1 on a single-region world (whole-planet battle).
-            obj_ncombat.battle_region = (planet_region_count(p_target, planet_number) > 1) ? region_focus_get(p_target, planet_number) : -1;
-            LOGGER.info($"BATTLE_REGION captured: {obj_ncombat.battle_region} (focus={region_focus_get(p_target, planet_number)}, planet={planet_number}, regions={planet_region_count(p_target, planet_number)})");
+            if (planet_region_count(p_target, planet_number) > 1) {
+                // Prefer the region stashed on the persistent controller at selector-click time; it
+                // survives the star-state churn that was resetting the live focus before launch.
+                var _pbr = obj_controller.pending_battle_region;
+                var _valid_pbr = is_real(_pbr) && (_pbr >= 0) && (_pbr < planet_region_count(p_target, planet_number));
+                obj_ncombat.battle_region = _valid_pbr ? _pbr : region_focus_get(p_target, planet_number);
+            } else {
+                obj_ncombat.battle_region = -1;
+            }
+            LOGGER.info($"BATTLE_REGION captured: {obj_ncombat.battle_region} (pending={obj_controller.pending_battle_region}, focus={region_focus_get(p_target, planet_number)}, planet={planet_number}, regions={planet_region_count(p_target, planet_number)})");
 
             var _planet = obj_ncombat.battle_object.p_feature[obj_ncombat.battle_id];
             if (obj_ncombat.battle_object.space_hulk == 1) {
