@@ -468,6 +468,7 @@ function hold_ground_disembark() {
         _unit.ship_location = -1;
         _unit.location_string = _star.name;
         _unit.planet_location = _planet;
+        _unit.region_location = _land_region; // the assaulted region becomes the unit's foothold
         _unit.get_unit_size();
         _region_force_added += _unit.size;
         _landed++;

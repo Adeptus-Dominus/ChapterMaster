@@ -50,6 +50,10 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
                 if (unit_location[0] == eLOCATION_TYPES.PLANET) {
                     _loc_name = unit_location[2];
                     _loc_planet_num = scr_roman(unit_location[1]);
+                    // Append the unit's sector (region) when it is stationed in a specific one.
+                    if (variable_struct_exists(_unit, "region_location") && is_real(_unit.region_location) && (_unit.region_location >= 0)) {
+                        _loc_planet_num += ", Sect. " + string(_unit.region_location + 1);
+                    }
                 } else if (unit_location[0] == eLOCATION_TYPES.SHIP) {
                     _loc_name = obj_ini.ship[unit_location[1]];
                 }

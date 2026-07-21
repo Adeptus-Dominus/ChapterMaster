@@ -120,6 +120,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     planet_location = 0;
     location_string = "";
     ship_location = -1;
+    // Which REGION of planet_location this unit is stationed in (index into the planet's regions).
+    // -1 = not in a specific region (on a ship, on a single-region world, or unset/old save). Set
+    // when the unit lands into a region (regular unload or Hold Ground) and cleared when it leaves
+    // the planet. Drives per-region combat, the per-region force tally, and the location label.
+    region_location = -1;
     last_ship = {
         uid: "",
         name: "",
@@ -1947,6 +1952,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             //check if ship is in the same location as marine and has enough space;
             if ((target_ship_location == system) && ((obj_ini.ship_carrying[ship] + size) <= obj_ini.ship_capacity[ship])) {
                 planet_location = 0; //mark marine as no longer on planet
+                region_location = -1; //no longer in any region
                 ship_location = ship; //id of ship marine is now loaded on
                 obj_ini.ship_carrying[ship] += size; //update ship capacity
 

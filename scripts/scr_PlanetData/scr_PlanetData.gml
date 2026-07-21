@@ -1965,6 +1965,14 @@ function PlanetData(_planet, _system) constructor {
         } else if (!_loading) {
             set_star_select_planet();
         } else if (_loading && planet > 0) {
+            // Region gate: a peaceful landing is only allowed into an empty/player/allied region
+            // that is not contested. Point at a hostile/contested region and the drop is refused
+            // (take it by assault / Hold Ground instead).
+            if ((planet_region_count(system, planet) > 1) && !region_allows_regular_unload(system, planet, region_focus_get(system, planet))) {
+                planet_draw = c_red;
+                tooltip_draw("Can't land in a hostile region - assault it (Hold Ground) instead. Right-click to pick another region.", 260);
+                return;
+            }
             obj_controller.unload = planet;
             obj_controller.return_object = system;
             obj_controller.return_size = obj_controller.man_size;
