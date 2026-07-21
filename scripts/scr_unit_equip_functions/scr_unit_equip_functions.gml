@@ -651,7 +651,7 @@ function UnitEquipment(equipment_set, unit = noone) constructor{
     static has_equipment_set = function (equipment_set){
         var _found = true;
         for (var i = 0; i < array_length(present_items); i++){
-            var _slot_key = equip_slots[i]
+            var _slot_key = present_items[i]
             if (!struct_exists(equipment_set, _slot_key)){
                 continue;
             }
