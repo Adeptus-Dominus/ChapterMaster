@@ -61,6 +61,11 @@ function Roster() constructor {
     };
 
     static add_role_to_roster = function(role) {
+        // An empty or non-string role is an illegal struct key (GML throws on "") and a roleless
+        // unit adds nothing to the tally, so skip it. Mirrors the local-roster guards below.
+        if (!is_string(role) || (role == "")) {
+            return;
+        }
         if (struct_exists(full_roster, role)) {
             full_roster[$ role]++;
         } else {
@@ -69,6 +74,11 @@ function Roster() constructor {
     };
 
     static add_role_to_selected_roster = function(role) {
+        // An empty or non-string role cannot be a struct key (GML throws on ""), and a unit with
+        // no assigned role contributes nothing to the role tally, so skip it.
+        if (!is_string(role) || (role == "")) {
+            return;
+        }
         if (struct_exists(selected_roster, role)) {
             selected_roster[$ role]++;
         } else {
