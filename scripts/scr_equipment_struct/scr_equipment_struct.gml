@@ -18,7 +18,7 @@ global.tag_recovery_values = {
     "terminator": 30,
 };
 
-function EquipmentStruct(item_data, core_type, quality_request = "none", arti_struct = -1) constructor {
+function EquipmentStruct(item_data, core_type = "", quality_request = "none", arti_struct = -1) constructor {
     type = core_type;
 
     if (is_real(arti_struct) && arti_struct > -1) {
@@ -98,6 +98,9 @@ function EquipmentStruct(item_data, core_type, quality_request = "none", arti_st
         var stat_order;
         var item_type = type;
         if (type == "") {
+            if (name == ""){
+                return "";
+            }
             if (struct_exists(global.gear[$ "armour"], name)) {
                 item_type = "armour";
             } else if (struct_exists(global.gear[$ "mobility"], name)) {

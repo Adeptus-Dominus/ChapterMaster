@@ -143,32 +143,12 @@ function reset_manage_unit_constants(unit) {
         unit_manage_constants.current_data = unit.uid;
         var _damage_res = unit.damage_resistance();
 
-        var _slot_defs = [
-            ["armour", "Armour"],
-            ["gear", "Gear" ],
-            ["mobi", "Back/Mobilitiy"],
-            ["wep1", "First Weapon" ],
-            ["wep2", "Second Weapon" ],
-        ];
+        var _slot_defs = UNIT_EQUIP_SLOTS;
 
         for (var i = 0; i < array_length(_slot_defs); i++) {
-            var _slot = _slot_defs[i][0];
-            var _label = _slot_defs[i][1];
-            var _const_key = $"{_slot}_string"
-
-            var _item = _equip_data.get_item(_slot);
-            var _is_struct = is_struct(_item);
-            var _desc = _is_struct ? _item.item_tooltip_desc_gen() : "";
-
-            var _quality = _is_struct ? _item.quality : "standard";
-
-            var _data = {
-                tooltip: $"=={_label}==\n{_desc}",
-                colour: quality_color(_quality),
-                max_width: 187,
-            };
-
-            unit_manage_constants[$ _const_key] = new ReactiveString(unit.equipments_qual_string(_slot, true), 0, 0, _data);
+            var _slot = _slot_defs[0];
+            var _const_key = $"{_slot}_string";
+            unit_manage_constants[$ _const_key] = _equip_data.equipment_ReactiveString(_slot);
         }
 
         // Psyker things

@@ -60,15 +60,6 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
         }
     };
 
-    //TODO we proobably have amcaro or soomethinng for this somewhere
-    static load_out_areas = [
-        "wep1",
-        "wep2",
-        "armour",
-        "gear",
-        "mobi",
-    ];
-
     static structure_role_optional_loadout = function(optional_data) {
         optional_load = variable_clone(optional_data); //create a fulfillment object for optional loadouts
 
@@ -218,8 +209,8 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
         }
 
         ignore_units = [];
-        for (var i = 0; i < array_length(load_out_areas); i++) {
-            current_load_slot = load_out_areas[i];
+        for (var i = 0; i < 5; i++) {
+            current_load_slot = UNIT_EQUIP_SLOTS[i];
             equip_loudouts_specific_equip_slot();
         }
     };
