@@ -201,7 +201,8 @@ function region_names_ensure(_star, _planet, _outlying_count) {
 /// @param {Real} _planet
 /// @returns {Array<Struct.Region>}
 function regions_generate(_star, _planet) {
-    LOGGER.info($"REGIONS_GENERATE called for {_star.name} planet {_planet} (focus was {variable_instance_exists(_star, \"p_region_focus\") ? _star.p_region_focus[_planet] : -99})");
+    var _dbg_focus = variable_instance_exists(_star, "p_region_focus") ? _star.p_region_focus[_planet] : -99;
+    LOGGER.info($"REGIONS_GENERATE called for {_star.name} planet {_planet} (focus was {_dbg_focus})");
     var _count = region_count_for_planet(_star, _planet);
     var _owner = _star.p_owner[_planet];
     var _first = _star.p_first[_planet];
