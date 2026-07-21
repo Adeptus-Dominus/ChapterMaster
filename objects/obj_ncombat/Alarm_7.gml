@@ -321,10 +321,18 @@ try {
 
                 var _planet = obj_turn_end.battle_world[_battle_index];
 
-                _battle_object.p_player[_planet] -= world_size;
+                // Foothold carve-out: if the player is holding ground on a world they do NOT own
+                // (an active foothold on enemy soil) and they WON this defence, leave the force in
+                // place so the foothold persists turn to turn instead of being stripped on landing.
+                var _is_foothold_defence = (_battle_object.p_owner[_planet] != eFACTION.PLAYER) && (_battle_object.p_player[_planet] > 0);
+                if (_is_foothold_defence && (defeat != 1)) {
+                    // Won defence of a foothold: hold the beachhead (p_player unchanged).
+                } else {
+                    _battle_object.p_player[_planet] -= world_size;
 
-                if (defeat == 1) {
-                    _battle_object.p_player[_planet] = 0;
+                    if (defeat == 1) {
+                        _battle_object.p_player[_planet] = 0;
+                    }
                 }
             }
             obj_controller.combat = 0;
