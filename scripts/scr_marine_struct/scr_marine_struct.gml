@@ -687,7 +687,31 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return _return_string;
     };
 
-    static has_trait = marine_has_trait;
+    static has_trait = function (_wanted_trait, _any = true) {
+        if (is_array(_wanted_trait)) {
+            var _len = array_length(_wanted_trait);
+
+            if (_any) {
+                for (var i = 0; i < _len; i++) {
+                    if (array_contains(traits, _wanted_trait[i])) {
+                        return true;
+                    }
+                }
+
+                return false;
+            } else {
+                for (var i = 0; i < _len; i++) {
+                    if (!array_contains(traits, _wanted_trait[i])) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+        } 
+
+        return array_contains(traits, _wanted_trait);
+    };
 
     static add_feat = function(feat) {
         feat_data = {};
