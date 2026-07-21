@@ -943,13 +943,29 @@ function draw_regions_panel(_star, _planet, _px, _py) {
             draw_set_color(scr_hit(_yf_x1, _yf_y1, _yf_x2, _yf_y2) ? c_white : c_aqua);
             draw_text(_row_x2 - 2, _yf_y1, _yf_str);
             draw_set_color(c_ltgray);
-            // Click opens the player's own force-composition breakdown for this region.
+            // Click opens the full Manage Units screen scoped to THIS region's troops, so the
+            // player can manage / move / recall the units stationed here (not just view them).
             if (_selectable && point_and_click([_yf_x1, _yf_y1, _yf_x2, _yf_y2])) {
                 region_focus_set(_star, _planet, i);
-                obj_star_select.region_force_open = true;
-                obj_star_select.region_force_view = i;
-                obj_star_select.region_force_faction = -1;
-                obj_star_select.region_force_player = true;
+                var _region_units = region_player_units(_star, _planet, i);
+                if (array_length(_region_units) > 0) {
+                    var _rname = _region.name;
+                    group_selection(_region_units, {
+                        purpose: $"{_star.name} - {_rname}",
+                        purpose_code: "manage",
+                        number: 0,
+                        system: _star.id,
+                        feature: "none",
+                        planet: _planet,
+                        selections: [],
+                        region_scope: i,        // which region these units are in (enables Recall)
+                        region_star: _star.id,
+                        region_planet: _planet,
+                    });
+                    if (instance_exists(obj_star_select)) {
+                        with (obj_star_select) { instance_destroy(); }
+                    }
+                }
             }
         }
         draw_set_halign(fa_left);
@@ -3842,6 +3858,34 @@ function regions_reinforce_tick(_star, _planet) {
         _regions[_best].reinforce_cooldown = 1;
         _rg.reinforce_cooldown = 1;
     }
+}
+
+/// @function region_player_units
+/// @description Collects the player's living unit structs stationed in one region (matched by each
+///              unit's region_location), as a flat array suitable for group_selection() - i.e. the
+///              same "open Manage Units on this set" entry point the System window uses. This lets
+///              the "Your Force" line open the full unit-management screen scoped to the region.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _region_index
+/// @returns {Array}
+function region_player_units(_star, _planet, _region_index) {
+    var _sys_name = _star.name;
+    var _units = [];
+    for (var _co = 0; _co <= obj_ini.companies; _co++) {
+        if (_co >= array_length(obj_ini.TTRPG)) { break; }
+        for (var _i = 0; _i < array_length(obj_ini.TTRPG[_co]); _i++) {
+            var _u = obj_ini.TTRPG[_co][_i];
+            if (!is_struct(_u)) { continue; }
+            if (_u.name() == "") { continue; }
+            if (obj_ini.god[_co][_i] >= 10) { continue; }              // dead/removed
+            if (_u.planet_location != _planet) { continue; }
+            if (_u.location_string != _sys_name) { continue; }
+            if (!variable_struct_exists(_u, "region_location") || (_u.region_location != _region_index)) { continue; }
+            array_push(_units, _u);
+        }
+    }
+    return _units;
 }
 
 /// @function region_player_force_breakdown

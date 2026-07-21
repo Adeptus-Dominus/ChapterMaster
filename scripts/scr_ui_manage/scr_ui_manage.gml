@@ -1627,6 +1627,27 @@ function draw_manage_selection_buttons(xx, yy) {
         button.draw(false);
     }
 
+    // Recall: only shown when this manage screen was opened scoped to a planet region (via the
+    // "Your Force" line). It re-embarks the selected surface troops onto their assigned ship,
+    // withdrawing them from the region. Same mechanism as Reload, surfaced here as a clear action.
+    if (is_struct(obj_controller.selection_data) && variable_struct_exists(obj_controller.selection_data, "region_scope")) {
+        button.move("right", true);
+        button.label = "Recall";
+        button.keystroke = false;
+        button.tooltip = "Pull the selected troops off the surface and back onto their assigned ship, withdrawing them from this region.";
+        var recall_possible = man_size > 0 && sel_loading == -1;
+        if (recall_possible) {
+            button.alpha = 1;
+            if (button.draw()) {
+                scr_company_load(selecting_location);
+                load_marines_into_ship(selecting_location, sh_ide, display_unit, true);
+            }
+        } else {
+            button.alpha = 0.5;
+            button.draw(false);
+        }
+    }
+
     var top_x = actions_block.x1 + 26;
     var top_y = actions_block.y1 + 70;
 
