@@ -865,7 +865,9 @@ function draw_regions_panel(_star, _planet, _px, _py) {
         draw_text(_row_x2 - 2, _ry, "Fort: " + _forti_names[clamp(_region.fortification, 0, 6)]);
 
         var _f_imperial = (_region.owner == eFACTION.PLAYER) || (_region.owner == eFACTION.IMPERIUM) || (_region.owner == eFACTION.MECHANICUS) || (_region.owner == eFACTION.INQUISITION) || (_region.owner == eFACTION.ECCLESIARCHY);
-        var _gar_str = _f_imperial ? "Imperium Forces" : region_faction_name(_region.owner) + " Forces";
+        var _gar_faction_name = _f_imperial ? "Imperium" : region_faction_name(_region.owner);
+        var _gar_count = region_garrison(_star, _planet, i, _region.owner);
+        var _gar_str = (_gar_count > 0) ? (_gar_faction_name + " " + scr_display_number(_gar_count)) : (_gar_faction_name + " Forces");
         var _gar_x1 = _row_x2 - 2 - string_width(_gar_str);
         var _gar_y1 = _ry + 16;
         var _gar_x2 = _row_x2 - 2;
