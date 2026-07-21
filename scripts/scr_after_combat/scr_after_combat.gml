@@ -456,14 +456,18 @@ function hold_ground_disembark() {
         if (marine_dead[i] == 1) {
             continue;
         }
-        // Land the unit planetside (unload handles ship_carrying bookkeeping; force the location
-        // if its conditional ship-branch did not fire, so a won Hold Ground assault always lands).
-        _unit.unload(_planet, _star);
-        if (_unit.planet_location != _planet || _unit.ship_location != -1) {
-            _unit.ship_location = -1;
-            _unit.location_string = _star.name;
-            _unit.planet_location = _planet;
+        // Opposed landing: place the unit planetside DIRECTLY (bypassing the gated regular
+        // unload(), since Hold Ground is precisely how you land under fire on enemy soil). Handle
+        // the ship_carrying bookkeeping ourselves so nothing is lost.
+        _unit.set_last_ship();
+        var _prev_loc = _unit.marine_location();
+        if ((_prev_loc[0] == eLOCATION_TYPES.SHIP) && (_prev_loc[1] >= 0) && (_prev_loc[1] < array_length(obj_ini.ship_carrying))) {
+            _unit.get_unit_size();
+            obj_ini.ship_carrying[_prev_loc[1]] = max(0, obj_ini.ship_carrying[_prev_loc[1]] - _unit.size);
         }
+        _unit.ship_location = -1;
+        _unit.location_string = _star.name;
+        _unit.planet_location = _planet;
         _unit.get_unit_size();
         _region_force_added += _unit.size;
         _landed++;

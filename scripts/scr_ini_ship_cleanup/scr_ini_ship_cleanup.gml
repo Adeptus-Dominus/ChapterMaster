@@ -108,7 +108,7 @@ function scr_kill_ship(index) {
                     while (array_length(_units_on_ship) > 0) {
                         _unit = array_pop(_units_on_ship);
                         if (irandom(100) > 100 - _unit.luck) {
-                            _unit.unload(irandom_range(1, _nearest_star.planets), _nearest_star);
+                            _unit.unload(irandom_range(1, _nearest_star.planets), _nearest_star, true); // abandoning a lost ship: set down anywhere
                         }
                     }
                 }

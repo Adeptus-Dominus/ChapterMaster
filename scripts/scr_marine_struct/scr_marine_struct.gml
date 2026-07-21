@@ -1982,11 +1982,20 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         }
     };
 
-    static unload = function(planet_number, system) {
+    static unload = function(planet_number, system, _force = false) {
         var current_location = marine_location();
         set_last_ship();
         if (!controllable()) {
-            return;
+            return false;
+        }
+        // Region gate: on a multi-region world a REGULAR (peaceful) landing is only allowed into a
+        // region that is empty, held by the player, or held by an allied Imperial faction and not
+        // contested. A hostile/contested region refuses the drop - taking it needs an opposed Hold
+        // Ground assault. The chosen region is the world's stored focus (what the player selected).
+        var _multi = (planet_region_count(system, planet_number) > 1);
+        var _land_region = _multi ? region_focus_get(system, planet_number) : 0;
+        if (_multi && !_force && !region_allows_regular_unload(system, planet_number, _land_region)) {
+            return false; // cannot casually land into an enemy/contested region (Hold Ground required)
         }
         if (current_location[0] == eLOCATION_TYPES.SHIP) {
             if (current_location[2] != "Warp" && current_location[2] == system.name) {
@@ -1994,14 +2003,26 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 planet_location = planet_number;
                 ship_location = -1;
                 get_unit_size();
-                system.p_player[planet_number] += size;
+                if (_multi) {
+                    region_player_force_add(system, planet_number, _land_region, size);
+                } else {
+                    system.p_player[planet_number] += size;
+                }
                 obj_ini.ship_carrying[current_location[1]] -= size;
+                return true;
             }
+            return false;
         } else {
             ship_location = -1;
             location_string = system.name;
             planet_location = planet_number;
-            system.p_player[planet_number] += size;
+            get_unit_size();
+            if (_multi) {
+                region_player_force_add(system, planet_number, _land_region, size);
+            } else {
+                system.p_player[planet_number] += size;
+            }
+            return true;
         }
     };
 

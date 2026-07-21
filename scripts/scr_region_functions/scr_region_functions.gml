@@ -848,11 +848,20 @@ function draw_regions_panel(_star, _planet, _px, _py) {
         // the player can read the assault order at a glance. Capital keeps its * marker.
         // A ">" marks a region the player can push into RIGHT NOW (enemy-held and, on a
         // siege world, bordering a region the player holds) so the attack path is legible.
-        draw_set_color(c_white);
+        var _unloading = instance_exists(obj_star_select) && (obj_star_select.loading == 1);
         var _num = string(i + 1) + ". ";
         var _hostile_here = (_region.owner != eFACTION.PLAYER) && (_region.owner != eFACTION.IMPERIUM) && (_region.owner != eFACTION.MECHANICUS) && (_region.owner != eFACTION.INQUISITION) && (_region.owner != eFACTION.ECCLESIARCHY);
-        var _attackable = _hostile_here && region_can_assault_index(_star, _planet, i);
-        var _mark = _attackable ? "> " : "";
+        var _mark = "";
+        if (_unloading) {
+            // Landing mode: "+" and aqua for a region you can set down in; dim the rest.
+            var _can_land = region_allows_regular_unload(_star, _planet, i);
+            draw_set_color(_can_land ? c_aqua : c_gray);
+            _mark = _can_land ? "+ " : "";
+        } else {
+            draw_set_color(c_white);
+            var _attackable = _hostile_here && region_can_assault_index(_star, _planet, i);
+            _mark = _attackable ? "> " : "";
+        }
         var _name = _region.is_capital ? (_mark + _num + "* " + _region.name) : (_mark + _num + _region.name);
         draw_text(_rx + 18, _ry, _name);
         draw_set_color(_col);
@@ -3552,6 +3561,49 @@ function region_player_force_scale_to_total(_star, _planet, _new_total) {
         _regions[i].player_force = max(0, round(_regions[i].player_force * _scale));
     }
     region_player_force_sync(_star, _planet);
+}
+
+/// @function region_allows_regular_unload
+/// @description Whether troops may make a PEACEFUL (regular) landing into this region: only if it
+///              is empty (unowned), held by the player, or held by an allied Imperial faction
+///              (Imperium / Mechanicus / Inquisition / Ecclesiarchy). A region held by a hostile
+///              faction, OR one currently contested (a hostile force present on a friendly world),
+///              refuses a regular unload - taking it requires an opposed landing (Hold Ground /
+///              assault). This is the rule that makes Hold Ground the ONLY way onto enemy soil.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _region_index
+/// @returns {Bool}
+function region_allows_regular_unload(_star, _planet, _region_index) {
+    var _region = region_get(_star, _planet, _region_index);
+    if (!is_struct(_region)) { return false; }
+    var _o = _region.owner;
+    var _friendly = (_o == eFACTION.NONE) || (_o == eFACTION.PLAYER) || (_o == eFACTION.IMPERIUM) || (_o == eFACTION.MECHANICUS) || (_o == eFACTION.INQUISITION) || (_o == eFACTION.ECCLESIARCHY);
+    if (!_friendly) {
+        return false; // hostile-held region -> needs an opposed landing
+    }
+    // A friendly/empty region that a hostile force is currently contesting is also off-limits to a
+    // casual landing (there is fighting here); you must Hold Ground to reinforce it under fire.
+    if (region_planet_enemy_present_in_region(_star, _planet, _region_index)) {
+        return false;
+    }
+    return true;
+}
+
+/// @function region_planet_enemy_present_in_region
+/// @description True if a hostile (non-player, non-allied) force holds or contests this specific
+///              region - either the region's own owner is hostile, or the world is contested and
+///              this region carries a hostile garrison share.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _region_index
+/// @returns {Bool}
+function region_planet_enemy_present_in_region(_star, _planet, _region_index) {
+    var _region = region_get(_star, _planet, _region_index);
+    if (!is_struct(_region)) { return false; }
+    var _o = _region.owner;
+    var _hostile_owner = (_o != eFACTION.NONE) && (_o != eFACTION.PLAYER) && (_o != eFACTION.IMPERIUM) && (_o != eFACTION.MECHANICUS) && (_o != eFACTION.INQUISITION) && (_o != eFACTION.ECCLESIARCHY);
+    return _hostile_owner;
 }
 
 /// @function region_force_count
