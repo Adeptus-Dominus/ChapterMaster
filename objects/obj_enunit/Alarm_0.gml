@@ -1,6 +1,6 @@
 /// @description This alarm is responsible for the enemy target column selection
 
-obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.SYSTEM, $"Enemy {obj_ncombat.combat_debugger.resolve_label(id)} at x={x}, flank={flank} is picking a target");
+obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.SYSTEM, $"Enemy {resolve_block_label(id)} at x={x}, flank={flank} is picking a target");
 
 if (!instance_exists(obj_pnunit)) {
     obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"No valid player blocks, exiting");
@@ -13,7 +13,7 @@ if (enemy == noone || !target_block_is_valid(enemy, obj_pnunit)) {
     exit;
 }
 
-obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"Initial target player block: {obj_ncombat.combat_debugger.resolve_label(enemy)} at x={enemy.x}");
+obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"Initial target player block: {resolve_block_label(enemy)} at x={enemy.x}");
 
 //In melee check
 engaged = collision_point(x - 10, y, obj_pnunit, 0, 1) || collision_point(x + 10, y, obj_pnunit, 0, 1);
@@ -39,7 +39,7 @@ if (!engaged) {
 
         if (!target_block_is_valid(enemy, obj_pnunit)) {
             enemy = flank == 0 ? get_rightmost() : get_leftmost();
-            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"Target is invalid, flipped to {obj_ncombat.combat_debugger.resolve_label(enemy)}");
+            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"Target is invalid, flipped to {resolve_block_label(enemy)}");
             if (!target_block_is_valid(enemy, obj_pnunit)) {
                 obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"Target is still invalid, exiting");
                 exit;
@@ -81,7 +81,7 @@ if (!engaged) {
                 if (cm_present) {
                     enemy = cm_block;
                     target_unit_index = cm_index;
-                    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"Alpha Strike: targeting Chapter Master at {obj_ncombat.combat_debugger.resolve_label(cm_block)} unit_index={cm_index}");
+                    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"Alpha Strike: targeting Chapter Master at {resolve_block_label(cm_block)} unit_index={cm_index}");
                 }
             }
 
@@ -91,7 +91,7 @@ if (!engaged) {
                 var _shot = false;
                 if ((!instance_exists(obj_nfort)) || flank) {
                     if (block_has_armour(enemy) || (enemy.veh_type[1] == "Defenses")) {
-                        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"AP -> vehicle in column {obj_ncombat.combat_debugger.resolve_label(enemy)}, apa={apa[i]}, firing");
+                        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"AP -> vehicle in column {resolve_block_label(enemy)}, apa={apa[i]}, firing");
                         scr_shoot(i, enemy, target_unit_index, "arp", "ranged");
                         continue;
                     } else if (instance_number(obj_pnunit) > 1) {
@@ -106,7 +106,7 @@ if (!engaged) {
                                 break;
                             }
                             if (block_has_armour(enemy2)) {
-                                obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"AP -> vehicle found in next column {obj_ncombat.combat_debugger.resolve_label(enemy2)}, firing");
+                                obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"AP -> vehicle found in next column {resolve_block_label(enemy2)}, firing");
                                 scr_shoot(i, enemy2, target_unit_index, "arp", "ranged");
                                 _shot = true;
                                 break;
@@ -130,7 +130,7 @@ if (!engaged) {
             if ((!_target_vehicles) && ((!instance_exists(obj_nfort)) || flank)) {
                 var _shot = false;
                 if (enemy.men > 0) {
-                    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"non-AP -> infantry in column {obj_ncombat.combat_debugger.resolve_label(enemy)}, men={enemy.men}, firing");
+                    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"non-AP -> infantry in column {resolve_block_label(enemy)}, men={enemy.men}, firing");
                     scr_shoot(i, enemy, target_unit_index, "att", "ranged");
                     continue;
                 } else if (instance_number(obj_pnunit) > 1) {
@@ -152,7 +152,7 @@ if (!engaged) {
                         var _back_column_size_value = enemy2.column_size;
 
                         if (!check_column_obstruction(_column_size_value, _back_column_size_value)) {
-                            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"non-AP -> infantry found in back column {obj_ncombat.combat_debugger.resolve_label(enemy2)}, firing");
+                            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"non-AP -> infantry found in back column {resolve_block_label(enemy2)}, firing");
                             scr_shoot(i, enemy2, target_unit_index, "att", "ranged");
                             _shot = true;
                             break;
@@ -167,7 +167,7 @@ if (!engaged) {
                 if (!_shot && !_no_vehicles_present) {
                     if ((!instance_exists(obj_nfort)) || flank) {
                         if (block_has_armour(enemy) || (enemy.veh_type[1] == "Defenses")) {
-                            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"non-AP fallback -> armour in column {obj_ncombat.combat_debugger.resolve_label(enemy)}, firing");
+                            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"non-AP fallback -> armour in column {resolve_block_label(enemy)}, firing");
                             scr_shoot(i, enemy, target_unit_index, "att", "ranged");
                             continue;
                         } else if (instance_number(obj_pnunit) > 1) {
@@ -182,7 +182,7 @@ if (!engaged) {
                                     break;
                                 }
                                 if (block_has_armour(enemy2)) {
-                                    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"non-AP fallback -> armour in next column {obj_ncombat.combat_debugger.resolve_label(enemy2)}, firing");
+                                    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"non-AP fallback -> armour in next column {resolve_block_label(enemy2)}, firing");
                                     scr_shoot(i, enemy2, target_unit_index, "att", "ranged");
                                     break;
                                 }
@@ -250,7 +250,7 @@ if (!engaged) {
 
             // Check for vehicles
             if (block_has_armour(enemy)) {
-                obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee AP -> vehicles in {obj_ncombat.combat_debugger.resolve_label(enemy)}");
+                obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee AP -> vehicles in {resolve_block_label(enemy)}");
                 scr_shoot(i, enemy, 1, "arp", "melee");
                 continue;
             } else {
@@ -262,11 +262,11 @@ if (!engaged) {
         if (!_armour_piercing) {
             // Check for men
             if (enemy.men > 0) {
-                obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee -> infantry in {obj_ncombat.combat_debugger.resolve_label(enemy)}");
+                obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee -> infantry in {resolve_block_label(enemy)}");
                 scr_shoot(i, enemy, 1, "att", "melee");
                 continue;
             } else if (block_has_armour(enemy)) {
-                obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee -> armour fallback in {obj_ncombat.combat_debugger.resolve_label(enemy)}");
+                obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"melee -> armour fallback in {resolve_block_label(enemy)}");
                 scr_shoot(i, enemy, 1, "arp", "melee");
                 continue;
             }

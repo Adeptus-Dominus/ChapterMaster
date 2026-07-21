@@ -336,3 +336,25 @@ function check_column_obstruction(front_size, back_size) {
 
     return false;
 }
+
+/// @description Returns a human-readable label for a unit block instance.
+/// @param {Id.Instance.obj_pnunit|Id.Instance.obj_enunit} _inst
+/// @returns {String}
+function resolve_block_label(_inst) {
+    if (!instance_exists(_inst)) {
+        return string(_inst);
+    }
+
+    var _object_index = _inst.object_index;
+
+    if (_object_index == obj_nfort) {
+        return "Fort";
+    }
+
+    if (_object_index != obj_pnunit && _object_index != obj_enunit) {
+        return $"inst({_inst.id})";
+    }
+
+    var _desc = arrays_to_string_with_counts(_inst.dudes, _inst.dudes_num, true, false);
+    return $"<{_desc}>";
+};
