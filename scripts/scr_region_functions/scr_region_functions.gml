@@ -206,6 +206,10 @@ function regions_generate(_star, _planet) {
         _regions[i].fortification = _regions[i].is_capital ? _fortified : max(0, _fortified - 1);
         _regions[i].defences = _regions[i].is_capital ? _defences : 0;
     }
+    // Seed each region's stored force weight from its owner's deployment doctrine (see
+    // faction_deployment_weight). This must run AFTER fortification is set, since Imperial
+    // doctrine weights by fortification.
+    regions_seed_force_weights(_regions);
 
     // Build the adjacency graph (hub-and-ring): capital borders every outlying region, and
     // outlying regions form a ring among themselves for flanking.
@@ -3432,6 +3436,25 @@ function faction_ladder_composition(_faction, _level, _infra_turns = 32) {
     return _lines;
 }
 
+/// @function region_force_count
+/// @description The ABSOLUTE number of the region owner's troops physically in this region: the
+///              planet's fieldable force for that faction times the region's stored share. This
+///              is the real per-region garrison size (the number that should be whittled down as
+///              the region is fought over). Step 2 will deplete THIS per region and add a
+///              matching player-force slot so troops can be unloaded into a specific region.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _region_index
+/// @returns {Real}
+function region_force_count(_star, _planet, _region_index) {
+    var _region = region_get(_star, _planet, _region_index);
+    if (!is_struct(_region)) { return 0; }
+    var _owner = _region.owner;
+    var _planet_total = planet_faction_force_total(_star, _planet, _owner);
+    var _share = region_faction_share(_star, _planet, _region_index, _owner);
+    return round(_planet_total * _share);
+}
+
 /// @function region_force_breakdown
 /// @description Builds the force-composition readout for a region's garrison drill-down menu.
 ///              v1 has real per-unit data only for the Imperial garrison (PDF / Guardsmen, straight
@@ -3504,6 +3527,56 @@ function region_force_breakdown(_star, _planet, _region_index) {
     return _result;
 }
 
+/// @function regions_seed_force_weights
+/// @description Seed each region's stored force_weight from its owner's deployment doctrine
+///              (faction_deployment_weight). Called at worldgen and whenever an old save's
+///              regions lack the field. Storing the weight (rather than recomputing it live)
+///              is what lets a region's forces be depleted independently later.
+/// @param {Array<Struct.Region>} _regions
+/// @returns {Undefined}
+function regions_seed_force_weights(_regions) {
+    for (var i = 0, l = array_length(_regions); i < l; i++) {
+        _regions[i].force_weight = faction_deployment_weight(_regions[i].owner, _regions[i]);
+    }
+}
+
+/// @function region_force_weight_ensure
+/// @description Old-save safety: a Region restored from a save made before force_weight existed
+///              carries -1 (or lacks the field). Seed the whole planet's weights on first access.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @returns {Undefined}
+function region_force_weight_ensure(_star, _planet) {
+    var _regions = regions_ensure(_star, _planet);
+    var _missing = false;
+    for (var i = 0, l = array_length(_regions); i < l; i++) {
+        if (!variable_struct_exists(_regions[i], "force_weight") || !is_real(_regions[i].force_weight) || (_regions[i].force_weight < 0)) {
+            _missing = true;
+            break;
+        }
+    }
+    if (_missing) {
+        regions_seed_force_weights(_regions);
+    }
+}
+
+/// @function region_force_weight
+/// @description This region's stored force weight (its garrison slice of the planet pool),
+///              old-save safe. Falls back to the live doctrine weight if somehow still unset.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _region_index
+/// @returns {Real}
+function region_force_weight(_star, _planet, _region_index) {
+    region_force_weight_ensure(_star, _planet);
+    var _region = region_get(_star, _planet, _region_index);
+    if (!is_struct(_region)) { return 1; }
+    if (variable_struct_exists(_region, "force_weight") && is_real(_region.force_weight) && (_region.force_weight >= 0)) {
+        return _region.force_weight;
+    }
+    return faction_deployment_weight(_region.owner, _region);
+}
+
 /// @function region_faction_share
 /// @description The fraction of a planet's (shared) force pool that sits in one region. The planet's
 ///              force is split only across the regions that faction actually holds, weighted by how
@@ -3518,11 +3591,14 @@ function region_faction_share(_star, _planet, _region_index, _faction) {
     var _regions = regions_ensure(_star, _planet);
     var _n = array_length(_regions);
     if (_n <= 1) { return 1; }
+    region_force_weight_ensure(_star, _planet);
     var _total_w = 0;
     var _my_w = 0;
     for (var i = 0; i < _n; i++) {
         if (_regions[i].owner != _faction) { continue; }
-        var _w = faction_deployment_weight(_faction, _regions[i]);
+        // Read the region's STORED force weight (seeded from doctrine, mutable) rather than
+        // recomputing it, so a region can hold a depleted slice independently of its neighbours.
+        var _w = (variable_struct_exists(_regions[i], "force_weight") && is_real(_regions[i].force_weight) && (_regions[i].force_weight >= 0)) ? _regions[i].force_weight : faction_deployment_weight(_faction, _regions[i]);
         _total_w += _w;
         if (i == _region_index) { _my_w = _w; }
     }

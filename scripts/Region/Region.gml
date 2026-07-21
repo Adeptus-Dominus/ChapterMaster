@@ -30,6 +30,14 @@ function Region(_name = "Region", _is_capital = false, _owner = eFACTION.IMPERIU
     // per-faction planet arrays (p_orks, p_tau, ...).
     force_level = 0;
 
+    // STEP 1 of the "planets within a planet" rework: a region now OWNS its slice of the
+    // planet's force as a stored, mutable weight rather than the split being recomputed live
+    // every draw. Seeded at worldgen from faction_deployment_weight (the owner's garrison
+    // doctrine). region_faction_share reads this, so a region's forces can later be depleted
+    // independently (clear one region without touching the others) and troops can be unloaded
+    // into a specific region. -1 = unseeded (old save) -> seeded on first access.
+    force_weight = -1;
+
     // Defensive depth. fortification 0-5 (walls/bunkers), defences = ground turret batteries.
     fortification = 0;
     defences = 0;
