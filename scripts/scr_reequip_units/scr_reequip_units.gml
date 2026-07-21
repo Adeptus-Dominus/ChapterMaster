@@ -648,7 +648,7 @@ function draw_popup_equip() {
                 warning = $"Not enough {n_armour} : {req_armour_num - have_armour_num} more are required.";
             }
 
-            if (armour_data.has_tag("terminator")) {
+            if (is_struct(armour_data) && armour_data.has_tag("terminator")) {
                 if (armour_data.req_exp > 0) {
                     for (var g = 0; g < array_length(obj_controller.display_unit); g++) {
                         if (obj_controller.man_sel[g] == 1 && is_struct(obj_controller.display_unit[g])) {
