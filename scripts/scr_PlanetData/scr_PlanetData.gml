@@ -1938,6 +1938,21 @@ function PlanetData(_planet, _system) constructor {
             planet_draw = c_red;
             tooltip_draw("Can't garrison a non-friendly planet", 150);
         }
+
+        // Right-click cycles the target REGION on a multi-region world while unloading, so the
+        // player can pick a landing region without leaving the planet (the panel closes if the
+        // cursor moves off it). Mirrors the combat right-click fire-target selector. Does not land.
+        if (_loading && (planet > 0) && (planet_region_count(system, planet) > 1)) {
+            if (mouse_check_button_pressed(mb_right)) {
+                var _rc = planet_region_count(system, planet);
+                var _cur = region_focus_get(system, planet);
+                region_focus_set(system, planet, (_cur + 1) mod _rc);
+                return;
+            }
+            // Hint the control while hovering a multi-region world in the unload flow.
+            tooltip_draw("Right-click to choose landing region", 200);
+        }
+
         if (!mouse_check_button_pressed(mb_left)) {
             return;
         }
