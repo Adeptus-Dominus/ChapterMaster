@@ -888,9 +888,22 @@ function draw_regions_panel(_star, _planet, _px, _py) {
         // beneath the enemy garrison line.
         var _pf = region_player_force(_star, _planet, i);
         if (_pf > 0) {
-            draw_set_color(c_aqua);
-            draw_text(_row_x2 - 2, _ry + 30, "Your Force " + scr_display_number(_pf));
+            var _yf_str = "Your Force " + scr_display_number(_pf);
+            var _yf_x1 = _row_x2 - 2 - string_width(_yf_str);
+            var _yf_y1 = _ry + 30;
+            var _yf_x2 = _row_x2 - 2;
+            var _yf_y2 = _ry + 44;
+            draw_set_color(scr_hit(_yf_x1, _yf_y1, _yf_x2, _yf_y2) ? c_white : c_aqua);
+            draw_text(_row_x2 - 2, _yf_y1, _yf_str);
             draw_set_color(c_ltgray);
+            // Click opens the player's own force-composition breakdown for this region.
+            if (_selectable && point_and_click([_yf_x1, _yf_y1, _yf_x2, _yf_y2])) {
+                region_focus_set(_star, _planet, i);
+                obj_star_select.region_force_open = true;
+                obj_star_select.region_force_view = i;
+                obj_star_select.region_force_faction = -1;
+                obj_star_select.region_force_player = true;
+            }
         }
         draw_set_halign(fa_left);
 
@@ -3625,11 +3638,60 @@ function region_force_count(_star, _planet, _region_index) {
     return round(_planet_total * _share);
 }
 
+/// @function region_player_force_breakdown
+/// @description Composition of the PLAYER'S own force stationed in one region, grouped by role,
+///              built from the units actually there (each unit's region_location). Feeds the shared
+///              draw_force_panel, so the "Your Force" line opens a real by-type breakdown.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _region_index
+/// @returns {Struct}
+function region_player_force_breakdown(_star, _planet, _region_index) {
+    var _region = region_get(_star, _planet, _region_index);
+    var _region_name = is_struct(_region) ? _region.name : "Region";
+    var _sys_name = _star.name;
+    var _counts = {};       // role -> count
+    var _order = [];        // preserve first-seen role order
+    var _total = 0;
+    for (var _co = 0; _co <= obj_ini.companies; _co++) {
+        if (_co >= array_length(obj_ini.TTRPG)) { break; }
+        for (var _i = 0; _i < array_length(obj_ini.TTRPG[_co]); _i++) {
+            var _u = obj_ini.TTRPG[_co][_i];
+            if (!is_struct(_u)) { continue; }
+            if (_u.name() == "") { continue; }
+            // Only living units physically in THIS system + planet + region.
+            if (obj_ini.god[_co][_i] >= 10) { continue; }
+            if (_u.planet_location != _planet) { continue; }
+            if (_u.location_string != _sys_name) { continue; }
+            if (!variable_struct_exists(_u, "region_location") || (_u.region_location != _region_index)) { continue; }
+            var _role = _u.role();
+            if (_role == "") { continue; }
+            if (!struct_exists(_counts, _role)) {
+                _counts[$ _role] = 0;
+                array_push(_order, _role);
+            }
+            _counts[$ _role] += 1;
+            _total += 1;
+        }
+    }
+    var _lines = [];
+    for (var _r = 0; _r < array_length(_order); _r++) {
+        var _rn = _order[_r];
+        array_push(_lines, { label: _rn, count: _counts[$ _rn] });
+    }
+    var _note = (_total <= 0) ? "No forces of yours are stationed in this sector." : "";
+    return {
+        owner: eFACTION.PLAYER,
+        owner_name: region_faction_name(eFACTION.PLAYER),
+        title: "Your Force - " + _region_name,
+        population: 0,
+        lines: _lines,
+        note: _note,
+    };
+}
+
 /// @function region_force_breakdown
 /// @description Builds the force-composition readout for a region's garrison drill-down menu.
-///              v1 has real per-unit data only for the Imperial garrison (PDF / Guardsmen, straight
-///              off the region fields); other owners return a "pending" note until the per-faction
-///              force recipes land. See docs/POPULATIONS_FORCE_PLAN.md §15 for the full plan.
 /// @param {Id.Instance.obj_star} _star
 /// @param {Real} _planet
 /// @param {Real} _region_index

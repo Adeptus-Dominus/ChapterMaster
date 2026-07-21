@@ -283,6 +283,7 @@ try {
             region_force_open = false;
             region_force_view = -1;
             region_force_faction = -1;
+            region_force_player = false;
             if ((obj_controller.selecting_planet > 0) && (planet_region_count(target, obj_controller.selecting_planet) > 1)) {
                 population = false;
                 garrison = "";
@@ -362,7 +363,9 @@ try {
         // it clears both the slate and the regions/construction column; its close [x] dismisses it.
         if ((obj_controller.selecting_planet > 0) && region_force_open) {
             var _force_data;
-            if (region_force_faction >= 0) {
+            if (region_force_player && (region_force_view >= 0) && (region_force_view < planet_region_count(target, obj_controller.selecting_planet))) {
+                _force_data = region_player_force_breakdown(target, obj_controller.selecting_planet, region_force_view);
+            } else if (region_force_faction >= 0) {
                 _force_data = planet_faction_force_breakdown(target, obj_controller.selecting_planet, region_force_faction);
             } else if ((region_force_view >= 0) && (region_force_view < planet_region_count(target, obj_controller.selecting_planet))) {
                 _force_data = region_force_breakdown(target, obj_controller.selecting_planet, region_force_view);
@@ -372,6 +375,7 @@ try {
             if (draw_force_panel(_force_data, 340 + main_data_slate.width + 308, 160)) {
                 region_force_open = false;
                 region_force_view = -1;
+                region_force_player = false;
             }
         }
         // Deploy Guard auxilia: offer the 4th slot when guard-carrying ships orbit this world.

@@ -11,6 +11,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
     var is_man = false;
     var _loc_name = "";
     var _loc_planet_num = "";
+    var _loc_sector_suffix = "";
     var unit_specialist = false;
     if (man[selected] == "man" && is_struct(display_unit[selected])) {
         is_man = true;
@@ -50,9 +51,10 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
                 if (unit_location[0] == eLOCATION_TYPES.PLANET) {
                     _loc_name = unit_location[2];
                     _loc_planet_num = scr_roman(unit_location[1]);
-                    // Append the unit's sector (region) when it is stationed in a specific one.
+                    // The unit's sector (region), carried as a minimal "| N" suffix and appended
+                    // AFTER the name+numeral so it never eats into the planet name's width budget.
                     if (variable_struct_exists(_unit, "region_location") && is_real(_unit.region_location) && (_unit.region_location >= 0)) {
-                        _loc_planet_num += ", Sect. " + string(_unit.region_location + 1);
+                        _loc_sector_suffix = " | " + string(_unit.region_location + 1);
                     }
                 } else if (unit_location[0] == eLOCATION_TYPES.SHIP) {
                     _loc_name = obj_ini.ship[unit_location[1]];
@@ -357,6 +359,8 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
         } else {
             truncatedLocation = string_truncate(string(_loc_name), 130);
         }
+        // Sector suffix goes on the end so it never costs the planet name any width.
+        truncatedLocation += _loc_sector_suffix;
 
         draw_text(xx + 430 + 8, yy + 66, truncatedLocation); // LOC
         draw_set_alpha(1);

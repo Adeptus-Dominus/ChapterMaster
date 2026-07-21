@@ -74,6 +74,7 @@ region_force_view = -1;
 // When >= 0, the force panel shows this faction's planet-wide roster (opened from a Planetary
 // Presence entry), overriding the region/planet view. -1 = not in faction mode.
 region_force_faction = -1;
+region_force_player = false; // when true, the drill-down shows the PLAYER's own force in region_force_view
 
 garrison_data_slate = new DataSlate();
 garrison_data_slate.title = "Garrison Report";
