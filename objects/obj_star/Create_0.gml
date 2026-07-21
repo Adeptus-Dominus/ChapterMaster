@@ -81,6 +81,10 @@ p_regions = array_create_advanced(_planet_array_size, []);
 // a save that captured it crashes at deserialize (array write into undefined).
 p_heresy_cleansed_turn = array_create(_planet_array_size, -9999);
 p_region_focus = array_create_advanced(_planet_array_size, 0); // player's conquest-focus region index
+// Persisted outlying-region names per planet, chosen once and reused so names (and the region
+// layout the focus indexes into) stay STABLE across turns and reloads. -1/empty entry = not yet
+// chosen for that planet. Same load-safety rule as p_region_focus.
+p_region_names = array_create_advanced(_planet_array_size, -1);
 // Positional-siege ground front: which region the player's landed force occupies on a
 // gun-world (-1 = no landing). Declared here so the serializer saves it and deserialize
 // does not crash on load (same rule as p_region_focus).

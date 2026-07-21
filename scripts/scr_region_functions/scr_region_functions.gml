@@ -169,6 +169,30 @@ function region_distribute_total(_regions, _total, _capital_weight, _field) {
     }
 }
 
+/// @function region_names_ensure
+/// @description Returns the planet's persisted outlying-region names, picking them ONCE (randomly,
+///              no repeats) on first use and storing them on the star so every later regeneration
+///              reuses the same names. Old-save safe: an unset/short entry is (re)generated. This is
+///              what keeps region names - and the region layout the conquest focus indexes into -
+///              stable across turns and reloads (fixing names changing each turn / the focus reset).
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _outlying_count how many non-capital names are needed
+/// @returns {Array<String>}
+function region_names_ensure(_star, _planet, _outlying_count) {
+    if (!variable_instance_exists(_star, "p_region_names")) {
+        _star.p_region_names = array_create_advanced(9, -1);
+    }
+    var _stored = _star.p_region_names[_planet];
+    // Reuse stored names when they exist and are long enough for this planet.
+    if (is_array(_stored) && (array_length(_stored) >= _outlying_count)) {
+        return _stored;
+    }
+    var _names = region_pick_zone_names(_outlying_count);
+    _star.p_region_names[_planet] = _names;
+    return _names;
+}
+
 /// @function regions_generate
 /// @description (Re)builds the region list for a planet from its current planet-level scalars,
 ///              distributing population and forces across regions with the capital taking the
@@ -177,11 +201,13 @@ function region_distribute_total(_regions, _total, _capital_weight, _field) {
 /// @param {Real} _planet
 /// @returns {Array<Struct.Region>}
 function regions_generate(_star, _planet) {
+    LOGGER.info($"REGIONS_GENERATE called for {_star.name} planet {_planet} (focus was {variable_instance_exists(_star, \"p_region_focus\") ? _star.p_region_focus[_planet] : -99})");
     var _count = region_count_for_planet(_star, _planet);
     var _owner = _star.p_owner[_planet];
     var _first = _star.p_first[_planet];
-    // Random, non-repeating zone names for the outlying regions (one per non-capital region).
-    var _zone_names = region_pick_zone_names(max(0, _count - 1));
+    // Persisted, non-repeating zone names for the outlying regions (chosen once, then reused), so
+    // regenerating the region array does not re-randomise names or invalidate the conquest focus.
+    var _zone_names = region_names_ensure(_star, _planet, max(0, _count - 1));
 
     var _regions = [];
     for (var i = 0; i < _count; i++) {
@@ -688,6 +714,9 @@ function region_focus_ensure(_star, _planet) {
     var _count = planet_region_count(_star, _planet);
     var _f = _star.p_region_focus[_planet];
     if (!is_real(_f) || (_f < 0) || (_f >= _count)) {
+        if (_f != 0) {
+            LOGGER.info($"FOCUS RESET to 0 on {_star.name} planet {_planet}: was {_f}, count={_count} (out of bounds)");
+        }
         _star.p_region_focus[_planet] = 0;
         _f = 0;
     }
