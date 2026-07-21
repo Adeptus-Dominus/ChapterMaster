@@ -20,7 +20,7 @@ if ((owner != eFACTION.INQUISITION) && (capital_number + frigate_number + escort
     instance_destroy();
 }
 
-if ((owner == eFACTION.TAU) && (x < 0) || (y < 0)) {
+if ((owner == eFACTION.TAU) && ((x < 0) || (y < 0))) {
     instance_destroy();
 }
 
