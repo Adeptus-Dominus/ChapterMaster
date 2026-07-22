@@ -21,6 +21,12 @@
 #macro STR_ANY_POWER_ARMOUR "Any Power Armour"
 #macro STR_ANY_TERMINATOR_ARMOUR "Any Terminator Armour"
 
+//slots align with enum eEQUIPMENT_SLOT ordering for cross compatability
+#macro UNIT_EQUIP_SLOTS [ "wep1", "wep2", "armour", "gear", "mobi", "all"]
+
+
+#macro UNIT_EQUIP_SLOTS_DISPLAY [ "First Weapon", "Second Weapon", "Armour", "Gear", "Back/Mobility", "ALL"]
+
 // Basic, because we don't include Artificer Armour
 global.list_basic_power_armour = ["MK7 Aquila", "MK6 Corvus", "MK5 Heresy", "MK8 Errant", "MK4 Maximus", "MK3 Iron Armour","Power Armour"];
 global.list_terminator_armour = ["Terminator Armour", "Tartaros","Cataphractii"];

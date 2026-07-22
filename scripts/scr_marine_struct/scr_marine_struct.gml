@@ -713,7 +713,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static unit_profile_text = scr_unit_detail_text;
     static has_equipped = unit_has_equipped;
 
-    static unit_equipment_data = function() {
+    static unit_equipment_data = function(as_UnitEquipment = true) {
         var armour_data = get_armour_data();
         var gear_data = get_gear_data();
         var mobility_data = get_mobility_data();
@@ -726,7 +726,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             wep1: weapon_one_data,
             wep2: weapon_two_data,
         };
-        return equip_data;
+        if(as_UnitEquipment){
+            return new UnitEquipment(equip_data, self);
+        } else {
+            return equip_data;
+        }
     };
 
     //body parts list can be extended as much as people want

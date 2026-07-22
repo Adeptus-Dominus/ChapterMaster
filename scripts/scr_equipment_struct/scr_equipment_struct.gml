@@ -18,7 +18,7 @@ global.tag_recovery_values = {
     "terminator": 30,
 };
 
-function EquipmentStruct(item_data, core_type, quality_request = "none", arti_struct = -1) constructor {
+function EquipmentStruct(item_data, core_type = "", quality_request = "none", arti_struct = -1) constructor {
     type = core_type;
 
     if (is_real(arti_struct) && arti_struct > -1) {
@@ -98,6 +98,9 @@ function EquipmentStruct(item_data, core_type, quality_request = "none", arti_st
         var stat_order;
         var item_type = type;
         if (type == "") {
+            if (name == ""){
+                return "";
+            }
             if (struct_exists(global.gear[$ "armour"], name)) {
                 item_type = "armour";
             } else if (struct_exists(global.gear[$ "mobility"], name)) {
@@ -398,6 +401,20 @@ function EquipmentStruct(item_data, core_type, quality_request = "none", arti_st
             }
         }
     };
+
+    static evaluate = function(evaluation_data){
+        var _valid = true;
+        var _eval_count = array_length(struct_get_names(evaluation_data));
+        if (struct_exists(evaluation_data, "name")){
+            _eval_count--;
+            var _name_check = evaluation_data.name;
+            _valid = name == _name_check;
+        }
+
+        if (_eval_count == 0){
+            return _valid
+        }
+    }
 }
 
 /// @param {string} search_area possible values: "any", "weapon", "gear", "armour", "mobility"
