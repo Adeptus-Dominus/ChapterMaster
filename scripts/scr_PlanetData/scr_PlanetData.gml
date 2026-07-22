@@ -431,6 +431,29 @@ function PlanetData(_planet, _system) constructor {
                         }
                     }
                 }
+                // CONSUMED: the reserve is empty, so the Hive Fleet has stripped the world to bedrock.
+                // Mark it Dead, clear the swarm (it re-embarks and moves on) and let the fleet grow on
+                // what it ate. This is the ending the legacy tower/pool path used to provide, now fired
+                // when the biomass model actually FINISHES instead of three turns after the swarm
+                // crossed strength 5 with the populace still intact.
+                if ((system.p_biomass[planet] <= 0) && (planet_type != "Dead")) {
+                    var _was_type = planet_type;
+                    var _hive_fleet = scr_orbiting_fleet(eFACTION.TYRANIDS, system);
+                    system.p_type[planet] = "Dead";
+                    planet_type = "Dead";
+                    set_population(0);
+                    system.p_pdf[planet] = 0;
+                    system.p_guardsmen[planet] = 0;
+                    system.p_race_pop[planet][eFACTION.TYRANIDS] = 0;   // swarm re-embarks; level sync below clears it
+                    if (_hive_fleet != noone) {
+                        _hive_fleet.capital_number += 1;
+                        _hive_fleet.escort_number += 3;
+                        if ((_was_type == "Death") || (_was_type == "Hive")) {
+                            _hive_fleet.capital_number += choose(0, 1, 1);   // a rich world feeds it better
+                        }
+                        _hive_fleet.image_index = floor(_hive_fleet.capital_number + (_hive_fleet.frigate_number / 2) + (_hive_fleet.escort_number / 4));
+                    }
+                }
             }
             // A fresh vanguard on a small world is below the level-1 anchor (50,000 Tyranids), which would
             // read as level 0 and hand the world straight back to its former owner while it is being eaten.
