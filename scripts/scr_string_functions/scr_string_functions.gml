@@ -504,3 +504,12 @@ function format_codeblock(_message, _language = "") {
 function format_time(_time) {
     return (_time < 10) ? $"0{_time}" : string(_time);
 }
+
+
+function format_number_with_sign(number) {
+    return number > 0 ? "+" + string(number) : string(number);
+}
+
+function string_format_percentage(number) {
+    return format_number_with_sign(number) + "%";
+};
