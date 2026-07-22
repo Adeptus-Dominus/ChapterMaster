@@ -525,7 +525,7 @@ function ComplexSet(_unit) constructor {
                 var _area = _tag_check_areas[i];
 
                 if (!array_contains(equipment_data.present_items, _area)){
-                    break;
+                    continue;
                 }
 
                 var _item = equipment_data.get_item(_area);
@@ -546,8 +546,6 @@ function ComplexSet(_unit) constructor {
         }
 
         var _is_weapon = _mod.position == "weapon";
-
-        var _is_weapon = false;
         if (!_is_weapon && struct_exists(_mod, "min_quality")) {
             var _viable = false;
             var _quality_check_areas = struct_get_names(_mod.min_quality);
