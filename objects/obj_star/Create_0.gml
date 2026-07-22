@@ -42,6 +42,10 @@ p_race_pop = array_create_advanced(_planet_array_size, array_create(15, 0)); // 
 p_infra_turns = array_create(_planet_array_size, 32);   // world development counter (drives force tier)
 p_ork_loot = array_create(_planet_array_size, 0);       // looted vehicles the Orks hold
 p_biomass = array_create(_planet_array_size, 0);        // Tyranid biomass reserve
+// Highest devouring-warning stage already announced for this world (0 = none, 4 = stripped bare), so
+// each escalating warning fires once instead of every turn. MUST be declared here like the other p_*
+// arrays or deserialize crashes on load.
+p_biomass_warn = array_create(_planet_array_size, 0);
 p_ork_clan = array_create_advanced(_planet_array_size, []); // per-planet array of Ork warband structs
 p_large = array_create(_planet_array_size, 0);
 p_pop = array_create(_planet_array_size, "");

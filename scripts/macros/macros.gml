@@ -119,6 +119,13 @@
 // the swarm outweighed everything alive and consumed it on arrival (dead in 1 turn). Capping the
 // vanguard relative to the food supply also makes small worlds take a sane time to strip.
 #macro TYRANID_VANGUARD_BIOMASS_CAP 0.0005
+// DEVOURING WARNINGS: because consumption compounds, a world reads as healthy until it suddenly
+// collapses. These thresholds are measured in "turns of food left at the current feeding rate"
+// (reserve / (swarm x appetite)), which maps to roughly the same real warning time on every world
+// type: ~15 turns out, ~10 turns out, ~5 turns out. Raise them to warn earlier.
+#macro TYRANID_WARN_EARLY 60
+#macro TYRANID_WARN_GRAVE 22
+#macro TYRANID_WARN_FINAL 7
 #macro REGION_GARRISON_FRACTION REGION_ASSAULT_COMMIT_FRACTION
 
 // ---- Orbital Gun Array (capital planetary defence) ----

@@ -332,28 +332,30 @@ function PlanetData(_planet, _system) constructor {
             if (!_fleet_here && _eta > 0) {
                 _beacon.eta = _eta - 1;   // Hive Fleet still crossing the sector
             } else {
-                if (system.p_race_pop[planet][eFACTION.TYRANIDS] <= 0) {
-                    // Seed the world's BIOMASS reserve ONCE — its people plus its native ecosystem. The swarm
-                    // strips this down over the coming turns; its final size is roughly this x efficiency.
-                    // Seeded BEFORE planetfall so the landing swarm can be scaled to the food supply.
-                    var _budget0 = 0;
-                    if (variable_instance_exists(system, "p_biomass")) {
-                        if (system.p_biomass[planet] <= 0) {
-                            var _human0 = large_population ? (population * 1000000000) : population;
-                            system.p_biomass[planet] = tyranid_biomass_budget(planet_type, _human0, _cap_head);
-                        }
-                        _budget0 = system.p_biomass[planet];
-                    }
-                    system.p_race_pop[planet][eFACTION.TYRANIDS] = tyranid_vanguard(planet_type, _budget0);   // PLANETFALL
-                }
                 _nid_active = true;
             }
-        } else if (current_owner == eFACTION.TYRANIDS && system.p_race_pop[planet][eFACTION.TYRANIDS] > 0 && !has_feature(eP_FEATURES.GENE_STEALER_CULT)) {
-            _nid_active = true;   // an established Tyranid world keeps swarming — but a still-infiltrating
-                                  // Genestealer Cult (§16p) does NOT devour the world yet; that waits for
-                                  // Ascension (the beacon branch above), so its host just grows as a cult.
+        } else if (current_owner == eFACTION.TYRANIDS && !has_feature(eP_FEATURES.GENE_STEALER_CULT)) {
+            // ANY Tyranid-held world is being devoured, however the Hive Fleet took it. Ascension is only
+            // one route in: a fleet that simply conquers a world strips it exactly the same way. (A still-
+            // infiltrating Genestealer Cult does NOT devour yet — that waits for Ascension above, so its
+            // host just grows as a cult.)
+            _nid_active = true;
         }
         if (_nid_active) {
+            // PLANETFALL: seed the world's BIOMASS reserve ONCE — its people plus its native ecosystem —
+            // and land a vanguard scaled to that food supply. Shared by BOTH routes in, so a fleet
+            // conquest begins stripping the world just as an ascension does.
+            if (system.p_race_pop[planet][eFACTION.TYRANIDS] <= 0) {
+                var _budget0 = 0;
+                if (variable_instance_exists(system, "p_biomass")) {
+                    if (system.p_biomass[planet] <= 0) {
+                        var _human0 = large_population ? (population * 1000000000) : population;
+                        system.p_biomass[planet] = tyranid_biomass_budget(planet_type, _human0, _cap_head);
+                    }
+                    _budget0 = system.p_biomass[planet];
+                }
+                system.p_race_pop[planet][eFACTION.TYRANIDS] = tyranid_vanguard(planet_type, _budget0);
+            }
             var _nid = system.p_race_pop[planet][eFACTION.TYRANIDS];
             if (!variable_instance_exists(system, "p_biomass")) {
                 // Old save without the biomass layer — fall back to bounded explosive growth so nothing breaks.
@@ -380,8 +382,50 @@ function PlanetData(_planet, _system) constructor {
                     if (large_population) { edit_population(-(population * (1 - _keep))); }
                     else { set_population(max(0, round(population * _keep))); }
                 }
+                // DEVOURING WARNINGS. Consumption compounds, so a world reads as healthy right up to the
+                // point it collapses. Measure how long the reserve lasts at the CURRENT feeding rate and
+                // announce escalating warnings as that runs down, so the sector sees a world being eaten
+                // instead of finding a corpse. Each stage fires once (p_biomass_warn holds the highest).
+                if (variable_instance_exists(system, "p_biomass_warn")) {
+                    var _feed_rate = max(1, system.p_race_pop[planet][eFACTION.TYRANIDS] * TYRANID_APPETITE);
+                    var _food_turns = system.p_biomass[planet] / _feed_rate;
+                    var _warn_stage = 0;
+                    if (system.p_biomass[planet] <= 0) {
+                        _warn_stage = 4;
+                    } else if (_food_turns <= TYRANID_WARN_FINAL) {
+                        _warn_stage = 3;
+                    } else if (_food_turns <= TYRANID_WARN_GRAVE) {
+                        _warn_stage = 2;
+                    } else if (_food_turns <= TYRANID_WARN_EARLY) {
+                        _warn_stage = 1;
+                    }
+                    var _warn_seen = system.p_biomass_warn[planet];
+                    if (!is_real(_warn_seen)) { _warn_seen = 0; }
+                    if (_warn_stage > _warn_seen) {
+                        system.p_biomass_warn[planet] = _warn_stage;
+                        switch (_warn_stage) {
+                            case 1:
+                                scr_event_log("yellow", $"The Hive Fleet is stripping {name()} in earnest. The world cannot hold out indefinitely.", system.name);
+                                break;
+                            case 2:
+                                scr_event_log("yellow", $"{name()} is being consumed. Most of the world's biomass is already inside the swarm.", system.name);
+                                break;
+                            case 3:
+                                scr_event_log("red", $"{name()} cannot hold out much longer. Only remnants remain before the swarm strips it bare.", system.name);
+                                break;
+                            default:
+                                scr_event_log("red", $"{name()} has been stripped bare. Nothing living remains.", system.name);
+                                break;
+                        }
+                    }
+                }
             }
-            system.p_tyranids[planet] = count_to_level(eFACTION.TYRANIDS, system.p_race_pop[planet][eFACTION.TYRANIDS]);
+            // A fresh vanguard on a small world is below the level-1 anchor (50,000 Tyranids), which would
+            // read as level 0 and hand the world straight back to its former owner while it is being eaten.
+            // Any surviving swarm holds the world at level 1 or better.
+            var _nid_lvl = count_to_level(eFACTION.TYRANIDS, system.p_race_pop[planet][eFACTION.TYRANIDS]);
+            if ((system.p_race_pop[planet][eFACTION.TYRANIDS] > 0) && (_nid_lvl < 1)) { _nid_lvl = 1; }
+            system.p_tyranids[planet] = _nid_lvl;
         }
     };
 
