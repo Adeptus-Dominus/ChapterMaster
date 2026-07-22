@@ -1,5 +1,6 @@
 try {
     acted = 0;
+    purges_done = 0;
 
     if (action == "Lost") {
         set_fleet_location("Lost");
@@ -30,7 +31,7 @@ try {
         }
 
         var spid = point_distance(x, y, action_x, action_y);
-        spid = spid / action_eta;
+        spid = spid / max(1, action_eta);
         var dir = point_direction(x, y, action_x, action_y);
 
         x = x + lengthdir_x(spid, dir);
@@ -93,7 +94,17 @@ try {
                 }
             }
             if ((steh.owner == eFACTION.ELDAR) && (obj_controller.faction_defeated[6] == 0) && (obj_controller.known[eFACTION.ELDAR] == 0)) {
-                obj_controller.known[eFACTION.ELDAR] = 1;
+                // Encountering an Eldar-held system yields first-contact
+                // intelligence, once per campaign (hopping in and out of the system
+                // must not farm clues); the reveal stays gated behind
+                // ELDAR_INTEL_REQUIRED clues.
+                if (!variable_instance_exists(obj_controller, "eldar_space_clue_granted")) {
+                    obj_controller.eldar_space_clue_granted = false;
+                }
+                if (!obj_controller.eldar_space_clue_granted) {
+                    obj_controller.eldar_space_clue_granted = true;
+                    eldar_intel_grant();
+                }
             }
             if ((steh.owner == eFACTION.TAU) && (obj_controller.faction_defeated[8] == 0) && (obj_controller.known[eFACTION.TAU] == 0)) {
                 obj_controller.known[eFACTION.TAU] = 1;
@@ -141,11 +152,18 @@ try {
                 dist = point_distance(x, y, steh.old_x, steh.old_y);
 
                 if ((rando >= 95) && (dist <= 300)) {
-                    obj_controller.known[eFACTION.ELDAR] = 1;
-                    scr_alert("green", "elfs", "Eldar Craftworld discovered.", steh.old_x, steh.old_y);
+                    // A lucky close pass grants the same once-per-campaign
+                    // first-contact clue, never a full reveal.
+                    if (!variable_instance_exists(obj_controller, "eldar_space_clue_granted")) {
+                        obj_controller.eldar_space_clue_granted = false;
+                    }
+                    if (!obj_controller.eldar_space_clue_granted) {
+                        obj_controller.eldar_space_clue_granted = true;
+                        eldar_intel_grant();
+                    }
                     with (obj_en_fleet) {
                         if (owner == eFACTION.ELDAR) {
-                            image_alpha = 1;
+                            // Un-hiding now happens in the intel reveal path only.
                         }
                     }
                 }

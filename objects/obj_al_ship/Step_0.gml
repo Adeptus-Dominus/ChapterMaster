@@ -398,10 +398,10 @@ if (owner != eFACTION.ELDAR) {
                 // Melee ship weapons (nids)
                 if (((string_count("Claws", wep) == 1) || (string_count("endrils", wep) == 1)) && (ok == 3)) {
                     if (target.shields <= 0) {
-                        target.hp -= weapon_dam[wep];
+                        target.hp -= weapon_dam[i];
                     }
                     if (target.shields > 0) {
-                        target.shields -= weapon_dam[wep];
+                        target.shields -= weapon_dam[i];
                     }
                 }
                 // Special weapons
@@ -678,10 +678,10 @@ if (owner == eFACTION.ELDAR) {
                 }
                 if (((string_count("Claws", wep) == 1) || (string_count("endrils", wep) == 1)) && (ok == 3)) {
                     if (target.shields <= 0) {
-                        target.hp -= weapon_dam[wep];
+                        target.hp -= weapon_dam[i];
                     }
                     if (target.shields > 0) {
-                        target.shields -= weapon_dam[wep];
+                        target.shields -= weapon_dam[i];
                     }
                 }
                 if (((string_count("Interceptor", wep) == 1) || (string_count("ommerz", wep) == 1) || (string_count("Manta", wep) == 1) || (string_count("Glands", wep) == 1) || (string_count("Eldar Launch", wep) == 1)) && (ok == 3)) {

@@ -10,6 +10,41 @@ try {
 
     LOGGER.info($"Ground Combat - {(defeat ? "Defeat" : "Victory")} - Enemy:{enemy} ({battle_special})");
 
+    // Guardsman veterancy: award battle experience to Guardsmen who fought here and
+    // lived, identified as basic Guardsmen still on the roster at the battle location
+    // (the same star-name match the meeting muster below uses). Only on victory. Around
+    // GUARD_VETERAN_XP / GUARD_BATTLE_XP survived battles makes one eligible for
+    // promotion to Veteran Guard (see promote_auxilia_to_veteran).
+    if (!defeat) {
+        var _grd_survivors = collect_role_group("all", "", false, { roles: ["Guardsman"] });
+        for (var _gs = 0; _gs < array_length(_grd_survivors); _gs++) {
+            var _grd = _grd_survivors[_gs];
+            if (_grd.location_string == obj_ncombat.battle_loc) {
+                _grd.add_experience(GUARD_BATTLE_XP);
+            }
+        }
+
+        // Kill lottery: each Guard small-arms kill tallied during the battle
+        // (obj_ncombat.guard_kills, see scr_shoot) awards GUARD_KILL_XP to one random
+        // surviving Guard at the battle site. Guardsmen, Veterans, and Sergeants all
+        // hold tickets, so credit lands unevenly: veterancy diverges instead of the
+        // whole levy promoting in lockstep, and Veterans and Sergeants bank XP toward
+        // future promotion tiers.
+        var _grd_lottery = collect_role_group("all", "", false, { roles: ["Guardsman", "Veteran Guard", "Guard Sergeant"] });
+        var _grd_here = [];
+        for (var _gl = 0; _gl < array_length(_grd_lottery); _gl++) {
+            if (_grd_lottery[_gl].location_string == obj_ncombat.battle_loc) {
+                array_push(_grd_here, _grd_lottery[_gl]);
+            }
+        }
+        if (array_length(_grd_here) > 0) {
+            repeat (obj_ncombat.guard_kills) {
+                var _lucky = _grd_here[irandom(array_length(_grd_here) - 1)];
+                _lucky.add_experience(GUARD_KILL_XP);
+            }
+        }
+    }
+
     // If battling own dudes, then remove the loyalists after the fact
 
     if (enemy == eFACTION.PLAYER) {
@@ -177,15 +212,24 @@ try {
             }
         }
         if (defeat == 0) {
+            // Kill the warlord exactly once. Remove the concealed-warlord feature and
+            // the daemonic incursion he anchors from the battle planet, so repeat
+            // purges no longer respawn the duel (and re-announce his death) while the
+            // world pumps heresy forever. Mirrors the Ork warboss departure pattern.
+            var _first_kill = (obj_controller.faction_defeated[10] == 0);
+            if (instance_exists(battle_object)) {
+                delete_features(battle_object.p_feature[battle_id], eP_FEATURES.WARLORD10);
+                delete_features(battle_object.p_feature[battle_id], eP_FEATURES.DAEMONIC_INCURSION);
+            }
             obj_controller.known[eFACTION.CHAOS] = 2;
             obj_controller.faction_defeated[10] = 1;
 
-            if (instance_exists(obj_turn_end)) {
+            if (_first_kill && instance_exists(obj_turn_end)) {
                 scr_event_log("", "Enemy Leader Assassinated: Chaos Lord");
                 scr_alert("", "ass", "Chaos Lord " + string(obj_controller.faction_leader[eFACTION.CHAOS]) + " has been killed.", 0, 0);
                 scr_popup("Chaos Lord Killed", "Chaos Lord " + string(obj_controller.faction_leader[eFACTION.CHAOS]) + " has been slain in combat.  Without his leadership the various forces of Chaos in the sector will crumble apart and disintegrate from infighting.  Sector " + string(obj_ini.sector_name) + " is no longer as threatened by the forces of Chaos.", "", "");
             }
-            if (!instance_exists(obj_turn_end)) {
+            if (_first_kill && !instance_exists(obj_turn_end)) {
                 scr_event_log("", "Enemy Leader Assassinated: Chaos Lord");
                 var _pop = instance_create(0, 0, obj_popup);
                 _pop.image = "";
@@ -277,10 +321,29 @@ try {
 
                 var _planet = obj_turn_end.battle_world[_battle_index];
 
-                _battle_object.p_player[_planet] -= world_size;
+                // Foothold carve-out: if the player is holding ground on a world they do NOT own
+                // (an active foothold on enemy soil) and they WON this defence, leave the force in
+                // place so the foothold persists turn to turn instead of being stripped on landing.
+                var _is_foothold_defence = (_battle_object.p_owner[_planet] != eFACTION.PLAYER) && (_battle_object.p_player[_planet] > 0);
+                if (_is_foothold_defence && (defeat != 1)) {
+                    // Won defence of a foothold: hold the beachhead (p_player unchanged).
+                } else {
+                    _battle_object.p_player[_planet] -= world_size;
 
-                if (defeat == 1) {
-                    _battle_object.p_player[_planet] = 0;
+                    if (defeat == 1) {
+                        _battle_object.p_player[_planet] = 0;
+                    }
+                    // Keep the per-region player record in step with the planet total: clear the
+                    // regional footholds when the force is wiped, else scale them to the survivors.
+                    if (_battle_object.p_player[_planet] <= 0) {
+                        _battle_object.p_player[_planet] = 0;
+                        var _rgns = regions_ensure(_battle_object, _planet);
+                        for (var _ri = 0; _ri < array_length(_rgns); _ri++) {
+                            _rgns[_ri].player_force = 0;
+                        }
+                    } else {
+                        region_player_force_scale_to_total(_battle_object, _planet, _battle_object.p_player[_planet]);
+                    }
                 }
             }
             obj_controller.combat = 0;

@@ -70,6 +70,8 @@ function add_vehicles_to_recovery() {
         "Whirlwind": 4,
         "Rhino": 3,
         "Land Speeder": 3,
+        "Leman Russ": 3,
+        "Chimera": 2,
         "Bike": 1,
     };
 
@@ -240,7 +242,7 @@ function after_battle_part1() {
                 marine_dead[i] = 1;
                 marine_hp[i] = -50;
             }
-            if ((veh_type[i] != "") && (obj_ncombat.defeat == 1)) {
+            if ((i < array_length(veh_type)) && (veh_type[i] != "") && (obj_ncombat.defeat == 1)) {
                 veh_dead[i] = 1;
                 veh_hp[i] = -200;
             }
@@ -411,4 +413,70 @@ function after_combat_dead_marine_equipment_recovered(unit) {
                 unit.update_mobility_item("", false, _recover);
         }
     }
+}
+
+/// @self Asset.GMObject.obj_pnunit
+/// @function hold_ground_disembark
+/// @description When the assault was launched with Hold Ground set, the surviving attackers
+///              (non-ally, non-local, still alive) STAY planetside as a foothold instead of
+///              returning to orbit: each is unloaded onto the battle world (ship_location -1,
+///              added to p_player), so the world's contested auto-battle engages them each
+///              turn until the player Recalls them. Local forces were already planetside and
+///              are untouched. Runs only on a won or survived ground battle.
+function hold_ground_disembark() {
+    if (!instance_exists(obj_ncombat) || (obj_ncombat.hold_ground != 1)) {
+        return;
+    }
+    var _star = obj_ncombat.battle_object;
+    var _planet = obj_ncombat.battle_id;
+    if (!instance_exists(_star)) {
+        return;
+    }
+    var _landed = 0;
+    var _p_before = _star.p_player[_planet];
+    // The region that was assaulted is where the foothold forms. Use the region captured at battle
+    // launch (obj_ncombat.battle_region); fall back to the live focus only if it was not set.
+    var _land_region = obj_ncombat.battle_region;
+    if (!is_real(_land_region) || (_land_region < 0) || (_land_region >= planet_region_count(_star, _planet))) {
+        _land_region = region_focus_get(_star, _planet);
+    }
+    var _region_force_added = 0;
+    var _n_us = array_length(unit_struct);
+    for (var i = 0; i < _n_us; i++) {
+        var _unit = unit_struct[i];
+        if (!is_struct(_unit)) {
+            continue;
+        }
+        // Land every surviving attacker that is not an ally and not dead. marine_local is NOT a
+        // filter here: both add_unit_to_battle call sites pass is_local=true, so it is true for
+        // every battle unit and never meant "already planetside" - skipping on it lands nobody.
+        if (ally[i] == true) {
+            continue;
+        }
+        if (marine_dead[i] == 1) {
+            continue;
+        }
+        // Opposed landing: place the unit planetside DIRECTLY (bypassing the gated regular
+        // unload(), since Hold Ground is precisely how you land under fire on enemy soil). Handle
+        // the ship_carrying bookkeeping ourselves so nothing is lost.
+        _unit.set_last_ship();
+        var _prev_loc = _unit.marine_location();
+        if ((_prev_loc[0] == eLOCATION_TYPES.SHIP) && (_prev_loc[1] >= 0) && (_prev_loc[1] < array_length(obj_ini.ship_carrying))) {
+            _unit.get_unit_size();
+            obj_ini.ship_carrying[_prev_loc[1]] = max(0, obj_ini.ship_carrying[_prev_loc[1]] - _unit.size);
+        }
+        _unit.ship_location = -1;
+        _unit.location_string = _star.name;
+        _unit.planet_location = _planet;
+        _unit.region_location = _land_region; // the assaulted region becomes the unit's foothold
+        _unit.get_unit_size();
+        _region_force_added += _unit.size;
+        _landed++;
+    }
+    // Deposit the whole landed force into the TARGETED region, then set p_player from the
+    // per-region sum. region_player_force_add re-syncs p_player to the sum of footholds, which
+    // becomes the authoritative planet total and supersedes the per-unit p_player writes unload()
+    // may have made (so the force is counted once, and now has a region location).
+    region_player_force_add(_star, _planet, _land_region, _region_force_added);
+    LOGGER.info($"HOLD GROUND disembark on {_star.name} {_planet}: {_landed} of {_n_us} landed into region {_land_region}, region force +{_region_force_added}, p_player {_p_before} -> {_star.p_player[_planet]}");
 }

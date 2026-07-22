@@ -48,7 +48,10 @@ function scr_vehicle_order(company_number) {
             || veh_role[company_number][i] == "Predator"
             || veh_role[company_number][i] == "Whirlwind"
             || veh_role[company_number][i] == "Land Speeder"
-            || veh_role[company_number][i] == "Land Raider";
+            || veh_role[company_number][i] == "Land Raider"
+            || veh_role[company_number][i] == "Chimera"
+            || veh_role[company_number][i] == "Leman Russ"
+            || veh_role[company_number][i] == "Basilisk";
 
         if (_is_vehicle_role) {
             temp_race[company_number][vehicle_count] = veh_race[company_number][i];

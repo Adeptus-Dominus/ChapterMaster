@@ -196,6 +196,11 @@ function roll_dice_chapter(dices = 1, faces = 6, player_benefit_at = "high") {
 }
 
 /// @description Roll a custom dice, influenced by the unit' luck, return sum of all rolls.
+/// Signature matches upstream (unit first). Do not restore the old fork order
+/// (dices, faces, benefit, unit): upstream call sites in scr_powers,
+/// scr_initialize_custom, and scr_after_combat pass the unit first, and a mixed
+/// state puts the string "high" where the unit struct belongs, crashing new-game
+/// creation, corruption rolls, and post-battle mutation rolls.
 /// @param {Struct} unit - unit struct.
 /// @param {Real} dices - how many dices to roll.
 /// @param {Real} faces - how many faces each dice has.

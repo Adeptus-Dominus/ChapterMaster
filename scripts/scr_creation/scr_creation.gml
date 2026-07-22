@@ -312,7 +312,7 @@ function scr_creation(slide_num) {
                         tooltip: "company specific livery that will overide role livery",
                         font: fnt_menu,
                     },
-                ],
+                ]
             );
             colour_selection_options = new RadioSet(
                 [
@@ -331,7 +331,7 @@ function scr_creation(slide_num) {
                         tooltip: "Advanced options for colouring",
                         font: fnt_menu,
                     },
-                ],
+                ]
             );
             if (full_liveries == "") {
                 var struct_cols = {

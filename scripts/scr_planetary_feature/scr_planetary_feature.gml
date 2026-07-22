@@ -27,6 +27,10 @@ enum eP_FEATURES {
     GENE_STEALER_CULT,
     MISSION,
     ORKSTRONGHOLD,
+    // Sector Governor overhaul — appended at END so existing feature indices stay save-stable (never reorder)
+    FUNGAL_BLOOM,       // Ork population engine (§16b)
+    ASCENSION_BEACON,   // GSC endgame: summons the Hive Fleet (§16b)
+    HERETIC_ACTIVITY,   // hidden Chaos cult tag (§16k)
 }
 
 enum eBASE_TYPES {
@@ -58,6 +62,9 @@ function NewPlanetFeature(feature_type, other_data = {}) constructor {
             player_hidden = 1;
             planet_display = "Genestealer Cult";
             cult_age = 0;
+            // Each cult has its OWN natural timeline to Ascension (§16p): lights the beacon once it has
+            // festered this many turns — rolled 100-200 at birth, so ascension occurs naturally mid-game.
+            ascension_age = irandom_range(100, 200);
             hiding = true;
             name = global.name_generator.GenerateComplexTitledName("genestealercult");
             break;
@@ -151,11 +158,32 @@ function NewPlanetFeature(feature_type, other_data = {}) constructor {
             planet_display = "Ork Stronghold";
             tier = 1;
             break;
+        case eP_FEATURES.FUNGAL_BLOOM:
+            // The Ork fungus ecosystem — the population engine of a WAAAGH (§16b).
+            planet_display = "Fungal Bloom";
+            player_hidden = 0;
+            break;
+        case eP_FEATURES.ASCENSION_BEACON:
+            // Genestealer Cult endgame (§16b): the psychic beacon that calls the Hive Fleet. Once lit, a
+            // fleet is summoned and travels in; the swarm only makes planetfall once it ARRIVES (eta -> 0).
+            planet_display = "Ascension Beacon";
+            player_hidden = 0;
+            eta = 15;  // SAFETY fallback only — planetfall normally fires when the fleet actually reaches
+                       // the system; this just guarantees the ascension can't soft-lock if the fleet fails.
+            break;
         case eP_FEATURES.MONASTERY:
             planet_display = "Fortress Monastery";
             player_hidden = 0;
             forge = 0;
             name = global.name_generator.GenerateFromSet("imperial_ship");
+            break;
+        case eP_FEATURES.HERETIC_ACTIVITY:
+            // A Chaos cult festering below the surface (§16k). Grows in SECRET — its true strength is never
+            // shown as a force count; the world only carries this WARNING tag until it revolts or is purged.
+            planet_display = "Heretic Activity";
+            player_hidden = 0;   // the WARNING tag is visible; the force numbers behind it are not
+            revolted = false;
+            cult_age = 0;
             break;
         case eP_FEATURES.RECRUITING_WORLD:
             planet_display = "Recruitment";
@@ -495,6 +523,9 @@ function planet_selection_action() {
                     buttons_selected = false;
                 }
 
+                if (!instance_exists(obj_star_select)) {
+                    break; // an earlier planet's action (unload) closed the screen
+                }
                 try {
                     p_data.planet_selection_logic();
                 } catch (_exception) {

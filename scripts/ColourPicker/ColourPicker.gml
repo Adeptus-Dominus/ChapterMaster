@@ -39,7 +39,7 @@ function ColourPicker(xx, yy, max_width = 400) constructor {
                 tooltip: "If selected You will be able to pick an icon or icon set after selecting a base colour",
             },
         ],
-        "Markings",
+        "Markings"
     );
 
     static textures_surface = surface_create(1, 1);

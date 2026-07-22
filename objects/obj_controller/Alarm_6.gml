@@ -14,7 +14,11 @@ if ((menu == eMENU.MANAGE) && (managing > 0)) {
         if (man_sel[f] == 1) {
             if (man[f] == "man") {
                 unit = display_unit[f];
-                if (ma_promote[f] == 0 && (!unit.IsSpecialist(SPECIALISTS_RANK_AND_FILE)) && (!unit.IsSpecialist(SPECIALISTS_SQUAD_LEADERS)) && (!unit.IsSpecialist(SPECIALISTS_VETERANS))) {
+                // Auxilia roles never veto the Promote button: like rank-and-file marines
+                // they are always a legal promotion selection, and the Auxilia promote path
+                // (setup_promotion_popup, managing 16) skips anyone who is not an eligible
+                // basic Guardsman, so Select All keeps working on that screen.
+                if (ma_promote[f] == 0 && (!array_contains(auxilia_roles(), ma_role[f])) && (!unit.IsSpecialist(SPECIALISTS_RANK_AND_FILE)) && (!unit.IsSpecialist(SPECIALISTS_SQUAD_LEADERS)) && (!unit.IsSpecialist(SPECIALISTS_VETERANS))) {
                     sel_promoting = -1;
                 }
             }

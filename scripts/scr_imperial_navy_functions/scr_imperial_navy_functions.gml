@@ -420,7 +420,7 @@ function navy_finish_destroying_player_world() {
         function(prev, _curr, idx) {
             return _curr > 0 ? idx : prev;
         },
-        0,
+        0
     );
 
     if (tar == 0) {
@@ -1099,4 +1099,366 @@ function get_imperial_navy_fleets() {
     }
 
     return _fleets;
+}
+
+// ============================================================================
+// Imperial Navy Orders (Sector Governor fleet suggestions)
+// ----------------------------------------------------------------------------
+// The player can click an Imperial Navy fleet to open the Sector Governor's
+// audience in "fleet orders" mode and SUGGEST one of: Hold position, As you
+// were (resume autonomy), or Follow one of the player's fleets (largest /
+// closest / smallest, locked to the fleet chosen at order time). Honoured only
+// while the Governor's disposition is above NAVY_ORDER_MIN_DISPOSITION.
+// A following fleet trails the chosen fleet, joins its attack (finishing the
+// planet), then reverts to autonomy once the attack is done or after
+// NAVY_FOLLOW_MAX_TURNS turns. Per-fleet state (navy_order, navy_follow_uid,
+// navy_order_turns) is declared in obj_en_fleet Create for save safety.
+// ============================================================================
+
+/// @function navy_order_ensure
+/// @description Old-save safety: seed the navy-order fields on a fleet that predates them.
+/// @param {Id.Instance.obj_en_fleet} _fleet
+/// @returns {Undefined}
+function navy_order_ensure(_fleet) {
+    if (!variable_instance_exists(_fleet, "navy_order")) {
+        _fleet.navy_order = "";
+    }
+    if (!variable_instance_exists(_fleet, "navy_follow_uid")) {
+        _fleet.navy_follow_uid = "";
+    }
+    if (!variable_instance_exists(_fleet, "navy_order_turns")) {
+        _fleet.navy_order_turns = 0;
+    }
+}
+
+/// @function player_fleet_flagship_uid
+/// @description A stable identifier for a player fleet: the uid of its first ship (capital,
+///              else frigate, else escort). Used to LOCK a follow order to a specific fleet so
+///              it survives instance-id reuse. Returns "" if the fleet has no ships.
+/// @param {Id.Instance.obj_p_fleet} _fleet
+/// @returns {String}
+function player_fleet_flagship_uid(_fleet) {
+    if (!instance_exists(_fleet)) {
+        return "";
+    }
+    for (var i = 0; i < array_length(_fleet.capital_uid); i++) {
+        if ((_fleet.capital[i] != "") && (_fleet.capital_uid[i] != "")) {
+            return string(_fleet.capital_uid[i]);
+        }
+    }
+    for (var i = 0; i < array_length(_fleet.frigate_uid); i++) {
+        if ((_fleet.frigate[i] != "") && (_fleet.frigate_uid[i] != "")) {
+            return string(_fleet.frigate_uid[i]);
+        }
+    }
+    for (var i = 0; i < array_length(_fleet.escort_uid); i++) {
+        if ((_fleet.escort[i] != "") && (_fleet.escort_uid[i] != "")) {
+            return string(_fleet.escort_uid[i]);
+        }
+    }
+    return "";
+}
+
+/// @function player_fleet_by_flagship_uid
+/// @description Find the player fleet whose flagship uid matches (the locked follow target).
+///              Returns noone if no live fleet matches (e.g. it was destroyed).
+/// @param {String} _uid
+/// @returns {Id.Instance.obj_p_fleet|Real}
+function player_fleet_by_flagship_uid(_uid) {
+    if (_uid == "") {
+        return noone;
+    }
+    var _match = noone;
+    with (obj_p_fleet) {
+        if (player_fleet_flagship_uid(id) == _uid) {
+            _match = id;
+            break;
+        }
+    }
+    return _match;
+}
+
+/// @function player_fleet_pick
+/// @description Resolve one of the player's fleets by rule at ORDER time: "largest" (most
+///              ships), "smallest" (fewest ships, non-empty), or "closest" (nearest to the
+///              ordering Navy fleet). Returns the chosen obj_p_fleet, or noone if none exist.
+/// @param {String} _rule   "largest" | "smallest" | "closest"
+/// @param {Real} _from_x
+/// @param {Real} _from_y
+/// @returns {Id.Instance.obj_p_fleet|Real}
+function player_fleet_pick(_rule, _from_x, _from_y) {
+    var _best = noone;
+    var _best_metric = -1;
+    with (obj_p_fleet) {
+        var _count = player_fleet_ship_count(id);
+        if (_count <= 0) {
+            continue;
+        }
+        var _metric;
+        if (_rule == "largest") {
+            _metric = _count;
+        } else if (_rule == "smallest") {
+            _metric = -_count;
+        } else {
+            _metric = -point_distance(_from_x, _from_y, x, y);
+        }
+        if ((_best == noone) || (_metric > _best_metric)) {
+            _best = id;
+            _best_metric = _metric;
+        }
+    }
+    return _best;
+}
+
+/// @function navy_order_give
+/// @description Apply a suggestion to a Navy fleet, gated on disposition. Returns true if the
+///              order was accepted. _kind is "hold", "release" (As you were), or "follow".
+/// @param {Id.Instance.obj_en_fleet} _fleet
+/// @param {String} _kind
+/// @param {String} _rule
+/// @returns {Bool}
+function navy_order_give(_fleet, _kind, _rule = "") {
+    if (!instance_exists(_fleet)) {
+        return false;
+    }
+    if (obj_controller.disposition[eFACTION.IMPERIUM] <= NAVY_ORDER_MIN_DISPOSITION) {
+        return false;
+    }
+    navy_order_ensure(_fleet);
+    _fleet.navy_order_turns = 0;
+
+    // Cancelling an order ("As you were") is free; it just returns the fleet to autonomy.
+    if (_kind == "release") {
+        _fleet.navy_order = "";
+        _fleet.navy_follow_uid = "";
+        return true;
+    }
+
+    // Every ACTIVE order (hold / follow) costs the Governor a little goodwill, so the player
+    // cannot spam orders for free. Deduct once the order is confirmed accepted below.
+    var _charge = function() {
+        obj_controller.disposition[eFACTION.IMPERIUM] = max(0, obj_controller.disposition[eFACTION.IMPERIUM] - NAVY_ORDER_DISPOSITION_COST);
+    };
+
+    if (_kind == "hold") {
+        _fleet.navy_order = "hold";
+        _fleet.navy_follow_uid = "";
+        _fleet.action = "";
+        _fleet.target = noone;
+        _charge();
+        return true;
+    }
+    if (_kind == "follow") {
+        var _target = player_fleet_pick(_rule, _fleet.x, _fleet.y);
+        if (!instance_exists(_target)) {
+            return false;
+        }
+        _fleet.navy_order = "follow";
+        _fleet.navy_follow_uid = player_fleet_flagship_uid(_target);
+        if (_fleet.navy_follow_uid == "") {
+            return false;
+        }
+        _charge();
+        return true;
+    }
+    return false;
+}
+
+/// @function navy_orders_tick
+/// @description Per-turn processing of all Navy fleets under a player suggestion. HOLD stays
+///              put; FOLLOW steers toward the locked player fleet and routes to the world it is
+///              attacking to join the assault. Reverts to autonomy when the fleet is gone, the
+///              disposition drops, or NAVY_FOLLOW_MAX_TURNS turns pass.
+/// @returns {Undefined}
+function navy_orders_tick() {
+    with (obj_en_fleet) {
+        if ((owner != eFACTION.IMPERIUM) || (navy != 1)) {
+            continue;
+        }
+        navy_order_ensure(id);
+        if (navy_order == "") {
+            continue;
+        }
+        if (obj_controller.disposition[eFACTION.IMPERIUM] <= NAVY_ORDER_MIN_DISPOSITION) {
+            navy_order = "";
+            navy_follow_uid = "";
+            navy_order_turns = 0;
+            continue;
+        }
+        navy_order_turns += 1;
+
+        if (navy_order == "hold") {
+            action = "";
+            target = noone;
+            continue;
+        }
+
+        if (navy_order == "follow") {
+            if (navy_order_turns > NAVY_FOLLOW_MAX_TURNS) {
+                navy_order = "";
+                navy_follow_uid = "";
+                navy_order_turns = 0;
+                continue;
+            }
+            var _pf = player_fleet_by_flagship_uid(navy_follow_uid);
+            if (!instance_exists(_pf)) {
+                navy_order = "";
+                navy_follow_uid = "";
+                navy_order_turns = 0;
+                continue;
+            }
+            // Where is the followed fleet, and is it attacking a world? obj_p_fleet has no
+            // `target` field; it exposes orbiting (the star it sits at) and, while travelling,
+            // action=="move" with action_x/action_y as its destination. Prefer the star it is
+            // orbiting (it is committing there), else the star it is moving toward, else just
+            // shadow its position. Only (re)issue a course when the destination changes, so we
+            // do not reset the fleet's ETA every turn.
+            var _dest = noone;
+            if (instance_exists(_pf.orbiting)) {
+                _dest = _pf.orbiting;
+            } else if (_pf.action == "move") {
+                var _ns = instance_nearest(_pf.action_x, _pf.action_y, obj_star);
+                if (instance_exists(_ns) && (point_distance(_ns.x, _ns.y, _pf.action_x, _pf.action_y) < 10)) {
+                    _dest = _ns; // heading to a specific star
+                }
+            }
+            var _dx = instance_exists(_dest) ? _dest.x : _pf.x;
+            var _dy = instance_exists(_dest) ? _dest.y : _pf.y;
+            // If already orbiting the destination star, let the fleet's own navy behaviour
+            // (attack / bombard) run rather than re-issuing a move onto itself.
+            var _already_there = instance_exists(_dest) && instance_exists(orbiting) && (orbiting == _dest);
+            if (!_already_there) {
+                target = instance_exists(_dest) ? _dest : noone;
+                action_x = _dx;
+                action_y = _dy;
+                set_fleet_movement();
+            }
+            continue;
+        }
+    }
+}
+
+
+/// @function navy_open_fleet_orders
+/// @description Open the Sector Governor's audience in fleet-order mode for a specific Imperial
+///              Navy fleet (the one the player clicked). Mirrors scr_toggle_diplomacy's audience
+///              setup, then routes straight to the "fleet_orders" dialogue branch. The clicked
+///              fleet is stashed on obj_controller so the branch's choices apply to it.
+/// @param {Id.Instance.obj_en_fleet} _fleet
+/// @returns {Undefined}
+function navy_open_fleet_orders(_fleet) {
+    if (!instance_exists(_fleet)) {
+        return;
+    }
+    with (obj_controller) {
+        navy_order_target_fleet = _fleet;
+        set_zoom_to_default();
+        set_up_diplomacy_buttons();
+        menu = eMENU.DIPLOMACY;
+        audience = 1;                 // in an audience (not the faction-select screen)
+        diplomacy = eFACTION.IMPERIUM; // talking to the Sector Governor
+        hide_banner = 1;
+        character_diplomacy = false;
+        cooldown = 8;
+        scr_dialogue("fleet_orders");
+    }
+}
+
+
+/// @function player_fleet_with_chapter_master
+/// @description The player fleet that currently bears the Chapter Master, or noone. The Chapter
+///              Master is the unit at [0,0] (fetch_unit); their ship_location gives the ship,
+///              and find_ships_fleet maps that ship to its fleet.
+/// @returns {Id.Instance.obj_p_fleet|Real}
+function player_fleet_with_chapter_master() {
+    var _cm = fetch_unit([0, 0]);
+    if (!is_struct(_cm)) {
+        return noone;
+    }
+    if (!variable_struct_exists(_cm, "ship_location") || (_cm.ship_location < 0)) {
+        return noone; // Chapter Master is planetside or not embarked
+    }
+    return find_ships_fleet(_cm.ship_location);
+}
+
+/// @function navy_nearest_fleet_to
+/// @description The Imperial Navy fleet (owner IMPERIUM, navy == 1) nearest to a point, or noone.
+///              Used to pick WHICH Navy fleet answers a War Room follow request.
+/// @param {Real} _x
+/// @param {Real} _y
+/// @returns {Id.Instance.obj_en_fleet|Real}
+function navy_nearest_fleet_to(_x, _y) {
+    var _best = noone;
+    var _best_d = -1;
+    with (obj_en_fleet) {
+        if ((owner != eFACTION.IMPERIUM) || (navy != 1)) {
+            continue;
+        }
+        var _d = point_distance(_x, _y, x, y);
+        if ((_best == noone) || (_d < _best_d)) {
+            _best = id;
+            _best_d = _d;
+        }
+    }
+    return _best;
+}
+
+/// @function navy_war_room_follow
+/// @description War Room entry point: ask the Governor to send an Imperial Navy fleet to follow
+///              one of the player's fleets. _rule picks the TARGET player fleet: "largest",
+///              "closest" (to the nearest Navy fleet), or "chapter_master". The nearest Navy
+///              fleet to that target is assigned the follow order (locked to its flagship uid,
+///              disposition-gated and charged inside navy_order_give). Returns a status string:
+///              "ok", "no_player_fleet", "no_navy_fleet", or "refused".
+/// @param {String} _rule
+/// @returns {String}
+function navy_war_room_follow(_rule) {
+    if (obj_controller.disposition[eFACTION.IMPERIUM] <= NAVY_ORDER_MIN_DISPOSITION) {
+        return "refused";
+    }
+
+    // Resolve the target player fleet.
+    var _target = noone;
+    if (_rule == "chapter_master") {
+        _target = player_fleet_with_chapter_master();
+    } else if (_rule == "closest") {
+        // The player fleet nearest to ANY Navy fleet: find the nearest Navy fleet to each
+        // player fleet and keep the closest pairing.
+        var _best_pf = noone;
+        var _best_d = -1;
+        with (obj_p_fleet) {
+            if (player_fleet_ship_count(id) <= 0) { continue; }
+            var _nf = navy_nearest_fleet_to(x, y);
+            if (!instance_exists(_nf)) { continue; }
+            var _d = point_distance(x, y, _nf.x, _nf.y);
+            if ((_best_pf == noone) || (_d < _best_d)) {
+                _best_pf = id;
+                _best_d = _d;
+            }
+        }
+        _target = _best_pf;
+    } else {
+        _target = player_fleet_pick("largest", 0, 0);
+    }
+
+    if (!instance_exists(_target)) {
+        return "no_player_fleet";
+    }
+
+    // Assign the nearest Navy fleet to that target to follow it.
+    var _navy = navy_nearest_fleet_to(_target.x, _target.y);
+    if (!instance_exists(_navy)) {
+        return "no_navy_fleet";
+    }
+    navy_order_ensure(_navy);
+    _navy.navy_order = "follow";
+    _navy.navy_follow_uid = player_fleet_flagship_uid(_target);
+    _navy.navy_order_turns = 0;
+    if (_navy.navy_follow_uid == "") {
+        _navy.navy_order = "";
+        return "no_player_fleet";
+    }
+    // Charge the disposition cost (same as a direct order).
+    obj_controller.disposition[eFACTION.IMPERIUM] = max(0, obj_controller.disposition[eFACTION.IMPERIUM] - NAVY_ORDER_DISPOSITION_COST);
+    return "ok";
 }

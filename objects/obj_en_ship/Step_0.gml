@@ -470,10 +470,10 @@ if (owner != eFACTION.ELDAR) {
 
                 if (((string_count("Claws", wep) == 1) || (string_count("endrils", wep) == 1)) && (ok == 3)) {
                     if (target.shields <= 0) {
-                        target.hp -= weapon_dam[wep];
+                        target.hp -= weapon_dam[i];
                     }
                     if (target.shields > 0) {
-                        target.shields -= weapon_dam[wep];
+                        target.shields -= weapon_dam[i];
                     }
                 }
                 if (((string_count("Interceptor", wep) == 1) || (string_count("ommerz", wep) == 1) || (string_count("Manta", wep) == 1) || (string_count("Glands", wep) == 1) || (string_count("Eldar Launch", wep) == 1)) && (ok == 3)) {
@@ -557,6 +557,11 @@ if (owner == 6) {
             action = "swoop";
             spid = 100;
         }
+
+        // Vanilla Eldar run spid 60-100 against everyone else's 20-45, producing
+        // endless chase loops. Scaled here so the whole class table tunes from one
+        // macro; they stay the fastest ships in the game.
+        spid *= ELDAR_SHIP_SPEED_MULT;
 
         if (target != 0) {
             if (speed < (spid / 10)) {
@@ -785,10 +790,10 @@ if (owner == 6) {
                 }
                 if (((string_count("Claws", wep) == 1) || (string_count("endrils", wep) == 1)) && (ok == 3)) {
                     if (target.shields <= 0) {
-                        target.hp -= weapon_dam[wep];
+                        target.hp -= weapon_dam[i];
                     }
                     if (target.shields > 0) {
-                        target.shields -= weapon_dam[wep];
+                        target.shields -= weapon_dam[i];
                     }
                 }
                 if (((string_count("Interceptor", wep) == 1) || (string_count("ommerz", wep) == 1) || (string_count("Manta", wep) == 1) || (string_count("Glands", wep) == 1) || (string_count("Eldar Launch", wep) == 1)) && (ok == 3)) {

@@ -581,6 +581,222 @@
             1
         ]
     },
+    "guard_squad": {
+        "ballistic_skill": [
+            25,
+            1
+        ],
+        "base_group": "human",
+        "charisma": [
+            15,
+            1
+        ],
+        "constitution": [
+            28,
+            1,
+            "max"
+        ],
+        "dexterity": [
+            20,
+            1
+        ],
+        "intelligence": [
+            15,
+            1
+        ],
+        "luck": 5,
+        "piety": [
+            25,
+            1
+        ],
+        "religion": "imperial_cult",
+        "start_gear": {
+            "armour": "Flak Armour",
+            "gear": "",
+            "mobi": "",
+            "wep1": "Lasgun",
+            "wep2": "Bayonet"
+        },
+        "strength": [
+            20,
+            1
+        ],
+        "technology": [
+            10,
+            1
+        ],
+        "title": "Guard Squad",
+        "weapon_skill": [
+            15,
+            1
+        ],
+        "wisdom": [
+            15,
+            1
+        ]
+    },
+    "guardsman": {
+        "ballistic_skill": [
+            25,
+            6
+        ],
+        "base_group": "human",
+        "charisma": [
+            15,
+            1
+        ],
+        "constitution": [
+            28,
+            1,
+            "max"
+        ],
+        "dexterity": [
+            20,
+            1
+        ],
+        "intelligence": [
+            15,
+            1
+        ],
+        "luck": 5,
+        "piety": [
+            25,
+            1
+        ],
+        "religion": "imperial_cult",
+        "start_gear": {
+            "armour": "Flak Armour",
+            "gear": "",
+            "mobi": "",
+            "wep1": "Lasgun",
+            "wep2": "Bayonet"
+        },
+        "strength": [
+            20,
+            1
+        ],
+        "technology": [
+            10,
+            1
+        ],
+        "title": "Guardsman",
+        "weapon_skill": [
+            15,
+            1
+        ],
+        "wisdom": [
+            15,
+            1
+        ]
+    },
+    "heavy_weapons_team": {
+        "ballistic_skill": [
+            28,
+            4
+        ],
+        "base_group": "human",
+        "charisma": [
+            15,
+            1
+        ],
+        "constitution": [
+            28,
+            1,
+            "max"
+        ],
+        "dexterity": [
+            20,
+            1
+        ],
+        "intelligence": [
+            15,
+            1
+        ],
+        "luck": 5,
+        "piety": [
+            25,
+            1
+        ],
+        "religion": "imperial_cult",
+        "start_gear": {
+            "armour": "Flak Armour",
+            "gear": "",
+            "mobi": "",
+            "wep1": "Heavy Bolter",
+            "wep2": ""
+        },
+        "strength": [
+            22,
+            1
+        ],
+        "technology": [
+            10,
+            1
+        ],
+        "title": "Heavy Weapons Team",
+        "weapon_skill": [
+            15,
+            1
+        ],
+        "wisdom": [
+            15,
+            1
+        ]
+    },
+    "guard_sergeant": {
+        "ballistic_skill": [
+            20,
+            6
+        ],
+        "base_group": "human",
+        "charisma": [
+            18,
+            1
+        ],
+        "constitution": [
+            34,
+            1,
+            "max"
+        ],
+        "dexterity": [
+            24,
+            1
+        ],
+        "intelligence": [
+            18,
+            1
+        ],
+        "luck": 6,
+        "piety": [
+            30,
+            1
+        ],
+        "religion": "imperial_cult",
+        "start_gear": {
+            "armour": "Flak Armour",
+            "gear": "",
+            "mobi": "",
+            "wep1": "Guard Chainsword",
+            "wep2": "Laspistol"
+        },
+        "strength": [
+            24,
+            1
+        ],
+        "technology": [
+            12,
+            1
+        ],
+        "title": "Guard Sergeant",
+        "weapon_skill": [
+            18,
+            1
+        ],
+        "wisdom": [
+            18,
+            1
+        ]
+    },
     "skitarii": {
         "ballistic_skill": [
             20,

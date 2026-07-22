@@ -1,0 +1,287 @@
+====================================================================
+ CHAPTER MASTER 1.5 - SECTOR GOVERNOR EDITION
+ Everything so far  (work summary + design plan)
+====================================================================
+
+This file has two halves:
+  PART A - what has been BUILT in the code (regions + buildings).
+  PART B - the DESIGN PLAN not yet coded (populations / biomass /
+           force generation), with the lore and decisions behind it.
+
+All code changes are additive, save-safe, and reviewed for GML
+syntax / name-collisions / save-load, but NOT compile-tested in this
+environment (no GameMaker compiler here). Companion markdown docs:
+docs/SECTOR_GOVERNOR_PLAN.md, docs/REGIONS.md,
+docs/POPULATIONS_FORCE_PLAN.md.
+
+
+====================================================================
+ PART A - WHAT'S BUILT
+====================================================================
+
+1. MULTI-REGION PLANETS (data layer)
+   - Every planet = a Capital + a variable number of outlying regions
+     (count by world type: Hive/Forge/Temperate/Shrine/Feudal/Desert
+     = 4; Ice/Agri/Death = 3; Lava = 2; Dead/Daemon/Craftworld/empty
+     = 1).
+   - Each region has its own owner, population, pdf, guardsmen,
+     fortification, defences, upgrades, buildings.
+   - Stored in obj_star.p_regions[planet] as plain-data Region records
+     (scripts/Region/Region.gml). Persists automatically via the
+     existing p_* save path. Generated at worldgen, lazily for old
+     saves.
+
+2. CONQUEST OVERLAY (Option A - planet scalars stay authoritative)
+   - Each turn regions_sync() DERIVES region control from the real
+     state: the owner holds the Capital; a contesting force takes a
+     share of the outlying regions scaled by strength. Grind an enemy
+     down and its regions flip to you one at a time, capital last.
+   - Nothing writes back to the authoritative scalars, so real combat
+     losses are never clobbered.
+
+3. REGION-SELECTION UI + STEERED CONQUEST
+   - A "Planetary Regions" panel on the system view: each region's
+     owner (colour-coded), fortification, defences, garrison, plus a
+     CONTESTED badge.
+   - Click a region to set your CONQUEST FOCUS. regions_sync flips the
+     focused region first, otherwise weakest-fortification-first - so
+     defences resist capture and you steer the conquest.
+   - Left-clicking a multi-region planet now locks in the regions view
+     (previously only hover showed it; click opened the garrison
+     report). Fix in PlanetData.set_star_select_planet.
+   - Region zone names are now RANDOMISED per planet from a ~32-name
+     pool (no more identical "Northern Reaches" every world).
+
+4. PER-REGION DEFENCES + CONSUME ON CAPTURE
+   - Fortified regions resist flipping and are ground down as they're
+     taken (consume-on-capture) - all inside the overlay, so the
+     fragile combat core is untouched. (Making the tactical battle
+     screen itself region-aware is deferred Option B.)
+
+5. REGION BUILDING TREE (construction)
+   - Data-driven catalogue (region_building_catalogue). A Construction
+     box under the regions panel with compact holo build tiles
+     (reuses the Monastery->Forge holo widget pattern). Instant
+     requisition build; buildings stored in Region.buildings.
+   - BUILDINGS (per region unless noted):
+       Bastion         1500  max 5   any     +1 fortification (cap 5)
+       Turret Battery  1000  max 5   any     +1 defences (cap 5)
+       Anti-Orbital    8000  1/PLANET any     active weapon (see below)
+       Manufactorum   10000  max 1   Hive/Forge/Desert  +~100 forge pts/turn
+       Factory         2000  max 1   Hive/Forge/Temperate +4 req/turn
+       Mine            1500  max 1   Desert/Ice/Lava/Dead/Death +3 req/turn
+       Industrial Farms 1200 max 1   Agri/Temperate/Feudal  grows population
+       PDF Barracks    1000  max 1   any     +200 PDF/turn
+       Guard Barracks  1500  max 1   any     +100 Guardsmen/turn
+       Training Ground 1200  max 1   any     +XP to Scouts garrisoned here
+       Candidate Stn.  2000  max 1   any     +15 recruit screening (no apoths)
+   - CAPS: Bastion & Turret stack (5 each). Anti-Orbital = ONE PER
+     PLANET. Each region may hold only ONE player-benefit improvement
+     (Manufactorum OR Factory OR Mine ...), but defences build
+     alongside it. Enforced by region_building_can_build; the panel
+     only lists what's currently buildable.
+   - Per-turn effects tick from scr_star_ownership's real (argument0)
+     pass, only for regions you hold.
+
+6. ANTI-ORBITAL GUN (region-owner-based, double-edged)
+   - Fires for WHOEVER holds its region. Player/Imperial-held: destroys
+     one hostile ship in orbit each turn. If the enemy captures that
+     region, the gun turns on YOUR fleet - a double-edged sword.
+   - Faction rules: mindless Tyranids can't work it (silent); a
+     Genestealer Cult must first learn it (~50%/turn) and then keeps
+     firing until driven off the region (tracked by Region.gun_mastered;
+     a reformed cult relearns); all other factions use it normally.
+   - Player-ship removal mirrors the game's own space-combat method
+     (find a live ship id, zero obj_ini.ship_hp, drop the count).
+
+KEY FILES TOUCHED (Part A)
+   scripts/Region/Region.gml                         (+buildings, +gun_mastered)
+   scripts/scr_region_functions/scr_region_functions.gml (the bulk)
+   objects/obj_star/Create_0.gml                     (p_region_focus)
+   objects/obj_star_select/Draw_64.gml               (panels, click-guard, reset)
+   scripts/scr_star_ownership/scr_star_ownership.gml  (sync + ticks)
+   scripts/scr_PlanetData/scr_PlanetData.gml          (candidate bonus, click fix)
+   ChapterMaster.yyp                                  (Region + scr_region_functions registered)
+   docs/*                                             (plan/regions docs)
+
+VERIFICATION
+   - Balanced braces/parens/brackets on every touched file; no leftover
+     references in the reverted combat files. Two independent GML review
+     passes found no compile-breaking issues (one caught bug - the
+     Training Ground's scr_random_marine return type - was fixed).
+   - Recommend a compile + new-galaxy smoke test in GameMaker. Eyeball
+     the right-column panel positions and the conquest / building
+     balance on first run.
+
+
+====================================================================
+ PART B - DESIGN PLAN (populations, biomass, force generation)
+====================================================================
+ Status: DOCUMENTED, not coded. Full spec in
+ docs/POPULATIONS_FORCE_PLAN.md. Ork-first, phased.
+
+THE UNIFIED VISION
+   Replace the abstract 0-6 enemy "force level" with forces DRAWN FROM
+   POPULATIONS. Every side - attacker or defender - musters exactly
+   WHAT IT ACTUALLY HAS on the world: its per-region population, its
+   p_pdf / p_guardsmen, its race / biomass pool. All of it flows
+   through ONE shared generator (spawn_from_counts) driven by a
+   per-faction LORE RECIPE. No abstract tiers, no nominal pools or
+   muster rates - what is present is what takes the field. Orks are the
+   pilot; PDF, Guard, Tau, Nids and the rest are the same machine with
+   different recipes.
+
+HOW COMBAT ACTUALLY WORKS (reviewed from the player's seat)
+   - It's a NUMERICAL SIMULATION - counts trading firepower, "numbers
+     beating numbers". Each side is vertical bars on a centre line; bar
+     HEIGHT = strength, COUNT shows only on hover. No models, no map.
+   - The player mostly presses ENTER to advance each round and reads
+     the combat log ("Enemy Forces at X%"). One in-fight input: click a
+     column to toggle advance/hold. All real choices are pre-battle:
+     which forces to commit, target, ship bombardment, and a FORMATION
+     (a saved 10-column layout).
+   - The resolution MATH already scales to huge counts (damage/hp =
+     kills). Enemies are stored as counts, so a 1,000,000-Ork battle
+     resolves correctly.
+   - What breaks at population scale (extra work): (a) the strength bar
+     SATURATES at ~800 men - needs a rescale so millions read; (b)
+     player-side MASS must be COUNTS, not per-model structs (marines
+     are stored one-struct-per-model and rescanned every turn - fine
+     for ~1000 Astartes, would hang for thousands of PDF). So: elites
+     = real units, mass = counts.
+
+NEW STATE (the D layer)
+   - Absolute headcounts for EVERY faction (the Imperial-Guard
+     headcount->units model, generalised).
+   - Populations live PER REGION (Region.race_pop, indexed by faction);
+     planet 0-6 level becomes a derived rollup. Tyranid biomass is a
+     per-planet pool.
+   - CIVILIANS vs COMBATANTS: a population is mostly civilian; only a
+     combatant fraction takes the field (the Imperium already does
+     this: population -> military -> PDF/Guard). Battle musters the
+     combatants; the civ pool is the base that breeds them, grows, and
+     gets consumed/taxed. TOTAL-WAR races are the exception - Tyranids
+     (every bioform fights) and largely Orks (the whole mob fights;
+     Gretchin are the nearest thing to a civ underclass) field ~all of
+     it. Each race profile carries a levy rate or a total-war flag.
+
+THE IMPERIAL PIPELINE (civ -> PDF -> tithe -> Guard)  [LORE-CONFIRMED]
+   - Civilians raise a BASE PDF for local defence (lore ~0.5% of
+     population).
+   - The Imperial TITHE trains ONE-TENTH of the PDF - the best of them -
+     into Astra Militarum (Guard) regiments that deploy off-world.
+   - So: civ -> PDF (local, always) -> Guard ~= PDF/10 (tithed, better).
+     This IS the Guard combat block's existing /10, now with a lore
+     reason. A NEW PDF unit (a weaker Guardsman) is required so locals
+     can actually fight.
+
+LORE-GROUNDED SCALE  (think MILLIONS, not thousands)
+   - Hive world: each hive 10-100 billion, 5-20 hives -> often >1
+     trillion per world; doubles ~every 100 years.
+   - PDF ~= 0.5% of population (a civilised world: ~20 million up into
+     billions).
+   - Guard regiment: 10,000-80,000 typical (siege 250,000+), raised as
+     ~1/10 of PDF.
+   - Ork WAAAGH: MILLIONS typically, BILLIONS at its worst (War of the
+     Beast overran whole sectors).
+   => The current combat caps at ~11,000 (threat 6); real scale is
+      millions. This confirms the display rescale + counts-not-per-model
+      work, and makes "marines tip the balance but can't win a WAAAGH
+      alone" perfectly lore-accurate.
+
+FLEETS DROP POPULATIONS (not force levels)
+   - Instead of a fleet "dumping X force" (bumping the 0-6 level), a
+     fleet arrival DROPS A POPULATION - a beachhead / spore-drop seeded
+     into a region's race pool.
+   - Populations then INTERACT directly: grow, spread, CONSUME each
+     other and the locals (orks eat the populace as livestock; Nids eat
+     everything -> biomass), and CONTEST regions (reusing the conquest
+     overlay). NPC-vs-NPC becomes POOL vs POOL - each side musters what
+     it has, the loser's pool takes real casualties - replacing the
+     abstract choose(1..6)*score fight in scr_enemy_ai_a.
+
+MARINES / ELITES
+   - Real HEADCOUNT units, fighting as they do now with elite stats, in
+     their actual small numbers. NOT abstracted into a multiplier. They
+     add their DEVASTATION to the field and TIP THE BALANCE - but it's
+     NOT an auto-win; a handful can't beat an overwhelming tide alone.
+
+WHY FIGHT ALONGSIDE ALLIES
+   - Worlds now field their own PDF/Guard, so defending a world means
+     fighting alongside its defenders.
+   - Marines can't out-body a million-Ork horde; the mass allied
+     PDF/Guard IS the line, the Astartes are the hammer. The elite +
+     the mass can win; the mass alone can't.
+   - Lore-accurate combined arms, and groundwork for the
+     Warmaster/Sector-Governor mode (lead Guard, petition the Astartes).
+   - The game already has an ally path (scr_battle_allies, the
+     ally/ally_forces setup in obj_ncombat) to build on.
+
+FACTION BEHAVIOUR & STARTING POSTURES
+   - Orks: start ~1-5 years into their growth cycle, "cracking open"
+     the locals. Bloom + livestock + spore-spread + WAAAGH. Total war.
+   - Tau: start OWNING their worlds, clustered together, expanding
+     methodically outward (assimilate, don't exterminate).
+   - Later: Tyranids (consume->biomass->ascend->splinter fleet),
+     Chaos/Heretics (corrupt->traitor PDF/Guard), Necrons (awaken->cull),
+     Eldar (raid).
+
+ORK FORCE-COMPOSITION RECIPE  (the pilot; P = ork headcount)
+   Calibrated to today's tiers (P~100 = old L1, P~11000 = old L6);
+   every unit already exists, so it's "ratio-ise + validate", no new
+   content. Mob = shares of P (normalised over active rows); retinue =
+   1-per-N with thresholds; boss above thresholds.
+     MOB:      Shoota 28% | Slugga 25% | 'Ard 20% (P>=150) | Gretchin 25% (P>=1500)
+     RETINUE:  Nob/Meganob 1/130 boyz | Flash Git 1/150 (P>=800) |
+               Mekboy 1/1250 | Deff Dread 1/180 | Battlewagon 1/400 |
+               Tankbusta 1/75 (P>=5000) | Kommando 1/350 (P>=5000)
+     BOSS:     Nob warlord (P<300) -> Warboss (P>=300) -> Big Warboss +
+               2-3 waves (P>=9000)
+   Example at P = 1,000,000: ~280k Shoota, 250k Slugga, 200k 'Ard, 250k
+   Gretchin; ~13.3k Tankbustas, 6.7k Flash Gitz, 5.6k Nobz, 2.9k
+   Kommandos, 800 Mekboyz; ~5.6k Deff Dreads, 2.5k Battlewagons; 1 Big
+   Warboss. (An apocalyptic, sector-level event.)
+
+IMPERIAL GUARD BLOCK (the working template, T = guard headcount)
+   Guardsmen: T/10 (5 columns of T/50) | Ogryn max(10,T/6650) |
+   Heavy Weapons Team T/10000 | Leman Russ Battle T/10000 |
+   Leman Russ Demolisher T/20000 | Chimera T/20000 |
+   Vendetta T/40000 | Basilisk T/50000.
+
+BUILD ORDER (phased, one faction at a time; combat file last)
+   1  Per-region race_pop + biomass state; seeds; Ork/Tau starting
+      postures; a "pops" debug cheat.               (LOW risk)
+   2  Bridge: 0-6 level derived from the region rollup; behaviour
+      profiles (grow/spread/consume) retargeted to the pools; victory
+      drains the pool.                               (MEDIUM)
+   3  PDF unit + generalise the Guard headcount->units block into a
+      shared spawn_from_counts; defender = PDF (p_pdf) + Guard
+      (p_guardsmen).                                 (MEDIUM-HIGH)
+   4  Unhook ORKS (attacker) via spawn_from_counts + the Ork recipe;
+      threat carries the count; display rescale; mass-as-counts.
+                                                      (HIGH - combat core)
+   5+ Nids (biomass), then Tau/Chaos/Necrons/Eldar, one block at a time.
+
+STILL-OPEN TUNING/LORE QUESTIONS
+   - World-type population caps.
+   - Exact count<->level anchors (calibrate to current tiers).
+   - Livestock rules (which captive pop feeds Ork growth).
+   - PDF stat line (autogun vs lasgun, armour, heavy weapons).
+   - Large-count handling in the sim (volley math / performance / the
+     obj_enunit row limits).
+   - Space fleet size from population too, or stay separate?
+   - Per-faction levy rates and the total-war flags.
+
+
+====================================================================
+ NEXT STEP OPTIONS
+====================================================================
+   - Review the faction INTERACTION seam concretely (fleet deposits,
+     scr_enemy_ai_a NPC war, consumption sites) before Phase 2.
+   - Flesh out another faction recipe (Tau) or the PDF stat line.
+   - Or start Phase 1 (the per-region population state) when ready to
+     write code.
+
+ Lore sources: Warhammer 40k Wiki & Lexicanum - Hive World, Planetary
+ Defence Force, Imperial Guard Regiment, WAAAGH!, War of the Beast.
+====================================================================

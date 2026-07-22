@@ -23,6 +23,31 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
     //if (obj_ncombat.enemy=5) then faith_bonus=faith[man_type];
 
     switch (name) {
+        // "Melee1" is the roster's generic sidearm-melee slot, carried by ten unit
+        // types across three factions (Eldar Guardians, Dire Avengers, Pathfinders,
+        // Fire Dragons, Dark Reapers and Exarchs; Ork Tankbustas; Chaos Havocs,
+        // Noise Marines, Rubric Marines). It never had stats anywhere (verbatim
+        // upstream), so every one of those units built an attack-0 range-0 weapon
+        // stack: "broken range" error spam each turn and no melee capability at all,
+        // a major silent contributor to the last-survivor melee stalemates. Statted
+        // here as a modest close-combat weapon; units with a real melee identity
+        // already carry proper weapons alongside it.
+        case "Melee1":
+            atta = 40;
+            arp = 1;
+            rang = 1;
+            break;
+        // Flesh Hooks are carried by Lictors (Tyranid battles) AND Mutants (Chaos
+        // and Heretic rosters). Their stats lived only under the Tyranid faction
+        // gate below, so Mutant flesh hooks were attack-0 range-0 in every battle
+        // mutants actually appear in. Weapon stats in this file are faction-gated;
+        // any weapon shared across factions must live in this ungated switch.
+        case "Flesh Hooks":
+            atta = 100;
+            arp = 2;
+            rang = 2;
+            amm = 1;
+            break;
         case "Venom Claws":
             atta = 200;
             arp = 4;
@@ -672,12 +697,10 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
                 arp = 3;
                 rang = 1;
                 break;
-            case "Flesh Hooks":
-                atta = 100;
-                arp = 2;
-                rang = 2;
-                amm = 1;
-                break;
+            // Genestealer Cult arsenal, ported verbatim from upstream scr_en_weapon.
+            // Cult revolt battles run under the TYRANIDS gate; without these cases
+            // every cult heavy weapon fell through with range 0 and never fired
+            // ("has broken range!" log spam, one-sided battles, no red loss lines).
             case "Hand Flamer":
                 atta = 40;
                 arp = 1;
@@ -723,11 +746,6 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
                 arp = 3;
                 rang = 12;
                 amm = 10;
-                break;
-            case "Melee Weapon":
-                atta = 50;
-                arp = 1;
-                rang = 1;
                 break;
             default:
                 break;
@@ -1132,6 +1150,8 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
     }
 
     atta = round(atta * obj_ncombat.global_defense);
+    // Upstream fix (a03a95fd9): arp is the weapon's AP tier (0..4), not a damage pool,
+    // so it must not scale with global_defense (0.8x turned tier 3 anti-tank into tier 2).
 
     if (obj_ncombat.enemy == eFACTION.PLAYER) {
         // more attack crap here
@@ -1156,6 +1176,11 @@ function scr_en_weapon(name, is_man, man_number, man_type, group) {
     for (var b = 0; b < 30; b++) {
         if ((wep[b] == name) && (goody == 0)) {
             att[b] += atta * man_number;
+            // apa is the weapon's armour-pierce TIER, a property of the weapon, not a
+            // pool. It used to accumulate (+= arp) once per merged dude group and, via
+            // the un-reset slot 0, once per turn, so the tier drifted with block
+            // composition and battle length: two lascannon groups read as tier 2, four
+            // as tier 4 (ignore armour), five as junk. Set it, don't sum it.
             apa[b] = arp;
             range[b] = rang;
             wep_num[b] += man_number;

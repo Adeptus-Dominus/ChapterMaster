@@ -16,14 +16,20 @@ scale = min(camera_get_view_width(view_camera[0]) / global.default_view_width, 2
 draw_set_color(c_white);
 draw_set_alpha(0.25);
 
-if ((!craftworld) && (vision == 1)) {
+if ((!craftworld) && (!space_hulk) && (vision == 1)) {
     draw_sprite_ext(sprite_index, image_index, x, y, 1 * scale, 1 * scale, 0, c_white, 1);
 }
 if (craftworld) {
     draw_sprite_ext(spr_craftworld, 0, x, y, 1 * scale, 1 * scale, point_direction(x, y, room_width / 2, room_height / 2) + 90, c_white, 1);
 }
 if (space_hulk) {
-    draw_sprite_ext(spr_star_hulk, 0, x, y, 1 * scale, 1 * scale, 0, c_white, 1);
+    // Space hulks drew the default star sprite plus a 30x23 marker speck
+    // (spr_star_hulk), which read as a missing texture. Draw the actual hulk
+    // artwork (spr_ship_hulk, 326x425, previously unreferenced) at map scale
+    // instead, with a stable per-hulk drift angle derived from position so each
+    // wreck hangs at its own tilt without storing any state.
+    var _drift = (x * 7 + y * 13) mod 360;
+    draw_sprite_ext(spr_ship_hulk, 0, x, y, 0.16 * scale, 0.16 * scale, _drift, c_white, 1);
 }
 
 if (storm > 0) {
@@ -88,5 +94,20 @@ if (global.load == -1 && (obj_controller.zoomed || in_camera_view(star_box_shape
 
     var _sprite = ds_map_find_value(global.star_sprites, name);
     draw_sprite_ext(_sprite, 0, x - (64 * scale), y, scale, scale, 1, c_white, 1);
+
+    // Ork clan icon: a small clan symbol on the green label so you can tell at a
+    // glance which clan runs this WAAAGH. Green stays (Ork identity); accent only.
+    if (owner == eFACTION.ORK) {
+        var _olead = system_leading_ork_warband(id);
+        if (is_struct(_olead)) {
+            var _px = x - (30 * scale);
+            var _py = y + (12 * scale);
+            var _pr = 6 * scale;
+            ork_warband_draw_icon(_olead, _px, _py, _pr);
+            if (scr_hit(_px - _pr, _py - _pr, _px + _pr, _py + _pr)) {
+                tooltip_draw(_olead.name + " leads this WAAAGH");
+            }
+        }
+    }
 }
 draw_set_valign(fa_top);

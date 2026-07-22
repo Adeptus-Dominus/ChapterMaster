@@ -5,6 +5,10 @@ if (instance_number(obj_ncombat) > 1) {
 set_zoom_to_default();
 LOGGER.info("Ground Combat Started");
 
+// Guardsman veterancy: kills made by Guard small-arms volleys this battle
+// (tallied in scr_shoot, paid out as GUARD_KILL_XP by the Alarm_7 kill lottery).
+guard_kills = 0;
+
 audio_stop_sound(snd_royal);
 audio_play_sound(snd_battle, 0, true);
 audio_sound_gain(snd_battle, 1, 5000);
@@ -46,15 +50,17 @@ instance_activate_object(obj_cursor);
 instance_activate_object(obj_ini);
 instance_activate_object(obj_img);
 
-var u = noone;
-for (var i = 10; i > 0; i--) {
-    // This creates the objects to then be filled in
-    u = instance_create(i * 10, 240, obj_pnunit);
-}
+// Battle blocks are one per formation type (matching the formation editor's bars)
+// rather than one per column, so formations sharing a column remain separate,
+// individually orderable segments of that line. No blocks are pre-created here: the
+// bat_*_column values are resolved by the roster scripts at fill time (this Create can
+// run before this battle's formation is applied), so every block is created on demand
+// by formation_block() at its correct column as the first unit of its type arrives.
 
 instance_create(0, 0, obj_centerline);
 
 local_forces = 0;
+hold_ground = 0; // when set, surviving player attackers stay planetside as a foothold after this battle
 battle_loc = "";
 battle_climate = "";
 if (instance_exists(obj_star)) {
@@ -62,7 +68,12 @@ if (instance_exists(obj_star)) {
     battle_object = instance_nearest(x, y, obj_star);
 } else {
     battle_object = noone;
-    LOGGER.error("No obj_star instance found for combat; battle_object defaulted to noone");
+    // Not an error: battles are created in the combat room, where no obj_star
+    // instance lives. Every spawner (drop_select, purge, missions, ruins, popup
+    // reinforcements) assigns obj_ncombat.battle_object right after creating this
+    // instance, so the nearest-star resolution above only matters for battles
+    // created in the map room.
+    LOGGER.info("No obj_star in this room; battle_object will be assigned by the battle spawner");
 }
 battle_id = 0;
 battle_mission = "";
@@ -82,6 +93,7 @@ done = 0;
 captured_gaunt = 0;
 ethereal = 0;
 hulk_treasure = 0;
+hulk_cleared = 0;
 four_show = 0;
 chaos_angry = 0;
 
@@ -89,6 +101,7 @@ leader = 0;
 thirsty = 0;
 really_thirsty = 0;
 allies = 0;
+player_attack_guard = 0; // embarked Guard committed to an assault from the attacking fleet
 present_inquisitor = 0;
 sorcery_seen = 0;
 inquisitor_ship = 0;
@@ -112,7 +125,9 @@ display_p2n = "";
 
 alarm[0] = 2;
 alarm[1] = 3;
-obj_pnunit.alarm[3] = 1;
+if (instance_exists(obj_pnunit)) {
+    obj_pnunit.alarm[3] = 1;
+}
 alarm[2] = 8;
 
 started = 0;
@@ -125,6 +140,16 @@ enem_sing = "Ork";
 threat = 0;
 fortified = 0;
 enemy_fortified = 0;
+// Set by scr_drop_select_function when the assault targets an outlying sector
+// of a multi-region world: the enemy commits only part of its force, and the
+// victory cuts their strategic level by 1 instead of 2 (Alarm_5). Declared here
+// or the Alarm_5 read crashes (no default-zero in this codebase).
+region_partial = false;
+// The region index this ground battle is being fought over (captured at launch from the player's
+// focus), so post-battle landing/attrition use the SAME region the assault targeted rather than
+// re-reading the focus at battle end (which can drift or reset). -1 = whole planet / not regional.
+battle_region = -1;
+bastion_bonus = 0;   // §16h: distinct Bastion fortress reinforcement (set at defend-setup; save-safe default 0)
 wall_destroyed = 0;
 flank_x = 0;
 
@@ -132,6 +157,7 @@ player_forces = 0;
 player_max = 0;
 player_defenses = 0;
 player_silos = 0;
+player_guard = 0;
 
 enemy_forces = 0;
 enemy_max = 0;
@@ -173,13 +199,25 @@ casualties = 0;
 dead_jims = 0;
 
 combat_log = new CombatLog(id);
-combat_log.log_font = fnt_aldrich_12;
 
+// Upstream combat debug buffer (inert unless activated: add() returns immediately
+// when inactive). The fork ran without this initialization while the call sites
+// lived only in upstream-side files; the merged enemy targeting alarm now calls it
+// on its first line, so every battle crashed on the unset variable. Initialize
+// exactly as upstream's Create_0 does.
 combat_debugger = new CombatDebugger(false);
-
+combat_log.log_font = fnt_aldrich_12;
 ctally_target = undefined;
 ctally_bounce = [];
 ctally_injure = [];
+// Grazing flavor: worst wound severity (0..1) and vehicle flag for the current injured
+// tally group, so the consolidated wound line can be graded like the enemy side's.
+ctally_injure_severity = 0;
+ctally_is_vehicle = false;
+ktally_target = undefined;
+ktally_weapons = {};
+ktally_order = [];
+ktally_leaders = [];
 
 world_size = 0;
 
@@ -241,6 +279,11 @@ en_big_mofo = 10;
 
 defending = true; // 1 is defensive
 dropping = false; // 0 is was on ground
+// Basic combat orders: latched true the first time any player block reaches the
+// enemy line to its front (east), which stops the formation-wide auto-advance so
+// the line holds at contact instead of individual blocks surging into gaps as
+// enemies die. Reset per battle here.
+player_front_contact = false;
 attacking = 0; // 1 means attacked from space/local
 time = floor(random(24)) + 1;
 terrain = "";

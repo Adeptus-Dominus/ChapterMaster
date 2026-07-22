@@ -1,0 +1,89 @@
+FORCES FROM POPULATIONS & THE BIGGER FIGHT - the short version
+==============================================================
+(design direction - not built yet)
+
+
+THE CORE CHANGE
+---------------
+Right now every enemy on a world is an abstract "force level" 1-6, and
+each level spawns a hand-written list of units. We're replacing that:
+every race has a REAL POPULATION on each world, and the forces in a
+battle are drawn straight from those numbers. A WAAAGH that's festered
+for 40 turns fields far more than one that just landed.
+
+
+HOW POPULATIONS WORK
+--------------------
+* Tracked per region, per race - so forces spread out and shift region
+  by region.
+* Mostly CIVILIAN. Only a fraction actually fights (the combatants); the
+  civilians are the base that breeds them, grows over time, and gets
+  consumed or taxed.
+* Total-war races are the exception: Tyranids and Orks are basically all
+  fighters (Gretchin are the closest thing Orks have to a civ class), so
+  they field their whole population.
+
+
+THE IMPERIAL SIDE  (civilians -> PDF -> tithe -> Guard)
+-------------------------------------------------------
+* Civilians raise a base PDF for local defence.
+* The Imperial Tithe trains one in ten of the PDF - the best of them -
+  into Astra Militarum (Guard) regiments that ship out to the wider war.
+* We add a NEW PDF unit: a weaker Guardsman, so locals can actually put
+  up a fight against invaders.
+
+
+FLEETS DROP POPULATIONS
+-----------------------
+* Instead of a fleet "dumping force", an arriving fleet drops a
+  POPULATION - a beachhead / spore-drop seeded into a region.
+* From there populations interact directly: they grow, spread, and
+  CONSUME each other and the locals. Orks bloom and use captives as
+  livestock; Nids eat everything into biomass.
+* Faction-vs-faction fights become population vs population - each side
+  musters what it actually has, and the loser's population takes the
+  casualties.
+
+
+THE FIGHT ITSELF
+----------------
+* Combat is a NUMBERS-VS-NUMBERS simulation - stacks of troops trading
+  firepower, casualties = damage / toughness. It already handles huge
+  counts, so a million-strong battle resolves fine.
+* Marines stay real units with elite stats. They add their devastation
+  and TIP THE BALANCE of a fight - but they are NOT an auto-win. A
+  thousand Astartes can't out-body a million Orks on their own.
+* So you fight ALONGSIDE allied PDF and Guard. The mass holds the line;
+  the Marines are the hammer that breaks it.
+
+
+THE SCALE  (straight from 40K lore)
+-----------------------------------
+* Hive worlds: hundreds of billions to over a trillion people.
+* PDF: about 0.5% of the population - millions to billions on a big world.
+* Guard regiments: 10,000-80,000, raised as 1 in 10 of the PDF.
+* Ork WAAAGHs: millions typically, billions at their worst.
+  => Think MILLIONS, not the ~11,000 the current battles cap at.
+
+
+STARTING STATES
+---------------
+* Orks start a few years into their growth cycle, just beginning to
+  attack the locals.
+* Tau start owning their worlds, clustered together, expanding
+  methodically outward.
+
+
+HOW IT GETS BUILT
+-----------------
+* One faction at a time, ORKS FIRST. The Orks already have every unit
+  type in the game, so it's just drawing them from a population by ratio
+  instead of a fixed tier. For example, a 1,000,000-strong WAAAGH would
+  field roughly:
+      280k Shoota Boyz, 250k Slugga Boyz, 200k 'Ard Boyz, 250k Gretchin,
+      ~13k Tankbustas, ~7k Flash Gitz, ~6k Nobz, ~3k Kommandos,
+      ~6k Deff Dreads, ~3k Battlewagons, and one Big Warboss.
+* Then Tyranids (biomass), then Tau, then the rest.
+
+
+That's the direction. Full technical spec: POPULATIONS_FORCE_PLAN.md.

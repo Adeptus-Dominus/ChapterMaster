@@ -172,6 +172,37 @@
         },
         "description": "This armour is used by T'au fire warriors."
     },
+    "Flak Armour": {
+        "abbreviation": "FlkArm",
+        "armour_value": {
+            "artifact": 12,
+            "master_crafted": 11,
+            "standard": 10
+        },
+        "damage_resistance_mod": {
+            "artifact": 0,
+            "master_crafted": 0,
+            "standard": 0
+        },
+        "description": "A simple flak jacket of ablative plates and ballistic weave, the standard protection of the Astra Militarum rank and file. It turns aside shrapnel and glancing hits but offers little against a determined blow.",
+        "hp_mod": {
+            "artifact": 0,
+            "master_crafted": 0,
+            "standard": 0
+        },
+        "melee_mod": {
+            "artifact": 0,
+            "master_crafted": 0,
+            "standard": 0
+        },
+        "ranged_mod": {
+            "artifact": 10,
+            "master_crafted": 8,
+            "standard": 5
+        },
+        "renegade_buy": true,
+        "value": 2
+    },
     "Light Power Armour": {
         "abbreviation": "LPwrArm",
         "armour_value": {

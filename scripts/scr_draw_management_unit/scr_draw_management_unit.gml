@@ -11,6 +11,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
     var is_man = false;
     var _loc_name = "";
     var _loc_planet_num = "";
+    var _loc_sector_suffix = "";
     var unit_specialist = false;
     if (man[selected] == "man" && is_struct(display_unit[selected])) {
         is_man = true;
@@ -50,6 +51,11 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
                 if (unit_location[0] == eLOCATION_TYPES.PLANET) {
                     _loc_name = unit_location[2];
                     _loc_planet_num = scr_roman(unit_location[1]);
+                    // The unit's sector (region), carried as a minimal "| N" suffix and appended
+                    // AFTER the name+numeral so it never eats into the planet name's width budget.
+                    if (variable_struct_exists(_unit, "region_location") && is_real(_unit.region_location) && (_unit.region_location >= 0)) {
+                        _loc_sector_suffix = " | " + string(_unit.region_location + 1);
+                    }
                 } else if (unit_location[0] == eLOCATION_TYPES.SHIP) {
                     _loc_name = obj_ini.ship[unit_location[1]];
                 }
@@ -353,6 +359,8 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
         } else {
             truncatedLocation = string_truncate(string(_loc_name), 130);
         }
+        // Sector suffix goes on the end so it never costs the planet name any width.
+        truncatedLocation += _loc_sector_suffix;
 
         draw_text(xx + 430 + 8, yy + 66, truncatedLocation); // LOC
         draw_set_alpha(1);
@@ -508,7 +516,9 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
     if (!unclickable && !click_lock) {
         var changed = false;
 
-        if (sel_all != "") {
+        // Select All means "all of what the company filter shows": with a company
+        // filtered in, hidden companies stay untouched.
+        if (sel_all != "" && !manage_company_filter_skip(selected)) {
             if (sel_all == "all") {
                 changed = true;
             } else if (sel_all == "vehicle" && !is_man) {
@@ -601,6 +611,15 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
 
         if (((mouse_x >= xx + 25 && mouse_y >= yy + 64 && mouse_x < xx + 974 && mouse_y < yy + 85) || force_tool == 1) && is_struct(_unit)) {
             unit_focus = _unit; // unit_struct
+            // Hovering back onto a unit hands the portrait slot back to the unit image.
+            vehicle_portrait_role = "";
+        }
+    } else if ((man[selected] == "vehicle") && draw) {
+        // Vehicle portraits (mod): vehicles set no unit_focus, so the portrait slot
+        // never knew a vehicle was hovered. Store the role; the manage panel maps it
+        // to a runtime PNG (see draw_sprite_and_unit_equip_data in scr_ui_manage).
+        if (mouse_x >= xx + 25 && mouse_y >= yy + 64 && mouse_x < xx + 974 && mouse_y < yy + 85) {
+            vehicle_portrait_role = string(ma_role[selected]);
         }
     }
     if (!ma_view[selected]) {

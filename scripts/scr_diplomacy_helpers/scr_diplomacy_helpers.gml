@@ -180,8 +180,17 @@ function draw_character_diplomacy() {
 
     _meet.inside_method = function() {
         var _diplo_unit = obj_controller.character_diplomacy;
-        if (!variable_instance_exists(obj_controller, "diplo_image")) {
+        // Upstream (808c2a) corrected the exists check (struct_exists on an instance
+        // was always false, so the portrait regenerated every frame and the missing
+        // cache key never showed). Now that the cache holds, key it by character:
+        // otherwise the first character ever met stays the portrait for every later
+        // audience. The unit ref is a struct, so the reflective serializer ignores
+        // both fields and the cache rebuilds cleanly after loading a save.
+        if ((!variable_instance_exists(obj_controller, "diplo_image"))
+        || (!variable_instance_exists(obj_controller, "diplo_image_unit"))
+        || (obj_controller.diplo_image_unit != _diplo_unit)) {
             obj_controller.diplo_image = _diplo_unit.draw_unit_image();
+            obj_controller.diplo_image_unit = _diplo_unit;
         }
         obj_controller.diplo_image.draw(210, 249, true, 1, 1, 0, CM_GREEN_COLOR, 1);
         _diplo_unit.stat_display(false, {x1: 10, y1: 520, w: 569, h: 303}, true);
@@ -203,8 +212,13 @@ function draw_character_diplomacy() {
     _cm_slate.inside_method = function() {
         var _master = fetch_unit([0, 0]);
 
-        if (!variable_instance_exists(obj_controller, "master_image")) {
+        // Same keyed cache as diplo_image above: a new Chapter Master (succession)
+        // must not inherit his predecessor's face.
+        if ((!variable_instance_exists(obj_controller, "master_image"))
+        || (!variable_instance_exists(obj_controller, "master_image_unit"))
+        || (obj_controller.master_image_unit != _master)) {
             obj_controller.master_image = _master.draw_unit_image();
+            obj_controller.master_image_unit = _master;
         }
         obj_controller.master_image.draw(1308, 249, true, 1, 1, 0, CM_GREEN_COLOR, 1);
         _master.stat_display(false, {x1: 1108, y1: 520, w: 569, h: 303}, true);

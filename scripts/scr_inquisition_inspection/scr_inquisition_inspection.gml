@@ -518,9 +518,19 @@ function inquisitor_inspection_structure() constructor {
                 }
 
                 finalize_contraband_popup();
+            } else {
+                // Findings existed but the Inquisitor's tolerance roll let them slide.
+                // This branch was previously silent, while the "blind eye" text below
+                // sat on the CLEAN branch, so a spotless chapter was told the
+                // Inquisitor had overlooked its "heretical dealings" and a chapter
+                // with real findings heard nothing. This is the community-reported
+                // "inspections always find something but never say what". Bug exists
+                // verbatim in upstream main.
+                var _tolerated_string = "The Inquisitor has chosen to turn a blind eye to some of your more questionable dealings on this occasion. It would perhaps be wise to be more careful in future.";
+                scr_popup("Inquisitor Finish Inspection", _tolerated_string, "inquisition");
             }
         } else {
-            var _inspection_passed_string = "The inquisitor Has chosen to turnj a blind eye to some of your more heretical dealings on this occaision. However, it would perhaps be wise to be more careful in furture ";
+            var _inspection_passed_string = "The Inquisitor concludes the inspection having found nothing of concern. The chapter's conduct is, for now, beyond reproach.";
             scr_popup("Inquisitor Finish Inspection", _inspection_passed_string, "inquisition");
         }
     };

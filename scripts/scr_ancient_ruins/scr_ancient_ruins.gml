@@ -270,7 +270,7 @@ function scr_explore_ruins() {
                         exit;
                     },
                 },
-            ],
+            ]
         );
         pip.image = "ancient_ruins";
     } catch (_exception) {

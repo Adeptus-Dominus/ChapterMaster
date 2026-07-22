@@ -1,3 +1,27 @@
+/// @function battle_log_tail_slot
+/// @desc First free slot AFTER the last queued message. The old posting scheme wrote
+/// at index `messages`, which is a COUNT, not a tail pointer: every displayed message
+/// clears a slot at the FRONT of the queue and decrements the count, so until the
+/// next compaction tick the count points AT the newest queued message. Any post
+/// landing in that window overwrote it (silently destroying lines, vehicle-loss
+/// lines in message-heavy piercing turns being the reported casualties) and inflated
+/// `messages` by one phantom per overwrite, which is how battles ended with the pump
+/// spinning on a nonzero count over empty slots, printing nothing.
+/// @returns {real} slot index, or -1 when the log is genuinely full (drop, never overwrite)
+function battle_log_tail_slot() {
+    var _last = 0;
+    for (var _m = COMBAT_LOG_CAPACITY; _m >= 1; _m--) {
+        if (obj_ncombat.message[_m] != "") {
+            _last = _m;
+            break;
+        }
+    }
+    if (_last >= COMBAT_LOG_CAPACITY) {
+        return -1;
+    }
+    return _last + 1;
+}
+
 /// @function add_battle_log_message
 /// @param {string} _message - The message text to add to the battle log
 /// @param {real} [_message_color=0] - The color enum value (0=default, eMSG_COLOR.*)
@@ -43,7 +67,7 @@ function report_held_fire(_weapon_names) {
     add_battle_log_message($"{_list} held fire lacking live targets.", eMSG_COLOR.WHITE);
 }
 
-function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shots, casulties, shots_bounced = false, _defer = false) {
+function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shots, casulties, shots_bounced = false, _defer = false, _graze_severity = 0) {
     // Generates flavor based on the damage and casualties from scr_shoot, only for the player
     // shots_bounced: true when armour stopped the shots outright (AP too low) and nothing died,
     // so the log can explain *why* instead of a flat "no casualties".
@@ -152,6 +176,10 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
     } else {
         firing_subject = $"{number_of_shots} {weapon_plural}";
     }
+
+    // A plain volley line ("<n> <weapons>", no character title) can be summed with other volleys
+    // of the same weapon on the same target into one consolidated kill line (see emit_volley_flavour).
+    var _volley_line = (!(character_shot && unit_name != "")) && (number_of_shots > 1);
 
     var flavoured = false;
 
@@ -726,16 +754,16 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
             leader_message = string_replace(leader_message, "a " + target_name, target_name);
             leader_message = string_replace(leader_message, "the " + target_name, target_name);
             leader_message = string_replace(leader_message, target_name + " ranks , inflicting {casulties}", target_name);
-            if (enemy == 5) {
+            if (obj_ncombat.enemy == 5) {
                 leader_message = string_replace(leader_message, "it", "her");
             }
-            if ((enemy == 6) && (obj_controller.faction_gender[6] == 1)) {
+            if ((obj_ncombat.enemy == 6) && (obj_controller.faction_gender[6] == 1)) {
                 leader_message = string_replace(leader_message, "it", "him");
             }
-            if ((enemy == 6) && (obj_controller.faction_gender[6] == 2)) {
+            if ((obj_ncombat.enemy == 6) && (obj_controller.faction_gender[6] == 2)) {
                 leader_message = string_replace(leader_message, "it", "her");
             }
-            if ((enemy != 6) && (enemy != 5)) {
+            if ((obj_ncombat.enemy != 6) && (obj_ncombat.enemy != 5)) {
                 leader_message = string_replace(leader_message, "it", "him");
             }
             message_color = eMSG_COLOR.YELLOW;
@@ -760,8 +788,14 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
         color: message_color,
         bounced: (shots_bounced && casulties == 0),
         injured: (!shots_bounced && casulties == 0),
+        severity: _graze_severity,
+        is_vehicle: (instance_exists(target) ? (target.dudes_vehicle[targeh] != 0) : false),
         target: target_name,
         subject: firing_subject,
+        weapon: weapon_plural,
+        shots: number_of_shots,
+        kills: casulties,
+        volley: _volley_line,
     };
 }
 
@@ -809,13 +843,25 @@ function emit_volley_flavour(_primary, _spill_kills) {
     // Non-killing volley (armour-bounce or a wound that dropped no-one, and nothing spilled):
     // consolidate into one chronological line per target instead of one line per weapon.
     if (is_struct(_primary) && (_primary.bounced || _primary.injured) && _list == "") {
-        combat_tally_add(_primary.target, _primary.subject, _primary.injured);
+        combat_kill_tally_flush();
+        combat_tally_add(_primary.target, _primary.subject, _primary.injured, _primary.severity, _primary.is_vehicle);
         return;
     }
 
-    // A killing volley posts immediately; flush any pending bounce/injure tally first so the log
-    // stays in chronological order.
+    // Simple killing volley with no spill-over: buffer it so consecutive volleys of the same weapon
+    // on the same target (e.g. a split lasgun volley firing in sub-stacks) collapse into one summed
+    // line. A single unmerged volley keeps its original rich flavour on flush. Flush the wound/bounce
+    // tally first so the log stays chronological.
+    if (is_struct(_primary) && _list == "" && _primary.volley && _primary.kills > 0) {
+        combat_tally_flush();
+        combat_kill_tally_add(_primary.target, _primary.weapon, _primary.shots, _primary.kills, _primary.attack, _primary.color, _primary.leader);
+        return;
+    }
+
+    // A killing volley with spill-over, or a titled/lone shot, posts immediately; flush both pending
+    // tallies first so the log stays in chronological order.
     combat_tally_flush();
+    combat_kill_tally_flush();
 
     if (!is_struct(_primary)) {
         // No primary line (scr_flavor bailed on a dead target - shouldn't happen now that emptied
@@ -842,13 +888,17 @@ function emit_volley_flavour(_primary, _spill_kills) {
 /// @desc Buffers a non-killing volley (wound or armour-bounce) against a target. Consecutive volleys
 ///       on the same target merge; switching target flushes the previous one, keeping the log
 ///       chronological. _injured true = penetrated but no kill; false = bounced off armour.
-function combat_tally_add(_target, _subject, _injured) {
+function combat_tally_add(_target, _subject, _injured, _severity = 0, _is_vehicle = false) {
     if (obj_ncombat.ctally_target != _target) {
         combat_tally_flush();
         obj_ncombat.ctally_target = _target;
     }
     if (_injured) {
         array_push(obj_ncombat.ctally_injure, _subject);
+        // Keep the worst wound in the group so the consolidated line grades by the
+        // heaviest hit, and remember whether the target is a vehicle for the tier table.
+        obj_ncombat.ctally_injure_severity = max(obj_ncombat.ctally_injure_severity, _severity);
+        obj_ncombat.ctally_is_vehicle = _is_vehicle;
     } else {
         array_push(obj_ncombat.ctally_bounce, _subject);
     }
@@ -861,7 +911,13 @@ function combat_tally_flush() {
     }
     var _t = obj_ncombat.ctally_target;
     if (array_length(obj_ncombat.ctally_injure) > 0) {
-        add_battle_log_message($"Fire from {combat_subject_join(obj_ncombat.ctally_injure)} wounded the {_t} but didn't bring it down.", eMSG_COLOR.WHITE);
+        // Grade the wound by how much got through, reusing the enemy side's severity tiers
+        // (incoming_damage_flavor). Injured means damage landed, so floor the severity at the
+        // graze tier (0.10) so it never shows the "shrugged off" band. Light green for
+        // wounded-but-standing, per Tavish's CM-Poligon color coding (CptMacTavish2224,
+        // tag LW_Beta_1.2).
+        var _wound_grade = incoming_damage_flavor(max(0.10, obj_ncombat.ctally_injure_severity), obj_ncombat.ctally_is_vehicle);
+        add_battle_log_message($"Fire from {combat_subject_join(obj_ncombat.ctally_injure)} hits the {_t}. {_wound_grade}", eMSG_COLOR.LIGHTGREEN);
     }
     if (array_length(obj_ncombat.ctally_bounce) > 0) {
         add_battle_log_message($"Fire from {combat_subject_join(obj_ncombat.ctally_bounce)} cannot penetrate the {_t}'s armour.", eMSG_COLOR.WHITE);
@@ -869,6 +925,59 @@ function combat_tally_flush() {
     obj_ncombat.ctally_target = undefined;
     obj_ncombat.ctally_bounce = [];
     obj_ncombat.ctally_injure = [];
+    obj_ncombat.ctally_injure_severity = 0;
+    obj_ncombat.ctally_is_vehicle = false;
+}
+
+/// @desc Buffers killing volleys that share a weapon and target, summing shots and kills so a split
+///       volley (many sub-stacks firing at one target) collapses into one line. The first volley's
+///       rich flavour is kept and used verbatim if no second volley merges with it. Switching target
+///       flushes the previous target first, keeping the log chronological.
+function combat_kill_tally_add(_target, _weapon, _shots, _kills, _attack, _color, _leader) {
+    if (obj_ncombat.ktally_target != _target) {
+        combat_kill_tally_flush();
+        obj_ncombat.ktally_target = _target;
+        obj_ncombat.ktally_weapons = {};
+        obj_ncombat.ktally_order = [];
+        obj_ncombat.ktally_leaders = [];
+    }
+    if (!variable_struct_exists(obj_ncombat.ktally_weapons, _weapon)) {
+        obj_ncombat.ktally_weapons[$ _weapon] = { shots: 0, kills: 0, count: 0, attack: _attack, color: _color };
+        array_push(obj_ncombat.ktally_order, _weapon);
+    }
+    var _acc = obj_ncombat.ktally_weapons[$ _weapon];
+    _acc.shots += _shots;
+    _acc.kills += _kills;
+    _acc.count += 1;
+    if (_leader != "") {
+        array_push(obj_ncombat.ktally_leaders, { text: _leader, color: _color });
+    }
+}
+
+/// @desc Posts the buffered kills for the current target: one line per weapon (the original rich
+///       line when only a single volley landed, otherwise a summed "<shots> <weapon> strike at the
+///       <target> ranks, killing <kills>"), then any deferred leader lines, and clears.
+function combat_kill_tally_flush() {
+    if (obj_ncombat.ktally_target == undefined) {
+        return;
+    }
+    var _t = obj_ncombat.ktally_target;
+    for (var _i = 0; _i < array_length(obj_ncombat.ktally_order); _i++) {
+        var _w = obj_ncombat.ktally_order[_i];
+        var _acc = obj_ncombat.ktally_weapons[$ _w];
+        if (_acc.count == 1) {
+            add_battle_log_message(_acc.attack, _acc.color);
+        } else {
+            add_battle_log_message($"{_acc.shots} {_w} strike at the {_t} ranks, killing {_acc.kills}.", _acc.color);
+        }
+    }
+    for (var _i = 0; _i < array_length(obj_ncombat.ktally_leaders); _i++) {
+        add_battle_log_message(obj_ncombat.ktally_leaders[_i].text, obj_ncombat.ktally_leaders[_i].color);
+    }
+    obj_ncombat.ktally_target = undefined;
+    obj_ncombat.ktally_weapons = {};
+    obj_ncombat.ktally_order = [];
+    obj_ncombat.ktally_leaders = [];
 }
 
 /// @desc Joins firing subjects into "A", "A and B", or "A, B, and C".

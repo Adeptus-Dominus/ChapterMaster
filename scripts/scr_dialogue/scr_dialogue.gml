@@ -81,6 +81,11 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             sorc = true;
         }
 
+        // Discuss is only implemented for the Imperium's Sector Commander; other
+        // audiences get a polite brushoff instead of a dead button.
+        if (diplo_keyphrase == "discuss_unavailable") {
+            diplo_text = "We have nothing further to discuss at this time.";
+        }
         if ((diplo_keyphrase == "intro") || (diplo_keyphrase == "intro1") || ((diplomacy == 10) && (diplo_keyphrase == "intro2"))) {
             event_log = $"Chapter Master {obj_ini.master_name} meets the {obj_controller.faction[diplomacy]} {obj_controller.faction_title[diplomacy]}, {obj_controller.faction_leader[diplomacy]}.";
             scr_event_log("", event_log);
@@ -1013,6 +1018,159 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                 }
                 if (rela == "hostile") {
                     diplo_text = $"What do you want, Chapter Master? I have little time for glorified interplanetary brigands such as yourself.";
+                }
+            }
+            // Sector war directives: reached from the Discuss button. Reviews the
+            // standing order (see scr_sector_directive) and offers changes through a
+            // two-step menu so the choice list stays short.
+            if (diplo_keyphrase == "discuss_directives") {
+                sector_directive_ensure();
+                if (rela == "hostile") {
+                    diplo_text = "You presume to direct MY armies? Look to your own failings first, Chapter Master.";
+                } else {
+                    diplo_text = $"My forces are presently {sector_directive_label()}.";
+                    if (sector_directive_can_change()) {
+                        diplo_text += " Speak, and the sector's strategy shall follow.";
+                        add_diplomacy_option({option_text: "Stand in defense of the core worlds.", goto: "directive_defend"});
+                        add_diplomacy_option({option_text: "Reclaim the worlds the Imperium has lost.", goto: "directive_reclaim"});
+                        add_diplomacy_option({option_text: "Concentrate on containing a threat...", goto: "directive_contain_menu"});
+                        add_diplomacy_option({option_text: "Send a fleet to support my forces...", goto: "fleet_support_menu"});
+                        add_diplomacy_option({option_text: "[Leave the strategy as it stands]", goto: "directive_close"});
+                    } else {
+                        diplo_text += $" My regiments are still redeploying; I will hear new orders in {max(1, sector_directive_turn + SECTOR_DIRECTIVE_COOLDOWN - turn)} turns.";
+                        add_diplomacy_option({option_text: "[Very well]", goto: "directive_close"});
+                    }
+                }
+            }
+            if (diplo_keyphrase == "directive_contain_menu") {
+                diplo_text = "Which threat shall the sector's regiments grind down?";
+                // Offer any faction the Governor can see loose in the sector: either the
+                // Chapter has formally encountered it (known[]) OR it actively holds a world
+                // (sector_faction_has_presence). Gating on known[] alone left the list empty
+                // when the player was already fighting a foe they had not "discovered".
+                if (((known[eFACTION.ORK] >= 1) || sector_faction_has_presence(eFACTION.ORK)) && (!faction_defeated[eFACTION.ORK])) {
+                    add_diplomacy_option({option_text: "The Orks.", goto: "directive_contain_ork"});
+                }
+                if (((known[eFACTION.TAU] >= 1) || sector_faction_has_presence(eFACTION.TAU)) && (!faction_defeated[eFACTION.TAU])) {
+                    add_diplomacy_option({option_text: "The T'au.", goto: "directive_contain_tau"});
+                }
+                if (((known[eFACTION.ELDAR] >= 1) || sector_faction_has_presence(eFACTION.ELDAR)) && (!faction_defeated[eFACTION.ELDAR])) {
+                    add_diplomacy_option({option_text: "The Eldar.", goto: "directive_contain_eldar"});
+                }
+                if (((known[eFACTION.CHAOS] >= 1) || sector_faction_has_presence(eFACTION.CHAOS)) && (!faction_defeated[eFACTION.CHAOS])) {
+                    add_diplomacy_option({option_text: "The forces of Chaos.", goto: "directive_contain_chaos"});
+                }
+                add_diplomacy_option({option_text: "[Back]", goto: "discuss_directives"});
+            }
+            if (diplo_keyphrase == "directive_defend") {
+                sector_directive_apply_choice("defend");
+            }
+            if (diplo_keyphrase == "directive_reclaim") {
+                sector_directive_apply_choice("reclaim");
+            }
+            if (diplo_keyphrase == "directive_contain_ork") {
+                sector_directive_apply_choice("contain_ork");
+            }
+            if (diplo_keyphrase == "directive_contain_tau") {
+                sector_directive_apply_choice("contain_tau");
+            }
+            if (diplo_keyphrase == "directive_contain_eldar") {
+                sector_directive_apply_choice("contain_eldar");
+            }
+            if (diplo_keyphrase == "directive_contain_chaos") {
+                sector_directive_apply_choice("contain_chaos");
+            }
+            if (diplo_keyphrase == "directive_close") {
+                diplo_text = "As you say. My staff will keep you appraised, Chapter Master.";
+            }
+            // ---- Imperial Navy fleet support (War Room) ----
+            // Ask the Governor to send an Imperial Navy fleet to shadow one of the player's
+            // fleets and join its attacks. Replaces the old click-on-fleet interaction.
+            if (diplo_keyphrase == "fleet_support_menu") {
+                if (disposition[eFACTION.IMPERIUM] <= NAVY_ORDER_MIN_DISPOSITION) {
+                    diplo_text = "My ships answer to the Emperor and to me, Chapter Master. When I have more cause to trust your judgement, perhaps I shall heed your counsel. For now... I don't think I will.";
+                    add_diplomacy_option({option_text: "[As you wish]", goto: "directive_close"});
+                } else {
+                    diplo_text = "Which of your fleets shall my ships support?";
+                    add_diplomacy_option({option_text: "My largest fleet.", goto: "fleet_support_largest"});
+                    add_diplomacy_option({option_text: "My fleet nearest yours.", goto: "fleet_support_closest"});
+                    add_diplomacy_option({option_text: "The fleet bearing my Chapter Master.", goto: "fleet_support_master"});
+                    add_diplomacy_option({option_text: "[Nothing for now]", goto: "directive_close"});
+                }
+            }
+            if ((diplo_keyphrase == "fleet_support_largest") || (diplo_keyphrase == "fleet_support_closest") || (diplo_keyphrase == "fleet_support_master")) {
+                var _fs_rule = "largest";
+                if (diplo_keyphrase == "fleet_support_closest") { _fs_rule = "closest"; }
+                if (diplo_keyphrase == "fleet_support_master") { _fs_rule = "chapter_master"; }
+                var _fs_result = navy_war_room_follow(_fs_rule);
+                switch (_fs_result) {
+                    case "ok":
+                        diplo_text = "It shall be done. My ships will shadow your fleet and lend their guns where you make war, until the battle is won or I have need of them elsewhere.";
+                        break;
+                    case "no_player_fleet":
+                        diplo_text = (_fs_rule == "chapter_master")
+                            ? "Your Chapter Master commands no fleet in the void that I can see, Chapter Master."
+                            : "I see no fleet of yours at void for my ships to join.";
+                        break;
+                    case "no_navy_fleet":
+                        diplo_text = "I have no fleet at liberty to send just now. They are all committed. Return when the situation has changed.";
+                        break;
+                    default:
+                        diplo_text = "I don't think I will.";
+                        break;
+                }
+                add_diplomacy_option({option_text: "[My thanks]", goto: "directive_close"});
+            }
+            // ---- Imperial Navy fleet suggestions (opened by clicking a Navy fleet) ----
+            if (diplo_keyphrase == "fleet_orders") {
+                if (disposition[eFACTION.IMPERIUM] <= NAVY_ORDER_MIN_DISPOSITION) {
+                    // Not enough trust: a polite, lore-accurate refusal. These are only
+                    // suggestions, so he declines rather than takes offence.
+                    diplo_text = "My ships answer to the Emperor and to me, Chapter Master. When I have more cause to trust your judgement, perhaps I shall heed your counsel. For now... I don't think I will.";
+                    add_diplomacy_option({option_text: "[As you wish]", goto: "directive_close"});
+                } else {
+                    diplo_text = "Yes? Do you have any suggestions?";
+                    add_diplomacy_option({option_text: "Hold position.", goto: "fleet_order_hold"});
+                    add_diplomacy_option({option_text: "As you were.", goto: "fleet_order_release"});
+                    add_diplomacy_option({option_text: "Follow my largest fleet.", goto: "fleet_order_follow_largest"});
+                    add_diplomacy_option({option_text: "Follow my closest fleet.", goto: "fleet_order_follow_closest"});
+                    add_diplomacy_option({option_text: "Follow my smallest fleet.", goto: "fleet_order_follow_smallest"});
+                    add_diplomacy_option({option_text: "[Nothing for now]", goto: "directive_close"});
+                }
+            }
+            if (diplo_keyphrase == "fleet_order_hold") {
+                if (navy_order_give(navy_order_target_fleet, "hold")) {
+                    diplo_text = "The fleet will hold station. As you command.";
+                } else {
+                    diplo_text = "That fleet is beyond my reach now, Chapter Master.";
+                }
+            }
+            if (diplo_keyphrase == "fleet_order_release") {
+                if (navy_order_give(navy_order_target_fleet, "release")) {
+                    diplo_text = "Then my captains shall use their own judgement once more.";
+                } else {
+                    diplo_text = "That fleet is beyond my reach now, Chapter Master.";
+                }
+            }
+            if (diplo_keyphrase == "fleet_order_follow_largest") {
+                if (navy_order_give(navy_order_target_fleet, "follow", "largest")) {
+                    diplo_text = "My ships will shadow your main strength, and lend their guns where you make war.";
+                } else {
+                    diplo_text = "I see no fleet of yours for them to follow.";
+                }
+            }
+            if (diplo_keyphrase == "fleet_order_follow_closest") {
+                if (navy_order_give(navy_order_target_fleet, "follow", "closest")) {
+                    diplo_text = "They will make for your nearest fleet and keep pace with it.";
+                } else {
+                    diplo_text = "I see no fleet of yours for them to follow.";
+                }
+            }
+            if (diplo_keyphrase == "fleet_order_follow_smallest") {
+                if (navy_order_give(navy_order_target_fleet, "follow", "smallest")) {
+                    diplo_text = "A wise escort for your lightest ships. It shall be done.";
+                } else {
+                    diplo_text = "I see no fleet of yours for them to follow.";
                 }
             }
             if (diplo_keyphrase == "trade_close") {

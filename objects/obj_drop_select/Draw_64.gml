@@ -107,8 +107,8 @@ try {
     var _draw_y = _y_center;
 
     if (purge > eDROP_TYPE.PURGESELECT) {
-        if (roster_slate.XX < _x_center + w) {
-            _draw_x = min(roster_slate.XX + 15, _x_center + w);
+        if (roster_slate.XX < _x_center + 660) {
+            _draw_x = min(roster_slate.XX + 15, _x_center + 660);
         } else {
             _draw_x = roster_slate.XX;
         }

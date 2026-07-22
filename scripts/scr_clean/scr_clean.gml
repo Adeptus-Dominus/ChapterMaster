@@ -7,8 +7,6 @@ function compress_enemy_array(_target_column) {
         return;
     }
 
-    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.CLEANUP, $"compress_enemy_array column={obj_ncombat.combat_debugger.resolve_label(_target_column)}");
-
     with (_target_column) {
         // Define all data arrays to be processed with their default values
         var _data_arrays = [
@@ -90,7 +88,6 @@ function destroy_empty_column(_target_column) {
             }
         }
         if ((_alive == 0) && (owner != 1)) {
-            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.CLEANUP, $"destroy_empty_column column={obj_ncombat.combat_debugger.resolve_label(_target_column)} destroyed");
             instance_destroy();
         }
     }
@@ -131,9 +128,63 @@ function check_dead_marines(unit_struct, unit_index) {
     return unit_lost;
 }
 
+/// @desc True if a unit role is Guard auxilia rather than Astartes. Matches the guard
+/// role grouping in scr_marine_struct. Used to pick the cover-save rate (Guardsmen use
+/// cover well; bulky Astartes do not).
+function unit_role_is_guard(_role) {
+    return (_role == "Guardsman")
+        || (_role == "Guard Sergeant")
+        || (_role == "Veteran Guard")
+        || (_role == "Heavy Weapons Team");
+}
+
+/// @desc Penetration (critical-hit) chance for a capable anti-tank shot, keyed to the
+/// vehicle's cost tier rather than the weapon's AP. Expensive war machines present almost
+/// no weak spot, so only a rare lucky hit to the right area gets through: a Land Raider
+/// (value 500) sits at 5%, cheaper hulls climb toward the light APCs. This is what stops a
+/// handful of Rokkits from deleting a Land Raider line: an arp-4 shot ignores armour and
+/// one-shots on a hit, so the CHANCE is the gate, not the damage. Values track
+/// vehicles.json costs (Land Raider 500, Predator 240, Whirlwind 180, Rhino/Land Speeder
+/// 120) and are the balance knob.
+function vehicle_penetration_chance(_veh_type) {
+    switch (_veh_type) {
+        case "Land Raider":  return 0.05; // value 500, tankiest hull
+        case "Leman Russ":   return 0.10; // Guard heavy battle tank
+        case "Predator":     return 0.15; // value 240
+        case "Whirlwind":    return 0.22; // value 180, armoured artillery
+        case "Basilisk":     return 0.28; // Guard artillery, thin armour
+        case "Chimera":      return 0.40; // Guard APC
+        case "Rhino":        return 0.45; // value 120, light APC
+        case "Land Speeder": return 0.55; // value 120, fast and lightly armoured
+    }
+    return 0.35; // any unlisted vehicle
+}
+
+/// @desc Anti-tank penetration roll for one capable shot. The caller only invokes this
+/// once the shot would deal damage, so this decides whether it actually gets through.
+/// Chance is the vehicle's cost-tiered weak-spot chance (see vehicle_penetration_chance),
+/// deliberately independent of the weapon's AP so a big AP volley cannot brute-force a
+/// heavy hull. Returns a damage multiplier: binary today (1 penetrate, 0 bounce); a future
+/// tiered result (little / medium / severe, or a disable band) can come from the same roll
+/// without touching the caller.
+function at_penetration_multiplier(_veh_type) {
+    return (random(1) < vehicle_penetration_chance(_veh_type)) ? 1 : 0;
+}
+
 /// @self Id.Instance.obj_pnunit
 /// @param {Id.Instance.obj_pnunit} target_object
-function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_damage, hostile_weapon, hostile_range, hostile_splash, hostile_armour_pierce) {
+function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_damage, hostile_weapon, hostile_range, hostile_splash, weapon_index_position, hostile_arp = 0, hostile_dist = 0) {
+    // Retreating formations take heavily reduced damage as they withdraw (see
+    // RETREAT_DAMAGE_MULT): they cannot fight back, but they are hard to catch.
+    if (target_object.move_order == "retreat") {
+        if (hostile_range <= 2) {
+            // Melee catch: a rout cut down from behind takes amplified damage,
+            // so parking at the field edge is never safe (RETREAT_MELEE_MULT).
+            hostile_damage *= RETREAT_MELEE_MULT;
+        } else {
+            hostile_damage *= RETREAT_DAMAGE_MULT;
+        }
+    }
     // Converts enemy scr_shoot damage into player marine or vehicle casualties.
     //
     // Parameters:
@@ -146,8 +197,6 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
     // hostile_splash: The splash damage modifier. Indicates if the weapon affects multiple targets or has an area-of-effect component.
 
     try {
-        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.SHOOTING, $"scr_clean target={obj_ncombat.combat_debugger.resolve_label(target_object)} is_infantry={target_is_infantry} shots={hostile_shots} dmg={hostile_damage} weapon={hostile_weapon} range={hostile_range} splash={hostile_splash} ap={hostile_armour_pierce}");
-
         with (target_object) {
             if (obj_ncombat.wall_destroyed == 1) {
                 exit;
@@ -157,31 +206,50 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
                 "units_lost": 0,
                 "unit_type": "",
                 "hits": 0,
+                "severity": 0,
+                "is_vehicle": false,
             };
+
+            // Scope the casualty breakdown to THIS attack. lost[]/lost_num[] are the column's
+            // per-attack scratch tally that scr_flavor2 reads to build its "X Foo lost" text.
+            // scr_flavor2 clears them at its end, but fork-added early-exits (suppressed empty or
+            // zero-shot attacks, a destroyed wall) can return before that reset, leaving a previous
+            // attack's casualties in place. A later attack that inflicts nothing of its own (e.g.
+            // autoguns pinging off a Predator's AC40 armour for zero damage) would then read and
+            // mis-report those stale kills as "8 Autoguns strike at Predator. 4 Predators lost."
+            // Clearing here guarantees the breakdown reflects only what this attack actually kills.
+            lost = [];
+            lost_num = [];
 
             // ### Vehicle Damage Processing ###
             if (!target_is_infantry && veh > 0) {
-                damage_vehicles(damage_data, hostile_shots, hostile_damage, hostile_armour_pierce);
+                damage_vehicles(damage_data, hostile_shots, hostile_damage, weapon_index_position, hostile_arp);
             }
 
             // ### Marine + Dreadnought Processing ###
             if (target_is_infantry && (men + dreads > 0)) {
-                damage_infantry(damage_data, hostile_shots, hostile_damage, hostile_armour_pierce);
+                damage_infantry(damage_data, hostile_shots, hostile_damage, weapon_index_position, hostile_splash, hostile_arp, hostile_dist);
             }
 
             if (damage_data.hits < hostile_shots) {
+                // Spillover: only the shots the primary path did not spend carry over.
+                // This used to pass the full hostile_shots again, so a volley that had
+                // already resolved against the primary target fired its entire count a
+                // second time at the secondary one.
+                var _remaining_shots = hostile_shots - damage_data.hits;
+
                 // ### Vehicle Damage Processing ###
                 if (target_is_infantry && veh > 0) {
-                    damage_vehicles(damage_data, hostile_shots, hostile_damage, hostile_armour_pierce);
+                    damage_vehicles(damage_data, _remaining_shots, hostile_damage, weapon_index_position, hostile_arp);
                 }
 
                 // ### Marine + Dreadnought Processing ###
                 if (!target_is_infantry && (men + dreads > 0)) {
-                    damage_infantry(damage_data, hostile_shots, hostile_damage, hostile_armour_pierce);
+                    damage_infantry(damage_data, _remaining_shots, hostile_damage, weapon_index_position, hostile_splash, hostile_arp, hostile_dist);
                 }
             }
 
-            scr_flavor2(damage_data.units_lost, damage_data.unit_type, hostile_range, hostile_weapon, damage_data.hits, hostile_splash);
+            scr_flavor2(damage_data.units_lost, damage_data.unit_type, hostile_range, hostile_weapon, damage_data.hits, hostile_splash, damage_data.severity, damage_data.is_vehicle);
 
             // ### Cleanup ###
             // If the target_object got wiped out, move it off-screen
@@ -196,9 +264,16 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
 }
 
 /// @self Asset.GMObject.obj_pnunit
-function damage_infantry(_damage_data, _shots, _damage, _hostile_armour_pierce) {
+function damage_infantry(_damage_data, _shots, _damage, _weapon_index, _splash, _arp = 0, _dist = 0) {
+    // _arp is the ATTACKER's armour pierce, passed down from scr_shoot. This used to read
+    // apa[_weapon_index], but this function runs in the TARGET obj_pnunit's context, so
+    // that indexed the PLAYER's own weapon-stack arp table with the ENEMY's stack number.
+    // Whatever player stack shared the index decided the enemy's armour penetration: land
+    // on a stack with apa 4 and enemy lasguns ignored armour entirely (dreadnoughts and
+    // vehicles melting to small arms); land elsewhere and real anti-tank bounced off.
+    var _armour_pierce = _arp;
     var _armour_mod = 0;
-    switch (_hostile_armour_pierce) {
+    switch (_armour_pierce) {
         case 4:
             _armour_mod = 0;
             break;
@@ -225,7 +300,88 @@ function damage_infantry(_damage_data, _shots, _damage, _hostile_armour_pierce) 
         }
     }
 
-    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.DAMAGE, $"damage_infantry valid_marines={array_length(valid_marines)} shots={_shots} dmg={_damage} ap={_hostile_armour_pierce}");
+    // Bulk man-block with no individual model structs (Guard auxilia): take losses
+    // straight off the men count, the way the enemy's ranks do, since there are no
+    // marine structs for the normal path to kill. Scoped to guard blocks only.
+    // ===== OBSOLETE: planetary Guard (iteration 1) =====
+    // Casualty math for the dead first-iteration men-block. The `guard` flag is never set
+    // to 1, so this never runs, and the cover-save inside it never applies. Live guardsmen
+    // take casualties through the normal marine path below. Left for reference only.
+    if (guard == 1 && array_length(valid_marines) == 0 && men > 0) {
+        // Identical to the enemy Guardsman casualty math in scr_shoot. Reduce each
+        // shot by armour, pool the survivable damage across all shots, convert it to
+        // dead men at dudes_hp each, and cap the kills at the shot count. With
+        // dudes_ac 40 the rank shrugs off low-AP fire (basic Choppaz, Shootas) the
+        // same way the enemy Guardsmen you fight do, and only armour-piercing weapons
+        // cut them down in numbers. Armour is what gives them their staying power, so
+        // there is no separate cohesion cap here.
+        var _g_ac = (array_length(dudes_ac) > 1) ? dudes_ac[1] : 40;
+        var _g_hp = (array_length(dudes_hp) > 1) ? dudes_hp[1] : 5;
+        if (_g_hp <= 0) {
+            _g_hp = 5;
+        }
+        var _g_after = _damage - (_g_ac * _armour_mod);
+        if (_g_after < 0) {
+            _g_after = 0;
+        }
+        var _g_pool = _shots * _g_after;
+        var _g_total = min(floor(_g_pool / _g_hp), _shots);
+        _g_total = min(_g_total, men);
+        if (_g_total < 0) {
+            _g_total = 0;
+        }
+        // Cover / dispersion save (see GUARD_COVER_SAVE in macros.gml). A flat fraction
+        // of would-be casualties are treated as missed, standing in for spacing, terrain
+        // and a small profile. Applied after armour so it also blunts armour-piercing
+        // weapons (choppaz, power klawz) that ignore Flak entirely.
+        if (_g_total > 0 && GUARD_COVER_SAVE > 0) {
+            _g_total = floor(_g_total * (1 - GUARD_COVER_SAVE));
+        }
+        _damage_data.hits += _shots;
+        // Always name the block, even on a zero-casualty hit, or the enemy attack
+        // flavor prints "fire at ." with a blank target whenever armour soaks the shot.
+        _damage_data.unit_type = "Imperial Guardsman";
+        if (_g_total > 0) {
+            men -= _g_total;
+            if (array_length(dudes_num) > 1) {
+                dudes_num[1] = max(0, dudes_num[1] - _g_total);
+            }
+            // Report through the same lost/lost_num summary the marines use.
+            _damage_data.units_lost += _g_total;
+            _damage_data.unit_type = "Imperial Guardsman";
+            var _g_idx = -1;
+            for (var gk = 0, gl = array_length(lost); gk < gl; gk++) {
+                if (lost[gk] == "Imperial Guardsman") {
+                    _g_idx = gk;
+                    break;
+                }
+            }
+            if (_g_idx >= 0) {
+                lost_num[_g_idx] += _g_total;
+            } else {
+                array_push(lost, "Imperial Guardsman");
+                array_push(lost_num, _g_total);
+            }
+        }
+        return;
+    }
+
+    // Per-role tally of kills this volley, used to relabel the attack after the loop.
+    var _killed_roles = [];
+    var _killed_counts = [];
+
+    // Cover save. A fraction of incoming shots are treated as deflected by spacing,
+    // terrain and a low profile the model does not otherwise simulate. Guard auxilia are
+    // trained to use cover and get the full GUARD_COVER_SAVE; Astartes are bulky and hide
+    // poorly, so they get the weaker MARINE_COVER_SAVE. The rate is chosen per unit from
+    // its role, since the old block-level guard flag is dead and live guardsmen are just
+    // unit_struct units. The save fades as the enemy closes: it is scaled by shooter
+    // distance so hugging the line strips it (see COVER_SAVE_FULL_RANGE /
+    // COVER_SAVE_MIN_FACTOR). Rolled per shot below, after armour, so it also blunts
+    // armour-piercing weapons that ignore Flak entirely.
+    var _cover_dist_factor = clamp(_dist / COVER_SAVE_FULL_RANGE, COVER_SAVE_MIN_FACTOR, 1);
+    var _cover_saved = 0;
+    var _cover_role = "";
 
     // Apply damage for each shot
     for (var shot = 0; shot < _shots; shot++) {
@@ -239,6 +395,16 @@ function damage_infantry(_damage_data, _shots, _damage, _hostile_armour_pierce) 
         var marine_index = array_random_element(valid_marines);
         var marine = unit_struct[marine_index];
         _damage_data.unit_type = marine.role();
+
+        // Cover save: the shot is spent (counts as a hit above) but deflected, so it does
+        // no damage. Only whole shots are saved, so a save never partially wounds. Rate is
+        // the unit's own (Guard auxilia get more cover than bulky Astartes).
+        var _cover_save = (unit_role_is_guard(marine.role()) ? GUARD_COVER_SAVE : MARINE_COVER_SAVE) * _cover_dist_factor;
+        if ((_cover_save > 0) && (random(1) < _cover_save)) {
+            _cover_saved++;
+            _cover_role = marine.role();
+            continue;
+        }
 
         // Apply damage
         var _shot_luck = roll_dice_chapter(1, 100, "low");
@@ -286,28 +452,109 @@ function damage_infantry(_damage_data, _shots, _damage, _hostile_armour_pierce) 
             var chunk = max(10, 62 - (marine_ac[marine_index] * 2));
             _modified_damage = (webr <= chunk) ? 5000 : 0;
         } */
-
         var _hp_before = marine.hp();
         marine.add_or_sub_health(-_modified_damage);
+        if ((_hp_before > 0) && (_modified_damage > 0)) {
+            _damage_data.severity = max(_damage_data.severity, clamp(_modified_damage / _hp_before, 0, 1));
+        }
 
         // Check if marine is dead
         if (check_dead_marines(marine, marine_index)) {
             // Remove dead infantry from further hits
             valid_marines = array_delete_value(valid_marines, marine_index);
             _damage_data.units_lost++;
-            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.DAMAGE, $"damage_infantry marine[{marine_index}] ({_damage_data.unit_type}) KILLED: luck={_shot_luck} armour={_marine_armour} raw_dmg={_damage} mod_dmg={_modified_damage} dr={damage_resistance} hp_before={_hp_before}");
+
+            // Record the fallen role so the headline can name who actually died.
+            var _arole = marine.role();
+            var _aidx = -1;
+            for (var _ai = 0; _ai < array_length(_killed_roles); _ai++) {
+                if (_killed_roles[_ai] == _arole) { _aidx = _ai; break; }
+            }
+            if (_aidx == -1) {
+                array_push(_killed_roles, _arole);
+                array_push(_killed_counts, 1);
+            } else {
+                _killed_counts[_aidx] += 1;
+            }
+
+            // ===== Splash carry-over =====
+            // Port of the enemy men-block math in scr_shoot onto the player's individual
+            // units. A blast weapon's lethal overkill spills onto adjacent units, capped at
+            // the weapon's splash, and every further kill is gated by that unit's own armour
+            // and HP. Low-HP ranks (guardsmen) get torn apart by a Kannon or Rokkit; Marines
+            // and bosses soak the leftover through armour and HP, so it cannot wipe them, and
+            // ordinary attrition does not rise because only overkill carries.
+            if (_splash > 1) {
+                var _carry = _modified_damage - _hp_before; // damage left after this kill
+                var _spread_left = _splash - 1;
+                while (_spread_left > 0 && _carry > 0 && array_length(valid_marines) > 0) {
+                    var _next_index = array_random_element(valid_marines);
+                    var _next = unit_struct[_next_index];
+                    var _next_net = _carry - (marine_ac[_next_index] * _armour_mod);
+                    if (_next_net > 0) {
+                        _next_net = round(_next_net * (1 - (_next.damage_resistance() / 100)));
+                    }
+                    if (_next_net <= 0) {
+                        break; // armour soaked the leftover; the blast is spent
+                    }
+                    var _next_hp_before = _next.hp();
+                    _next.add_or_sub_health(-_next_net);
+                    if (check_dead_marines(_next, _next_index)) {
+                        valid_marines = array_delete_value(valid_marines, _next_index);
+                        _damage_data.units_lost++;
+                        // Record the fallen role (splash victims count too).
+                        var _brole = _next.role();
+                        var _bidx = -1;
+                        for (var _bi = 0; _bi < array_length(_killed_roles); _bi++) {
+                            if (_killed_roles[_bi] == _brole) { _bidx = _bi; break; }
+                        }
+                        if (_bidx == -1) {
+                            array_push(_killed_roles, _brole);
+                            array_push(_killed_counts, 1);
+                        } else {
+                            _killed_counts[_bidx] += 1;
+                        }
+                        _carry = _next_net - _next_hp_before; // remaining overkill rolls on
+                    } else {
+                        break; // wounded but alive; the blast is spent on this body
+                    }
+                    _spread_left--;
+                }
+            }
         }
     }
 
-    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.DAMAGE, $"damage_infantry done: hits={_damage_data.hits} lost={_damage_data.units_lost}");
+    // The loop overwrote unit_type with a random *surviving* unit every shot, so a dying
+    // screen in front of a tanky unit (Dreadnought) let the survivor win the "strike at X"
+    // headline while the casualty list named the dead. If anything fell, relabel the attack
+    // with the role that took the most casualties so the headline and the losses agree.
+    if (array_length(_killed_roles) > 0) {
+        var _top = 0;
+        for (var _ti = 1; _ti < array_length(_killed_counts); _ti++) {
+            if (_killed_counts[_ti] > _killed_counts[_top]) {
+                _top = _ti;
+            }
+        }
+        _damage_data.unit_type = _killed_roles[_top];
+    }
+
+    // Report the cover save in the combat log so a volley that hits little or nothing is
+    // explained rather than looking like a miss. Light blue, matching the non-lethal
+    // (armour-holds) family of lines.
+    if ((_cover_saved > 0) && (_cover_role != "")) {
+        obj_ncombat.combat_log.push($"The {_cover_role} weather the fire from effective cover!", make_color_rgb(120, 190, 225));
+    }
 
     return;
 }
 
 /// @self Asset.GMObject.obj_pnunit
-function damage_vehicles(_damage_data, _shots, _damage, _hostile_armour_pierce) {
+function damage_vehicles(_damage_data, _shots, _damage, _weapon_index, _arp = 0) {
+    // See damage_infantry: _arp is the attacker's real armour pierce. The old
+    // apa[_weapon_index] read pulled from the player's own stack table by index.
+    var _armour_pierce = _arp;
     var _armour_mod = 0;
-    switch (_hostile_armour_pierce) {
+    switch (_armour_pierce) {
         case 4:
             _armour_mod = 0;
             break;
@@ -318,7 +565,12 @@ function damage_vehicles(_damage_data, _shots, _damage, _hostile_armour_pierce) 
             _armour_mod = 4;
             break;
         case 1:
-            _armour_mod = 6;
+            // Was 6, identical to no armour pierce at all. Nearly every enemy anti-tank
+            // weapon (Rokkit Launcha, Lascannon, Missile Launcher, Kannon) is arp 1, so
+            // enemy AT fire did literally nothing to player vehicles: a Rokkit at att 150
+            // against a Rhino (AC 30 x 6 = 180) resolved to 0. At mod 3 the same Rokkit
+            // does 60 per shot to a Rhino and still bounces off heavier hulls.
+            _armour_mod = 3;
             break;
         default:
             _armour_mod = 6;
@@ -327,6 +579,10 @@ function damage_vehicles(_damage_data, _shots, _damage, _hostile_armour_pierce) 
 
     var veh_index = -1;
 
+    // Pen-vs-armour debug trail (MOD_IDEAS P5): one line per volley so "my rockets did
+    // nothing" reports can be diagnosed from last_messages.log instead of guesswork.
+    LOGGER.debug($"veh volley: arp {_armour_pierce} mod {_armour_mod} dmg/shot {_damage} shots {_shots} target_ac {(array_length(veh_ac) > 1 ? veh_ac[1] : -1)}");
+
     // Find valid vehicle targets
     var valid_vehicles = [];
     for (var v = 0, l = array_length(veh_hp); v < l; v++) {
@@ -334,8 +590,6 @@ function damage_vehicles(_damage_data, _shots, _damage, _hostile_armour_pierce) 
             array_push(valid_vehicles, v);
         }
     }
-
-    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.DAMAGE, $"damage_vehicles valid_vehicles={array_length(valid_vehicles)} shots={_shots} dmg={_damage} ap={_hostile_armour_pierce}");
 
     // Apply damage for each hostile shot, until we run out of targets
     for (var shot = 0; shot < _shots; shot++) {
@@ -353,19 +607,33 @@ function damage_vehicles(_damage_data, _shots, _damage, _hostile_armour_pierce) 
         if (_modified_damage < 0) {
             _modified_damage = 0;
         }
-        if (enemy == 13 && _modified_damage < 1) {
+        // Anti-tank penetration roll: a shot that can bite still has to roll to do so, so
+        // a stack of many shots does not automatically shred armour. A failed roll bounces
+        // for no damage. Only capable shots roll; ones already soaked to zero just bounce.
+        if (_modified_damage > 0) {
+            _modified_damage *= at_penetration_multiplier(veh_type[veh_index]);
+        }
+        // This ran in the obj_pnunit context, where `enemy` is the block's TARGET
+        // instance variable (set in its own Alarm_0), so enemy fire landing before
+        // the block's first tick crashed with an unset read; and comparing a target
+        // instance id to 13 was wrong regardless. The battle faction lives on
+        // obj_ncombat.
+        if (obj_ncombat.enemy == eFACTION.NECRONS && _modified_damage < 1) {
             _modified_damage = 1;
         }
-        var _hp_before = veh_hp[veh_index];
+        var _veh_hp_before = veh_hp[veh_index];
         veh_hp[veh_index] -= _modified_damage;
         _damage_data.unit_type = veh_type[veh_index];
+        _damage_data.is_vehicle = true;
+        if (_veh_hp_before > 0) {
+            _damage_data.severity = max(_damage_data.severity, clamp(_modified_damage / _veh_hp_before, 0, 1));
+        }
 
         // Check if the vehicle is destroyed
         if (veh_hp[veh_index] <= 0 && veh_dead[veh_index] == 0) {
             veh_dead[veh_index] = 1;
             _damage_data.units_lost++;
             obj_ncombat.player_forces -= 1;
-            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.DAMAGE, $"damage_vehicles veh[{veh_index}] ({_damage_data.unit_type}) DESTROYED: armour={veh_ac[veh_index] * _armour_mod} raw_dmg={_damage} mod_dmg={_modified_damage} hp_before={_hp_before}");
 
             // Record loss
             var existing_index = array_get_index(lost, veh_type[veh_index]);
@@ -380,8 +648,6 @@ function damage_vehicles(_damage_data, _shots, _damage, _hostile_armour_pierce) 
             valid_vehicles = array_delete_value(valid_vehicles, veh_index);
         }
     }
-
-    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.DAMAGE, $"damage_vehicles done: hits={_damage_data.hits} lost={_damage_data.units_lost}");
 
     return;
 }

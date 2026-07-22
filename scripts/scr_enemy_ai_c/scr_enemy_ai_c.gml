@@ -423,7 +423,15 @@ function scr_enemy_ai_c() {
 
     // Tyranids here
     for (var i = 1; i <= planets; i++) {
-        if ((p_tyranids[i] >= 5) && (planets >= i) && (p_player[i] + p_orks[i] + p_guardsmen[i] + p_pdf[i] + p_chaos[i] == 0)) {
+        // Worlds running the BIOMASS consumption model (p_biomass > 0) are handled entirely by
+        // end_turn_race_population_growth in scr_PlanetData: a gradual multi-year strip that ends by
+        // marking the world Dead and feeding the fleet. They are skipped here, because this legacy
+        // Capillary Tower / Reclamation Pool path kills a world in ~3 TURNS from full population the
+        // moment the swarm reaches strength 5, which short-circuits that entire timeline (a hive world
+        // would die around turn 26 instead of 75). Worlds without a reserve - old saves, or a swarm
+        // that arrived by some path that never seeded one - still use this original behaviour.
+        var _biomass_world = variable_instance_exists(id, "p_biomass") && (p_biomass[i] > 0);
+        if ((p_tyranids[i] >= 5) && !_biomass_world && (planets >= i) && (p_player[i] + p_orks[i] + p_guardsmen[i] + p_pdf[i] + p_chaos[i] == 0)) {
             var ship = scr_orbiting_fleet(eFACTION.TYRANIDS);
             if ((ship != noone) && (p_type[i] != "Dead") && (array_length(p_feature[i]) != 0)) {
                 if (ship.capital_number > 0) {

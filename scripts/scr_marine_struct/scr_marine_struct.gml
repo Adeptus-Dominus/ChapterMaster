@@ -120,6 +120,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     planet_location = 0;
     location_string = "";
     ship_location = -1;
+    // Which REGION of planet_location this unit is stationed in (index into the planet's regions).
+    // -1 = not in a specific region (on a ship, on a single-region world, or unset/old save). Set
+    // when the unit lands into a region (regular unload or Hold Ground) and cleared when it leaves
+    // the planet. Drives per-region combat, the per-region force tally, and the location label.
+    region_location = -1;
     last_ship = {
         uid: "",
         name: "",
@@ -192,6 +197,13 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         load_json_data(global.base_stats[$ class]);
     }
 
+    // Roll array-form stats into numbers BEFORE any equipment is applied. Classes with
+    // ranged stats in unit_stats.json (e.g. guardsman constitution [28, 1, "max"]) used to
+    // keep the raw array until after alter_equipment below, but equipping armour runs
+    // hp_portion -> max_health, which since the max-health rework reads constitution
+    // directly. Multiplying the un-rolled array threw "Variable is malformed" and aborted
+    // unit creation (Governor-bought Guardsmen crashed and never arrived). Upstream main
+    // has the same latent ordering bug.
     var stats = [
         "constitution",
         "strength",
@@ -400,6 +412,16 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         ];
     }; //change exp
 
+    /// @desc Add battle or mission experience to this unit. Used by Guardsman veterancy
+    /// (GUARD_BATTLE_XP per surviving victory; GUARD_VETERAN_XP gates promotion to
+    /// Veteran Guard), the guardxp cheat, and Techmarine mission rewards. (Restored:
+    /// lost in the 13-Jul-2026 upstream merge resolution while all three call sites
+    /// survived, so any Guard victory, guardxp use, or Techmarine mission reward
+    /// crashed at runtime with "Variable ... GUARD_BATTLE_XP not set before reading it".)
+    static add_experience = function(_amount) {
+        experience += _amount;
+    };
+
     static handle_stat_growth = unit_stat_growth;
 
     static armour = function(raw = false) {
@@ -575,6 +597,20 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         var unit_role = role();
         var arm = armour();
         var sz = 1;
+        // Guardsmen are line infantry, racked aboard far denser than power-armoured
+        // Astartes, so a single trooper takes only a tenth of a marine's berth. A Guard
+        // Squad is left at a full slot, since one already stands in for a whole squad. A
+        // Guard Sergeant bunks with his men, so he takes the same tenth-slot as a trooper.
+        if (unit_role == "Guardsman" || unit_role == "Guard Sergeant" || unit_role == "Veteran Guard") {
+            size = 0.1;
+            return size;
+        }
+        // Heavy Weapons Team: three crew plus the gun and its ammunition. Half a marine
+        // berth rather than a lone trooper's tenth-slot.
+        if (unit_role == "Heavy Weapons Team") {
+            size = 0.5;
+            return size;
+        }
         if (string_count("Dread", arm) > 0) {
             sz += 5;
         } else if (array_contains(global.list_terminator_armour, arm)) {
@@ -606,6 +642,12 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             _gear_mod += get_weapon_two_data("hp_mod");
             _gear_mod /= 100;
             _max_h *= _gear_mod;
+        }
+        if (role() == "Guard Squad") {
+            _max_h *= GUARD_SQUAD_SIZE; // a squad shares one pooled health bar and dies as a whole
+        }
+        if (role() == "Heavy Weapons Team") {
+            _max_h *= GUARD_HEAVY_WEAPONS_TEAM_SIZE; // a 3-man weapons team shares one pooled health bar
         }
 
         return round(_max_h);
@@ -1199,10 +1241,16 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static get_weapon_one_data = function(type = "all") {
+        if (is_dreadnought()) {
+            return gear_weapon_data("weapon", dread_infantry_weapon(weapon_one()), type, false, weapon_one_quality, dread_infantry_weapon(weapon_one(true)));
+        }
         return gear_weapon_data("weapon", weapon_one(), type, false, weapon_one_quality, weapon_one(true));
     };
 
     static get_weapon_two_data = function(type = "all") {
+        if (is_dreadnought()) {
+            return gear_weapon_data("weapon", dread_infantry_weapon(weapon_two()), type, false, weapon_two_quality, dread_infantry_weapon(weapon_two(true)));
+        }
         return gear_weapon_data("weapon", weapon_two(), type, false, weapon_two_quality, weapon_two(true));
     };
 
@@ -1244,6 +1292,14 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         } else if (base_group == "human") {
             ranged_hands_limit = 1;
         }
+        if (role() == "Heavy Weapons Team") {
+            // A weapons team is GUARD_HEAVY_WEAPONS_TEAM_SIZE crew serving one deployed
+            // emplacement, not one man hauling it. The human base of 1 left every
+            // ranged_hands 2 heavy weapon (Heavy Bolter, Lascannon, Autocannon) over the
+            // cap, so the team fired its own gun permanently encumbered. Give the unit
+            // the crew's combined hands instead.
+            ranged_hands_limit = GUARD_HEAVY_WEAPONS_TEAM_SIZE;
+        }
         carry_string += $"Base: {ranged_hands_limit}#";
         if (strength >= 50) {
             ranged_hands_limit += 0.5;
@@ -1281,10 +1337,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static ranged_attack = function(weapon_slot = 0) {
-        var ranged_damage_data = [];
         encumbered_ranged = false;
         //base modifyer based on unit skill set
-        var ranged_att = 100 * ((ballistic_skill / 50) + (dexterity / 400) + (experience / 500));
+        ranged_att = 100 * ((ballistic_skill / 50) + (dexterity / 400) + (experience / 500));
         var final_range_attack = 0;
         var explanation_string = $"Stat Mod: x{ranged_att / 100}#  BS: x{ballistic_skill / 50}#  DEX: x{dexterity / 400}#  EXP: x{experience / 500}#";
         //determine capavbility to weild bulky weapons
@@ -1302,6 +1357,29 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         }
         if (!is_struct(_wep2)) {
             _wep2 = new EquipmentStruct({}, "");
+        }
+        // Hot-shot power draw: a weapon tagged requires_power_pack (the Hellgun) only
+        // reaches full output fed by a Power Pack in the gear slot. Without one it can
+        // merely sip from standard cells and performs as a plain Lasgun for the rest of
+        // this calculation, so the unit panel and the combat stacks both report honest
+        // numbers, and it recovers the moment a pack is equipped (this method is
+        // recomputed live by the panel and at every battle deployment). Skitarii are
+        // exempt, feeding the gun from their own augmetic reactors.
+        if (role() != "Skitarii" && gear() != "Power Pack") {
+            if (_wep1.has_tag("requires_power_pack")) {
+                var _cell_starved_1 = gear_weapon_data("weapon", "Lasgun", "all", false, "standard");
+                if (is_struct(_cell_starved_1)) {
+                    _wep1 = _cell_starved_1;
+                    explanation_string += "No Power Pack: Hellgun fires as a Lasgun#";
+                }
+            }
+            if (_wep2.has_tag("requires_power_pack")) {
+                var _cell_starved_2 = gear_weapon_data("weapon", "Lasgun", "all", false, "standard");
+                if (is_struct(_cell_starved_2)) {
+                    _wep2 = _cell_starved_2;
+                    explanation_string += "No Power Pack: Hellgun fires as a Lasgun#";
+                }
+            }
         }
         if (allegiance == global.chapter_name) {
             _wep1.owner_data("chapter");
@@ -1449,6 +1527,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             melee_hands_limit = 1 + (technology / 100);
         } else if (base_group == "human") {
             melee_hands_limit = 1;
+        }
+        if (role() == "Heavy Weapons Team") {
+            // Crew hands, matching the ranged cap above.
+            melee_hands_limit = GUARD_HEAVY_WEAPONS_TEAM_SIZE;
         }
         carry_string += $"Base: {melee_hands_limit}#";
         if (strength >= 50) {
@@ -1654,14 +1736,14 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             }
         }
 
-        var _melee_damage_data = [
+        melee_damage_data = [
             final_attack,
             explanation_string,
             melee_carrying,
             primary_weapon,
             secondary_weapon,
         ];
-        return _melee_damage_data;
+        return melee_damage_data;
     };
 
     static has_force_weapon = function() {
@@ -1680,9 +1762,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     //TODO just did this so that we're not loosing featuring but this porbably needs a rethink
-    static hammer_of_wrath = function(_melee_damage_data = melee_attack()) {
-        var _melee_attack = _melee_damage_data[0];
-        var _melee_weapon = _melee_damage_data[3];
+    static hammer_of_wrath = function() {
+        var _melee_attack = melee_damage_data[0];
+        var _melee_weapon = melee_damage_data[3];
 
         var wrath = new EquipmentStruct(
             {
@@ -1693,7 +1775,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 spli: _melee_weapon.spli,
                 arp: _melee_weapon.arp,
             },
-            "weapon",
+            "weapon"
         );
 
         var wrath_melee = new EquipmentStruct(
@@ -1705,7 +1787,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 spli: _melee_weapon.spli,
                 arp: _melee_weapon.arp,
             },
-            "weapon",
+            "weapon"
         );
 
         wrath.second_profiles = [wrath_melee];
@@ -1714,22 +1796,22 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static armour_calc = function() {
-        var _armour_rating = 0;
-        _armour_rating += get_armour_data("armour_value");
-        _armour_rating += get_weapon_one_data("armour_value");
-        _armour_rating += get_mobility_data("armour_value");
-        _armour_rating += get_gear_data("armour_value");
-        _armour_rating += get_weapon_two_data("armour_value");
+        armour_rating = 0;
+        armour_rating += get_armour_data("armour_value");
+        armour_rating += get_weapon_one_data("armour_value");
+        armour_rating += get_mobility_data("armour_value");
+        armour_rating += get_gear_data("armour_value");
+        armour_rating += get_weapon_two_data("armour_value");
         if (armour() != "" && allegiance == global.chapter_name) {
             // STC Bonuses
             if (obj_controller.stc_bonus[1] == 5) {
-                _armour_rating *= 1.05;
+                armour_rating *= 1.05;
             }
             if (obj_controller.stc_bonus[2] == 3) {
-                _armour_rating *= 1.05;
+                armour_rating *= 1.05;
             }
         }
-        return _armour_rating;
+        return armour_rating;
     };
 
     static in_squad = function() {
@@ -1874,6 +1956,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             //check if ship is in the same location as marine and has enough space;
             if ((target_ship_location == system) && ((obj_ini.ship_carrying[ship] + size) <= obj_ini.ship_capacity[ship])) {
                 planet_location = 0; //mark marine as no longer on planet
+                region_location = -1; //no longer in any region
                 ship_location = ship; //id of ship marine is now loaded on
                 obj_ini.ship_carrying[ship] += size; //update ship capacity
 
@@ -1909,11 +1992,20 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         }
     };
 
-    static unload = function(planet_number, system) {
+    static unload = function(planet_number, system, _force = false) {
         var current_location = marine_location();
         set_last_ship();
         if (!controllable()) {
-            return;
+            return false;
+        }
+        // Region gate: on a multi-region world a REGULAR (peaceful) landing is only allowed into a
+        // region that is empty, held by the player, or held by an allied Imperial faction and not
+        // contested. A hostile/contested region refuses the drop - taking it needs an opposed Hold
+        // Ground assault. The chosen region is the world's stored focus (what the player selected).
+        var _multi = (planet_region_count(system, planet_number) > 1);
+        var _land_region = _multi ? region_focus_get(system, planet_number) : 0;
+        if (_multi && !_force && !region_allows_regular_unload(system, planet_number, _land_region)) {
+            return false; // cannot casually land into an enemy/contested region (Hold Ground required)
         }
         if (current_location[0] == eLOCATION_TYPES.SHIP) {
             if (current_location[2] != "Warp" && current_location[2] == system.name) {
@@ -1921,20 +2013,51 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 planet_location = planet_number;
                 ship_location = -1;
                 get_unit_size();
-                system.p_player[planet_number] += size;
+                if (_multi) {
+                    region_player_force_add(system, planet_number, _land_region, size);
+                } else {
+                    system.p_player[planet_number] += size;
+                }
                 obj_ini.ship_carrying[current_location[1]] -= size;
+                return true;
             }
+            return false;
         } else {
             ship_location = -1;
             location_string = system.name;
             planet_location = planet_number;
-            system.p_player[planet_number] += size;
+            get_unit_size();
+            if (_multi) {
+                region_player_force_add(system, planet_number, _land_region, size);
+            } else {
+                system.p_player[planet_number] += size;
+            }
+            return true;
         }
     };
 
     static allocate_unit_to_fresh_spawn = function(type = "default") {
         var homestar = noone;
         var spawn_location_chosen = false;
+        if (type == "home_planet") {
+            // Place on the chapter's actual owned planet in the home system and keep the unit
+            // off-ship, so bulk spawns are not scattered across the fleet's ships. Scan for a
+            // player-owned planet rather than trusting obj_ini.home_planet, which can be a
+            // stale index pointing at a planet that does not exist in this system.
+            ship_location = -1;
+            location_string = obj_ini.home_name;
+            planet_location = obj_ini.home_planet;
+            var homestar = find_star_by_name(obj_ini.home_name);
+            if (homestar != "none") {
+                for (var i = 1; i <= homestar.planets; i++) {
+                    if (homestar.p_owner[i] == eFACTION.PLAYER) {
+                        planet_location = i;
+                        break;
+                    }
+                }
+            }
+            return;
+        }
         if (((type == "home") || (type == "default")) && (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD)) {
             homestar = find_star_by_name(obj_ini.home_name);
         } else if (type != "ship") {
@@ -2230,9 +2353,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             }
         }
 
-        var artifact_list = equipped_artifacts();
+        var arti, artifact_list = equipped_artifacts();
         for (var i = 0; i < array_length(artifact_list); i++) {
-            var arti = obj_ini.artifact_struct[artifact_list[i]];
+            arti = obj_ini.artifact_struct[artifact_list[i]];
             arti.bearer = [
                 end_company,
                 end_slot,
@@ -2321,6 +2444,26 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             }
         }
     };
+}
+
+/// @desc Maps a dreadnought's heavy Mount/Sponson weapon variant to its infantry
+/// equivalent. Per upstream direction, a dreadnought fires the infantry version of what it
+/// carries: the Mount/Sponson variants exist for vehicles and hit far harder, which was
+/// only ever a way to brute-force vehicle damage before the penetration roll existed.
+/// Weapons that are already infantry, or unique dreadnought weapons without an infantry
+/// counterpart (Kheres Assault Cannon, Inferno Cannon), pass through unchanged, as do
+/// non-string equips (artifacts).
+function dread_infantry_weapon(_weapon) {
+    if (!is_string(_weapon)) {
+        return _weapon;
+    }
+    switch (_weapon) {
+        case "Twin Linked Assault Cannon Mount":  return "Assault Cannon";
+        case "Twin Linked Heavy Bolter Mount":    return "Twin Linked Heavy Bolter";
+        case "Twin Linked Lascannon Mount":       return "Twin Linked Lascannon";
+        case "Twin Linked Heavy Flamer Sponsons": return "Heavy Flamer";
+    }
+    return _weapon;
 }
 
 function jsonify_marine_struct(company, marine, stringify = true) {

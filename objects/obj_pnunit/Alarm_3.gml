@@ -3,8 +3,11 @@ try {
         if (men + dreads + veh <= 0) {
             instance_destroy();
         }
-        obj_ncombat.player_forces += self.men + self.veh + self.dreads;
-        obj_ncombat.player_max += self.men + self.veh + self.dreads;
+        // if (veh+dreads>0) then instance_destroy();
+        if (guard == 0) {
+            obj_ncombat.player_forces += self.men + self.veh + self.dreads;
+            obj_ncombat.player_max += self.men + self.veh + self.dreads;
+        }
 
         //TODO centralise a method for moving units between columns
         /*if (men<=4) and (veh=0) and (dreads=0){// Squish leftt
@@ -20,7 +23,7 @@ try {
             var r_lost = 0;
 
             for (var raar = 0; raar < (men + dreads); raar++) {
-                var _r_roll = floor(random(1000)) + 1;
+                r_roll = floor(random(1000)) + 1;
                 if (obj_ncombat.player_forces < (obj_ncombat.player_max * 0.75)) {
                     _r_roll -= 8;
                 }
@@ -105,7 +108,17 @@ try {
                     }
                 }
 
-                if (norun == 0 && x > 10) {
+                // Guard blocks never retreat. The vanilla rule backs a block away from a
+                // pure-vehicle enemy it cannot hurt, but for the Guard that walks the
+                // whole rank out of the line and off to the rear, where the enemy ignores
+                // it (the Marines are now the front block) and turns on the Marines it was
+                // meant to screen. This is why the Guard only behaved when they were the
+                // last force left: alone there is nothing to fall back behind and no
+                // Marine front for the enemy to switch to. The Guard are meant to hold and
+                // die in place, so only non-guard blocks fall back here.
+                // Upstream (c862e93bf) bounds the fallback at x > 10 so blocks stop walking
+                // backwards off the field; the Guard exclusion above still applies.
+                if (norun == 0 && guard == 0 && x > 10) {
                     x -= 10;
                     engaged = false;
                 }

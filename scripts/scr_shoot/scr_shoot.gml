@@ -1,18 +1,33 @@
-/// @self Id.Instance.obj_enunit|Id.Instance.obj_pnunit
-/// @param {Real} weapon_index_position Weapon number
-/// @param {Id.Instance.obj_enunit|Id.Instance.obj_pnunit} target_object Target object
-/// @param {Real} target_type Target dudes
-/// @param {String} damage_data "att" or "arp" or "highest"
-/// @param {String} melee_or_ranged melee or ranged
-function scr_shoot(weapon_index_position, target_object, target_type, damage_data, melee_or_ranged) {
+function scr_shoot(weapon_index_position, target_object, target_type, damage_data, melee_or_ranged, shot_override = -1, consume_ammo = true) {
+    // Universal target guard: a volley can destroy its target mid-loop (or a re-pick
+    // can return noone when nothing remains), so every caller funnels through this one
+    // check instead of guarding each call site. Firing at nothing does nothing.
+    if (!instance_exists(target_object)) {
+        return;
+    }
+    // A retreating player formation cannot fight: it withdraws under fire without
+    // shooting or swinging back (see the retreat order).
+    if ((object_index == obj_pnunit) && (move_order == "retreat")) {
+        return;
+    }
     try {
-        // This massive clusterfuck of a script uses the newly determined weapon and target data to attack and assign damage
-        for (var j = 1; j <= 100; j++) {
-            obj_ncombat.dead_ene[j] = "";
-            obj_ncombat.dead_ene_n[j] = 0;
-        }
-        obj_ncombat.dead_enemies = 0;
+        // weapon_index_position: Weapon number
+        // target_object: Target object
+        // target_type: Target dudes
+        // damage_data: "att" or "arp" or "highest"
+        // melee_or_ranged: melee or ranged
+        // shot_override: fire only this many of the stack's shots (-1 = full stack, the
+        //   default and the behaviour of every pre-existing caller). Used by enemy column
+        //   piercing to split one volley across several player blocks.
+        // consume_ammo: when one weapon stack fires several sub-volleys in the same alarm
+        //   (column piercing), only the first call spends the turn's ammo tick.
 
+        // This massive clusterfuck of a script uses the newly determined weapon and target data to attack and assign damage
+        // attack_count_mod is declared once here at function scope. It is set in the
+        // early weapon block and reset/recomputed in the that_works damage block; GML
+        // hoists var to function scope anyway, so this only makes the shared scope
+        // explicit and silences the GM2043 "outside its scope" warnings.
+        var attack_count_mod = 1;
         var hostile_type;
         var hostile_damage;
         var hostile_weapon;
@@ -20,12 +35,44 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
         var hostile_splash;
         var aggregate_damage = att[weapon_index_position];
         var armour_pierce = apa[weapon_index_position];
+
+        // Shooter-to-target distance in block units, threaded into scr_clean so the cover
+        // save can fade as the enemy closes (see damage_infantry / COVER_SAVE_FULL_RANGE).
+        var _shot_dist = instance_exists(target_object) ? point_distance(x, y, target_object.x, target_object.y) / 10 : 0;
+
+        // Range accuracy/damage falloff. Ranged fire hits hardest up close and softens
+        // toward the weapon's maximum range; melee and wall fire are exempt (a knife does
+        // not care about distance). Applied to dealt damage below. See RANGE_* macros.
+        var _range_mult = 1;
+        if (melee_or_ranged == "ranged") {
+            var _weapon_range = range[weapon_index_position];
+            var _range_ratio = (_weapon_range > 0) ? clamp(_shot_dist / _weapon_range, 0, 1) : 0;
+            _range_mult = clamp(RANGE_POINT_BLANK_BONUS - _range_ratio * RANGE_FALLOFF, RANGE_MIN_MULT, RANGE_POINT_BLANK_BONUS);
+            // Devastators braced: a holding Devastator formation steadies its heavy
+            // weapons for more effective ranged fire.
+            if ((object_index == obj_pnunit) && (formation_type == "devastator") && (move_order == "hold")) {
+                _range_mult *= DEVASTATOR_BRACED_MULT;
+            }
+        }
         if (obj_ncombat.wall_destroyed == 1) {
             exit;
         }
 
         if ((weapon_index_position >= 0) && instance_exists(target_object) && (owner == 2)) {
             var shots_fired = wep_num[weapon_index_position];
+            if (shot_override > -1) {
+                var _stack_shots = shots_fired;
+                shots_fired = min(shot_override, shots_fired);
+                // att[] is the stack's TOTAL damage (the builder accumulates
+                // atta * man_number), and per-hit damage is aggregate / hit count.
+                // A partial volley must carry a proportional slice of the aggregate,
+                // otherwise 50 shots deliver the whole stack's damage and chip fire
+                // one-shots vehicles it should bounce off. apa[] is per-weapon
+                // (set, not summed in the builder) and stays untouched.
+                if ((_stack_shots > 0) && (shots_fired < _stack_shots)) {
+                    aggregate_damage = (aggregate_damage * shots_fired) / _stack_shots;
+                }
+            }
             if (shots_fired == 0 || ammo[weapon_index_position] == 0) {
                 exit;
             }
@@ -51,6 +98,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
             }
             if (obj_ncombat.enemy == eFACTION.HERETICS) {
                 aggregate_damage = round(aggregate_damage * 1.15);
+                armour_pierce = round(armour_pierce * 1.15);
             }
             if ((obj_ncombat.enemy == eFACTION.CHAOS) && (obj_ncombat.threat == 7)) {
                 doom = 1;
@@ -59,7 +107,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
             var damage_type = "";
             var stop = 0;
 
-            if (ammo[weapon_index_position] > 0) {
+            if (consume_ammo && (ammo[weapon_index_position] > 0)) {
                 ammo[weapon_index_position] -= 1;
             }
 
@@ -75,7 +123,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                 damage_type = "status";
             }
 
-            var attack_count_mod = max(1, splash[weapon_index_position]);
+            attack_count_mod = max(1, splash[weapon_index_position]);
 
             if ((damage_type == "status") && (stop == 0) && (shots_fired > 0)) {
                 var damage_per_weapon = 0, hit_number = shots_fired;
@@ -94,7 +142,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                     hostile_range = range[weapon_index_position];
                     hostile_splash = attack_count_mod;
 
-                    scr_clean(target_object, hostile_type, hit_number, hostile_damage, hostile_weapon, hostile_range, hostile_splash, armour_pierce);
+                    scr_clean(target_object, hostile_type, hit_number, (hostile_damage * _range_mult), hostile_weapon, hostile_range, hostile_splash, weapon_index_position, armour_pierce, _shot_dist);
                 }
             } else if ((damage_type == "att") && (aggregate_damage > 0) && (stop == 0) && (shots_fired > 0)) {
                 var damage_per_weapon, hit_number;
@@ -130,7 +178,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                     hostile_range = range[weapon_index_position];
                     hostile_splash = attack_count_mod;
 
-                    scr_clean(target_object, hostile_type, hit_number, hostile_damage, hostile_weapon, hostile_range, hostile_splash, armour_pierce);
+                    scr_clean(target_object, hostile_type, hit_number, (hostile_damage * _range_mult), hostile_weapon, hostile_range, hostile_splash, weapon_index_position, armour_pierce, _shot_dist);
                 }
             } else if (((damage_type == "arp") || (damage_type == "dread")) && (armour_pierce > 0) && (stop == 0) && (shots_fired > 0)) {
                 var damage_per_weapon, hit_number;
@@ -181,7 +229,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                         target_object.hostile_shooters = (wep_owner[weapon_index_position] == "assorted") ? 999 : 1;
                         hostile_type = 0;
 
-                        scr_clean(target_object, hostile_type, hit_number, hostile_damage, hostile_weapon, hostile_range, hostile_splash, armour_pierce);
+                        scr_clean(target_object, hostile_type, hit_number, (hostile_damage * _range_mult), hostile_weapon, hostile_range, hostile_splash, weapon_index_position, armour_pierce, _shot_dist);
                     }
                 }
             }
@@ -195,10 +243,36 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
             if (weapon_index_position >= 0) {
                 shots_fired = wep_num[weapon_index_position];
             }
+            // Column piercing sub-volleys (player side). Unlike the enemy branch, no
+            // aggregate scaling is needed: player per-shot damage divides by wep_num
+            // (the full stack) rather than by shots fired, so a partial volley already
+            // deals a clean linear share of the stack's damage.
+            if (shot_override > -1) {
+                shots_fired = min(shot_override, shots_fired);
+            }
 
             if (shots_fired == 0) {
                 exit;
             }
+
+            // Guardsman accuracy: mirror the enemy's doom (the owner == eFACTION.IMPERIUM branch
+            // above) on the player side. Ranged, multi-shot lasgun stacks only, matching the enemy
+            // gating (shots_fired != 1 && not melee). Scaling shots_fired flows through total damage
+            // (c = shots_fired * final_hit_damage_value), the casualty cap, and the announced count,
+            // while damage_per_weapon stays divided by wep_num, so the cut is a clean linear share.
+            if ((weapon_index_position >= 0) && (shots_fired > 1) && (melee_or_ranged != "melee") && (wep[weapon_index_position] == "Lasgun")) {
+                shots_fired = max(1, floor(shots_fired * GUARD_DOOM));
+            }
+
+            /*if (weapon_index_position<-40){
+				if (weapon_index_position=-53){
+					if (player_silos>30) then shots_fired=30;
+					if (player_silos<30) then shots_fired=player_silos;
+				}
+				if (weapon_index_position=-51) or (weapon_index_position=-52){
+					shots_fired=round(player_silos/2);
+				}
+			}*/
 
             while (target_type < array_length(target_object.dudes_hp)) {
                 if (target_object.dudes_hp[target_type] == 0) {
@@ -214,7 +288,7 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                 if (ammo[weapon_index_position] == 0) {
                     stop = 1;
                 }
-                if (ammo[weapon_index_position] > 0) {
+                if (consume_ammo && (ammo[weapon_index_position] > 0)) {
                     ammo[weapon_index_position] -= 1;
                 }
             }
@@ -239,8 +313,6 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
 
             if ((weapon_index_position >= 0) || (weapon_index_position < -40)) {
                 // Normal shooting
-                var overkill = 0, damage_remaining = 0, shots_remaining = 0;
-
                 var that_works = false;
 
                 if (weapon_index_position >= 0) {
@@ -253,247 +325,174 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                 }
 
                 if (that_works == true) {
-                    var damage_per_weapon = 0, c = 0, target_armour_value = 0, ap = 0, wii = "";
-                    var attack_count_mod = 0;
+                    var damage_per_weapon = 0;
+                    attack_count_mod = 0;
 
                     if (weapon_index_position >= 0) {
                         damage_per_weapon = aggregate_damage / wep_num[weapon_index_position];
-                        ap = armour_pierce;
                     } // Average damage
                     if (weapon_index_position < -40) {
-                        wii = "";
                         attack_count_mod = 3;
 
                         if (weapon_index_position == -51) {
-                            wii = "Heavy Bolter Emplacement";
                             at = 160;
                             armour_pierce = 0;
                         }
                         if (weapon_index_position == -52) {
-                            wii = "Missile Launcher Emplacement";
                             at = 200;
                             armour_pierce = -1;
                         }
                         if (weapon_index_position == -53) {
-                            wii = "Missile Silo";
                             at = 250;
                             armour_pierce = 0;
                         }
                     }
 
-                    target_armour_value = target_object.dudes_ac[target_type];
-
-                    // Calculate final armor value based on armor piercing (AP) rating against target type
-                    if (target_object.dudes_vehicle[target_type]) {
-                        if (armour_pierce == 4) {
-                            target_armour_value = 0;
-                        }
-                        if (armour_pierce == 3) {
-                            target_armour_value = target_armour_value * 2;
-                        }
-                        if (armour_pierce == 2) {
-                            target_armour_value = target_armour_value * 4;
-                        }
-                        if (armour_pierce == 1) {
-                            target_armour_value = target_armour_value * 6;
-                        }
-                    } else {
-                        if (armour_pierce == 4) {
-                            target_armour_value = 0;
-                        }
-                        if (armour_pierce == 3) {
-                            target_armour_value = target_armour_value * 1.5;
-                        }
-                        if (armour_pierce == 2) {
-                            target_armour_value = target_armour_value * 2;
-                        }
-                        if (armour_pierce == 1) {
-                            target_armour_value = target_armour_value * 3;
-                        }
-                    }
-
                     attack_count_mod = max(1, splash[weapon_index_position]);
 
-                    final_hit_damage_value = max(0, damage_per_weapon - target_armour_value); //damage armour reduction
+                    // Armour multiplier indexed by AP rating (1..4); any AP outside that range
+                    // leaves armour untouched. Infantry and vehicles scale differently.
+                    var _inf_ap = [1, 3, 2, 1.5, 0];
+                    var _veh_ap = [1, 6, 4, 2, 0];
+                    var _ap_valid = (armour_pierce >= 1) && (armour_pierce <= 4);
 
-                    final_hit_damage_value *= target_object.dudes_dr[target_type]; //damage_resistance mod
-
-                    c = shots_fired * final_hit_damage_value; // New damage
-
-                    var casualties, onceh = 0, ponies = 0;
-
-                    casualties = min(floor(c / target_object.dudes_hp[target_type]), shots_fired * attack_count_mod);
-
-                    ponies = target_object.dudes_num[target_type];
-                    if ((target_object.dudes_num[target_type] == 1) && ((target_object.dudes_hp[target_type] - c) <= 0)) {
-                        casualties = 1;
+                    // Never open fire on a dead rank/formation. Stale men/veh/medi (only refreshed on
+                    // the enemy's own alarm) and scr_target's rank-1 fallback can aim us at corpses;
+                    // snap to a living rank instead, or clean up the empty formation and bail.
+                    if (!instance_exists(target_object)) {
+                        exit;
+                    }
+                    // Shape guard (auto): skip when the target lacks dudes_num (wrong block type).
+                    if (!variable_instance_exists(target_object, "dudes_num")
+            || is_undefined(target_type)
+            || (target_type < 0)
+            || (target_type >= array_length(target_object.dudes_num))
+            || is_undefined(target_object.dudes_num[target_type])) {
+                        return;
+                    }
+                    if (target_object.dudes_num[target_type] <= 0) {
+                        var _alive_rank = find_next_alive_rank(target_object, -1);
+                        if (_alive_rank == -1) {
+                            destroy_empty_column(target_object);
+                            exit;
+                        }
+                        target_type = _alive_rank;
                     }
 
-                    if (target_object.dudes_num[target_type] - casualties < 0) {
-                        overkill = casualties - target_object.dudes_num[target_type];
-                        damage_remaining = c - (overkill * target_object.dudes_hp[target_type]);
+                    // Damage spills across ranks and, once a formation is spent, into the
+                    // formation behind it. Every target actually fired upon gets its own flavour
+                    // line with its own casualty count. The loop always terminates: shots_left
+                    // strictly shrinks on every iteration that continues.
+                    var spill_block = target_object;
+                    var spill_rank = target_type;
+                    var shots_left = shots_fired;
+                    var touched_blocks = []; // Spill-over formations only; target_object is cleaned below.
 
-                        shots_remaining = round(damage_remaining / damage_per_weapon);
-                    }
+                    // The whole volley posts ONE battle-log line: the first target gets the rich
+                    // weapon flavour (deferred), and every later target the overflow kills is
+                    // gathered into a kill list appended to it (see emit_volley_flavour).
+                    var _first_target = true;
+                    var _primary_flavour = undefined;
+                    var _spill_kills = []; // [{ name, count }] for targets killed after the first.
 
-                    if (target_object.dudes_num[target_type] - casualties < 0) {
-                        casualties = ponies;
-                    }
-                    if (casualties < 0) {
-                        casualties = 0;
-                    }
+                    while (shots_left > 0) {
+                        // This target's armour against our AP rating.
+                        var _armour = spill_block.dudes_ac[spill_rank];
+                        if (_ap_valid) {
+                            var _ap_table = spill_block.dudes_vehicle[spill_rank] ? _veh_ap : _inf_ap;
+                            _armour *= _ap_table[armour_pierce];
+                        }
+                        var final_hit = max(0, (damage_per_weapon * _range_mult - (_armour * attack_count_mod)) * spill_block.dudes_dr[spill_rank]);
 
-                    if (casualties >= 1) {
-                        var iii = 0, found = 0, openz = 0;
-                        for (iii = 0; iii <= 40; iii++) {
-                            iii += 1;
-                            if (found == 0) {
-                                if ((obj_ncombat.dead_ene[iii] == "") && (openz == 0)) {
-                                    openz = iii;
-                                }
-                                if ((obj_ncombat.dead_ene[iii] == target_object.dudes[target_type]) && (found == 0)) {
-                                    found = iii;
-                                    obj_ncombat.dead_ene_n[obj_ncombat.dead_enemies] += casualties;
-                                }
+                        var rank_num = spill_block.dudes_num[spill_rank];
+                        var rank_hp = spill_block.dudes_hp[spill_rank];
+                        var total_damage = shots_left * final_hit;
+                        var raw_kills = floor(total_damage / rank_hp);
+                        var casualties = min(raw_kills, rank_num, shots_left * attack_count_mod);
+
+                        // Guardsman veterancy: tally kills made by Guard small-arms volleys.
+                        // Struct-based player blocks only: ally reinforcement blocks and
+                        // enemy fire carry no unit_struct entries, so they never tally.
+                        // Paid out as GUARD_KILL_XP per kill to random surviving Guard by
+                        // the battle-end lottery in obj_ncombat Alarm_7.
+                        if (casualties > 0 && variable_instance_exists(id, "unit_struct") && array_length(unit_struct) > 0 && wep_title[weapon_index_position] == "" && (wep[weapon_index_position] == "Lasgun" || wep[weapon_index_position] == "Autogun" || wep[weapon_index_position] == "Hellgun")) {
+                            obj_ncombat.guard_kills += casualties;
+                        }
+
+                        // Surplus damage only spills once this rank is actually wiped out.
+                        var next_shots = 0;
+                        if ((casualties >= rank_num) && (rank_num > 0) && (raw_kills > rank_num)) {
+                            next_shots = max(0, shots_left - ceil((rank_num * rank_hp) / final_hit));
+                        }
+
+                        // Gather flavour. The first target carries the rich phrasing (deferred, with
+                        // the full weapon count); later targets just contribute to the kill list.
+                        // final_hit <= 0 means armour stopped the shots cold (AP too low).
+                        if (_first_target) {
+                            // Grazing severity for the wound-no-kill case: how far this volley's
+                            // damage got toward killing one model (0..1), so scr_flavor can grade the
+                            // player's wound line the way the enemy side already grades incoming fire.
+                            var _graze_sev = ((final_hit > 0) && (casualties == 0) && (rank_hp > 0)) ? clamp(total_damage / rank_hp, 0, 1) : 0;
+                            _primary_flavour = scr_flavor(weapon_index_position, spill_block, spill_rank, shots_fired, casualties, final_hit <= 0, true, _graze_sev);
+                            _first_target = false;
+                        } else if (casualties > 0) {
+                            array_push(_spill_kills, { name: spill_block.dudes[spill_rank], count: casualties });
+                        }
+
+                        if ((rank_num == 1) && (casualties == 0) && (total_damage > 0)) {
+                            spill_block.dudes_hp[spill_rank] -= total_damage; // Chip a lone survivor
+                            if (spill_block.dudes_hp[spill_rank] <= 0) {
+                                // Chipped to death: remove it now and drop the force count. Otherwise
+                                // dudes_num stays 1 at dudes_hp <= 0 - a "zombie" that find_next_alive_rank
+                                // skips, so it's never finished off and keeps inflating enemy_forces.
+                                spill_block.dudes_num[spill_rank] = 0;
+                                obj_ncombat.enemy_forces -= 1;
                             }
                         }
-                        if (found == 0) {
-                            obj_ncombat.dead_enemies += 1;
-                            obj_ncombat.dead_ene[openz] = string(target_object.dudes[target_type]);
-                            obj_ncombat.dead_ene_n[openz] = casualties;
+                        if (casualties >= 1) {
+                            spill_block.dudes_num[spill_rank] -= casualties;
+                            obj_ncombat.enemy_forces -= casualties;
                         }
-                    }
 
-                    var k = 0;
-                    if ((damage_remaining > 0) && (shots_remaining > 0)) {
-                        repeat (10) {
-                            if ((damage_remaining > 0) && (shots_remaining > 0)) {
-                                var godd;
-                                godd = 0;
-                                k = target_type;
+                        shots_left = next_shots;
+                        if (shots_left <= 0) {
+                            break;
+                        }
 
-                                // Find similar target in this same group
-                                repeat (10) {
-                                    k += 1;
-                                    if (godd == 0) {
-                                        if ((target_object.dudes_num[k] > 0) && (target_object.dudes_vehicle[k] == target_object.dudes_vehicle[target_type])) {
-                                            godd = k;
-                                        }
-                                    }
-                                }
-                                k = target_type;
-                                if (godd == 0) {
-                                    repeat (10) {
-                                        k -= 1;
-                                        if ((godd == 0) && (k >= 1)) {
-                                            if ((target_object.dudes_num[k] > 0) && (target_object.dudes_vehicle[k] == target_object.dudes_vehicle[target_type])) {
-                                                godd = k;
-                                            }
-                                        }
-                                    }
-                                }
-
-                                // Found damage_per_weapon similar target to get the damage
-                                if ((godd > 0) && (damage_remaining > 0) && (shots_remaining > 0)) {
-                                    var a2, b2, c2, target_armour_value2, ap2;
-                                    ap2 = damage_remaining;
-                                    a2 = damage_per_weapon; // Average damage
-
-                                    target_armour_value2 = target_object.dudes_ac[godd];
-                                    if (target_object.dudes_vehicle[godd] == 0) {
-                                        if (ap2 == 1) {
-                                            target_armour_value2 = target_armour_value2 * 3;
-                                        }
-                                        if (ap2 == 2) {
-                                            target_armour_value2 = target_armour_value2 * 2;
-                                        }
-                                        if (ap2 == 3) {
-                                            target_armour_value2 = target_armour_value2 * 1.5;
-                                        }
-                                        if (ap2 == 4) {
-                                            target_armour_value2 = 0;
-                                        }
-                                    }
-                                    if (target_object.dudes_vehicle[godd] == 1) {
-                                        if (ap2 == 1) {
-                                            target_armour_value2 = target_armour_value2 * 6;
-                                        }
-                                        if (ap2 == 2) {
-                                            target_armour_value2 = target_armour_value2 * 4;
-                                        }
-                                        if (ap2 == 3) {
-                                            target_armour_value2 = target_armour_value2 * 2;
-                                        }
-                                    }
-                                    b2 = a2 - target_armour_value2;
-                                    if (b2 <= 0) {
-                                        b2 = 0;
-                                    } // Average after armour
-
-                                    c2 = b2 * shots_remaining; // New damage
-
-                                    var casualties2 = 0;
-                                    var onceh2 = 0;
-                                    var ponies2 = 0;
-                                    if (attack_count_mod <= 1) {
-                                        casualties2 = min(floor(c2 / target_object.dudes_hp[godd]), shots_remaining);
-                                    }
-
-                                    if (attack_count_mod > 1) {
-                                        casualties2 = floor(c2 / target_object.dudes_hp[godd]);
-                                    }
-                                    ponies2 = target_object.dudes_num[godd];
-                                    if ((target_object.dudes_num[godd] == 1) && ((target_object.dudes_hp[godd] - c2) <= 0)) {
-                                        casualties2 = 1;
-                                    }
-                                    if (target_object.dudes_num[godd] < casualties2) {
-                                        casualties2 = target_object.dudes_num[godd];
-                                    }
-                                    if (casualties2 < 1) {
-                                        casualties2 = 0;
-                                        damage_remaining = 0;
-                                        overkill = 0;
-                                        shots_remaining = 0;
-                                    }
-
-                                    if ((casualties2 >= 1) && (shots_fired > 0)) {
-                                        var iii = 0;
-                                        var found = 0;
-                                        var openz = 0;
-                                        repeat (40) {
-                                            iii += 1;
-                                            if (found == 0) {
-                                                if ((obj_ncombat.dead_ene[iii] == "") && (openz == 0)) {
-                                                    openz = iii;
-                                                }
-                                                if ((obj_ncombat.dead_ene[iii] == target_object.dudes[godd]) && (found == 0)) {
-                                                    found = iii;
-                                                    obj_ncombat.dead_ene_n[obj_ncombat.dead_enemies] += casualties;
-                                                }
-                                            }
-                                        }
-                                        if (found == 0) {
-                                            obj_ncombat.dead_enemies += 1;
-                                            obj_ncombat.dead_ene[openz] = string(target_object.dudes[godd]);
-                                            obj_ncombat.dead_ene_n[openz] = casualties;
-                                        }
-
-                                        target_object.dudes_num[godd] -= casualties2;
-                                        obj_ncombat.enemy_forces -= casualties2;
-                                    }
-                                }
+                        // Next target: a living rank in this formation, else the formation behind.
+                        var next_rank = find_next_alive_rank(spill_block, spill_block.dudes_vehicle[spill_rank]);
+                        if (next_rank == -1) {
+                            var _spent_x = spill_block.x;
+                            spill_block = get_next_enemy_formation(spill_block);
+                            if (spill_block == noone) {
+                                break;
+                            }
+                            // Overkill only spills into a formation standing directly
+                            // behind the one just wiped (touching columns). An air gap
+                            // stops it: the tester's cultists two rows back, with open
+                            // ground between them and the CSM, were being slaughtered
+                            // by thunder hammer spill leaping the gap.
+                            if (abs(spill_block.x - _spent_x) > OVERKILL_SPILL_MAX_GAP) {
+                                break;
+                            }
+                            array_push(touched_blocks, spill_block);
+                            next_rank = find_next_alive_rank(spill_block, -1);
+                            if (next_rank == -1) {
+                                break;
                             }
                         }
-                    } // End repeat 10
-                    scr_flavor(weapon_index_position, target_object, target_type, shots_fired - wep_rnum[weapon_index_position], casualties);
+                        spill_rank = next_rank;
+                    }
 
-                    if ((target_object.dudes_num[target_type] == 1) && (c > 0)) {
-                        target_object.dudes_hp[target_type] -= c;
-                    } // Need special flavor here for just damaging
+                    // Post the single consolidated line for the whole volley.
+                    emit_volley_flavour(_primary_flavour, _spill_kills);
 
-                    if (casualties >= 1) {
-                        target_object.dudes_num[target_type] -= casualties;
-                        obj_ncombat.enemy_forces -= casualties;
+                    // Clean up the spill-over formations (target_object is handled below).
+                    for (var _tb = 0; _tb < array_length(touched_blocks); _tb++) {
+                        if (instance_exists(touched_blocks[_tb])) {
+                            compress_enemy_array(touched_blocks[_tb]);
+                            destroy_empty_column(touched_blocks[_tb]);
+                        }
                     }
                 }
             }
@@ -501,6 +500,169 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
             if (stop == 0) {
                 compress_enemy_array(target_object);
                 destroy_empty_column(target_object);
+            }
+        }
+    } catch (_exception) {
+        ERROR_HANDLER.handle_exception(_exception);
+    }
+}
+
+/// @function find_next_alive_rank
+/// @description Returns the index of the next living rank (dudes_num > 0 and dudes_hp > 0) in a
+///              formation, preferring ranks that match the requested vehicle flag. Returns -1 if
+///              none. The dudes_hp > 0 check keeps callers safe from dividing by a rank's HP.
+/// @param {Id.Instance} _block The obj_enunit formation to search.
+/// @param {Real} _prefer_vehicle 0/1 to prefer that category, or -1 for any living rank.
+/// @returns {Real}
+function find_next_alive_rank(_block, _prefer_vehicle) {
+    if (!instance_exists(_block)) {
+        return -1;
+    }
+    var _fallback = -1;
+    for (var f = 1; f <= 30; f++) {
+        if (_block.dudes_num[f] <= 0 || _block.dudes_hp[f] <= 0) {
+            continue;
+        }
+        if (_prefer_vehicle == -1 || _block.dudes_vehicle[f] == _prefer_vehicle) {
+            return f;
+        }
+        if (_fallback == -1) {
+            _fallback = f;
+        }
+    }
+    return _fallback;
+}
+
+/// @function get_next_enemy_formation
+/// @description Returns the nearest enemy formation (obj_enunit) sitting behind the given one
+///              that still contains at least one living rank, or noone if there isn't one.
+/// @param {Id.Instance} _block The formation we are spilling out of.
+/// @returns {Id.Instance}
+function get_next_enemy_formation(_block) {
+    if (!instance_exists(_block)) {
+        return noone;
+    }
+    var _bx = _block.x;
+    var _bid = _block.id;
+    var _best = noone;
+    var _best_x = 0;
+    with (obj_enunit) {
+        if (id == _bid) {
+            continue;
+        }
+        if (x <= _bx) {
+            continue;
+        }
+        if (find_next_alive_rank(id, -1) == -1) {
+            continue;
+        }
+        if (_best == noone || x < _best_x) {
+            _best = id;
+            _best_x = x;
+        }
+    }
+    return _best;
+}
+
+/// @self Asset.GMObject.obj_pnunit
+/// @description Speed Force: sweep the whole enemy force, dividing damage proportionally to rank
+///              size, and report it as ONE consolidated volley line (see emit_volley_flavour).
+/// @param {Real} weapon_index_position The Speed Force weapon stack index.
+function scr_shoot_spread(weapon_index_position) {
+    try {
+        if (wep_num[weapon_index_position] <= 0 || ammo[weapon_index_position] == 0) {
+            exit;
+        }
+
+        var _shots = wep_num[weapon_index_position];
+        var _ap = apa[weapon_index_position];
+        var _dpw = att[weapon_index_position] / _shots; // per-bike damage
+        var _mod = max(1, splash[weapon_index_position]);
+        if (ammo[weapon_index_position] > 0) {
+            ammo[weapon_index_position] -= 1;
+        }
+
+        // Armour multiplier indexed by AP rating (1..4), matching scr_shoot's normal path.
+        var _inf_ap = [1, 3, 2, 1.5, 0];
+        var _veh_ap = [1, 6, 4, 2, 0];
+        var _ap_valid = (_ap >= 1) && (_ap <= 4);
+
+        // Total living models across every formation on the field.
+        var _formations = [];
+        var _total = 0;
+        with (obj_enunit) {
+            array_push(_formations, id);
+            for (var r = 1; r <= 30; r++) {
+                if (dudes[r] != "" && dudes_num[r] > 0) {
+                    _total += dudes_num[r];
+                }
+            }
+        }
+        if (_total <= 0) {
+            exit;
+        }
+
+        // Apply damage proportionally to each rank's share of the field; record every rank that lost models.
+        var _hits = []; // [{ name, kills, bounced }]
+        for (var fi = 0; fi < array_length(_formations); fi++) {
+            var _f = _formations[fi];
+            if (!instance_exists(_f)) {
+                continue;
+            }
+            for (var r = 1; r <= 30; r++) {
+                if (_f.dudes[r] == "" || _f.dudes_num[r] <= 0) {
+                    continue;
+                }
+
+                var _armour = _f.dudes_ac[r];
+                if (_ap_valid) {
+                    var _ap_table = _f.dudes_vehicle[r] ? _veh_ap : _inf_ap;
+                    _armour *= _ap_table[_ap];
+                }
+
+                var _rank_shots = _shots * (_f.dudes_num[r] / _total);
+                var _final_hit = max(0, (_dpw * _range_mult - (_armour * _mod)) * _f.dudes_dr[r]);
+                var _kills = min(floor((_rank_shots * _final_hit) / _f.dudes_hp[r]), _f.dudes_num[r]);
+                if (_kills < 0) {
+                    _kills = 0;
+                }
+
+                if (_kills > 0) {
+                    _f.dudes_num[r] -= _kills;
+                    obj_ncombat.enemy_forces -= _kills;
+                    array_push(_hits, { name: _f.dudes[r], kills: _kills, bounced: (_final_hit <= 0), block: _f, rank: r });
+                }
+            }
+        }
+
+        // Primary = the rank with the most kills (rich deferred flavour); the rest form the kill list.
+        var _primary = undefined;
+        var _spill = [];
+        if (array_length(_hits) > 0) {
+            var _best = 0;
+            for (var i = 1; i < array_length(_hits); i++) {
+                if (_hits[i].kills > _hits[_best].kills) {
+                    _best = i;
+                }
+            }
+            for (var i = 0; i < array_length(_hits); i++) {
+                if (i == _best) {
+                    continue;
+                }
+                array_push(_spill, { name: _hits[i].name, count: _hits[i].kills });
+            }
+            var _p = _hits[_best];
+            if (instance_exists(_p.block)) {
+                _primary = scr_flavor(weapon_index_position, _p.block, _p.rank, _shots, _p.kills, _p.bounced, true);
+            }
+        }
+        emit_volley_flavour(_primary, _spill);
+
+        // Clean up spent ranks/formations (mirrors scr_shoot).
+        for (var fi = 0; fi < array_length(_formations); fi++) {
+            if (instance_exists(_formations[fi])) {
+                compress_enemy_array(_formations[fi]);
+                destroy_empty_column(_formations[fi]);
             }
         }
     } catch (_exception) {

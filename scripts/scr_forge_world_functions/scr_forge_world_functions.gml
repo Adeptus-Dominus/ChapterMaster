@@ -77,7 +77,7 @@ function get_imperium_forge_systems() {
                     function(prev, curr) {
                         return prev + present_fleet[curr];
                     },
-                    0,
+                    0
                 );
 
                 good = enemy_fleet_count <= 0;

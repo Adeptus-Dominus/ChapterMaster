@@ -1,5 +1,109 @@
+// ---------------------------------------------------------------------------------
+// Bombardment tuning. These govern how much of a world a single bombardment kills.
+// Casualties are a share of the world's population CAPACITY (its max population) so a
+// world is depopulated down to zero over repeated strikes rather than a fixed absolute
+// figure that wipes small worlds in one shot. The share scales with how much fleet
+// firepower is committed and is shaped by world type, enemy size, how far the enemy has
+// overrun the world, and the world's fortifications. Bombardment never turns a world
+// Dead; the world keeps its type at zero population and can regrow once its enemies are
+// cleared. All values are macros so balance can be tuned without touching logic.
+// ---------------------------------------------------------------------------------
+
+// Share of world capacity killed per point of bombard score, before the factor
+// multipliers. Bombard score is Battle Barge 3, Strike Cruiser 1, escorts 0, so more
+// ships (and bigger ships) do more population damage. Zero ships do nothing.
+#macro BOMBARD_POP_PER_POWER 0.06
+// Hard ceiling on a single bombard's share of capacity. At 1.0 an overwhelming fleet can
+// depopulate a world in one strike; a lone ship takes many.
+#macro BOMBARD_MAX_FRACTION 1.0
+// Each fortification level (0 none .. 5 fully fortified) cuts population casualties by
+// this much, down to the floor, since bunkers and shelters protect civilians.
+#macro BOMBARD_DEFENSE_REDUCTION 0.15
+#macro BOMBARD_DEFENSE_FLOOR 0.20
+
+/// @desc World-type multiplier on bombardment population casualties. Dense hive cities
+/// burn hardest; spread-out agri and feudal worlds lose fewer people per bombardment.
+function bombard_planet_type_pop_mult(_type) {
+    switch (_type) {
+        case "Hive": return 1.5;
+        case "Desert": return 0.8;
+        case "Agri": return 0.6;
+        case "Feudal": return 0.5;
+    }
+    return 1.0; // Temperate / civilised and everything else
+}
+
+/// @desc Enemy-presence multiplier on bombardment population casualties. A larger, more
+/// deeply embedded enemy (strength tier 0 none .. 6 Overwhelming) means the bombardment
+/// has to hit more of the world to root it out, so more civilians die alongside it.
+function bombard_presence_pop_mult(_tier) {
+    var _mults = [0.6, 0.7, 0.85, 1.0, 1.2, 1.4, 1.6];
+    return _mults[clamp(_tier, 0, 6)];
+}
+
+/// @desc Ratio multiplier: how far the enemy has overrun the world. A large enemy on a
+/// lightly populated world drives collateral up; a small enemy on a teeming world keeps
+/// it down. Compares the enemy strength tier to a coarse population bucket.
+function bombard_ratio_pop_mult(_planet, _tier) {
+    var _pop = _planet.population_as_small();
+    var _pop_tier = 0;
+    if (_pop >= 1000000000) {
+        _pop_tier = 5;
+    } else if (_pop >= 100000000) {
+        _pop_tier = 4;
+    } else if (_pop >= 10000000) {
+        _pop_tier = 3;
+    } else if (_pop >= 1000000) {
+        _pop_tier = 2;
+    } else if (_pop >= 100000) {
+        _pop_tier = 1;
+    }
+    var _diff = clamp(_tier - _pop_tier, -3, 3);
+    return clamp(1 + _diff * 0.15, 0.6, 1.5);
+}
+
+/// @desc Fortification multiplier on bombardment population casualties. Planet defenses
+/// (fortification_level 0 none .. 5 fully fortified) shelter civilians in bunkers, so a
+/// well-defended world loses far fewer people to orbital fire.
+function bombard_defense_pop_mult(_planet) {
+    var _level = clamp(_planet.fortification_level, 0, 5);
+    return clamp(1 - _level * BOMBARD_DEFENSE_REDUCTION, BOMBARD_DEFENSE_FLOOR, 1);
+}
+
+/// @desc Share of a world's population CAPACITY killed by one bombardment. Driven by the
+/// committed bombard score (ship count and type), then shaped by world type, enemy size,
+/// enemy-to-population ratio, and fortifications, capped at BOMBARD_MAX_FRACTION.
+function bombard_pop_kill_fraction(_planet, _enemy_tier, _bomb_power) {
+    var _frac = _bomb_power * BOMBARD_POP_PER_POWER;
+    _frac *= bombard_planet_type_pop_mult(_planet.planet_type);
+    _frac *= bombard_presence_pop_mult(_enemy_tier);
+    _frac *= bombard_ratio_pop_mult(_planet, _enemy_tier);
+    _frac *= bombard_defense_pop_mult(_planet);
+    return clamp(_frac, 0, BOMBARD_MAX_FRACTION);
+}
+
+/// @desc Population killed by one bombardment, in the planet's own population scale. A
+/// bombard removes a share of the world's capacity (max population) that grows with the
+/// fleet firepower committed, so a small strike chips away while an overwhelming fleet can
+/// depopulate a world in one blow, but never more than the population actually present.
+/// Used by both scr_bomb_world and the dialog preview so estimate and outcome agree.
+function bombard_population_kill(_planet, _enemy_tier, _bomb_power) {
+    var _capacity = max(_planet.max_population, _planet.population);
+    var _kill = _capacity * bombard_pop_kill_fraction(_planet, _enemy_tier, _bomb_power);
+    return min(_planet.population, _kill);
+}
+
 function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_strength) {
     var pop_after = 0, reduced_bombard_score = 0, strength_reduction = 0, txt2 = "", txt3 = "", txt4 = "", max_kill, overkill, roll, kill;
+
+    // Orbital Gun Array toll: bombarding a gun-world from orbit provokes the guns unless
+    // the bombardment is aimed at the safe landing region (which you may clear to land in).
+    // Charged once per bombardment on the focused region.
+    if (instance_exists(system)) {
+        var _og_region = (planet_region_count(system, planet) > 1)
+            ? region_focus_get(system, planet) : -1;
+        orbital_gun_ship_toll(system, planet, _og_region);
+    }
 
     var score_before = population;
 
@@ -15,7 +119,7 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
     }
     txt1 += $" annihilation upon {name()}. Even from space the explosions can be seen, {choose("tearing ground", "hammering", "battering", "thundering")} across the planet's surface.";
 
-    kill = population_small_conversion(0.15);
+    kill = bombard_population_kill(self, target_strength, bombard_ment_power);
 
     var pop_before = population;
 
@@ -104,9 +208,15 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
                 }
                 break;
             case 11:
+                // Traitor Guard: renegade IG, "competent protection" tier like loyalist IG
+                // and standard chaos forces per the bombard_protect_scores comment below.
                 txt2 = "##The Traitor forces are suitably fortified; ";
-                bombard_protection = 3;
+                bombard_protection = 2;
                 break;
+            // case 12:
+            // txt2="##The Daemonic forces are incredibly difficult to bombard; ";
+            // bombard_protection=4;
+            // break;
             case 13:
                 txt2 = "##The Necron forces are incredibly difficult to bombard; ";
                 bombard_protection = 4; // They are a hi-tech faction, so bombing them should be difficult
@@ -166,19 +276,21 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
         // if (rel>0 && rel<=20 && (target_strength-strength_reduction)>0){
         //	txt2+=" minor losses from the bombardment, decreasing "+string(strength_reduction)+" stages.";
         // ?
+        // Only describe losses when there was a reduction; otherwise the "no losses" line
+        // above already covered it and this used to append a second, contradictory
+        // "some losses ... decreased by 0" sentence.
         if (strength_reduction > 0) {
             if ((target_strength - strength_reduction) <= 0) {
                 txt2 += " total annihilation from the bombardment and are wiped clean from the planet.";
             } else {
                 var _losses_text = "";
-                var _damage_pct = 100 - rel;
-                if (_damage_pct > 0 && _damage_pct <= 20) {
+                if (rel > 0 && rel <= 20) {
                     _losses_text = "minor losses";
-                } else if (_damage_pct > 20 && _damage_pct <= 40) {
+                } else if (rel > 20 && rel <= 40) {
                     _losses_text = "moderate losses";
-                } else if (_damage_pct > 40 && _damage_pct <= 60) {
+                } else if (rel > 40 && rel <= 60) {
                     _losses_text = "heavy losses";
-                } else if (_damage_pct > 60) {
+                } else if (rel > 60 && (target_strength - strength_reduction) > 0) {
                     _losses_text = "devastating losses";
                 } else {
                     _losses_text = "some losses";
@@ -246,14 +358,22 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
                     break;
                 case 7:
                     system.p_orks[planet] -= strength_reduction;
+                    faction_pop_clamp_to_level(system, planet, eFACTION.ORK);
                     break;
                 case 8:
                     system.p_tau[planet] -= strength_reduction;
                     break;
                 case 9:
                     system.p_tyranids[planet] -= strength_reduction;
+                    faction_pop_clamp_to_level(system, planet, eFACTION.TYRANIDS);
+                    beacon_teardown_if_cleansed(system, planet);
                     break;
-                case 10:
+                case 10: {
+                    // planet_forces[eFACTION.CHAOS] (the strength this bombardment was aimed
+                    // and reported against) is p_chaos + p_demons, but this wrote p_traitors,
+                    // the eFACTION.HERETICS force. The bombarded Chaos force never shrank (and
+                    // p_traitors could go negative) while the report could claim total
+                    // annihilation. Reduce p_chaos first, spill any remainder into p_demons.
                     var _chaos_cut = min(system.p_chaos[planet], strength_reduction);
                     system.p_chaos[planet] -= _chaos_cut;
                     var _demon_spill = strength_reduction - _chaos_cut;
@@ -261,11 +381,17 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
                         system.p_demons[planet] = max(0, system.p_demons[planet] - _demon_spill);
                     }
                     break;
+                }
                 case 11:
                     system.p_traitors[planet] = max(0, system.p_traitors[planet] - strength_reduction);
+                    faction_pop_clamp_to_level(system, planet, eFACTION.HERETICS);
                     break;
+                // case 12:
+                // system.p_demons[planet]-=strength_reduction;
+                // break;
                 case 13:
                     system.p_necrons[planet] -= strength_reduction;
+                    faction_pop_clamp_to_level(system, planet, eFACTION.NECRONS);
                     break;
             }
         }
@@ -395,9 +521,109 @@ function scr_bomb_world(bombard_target_faction, bombard_ment_power, target_stren
         pip.text = txt1 + txt2 + txt3;
     }
 
+    // Fleet movement lock preserved (bombarding ends the fleet's turn for movement).
+    // Every ship the player selected spends its whole support allowance, so each ship
+    // bombards at most once per turn. Previously only the first fresh ship was spent
+    // regardless of how many were selected, so the remaining selected ships stayed
+    // fresh and could be re-selected to bombard the same world again on the next
+    // Confirm, letting one fleet fire several times over.
     obj_bomb_select.sh_target.acted = 5;
+    with (obj_bomb_select) {
+        for (var _bspend = 0; _bspend < array_length(ship_ide); _bspend++) {
+            if ((ship_all[_bspend] == 1) && (ship_ide[_bspend] >= 0)) {
+                ship_bombard_spend(ship_ide[_bspend]);
+            }
+        }
+    }
     with (obj_bomb_select) {
         instance_destroy();
     }
     // show_message("Pop: "+string(pop_before)+" -> "+string(pop_after)+"#killed: "+string(kill)+"#Heresy: "+string(heres_before)+" -> "+string(heres_after));
+}
+
+/// @desc Rough, bracketed preview of a bombardment's effect for the selection dialog,
+/// so the player can see roughly what a bombard will do before committing. Mirrors the
+/// kill and strength_reduction math in scr_bomb_world above. Returns a struct with two
+/// labels, population and enemy, each one of None / Negligible / Low / Medium / High /
+/// Massive. It is an estimate: it ignores the sub-1 random reduction roll and the Ork
+/// Stronghold / Daemon-world specials.
+function bombard_effect_estimate(_planet, _target_faction, _bomb_power, _target_strength) {
+    // Population: scr_bomb_world kills a fixed slice (0.15) of the planet's own scale,
+    // subtracted straight from population, so it does not scale with ship count. On a
+    // small world that fixed slice dwarfs the whole population and wipes it out, which
+    // is the surprise this preview exists to warn about.
+    var _pop_pct = 0;
+    var _pop_before = _planet.population;
+    if ((_pop_before > 0) && (_planet.planet_type != "Space Hulk")) {
+        var _kill = bombard_population_kill(_planet, _target_strength, _bomb_power);
+        _pop_pct = (min(_pop_before, _kill) / _pop_before) * 100;
+    }
+
+    // Enemy: same reduction math as scr_bomb_world. The reduced score, scaled by the
+    // target's bombard protection, is how many strength stages come off.
+    var _en_pct = 0;
+    if (_target_strength > 0) {
+        var _reduced = _bomb_power / 3;
+        var _protection = clamp(bombard_protection_estimate(_target_faction), 0, 4);
+        var _protect_scores = [4, 0.9, 0.75, 0.5, 0.34];
+        var _stages = floor(_reduced * _protect_scores[_protection]);
+        _en_pct = (min(_stages, _target_strength) / _target_strength) * 100;
+    }
+
+    return {
+        population: bombard_effect_bracket(_pop_pct),
+        enemy: bombard_effect_bracket(_en_pct),
+    };
+}
+
+/// @desc Base bombard protection tier per target faction, matching the switch in
+/// scr_bomb_world (Ork Stronghold and Daemon-world bonuses are left out of the estimate).
+function bombard_protection_estimate(_faction) {
+    switch (_faction) {
+        case 2: return 2;
+        case 2.5: return 1;
+        case 3: return 3;
+        case 5: return 1;
+        case 6: return 4;
+        case 7: return 2;
+        case 8: return 3;
+        case 9: return 0;
+        case 10: return 2;
+        case 11: return 2;
+        case 13: return 4;
+    }
+    return 1;
+}
+
+/// @desc Map a 0-100 percentage to a coarse severity label for the bombard preview.
+function bombard_effect_bracket(_pct) {
+    if (_pct <= 0) {
+        return "None";
+    }
+    if (_pct < 5) {
+        return "Negligible";
+    }
+    if (_pct < 20) {
+        return "Low";
+    }
+    if (_pct < 45) {
+        return "Medium";
+    }
+    if (_pct < 80) {
+        return "High";
+    }
+    return "Massive";
+}
+
+/// @desc Colour for a bombard severity label so the worst outcomes read at a glance.
+function bombard_effect_bracket_color(_label) {
+    switch (_label) {
+        case "None": return c_gray;
+        case "Negligible": return #34bc75;
+        case "Low": return #34bc75;
+        case "Medium": return c_yellow;
+        case "High": return c_orange;
+        case "Massive": return c_red;
+    }
+    return c_white;
 }

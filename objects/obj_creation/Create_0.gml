@@ -117,7 +117,7 @@ buttons = {
                 tooltip: "Your home system is relativly central in the sector",
             },
         ],
-        "Home Spwan\nLocation",
+        "Home Spwan\nLocation"
     ),
     recruit_home_relationship: new RadioSet(
         [
@@ -137,7 +137,7 @@ buttons = {
                 tooltip: "Your recruit world will be in a different system to your homeworld.",
             },
         ],
-        "Recruit world",
+        "Recruit world"
     ),
     home_warp: new RadioSet(
         [
@@ -157,7 +157,7 @@ buttons = {
                 tooltip: "Your home system is in a very stable warp area, accessible by several warp lanes",
             },
         ],
-        "Home warp access",
+        "Home warp access"
     ),
     home_planets: new RadioSet(
         [
@@ -178,7 +178,7 @@ buttons = {
                 font: fnt_40k_14b,
             },
         ],
-        "Home System Planets",
+        "Home System Planets"
     ),
     culture_styles: new MultiSelect(_culture_styles_array, "Chapter Visual Styles"),
     company_liveries_choice: new RadioSet(
@@ -228,7 +228,7 @@ buttons = {
                 font: fnt_40k_14b,
             },
         ],
-        "Companies",
+        "Companies"
     ),
     livery_switch: new UnitButtonObject({
         x1: 570,

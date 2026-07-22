@@ -85,3 +85,6 @@ Arguments with stars `(argument*)` can be omitted.
 - `depcha (number*)` - sets disposition of Chaos to specified value.
 - `deptyr (number*)` - sets disposition of...Tyranids? (probably does nothing) to specified value.
 
+
+- `spawnguard [amount=1000]` — add Guardsmen to the last planet you clicked (open its panel, close it, enter the cheat). `spawnguard <planet> <amount>` targets explicitly, and `spawnguard "Star Name" <planet> <amount>` targets any system by (quoted) name.
+- `spawnbarracks [guard|pdf]` — plant a free Guard/PDF Barracks on the last planet you clicked. `spawnbarracks <planet> [guard|pdf]` targets explicitly, and `spawnbarracks "Star Name" <planet> [guard|pdf]` by name.

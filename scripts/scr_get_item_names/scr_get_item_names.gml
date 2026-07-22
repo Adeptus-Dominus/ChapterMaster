@@ -62,7 +62,7 @@ function push_marine_ranged_weapons_item_names(_item_names) {
 /// @param {array} _item_names - The list to append to.
 /// @returns {void}
 function push_marine_melee_weapons_item_names(_item_names) {
-    var item_count = 19;
+    var item_count = 20;
     var initial_size = array_length(_item_names);
     array_resize(_item_names, initial_size + item_count);
 
@@ -82,10 +82,11 @@ function push_marine_melee_weapons_item_names(_item_names) {
     _item_names[@ index++] = "Thunder Hammer";
     _item_names[@ index++] = "Heavy Thunder Hammer";
     _item_names[@ index++] = "Crozius Arcanum";
+    _item_names[@ index++] = "Omnissian Axe";
     _item_names[@ index++] = "Boarding Shield";
     _item_names[@ index++] = "Storm Shield";
     _item_names[@ index++] = "Bolt Pistol";
-    _item_names[@ index++] = "Bolter"; // 19
+    _item_names[@ index++] = "Bolter"; // 20
 }
 
 /// @description This function appends the list of marine armour items to the given list.
@@ -116,7 +117,7 @@ function push_marine_armour_item_names(_item_names) {
 /// @param {array} _item_names - The list to append to.
 /// @returns {void}
 function push_marine_gear_item_names(_item_names) {
-    var item_count = 4;
+    var item_count = 5;
     var initial_size = array_length(_item_names);
     array_resize(_item_names, initial_size + item_count);
 
@@ -124,8 +125,9 @@ function push_marine_gear_item_names(_item_names) {
     // _item_names[@ index++] = "Bionics";
     _item_names[@ index++] = "Iron Halo";
     _item_names[@ index++] = "Narthecium";
+    _item_names[@ index++] = "Power Pack";
     _item_names[@ index++] = "Psychic Hood";
-    _item_names[@ index++] = "Rosarius"; // 4
+    _item_names[@ index++] = "Rosarius"; // 5
 }
 
 /// @description This function appends the list of marine mobility items to the given list.
@@ -688,7 +690,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                                 undefined, // no required tags
                                 ["vehicle"], // exclude vehicle weapons
                                 _with_none_if_not_skip,
-                                true, // with_any
+                                true // with_any
                             );
                         } else {
                             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
@@ -704,7 +706,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                                 undefined, // no required tags
                                 ["vehicle"], // exclude vehicle weapons
                                 _with_none_if_not_skip,
-                                true, // with_any
+                                true // with_any
                             );
                             if (_include_company_standard) {
                                 _item_names[@ array_length(_item_names)] = "Company Standard";
@@ -723,7 +725,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                                 undefined, // no required tags
                                 ["vehicle"], // exclude vehicle weapons
                                 _with_none_if_not_skip,
-                                true, // with_any
+                                true // with_any
                             );
                         } else {
                             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
@@ -745,7 +747,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                             undefined, // no required tags
                             ["vehicle"], // exclude vehicle armour
                             _with_none_if_not_skip,
-                            true, // with_any
+                            true // with_any
                         );
                     } else {
                         get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
@@ -762,7 +764,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                             undefined, // no required tags
                             ["vehicle", "no_equip"], // exclude vehicle gear + unequippable items
                             _with_none_if_not_skip,
-                            true, // with_any
+                            true // with_any
                         );
                     } else {
                         get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
@@ -779,7 +781,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                             undefined, // no required tags
                             ["vehicle"], // exclude vehicle mobility
                             _with_none_if_not_skip,
-                            true, // with_any
+                            true // with_any
                         );
                     } else {
                         get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
@@ -805,7 +807,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                                 ["dreadnought"], // required tags
                                 undefined, // no excluded tags
                                 _with_none_if_not_skip,
-                                true, // with_any
+                                true // with_any
                             );
                         } else {
                             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
@@ -821,7 +823,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                                 ["dreadnought"], // required tags
                                 undefined, // no excluded tags
                                 _with_none_if_not_skip,
-                                true, // with_any
+                                true // with_any
                             );
                         } else {
                             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
@@ -837,7 +839,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                                 ["dreadnought"], // required tags
                                 undefined, // no excluded tags
                                 _with_none_if_not_skip,
-                                true, // with_any
+                                true // with_any
                             );
                         } else {
                             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);

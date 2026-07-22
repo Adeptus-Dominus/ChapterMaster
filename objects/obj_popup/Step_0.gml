@@ -1,3 +1,12 @@
+// Orphaned fleeing-fleet popup: if turn processing already ended there is nothing
+// left to release into; clean up instead of locking input forever.
+if ((type == 99) && !instance_exists(obj_turn_end)) {
+    obj_controller.force_scroll = 0;
+    obj_controller.popup = 0;
+    instance_destroy();
+    exit;
+}
+
 try {
     if (hide == true) {
         exit;

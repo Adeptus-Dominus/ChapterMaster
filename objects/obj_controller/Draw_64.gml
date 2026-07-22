@@ -195,7 +195,9 @@ if (!zoomed && !zui) {
         yf = string(year_fraction);
     }
     draw_text(1520 + new_banner_x, 228, string_hash_to_newline(string(check_number) + " " + string(yf) + " " + string(year) + ".M" + string(millenium)));
-    // Shows the income on the menu
+    // Shows the income on the menu. Region-building requisition now flows through
+    // the income system itself (income_regions in scr_income), so income_last is the
+    // whole truth again.
     var inc = "";
     if (income_last > 0) {
         inc = "+" + string(round(income_last));

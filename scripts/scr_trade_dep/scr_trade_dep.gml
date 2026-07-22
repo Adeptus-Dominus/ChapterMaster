@@ -5,10 +5,19 @@ function scr_trade_dep() {
     //LOGGER.debug($"trade goods : {_goods}");
     if (struct_exists(_goods, "mercenaries")) {
         var _mercs = struct_get_names(_goods.mercenaries);
+        var _spawned_any = false;
         for (var m = 0; m < array_length(_mercs); m++) {
             var _merc_type = _mercs[m];
             repeat (_goods.mercenaries[$ _merc_type].number) {
-                scr_add_man(_merc_type, 0, "", "", 0, true, "default");
+                // Skip the per-spawn company re-sort; one sort after the batch keeps a
+                // large levy (a thousand guardsmen) fast instead of O(n squared).
+                scr_add_man(_merc_type, 0, "", "", 0, true, "default", {skip_company_order: true});
+                _spawned_any = true;
+            }
+        }
+        if (_spawned_any) {
+            with (obj_ini) {
+                scr_company_order(0);
             }
         }
     }

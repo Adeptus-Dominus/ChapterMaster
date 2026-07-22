@@ -58,61 +58,76 @@ function scr_ship_battle(target_ship_id, cooridor_width) {
                     sofar += 1;
 
                     var col = 0, targ = 0;
+                    var ftype = "";
 
                     if (unit.role() == obj_ini.role[100][12]) {
                         col = obj_controller.bat_scout_column;
+                        ftype = "scout";
                         obj_ncombat.scouts += 1;
                     }
                     if (unit.role() == obj_ini.role[100][8]) {
                         col = obj_controller.bat_tactical_column;
+                        ftype = "tactical";
                         obj_ncombat.tacticals += 1;
                     }
                     if (unit.role() == obj_ini.role[100][3]) {
                         col = obj_controller.bat_veteran_column;
+                        ftype = "veteran";
                         obj_ncombat.veterans += 1;
                     }
                     if (unit.role() == obj_ini.role[100][9]) {
                         col = obj_controller.bat_devastator_column;
+                        ftype = "devastator";
                         obj_ncombat.devastators += 1;
                     }
                     if (unit.role() == obj_ini.role[100][10]) {
                         col = obj_controller.bat_assault_column;
+                        ftype = "assault";
                         obj_ncombat.assaults += 1;
                     }
                     if (unit.role() == obj_ini.role[100][17]) {
                         col = obj_controller.bat_librarian_column;
+                        ftype = "librarian";
                         obj_ncombat.librarians += 1;
                     }
                     if (unit.role() == "Codiciery") {
                         col = obj_controller.bat_librarian_column;
+                        ftype = "librarian";
                         obj_ncombat.librarians += 1;
                     }
                     if (unit.role() == "Epistolary") {
                         col = obj_controller.bat_librarian_column;
+                        ftype = "librarian";
                         obj_ncombat.librarians += 1;
                     }
                     if (unit.role() == "Lexicanum") {
                         col = obj_controller.bat_librarian_column;
+                        ftype = "librarian";
                         obj_ncombat.librarians += 1;
                     }
                     if (unit.role() == obj_ini.role[100][16]) {
                         col = obj_controller.bat_techmarine_column;
+                        ftype = "techmarine";
                         obj_ncombat.techmarines += 1;
                     }
                     if (unit.role() == obj_ini.role[100][2]) {
                         col = obj_controller.bat_honor_column;
+                        ftype = "honor";
                         obj_ncombat.honors += 1;
                     }
                     if (unit.role() == obj_ini.role[100][6]) {
                         col = obj_controller.bat_dreadnought_column;
+                        ftype = "dreadnought";
                         obj_ncombat.dreadnoughts += 1;
                     }
                     if (unit.role() == "Venerable " + string(obj_ini.role[100][6])) {
                         col = obj_controller.bat_dreadnought_column;
+                        ftype = "dreadnought";
                         obj_ncombat.dreadnoughts += 1;
                     }
                     if (unit.role() == obj_ini.role[100][4]) {
                         col = obj_controller.bat_terminator_column;
+                        ftype = "terminator";
                         obj_ncombat.terminators += 1;
                     }
 
@@ -128,14 +143,18 @@ function scr_ship_battle(target_ship_id, cooridor_width) {
                         }
 
                         col = obj_controller.bat_tactical_column;
+                        ftype = "tactical";
                         if (obj_ini.armour[co][v] == "Terminator Armour") {
                             col = obj_controller.bat_terminator_column;
+                            ftype = "terminator";
                         }
                         if (obj_ini.armour[co][v] == "Tartaros Armour") {
                             col = obj_controller.bat_terminator_column;
+                            ftype = "terminator";
                         }
                         if (co == 10) {
                             col = obj_controller.bat_scout_column;
+                            ftype = "scout";
                         }
                     }
 
@@ -155,35 +174,44 @@ function scr_ship_battle(target_ship_id, cooridor_width) {
 
                         if (co == 1) {
                             col = obj_controller.bat_veteran_column;
+                            ftype = "veteran";
                             if (obj_ini.armour[co][v] == "Terminator Armour") {
                                 col = obj_controller.bat_terminator_column;
+                                ftype = "terminator";
                             }
                             if (obj_ini.armour[co][v] == "Tartaros Armour") {
                                 col = obj_controller.bat_terminator_column;
+                                ftype = "terminator";
                             }
                         }
                         if (co >= 2) {
                             col = obj_controller.bat_tactical_column;
+                            ftype = "tactical";
                         }
                         if (co == 10) {
                             col = obj_controller.bat_scout_column;
+                            ftype = "scout";
                         }
                         if (obj_ini.mobi[co][v] == "Jump Pack") {
                             col = obj_controller.bat_assault_column;
+                            ftype = "assault";
                         }
                     }
 
                     if (unit.role() == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
                         col = obj_controller.bat_command_column;
+                        ftype = "command";
                         obj_ncombat.important_dudes += 1;
                         obj_ncombat.big_mofo = 1;
                     }
                     if (unit.role() == "Forge Master") {
                         col = obj_controller.bat_command_column;
+                        ftype = "command";
                         obj_ncombat.important_dudes += 1;
                     }
                     if (unit.role() == "Master of Sanctity") {
                         col = obj_controller.bat_command_column;
+                        ftype = "command";
                         obj_ncombat.important_dudes += 1;
                         if (obj_ncombat.big_mofo > 2) {
                             obj_ncombat.big_mofo = 2;
@@ -191,10 +219,12 @@ function scr_ship_battle(target_ship_id, cooridor_width) {
                     }
                     if (unit.role() == "Master of the Apothecarion") {
                         col = obj_controller.bat_command_column;
+                        ftype = "command";
                         obj_ncombat.important_dudes += 1;
                     }
                     if (unit.role() == "Chief " + string(obj_ini.role[100][17])) {
                         col = obj_controller.bat_command_column;
+                        ftype = "command";
                         obj_ncombat.important_dudes += 1;
                         if (obj_ncombat.big_mofo > 3) {
                             obj_ncombat.big_mofo = 3;
@@ -204,13 +234,15 @@ function scr_ship_battle(target_ship_id, cooridor_width) {
                     if (unit.role() == "Death Company") {
                         // Ahahahahah
                         col = max(obj_controller.bat_assault_column, obj_controller.bat_command_column, obj_controller.bat_honor_column, obj_controller.bat_dreadnought_column, obj_controller.bat_veteran_column);
+                        ftype = "deathco";
                     }
 
                     if (col == 0) {
                         col = obj_controller.bat_hire_column;
+                        ftype = "hire";
                     }
 
-                    targ = instance_nearest(col * 10, 240, obj_pnunit);
+                    targ = formation_block(ftype, col);
                     with (targ) {
                         scr_add_unit_to_roster(unit);
                     }

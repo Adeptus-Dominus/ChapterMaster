@@ -41,7 +41,16 @@ function awaken_tomb_event() {
     star_alert.image_speed = 1;
     star_alert.col = "red";
     star.p_pdf[planet] = 0;
-    star.p_necrons[planet] = 6;
+    // Necrons AWAKEN SLOWLY (§16b): the tomb surges to life, but the legions rise over turns rather than
+    // instantly at full strength. Seed a starting awakened population; end_turn_race_population_growth
+    // grows it while the tomb is awake, and that POPULATION (not a 0-6 level) drives the Necron force.
+    if (variable_instance_exists(star, "p_race_pop")) {
+        var _seed = necron_awaken_seed(star.p_type[planet]);
+        star.p_race_pop[planet][eFACTION.NECRONS] = max(star.p_race_pop[planet][eFACTION.NECRONS], _seed);
+        star.p_necrons[planet] = count_to_level(eFACTION.NECRONS, star.p_race_pop[planet][eFACTION.NECRONS]);
+    } else {
+        star.p_necrons[planet] = 6;
+    }
 
     if (star.p_guardsmen[planet] < 2000000) {
         star.p_guardsmen[planet] = 0;

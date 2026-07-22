@@ -95,34 +95,52 @@ try {
 
     var u = noone;
 
-    if ((fortified > 1) && !(enemy == eFACTION.CHAOS && threat == 7)) {
+    if (((fortified > 1) || (bastion_bonus > 0)) && !(enemy == eFACTION.CHAOS && threat == 7)) {
         u = instance_create(0, 0, obj_nfort);
         u.image_speed = 0;
         u.image_alpha = 0.5;
 
+        // Base fortress HP/armour from the fortification TIER (the shared 0-6 scale the base-game "improve
+        // defences" upgrade fills). A Bastion-only world (tier 0-1) still raises a modest bunker to reinforce.
         if (fortified == 2) {
             u.ac = 30;
             u.hp = 400;
-        }
-        if (fortified == 3) {
+        } else if (fortified == 3) {
             u.ac = 40;
             u.hp = 800;
-        }
-        if (fortified == 4) {
+        } else if (fortified == 4) {
             u.ac = 40;
             u.hp = 1250;
-        }
-        if (fortified == 5) {
+        } else if (fortified >= 5) {
             u.ac = 40;
             u.hp = 1500;
+        } else {
+            u.ac = 25;
+            u.hp = 250;
+        }
+
+        // DISTINCT Bastion bonus (§16h): each Bastion region-building reinforces the fortress ON TOP of the
+        // fortification tier — UNCAPPED, so Bastions keep adding value even at maximum fortification (unlike
+        // the tier, which caps). +400 HP and +5 armour per Bastion. Counted from the world's regions at
+        // defend-setup (obj_turn_end/Mouse_56); save-safe (0 on old / region-less saves).
+        if (bastion_bonus > 0) {
+            u.hp += bastion_bonus * 400;
+            u.ac += bastion_bonus * 5;
         }
 
         if (siege && (fortified > 0) && defending) {
             global_attack *= 1.1;
-            u.hp = round(u.hp * 1.2);
+            u.hp[1] = round(u.hp[1] * 1.2);
         }
 
         u.maxhp = u.hp;
+    }
+
+    // Battle-size clamp (see ENEMY_BATTLE_THREAT_CAP in macros.gml): level-scale
+    // threats (1-6) are capped for spawn sizing; 7 (Enormicus) and raw garrison
+    // headcounts (Imperial worlds pass guardsmen counts through threat) pass free.
+    if ((threat >= 1) && (threat <= 6) && (threat > ENEMY_BATTLE_THREAT_CAP)) {
+        threat = ENEMY_BATTLE_THREAT_CAP;
     }
 
     var _num = xxx / 10;
@@ -409,7 +427,11 @@ try {
             hulk_forces = make;
         }
         // * CSM Space Hulk *
-        if (enemy == eFACTION.CHAOS) {
+        if ((enemy == eFACTION.CHAOS) || (enemy == eFACTION.HERETICS)) {
+            // Hulk garrisons roll faction CHAOS but store strength in p_traitors
+            // (obj_star Alarm_0), so under the corrected numbering their battles
+            // arrive as HERETICS: without this the hulk spawned no defenders at all
+            // (reported four out of four boardings empty).
             modi = random_range(0.80, 1.20) + 1;
             make = round(max(3, player_starting_dudes * modi));
 
@@ -524,13 +546,15 @@ try {
     }
     // * Imperial Guard Force *
     if (enemy == eFACTION.IMPERIUM) {
-        guard_total = threat;
+        // Strategic garrison headcount -> tactical spawn cap (see ENEMY_GUARD_BATTLE_CAP):
+    // fighting an Imperial world with millions of PDF must not spawn millions.
+    guard_total = min(threat, ENEMY_GUARD_BATTLE_CAP);
 
         var guar = threat / 10;
 
         // Guardsmen
         u = instance_create(xxx, 240, obj_enunit);
-        enemy_dudes = string(threat);
+        enemy_dudes = threat;
         u.dudes[1] = "Imperial Guardsman";
         u.dudes_num[1] = round(guar / 5);
         enemies[1] = u.dudes[1];
@@ -1818,7 +1842,7 @@ try {
         u.dudes_num[1] = 40;
         u.dudes[2] = "Hormagaunt";
         u.dudes_num[2] = 40;
-        // Small Genestealer Cult Group
+        // Small Genestealer Group
         if (threat == 1) {
             u = instance_nearest(xxx, 240, obj_enunit);
             enemy_dudes = "100";
@@ -2086,7 +2110,12 @@ try {
     }
 
     // ** Chaos Forces **
-    if ((enemy == eFACTION.CHAOS) && (battle_special != "ship_demon") && (battle_special != "fallen1") && (battle_special != "fallen2") && (battle_special != "WL10_reveal") && (battle_special != "WL10_later") && (string_count("cs_meeting_battle", battle_special) == 0)) {
+    // Spawn-side half of the chaos/heretics renumbering (upstream 173a6500 flipped
+    // battle RESOLUTION but not these composition gates): the threat-scaled cult and
+    // traitor horde compositions belong to HERETICS worlds (p_traitors), which now
+    // arrive as eFACTION.HERETICS. Before this swap they received the small CSM
+    // warband below (a constant ~5 CSM + 30 cultists at every strength).
+    if ((enemy == eFACTION.HERETICS) && (battle_special != "ship_demon") && (battle_special != "fallen1") && (battle_special != "fallen2") && (battle_special != "WL10_reveal") && (battle_special != "WL10_later") && (string_count("cs_meeting_battle", battle_special) == 0)) {
         // Small Chaos Cult Group
         if (threat == 1) {
             u = instance_nearest(xxx, 240, obj_enunit);
@@ -2295,13 +2324,19 @@ try {
         }
     }
 
+    // Hoisted above both Chaos-side composition blocks: the CSM warband block below
+    // reads slaa 39 times but the declaration only executed inside this daemon block,
+    // so any plain Chaos ground battle hit an uninitialized local at its first
+    // if (slaa) case (GM2043 was flagging a real latent crash, present in vanilla's
+    // old numbering too). If we want multiple story events for specific Chaos Gods,
+    // slaa could become a gods value instead (upstream TBD note preserved).
+    var slaa = false;
+    if (battle_special == "ruins_eldar") {
+        slaa = true;
+    }
+
     // ** Daemon Forces ** - The faction for the check is the Genestealers but the forces being setup are clearly Daemons.
     if (enemy == eFACTION.CHAOS && (battle_special == "ship_demon" || battle_special == "ruins_eldar")) {
-        // If we want to have multiple story events regarding specific Chaos Gods, we could name slaa into gods and just check the value? TBD
-        var slaa = false;
-        if (battle_special == "ruins_eldar") {
-            slaa = true;
-        }
         // Small Daemon Group
         if (threat == 1) {
             u = instance_nearest(xxx, 240, obj_enunit);
@@ -2395,6 +2430,236 @@ try {
             u.dudes_num[2] = 1;
             u.dudes[3] = "Soul Grinder";
             u.dudes_num[3] = 1;
+            instance_deactivate_object(u);
+
+            u = instance_nearest(xxx + 20, 240, obj_enunit);
+            if (slaa) {
+                u.dudes[1] = "Daemonette";
+                u.dudes_num[1] = 400;
+                u.dudes[2] = "Maulerfiend";
+                u.dudes_num[2] = 2;
+            } else {
+                u.dudes[1] = "Bloodletter";
+                u.dudes_num[1] = 100;
+                u.dudes[2] = "Daemonette";
+                u.dudes_num[2] = 100;
+                u.dudes[3] = "Plaguebearer";
+                u.dudes_num[3] = 100;
+                u.dudes[4] = "Pink Horror";
+                u.dudes_num[4] = 100;
+                u.dudes[5] = "Maulerfiend";
+                u.dudes_num[5] = 2;
+            }
+            instance_deactivate_object(u);
+        }
+        // Medium Daemon Army
+        if (threat == 5) {
+            u = instance_nearest(xxx + 40, 240, obj_enunit);
+            enemy_dudes = "1000";
+            u.neww = 1;
+
+            u.dudes[1] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+            if (slaa) {
+                u.dudes[1] = "Greater Daemon of Slaanesh";
+            }
+            u.dudes_num[1] = 1;
+            u.dudes[2] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+            if (slaa) {
+                u.dudes[2] = "Greater Daemon of Slaanesh";
+            }
+            u.dudes_num[2] = 1;
+            u.dudes[3] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+            if (slaa) {
+                u.dudes[3] = "Greater Daemon of Slaanesh";
+            }
+            u.dudes_num[3] = 1;
+            u.dudes[4] = "Soul Grinder";
+            u.dudes_num[4] = 2;
+            instance_deactivate_object(u);
+
+            u = instance_nearest(xxx + 20, 240, obj_enunit);
+            if (slaa) {
+                u.dudes[1] = "Daemonette";
+                u.dudes_num[1] = 1000;
+                u.dudes[2] = "Maulerfiend";
+                u.dudes_num[2] = 2;
+            } else {
+                u.dudes[1] = "Bloodletter";
+                u.dudes_num[1] = 250;
+                u.dudes[2] = "Daemonette";
+                u.dudes_num[2] = 250;
+                u.dudes[3] = "Plaguebearer";
+                u.dudes_num[3] = 250;
+                u.dudes[4] = "Pink Horror";
+                u.dudes_num[4] = 250;
+                u.dudes[5] = "Maulerfiend";
+                u.dudes_num[5] = 2;
+            }
+            instance_deactivate_object(u);
+        }
+        // Large Daemon Army
+        if (threat == 6) {
+            u = instance_nearest(xxx + 40, 240, obj_enunit);
+            enemy_dudes = "2000";
+            u.neww = 1;
+
+            u.dudes[1] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+            if (slaa) {
+                u.dudes[1] = "Greater Daemon of Slaanesh";
+            }
+            u.dudes_num[1] = 1;
+            u.dudes[2] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+            if (slaa) {
+                u.dudes[2] = "Greater Daemon of Slaanesh";
+            }
+            u.dudes_num[2] = 1;
+            u.dudes[3] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+            if (slaa) {
+                u.dudes[3] = "Greater Daemon of Slaanesh";
+            }
+            u.dudes_num[3] = 1;
+            u.dudes[4] = "Soul Grinder";
+            u.dudes_num[4] = 1;
+            instance_deactivate_object(u);
+
+            u = instance_nearest(xxx + 30, 240, obj_enunit);
+            u.neww = 1;
+            u.dudes[1] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+            if (slaa) {
+                u.dudes[1] = "Greater Daemon of Slaanesh";
+            }
+            u.dudes_num[1] = 1;
+            u.dudes[2] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch", "Khorne", "Nurgle"));
+            if (slaa) {
+                u.dudes[2] = "Greater Daemon of Slaanesh";
+            }
+            u.dudes_num[2] = 1;
+            u.dudes[3] = "Soul Grinder";
+            u.dudes_num[3] = 1;
+            instance_deactivate_object(u);
+
+            u = instance_nearest(xxx + 20, 240, obj_enunit);
+            if (slaa) {
+                u.dudes[1] = "Daemonette";
+                u.dudes_num[1] = 2000;
+                u.dudes[2] = "Maulerfiend";
+                u.dudes_num[2] = 3;
+            } else {
+                u.dudes[1] = "Bloodletter";
+                u.dudes_num[1] = 500;
+                u.dudes[2] = "Daemonette";
+                u.dudes_num[2] = 500;
+                u.dudes[3] = "Plaguebearer";
+                u.dudes_num[3] = 500;
+                u.dudes[4] = "Pink Horror";
+                u.dudes_num[4] = 500;
+                u.dudes[5] = "Maulerfiend";
+                u.dudes_num[5] = 3;
+            }
+            instance_deactivate_object(u);
+        }
+    }
+
+    // ** Chaos Space Marines Forces **
+    // The CSM warband compositions belong to true Chaos forces (p_chaos), which now
+    // arrive as eFACTION.CHAOS. Second half of the spawn-side renumbering swap.
+    // The renumbering moved this block to CHAOS, whose battles include the daemon,
+    // fallen, and concealed-warlord specials (each with its own composition above);
+    // without these exclusions those battles would spawn a CSM warband on top of
+    // their special forces. The HERETICS block carries the same list for the same
+    // reason.
+    if ((enemy == eFACTION.CHAOS) && (battle_special != "ChaosWarband") && (battle_special != "ship_demon") && (battle_special != "ruins_eldar") && (battle_special != "fallen1") && (battle_special != "fallen2") && (battle_special != "WL10_reveal") && (battle_special != "WL10_later") && (string_count("cs_meeting_battle", battle_special) == 0)) {
+        // Small CSM Group
+        if (threat == 1) {
+            u = instance_nearest(xxx, 240, obj_enunit);
+            enemy_dudes = "5";
+
+            u.dudes[1] = choose("Bloodletter", "Daemonette", "Plaguebearer", "Pink Horror");
+            if (slaa) {
+                u.dudes[1] = "Daemonette";
+            }
+            u.dudes_num[1] = 5;
+            enemies[1] = u.dudes[1];
+            u.dudes[2] = "Cultist Elite";
+            u.dudes_num[2] = 30;
+            enemies[2] = u.dudes[2];
+        }
+        // Medium Daemon Group
+        if (threat == 2) {
+            u = instance_nearest(xxx, 240, obj_enunit);
+            enemy_dudes = "90";
+
+            u.dudes[1] = choose("Bloodletter", "Daemonette", "Plaguebearer", "Pink Horror");
+            if (slaa) {
+                u.dudes[1] = "Daemonette";
+            }
+            u.dudes_num[1] = 30;
+
+            instance_deactivate_object(u);
+            u = instance_nearest(xxx + 10, 240, obj_enunit);
+            u.dudes[1] = choose("Bloodletter", "Daemonette", "Plaguebearer", "Pink Horror");
+            if (slaa) {
+                u.dudes[1] = "Daemonette";
+            }
+            u.dudes_num[1] = 30;
+            u.dudes[2] = "Defiler";
+            u.dudes_num[2] = 1;
+        }
+        // Large Daemon Group
+        if (threat == 3) {
+            u = instance_nearest(xxx, 240, obj_enunit);
+            enemy_dudes = "240";
+
+            u.dudes[1] = "Greater Daemon of " + choose("Tzeentch", "Slaanesh", "Nurgle", "Khorne");
+            if (slaa) {
+                u.dudes[1] = "Greater Daemon of Slaanesh";
+            }
+            u.dudes_num[1] = 1;
+            u.dudes[2] = "Chaos Sorcerer";
+            u.dudes_num[2] = 1;
+            u.dudes[3] = "Pink Horror";
+            if (slaa) {
+                u.dudes[3] = "Daemonette";
+            }
+            u.dudes_num[3] = 60;
+
+            instance_deactivate_object(u);
+            u = instance_nearest(xxx + 10, 240, obj_enunit);
+            u.dudes[1] = "Defiler";
+            u.dudes_num[1] = 2;
+
+            instance_deactivate_object(u);
+            u = instance_nearest(xxx + 20, 240, obj_enunit);
+            if (slaa) {
+                u.dudes[1] = "Daemonette";
+                u.dudes_num[1] = 240;
+            } else {
+                u.dudes[1] = "Bloodletter";
+                u.dudes_num[1] = 60;
+                u.dudes[2] = "Plaguebearer";
+                u.dudes_num[2] = 60;
+                u.dudes[3] = "Daemonette";
+                u.dudes_num[3] = 60;
+                u.dudes[4] = "Maulerfiend";
+                u.dudes_num[4] = 2;
+            }
+        }
+        // Small Daemon Army
+        if (threat == 4) {
+            u = instance_nearest(xxx + 40, 240, obj_enunit);
+            enemy_dudes = "400";
+            u.neww = 1;
+
+            u.dudes[1] = "Greater Daemon of " + string(choose("Slaanesh", "Tzeentch"));
+            if (slaa) {
+                u.dudes[1] = "Greater Daemon of Slaanesh";
+            }
+            u.dudes_num[1] = 1;
+            u.dudes[2] = "Chaos Sorcerer";
+            u.dudes_num[2] = 2;
+            u.dudes[3] = "Chaos Chosen";
+            u.dudes_num[3] = 10;
+
             instance_deactivate_object(u);
 
             u = instance_nearest(xxx + 20, 240, obj_enunit);
@@ -2747,7 +3012,7 @@ try {
     }
 
     // ** World Eaters Forces **
-    if ((enemy == eFACTION.HERETICS) && (battle_special == "ChaosWarband")) {
+    if ((enemy == eFACTION.CHAOS) && (battle_special == "ChaosWarband")) {
         // Small WE Group
         if (threat == 1) {
             u = instance_nearest(xxx, 240, obj_enunit);
@@ -3184,6 +3449,11 @@ try {
         u = instance_create(-50, 240, obj_pnunit);
         u.defenses = 1;
 
+        // §16h: emplacement durability scales with how many ground defences the world mounts, so stacking
+        // Turret Battery region-buildings (+6 p_defenses each) actually hardens the defending fight instead
+        // of being a flat one-off. ~1x per battery, capped at 5x (a world's ~30 defence cap / a homeworld).
+        var _def_mult = clamp(player_defenses / 6, 1, 5);
+
         for (var i = 1; i <= 3; i++) {
             u.veh_co[i] = 0;
             u.veh_id[i] = 0;
@@ -3191,7 +3461,7 @@ try {
             u.veh_hp[i] = 1000;
             u.veh_ac[i] = 1000;
             u.veh_dead[i] = 0;
-            u.veh_hp_multiplier[i] = 1;
+            u.veh_hp_multiplier[i] = _def_mult;
         }
 
         u.veh_wep1[1] = "Heavy Bolter Emplacement";
@@ -3200,6 +3470,15 @@ try {
         u.veh = 3;
         u.sprite_index = spr_weapon_blank;
     }
+
+    // ** Imperial Guard auxilia **
+    // The old p_guardsmen bolt-on block was retired here. Guardsmen are now fielded
+    // through the standard roster: station them on a world (ship_location -1) and the
+    // Local Forces toggle deploys them into the Hirelings block like any other unit,
+    // so the engine handles placement, targeting and casualties. player_guard is kept
+    // at 0 so the dormant firepower-injection path in scr_player_combat_weapon_stacks
+    // stays inert.
+    player_guard = 0;
 
     instance_activate_object(obj_enunit);
 } catch (_exception) {

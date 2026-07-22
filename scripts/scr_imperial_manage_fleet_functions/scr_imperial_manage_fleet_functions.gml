@@ -14,11 +14,23 @@ function new_colony_fleet(doner_star, doner_planet, target, target_planet, missi
         doner_star.p_population[doner_planet] *= 0.90;
     }
 
+    // Colonists carry their homeworld's taint (§16k): a corrupt or cult-infested origin plants that rot at
+    // the new colony, so hidden heretic cults spread world-to-world through the colony ships. (Genestealer
+    // cults already ride along via colonist_influence / merge_influences below.)
+    var _donor_corr = variable_instance_exists(doner_star, "p_heresy") ? doner_star.p_heresy[doner_planet] : 0;
+    var _donor_cult = false;
+    try {
+        var _dpd = doner_star.get_planet_data(doner_planet);
+        _donor_cult = _dpd.has_feature(eP_FEATURES.HERETIC_ACTIVITY) || _dpd.has_feature(eP_FEATURES.GENE_STEALER_CULT);
+    } catch (_e) { _donor_cult = false; }
+
     var new_cargo = {
         colonists: doner_volume,
         mission: mission,
         target_planet: target_planet,
         colonist_influence: doner_star.p_influence[doner_planet],
+        corruption: _donor_corr,
+        cult: _donor_cult,
     };
 
     new_colonise_fleet.trade_goods = "colonize";
@@ -90,6 +102,22 @@ function deploy_colonisers(star) {
         var player_vision = star.p_player[targ_planet] > 0 || star.p_owner[targ_planet] == eFACTION.PLAYER;
         if (star.p_influence[targ_planet][eFACTION.TYRANIDS] > start_influ && player_vision) {
             alert_string += " They bring with them traces of a Genestelar Cult";
+        }
+        // Heretic taint rides the colony ships too (§16k): a cult-bearing origin plants a strong dose of
+        // corruption at the new colony (which grows its own hidden cult once past the corruption floor); a
+        // heavily-corrupted-but-uninfested origin passes on a lighter dose. Clean worlds spread nothing.
+        if (variable_struct_exists(data, "corruption") && variable_instance_exists(star, "p_heresy")) {
+            var _carry = (variable_struct_exists(data, "cult") && data.cult) ? round(data.corruption * 0.6)
+                       : ((data.corruption >= 25) ? round(data.corruption * 0.3) : 0);
+            if (_carry > 0) {
+                star.p_heresy[targ_planet] = min(100, star.p_heresy[targ_planet] + _carry);
+                if (player_vision) { alert_string += " Dark whispers move among the new arrivals."; }
+                // The god spreads along the trade routes (§16r): the arriving cell carries its home world's
+                // god, so the cult that grows here later swears to the same god (unless already assigned).
+                if (variable_struct_exists(data, "chaos_god") && (data.chaos_god >= 0) && variable_instance_exists(star, "p_chaos_god")) {
+                    if (star.p_chaos_god[targ_planet] < 0) { star.p_chaos_god[targ_planet] = data.chaos_god; }
+                }
+            }
         }
         scr_alert("green", "duhuhuhu", alert_string, star.x, star.y);
     } else {

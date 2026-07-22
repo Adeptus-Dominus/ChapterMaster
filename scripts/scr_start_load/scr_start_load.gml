@@ -70,6 +70,9 @@ function scr_start_load(fleet, load_from_star, load_options) {
         "Land Speeder",
         "Land Raider",
         "Whirlwind",
+        "Chimera",
+        "Leman Russ",
+        "Basilisk",
     ];
     function load_vehicles(_companies, _equip, _ship, size) {
         obj_ini.veh_wid[_companies][_equip] = 0;

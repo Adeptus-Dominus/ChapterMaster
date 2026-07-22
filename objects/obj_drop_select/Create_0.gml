@@ -83,6 +83,8 @@ if (!instance_exists(obj_saveload)) {
     roster = new Roster();
     if (instance_exists(p_target)) {
         roster.roster_location = p_target.name;
+        // Seed the persistent pending-battle-region from this planet's current focus.
+        obj_controller.pending_battle_region = (planet_region_count(p_target, planet_number) > 1) ? region_focus_get(p_target, planet_number) : -1;
     }
 
     roster.roster_planet = planet_number;
@@ -136,6 +138,15 @@ if (!instance_exists(obj_saveload)) {
     if (formation_current == -1) {
         formation_current = 0;
     }
+    // Hardening: a stored last_raid_form / last_attack_form that is not among the formations
+    // valid for this drop type, or a value left over across a save/load, would otherwise leave
+    // formation_current as an out-of-range raw value. Clamp it so the selector can never index
+    // past the array, and pin it to 0 when there are no formations to choose from.
+    if (array_length(formation_possible) > 0) {
+        formation_current = clamp(formation_current, 0, array_length(formation_possible) - 1);
+    } else {
+        formation_current = 0;
+    }
 
     fighting = array_create(11, array_create(501));
     veh_fighting = array_create(11, array_create(501));
@@ -152,6 +163,7 @@ y2 = 0;
 
 btn_formation = new InteractiveButton();
 btn_target = new InteractiveButton();
+btn_sector = new InteractiveButton();
 
 btn_attack = new InteractiveButton();
 btn_attack.text_color = CM_GREEN_COLOR;
@@ -162,6 +174,15 @@ btn_back.str1 = "BACK";
 btn_back.text_color = CM_GREEN_COLOR;
 btn_back.button_color = CM_GREEN_COLOR;
 btn_back.width = 90;
+
+// Behead the Warboss: a decapitation strike offered inside the raid screen, only when this world has an
+// actual Ork Warboss present (§16f). Drawn/hit-tested in drop_select_unit_selection.
+btn_behead = new InteractiveButton();
+btn_behead.str1 = "BEHEAD WARBOSS";
+btn_behead.text_color = c_red;
+btn_behead.button_color = c_red;
+btn_behead.width = 200;
+btn_behead.tooltip = "Send a strike force after the WAAAGH's Warboss. Kill him and, with no duel-victor to inherit, the Ork clans fall into a succession scramble - or an outright civil war. Spends this fleet's action; harder against a big Ork Stronghold.";
 
 if (purge == 0) {
     sisters = p_target.p_sisters[planet_number];
@@ -317,7 +338,7 @@ if (purge == 0) {
 
     assasinate_purge = new PurgeButton(7, 631, 450, eDROP_TYPE.PURGEASSASSINATE);
     assasinate_purge.active = _viable_ground_forces;
-    assasinate_purge.description = "Often the simplest solution is a single bolt shell or the swift knife the heart. Kill the Leader.";
+    assasinate_purge.description = "Often the simplest solution is a single bolt shell or the swift knife to the heart. Kill the Planetary Governor, then choose the succession: the lawful heir, a governor sympathetic to your chapter, or a Chapter Serf who places the world under your control. Manipulating the succession carries a risk of Inquisition discovery, with consequences that may surface months or years later.";
 
     purge_options = [
         bombard_purge,

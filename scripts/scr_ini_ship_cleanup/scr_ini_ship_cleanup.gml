@@ -100,13 +100,15 @@ function scr_kill_ship(index) {
             array_delete(ship_carrying, index, 1);
             array_delete(ship_contents, index, 1);
             array_delete(ship_turrets, index, 1);
+            array_delete(ship_guardsmen, index, 1);
+            array_delete(ship_guardsmen_max, index, 1);
 
             if (!in_warp) {
                 if (_nearest_star != noone) {
                     while (array_length(_units_on_ship) > 0) {
                         _unit = array_pop(_units_on_ship);
                         if (irandom(100) > 100 - _unit.luck) {
-                            _unit.unload(irandom_range(1, _nearest_star.planets), _nearest_star);
+                            _unit.unload(irandom_range(1, _nearest_star.planets), _nearest_star, true); // abandoning a lost ship: set down anywhere
                         }
                     }
                 }

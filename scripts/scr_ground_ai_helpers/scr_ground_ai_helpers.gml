@@ -17,7 +17,12 @@ function planet_imperial_base_enemies(planet, star = noone) {
 }
 
 function has_imperial_enemies(planet, system) {
-    var _enemies = system.p_orks[planet] + system.p_chaos[planet] + system.p_tyranids[planet] + system.p_necrons[planet] + system.p_tau[planet] + system.p_traitors[planet];
+    // Hidden heretic cults and still-infiltrating Genestealer cults are SECRET — the Imperium can't see them,
+    // so it must NOT count them as a threat or deploy against them (§16k/§16p). A world in OPEN revolt reads
+    // its real p_traitors/p_tyranids; a concealed cell reads zero until it reveals.
+    var _traitors = heretic_is_hidden(system, planet)    ? 0 : system.p_traitors[planet];
+    var _nids     = genestealer_is_hidden(system, planet) ? 0 : system.p_tyranids[planet];
+    var _enemies = system.p_orks[planet] + system.p_chaos[planet] + _nids + system.p_necrons[planet] + system.p_tau[planet] + _traitors;
 
     if (obj_controller.faction_status[eFACTION.IMPERIUM] == "War") {
         _enemies += system.p_player[planet];

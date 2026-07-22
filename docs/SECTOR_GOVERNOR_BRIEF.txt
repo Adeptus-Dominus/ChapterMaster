@@ -1,0 +1,64 @@
+SECTOR GOVERNOR EDITION - the short version
+===========================================
+
+WHAT'S IN NOW
+-------------
+
+* Planets are now REGIONS. Every world is a capital plus a few outlying
+  regions, so you take a world region by region instead of in one click.
+  Click a region on the system screen to focus your assault - the panel
+  shows each region's owner, fortification, defences and garrison, and
+  flags contested worlds (where more than one faction holds ground).
+
+* BUILD on your regions. A construction panel lets you build per region:
+    - Defences: Bastion (walls), Turret Battery, Anti-Orbital Gun.
+    - Economy:  Manufactorum (forge/industry points), Factory, Mine.
+    - Growth:   Industrial Farms, PDF Barracks, Guard Barracks,
+                Training Ground (trains Scouts stationed on the world),
+                Candidate Station (better recruiting without tying up
+                your Apothecaries).
+  Rules: one economy/growth "improvement" per region, but defences build
+  alongside it. The Anti-Orbital Gun is one per planet.
+
+* The ANTI-ORBITAL GUN is a double-edged sword. While you hold its region
+  it shoots down an enemy ship in orbit every turn. If the enemy captures
+  that region, the captured gun fires on YOUR fleet. Mindless Tyranids
+  can't work it; a Genestealer Cult can figure it out - and keeps using
+  it until you drive them off.
+
+* Odds and ends: region zones now get randomised names, and clicking a
+  planet properly brings up the regions view.
+
+
+WHAT'S COMING  (designed, not built yet)
+----------------------------------------
+
+The big one: FORCES COME FROM POPULATIONS, not an abstract 1-6 number.
+
+* Every race has a real population on each world, tracked per region.
+  Battles are drawn from those actual numbers - a WAAAGH that's festered
+  for 40 turns fields far more than one that just landed.
+
+* Enemy fleets DROP A POPULATION (a beachhead), which then grows, spreads
+  and eats the locals - Orks bloom and use captives as livestock, Nids
+  consume everything into biomass.
+
+* Populations are mostly CIVILIAN; only a fraction fights (except
+  total-war races like Tyranids and Orks). Civilians raise the PDF; the
+  Imperial tithe trains one in ten of the PDF into the Guard.
+
+* A new PDF unit (a weaker Guardsman) so locals can actually fight off
+  invasions.
+
+* Real 40K scale: WAAAGHs in the millions, hive worlds in the trillions.
+  Combat is a numbers-vs-numbers sim, so it handles the scale fine.
+
+* You fight ALONGSIDE allied PDF/Guard. Your Marines tip the balance but
+  can't beat a horde on their own - the mass holds the line, the Astartes
+  are the hammer.
+
+* Built one faction at a time, Orks first.
+
+
+That's the brass tacks. Full detail lives in the design docs
+(POPULATIONS_FORCE_PLAN.md, REGIONS.md, SECTOR_GOVERNOR_PLAN.md).

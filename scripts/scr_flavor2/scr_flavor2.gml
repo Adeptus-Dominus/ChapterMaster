@@ -1,5 +1,8 @@
 /// @self Id.Instance.obj_pnunit|Id.Instance.obj_enunit
-function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapon, hostile_shots, hostile_splash) {
+// Merge seam: the fork's damage-severity reporting (scr_clean passes severity and
+// a vehicle flag; used by the armour-held flavor below) rides on upstream's rebuilt
+// log. Parameters restored with safe defaults.
+function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapon, hostile_shots, hostile_splash, damage_severity = 0, target_is_vehicle = false) {
     // Generates flavor based on the damage and casualties from scr_shoot, only for the opponent
 
     if (obj_ncombat.wall_destroyed == 1) {
@@ -35,6 +38,47 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
     }
     if (hostile_splash == 1) {
         _hostile_shots = max(1, round(_hostile_shots / 3));
+    }
+
+    // A resolution that attributed no unit at all (damage_data.unit_type left empty:
+    // the shot landed on a block whose relevant pool was already gone) produces
+    // "X strikes at ." lines. They carry no information; skip them entirely.
+    if ((target_type == "") && (lost_units_count == 0)) {
+        exit;
+    }
+
+    // Target readout: the bare unit name ("strikes at Assault") says nothing about what
+    // was hit or how many stand there. Append the block's living strength for that unit
+    // type. scr_flavor2 runs in the target block's own scope, so the arrays are directly
+    // readable. Only the "wall" comparisons below care about the raw value, and walls
+    // are never modified here.
+    if ((target_type != "wall") && is_string(target_type) && (target_type != "")) {
+        var _target_count = 0;
+        if (target_is_vehicle) {
+            if (variable_instance_exists(id, "veh_type")) {
+                for (var _tc = 0; _tc < array_length(veh_type); _tc++) {
+                    if ((veh_type[_tc] == target_type) && (_tc < array_length(veh_dead)) && (veh_dead[_tc] == 0) && (_tc < array_length(veh_hp)) && (veh_hp[_tc] > 0)) {
+                        _target_count++;
+                    }
+                }
+            }
+            if (_target_count > 0) {
+                target_type = $"{target_type} ({_target_count} remaining)";
+            }
+        } else if (target_type == "Imperial Guardsman") {
+            if (variable_instance_exists(id, "men") && (men > 0)) {
+                target_type = $"{target_type} ranks ({men} strong)";
+            }
+        } else if (variable_instance_exists(id, "marine_type")) {
+            for (var _tc = 0; _tc < array_length(marine_type); _tc++) {
+                if ((marine_type[_tc] == target_type) && (_tc < array_length(marine_dead)) && (marine_dead[_tc] == 0)) {
+                    _target_count++;
+                }
+            }
+            if (_target_count > 0) {
+                target_type = $"{target_type} ranks ({_target_count} strong)";
+            }
+        }
     }
 
     var flavor = 0;
@@ -276,7 +320,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
                 m1 = $"{_hostile_shots} {_hostile_weapon}z are flung into {target_type}.  ";
             }
         }
-        if ((_hostile_weapon == "Melee1") && (enemy == eFACTION.ORK)) {
+        if ((_hostile_weapon == "Melee1") && (obj_ncombat.enemy == eFACTION.ORK)) {
             flavor = 1;
             var ranz = choose(1, 2, 3);
             if (ranz == 1) {
@@ -371,17 +415,9 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
     if (flavor == 0) {
         flavor = true;
         if (_hostile_shots == 1) {
-            if (lost_units_count == 0) {
-                m1 += $"{_hostile_weapon} strikes at {target_type}, no casualties.";
-            } else {
-                m1 += $"{_hostile_weapon} strikes at {target_type}. ";
-            }
+            m1 += $"{_hostile_weapon} strikes at {target_type}.  ";
         } else {
-            if (lost_units_count == 0) {
-                m1 += $"{_hostile_shots} {_hostile_weapon}s strike at {target_type}, no casualties.";
-            } else {
-                m1 += $"{_hostile_shots} {_hostile_weapon}s strike at {target_type}. ";
-            }
+            m1 += $"{_hostile_shots} {_hostile_weapon}s strike at {target_type}.  ";
         }
     }
 
@@ -418,8 +454,11 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
             special = is_specialist(unit_role, SPECIALISTS_HEADS) || unit_role == obj_ini.role[100][eROLE.CHAPTERMASTER] || unit_role == "Venerable " + string(obj_ini.role[100][eROLE.DREADNOUGHT]) || unit_role == obj_ini.role[100][eROLE.CAPTAIN] || obj_ncombat.player_max <= 6;
 
             if (!special) {
-                plural = units_lost > 1 ? "s" : "";
-                m2 += $"{units_lost} {unit_role}{plural}, ";
+                var _plural_name = unit_role;
+                if (units_lost > 1) {
+                    _plural_name = (unit_role == "Guardsman") ? "Guardsmen" : (unit_role + "s");
+                }
+                m2 += $"{units_lost} {_plural_name}, ";
             } else {
                 him = -1; // Find which unit this is
                 for (var marine = 0; marine < marine_length; marine++) {
@@ -485,10 +524,52 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
         }
     }
 
+    // No kills but the attack connected: report the damage instead of a bare attack verb, scaled by
+    // how close it came to a kill. Severity is 0 for targets that do not track it (e.g. guardsmen),
+    // which lands on the lowest tier.
+    if ((m2 == "") && (lost_units_count == 0) && (hostile_shots > 0) && (target_type != "wall")) {
+        m2 = incoming_damage_flavor(damage_severity, target_is_vehicle);
+        // Enemy fire reads in the red family, mirroring the player's green. A shot that
+        // bounces with no effect renders grey (neutral, same as armour-holds on both
+        // sides); a hit that wounds or pierces without killing renders bright red so
+        // incoming damage stands out as a threat rather than borrowing the player's
+        // light green. (Colour paradigm: green/light green = you dealing damage,
+        // red/bright red = the enemy dealing damage, grey = a save with no effect.)
+        mes_color = (damage_severity < 0.10) ? eMSG_COLOR.WHITE : eMSG_COLOR.BRIGHT_RED;
+    }
+
     mes = m1 + m2 + m3;
 
     if (string_length(mes) > 3) {
         obj_ncombat.combat_log.push(mes, mes_color);
         obj_ncombat.alarm[3] = 2;
     }
+}
+
+
+// Merge seam: fork-owned severity flavor (restored complete from the pre-merge
+// tree; the first restoration appended a truncated fragment that broke the whole
+// script's parse, degrading scr_flavor2 to a zero-argument function).
+/// @function incoming_damage_flavor
+/// @description Combat-log sentence for an enemy hit that did NOT kill, scaled by how close it came
+/// to a kill (_severity = damage over the target's health before the hit, 0..1). Vehicles get
+/// armour/hull language, infantry get wound language. Appended after the attack verb, e.g.
+/// "24 Big Shootaz roar and blast away at Rhino.  Piercing the armour." Edit the wording freely;
+/// only the tier thresholds matter to the rest of the code.
+/// @param {real} _severity 0..1
+/// @param {bool} _is_vehicle target is a vehicle
+/// @returns {string}
+function incoming_damage_flavor(_severity, _is_vehicle) {
+    if (_is_vehicle) {
+        if (_severity < 0.10) return choose("Only peeling the paint.", "Just chipping the paint.", "Pinging off the armour.", "Bouncing off the hull.", "Only scratching the armour.");
+        if (_severity < 0.35) return choose("Barely putting a dent in the armour.", "Leaving a few dents in the hull.", "Only scuffing the armour.");
+        if (_severity < 0.65) return choose("Piercing the armour.", "Punching through the plating.", "Cracking the armour open.");
+        if (_severity < 0.90) return choose("Punching a huge hole in the armour.", "Tearing a gash through the hull.", "Blowing a hole in the plating.");
+        return choose("Almost destroying it.", "Leaving it a smoking wreck.", "Nearly tearing it apart.");
+    }
+    if (_severity < 0.10) return choose("But the armour holds.", "But it is shrugged off.");
+    if (_severity < 0.35) return choose("Drawing blood.", "Causing light wounds.", "Leaving a few grazes.");
+    if (_severity < 0.65) return choose("Wounding several.", "Bloodying the ranks.", "Leaving wounded behind.");
+    if (_severity < 0.90) return choose("Leaving deep wounds.", "Savaging the ranks.", "Leaving many badly wounded.");
+    return choose("Leaving the survivors maimed and reeling.", "All but breaking them.", "Leaving them maimed and scattered.");
 }

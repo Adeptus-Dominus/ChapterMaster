@@ -2,40 +2,55 @@
   <img src="https://github.com/user-attachments/assets/47772b42-59ad-4fdf-84de-ae9bcba999be" alt="Chapter Master - Adeptus Dominus Logo"/>
 </p>
 
-# Chapter Master - Adeptus Dominus
+**NEW RELEASE HERE** https://github.com/KestasV/Chapter-Master-1.5-Adeptus-Indomitus/releases/tag/Exe1.1
 
-[![Development Release](https://github.com/Adeptus-Dominus/ChapterMaster/actions/workflows/create_release.yml/badge.svg?branch=main)](https://github.com/Adeptus-Dominus/ChapterMaster/actions/workflows/create_release.yml)
-[![](https://dcbadge.limes.pink/api/server/https://discord.gg/zAGpqHzsXQ?style=flat)](https://discord.gg/zAGpqHzsXQ)
-[![GitHub repo size](https://img.shields.io/github/repo-size/Adeptus-Dominus/ChapterMaster?style=flat&label=Repo%20Size&labelColor=4493f8&color=545454)](https://github.com/Adeptus-Dominus/ChapterMaster)
+**FASTEST WAY TO PLAY THIS FORK WITH LATEST UPDATES**
+1. Install GameMaker 2.3 https://gamemaker.io/en/blog/gamemaker-studio-2-version-2-dot-3-0-release
+2. Download and extract the repository ZIP.
+3. Open ChapterMaster.yyp.
+4. Select Windows and GMS2 VM.
+5. Press F5.
+6. Select New Game.
+7. Choose a premade Chapter.
+8. Use the double-right arrow to skip detailed customization.
+9. Finish the Chapter Master screen.
+10. Start commanding your Chapter.
 
-**Chapter Master** (aka CM) is a strategy/simulation game, written in **Game Maker Language**, originally designed and developed by Duke.\
-This project aims to continue development on the game, fix any bugs, expand and add features.
+# Chapter Master 1.5 – Adeptus Indomitus
 
-**Adeptus Dominus** is just how the team of primordial collaborators decided to call themselves and the new version of the game.
+**Chapter Master 1.5 – Adeptus Indomitus** is a major continuation fork of *Chapter Master: Adeptus Dominus*, expanding the game from a pure Space Marine Chapter command simulator into a broader Imperial war effort.
 
-## Links
+The central addition is a fieldable **Imperial Guard / Astra Militarum Auxilia** layer. The player can bargain with Imperial and Mechanicus authorities to raise Guardsmen, Guard Sergeants, Heavy Weapons Teams, Chimeras, Leman Russ tanks, and Basilisk artillery, then deploy them alongside the Chapter as a supporting Imperial force.
 
-Our discord server: [Chapter Master Discord](https://discord.gg/zAGpqHzsXQ)
-  - Where most of the development talk, feature suggestion and bug-reporting takes place.
-  - GitHub issues are not used at the moment, as such we use #bug-report-forum in this server to handle bug reports.
-  - If you can code, draw, design, help with the GitHub stuff or just want to help in any way possible - you'll be welcomed with open arms.
-  - If you just love WH40K and want to chat - you'll have a great time in the server as well.
+This fork adds new Guard unit profiles, Guard weapons, vehicle weapons, armour, Auxilia organization, and dedicated combat behaviour. Guardsmen are not just renamed Marines: they fight as mass infantry screens, split into capped lasgun volleys, shield more valuable forces behind them, and require armour, tanks, artillery, and Astartes support to survive serious threats.
 
-1d6Chan Wiki: [Chapter Master: Adeptus Dominus](https://1d6chan.miraheze.org/wiki/Chapter_Master:_Adeptus_Dominus)
-  - With some helpful pages that explain some of the new systems added in the Adeptus Dominus version.
-  - Help with expanding it will be welcomed.
+Ground combat has been heavily reworked. Targeting now better distinguishes anti-infantry and anti-tank fire, armour walls no longer create absurd all-or-nothing shooting behaviour, partial volleys can pierce through vehicle screens, splash damage can carry over, vehicle weapons remain relevant at point-blank range, and dead or empty formations are cleaned up more reliably.
 
-Main repository: [Adeptus-Dominus/ChapterMaster](https://github.com/Adeptus-Dominus/ChapterMaster)
+The campaign layer has also been expanded with Auxilia recruitment through diplomacy, Mechanicus armour support, per-ship assault capacity, local assault counters, lost-in-the-Warp ship events, Eldar incursion and craftworld-intel systems, improved fleet handling, better management UI, richer unit profile tooltips, and numerous bug fixes.
 
-## Playing
+This is an unofficial fan fork intended to preserve and expand the spirit of *Chapter Master* while pushing it toward a larger, more dynamic Imperial command experience.
 
-### Windows, Linux, macOS
+## The biggest concrete changes
 
-Download the [latest release](https://github.com/Adeptus-Dominus/ChapterMaster/releases/latest) or a [development pre-release](https://github.com/Adeptus-Dominus/ChapterMaster/releases), unzip and launch.
+*****_Imperial Guard / Auxilia system_. Added real Guard-side content: Guardsmen, Guard Squads, Heavy Weapons Teams, and Guard Sergeants, with human base stats, Flak Armour, Lasguns, Bayonets, Heavy Bolters, Guard Chainswords, and Laspistols.
+
+*****_Diplomatic recruitment and attached armour_. Sector Governor trade now raises Guardsmen directly at the homeworld, adds one Guard Sergeant per full squad, one Chimera per 200 Guardsmen, and one Heavy Weapons Team per 100 Guardsmen; Mechanicus trade can now provide Leman Russ tanks and Basilisks for the Auxilia company.
+
+*****_New Astra Militarum wargear and vehicles_. Added or integrated Flak Armour, Lasguns, Hellguns, Earthshaker Cannons, Battle Cannons, Multi-Lasers, Chimeras, Leman Russ loadouts, and Basilisk artillery loadouts.
+
+*****_Combat model overhaul._ Guard screens occupy forward columns, anti-tank weapons now have a dedicated target-preference threshold, volleys pierce armour walls by depth instead of passing through for free or vanishing, and Guardsmen split into capped lasgun stacks instead of forming one giant unrealistic volley.
+
+*****_Better targeting, armour, and casualty logic_. Enemy weapons now prefer vehicles only when their AP role justifies it, Guard screens can actually shield vehicles behind them, column piercing works on both sides, partial volleys scale damage correctly, stale casualty reports are cleared, and vehicle armour penetration was fixed so enemy anti-tank weapons can actually hurt vehicles.
+
+*****_Fleet, assault, and campaign-layer additions._ Ships now have per-turn ground-assault support counters, planets have local assault counters, new ship defaults include Guard-related capacity fields, and lost-in-the-Warp ships can return with damage, corruption, mutiny, Chaos capture, or destruction outcomes.
+
+*****_Eldar campaign restoration and improvement_. Eldar are no longer only a hidden craftworld oddity:  added incursion/intel settings, craftworld reveal requirements, first-contact clues, and Eldar ship speed tuning.
+
+*****_Management UI and quality-of-life_. The management screen now recognizes an Auxilia company, includes richer unit profile UI/tooltips, and has buttons for squad view, profile, bio, and capture image.
 
 ## Compiling from source
 
-1. Install the **GameMaker** IDE matching your system (available on the [GameMaker website](https://releases.gamemaker.io/release-notes/2026/0) or [Steam](https://store.steampowered.com/app/1670460/GameMaker/)).
+1. Install the **GameMaker** IDE matching r system (available on the [GameMaker website](https://releases.gamemaker.io/release-notes/2026/0) or [Steam](https://store.steampowered.com/app/1670460/GameMaker/)).
 2. Clone or download the repository (find the green **<>Code** button and select **Download ZIP**).
 3. Find **ChapterMaster.yyp** in the downloaded folder and open it with **GameMaker**.
 4. Select the target platform in the IDE: **Windows, macOS, Ubuntu**.
@@ -44,6 +59,18 @@ Download the [latest release](https://github.com/Adeptus-Dominus/ChapterMaster/r
 
 ## Contributing
 
+**++**BIG thanks to **Tavish** for the combat changes adapted and worked on from his "LW_Beta_1.2" fork**++**
+
+**++**Another big thanks to Tophat#7692 for testing and helping with the design. Half of the errors, bugs and design ideas wouldn't have been possible without you**++**
+
+**++**And shoutouts to the developers at main for upkeeping this old legacy code so i can work on improvements!**++**
+
+This mod was made with assistance from Claude Fable 5 and Opus 4.8 on code consultation
+
+
+
+
+**To contribute to this fork please contact me on Discord, hopefully we can work together. I take ALL input and suggestions in, even if 're not a coder. If there's somethin  wanna personally see in the game then please tell me.** https://discord.com/channels/714022226810372107/1520160266120204409
 Best bet is to ask about everything in our Discord, because things bellow are probably not very helpful at the moment.
 
 - [CONTRIBUTING.md](https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/docs/CONTRIBUTING.md) (required read before any contribution)

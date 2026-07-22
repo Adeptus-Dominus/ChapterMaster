@@ -119,11 +119,11 @@
             "ossmodula": 0,
             "membrane": 0,
             "zygote": 0,
-            "betchers": 0,
+            "betchers": 1,
             "catalepsean": 0,
             "secretions": 0,
             "occulobe": 0,
-            "mucranoid": 1
+            "mucranoid": 0
         },
         "disposition": [
             0, // nothing

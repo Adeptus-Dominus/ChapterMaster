@@ -58,8 +58,38 @@ function add_data_to_stack(stack_index, weapon, unit_damage = false, head_role =
 }
 
 /// @self Asset.GMObject.obj_pnunit
+/// Adds a single named weapon to the stacks, firing "count" times. Used for Guard
+/// Squads, where one unit struct stands for a whole squad: the default weapon (wep1)
+/// fires once per man and the special weapon (wep2) fires once for the squad. Mirrors
+/// the enemy horde firepower in scr_en_weapon (attack times the number firing) rather
+/// than the normal single-primary-weapon path, which would only fire the higher-attack gun.
+function add_squad_weapon(weapon_name, count, head_role = false, unit = "none") {
+    if (weapon_name == "") {
+        return;
+    }
+    var _w = gear_weapon_data("weapon", weapon_name, "all", false, "standard");
+    if (!is_struct(_w) || _w.name == "") {
+        return;
+    }
+    var _idx = find_stack_index(_w.name, head_role, unit);
+    if (_idx < 0) {
+        return;
+    }
+    att[_idx] += _w.attack * count;
+    apa[_idx] = _w.arp;
+    range[_idx] = _w.range;
+    wep_num[_idx] += count;
+    splash[_idx] = _w.spli;
+    wep[_idx] = _w.name;
+    if (obj_ncombat.started == 0) {
+        ammo[_idx] = _w.ammo;
+    }
+    wep_owner[_idx] = "assorted";
+}
+
+/// @self Asset.GMObject.obj_pnunit
 function find_stack_index(weapon_name, head_role = false, unit = "none") {
-    var final_index = -1;
+    final_index = -1;
     var allow = false;
     for (var stack_index = 1; stack_index < array_length(wep); stack_index++) {
         allow = false;
@@ -76,6 +106,35 @@ function find_stack_index(weapon_name, head_role = false, unit = "none") {
         }
     }
     return final_index;
+}
+
+/// @self Asset.GMObject.obj_pnunit
+/// Like find_stack_index, but caps how many shooters share a stack so a large body of
+/// identically-armed troops (a guard regiment of lasguns) splits into several smaller stacks
+/// instead of one regiment-wide one. Each capped stack fires and targets independently in
+/// combat, the way the enemy's obj_enunit blocks already do. Fills a partial chunk first,
+/// opens a fresh stack when the current one is full, and only as a last resort (all 71 stack
+/// slots used) merges over the cap so fire is never silently dropped.
+function find_capped_stack_index(weapon_name, cap) {
+    // 1. a matching, un-led chunk that still has room
+    for (var si = 1; si < array_length(wep); si++) {
+        if (wep[si] == weapon_name && wep_title[si] == "" && wep_num[si] < cap) {
+            return si;
+        }
+    }
+    // 2. no room left in any existing chunk: start a fresh one
+    for (var si = 1; si < array_length(wep); si++) {
+        if (wep[si] == "" && wep_title[si] == "") {
+            return si;
+        }
+    }
+    // 3. stack slots exhausted: merge over the cap rather than drop the shots
+    for (var si = 1; si < array_length(wep); si++) {
+        if (wep[si] == weapon_name && wep_title[si] == "") {
+            return si;
+        }
+    }
+    return -1;
 }
 
 /// @self Asset.GMObject.obj_pnunit
@@ -127,10 +186,87 @@ function scr_player_combat_weapon_stacks() {
         exit;
     }
 
+    // ===== OBSOLETE: planetary Guard (iteration 1) =====
+    // First-iteration "planetary Guard" men-block (PDF / Imperial Navy). The obj_pnunit
+    // `guard` flag is never set to 1 anywhere in the project, so this branch is dead and
+    // never runs. Left for reference only. The live guardsmen are individual unit_struct
+    // units with role "Guardsman" and fire through the normal weapon path below, not here.
+    if (guard == 1) {
+        var _gi = 0;
+        var _pg = men;    // current Guardsmen in this block
+
+        // Massed lasguns: one per man, attack 60, armour pierce 1, range 6, 30 rounds.
+        _gi += 1;
+        wep[_gi] = "Lasgun";
+        wep_num[_gi] = max(1, _pg);
+        range[_gi] = 6;
+        att[_gi] = 60 * wep_num[_gi];
+        apa[_gi] = 1;
+        ammo[_gi] = 30;
+        splash[_gi] = 0;
+
+        // Bayonets (melee, range 1). Required or the block locks up in melee: once an
+        // enemy is adjacent the fire logic disables every ranged weapon, and with no
+        // melee weapon the Guard can neither shoot nor swing. Guardsmen are poor in
+        // melee, so this is a weak profile.
+        _gi += 1;
+        wep[_gi] = "Bayonet";
+        wep_num[_gi] = max(1, _pg);
+        range[_gi] = 1;
+        att[_gi] = 12 * wep_num[_gi];
+        apa[_gi] = 0;
+        ammo[_gi] = -1;
+        splash[_gi] = 0;
+
+        // Heavy bolters: attack 120, range 16. Anti-infantry support only. The Guard
+        // carry no anti-tank weapon by design, so a pure-infantry force cannot crack
+        // armour; they bleed against vehicles unless a Leman Russ tank line is present.
+        _gi += 1;
+        wep[_gi] = "Heavy Bolter";
+        wep_num[_gi] = max(1, round(_pg / 200));
+        range[_gi] = 16;
+        att[_gi] = 120 * wep_num[_gi];
+        apa[_gi] = 0;
+        ammo[_gi] = -1;
+        splash[_gi] = 0;
+
+        exit;
+    }
+
+    if (guard == 2) {
+        // Leman Russ tank line, fielded as its own block separate from the infantry,
+        // the way the enemy Imperial Guard keep tanks out of their soldier lines.
+        // Battle Cannon 300 and Lascannon 200, both armour-piercing, scaled to the
+        // tanks still alive. This is the Guard's only anti-armour.
+        var _gi = 0;
+        var _tk = veh;
+
+        _gi += 1;
+        wep[_gi] = "Battle Cannon";
+        wep_num[_gi] = max(1, _tk);
+        range[_gi] = 12;
+        att[_gi] = 300 * wep_num[_gi];
+        apa[_gi] = round(att[_gi] * 0.6);
+        ammo[_gi] = -1;
+        splash[_gi] = 0;
+
+        _gi += 1;
+        wep[_gi] = "Lascannon";
+        wep_num[_gi] = max(1, _tk);
+        range[_gi] = 20;
+        att[_gi] = 200 * wep_num[_gi];
+        apa[_gi] = round(att[_gi] * 0.8);
+        ammo[_gi] = -1;
+        splash[_gi] = 0;
+
+        exit;
+    }
+
+    var i, g = 0;
     veh = 0;
     men = 0;
     dreads = 0;
-    for (var i = 0; i < array_length(att); i++) {
+    for (i = 0; i < array_length(att); i++) {
         dudes_num[i] = 0;
         att[i] = 0;
         apa[i] = 0;
@@ -141,7 +277,7 @@ function scr_player_combat_weapon_stacks() {
 
     var dreaded = false;
 
-    for (var g = 0; g < array_length(unit_struct); g++) {
+    for (g = 0; g < array_length(unit_struct); g++) {
         var unit = unit_struct[g];
         if (is_struct(unit)) {
             if (unit.hp() > 0) {
@@ -174,11 +310,21 @@ function scr_player_combat_weapon_stacks() {
                         if (mobi_item.has_tag("jump")) {
                             var stack_index = find_stack_index("Hammer of Wrath", head_role, unit);
                             if (stack_index > -1) {
-                                add_data_to_stack(stack_index, unit.hammer_of_wrath(marine_attack[g]), false, head_role, unit);
+                                add_data_to_stack(stack_index, unit.hammer_of_wrath(), false, head_role, unit);
                                 if (head_role) {
                                     player_head_role_stack(stack_index, unit);
                                 }
                             }
+                        }
+                    }
+                }
+                if (is_struct(mobi_item) && mobi_item.has_tag("bike")) {
+                    var _speed_force = unit.speed_force(mobi_item.has_tag("sf_ranged"));
+                    var stack_index = find_stack_index(_speed_force.name, head_role, unit);
+                    if (stack_index > -1) {
+                        add_data_to_stack(stack_index, _speed_force, false, head_role, unit);
+                        if (head_role) {
+                            player_head_role_stack(stack_index, unit);
                         }
                     }
                 }
@@ -230,26 +376,55 @@ function scr_player_combat_weapon_stacks() {
                     }
                 }
                 if (marine_casting[g] == false) {
-                    var primary_ranged = marine_ranged[g][3]; //collect unit ranged data
-                    var weapon_stack_index = find_stack_index(primary_ranged.name, head_role, unit);
-                    if (weapon_stack_index > -1) {
-                        add_data_to_stack(weapon_stack_index, primary_ranged, marine_ranged[g][0], head_role, unit);
-                        if (head_role) {
-                            player_head_role_stack(weapon_stack_index, unit);
+                    var weapon_stack_index = 0;
+                    // ===== RESERVED: Guard Squad (iteration 2) =====
+                    // Single pooled-HP squad entity (role "Guard Squad"). Not deployed in
+                    // normal play; the live guardsmen are individuals. Kept deliberately for
+                    // planned reuse as heavy weapons teams. Do not delete.
+                    if (unit.role() == "Guard Squad") {
+                        // The squad thins as it takes losses: its surviving strength scales with
+                        // remaining health, so a half-health squad fires half its lasguns and a
+                        // squad on its last legs fires one. It fires wep1 once per surviving man
+                        // and its special weapon (wep2) once while the squad still lives.
+                        var _sq_max = unit.max_health();
+                        var _sq_men = (_sq_max > 0) ? max(1, ceil(GUARD_SQUAD_SIZE * unit.hp() / _sq_max)) : 1;
+                        add_squad_weapon(unit.weapon_one(), _sq_men, head_role, unit);
+                        add_squad_weapon(unit.weapon_two(), 1, head_role, unit);
+                    } else {
+                        var primary_ranged = unit.ranged_damage_data[3]; //collect unit ranged data
+                        // Hot-shot power draw is handled upstream: ranged_attack() in
+                        // scr_marine_struct swaps a packless Hellgun for Lasgun data
+                        // (Skitarii exempt), so by the time it reaches this stack it
+                        // already carries honest numbers. Do not hard-block it here.
+                        // Rank-and-file guardsmen split into enemy-block-sized volleys (capped
+                        // stacks) instead of merging the whole regiment into one lasgun stack, so
+                        // each volley fires and picks its target on its own. Everyone else (Marines,
+                        // sergeants, specialists) stacks normally.
+                        if (unit.role() == "Guardsman") {
+                            weapon_stack_index = find_capped_stack_index(primary_ranged.name, GUARD_VOLLEY_SIZE);
+                        } else {
+                            weapon_stack_index = find_stack_index(primary_ranged.name, head_role, unit);
+                        }
+                        if (weapon_stack_index > -1) {
+                            add_data_to_stack(weapon_stack_index, primary_ranged, unit.ranged_damage_data[0], head_role, unit);
+                            if (head_role) {
+                                player_head_role_stack(weapon_stack_index, unit);
+                            }
                         }
                     }
 
-                    var primary_melee = marine_attack[g][3]; //collect unit melee data
+                    var primary_melee = unit.melee_damage_data[3]; //collect unit melee data
                     weapon_stack_index = find_stack_index(primary_melee.name, head_role, unit);
                     if (weapon_stack_index > -1) {
-                        if (range[weapon_stack_index] >= 2) {
+                        if (range[weapon_stack_index] > 1.9) {
                             continue;
                         } //creates secondary weapon stack for close combat ranged weaponry use
-                        add_data_to_stack(weapon_stack_index, primary_melee, marine_attack[g][0], head_role, unit);
+                        primary_melee.range = 1;
+                        add_data_to_stack(weapon_stack_index, primary_melee, unit.melee_damage_data[0], head_role, unit);
                         if (head_role) {
                             player_head_role_stack(weapon_stack_index, unit);
                         }
-                        if (floor(primary_melee.range) < 2 && primary_melee.ammo == 0) {
+                        if (floor(primary_melee.range) <= 1 && primary_melee.ammo == 0) {
                             ammo[weapon_stack_index] = -1; //no ammo limit
                         }
                     }
@@ -257,7 +432,7 @@ function scr_player_combat_weapon_stacks() {
             }
         }
     }
-    for (var g = 0; g < array_length(veh_id); g++) {
+    for (g = 0; g < array_length(veh_id); g++) {
         if ((veh_id[g] > 0) && (veh_hp[g] > 0) && (veh_dead[g] != 1)) {
             if ((veh_id[g] > 0) && (veh_hp[g] > 0)) {
                 veh_dead[g] = 0;
@@ -330,7 +505,7 @@ function scr_player_combat_weapon_stacks() {
 
     if ((men == 1) && (veh == 0) && (obj_ncombat.player_forces == 1)) {
         var h = 0;
-        for (var i = 0; i < array_length(unit_struct); i++) {
+        for (i = 0; i < array_length(unit_struct); i++) {
             if (h == 0) {
                 var unit = unit_struct[i];
                 if (!is_struct(unit)) {
@@ -350,6 +525,11 @@ function scr_player_combat_weapon_stacks() {
 /// @self Asset.GMObject.obj_ncombat
 function set_up_player_blocks_turn() {
     if (instance_exists(obj_pnunit)) {
+        // Advance the line front-first as one ordered pass before any block fires, so a
+        // rear block never stalls behind a front block that has not moved yet (see
+        // move_player_blocks). Movement used to run per-block inside Alarm_0 in arbitrary
+        // instance order, which drifted rear vehicles out of the formation.
+        move_player_blocks();
         with (obj_pnunit) {
             alarm[3] = 2;
             wait_and_execute(3, scr_player_combat_weapon_stacks);
@@ -388,6 +568,7 @@ function scr_add_unit_to_roster(unit, is_local = false, is_ally = false) {
     array_push(marine_local, is_local);
     array_push(marine_casting, false);
     array_push(marine_casting_cooldown, 0);
+    array_push(marine_defense, 1);
 
     array_push(marine_dead, 0);
     array_push(marine_mshield, 0);
@@ -424,7 +605,38 @@ function create_vehicle_ram_weapon(veh_type) {
                     spli: 6,
                     arp: 3,
                 },
-                "weapon",
+                "weapon"
+            );
+        case "Chimera":
+            // The Guard levy's APC rams like the Rhino it parallels, not like a
+            // skimmer: same chassis role, same RAM class.
+            return new EquipmentStruct(
+                {
+                    attack: 100,
+                    name: "RAM",
+                    range: 1,
+                    ammo: -1,
+                    spli: 6,
+                    arp: 3,
+                },
+                "weapon"
+            );
+        case "Leman Russ":
+            // The Guard's battle tank rams between the Predator and the Land Raider,
+            // matching its slot in vehicle_penetration_chance (Raider 0.05, Russ 0.10,
+            // Predator 0.15): a heavier chassis than the Rhino family the Predator
+            // shares, lighter than the Raider. Distinct name so a mixed block never
+            // merges its stats into another hull's RAM slot.
+            return new EquipmentStruct(
+                {
+                    attack: 150,
+                    name: "Tank RAM",
+                    range: 1,
+                    ammo: -1,
+                    spli: 8,
+                    arp: 3,
+                },
+                "weapon"
             );
         case "Land Raider":
             return new EquipmentStruct(
@@ -436,7 +648,7 @@ function create_vehicle_ram_weapon(veh_type) {
                     spli: 10,
                     arp: 4,
                 },
-                "weapon",
+                "weapon"
             );
         default:
         case "Land Speeder":
@@ -449,7 +661,7 @@ function create_vehicle_ram_weapon(veh_type) {
                     spli: 4,
                     arp: 2,
                 },
-                "weapon",
+                "weapon"
             );
     }
 }

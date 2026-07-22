@@ -494,6 +494,9 @@ function company_specific_management() {
             case 15:
                 _company_name = "Armamentarium";
                 break;
+            case 16:
+                _company_name = "Auxilia";
+                break;
         }
     }
     // Draw the company followed by chapters name
@@ -665,7 +668,35 @@ function draw_sprite_and_unit_equip_data() {
 
             // Draw unit image
             draw_set_color(c_white);
-            if (is_struct(obj_controller.unit_manage_image)) {
+            // ===== Vehicle portraits (mod) =====
+            // Vehicles never route through scr_draw_unit_image and set no unit_focus, so
+            // they had no portrait anywhere. Hovering a vehicle row (see
+            // scr_draw_management_unit) stores its role in vehicle_portrait_role, and the
+            // portrait slot draws a runtime PNG from images\units\ instead of the last
+            // unit's image, scaled to fit the frame. Adding a new vehicle portrait is one
+            // line in the struct below: role name on the left, PNG filename on the right.
+            var _veh_portrait_files = {
+                Chimera: "chimera",
+            };
+            var _veh_p_role = variable_instance_exists(id, "vehicle_portrait_role") ? vehicle_portrait_role : "";
+            var _veh_p_drawn = false;
+            if ((_veh_p_role != "") && struct_exists(_veh_portrait_files, _veh_p_role)) {
+                if (!variable_global_exists("vehicle_portraits")) {
+                    global.vehicle_portraits = {};
+                }
+                if (!struct_exists(global.vehicle_portraits, _veh_p_role)) {
+                    global.vehicle_portraits[$ _veh_p_role] = sprite_add(working_directory + "/images/units/" + _veh_portrait_files[$ _veh_p_role] + ".png", 1, false, false, 0, 0);
+                }
+                var _veh_spr = global.vehicle_portraits[$ _veh_p_role];
+                if (sprite_exists(_veh_spr)) {
+                    var _vp_w = sprite_get_width(_veh_spr);
+                    var _vp_h = sprite_get_height(_veh_spr);
+                    var _vp_scale = min(1, 166 / _vp_w, 232 / _vp_h);
+                    draw_sprite_ext(_veh_spr, 0, xx + 320 + ((166 - (_vp_w * _vp_scale)) / 2), yy + 109 + ((232 - (_vp_h * _vp_scale)) / 2), _vp_scale, _vp_scale, 0, c_white, 1);
+                    _veh_p_drawn = true;
+                }
+            }
+            if (!_veh_p_drawn && is_struct(obj_controller.unit_manage_image)) {
                 obj_controller.unit_manage_image.draw(xx + 320, yy + 109);
             }
 
@@ -814,7 +845,17 @@ function scr_ui_manage() {
             squad_sel = -1;
             squad_sel_action = -1;
         }
-        if (man_size < 1) {
+        // Only clear the selection when nothing is actually picked. The old check reset
+        // on any total below 1.0, which wiped fractional-size selections (guardsmen at
+        // 0.1) before they could reach a full marine's worth of space.
+        var _has_selection = false;
+        for (var _ms = 0; _ms < array_length(man_sel); _ms++) {
+            if (man_sel[_ms] == 1) {
+                _has_selection = true;
+                break;
+            }
+        }
+        if (man_size < 1 && !_has_selection) {
             reset_manage_selections();
         }
         var unit;
@@ -1025,8 +1066,57 @@ function scr_ui_manage() {
         };
 
         if (!obj_controller.view_squad) {
+            // Auxilia squad collapse (managing 16): render Guard squads as single
+            // selectable rows instead of hundreds of individual guardsman rows, so ship
+            // loading is squad clicks rather than per-man clicks. Toggleable; defaults on.
+            if (!variable_instance_exists(id, "auxilia_squad_collapse")) {
+                auxilia_squad_collapse = true;
+            }
+            if (!variable_instance_exists(id, "marine_squad_collapse")) {
+                marine_squad_collapse = true;
+            }
+            // Management runs as a selection screen (managing -1); the squad collapse
+            // machinery is list-driven (groups display_unit by unit.squad), so it works
+            // there unchanged. Gate on purpose_code "manage" so every Manage Units entry
+            // (fleet Ship Management, system view, planet view) gets the same list,
+            // instead of matching one screen's purpose string.
+            var _ship_mgmt_list = (managing < 0) && is_struct(selection_data)
+                && struct_exists(selection_data, "purpose_code")
+                && (selection_data.purpose_code == "manage");
+            if ((managing == 16) && auxilia_squad_collapse) {
+                draw_auxilia_squad_rows(xx, yy, stats_displayed);
+            } else if ((((managing >= 1) && (managing <= 10)) || _ship_mgmt_list) && marine_squad_collapse) {
+                // Marine squad collapse: same collapsed-row treatment as the Auxilia
+                // view, but grouped by the real squads system (unit.squad ids), with
+                // squad-type names ("Tactical Squad 2") instead of generic numbering.
+                // Command-slot prompts are company furniture; the ship list passes none.
+                draw_marine_squad_rows(xx, yy, stats_displayed, _ship_mgmt_list ? [] : get_command_slots_data());
+            } else {
             var repetitions = min(man_max, MANAGE_MAN_SEE);
             man_count = 0;
+            if ((managing == 16) || ((managing >= 1) && (managing <= 10)) || _ship_mgmt_list) {
+                // First roster row becomes the view toggle, consuming a row slot the same
+                // way company command-slot prompts do. "Squad List" for marines to avoid
+                // clashing with the existing Squad View button in the unit panel.
+                var _sq_label = (managing == 16) ? "Switch to Squad View" : "Switch to Squad List View";
+                var _flat_filter_here = manage_filter_context();
+                if (_flat_filter_here) {
+                    manage_company_filter_button(xx + 684, yy + 64, xx + 974, yy + 85);
+                }
+                var _sq_btn = draw_unit_buttons([xx + 25, yy + 64, _flat_filter_here ? (xx + 680) : (xx + 974), yy + 85], _sq_label, [1, 1], CM_GREEN_COLOR, fa_center, fnt_40k_14b);
+                draw_set_halign(fa_left);
+                draw_set_valign(fa_top);
+                if (point_and_click(_sq_btn)) {
+                    if (managing == 16) {
+                        auxilia_squad_collapse = true;
+                    } else {
+                        marine_squad_collapse = true;
+                    }
+                    man_current = 0;
+                }
+                yy += 20;
+                repetitions--;
+            }
 
             var _command_slots_data = get_command_slots_data();
             draw_set_font(fnt_40k_14);
@@ -1054,7 +1144,7 @@ function scr_ui_manage() {
                     break;
                 }
 
-                while ((sel <= array_length(display_unit) - 1) && (man[sel] == "hide" || (man_sel[sel] != 1 && _only_display_selected))) {
+                while ((sel <= array_length(display_unit) - 1) && (man[sel] == "hide" || (man_sel[sel] != 1 && _only_display_selected) || manage_company_filter_skip(sel))) {
                     sel += 1;
                 }
                 if (sel >= array_length(display_unit)) {
@@ -1117,6 +1207,7 @@ function scr_ui_manage() {
 
             draw_set_color(#3f7e5d);
             scr_scrollbar(974, 172, 1005, 790, 34, man_max, man_current);
+            }
         }
         if (instance_exists(obj_controller) && is_struct(obj_controller.unit_focus)) {
             var selected_unit = obj_controller.unit_focus;
@@ -1194,6 +1285,9 @@ function scr_ui_manage() {
                         break;
                     case 15:
                         fx = "Armamentarium";
+                        break;
+                    case 16:
+                        fx = "Auxilia";
                         break;
                     default:
                         fx = "Unknown";
@@ -1454,10 +1548,13 @@ function draw_manage_selection_buttons(xx, yy) {
     button.y1 = action_button_bottom_y + 30 + _load_button_h_gap;
     button.x2 = button.x1 + button.w;
     button.y2 = button.y1 + button.h;
-    button.label = "Load";
+    var _embarking = (sel_loading == -1);
+    button.label = _embarking ? "Embark" : "Disembark";
     var load_unload_possible = man_size > 0;
     button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("L"));
-    button.tooltip = "Press Shift L";
+    button.tooltip = _embarking
+        ? "Embarks the selected units onto a ship of your choosing. (Shift L)"
+        : "Disembarks the selected units from this ship down onto a planet. (Shift L)";
     if (load_unload_possible) {
         button.alpha = 1;
         if (sel_loading == -1) {
@@ -1465,7 +1562,6 @@ function draw_manage_selection_buttons(xx, yy) {
                 load_selection();
             }
         } else if (sel_loading != -1) {
-            button.label = "Unload";
             if (button.draw()) {
                 unload_selection();
             }
@@ -1477,10 +1573,11 @@ function draw_manage_selection_buttons(xx, yy) {
 
     button.move("right", true);
 
-    button.label = "Reload";
+    button.label = "Reembark";
     button.keystroke = false;
+    button.tooltip = "Reembarks selected units to their origin ships.";
     if (instance_exists(obj_controller) && is_struct(_unit_focus)) {
-        button.tooltip = $"{_unit_focus.last_ship.name}";
+        button.tooltip = $"Reembarks selected units to their origin ships - this one returns to the {_unit_focus.last_ship.name}.";
     }
     reload_possible = man_size > 0 && sel_loading == -1;
     if (reload_possible) {
@@ -1492,6 +1589,44 @@ function draw_manage_selection_buttons(xx, yy) {
     } else {
         button.alpha = 0.5;
         button.draw(false);
+    }
+
+    // Recall: a BULK withdraw, shown whenever the units being managed are PLANETSIDE (no ship
+    // selected), so it is available both from a region's "Your Force" manage screen and from the
+    // ordinary planet/system Manage Units menu. Unlike Reload (which acts on the current selection)
+    // this needs no selection at all: it sends EVERY unit standing on a surface here back to the
+    // ship it came from in one click, which is the thing you actually want when abandoning a world.
+    var _region_scoped = is_struct(obj_controller.selection_data) && variable_struct_exists(obj_controller.selection_data, "region_scope");
+    if (sel_loading == -1) {
+        // Anything standing on a surface here? ma_wid holds the planet a unit is on (0 = aboard ship).
+        var _surface_count = 0;
+        for (var _rq = 0; _rq < array_length(display_unit); _rq++) {
+            if ((_rq < array_length(ma_wid)) && (ma_wid[_rq] > 0)) { _surface_count += 1; }
+        }
+        button.move("right", true);
+        button.label = "Recall All";
+        button.keystroke = false;
+        button.tooltip = _region_scoped
+            ? $"Reembarks all units to their ships instantly - every one of the {_surface_count} in this sector. No selection needed."
+            : $"Reembarks all units to their ships instantly - all {_surface_count} on the surface. No selection needed.";
+        var recall_possible = (_surface_count > 0);
+        if (recall_possible) {
+            button.alpha = 1;
+            if (button.draw()) {
+                // Select every surface unit, then run the standard reload (which acts on man_sel).
+                // No cleanup needed afterwards: load_marines_into_ship clears man_sel per unit it
+                // successfully loads and resets man_size itself. Anything that would not fit stays
+                // selected on purpose, so it is visible what got left behind.
+                for (var _rq = 0; _rq < array_length(display_unit); _rq++) {
+                    man_sel[_rq] = ((_rq < array_length(ma_wid)) && (ma_wid[_rq] > 0)) ? 1 : 0;
+                }
+                scr_company_load(selecting_location);
+                load_marines_into_ship(selecting_location, sh_ide, display_unit, true);
+            }
+        } else {
+            button.alpha = 0.5;
+            button.draw(false);
+        }
     }
 
     var top_x = actions_block.x1 + 26;
@@ -1608,4 +1743,662 @@ function draw_manage_selection_buttons(xx, yy) {
             }
         }
     }
+}
+
+/// @self Asset.GMObject.obj_controller
+/// @desc Collapsed squad rows for the Auxilia view (managing 16). Each Guard squad
+/// (one Guard Sergeant plus up to GUARD_SQUAD_SIZE Guardsmen at the same location)
+/// renders as a single row; clicking it selects or deselects every member, mirroring
+/// the eligibility gates and selection side effects of scr_draw_management_unit so
+/// the normal Load-to-ships flow (man_sel / man_size / selecting_location) just works.
+/// Heavy Weapons Teams, Veteran Guard, and vehicles keep their normal individual rows.
+function draw_auxilia_squad_rows(xx, yy, _stats_displayed = false) {
+    // Select-all buttons still work through the standard per-unit path.
+    if (sel_all != "" || squad_sel_count > 0) {
+        for (var i = 0; i < array_length(display_unit); i++) {
+            scr_draw_management_unit(i, yy, xx, false);
+        }
+    }
+    sel_all = "";
+
+    // ---- Bucket sergeants and guardsmen per location, in encounter order ----
+    var _locs = [];
+    var _buckets = {};
+    var _other_rows = [];
+    for (var i = 0; i < array_length(display_unit); i++) {
+        if (man[i] == "hide") {
+            continue;
+        }
+        var _is_unit = (man[i] == "man") && is_struct(display_unit[i]);
+        var _role = _is_unit ? display_unit[i].role() : "";
+        if ((_role == "Guard Sergeant") || (_role == "Guardsman")) {
+            var _loc = string(ma_loc[i]);
+            if (!struct_exists(_buckets, _loc)) {
+                _buckets[$ _loc] = {sgts: [], grds: []};
+                array_push(_locs, _loc);
+            }
+            if (_role == "Guard Sergeant") {
+                array_push(_buckets[$ _loc].sgts, i);
+            } else {
+                array_push(_buckets[$ _loc].grds, i);
+            }
+        } else {
+            array_push(_other_rows, i);
+        }
+    }
+
+    // ---- Pair into squads: one sergeant heads up to GUARD_SQUAD_SIZE guardsmen ----
+    var _rows = [];
+    for (var l = 0; l < array_length(_locs); l++) {
+        var _b = _buckets[$ _locs[l]];
+        var _g = 0;
+        var _sg = 0;
+        var _sq = 0;
+        while ((_g < array_length(_b.grds)) || (_sg < array_length(_b.sgts))) {
+            var _members = [];
+            if (_sg < array_length(_b.sgts)) {
+                array_push(_members, _b.sgts[_sg]);
+                _sg++;
+            }
+            var _take = 0;
+            while ((_take < GUARD_SQUAD_SIZE) && (_g < array_length(_b.grds))) {
+                array_push(_members, _b.grds[_g]);
+                _g++;
+                _take++;
+            }
+            _sq++;
+            array_push(_rows, {squad_members: _members, squad_no: _sq, loc: _locs[l]});
+        }
+    }
+    for (var o = 0; o < array_length(_other_rows); o++) {
+        array_push(_rows, {unit_row: _other_rows[o]});
+    }
+
+    var _row_max = array_length(_rows) + 1; // +1 for the toggle row
+    man_max = _row_max; // scrollbar drag math reads obj_controller.man_max directly
+    man_current = clamp(man_current, 0, max(0, _row_max - MANAGE_MAN_SEE));
+
+    // ---- Toggle row ----
+    var _yy = yy;
+    var _sq_btn = draw_unit_buttons([xx + 25, _yy + 64, xx + 974, _yy + 85], "Switch to Individual View", [1, 1], CM_GREEN_COLOR, fa_center, fnt_40k_14b);
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    if (point_and_click(_sq_btn)) {
+        auxilia_squad_collapse = false;
+        man_max = MANAGE_MAN_MAX;
+        man_current = 0;
+        exit;
+    }
+    _yy += 20;
+
+    // ---- Rows ----
+    draw_set_font(fnt_40k_14);
+    var _visible = min(MANAGE_MAN_SEE - 1, _row_max - 1 - man_current);
+    for (var r = 0; r < _visible; r++) {
+        var _row = _rows[man_current + r];
+        if (struct_exists(_row, "unit_row")) {
+            scr_draw_management_unit(_row.unit_row, _yy, xx, true);
+            draw_set_font(fnt_40k_14);
+            _yy += 20;
+            continue;
+        }
+
+        var _members = _row.squad_members;
+        var _count = array_length(_members);
+        var _sel_count = 0;
+        var _size_sum = 0;
+        for (var m = 0; m < _count; m++) {
+            if (man_sel[_members[m]] == 1) {
+                _sel_count++;
+            }
+            if (is_struct(display_unit[_members[m]])) {
+                _size_sum += display_unit[_members[m]].get_unit_size();
+            }
+        }
+        var _all_sel = (_count > 0) && (_sel_count == _count);
+        var _lead = display_unit[_members[0]];
+        var _has_sgt = is_struct(_lead) && (_lead.role() == "Guard Sergeant");
+
+        var _label = $"Squad {_row.squad_no}";
+        if (_has_sgt) {
+            _label += $" - Sgt. {_lead.name()}";
+        } else {
+            _label += " - no sergeant";
+        }
+        _label += $"  |  {_count} troops  |  {string_format(_size_sum, 1, 1)} space  |  {_row.loc}";
+        if ((_sel_count > 0) && !_all_sel) {
+            _label += $"  ({_sel_count}/{_count} selected)";
+        }
+
+        var _rect = [xx + 25, _yy + 64, xx + 974, _yy + 85];
+        draw_set_color(c_black);
+        draw_rectangle(_rect[0], _rect[1], _rect[2], _rect[3], 0);
+        if (_sel_count > 0) {
+            draw_set_alpha(_all_sel ? 0.45 : 0.2);
+            draw_set_color(#1e5c40);
+            draw_rectangle(_rect[0], _rect[1], _rect[2], _rect[3], 0);
+            draw_set_alpha(1);
+        }
+        draw_set_color(_all_sel ? CM_GREEN_COLOR : c_gray);
+        draw_rectangle(_rect[0], _rect[1], _rect[2], _rect[3], 1);
+        draw_set_color(CM_GREEN_COLOR);
+        draw_text(xx + 35, _yy + 66, _label);
+
+        // Hover focus so the Load / selection buttons render, like unit rows do.
+        if ((mouse_x >= _rect[0]) && (mouse_y >= _rect[1]) && (mouse_x < _rect[2]) && (mouse_y < _rect[3]) && is_struct(_lead)) {
+            unit_focus = _lead;
+        }
+
+        // Click toggles the whole squad, mirroring scr_draw_management_unit's gates
+        // and side effects per member.
+        if (point_and_click(_rect) && (scrollbar_engaged == 0) && !instance_exists(obj_star_select)) {
+            var _target = _all_sel ? 0 : 1;
+            for (var m = 0; m < _count; m++) {
+                var _idx = _members[m];
+                if (man_sel[_idx] == _target) {
+                    continue;
+                }
+                if (!ma_view[_idx]) {
+                    continue;
+                }
+                var _u = display_unit[_idx];
+                if (!is_struct(_u)) {
+                    continue;
+                }
+                if (_target == 1) {
+                    if (!_u.controllable() || _u.in_jail()) {
+                        continue;
+                    }
+                    if (selecting_location != "") {
+                        var _wrong = false;
+                        if (selecting_ship > -1) {
+                            if (ma_lid[_idx] == -1) {
+                                _wrong = true;
+                            } else {
+                                _wrong = obj_ini.ship_location[ma_lid[_idx]] != selecting_location;
+                            }
+                        } else {
+                            _wrong = ma_loc[_idx] != selecting_location;
+                        }
+                        if (_wrong) {
+                            continue;
+                        }
+                    }
+                    if (selecting_location == "") {
+                        selecting_location = ma_loc[_idx];
+                        selecting_ship = ma_lid[_idx];
+                        selecting_planet = ma_wid[_idx];
+                    }
+                    ma_loc[_idx] = selecting_location;
+                }
+                man_sel[_idx] = _target;
+                if (_target == 1) {
+                    man_size += _u.get_unit_size();
+                } else {
+                    man_size -= _u.get_unit_size();
+                }
+            }
+        }
+        _yy += 20;
+    }
+
+    // ---- Scroll furniture, selection buttons, scrollbar (mirrors the individual view tail) ----
+    draw_set_color(c_black);
+    draw_rectangle(xx + 974, yy + 165, xx + 1005, yy + 822, 0);
+    draw_set_color(c_gray);
+    draw_rectangle(xx + 974, yy + 165, xx + 1005, yy + 822, 1);
+    draw_rectangle(xx + 25, yy + 142, xx + 14 + 8, yy + 822, 1);
+    draw_set_color(0);
+    draw_rectangle(xx + 974, yy + 141, xx + 1005, yy + 172, 0);
+    draw_rectangle(xx + 974, yy + 790, xx + 1005, yy + 822, 0);
+    draw_set_color(c_gray);
+    draw_rectangle(xx + 974, yy + 141, xx + 1005, yy + 172, 1);
+    draw_rectangle(xx + 974, yy + 790, xx + 1005, yy + 822, 1);
+    draw_sprite_stretched(spr_arrow, 2, xx + 974, yy + 141, 31, 30);
+    draw_sprite_stretched(spr_arrow, 3, xx + 974, yy + 791, 31, 30);
+    if (point_and_click([xx + 974, yy + 141, xx + 1005, yy + 172])) {
+        man_current = max(0, man_current - 1);
+    }
+    if (point_and_click([xx + 974, yy + 790, xx + 1005, yy + 822])) {
+        man_current = min(max(0, _row_max - MANAGE_MAN_SEE), man_current + 1);
+    }
+
+    yy += 8;
+    // stats_displayed is a function-scoped static of the manage draw function, not an
+    // instance variable; reading it bare from this separate function crashed with an
+    // unset-variable error on the first Auxilia frame after loading. It is passed in
+    // as a parameter from the scope that owns it.
+    var _draw_selec_buttons = !obj_controller.unit_profile && !_stats_displayed;
+    if (_draw_selec_buttons && instance_exists(obj_popup)) {
+        _draw_selec_buttons = obj_popup.type != ePOPUP_TYPE.EQUIP;
+    }
+    if (_draw_selec_buttons && is_struct(obj_controller.unit_focus)) {
+        draw_manage_selection_buttons(xx, yy);
+    }
+    draw_set_color(#3f7e5d);
+    scr_scrollbar(974, 172, 1005, 790, 34, _row_max, man_current);
+}
+
+/// @self Asset.GMObject.obj_controller
+/// @desc Collapsed squad rows for marine companies (managing 1-10). Units are grouped
+/// by their real squad membership (unit.squad ids from obj_ini.squads) and location,
+/// rendered one row per squad named by type: "Tactical Squad 2", "Devastator Squad 1",
+/// etc., numbered per type in roster order, with the squad nickname when set. Clicking
+/// a row selects or deselects every member, mirroring the eligibility gates and
+/// selection side effects of scr_draw_management_unit so the normal Load-to-ships flow
+/// (man_sel / man_size / selecting_location) just works. Units without a squad
+/// (Captain, specialists, unassigned marines, vehicles) keep their normal individual
+/// rows in roster order. Command-slot prompts (Captain Required, etc.) still render.
+/// A squad split across locations shows one row per location so a row is always fully
+/// loadable. _stats_displayed is passed in because it is a function-scoped static of
+/// the manage draw function (see draw_auxilia_squad_rows).
+/// Company cycle filter for management selection screens (Manage Units from
+/// fleet / system / planet). Left-click the button cycles to the next company
+/// PRESENT in the current list, right-click cycles back, wrapping through
+/// "All Companies". State is session-scoped on obj_controller and reset every
+/// time a manage screen opens (group_selection).
+/// @self Asset.GMObject.obj_controller
+function manage_filter_context() {
+    return (managing < 0) && is_struct(selection_data)
+        && struct_exists(selection_data, "purpose_code")
+        && (selection_data.purpose_code == "manage");
+}
+
+/// Company of a display index; -100 buckets vehicles and anything without one.
+function manage_unit_company(_i) {
+    if ((man[_i] == "man") && is_struct(display_unit[_i])
+    && variable_struct_exists(display_unit[_i], "company")
+    && is_real(display_unit[_i].company)) {
+        return display_unit[_i].company;
+    }
+    return -100;
+}
+
+function manage_company_filter_value() {
+    if (!variable_instance_exists(obj_controller, "manage_company_filter")) {
+        obj_controller.manage_company_filter = -1;
+    }
+    return obj_controller.manage_company_filter;
+}
+
+/// True when the row at display index _i should be hidden by the active filter.
+function manage_company_filter_skip(_i) {
+    if (!manage_filter_context()) {
+        return false;
+    }
+    var _f = manage_company_filter_value();
+    if (_f == -1) {
+        return false;
+    }
+    return manage_unit_company(_i) != _f;
+}
+
+/// Distinct companies present in the list, ascending (HQ 0 first, Auxilia and
+/// the -100 bucket last), so the cycle only visits what is actually here.
+function manage_companies_present() {
+    var _seen = {};
+    var _out = [];
+    for (var _i = 0; _i < array_length(display_unit); _i++) {
+        if (man[_i] == "hide") {
+            continue;
+        }
+        var _c = manage_unit_company(_i);
+        var _k = string(_c);
+        if (!struct_exists(_seen, _k)) {
+            _seen[$ _k] = true;
+            array_push(_out, _c);
+        }
+    }
+    array_sort(_out, function(_a, _b) {
+        var _av = (_a == -100) ? 9999 : _a;
+        var _bv = (_b == -100) ? 9999 : _b;
+        return _av - _bv;
+    });
+    return _out;
+}
+
+function manage_company_filter_label(_c) {
+    if (_c == -1) { return "All Companies"; }
+    if (_c == 0) { return "HQ / Unassigned"; }
+    if (_c == 16) { return "Auxilia"; }
+    if (_c == -100) { return "Vehicles & Others"; }
+    return $"{int_to_roman(_c)} Company";
+}
+
+/// Advance (+1) or rewind (-1) the filter through [All, ...present].
+function manage_company_filter_cycle(_dir) {
+    var _present = manage_companies_present();
+    var _cycle = [-1];
+    for (var _i = 0; _i < array_length(_present); _i++) {
+        array_push(_cycle, _present[_i]);
+    }
+    var _cur = manage_company_filter_value();
+    var _idx = 0;
+    for (var _i = 0; _i < array_length(_cycle); _i++) {
+        if (_cycle[_i] == _cur) {
+            _idx = _i;
+            break;
+        }
+    }
+    var _len = array_length(_cycle);
+    _idx = ((_idx + _dir) % _len + _len) % _len;
+    obj_controller.manage_company_filter = _cycle[_idx];
+    man_current = 0;
+    // Changing the filter clears every selection: what you see is what you have
+    // selected. Ghost selections from other companies otherwise ride invisibly
+    // into Proceed and ship loading.
+    for (var _i = 0; _i < array_length(man_sel); _i++) {
+        man_sel[_i] = 0;
+    }
+    squad_sel_count = 0;
+}
+
+/// Draws the filter button on the right end of a view-toggle row and handles
+/// both click directions. Returns nothing; safe to call only in filter context.
+function manage_company_filter_button(_x1, _y1, _x2, _y2) {
+    var _label = $"Company: {manage_company_filter_label(manage_company_filter_value())}";
+    var _btn = draw_unit_buttons([_x1, _y1, _x2, _y2], _label, [1, 1], c_yellow, fa_center, fnt_40k_14b);
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    if (point_and_click(_btn) && (scrollbar_engaged == 0)) {
+        manage_company_filter_cycle(1);
+    } else if (mouse_check_button_pressed(mb_right)
+    && point_in_rectangle(mouse_x, mouse_y, _x1, _y1, _x2, _y2)
+    && (scrollbar_engaged == 0)) {
+        manage_company_filter_cycle(-1);
+    }
+}
+
+function draw_marine_squad_rows(xx, yy, _stats_displayed = false, _command_slots = []) {
+    // Select-all buttons still work through the standard per-unit path.
+    if (sel_all != "" || squad_sel_count > 0) {
+        for (var i = 0; i < array_length(display_unit); i++) {
+            scr_draw_management_unit(i, yy, xx, false);
+        }
+    }
+    sel_all = "";
+
+    // ---- Group roster rows by (squad id, location), preserving encounter order ----
+    var _rows = [];
+    var _groups = {};
+    var _squad_num = {}; // squad id -> per-type number
+    var _type_counts = {}; // display_name -> squads seen so far
+    for (var i = 0; i < array_length(display_unit); i++) {
+        if (man[i] == "hide") {
+            continue;
+        }
+        if (manage_company_filter_skip(i)) {
+            continue;
+        }
+        var _is_unit = (man[i] == "man") && is_struct(display_unit[i]);
+        var _sq_id = "none";
+        if (_is_unit && variable_struct_exists(display_unit[i], "squad")) {
+            _sq_id = display_unit[i].squad;
+        }
+        if ((_sq_id != "none") && is_string(_sq_id) && struct_exists(obj_ini.squads, _sq_id)) {
+            var _key = _sq_id + "|" + string(ma_loc[i]);
+            if (!struct_exists(_groups, _key)) {
+                var _grp = {squad_members: [], squad_id: _sq_id, loc: string(ma_loc[i])};
+                _groups[$ _key] = _grp;
+                array_push(_rows, _grp);
+                if (!struct_exists(_squad_num, _sq_id)) {
+                    var _sq = fetch_squad(_sq_id);
+                    var _tname = "Squad";
+                    if (struct_exists(_sq, "display_name") && is_string(_sq.display_name) && (_sq.display_name != "")) {
+                        _tname = _sq.display_name;
+                    }
+                    if (!struct_exists(_type_counts, _tname)) {
+                        _type_counts[$ _tname] = 0;
+                    }
+                    _type_counts[$ _tname]++;
+                    _squad_num[$ _sq_id] = {num: _type_counts[$ _tname], tname: _tname};
+                }
+            }
+            array_push(_groups[$ _key].squad_members, i);
+        } else {
+            array_push(_rows, {unit_row: i});
+        }
+    }
+
+    // ---- Per-squad expansion (FatKevin): a squad row can be opened individually,
+    // injecting its members as REAL unit rows (scr_draw_management_unit) directly
+    // beneath it, while other squads stay collapsed. Session-scoped view state on
+    // obj_controller (a struct, so the reflective serializer ignores it).
+    if (!variable_instance_exists(obj_controller, "squad_view_expanded")) {
+        obj_controller.squad_view_expanded = {};
+    }
+    var _expanded_rows = [];
+    for (var _er = 0; _er < array_length(_rows); _er++) {
+        var _erow = _rows[_er];
+        array_push(_expanded_rows, _erow);
+        if (!struct_exists(_erow, "unit_row")
+        && struct_exists(obj_controller.squad_view_expanded, _erow.squad_id)
+        && obj_controller.squad_view_expanded[$ _erow.squad_id]) {
+            for (var _em = 0; _em < array_length(_erow.squad_members); _em++) {
+                array_push(_expanded_rows, {unit_row: _erow.squad_members[_em]});
+            }
+        }
+    }
+    _rows = _expanded_rows;
+
+    // ---- Fixed rows: toggle + any open command-slot prompts ----
+    var _empty_slots = [];
+    for (var r = 0; r < array_length(_command_slots); r++) {
+        if (company_data[$ _command_slots[r].unit_check] == "none") {
+            array_push(_empty_slots, _command_slots[r]);
+        }
+    }
+    var _fixed = 1 + array_length(_empty_slots);
+    var _row_max = array_length(_rows) + _fixed;
+    man_max = _row_max; // scrollbar drag math reads obj_controller.man_max directly
+    man_current = clamp(man_current, 0, max(0, _row_max - MANAGE_MAN_SEE));
+
+    // ---- Toggle row (+ company cycle filter on management screens) ----
+    // NOTE: draw_auxilia_squad_rows has a byte-identical toggle row above; any
+    // anchored edit here must include the marine_squad_collapse line below or it
+    // lands in the wrong function (that is exactly what happened once).
+    var _yy = yy;
+    var _filter_here = manage_filter_context();
+    var _tog_x2 = _filter_here ? (xx + 680) : (xx + 974);
+    if (_filter_here) {
+        manage_company_filter_button(xx + 684, _yy + 64, xx + 974, _yy + 85);
+    }
+    var _sq_btn = draw_unit_buttons([xx + 25, _yy + 64, _tog_x2, _yy + 85], "Switch to Individual View", [1, 1], CM_GREEN_COLOR, fa_center, fnt_40k_14b);
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    if (point_and_click(_sq_btn)) {
+        marine_squad_collapse = false;
+        man_max = MANAGE_MAN_MAX;
+        man_current = 0;
+        exit;
+    }
+    _yy += 20;
+
+    // ---- Command-slot prompts (Captain Required, etc.) ----
+    draw_set_font(fnt_40k_14);
+    for (var r = 0; r < array_length(_empty_slots); r++) {
+        var _slot = _empty_slots[r];
+        if (command_slot_draw(xx, _yy, _slot.button_text)) {
+            command_slot_prompt(_slot.search_params, _slot.role_group_params, _slot.purpose, _slot.purpose_code);
+        }
+        _yy += 20;
+    }
+
+    // ---- Rows ----
+    var _visible = min(MANAGE_MAN_SEE - _fixed, array_length(_rows) - man_current);
+    for (var r = 0; r < _visible; r++) {
+        var _row = _rows[man_current + r];
+        if (struct_exists(_row, "unit_row")) {
+            scr_draw_management_unit(_row.unit_row, _yy, xx, true);
+            draw_set_font(fnt_40k_14);
+            _yy += 20;
+            continue;
+        }
+
+        var _members = _row.squad_members;
+        var _count = array_length(_members);
+        var _sel_count = 0;
+        var _size_sum = 0;
+        var _sgt = noone;
+        var _squad_ship = -1; // consensus ship: -1 none seen yet, -2 mixed or not aboard
+        for (var m = 0; m < _count; m++) {
+            if (man_sel[_members[m]] == 1) {
+                _sel_count++;
+            }
+            var _mu = display_unit[_members[m]];
+            if (is_struct(_mu)) {
+                _size_sum += _mu.get_unit_size();
+                if ((_sgt == noone) && _mu.IsSpecialist(SPECIALISTS_SQUAD_LEADERS)) {
+                    _sgt = _mu;
+                }
+                // Track whether the whole squad rides one ship so the row can say so.
+                var _ml = _mu.marine_location();
+                if (_ml[0] == eLOCATION_TYPES.SHIP) {
+                    if (_squad_ship == -1) {
+                        _squad_ship = _ml[1];
+                    } else if (_squad_ship != _ml[1]) {
+                        _squad_ship = -2;
+                    }
+                } else {
+                    _squad_ship = -2;
+                }
+            }
+        }
+        var _all_sel = (_count > 0) && (_sel_count == _count);
+        var _lead = is_struct(_sgt) ? _sgt : display_unit[_members[0]];
+
+        var _nd = _squad_num[$ _row.squad_id];
+        var _label = $"{_nd.tname} {_nd.num}";
+        var _sq = fetch_squad(_row.squad_id);
+        if (struct_exists(_sq, "nickname") && is_string(_sq.nickname) && (_sq.nickname != "")) {
+            _label += $" \"{_sq.nickname}\"";
+        }
+        if (is_struct(_sgt)) {
+            _label += $" - Sgt. {_sgt.name()}";
+        }
+        _label += $"  |  {_count} troops  |  {string_format(_size_sum, 1, 1)} space  |  {_row.loc}";
+        // The squad location alone read like "Warp" with no hint of the vessel; when
+        // every member is aboard the same ship, name it right next to the location.
+        if ((_squad_ship >= 0) && (_squad_ship < array_length(obj_ini.ship))) {
+            _label += $"  |  aboard {obj_ini.ship[_squad_ship]}";
+        }
+        if ((_sel_count > 0) && !_all_sel) {
+            _label += $"  ({_sel_count}/{_count} selected)";
+        }
+
+        var _rect = [xx + 25, _yy + 64, xx + 974, _yy + 85];
+        // Per-squad expander: its own hitbox, consumed before the select-all click.
+        var _is_open = struct_exists(obj_controller.squad_view_expanded, _row.squad_id)
+            && obj_controller.squad_view_expanded[$ _row.squad_id];
+        var _glyph_rect = [xx + 27, _yy + 65, xx + 55, _yy + 84];
+        var _glyph_hit = point_and_click(_glyph_rect) && (scrollbar_engaged == 0);
+        if (_glyph_hit) {
+            obj_controller.squad_view_expanded[$ _row.squad_id] = !_is_open;
+            _is_open = !_is_open;
+        }
+        draw_set_color(c_black);
+        draw_rectangle(_rect[0], _rect[1], _rect[2], _rect[3], 0);
+        if (_sel_count > 0) {
+            draw_set_alpha(_all_sel ? 0.45 : 0.2);
+            draw_set_color(#1e5c40);
+            draw_rectangle(_rect[0], _rect[1], _rect[2], _rect[3], 0);
+            draw_set_alpha(1);
+        }
+        draw_set_color(_all_sel ? CM_GREEN_COLOR : c_gray);
+        draw_rectangle(_rect[0], _rect[1], _rect[2], _rect[3], 1);
+        draw_set_color(CM_GREEN_COLOR);
+        draw_set_color(c_yellow);
+        draw_text(xx + 31, _yy + 66, _is_open ? "[-]" : "[+]");
+        draw_set_color(CM_GREEN_COLOR);
+        draw_text(xx + 60, _yy + 66, _label);
+
+        // Hover focus so the Load / selection buttons render, like unit rows do.
+        if ((mouse_x >= _rect[0]) && (mouse_y >= _rect[1]) && (mouse_x < _rect[2]) && (mouse_y < _rect[3]) && is_struct(_lead)) {
+            unit_focus = _lead;
+        }
+
+        // Click toggles the whole squad, mirroring scr_draw_management_unit's gates
+        // and side effects per member.
+        if (point_and_click(_rect) && !_glyph_hit && (scrollbar_engaged == 0) && !instance_exists(obj_star_select)) {
+            var _target = _all_sel ? 0 : 1;
+            for (var m = 0; m < _count; m++) {
+                var _idx = _members[m];
+                if (man_sel[_idx] == _target) {
+                    continue;
+                }
+                if (!ma_view[_idx]) {
+                    continue;
+                }
+                var _u = display_unit[_idx];
+                if (!is_struct(_u)) {
+                    continue;
+                }
+                if (_target == 1) {
+                    if (!_u.controllable() || _u.in_jail()) {
+                        continue;
+                    }
+                    if (selecting_location != "") {
+                        var _wrong = false;
+                        if (selecting_ship > -1) {
+                            if (ma_lid[_idx] == -1) {
+                                _wrong = true;
+                            } else {
+                                _wrong = obj_ini.ship_location[ma_lid[_idx]] != selecting_location;
+                            }
+                        } else {
+                            _wrong = ma_loc[_idx] != selecting_location;
+                        }
+                        if (_wrong) {
+                            continue;
+                        }
+                    }
+                    if (selecting_location == "") {
+                        selecting_location = ma_loc[_idx];
+                        selecting_ship = ma_lid[_idx];
+                        selecting_planet = ma_wid[_idx];
+                    }
+                    ma_loc[_idx] = selecting_location;
+                }
+                man_sel[_idx] = _target;
+                if (_target == 1) {
+                    man_size += _u.get_unit_size();
+                } else {
+                    man_size -= _u.get_unit_size();
+                }
+            }
+        }
+        _yy += 20;
+    }
+
+    // ---- Scroll furniture, selection buttons, scrollbar (mirrors the individual view tail) ----
+    draw_set_color(c_black);
+    draw_rectangle(xx + 974, yy + 165, xx + 1005, yy + 822, 0);
+    draw_set_color(c_gray);
+    draw_rectangle(xx + 974, yy + 165, xx + 1005, yy + 822, 1);
+    draw_rectangle(xx + 25, yy + 142, xx + 14 + 8, yy + 822, 1);
+    draw_set_color(0);
+    draw_rectangle(xx + 974, yy + 141, xx + 1005, yy + 172, 0);
+    draw_rectangle(xx + 974, yy + 790, xx + 1005, yy + 822, 0);
+    draw_set_color(c_gray);
+    draw_rectangle(xx + 974, yy + 141, xx + 1005, yy + 172, 1);
+    draw_rectangle(xx + 974, yy + 790, xx + 1005, yy + 822, 1);
+    draw_sprite_stretched(spr_arrow, 2, xx + 974, yy + 141, 31, 30);
+    draw_sprite_stretched(spr_arrow, 3, xx + 974, yy + 791, 31, 30);
+    if (point_and_click([xx + 974, yy + 141, xx + 1005, yy + 172])) {
+        man_current = max(0, man_current - 1);
+    }
+    if (point_and_click([xx + 974, yy + 790, xx + 1005, yy + 822])) {
+        man_current = min(max(0, _row_max - MANAGE_MAN_SEE), man_current + 1);
+    }
+
+    yy += 8;
+    var _draw_selec_buttons = !obj_controller.unit_profile && !_stats_displayed;
+    if (_draw_selec_buttons && instance_exists(obj_popup)) {
+        _draw_selec_buttons = obj_popup.type != ePOPUP_TYPE.EQUIP;
+    }
+    if (_draw_selec_buttons && is_struct(obj_controller.unit_focus)) {
+        draw_manage_selection_buttons(xx, yy);
+    }
+    draw_set_color(#3f7e5d);
+    scr_scrollbar(974, 172, 1005, 790, 34, _row_max, man_current);
 }

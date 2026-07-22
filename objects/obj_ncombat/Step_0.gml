@@ -1,3 +1,41 @@
+// R: general retreat. Every formation withdraws except the rear guard: the block
+// under the cursor if any, otherwise the block closest to the enemy line. The rear
+// guard may follow once it has delayed the enemy (see RETREAT_REARGUARD_HOLD).
+if (keyboard_check_pressed(ord("R")) && instance_exists(obj_pnunit) && (defeat == 0)) {
+    var _rear = noone;
+    with (obj_pnunit) {
+        if ((veh_type[1] == "Defenses") || retreat_departed || (move_order == "retreat") || (move_order == "")) {
+            continue;
+        }
+        if (hit()) {
+            _rear = id;
+            break;
+        }
+    }
+    if (_rear == noone) {
+        with (obj_pnunit) {
+            if ((veh_type[1] == "Defenses") || retreat_departed || (move_order == "retreat") || (move_order == "")) {
+                continue;
+            }
+            if ((_rear == noone) || (x > _rear.x)) {
+                _rear = id;
+            }
+        }
+    }
+    var _any = false;
+    with (obj_pnunit) {
+        if ((id == _rear) || (veh_type[1] == "Defenses") || retreat_departed || (move_order == "retreat") || (move_order == "")) {
+            continue;
+        }
+        move_order = "retreat";
+        order_manual = true;
+        _any = true;
+    }
+    if (_any && (_rear != noone)) {
+        combat_log.push($"General retreat! The {_rear.formation_display_name(_rear.formation_type)} hold the line as rear guard!", eMSG_COLOR.YELLOW);
+    }
+}
+
 combat_log.update_scroll(x, y, 800, 900);
 
 if (fadein > -30) {
@@ -54,7 +92,7 @@ if ((((timer_stage == 2) && (fugg >= 60)) || (((timer_stage == 4) || (timer_stag
             combat_emit_enemy_status();
         }
         if (enemy == eFACTION.ELDAR) {
-            if (((player_forces <= 0) || (!instance_exists(obj_pnunit))) && (defeat_message == 0)) {
+            if (((player_forces <= 0) || (!instance_exists(obj_pnunit)) || player_all_departed()) && (defeat_message == 0)) {
                 defeat_message = 1;
                 _newline = string(global.chapter_name) + " Defeated";
                 combat_log.push(_newline, _newline_color);
@@ -73,7 +111,7 @@ if ((((timer_stage == 2) && (fugg >= 60)) || (((timer_stage == 4) || (timer_stag
     if (((timer_stage == 4) || (timer_stage == 5)) && (four_show == 0)) {
         _newline_color = eMSG_COLOR.YELLOW;
         if (enemy != eFACTION.ELDAR) {
-            if (((player_forces <= 0) || (!instance_exists(obj_pnunit))) && (defeat_message == 0)) {
+            if (((player_forces <= 0) || (!instance_exists(obj_pnunit)) || player_all_departed()) && (defeat_message == 0)) {
                 defeat_message = 1;
                 _newline = string(global.chapter_name) + " Defeated";
                 combat_log.push(_newline, _newline_color);
@@ -86,7 +124,13 @@ if ((((timer_stage == 2) && (fugg >= 60)) || (((timer_stage == 4) || (timer_stag
         }
         if (enemy == eFACTION.ELDAR) {
             if (((enemy_forces <= 0) || (!instance_exists(obj_enunit))) && (defeat_message == 0)) {
-                combat_emit_enemy_status();
+                defeat_message = 1;
+                _newline = "Enemy Forces Defeated";
+                combat_log.push(_newline, _newline_color);
+                timer_maxspeed = 0;
+                timer_speed = 0;
+                started = 2;
+                instance_activate_object(obj_pnunit);
             }
         }
         done = 1;

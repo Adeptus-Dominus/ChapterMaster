@@ -295,6 +295,9 @@ with (obj_star) {
 // Eldar craftworld here
 craftworld = 1;
 
+// Upstream (8fb162d8d) rewrote placement as repeat/break, removing the old `go`
+// state variable (and its unset-read crash on campaign start) entirely.
+// Fork keeps its reduced Eldar fleet inside the new structure.
 repeat (100) {
     xx = floor(random(1152 + 600)) + 104;
     yy = floor(random(748 + 440)) + 104;
@@ -305,13 +308,20 @@ repeat (100) {
             craft.craftworld = 1;
             array_push(craft.p_feature[1], new NewPlanetFeature(eP_FEATURES.WARLORD6));
 
-            var elforce = create_enemy_fleet(xx, yy, eFACTION.ELDAR);
-            fleet_register_at_star(elforce, craft); // craft star has name="" so get_nearest_star in create_enemy_fleet won't find it
-            elforce.sprite_index = spr_fleet_eldar;
-            elforce.capital_number = choose(2, 3);
-            elforce.frigate_number = choose(4, 5, 6);
-            elforce.escort_number = floor(random_range(7, 11)) + 1;
-            elforce.image_alpha = 0;
+            // Eldar naval combat is rough to play against, so the escort fleet is kept
+            // small (vanilla spawned 2-3 capitals, 4-6 frigates, 8-11 escorts) and Eldar
+            // ship speed is toned down via ELDAR_SHIP_SPEED_MULT. Set ELDAR_FLEET_ENABLED
+            // to 0 in macros.gml to remove the fleet entirely.
+            if (ELDAR_FLEET_ENABLED) {
+                var elforce = create_enemy_fleet(xx, yy, eFACTION.ELDAR);
+                fleet_register_at_star(elforce, craft); // craft star has name="" so nearest-star lookup in create_enemy_fleet won't find it
+                elforce.sprite_index = spr_fleet_eldar;
+                elforce.owner = eFACTION.ELDAR;
+                elforce.capital_number = 1;
+                elforce.frigate_number = choose(1, 2);
+                elforce.escort_number = choose(2, 3, 4);
+                elforce.image_alpha = 0;
+            }
             break;
         }
     }

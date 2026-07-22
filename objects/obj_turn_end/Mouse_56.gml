@@ -13,8 +13,19 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
             with (obj_fleet_select) {
                 instance_destroy();
             }
+            // The queued space battle can reference a fleet that no longer exists by
+            // the time the player clicks: merged, destroyed, or consumed by an event
+            // earlier in the end-turn stack. The Fight branch below already skips such
+            // stale entries via alarm[4]; mirror that here instead of crashing on a
+            // dead instance read.
+            if (!instance_exists(battle_pobject[current_battle])) {
+                alarm[4] = 1;
+                exit;
+            }
             var that = instance_nearest(battle_pobject[current_battle].x, battle_pobject[current_battle].y, obj_p_fleet);
-            that.alarm[3] = 1;
+            if (instance_exists(that)) {
+                that.alarm[3] = 1;
+            }
             var that2 = instance_create(0, 0, obj_popup);
             that2.type = 99;
             obj_controller.force_scroll = 1;
@@ -23,7 +34,7 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
         if (scr_hit(xxx + 272, yyy + 354, xxx + 399, yyy + 389, true)) {
             // Fight fight fight, space
             var _battle_fleet = battle_pobject[current_battle];
-            if (_battle_fleet.capital_number + _battle_fleet.frigate_number + _battle_fleet.escort_number <= 0) {
+            if (!instance_exists(_battle_fleet) || (_battle_fleet.capital_number + _battle_fleet.frigate_number + _battle_fleet.escort_number <= 0)) {
                 alarm[4] = 1;
                 exit;
             }
@@ -148,6 +159,16 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
 
             if (_allow_fortifications) {
                 obj_ncombat.fortified = _planet_data.fortification_level;
+                // §16h: bridge the planet's ground defences (p_defenses -> ground_defences) into the
+                // defending battle. This was declared but never assigned (player_defenses hard-set to 0 in
+                // obj_ncombat Create_0), so Turret Battery region-buildings — and any p_defenses — never
+                // spawned the weapon-emplacement unit. Alarm_5 already writes battle losses back to
+                // p_defenses[battle_id], so the setup read was the missing half of the loop.
+                obj_ncombat.player_defenses = _planet_data.ground_defences;
+                // §16h: the world's Bastion region-buildings reinforce the fortress in this battle — a DISTINCT,
+                // uncapped bonus (each Bastion = +bunker HP/armour in obj_ncombat/Alarm_0), separate from the
+                // fortification tier above. Counted live from the serialised regions, so it covers old saves too.
+                obj_ncombat.bastion_bonus = planet_bastion_count(_planet_data.system, _planet_data.planet);
             }
 
             if (obj_ncombat.enemy == eFACTION.NECRONS) {

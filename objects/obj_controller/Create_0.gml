@@ -104,6 +104,10 @@ display_unit = undefined;
 
 diplo_buttons = {};
 diplomacy_pathway = "";
+// Which Imperial Navy fleet the player clicked to open the Sector Governor's fleet-order
+// audience (noone when not commanding a fleet). Read by the fleet_orders dialogue branch so
+// the chosen suggestion applies to that specific fleet. See scr_imperial_navy_functions.
+navy_order_target_fleet = noone;
 option_selections = [];
 ready = false;
 
@@ -517,6 +521,11 @@ tagged_training = 0;
 
 // ** Default menu items **
 selecting_planet = 0;
+// The region a ground assault is aimed at, stashed here (on the persistent controller) when the
+// player picks it on the Attack screen's Sector selector, so it survives until launch even if the
+// star's per-region state is rebuilt in between. -1 = none / whole-planet. Read at launch into
+// obj_ncombat.battle_region.
+pending_battle_region = -1;
 selecting_ship = -1;
 fleet_minimized = 0;
 fleet_all = 1;
@@ -834,6 +843,7 @@ income_fleet = 0;
 income_trade = 0;
 income_leader = 0;
 income_tribute = 0;
+income_regions = 0; // requisition from player-held region buildings (Factory/Mine), shown in the counter
 // ** Extra variables **
 info_chips = 0;
 inspection_passes = 0;
@@ -1178,6 +1188,14 @@ serialize = function() {
         "specialist_point_handler",
         "spec_train_data",
         "tooltips",
+        // Diplomacy UI structs: rebuilt at runtime, never saved. Listed so the
+        // serializer's unserialized-struct warning stays quiet about them.
+        "diplo_buttons",
+        "audience_data",
+        "diplo_image",
+        "diplo_image_unit",
+        "master_image",
+        "master_image_unit",
         "last_unit",
         "unit_manage_constants",
         "unit_manage_image",

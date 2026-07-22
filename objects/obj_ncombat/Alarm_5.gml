@@ -25,6 +25,8 @@ if (defeat == 0) {
     with (obj_pnunit) {
         add_marines_to_recovery();
         add_vehicles_to_recovery();
+        // Hold Ground: keep surviving attackers planetside as a foothold (opt-in at launch).
+        hold_ground_disembark();
     }
 
     while (!ds_priority_empty(marines_to_recover)) {
@@ -325,15 +327,27 @@ if ((fortified > 0) && (!instance_exists(obj_nfort)) && (reduce_fortification ==
 if ((!defeat) && (battle_special == "space_hulk")) {
     var enemy_power = 0, loot = 0, dicey = roll_dice_chapter(1, 100, "low");
 
-    if (enemy == eFACTION.ORK || enemy == eFACTION.TYRANIDS || enemy == eFACTION.HERETICS) {
+    // Reduce the hulk garrison by one and read the strength left behind. Chaos-rolled
+    // hulks store their garrison in p_traitors (obj_star Alarm_0), so under the
+    // corrected Chaos/Heretic numbering (upstream 173a6500) their battles arrive as
+    // eFACTION.HERETICS and the raw enemy id reaches the right slot; the old swap
+    // this fork carried predates the renumbering and would now misroute. This block
+    // also lets hulks lose forces, clear, and roll loot at all, which they
+    // previously never could.
+    if (enemy == eFACTION.ORK || enemy == eFACTION.TYRANIDS || enemy == eFACTION.HERETICS || enemy == eFACTION.CHAOS) {
         enemy_power = p_data.add_forces(enemy, -1);
+        // Garrison wiped out: the hulk is cleared. The salvage choice is offered post-battle in
+        // space_hulk_explore_battle_aftermath (scr_post_battle_events).
+        if (enemy_power <= 0) {
+            hulk_cleared = 1;
+        }
     }
 
     part10 = "Space Hulk Exploration at ";
     var ex = min(100, 100 - ((enemy_power - 1) * 20));
     part10 += string(ex) + "%";
-    _newline = part10;
-    combat_log.push(_newline, eMSG_COLOR.YELLOW);
+    // Ported to the rebuilt combat log (upstream removed scr_newtext).
+    add_battle_log_message(part10, (ex == 100) ? eMSG_COLOR.RED : eMSG_COLOR.DEFAULT);
 
     if (dicey <= (enemy_power * 10)) {
         loot = choose(1, 2, 3, 4);
@@ -421,6 +435,7 @@ if (defeat == 0 && _reduce_power) {
         part10 = "Necrons";
     }
 
+
     if (instance_exists(battle_object) && (enemy_power > 2)) {
         if (awake_tomb_world(battle_object.p_feature[battle_id]) != 0) {
             scr_gov_disp(battle_object.name, battle_id, floor(enemy_power / 2));
@@ -433,8 +448,43 @@ if (defeat == 0 && _reduce_power) {
         } else {
             power_reduction = 2;
         }
+        // Outlying-sector assault: clearing an outlying region's (capped) garrison drops the
+        // enemy's strategic level at the FULL rate, so regions fall responsively as the player
+        // grinds forward rather than crawling one notch at a time. (Previously this was halved
+        // to 1, which made outlying pushes feel like they achieved nothing.)
+        if (region_partial && (power_reduction < 2)) {
+            power_reduction = 2;
+        }
         new_power = enemy_power - power_reduction;
         new_power = max(new_power, 0);
+
+        // Per-region attrition: reduce the STORED enemy garrison in the region that was actually
+        // fought over, so a cleared region stays cleared until a neighbour reinforces it on a later
+        // turn (regions_reinforce_tick). Without this the per-region split just recomputed from the
+        // planet pool and read as instant reinforcement.
+        if (instance_exists(battle_object) && (planet_region_count(battle_object, battle_id) > 1)) {
+            var _atk_region = battle_region;
+            if (!is_real(_atk_region) || (_atk_region < 0) || (_atk_region >= planet_region_count(battle_object, battle_id))) {
+                _atk_region = region_focus_get(battle_object, battle_id);
+            }
+            var _here = region_enemy_force(battle_object, battle_id, _atk_region);
+            if (new_power <= 0) {
+                region_enemy_force_deplete(battle_object, battle_id, _atk_region, _here); // enemy wiped: clear region
+            } else if (enemy_power > 0) {
+                // Take off the same fraction of this region's garrison as the tier reduction represents.
+                var _frac = clamp(power_reduction / enemy_power, 0, 1);
+                region_enemy_force_deplete(battle_object, battle_id, _atk_region, ceil(_here * _frac));
+            }
+        }
+
+        // Eldar craftworld hunt: intelligence is recovered only when the warhost is
+        // wiped from the planet entirely (its force reaches zero), never per battle,
+        // so repeated raids against the same warhost cannot farm clues (tester found
+        // three raids on one world yielded three clues). Only while the craftworld
+        // remains hidden.
+        if ((enemy == eFACTION.ELDAR) && (new_power <= 0) && (obj_controller.known[eFACTION.ELDAR] == 0)) {
+            eldar_intel_grant();
+        }
 
         // Give some money for killing enemies?
         var _quad_factor = 6;
@@ -519,7 +569,23 @@ if (defeat == 0 && _reduce_power) {
     }
 
     if (enemy >= eFACTION.ECCLESIARCHY) {
+        // Upstream commit 173a6500 ("fix: The entire chaos vs heretics standoff")
+        // renumbered the Chaos/Heretic pair to match eFACTION everywhere: enemy
+        // eFACTION.CHAOS now reads p_chaos above and eFACTION.HERETICS reads
+        // p_traitors, the same mapping edit_forces uses. The compensating swap this
+        // fork carried (translating the pair before edit_forces) is therefore
+        // removed; with the renumbering in place it would invert a correct pair.
         p_data.edit_forces(enemy, new_power);
+        // War losses kill people: clamp the faction's real headcount into the band of
+        // the level just written, or the population engine resurrects the garrison
+        // next tick (see faction_pop_clamp_to_level).
+        faction_pop_clamp_to_level(p_data.system, p_data.planet, enemy);
+        if (enemy == eFACTION.TYRANIDS) {
+            beacon_teardown_if_cleansed(p_data.system, p_data.planet);
+        }
+        if (((enemy == eFACTION.HERETICS) || (enemy == eFACTION.CHAOS)) && (new_power <= 0)) {
+            heresy_cleansed_stamp(p_data.system, p_data.planet);
+        }
     }
 
     if ((enemy != eFACTION.IMPERIUM) && (string_count("cs_meeting_battle", battle_special) == 0)) {
@@ -547,31 +613,33 @@ if (defeat == 0 && _reduce_power) {
     }
 
     if ((enemy == eFACTION.TAU) && (ethereal > 0) && (defeat == 0)) {
-        _newline = "Tau Ethereal Captured";
-        combat_log.push(_newline, eMSG_COLOR.YELLOW);
+        add_battle_log_message("Tau Ethereal Captured", eMSG_COLOR.YELLOW);
     }
 
     if (enemy == eFACTION.NECRONS && p_data.planet_forces[eFACTION.NECRONS] < 3 && awake_tomb_world(p_data.features) == 1) {
         if (plasma_bomb > 0) {
-            _newline = "Plasma Bomb used to seal the Necron Tomb.";
-            combat_log.push(_newline, eMSG_COLOR.YELLOW);
+            add_battle_log_message("Plasma Bomb used to seal the Necron Tomb.", eMSG_COLOR.YELLOW);
             seal_tomb_world(p_data.features);
         } else if (plasma_bomb <= 0) {
             p_data.edit_forces(enemy, 3);
             if (dropping) {
-                _newline = "Deep Strike Ineffective; Plasma Bomb required";
+                newline = "Deep Strike Ineffective; Plasma Bomb required";
             }
             if (!dropping) {
-                _newline = "Attack Ineffective; Plasma Bomb required";
+                newline = "Attack Ineffective; Plasma Bomb required";
             }
-            combat_log.push(_newline, eMSG_COLOR.RED);
+            // This message was assigned but never posted (dead newline under the
+            // legacy log too); posted properly on the rebuilt log.
+            add_battle_log_message(newline, eMSG_COLOR.YELLOW);
+            // A blended merge hunk also pushed the stale _newline here in red,
+            // re-posting the previous log line on every plasma-ineffective result;
+            // removed.
         }
     }
 }
 
 if ((defeat == 0) && (enemy == eFACTION.TYRANIDS) && (battle_special == "tyranid_org")) {
-    _newline = $"{string_plural_count("Gaunt organism", captured_gaunt)} have been captured.";
-    combat_log.push(_newline, eMSG_COLOR.YELLOW);
+    add_battle_log_message($"{string_plural_count("Gaunt organism", captured_gaunt)} have been captured.", eMSG_COLOR.DEFAULT);
 
     if (captured_gaunt > 0) {
         var why = 0, thatta = 0;
@@ -795,9 +863,10 @@ if ((inq_eated == false) && (sorcery_seen >= 2)) {
 }
 
 if ((exterminatus > 0) && dropping) {
-    _newline = "Exterminatus has been succesfully placed.";
     endline = 0;
-    combat_log.push(_newline, eMSG_COLOR.YELLOW);
+    // Was a legacy newline/newline_color assignment beside a blended push of the
+    // stale _newline, so the wrong text posted; posts its own line now.
+    combat_log.push("Exterminatus has been succesfully placed.", eMSG_COLOR.YELLOW);
 }
 
 instance_activate_object(obj_star);
@@ -849,7 +918,7 @@ if ((obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) && (defeat == 1) && !droppin
         }
 
         var percent = 0;
-        _newline = "";
+        newline = "";
         if (defenses_lost > 0) {
             percent = round((defenses_lost / player_defenses) * 100);
             _newline = string(defenses_lost) + " Weapon Emplacements have been lost (" + string(percent) + "%).";
@@ -903,6 +972,14 @@ if (defeat == 1) {
         obj_ground_mission.recoverable_gene_seed = seed_lost;
     }
 }
+
+// The line "obj_ini.gene_slaves = [];" was removed here. It ran unconditionally at
+// the end of EVERY battle resolution, silently deleting all Test-Slave Incubator
+// batches raw (no gene-seed recovery, no incubator item refund, no event) any time
+// the player fought anything while batches were maturing. The legitimate wipe (the
+// homeworld falling with no underground gene vaults) is already handled above via
+// destroy_all_gene_slaves(false) inside its proper guard. Present verbatim in
+// upstream main (objects\obj_ncombat\Alarm_5.gml).
 
 instance_deactivate_object(obj_star);
 instance_deactivate_object(obj_ground_mission);

@@ -3,6 +3,21 @@ function scr_load_all(select_units) {
     // Load / Select All
     if (select_units) {
         man_size = 0;
+        // If no location is anchored yet, anchor it to the first selectable unit so a
+        // straight Select All works even when nothing was individually clicked first
+        // (e.g. a body of guardsmen mustered on a planet). The vehicle branch below
+        // already self-anchors; this gives the man branch the same behaviour.
+        if (selecting_location == "") {
+            for (var j = 0; j < array_length(display_unit); j++) {
+                var anchor_unit = display_unit[j];
+                if (is_struct(anchor_unit) && (man[j] == "man") && (ma_god[j] < 10) && (anchor_unit.assignment() == "none")) {
+                    selecting_location = ma_loc[j];
+                    selecting_planet = ma_wid[j];
+                    selecting_ship = ma_lid[j];
+                    break;
+                }
+            }
+        }
         // This sets the maximum size of marines in a company to 200 size
         for (var i = 0; i < array_length(display_unit); i++) {
             var unit = display_unit[i];

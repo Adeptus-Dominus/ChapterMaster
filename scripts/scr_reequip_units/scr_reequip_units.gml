@@ -261,7 +261,7 @@ function reload_items() {
         range_melee_radio.selection_val("val"),
         false, // include company standard
         true, // limit to available equipment
-        quality_radio.selection_val("val"),
+        quality_radio.selection_val("val")
     );
 }
 
@@ -619,6 +619,12 @@ function draw_popup_equip() {
                     n_good2 = 0;
                     warning = "Only " + string(obj_ini.role[100][6]) + " can use Close Combat Weapons.";
                 }
+                // Removed the blanket block that invalidated any weapon-two change for
+                // Terminator/Tartaros/Dreadnought armour whenever a mobility item was equipped.
+                // It hard-locked the second weapon slot for terminators with a Cyclone Missile
+                // System or Servo-arm/harness (with no warning text), even for light weapons.
+                // The burden system in scr_marine_struct already prices these items in via
+                // their melee_hands/ranged_hands cap maluses and encumbrance penalties.
             }
         }
         if (equipment_area == eEQUIPMENT_SLOT.ARMOUR) {
@@ -631,43 +637,34 @@ function draw_popup_equip() {
                         have_armour_num += 1;
                     }
                 }
-                have_armour_num += scr_item_count(n_armour);
+            }
+            have_armour_num += scr_item_count(n_armour);
 
-                if (have_armour_num >= req_armour_num || n_armour == ITEM_NAME_NONE) {
-                    n_good3 = 1;
-                }
-                if (have_armour_num < req_armour_num && (n_armour != ITEM_NAME_ANY && n_armour != ITEM_NAME_NONE)) {
-                    n_good3 = 0;
-                    warning = $"Not enough {n_armour} : {req_armour_num - have_armour_num} more are required.";
-                }
+            if (have_armour_num >= req_armour_num || n_armour == ITEM_NAME_NONE) {
+                n_good3 = 1;
+            }
+            if (have_armour_num < req_armour_num && (n_armour != ITEM_NAME_ANY && n_armour != ITEM_NAME_NONE)) {
+                n_good3 = 0;
+                warning = $"Not enough {n_armour} : {req_armour_num - have_armour_num} more are required.";
+            }
 
-                if (armour_data.has_tag("terminator")) {
-                    if (armour_data.req_exp > 0) {
-                        for (var g = 0; g < array_length(obj_controller.display_unit); g++) {
-                            if (obj_controller.man_sel[g] == 1 && is_struct(obj_controller.display_unit[g])) {
-                                if (obj_controller.display_unit[g].experience < armour_data.req_exp) {
-                                    n_good3 = 0;
-                                    warning = $"A unit must have {armour_data.req_exp}+ EXP to use a {armour_data.name}.";
-                                    break;
-                                }
+            if (is_struct(armour_data) && armour_data.has_tag("terminator")) {
+                if (armour_data.req_exp > 0) {
+                    for (var g = 0; g < array_length(obj_controller.display_unit); g++) {
+                        if (obj_controller.man_sel[g] == 1 && is_struct(obj_controller.display_unit[g])) {
+                            if (obj_controller.display_unit[g].experience < armour_data.req_exp) {
+                                n_good3 = 0;
+                                warning = $"A unit must have {armour_data.req_exp}+ EXP to use a {armour_data.name}.";
+                                break;
                             }
                         }
                     }
                 }
-
-                if ((string_count("Dread", o_armour) > 0) && (string_count("Dread", n_armour) == 0)) {
-                    n_good4 = 0;
-                    warning = "Marines may not exit Dreadnoughts.";
-                }
             }
 
-            if (is_struct(mobility_data)) {
-                n_good5 = 1;
-                var _compat = check_mobility_armour_compatibility(armour_data, mobility_data);
-                if (!_compat.valid) {
-                    n_good5 = 0;
-                    warning = _compat.warning;
-                }
+            if ((string_count("Dread", o_armour) > 0) && (string_count("Dread", n_armour) == 0)) {
+                n_good4 = 0;
+                warning = "Marines may not exit Dreadnoughts.";
             }
         }
         if ((equipment_area == eEQUIPMENT_SLOT.GEAR) && (n_gear != "Assortment") && (n_gear != ITEM_NAME_NONE)) {
@@ -727,11 +724,47 @@ function draw_popup_equip() {
                 warning = "Not enough " + string(n_mobi) + "; " + string(req_mobi_num - have_mobi_num) + " more are required.";
             }
 
-            if (is_struct(mobility_data)) {
-                var _compat = check_mobility_armour_compatibility(armour_data, mobility_data);
-                if (!_compat.valid) {
+            if (is_struct(armour_data) && is_struct(mobility_data)) {
+                if (armour_data.has_tag("terminator") && !mobility_data.has_tag("terminator") && !mobility_data.has_tag("terminator_only")) {
                     n_good5 = 0;
-                    warning = _compat.warning;
+                    warning = "Cannot use this with Terminator Armour.";
+                } else if (!armour_data.has_tag("terminator") && mobility_data.has_tag("terminator_only")) {
+                    n_good5 = 0;
+                    warning = "Cannot use this without Terminator Armour.";
+                } else if (armour_data.has_tag("dreadnought") && !mobility_data.has_tag("dreadnought") && !mobility_data.has_tag("dreadnought_only")) {
+                    n_good5 = 0;
+                    warning = "Cannot use this with Dreadnought Armour.";
+                } else if (!armour_data.has_tag("dreadnought") && mobility_data.has_tag("dreadnought_only")) {
+                    n_good5 = 0;
+                    warning = "Cannot use this without Dreadnought Armour.";
+                }
+            } else if (!is_struct(armour_data) && is_struct(mobility_data)) {
+                // Mixed armour selections collapse n_armour to "Assortment", so armour_data is
+                // not a struct even when every selected unit wears terminator plate (e.g. one in
+                // Tartaros and one in Indomitus). Check each selected unit's real armour tags
+                // instead of blanket-rejecting terminator/dreadnought mobility items.
+                if (mobility_data.has_tag("terminator") || mobility_data.has_tag("terminator_only")) {
+                    for (var g = 0; g < array_length(obj_controller.display_unit); g++) {
+                        if (obj_controller.man_sel[g] == 1 && is_struct(obj_controller.display_unit[g])) {
+                            var _unit_armour_data = obj_controller.display_unit[g].get_armour_data();
+                            if (!is_struct(_unit_armour_data) || !_unit_armour_data.has_tag("terminator")) {
+                                n_good5 = 0;
+                                warning = "Cannot use this without Terminator Armour.";
+                                break;
+                            }
+                        }
+                    }
+                } else if (mobility_data.has_tag("dreadnought") || mobility_data.has_tag("dreadnought_only")) {
+                    for (var g = 0; g < array_length(obj_controller.display_unit); g++) {
+                        if (obj_controller.man_sel[g] == 1 && is_struct(obj_controller.display_unit[g])) {
+                            var _unit_armour_data = obj_controller.display_unit[g].get_armour_data();
+                            if (!is_struct(_unit_armour_data) || !_unit_armour_data.has_tag("dreadnought")) {
+                                n_good5 = 0;
+                                warning = "Cannot use this without Dreadnought Armour.";
+                                break;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -793,9 +826,15 @@ function reequip_selection() {
             if (is_struct(unit)) {
                 unit.update_armour(n_armour, true, true, standard);
                 unit.update_mobility_item(n_mobi, true, true, standard);
+                // Gear must apply before the weapons: equipping a pack-hungry weapon
+                // (the Hellgun) auto-slots a Power Pack into an empty gear slot, and
+                // applying the popup's gear value afterwards would strip that pack in
+                // the same click, because these dropdowns default to the unit's current
+                // gear, which is "" for most Guard. Gear-first also lets an explicit
+                // gear choice win: the pairing respects an occupied slot.
+                unit.update_gear(n_gear, true, true, standard);
                 unit.update_weapon_one(n_wep1, true, true, standard);
                 unit.update_weapon_two(n_wep2, true, true, standard);
-                unit.update_gear(n_gear, true, true, standard);
 
                 update_man_manage_array(i);
                 continue;

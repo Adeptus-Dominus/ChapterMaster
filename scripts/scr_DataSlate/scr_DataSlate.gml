@@ -543,3 +543,33 @@ function ShutterButton() constructor {
         }
     };
 }
+
+/// @desc Short hover tooltip for the planet action shutter buttons (obj_star_select).
+/// ShutterButton.draw_shutter has always rendered its tooltip field on hover; nothing
+/// ever set one. Unknown actions return "" (no tooltip), so new buttons are safe.
+function planet_action_tooltip(_action) {
+    switch (_action) {
+        case "Attack":
+            return "Launch a ground assault to destroy enemy forces on this world. Each ship carrying troops can support up to 2 assaults per turn; planetside forces fight without ship support.";
+        case "Raid":
+            return "A limited strike that chips away at enemy forces without committing to a full battle. Requires a fleet that has spent at most one action this turn.";
+        case "Bombard":
+            return "Orbital bombardment: devastating to enemy forces, the population, and the world itself. Must be the fleet's first action of the turn.";
+        case "Purge":
+            return $"Cleanse this world's population of heresy and xenos taint. Opens a choice of methods, from orbital purging to assassinating the Planetary Governor. Up to {PURGES_PER_FLEET_TURN} purges per fleet each turn, independent of assaults.";
+        case "Cyclonic Torpedo":
+            return "Exterminatus. Destroys the planet and everything on it, permanently. There is no taking this back.";
+        case "Deploy Guard":
+            return "Land every Guardsman aboard your orbiting ships onto this world. They join its local forces and can fight in battles here without ship support.";
+        case "+Recruiting":
+            return "Designate this world as a recruiting world, letting your chapter draw aspirants from its population. Requires an available recruiting-world right and a world not at war.";
+        case "Build":
+            return "Begin construction of a chapter facility on this world.";
+        case "Base":
+        case "Arsenal":
+        case "Gene-Vault":
+            return "Manage your chapter facilities on this world.";
+        default:
+            return "";
+    }
+}

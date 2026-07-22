@@ -1,4 +1,4 @@
-unit = undefined;
+unit = "";
 men = 0;
 veh = 0;
 charge = 0;
@@ -9,14 +9,34 @@ attacked_dudes = 0;
 dreads = 0;
 jetpack_destroy = 0;
 defenses = 0;
-/// @type {Id.Instance.obj_enunit}
-enemy = noone;
+guard = 0; // OBSOLETE (iteration 1): flag for the dead planetary Guard men-block. Never set to 1 anywhere, so the guard==1 branches in scr_clean and scr_player_combat_weapon_stacks are dead. Live guardsmen are role "Guardsman" unit_struct units.
+
+// Which formation-editor bar this block embodies ("tactical", "rhino", "deathco",
+// or "colN" generic fallback). One battle block per type; see formation_block().
+formation_type = "";
+// Focus-fire order: 0 = nearest enemies (default), 1..3 = focus the Nth enemy line.
+fire_target_line = 0;
+// One leap per battle for an ordered Assault formation (see move_player_block).
+assault_jumped = false;
+// Set once a retreating formation reaches the field edge and withdraws.
+retreat_departed = false;
+// Movement passes spent as the last fighting formation (rear-guard delay).
+rearguard_ticks = 0;
 
 unit_count = 0;
 unit_count_old = 0;
 composition_string = "";
 
 column_size = 0;
+
+// Basic combat orders: "" until seeded from the battle type on the block's first
+// Alarm_0 tick, then "advance" or "hold", toggled by clicking the block's bar.
+move_order = "";
+// True only once the player has clicked this block. Leapfrogging is reserved for
+// manually ordered blocks: the seeded auto-advance must keep vanilla stall behavior
+// or formations scramble on their own (tester's raid reordered itself with no
+// orders given, tacticals vaulting the engaged front line).
+order_manual = false;
 
 centerline_offset = 0;
 pos = 880;
@@ -46,6 +66,7 @@ marine_powers = [];
 marine_dead = [];
 marine_attack = [];
 marine_ranged = [];
+marine_defense = [];
 marine_casting = [];
 marine_casting_cooldown = [];
 marine_local = [];
@@ -145,8 +166,11 @@ tick_psychic_buffs = function() {
         for (var i = 0; i < array_length(unit_struct); i++) {
             for (var b = 0; b < array_length(_buffs); b++) {
                 var _name = _buffs[b];
-                if (self[$ _name][i] > 0) {
-                    self[$ _name][i] -= 1;
+                // LTS compat: the compiler rejects assignment through self[$ ...]
+                // (GM1031), so mutate via a local array reference instead.
+                var _arr = self[$ _name];
+                if (_arr[i] > 0) {
+                    _arr[i] -= 1;
                 }
             }
         }

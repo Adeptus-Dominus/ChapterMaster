@@ -1,4 +1,48 @@
 // TODO: Merge all update function into one;
+
+/// @description Guard armoury discipline: auxilia infantry may only equip Guard-pattern
+/// weapons; every Astartes weapon (Bolters included) is off limits. Heavy Weapons Teams
+/// additionally field their crewed heavy weapons. Any role outside the Guard infantry is
+/// unrestricted here. This gate also filters start_gear, so every weapon named in the
+/// guard unit templates (unit_stats.json) MUST stay on these lists or the unit spawns
+/// with an empty slot, the way the Skitarii once arrived empty handed.
+/// @param {string} _role    the unit role being equipped
+/// @param {string} _weapon  the weapon name being equipped
+/// @returns {bool}
+function guard_weapon_permitted(_role, _weapon) {
+    static _guard_infantry_weapons = ["Lasgun", "Autogun", "Hellgun", "Bayonet", "Guard Chainsword", "Laspistol"];
+    // Crewed heavy weapons a Heavy Weapons Team may field. The team's template
+    // spawns with a Heavy Bolter; the rest are Guard-pattern crew weapons the
+    // armoury may issue. Any weapon named in unit_stats.json guard templates
+    // MUST stay on these lists (see the docstring above).
+    static _guard_heavy_weapons = ["Heavy Bolter", "Lascannon", "Autocannon", "Missile Launcher"];
+    if (_role == "Guardsman" || _role == "Veteran Guard" || _role == "Guard Sergeant") {
+        return array_contains(_guard_infantry_weapons, _weapon);
+    }
+    if (_role == "Heavy Weapons Team") {
+        return array_contains(_guard_infantry_weapons, _weapon) || array_contains(_guard_heavy_weapons, _weapon);
+    }
+    return true;
+}
+
+/// @self Struct.TTRPG_stats
+/// @description Hot-shot pairing: slot a Power Pack from the armoury into an empty gear
+/// slot when a pack-hungry weapon (requires_power_pack) is held, mirroring how Devastator
+/// loadouts pair the Heavy Weapons Pack with the heavy weapon. Skitarii need none, an
+/// occupied gear slot is respected, and with no stock the trooper simply fires it as a
+/// Lasgun until a pack is forged and equipped.
+function try_pair_power_pack(_weapon, from_armoury, to_armoury) {
+    if (role() == "Skitarii" || gear() != "") {
+        return;
+    }
+    var _pairing_data = gear_weapon_data("weapon", _weapon);
+    if (is_struct(_pairing_data) && _pairing_data.has_tag("requires_power_pack")) {
+        if (!from_armoury || scr_item_count("Power Pack") > 0) {
+            update_gear("Power Pack", from_armoury, to_armoury);
+        }
+    }
+}
+
 /// @self Struct.TTRPG_stats
 function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = true, quality = "any") {
     var is_artifact = !is_string(new_armour);
@@ -157,6 +201,11 @@ function scr_update_unit_weapon_one(new_weapon, from_armoury = true, to_armoury 
             return "no change";
         }
     } else if (change_wep == new_weapon && same_quality) {
+        // Re-applying the same pack-hungry weapon still pairs a Power Pack, so a
+        // plain Re-equip pass retrofits packs onto already-armed Hellgunners.
+        if (!unequipping && !is_artifact) {
+            try_pair_power_pack(new_weapon, from_armoury, to_armoury);
+        }
         return "no change";
     }
 
@@ -175,6 +224,25 @@ function scr_update_unit_weapon_one(new_weapon, from_armoury = true, to_armoury 
         }
         if (!weapon_found) {
             return "no_items";
+        }
+    }
+
+    // Role-restricted weapon gate: some weapons are limited by role (the Hellgun is
+    // Veteran Guard and Skitarii only; Skitarii start_gear ships a Hellgun, so without
+    // the exemption a purchased Skitarii is rejected by its own starting weapon and
+    // arrives empty handed). Reject and log before any armoury or slot mutation if the
+    // unit lacks the role. Skips unequip and artifacts. Mirrors the mobility tag-gate.
+    if (!unequipping && !is_artifact) {
+        var _wep_restrict_data = gear_weapon_data("weapon", new_weapon);
+        if (is_struct(_wep_restrict_data) && _wep_restrict_data.has_tag("veteran_guard_only") && role() != "Veteran Guard" && role() != "Skitarii") {
+            LOGGER.error($"Failed to equip {new_weapon} for {name()} - restricted to Veteran Guard and Skitarii.");
+            return "restricted";
+        }
+        // Guard armoury discipline: auxilia infantry equip Guard-pattern weapons only,
+        // no Astartes wargear. See guard_weapon_permitted.
+        if (!guard_weapon_permitted(role(), new_weapon)) {
+            LOGGER.error($"Failed to equip {new_weapon} for {name()} - not Guard-issue.");
+            return "restricted";
         }
     }
 
@@ -202,6 +270,11 @@ function scr_update_unit_weapon_one(new_weapon, from_armoury = true, to_armoury 
     }
 
     obj_ini.wep1[company][marine_number] = new_weapon;
+
+    // Hot-shot pairing: see try_pair_power_pack.
+    if (!unequipping && !is_artifact) {
+        try_pair_power_pack(new_weapon, from_armoury, to_armoury);
+    }
 
     if (is_artifact) {
         obj_ini.artifact_equipped[artifact_id] = true;
@@ -233,6 +306,14 @@ function scr_update_unit_weapon_two(new_weapon, from_armoury = true, to_armoury 
     var same_quality = quality == "any" || quality == weapon_two_quality;
     if (change_wep == new_weapon && same_quality) {
         return "no change";
+    }
+
+    // Guard armoury discipline: the sidearm slot obeys the same Guard-issue whitelist as
+    // the primary, so a Bolter (or any other Astartes weapon) cannot slip in as wep2.
+    // See guard_weapon_permitted. Skips unequip and artifacts.
+    if (!unequipping && !is_artifact && !guard_weapon_permitted(role(), new_weapon)) {
+        LOGGER.error($"Failed to equip {new_weapon} for {name()} - not Guard-issue.");
+        return "restricted";
     }
 
     if (from_armoury && !unequipping && !is_artifact) {

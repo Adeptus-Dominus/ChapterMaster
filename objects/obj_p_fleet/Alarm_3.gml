@@ -1,4 +1,4 @@
-if (obj_controller.zoomed == 1) {
+if (obj_controller.zoomed == 1 && !is_nan(self.x) && !is_nan(self.y)) {
     obj_controller.x = self.x;
     obj_controller.y = self.y;
 }

@@ -4,6 +4,16 @@ enum eMSG_COLOR {
     AQUA = 5,
     RED = 6,
     YELLOW = 8,
+    // Light green tier ported from Tavish's CM-Poligon color coding (CptMacTavish2224,
+    // tag LW_Beta_1.2): hits that wounded without killing.
+    LIGHTGREEN = 9,
+    // Bright red: the enemy's mirror of LIGHTGREEN. Enemy fire that wounds or pierces
+    // armour without killing, so incoming damage reads as a threat (red family) instead
+    // of borrowing the player's green. Kills stay the muted RED; this is the brighter
+    // "it hurt but nobody died yet" tier.
+    BRIGHT_RED = 10,
+    // Bright blue: reserved for continuous / ongoing-narration log lines.
+    BRIGHT_BLUE = 11,
 }
 
 /// @param {Id.Instance} _owner The optional owning instance or controller.
@@ -119,6 +129,15 @@ function CombatLog(_owner = undefined) constructor {
                     break;
                 case eMSG_COLOR.YELLOW:
                     _final_color = 3055825;
+                    break;
+                case eMSG_COLOR.LIGHTGREEN:
+                    _final_color = c_lime;
+                    break;
+                case eMSG_COLOR.BRIGHT_RED:
+                    _final_color = make_color_rgb(255, 60, 60);
+                    break;
+                case eMSG_COLOR.BRIGHT_BLUE:
+                    _final_color = make_color_rgb(70, 150, 255);
                     break;
             }
 

@@ -372,6 +372,13 @@ function flush_psychic_summary(_psy_log) {
     }
 }
 
+/// @desc Folds one attack-power cast into the per-formation psychic summary, keyed by power + target,
+///       so many identical Librarian casts collapse into a single battle-log line.
+/// @param {Struct} _psy_log The accumulator struct (one per formation casting phase).
+// Duplicate accumulate_psychic_cast / flush_psychic_summary removed here: the
+// fork carried Tavish-lineage copies (legacy 3-argument add_battle_log_message)
+// alongside upstream's rebuilt versions above, producing duplicate script names.
+
 /// @desc Function to get requested data from the disciplines_data structure. Returns The requested data, or undefined if not found.
 /// @param _discipline_name - The name of the discipline
 /// @param _data_name - The specific data attribute you want

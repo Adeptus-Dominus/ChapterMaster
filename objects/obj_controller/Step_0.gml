@@ -405,7 +405,7 @@ try {
         clear_diplo_choices();
     }
 
-    income = income_base + income_home + income_forge + income_agri + income_training + income_fleet + income_trade + income_tribute;
+    income = income_base + income_home + income_forge + income_agri + income_training + income_fleet + income_trade + income_tribute + income_regions;
 
     if ((menu == eMENU.DIPLOMACY) && ((diplomacy > 0) || ((diplomacy < -5) && (diplomacy > -6)))) {
         if (string_length(diplo_txt) < string_length(diplo_text)) {
@@ -470,10 +470,25 @@ try {
                 }
                 var unit_id = unit.marine_number;
                 var company = unit.company;
+                // Determine the landing region (the world's stored focus) and gate the drop: a
+                // regular unload may only set down in an empty / player / allied region that is not
+                // contested. A hostile region refuses the landing (Hold Ground is the only way in).
+                var _unload_star = find_star_by_name(selecting_location);
+                var _multi = instance_exists(_unload_star) && (planet_region_count(_unload_star, unload) > 1);
+                var _land_region = _multi ? region_focus_get(_unload_star, unload) : -1;
+                if (_multi && !region_allows_regular_unload(_unload_star, unload, _land_region)) {
+                    continue; // cannot casually land into an enemy/contested region
+                }
                 unit.location_string = obj_ini.ship_location[b];
                 unit.ship_location = -1;
                 unit.planet_location = unload;
+                unit.region_location = _land_region;
                 obj_ini.uid[company][unit_id] = 0;
+                // Keep the per-region force tally in step with the units on the ground.
+                if (_multi) {
+                    unit.get_unit_size();
+                    region_player_force_add(_unload_star, unload, _land_region, unit.size);
+                }
 
                 ma_loc[q] = obj_ini.ship_location[b];
                 ma_lid[q] = -1;

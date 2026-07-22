@@ -56,6 +56,77 @@ function scr_cheatcode(argument0) {
                 case "newtech":
                     obj_controller.tech_points = 400;
                     break;
+                case "regions": {
+                    // Debug readout of the multi-region layer for the open/selected planet.
+                    var _rstar = cheat_target_star(name);
+                    if (instance_exists(_rstar)) {
+                        var _rplanet = cheat_target_planet(_rstar, (array_length(cheat_arguments) > 0) ? cheat_arguments[0] : undefined);
+                        var _rdump = regions_debug_dump(_rstar, _rplanet);
+                        show_debug_message(_rdump);
+                        scr_popup("DEBUG", _rdump, "");
+                    } else {
+                        scr_popup("DEBUG", "regions: no star found", "");
+                    }
+                    break;
+                }
+                case "spawnguard": {
+                    // Test cheat: pump p_guardsmen on a planet so barracks growth and
+                    // garrison combat (threat -> guard_total when fighting an Imperial
+                    // world) can be tested quickly. Also mirrors into the region
+                    // overlay's capital for display consistency.
+                    // Targets the last planet you clicked (open its panel, close, then
+                    // enter the cheat). Usage: spawnguard [amount=1000]  or
+                    // spawnguard <planet> <amount>
+                    var _gstar = cheat_target_star(name);
+                    if (instance_exists(_gstar)) {
+                        var _gp; var _gn;
+                        if (array_length(cheat_arguments) >= 2) {
+                            _gp = cheat_target_planet(_gstar, cheat_arguments[0]);
+                            _gn = max(1, real(cheat_arguments[1]));
+                        } else {
+                            _gp = cheat_target_planet(_gstar, undefined);
+                            _gn = (array_length(cheat_arguments) == 1) ? max(1, real(cheat_arguments[0])) : 1000;
+                        }
+                        _gstar.p_guardsmen[_gp] += _gn;
+                        var _gregs = regions_ensure(_gstar, _gp);
+                        if (array_length(_gregs) > 0) {
+                            _gregs[0].guardsmen += _gn;
+                        }
+                        scr_popup("DEBUG", $"+{_gn} Guardsmen on {_gstar.name} {scr_roman(_gp)} (now {_gstar.p_guardsmen[_gp]}).", "");
+                    } else {
+                        scr_popup("DEBUG", "spawnguard: no star found", "");
+                    }
+                    break;
+                }
+                case "spawnbarracks": {
+                    // Test cheat: plant a barracks region building directly, no cost or
+                    // build UI. It ticks each end turn like a bought one (+100 Guard /
+                    // +200 PDF to both the region overlay and the planet scalar).
+                    // Targets the last planet you clicked. Usage:
+                    // spawnbarracks [guard|pdf]  or  spawnbarracks <planet> [guard|pdf]
+                    var _bstar = cheat_target_star(name);
+                    if (instance_exists(_bstar)) {
+                        var _bp; var _bkind = "guard_barracks";
+                        var _ba = array_length(cheat_arguments);
+                        if ((_ba >= 1) && ((string_lower(cheat_arguments[0]) == "pdf") || (string_lower(cheat_arguments[0]) == "guard"))) {
+                            _bp = cheat_target_planet(_bstar, undefined);
+                            if (string_lower(cheat_arguments[0]) == "pdf") { _bkind = "pdf_barracks"; }
+                        } else {
+                            _bp = cheat_target_planet(_bstar, (_ba >= 1) ? cheat_arguments[0] : undefined);
+                            if ((_ba >= 2) && (string_lower(cheat_arguments[1]) == "pdf")) { _bkind = "pdf_barracks"; }
+                        }
+                        var _bregs = regions_ensure(_bstar, _bp);
+                        if (array_length(_bregs) > 0) {
+                            array_push(_bregs[0].buildings, _bkind);
+                            scr_popup("DEBUG", $"Built {_bkind} in {_bregs[0].name} on {_bstar.name} {scr_roman(_bp)}. It ticks each end turn.", "");
+                        } else {
+                            scr_popup("DEBUG", "spawnbarracks: no regions on that planet", "");
+                        }
+                    } else {
+                        scr_popup("DEBUG", "spawnbarracks: no star found", "");
+                    }
+                    break;
+                }
                 case "newchap":
                     obj_controller.chaplain_points = 50;
                     break;
@@ -103,12 +174,78 @@ function scr_cheatcode(argument0) {
                         scr_add_man("Flash Git", 0, "", "", 0, true, "default");
                     }
                     break;
+                case "guardsman":
+                    repeat (real(cheat_arguments[0])) {
+                        scr_add_man("Guardsman", 0, "", "", 0, true, "home_planet", {skip_company_order: true});
+                    }
+                    with (obj_ini) {
+                        scr_company_order(0);
+                    }
+                    break;
+                case "guardsquad":
+                    repeat (real(cheat_arguments[0])) {
+                        scr_add_man("Guard Squad", 0, "", "", 0, true, "home_planet", {skip_company_order: true});
+                    }
+                    with (obj_ini) {
+                        scr_company_order(0);
+                    }
+                    break;
+                case "veteranguard":
+                    // Promote every basic Guardsman to Veteran Guard (role swap, veteran
+                    // stat buff, Hellgun equip unlocked). The Auxilia screen Promote button
+                    // covers the selection path (setup_promotion_popup); this cheat remains
+                    // the promote-everything bulk trigger.
+                    var _vet_promoted = promote_auxilia_to_veteran();
+                    with (obj_ini) {
+                        scr_company_order(0);
+                    }
+                    scr_popup("Veteran Guard", $"Promoted {_vet_promoted} Guardsmen to Veteran Guard.", "");
+                    break;
+                case "guardxp":
+                    // Grant experience to every basic Guardsman for testing the veterancy
+                    // gate without fighting several battles. "guardxp" alone grants exactly
+                    // enough to promote (GUARD_VETERAN_XP); "guardxp N" grants N. Follow with
+                    // the veteranguard cheat (or the Promote All button) to promote the now
+                    // eligible troopers.
+                    var _xp_amt = real(cheat_arguments[0]);
+                    if (_xp_amt <= 1) {
+                        _xp_amt = GUARD_VETERAN_XP;
+                    }
+                    var _grd_all = collect_role_group("all", "", false, { roles: ["Guardsman"] });
+                    for (var _gx = 0; _gx < array_length(_grd_all); _gx++) {
+                        _grd_all[_gx].add_experience(_xp_amt);
+                    }
+                    scr_popup("Guard XP", $"Granted {_xp_amt} experience to {array_length(_grd_all)} Guardsmen.", "");
+                    break;
                 case "chaosfleetspawn":
                     spawn_chaos_warlord();
                     break;
                 case "waaagh":
                     init_ork_waagh(true);
                     break;
+                case "ascension":
+                case "ascensionday":
+                case "beacon": {
+                    // DEBUG: force ASCENSION DAY on the selected planet — reveal/seed a Genestealer Cult,
+                    // hand the world to the Tyranids and light the Ascension Beacon (summons the Hive Fleet).
+                    var _astar = noone;
+                    if (instance_exists(obj_star_select)) { _astar = obj_star_select.target; }
+                    if (!instance_exists(_astar) && instance_exists(obj_p_fleet)) {
+                        _astar = instance_nearest(obj_p_fleet.x, obj_p_fleet.y, obj_star);
+                    }
+                    if (!instance_exists(_astar)) {
+                        _astar = instance_nearest(mouse_x, mouse_y, obj_star);
+                    }
+                    if (instance_exists(_astar)) {
+                        var _aplanet = obj_controller.selecting_planet;
+                        if (_aplanet < 1) { _aplanet = real(cheat_arguments[0]); }
+                        _aplanet = clamp(_aplanet, 1, max(1, _astar.planets));
+                        force_ascension_day(_astar, _aplanet);
+                    } else {
+                        scr_popup("DEBUG", "ascension: no star selected", "");
+                    }
+                    break;
+                }
                 case "neworkfleet":
                     var p_fleet = get_largest_player_fleet();
                     with (instance_nearest(p_fleet.x, p_fleet.y, obj_star)) {
@@ -356,8 +493,28 @@ function scr_cheatcode(argument0) {
                         array_insert(obj_controller.recruit_exp, i, 20);
                         array_insert(obj_controller.recruit_data, i, {});
                         array_insert(obj_controller.recruit_name, i, global.name_generator.GenerateFromSet("space_marine"));
-                        scr_alert("green", "recruitment", (string(obj_controller.recruit_name[i]) + "has started training."), 0, 0);
                     }
+                    // One summary alert instead of one per recruit. Firing hundreds of
+                    // alerts in a single frame (recruit 500) floods the notification
+                    // system and hangs the game.
+                    scr_alert("green", "recruitment", (string(real(cheat_arguments[0])) + " recruits have started training."), 0, 0);
+                    break;
+                case "spawnmarines":
+                    // Spawn N fully-formed marines straight into a company (1st by
+                    // default), bypassing the training queue, for testing large rosters.
+                    // Usage: "spawnmarines" (500 into company 1), "spawnmarines 800", or
+                    // "spawnmarines 500 3" for company 3. Uses the same default recruit
+                    // role the game grants on recruitment completion, and posts one
+                    // summary alert rather than one per marine, so a big count does not
+                    // flood the notification system the way the old recruit loop did.
+                    var _spawn_count = (array_length(cheat_arguments) > 0) ? real(cheat_arguments[0]) : 500;
+                    var _spawn_company = (array_length(cheat_arguments) > 1) ? real(cheat_arguments[1]) : 1;
+                    with (obj_controller) {
+                        repeat (_spawn_count) {
+                            scr_add_man(obj_ini.role[100][12], _spawn_company, 20, global.name_generator.GenerateFromSet("space_marine"), 0, false, "default", {});
+                        }
+                    }
+                    scr_alert("green", "recruitment", (string(_spawn_count) + " marines spawned in company " + string(_spawn_company) + "."), 0, 0);
                     break;
                 case "shiplostevent":
                     loose_ship_to_warp_event();
@@ -496,7 +653,6 @@ function draw_planet_debug_problems() {
         if (scr_hit(38, _y, 337, _y + 20)) {
             tooltip_draw(mission_name_key(_keys[i]));
             if (mouse_button_clicked()) {
-                var _p_data = obj_star_select.p_data;
                 switch (_keys[i]) {
                     case "inquisitor":
                         mission_inquistion_hunt_inquisitor(target.id);
@@ -581,6 +737,21 @@ function draw_planet_debug_forces() {
             target[$ key][current_planet] = clamp(target[$ key][current_planet] + 1, 0, 6);
         }
     }
+
+    // Region layer readout (Sector Governor roadmap B).
+    if (current_planet >= 1) {
+        var _regions = regions_ensure(target, current_planet);
+        var _region_count = array_length(_regions);
+        var _contested = planet_is_contested(target, current_planet) ? " [CONTESTED]" : "";
+        var _region_y = base_y + array_length(faction_names) * 20 + 8;
+        draw_text(38, _region_y, $"Regions ({_region_count}){_contested}:");
+        for (var r = 0; r < _region_count; r++) {
+            var _region = _regions[r];
+            var _cap = _region.is_capital ? "*" : "-";
+            draw_text(48, _region_y + 18 + r * 18, $"{_cap} {_region.name}: {region_faction_name(_region.owner)}, pop {_region.population}");
+        }
+    }
+
     pop_draw_return_values();
 }
 
@@ -623,7 +794,7 @@ function system_debug_enemy_invasion() {
                     system_debug_enemy_invasion_spawn();
                 },
             },
-        ],
+        ]
     );
 }
 
@@ -771,4 +942,42 @@ function system_debug_remove_fleet() {
     replace_options(_opts, false, false);
 
     text = "Which fleet would you like to delete?";
+}
+
+/// Resolve the star a planet-targeting cheat should act on. The console can't be
+/// open while the planet screen is, so "what you're looking at" can't work: use
+/// the last system/planet the player clicked, then fall back to the star nearest
+/// the fleet, then the mouse.
+function cheat_target_star(_name = "") {
+    // A quoted star name wins outright: spawnguard "Demetrius" 2 5000
+    if (_name != "") {
+        var _named = find_star_by_name(_name);
+        if (instance_exists(_named)) {
+            return _named;
+        }
+    }
+    if (variable_instance_exists(obj_controller, "last_selected_star") && instance_exists(obj_controller.last_selected_star)) {
+        return obj_controller.last_selected_star;
+    }
+    if (instance_exists(obj_star_select)) {
+        return obj_star_select.target;
+    }
+    if (instance_exists(obj_p_fleet)) {
+        return instance_nearest(obj_p_fleet.x, obj_p_fleet.y, obj_star);
+    }
+    return instance_nearest(mouse_x, mouse_y, obj_star);
+}
+
+/// Default planet for a planet-targeting cheat: explicit argument wins, else the
+/// last planet the player clicked (when it belongs to the resolved star), else 1.
+function cheat_target_planet(_star, _arg_planet) {
+    if (_arg_planet != undefined) {
+        return clamp(real(_arg_planet), 1, max(1, _star.planets));
+    }
+    if (variable_instance_exists(obj_controller, "last_selected_planet")
+    && variable_instance_exists(obj_controller, "last_selected_star")
+    && (obj_controller.last_selected_star == _star)) {
+        return clamp(obj_controller.last_selected_planet, 1, max(1, _star.planets));
+    }
+    return 1;
 }

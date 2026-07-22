@@ -60,7 +60,7 @@ slate_panel.inside_method = function() {
         } else if (title == "LIBRARIUM") {
             draw_sprite_ext(spr_lib_area_pad, 0, x + (panel_width / 2) - ((0.3 * 180) / 2), y - 30, 0.3, 0.3, 0, c_white, 1);
         } else {
-            sprx = x + (wid / 2) - 16;
+            sprx = x + (panel_width / 2) - 16;
             spry = y - 16;
             sprw = 141 * 0.23;
             sprh = 141 * 0.23;

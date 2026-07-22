@@ -50,6 +50,15 @@ if (dragging == false) {
     rel_mousey = 0;
     old_x = 0;
     old_y = 0;
+    // col_parent deliberately NOT reset here. It is the bar's home bracket, assigned
+    // once by init_combat_bars, and mouse_release needs it on drop: both for the
+    // same-bracket snap-back check and for decrementing the source bracket's
+    // occupancy (temp[4800 + col_parent]). Zeroing it every idle frame (upstream
+    // commit 6730ae794) made every drop read and subtract from temp[4800], an
+    // uninitialized slot outside the per-bracket 4801-4810 range: a hard crash when
+    // that slot holds a string, and silent occupancy-count corruption (source
+    // bracket never decremented) when it holds a number. Bug exists verbatim in
+    // upstream main.
     col_target = 0;
     above_neighbor = 0;
     nearest_col = 0;

@@ -113,7 +113,26 @@ function scr_star_ownership(argument0) {
             }
         }
 
+        // Derived conquest overlay: reflect how far this planet has been taken (Option A). §16
+        regions_sync(id, run);
+
         if (argument0 != false) {
+            // Enemy reinforcement between regions, ONE HOP PER TURN: a thinned enemy region pulls
+            // force from an adjacent same-owner region (capital first) instead of the split instantly
+            // rebalancing, so attacking a single region can no longer bleed the whole planet at once.
+            regions_reinforce_tick(id, run);
+            // Dig In: a force that has held a region for a couple of turns entrenches (+1
+            // fortification, capped). Runs right after regions_sync so ownership for the turn
+            // is settled and a region only captured this turn is not credited a hold turn.
+            regions_dig_in_tick(id, run);
+            // Per-turn effects of region buildings the player holds (income, garrison growth, etc.). §16
+            regions_buildings_tick(id, run);
+            // Infrastructure develops the longer the current owner holds the world — drives the force tier
+            // (unit types unlocked) and the production ramp. Reset on capture (see set_new_owner).
+            p_infra_turns[run] = min(p_infra_turns[run] + 1, 999);
+            // Anti-orbital guns fire for whoever holds their region (can turn on the player). §16
+            regions_orbital_guns_tick(id, run);
+            regions_ground_advance_tick(id, run);
             if (array_length(p_feature[run]) != 0) {
                 if (planet_feature_bool(p_feature[run], eP_FEATURES.DAEMONIC_INCURSION)) {
                     p_heresy[run] += 2;

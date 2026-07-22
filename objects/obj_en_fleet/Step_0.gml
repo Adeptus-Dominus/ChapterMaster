@@ -69,14 +69,20 @@ if (ii_check == 0) {
 
 if (owner == eFACTION.TYRANIDS) {
     image_alpha = 0;
-    if (instance_exists(obj_p_fleet)) {
-        var bundy = instance_nearest(x, y, obj_p_fleet);
-        if ((bundy.action == "") && (self.action == "") && (point_distance(bundy.x, bundy.y, x, y) < 90) && (bundy.x > x) && (bundy.y < y)) {
+    // A beacon-summoned Hive Fleet is a KNOWN, screaming arrival — flagged 'revealed' so it stays visible the
+    // whole way across the map (§16n). Ordinary Tyranid tendrils keep their fog-of-war stealth below.
+    if (variable_instance_exists(id, "revealed") && revealed) {
+        image_alpha = 1;
+    } else {
+        if (instance_exists(obj_p_fleet)) {
+            var bundy = instance_nearest(x, y, obj_p_fleet);
+            if ((bundy.action == "") && (self.action == "") && (point_distance(bundy.x, bundy.y, x, y) < 90) && (bundy.x > x) && (bundy.y < y)) {
+                image_alpha = 1;
+            }
+        }
+        if ((instance_nearest(x, y - 32, obj_star).vision == 1) && (action == "")) {
             image_alpha = 1;
         }
-    }
-    if ((instance_nearest(x, y - 32, obj_star).vision == 1) && (action == "")) {
-        image_alpha = 1;
     }
 }
 

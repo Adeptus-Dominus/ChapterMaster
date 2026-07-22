@@ -37,6 +37,16 @@ p_owner = array_create(_planet_array_size, 0);
 p_first = array_create(_planet_array_size, 0);
 p_population = array_create(_planet_array_size, 0);
 p_max_population = array_create(_planet_array_size, 0);
+// --- Sector Governor overhaul: population/force data model (p_* so they serialise; old saves back-fill) ---
+p_race_pop = array_create_advanced(_planet_array_size, array_create(15, 0)); // [planet][eFACTION] headcount
+p_infra_turns = array_create(_planet_array_size, 32);   // world development counter (drives force tier)
+p_ork_loot = array_create(_planet_array_size, 0);       // looted vehicles the Orks hold
+p_biomass = array_create(_planet_array_size, 0);        // Tyranid biomass reserve
+// Highest devouring-warning stage already announced for this world (0 = none, 4 = stripped bare), so
+// each escalating warning fires once instead of every turn. MUST be declared here like the other p_*
+// arrays or deserialize crashes on load.
+p_biomass_warn = array_create(_planet_array_size, 0);
+p_ork_clan = array_create_advanced(_planet_array_size, []); // per-planet array of Ork warband structs
 p_large = array_create(_planet_array_size, 0);
 p_pop = array_create(_planet_array_size, "");
 p_guardsmen = array_create(_planet_array_size, 0);
@@ -54,6 +64,7 @@ p_tyranids = array_create(_planet_array_size, 0);
 p_traitors = array_create(_planet_array_size, 0);
 p_chaos = array_create(_planet_array_size, 0);
 p_demons = array_create(_planet_array_size, 0);
+p_chaos_god = array_create(_planet_array_size, -1);      // which Chaos god a Chaos world flies (-1 = none) §16r
 p_sisters = array_create(_planet_array_size, 0);
 p_necrons = array_create(_planet_array_size, 0);
 p_halp = array_create(_planet_array_size, 0);
@@ -66,6 +77,23 @@ p_governor = array_create(_planet_array_size, false);
 p_operatives = array_create_advanced(_planet_array_size, []);
 p_feature = array_create_advanced(_planet_array_size, []);
 p_upgrades = array_create_advanced(_planet_array_size, []);
+// Multi-region layer: array of Region records per planet. MUST be declared here or deserialize crashes on load.
+p_regions = array_create_advanced(_planet_array_size, []);
+// Heretic-revolt peace cooldown (turn a planet was last cleansed). Was lazily
+// created in scr_region_functions on first cleanse; serialize sweeps every p_*
+// instance var into planet_data, so a fresh instance MUST declare it or loading
+// a save that captured it crashes at deserialize (array write into undefined).
+p_heresy_cleansed_turn = array_create(_planet_array_size, -9999);
+p_region_focus = array_create_advanced(_planet_array_size, 0); // player's conquest-focus region index
+// Persisted outlying-region names per planet, chosen once and reused so names (and the region
+// layout the focus indexes into) stay STABLE across turns and reloads. -1/empty entry = not yet
+// chosen for that planet. Same load-safety rule as p_region_focus.
+p_region_names = array_create_advanced(_planet_array_size, -1);
+// Positional-siege ground front: which region the player's landed force occupies on a
+// gun-world (-1 = no landing). Declared here so the serializer saves it and deserialize
+// does not crash on load (same rule as p_region_focus).
+p_ground_position = array_create(_planet_array_size, -1);
+p_enemy_gun_progress = array_create(_planet_array_size, 0); // enemy Orbital Gun Array build progress (turns)
 p_influence = array_create_advanced(_planet_array_size, array_create(15, 0));
 p_problem = array_create_advanced(_planet_array_size, array_create(8, ""));
 p_problem_other_data = array_create_advanced(_planet_array_size, array_create_advanced(8, {}));
@@ -82,8 +110,17 @@ get_garrison = function(planet) {
         _gar = system_garrison[planet];
         _gar.star = id;
         _gar.planet = planet;
-    } else {
-        _gar.update();
+    } else  {
+        try {
+            _gar.update();
+        } catch (_garrison_reload_error) {
+            // A garrison restored from a save keeps its data but loses its struct
+            // methods, so rebuild it from the planet's operatives, which persist.
+            system_garrison[planet] = new GarrisonForce(self, planet);
+            _gar = system_garrison[planet];
+            _gar.star = self;
+            _gar.planet = planet;
+        }
     }
     return _gar;
 };
@@ -95,8 +132,15 @@ get_sabatours = function(planet) {
         _gar = system_sabatours[planet];
         _gar.star = id;
         _gar.planet = planet;
-    } else {
-        _gar.update();
+    } else  {
+        try {
+            _gar.update();
+        } catch (_sabotage_reload_error) {
+            system_sabatours[planet] = new GarrisonForce(self, planet, "sabotage");
+            _gar = system_sabatours[planet];
+            _gar.star = self;
+            _gar.planet = planet;
+        }
     }
     return _gar;
 };
@@ -107,13 +151,23 @@ get_planet_data = function(planet) {
     if (is_undefined(_gar)) {
         system_datas[planet] = new PlanetData(planet, id);
         _gar = system_datas[planet];
-    } else {
-        _gar.refresh_data();
+    } else  {
+        try {
+            _gar.refresh_data();
+        } catch (_planetdata_reload_error) {
+            system_datas[planet] = new PlanetData(planet, self);
+            _gar = system_datas[planet];
+        }
     }
     return _gar;
 };
 
-add_feature = function(planet, feature) {
+/// @returns {Array<Struct.Region>}
+get_regions = function(planet){
+    return regions_ensure(self, planet);
+}
+
+add_feature = function(planet, feature){
     array_push(p_feature[planet], feature);
 };
 
@@ -225,6 +279,13 @@ function deserialize(save_data) {
                     continue;
                 }
                 var val = planet[$ var_name];
+                // Sanitize on load: a p_ field the save captured but this build does
+                // not declare (lazily-added or legacy) leaves self[$ var_name]
+                // undefined, and the array write below kills the whole load.
+                // Materialize an array instead of dying.
+                if (!variable_instance_exists(id, var_name) || !is_array(self[$ var_name])) {
+                    self[$ var_name] = array_create(array_length(planet_arr), 0);
+                }
                 self[$ var_name][p] = val;
             }
         }

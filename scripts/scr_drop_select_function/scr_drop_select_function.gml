@@ -46,17 +46,26 @@ function drop_select_unit_selection() {
         // draw_rectangle(xx+1084,yy+215,xx+1142,yy+273,0);
 
         // Formation
-        var _formation_str = $"Formation: {obj_controller.bat_formation[formation_possible[formation_current]]}";
-        btn_formation.x1 = x2 - 50 - string_width(_formation_str);
+        // Hardening: never index formation_possible without checking it is non-empty and the
+        // index is in range. A drifted or stale formation_current (e.g. across a load) would
+        // otherwise crash the whole drop screen on draw.
+        var _formation_str = "Formation: -";
+        if (array_length(formation_possible) > 0) {
+            formation_current = clamp(formation_current, 0, array_length(formation_possible) - 1);
+            _formation_str = $"Formation: {obj_controller.bat_formation[formation_possible[formation_current]]}";
+        }
+        // Upstream renamed this button to btn_formation in obj_drop_select Create_0;
+        // the old name here crashed the whole attack screen on draw.
+        btn_formation.x1 = x2 - 40 - (string_width(_formation_str) + 4);
         btn_formation.y1 = y1 + 80;
-        btn_formation.button_color = CM_GREEN_COLOR;
-        btn_formation.text_color = CM_GREEN_COLOR;
         btn_formation.update({str1: _formation_str});
         btn_formation.draw();
         if (btn_formation.clicked()) {
-            formation_current++;
-            if (formation_current >= array_length(formation_possible)) {
-                formation_current = 0;
+            if (array_length(formation_possible) > 0) {
+                formation_current++;
+                if (formation_current >= array_length(formation_possible)) {
+                    formation_current = 0;
+                }
             }
         }
 
@@ -76,18 +85,46 @@ function drop_select_unit_selection() {
     // Local force button;
     if (purge != eDROP_TYPE.PURGEBOMBARD) {
         var _local_button = roster.local_button;
+        // Local force exhaustion: planetside forces also support at most
+        // SHIP_ASSAULTS_PER_TURN ground assaults per turn, closing the loop of
+        // deploying troops to the surface and attacking endlessly for free. When
+        // spent, the button locks red like an exhausted ship. Attacks only.
+        var _locals_spent = (attack == 1) && (local_assaults_used(p_target, planet_number) >= GROUND_ASSAULTS_PER_TURN);
+        if (_locals_spent) {
+            if (_local_button.active) {
+                _local_button.active = false;
+                roster.update_roster();
+            }
+            _local_button.text_color = c_red;
+            _local_button.button_color = c_red;
+            _local_button.tooltip = "This planet's forces have already supported the maximum number of ground assaults this turn.";
+        }
         _local_button.x1 = _buttons_x;
         _local_button.y1 = _buttons_y;
         _local_button.update();
         _local_button.draw();
+
         if (_local_button.clicked()) {
+            if (_locals_spent) {
+                _local_button.active = false;
+            }
             roster.update_roster();
         }
     }
 
     _buttons_y += 30;
 
-    // Ship buttons;
+    // Ship assault economy: assault-exhausted ships are drawn locked and red (see
+    // scr_roster). ToggleButton clicks and Select All still flip their active flag,
+    // so force locked ships back off here before the selection is consumed.
+    for (var _ls = 0; _ls < array_length(roster.ships); _ls++) {
+        var _ls_btn = roster.ships[_ls];
+        if (variable_struct_exists(_ls_btn, "assault_locked") && _ls_btn.assault_locked && _ls_btn.active) {
+            _ls_btn.active = false;
+            roster.ship_multi_selector.changed = true;
+        }
+    }
+
     if (roster.ship_multi_selector.changed) {
         roster.update_roster();
     }
@@ -142,6 +179,9 @@ function drop_select_unit_selection() {
     if (purge == eDROP_TYPE.RAIDATTACK) {
         var target_race = "";
         var target_threat = "";
+        // Ported from upstream: without this declaration, attacking a world with no
+        // enemy forces left (race_quantity 0) skips the only assignment below and the
+        // string_width read throws "not set before reading it".
         var _target_str = "No Target";
 
         if (attacking >= 5 && attacking <= 13) {
@@ -166,6 +206,23 @@ function drop_select_unit_selection() {
         btn_target.update({str1: _target_str});
         btn_target.draw();
         btn_target.active = force_present[1] != 0;
+
+        // Hold Ground toggle (ground assaults only): placed to the LEFT of the enemy
+        // faction/threat label on the same row, out of the ship-selection column where it
+        // used to overlap the ship names. When active, survivors stay planetside as a
+        // foothold after the battle.
+        if (attack == 1) {
+            var _hg_button = roster.hold_ground_button;
+            _hg_button.update({str1: "Hold Ground"});
+            _hg_button.x1 = btn_target.x1 - _hg_button.w - 20;
+            _hg_button.y1 = btn_target.y1;
+            _hg_button.tooltip = "HOLD GROUND: your surviving troops stay on the surface in the region you attack, instead of returning to orbit. They hold that territory and an automatic battle is fought there each turn until the region is cleared - either they take it, or they are wiped out. Use 'Recall All' in Manage Units to bring them back to their ships. Landing under fire like this is the only way onto an enemy-held region.";
+            _hg_button.update();
+            _hg_button.draw();
+            // ToggleButton.clicked() already flips `active`; toggling again here cancelled it,
+            // so the button appeared to do nothing on click.
+            _hg_button.clicked();
+        }
 
         if (btn_target.clicked()) {
             var _current_i = 0;
@@ -192,6 +249,52 @@ function drop_select_unit_selection() {
         }
 
         draw_sprite(spr_faction_icons, attacking, x2 - 100, y1 + 20);
+
+        // Target SECTOR selector: which planetary region the assault lands on. Cycles the planet's
+        // conquest focus (shared with the system-view regions panel). Only on multi-region worlds.
+        if (planet_region_count(p_target, planet_number) > 1) {
+            var _seci = region_focus_get(p_target, planet_number);
+            var _secr = region_get(p_target, planet_number, _seci);
+            var _forti_n = ["None", "Sparse", "Light", "Moderate", "Heavy", "Major", "Extreme"];
+            var _sector_str = $"Sector {_seci + 1}: {_secr.name} ({region_faction_name(_secr.owner)}, Fort {_forti_n[clamp(_secr.fortification, 0, 6)]}, Def {_secr.defences})";
+            // Show the commitment tradeoff while cycling: outlying sectors of a foe
+            // holding several regions meet a partial force; the capital (or a foe
+            // in a single region) meets everything, leaders included.
+            if (_secr.is_capital || (array_length(regions_owned_by(p_target, planet_number, attacking)) <= 1)) {
+                _sector_str += " [full enemy force]";
+            } else {
+                _sector_str += " [partial enemy force]";
+            }
+            // Drawn directly (not via InteractiveButton, whose width-based text padding pushes a
+            // wide label to the box bottom): a centred box with the text centred both ways inside it.
+            // Click cycles the conquest focus (shared with the system-view regions panel).
+            draw_set_font(fnt_40k_14);
+            var _ssw = string_width(_sector_str);
+            var _ssh = string_height(_sector_str);
+            var _ssx1 = x3 - (_ssw / 2) - 8;
+            // Sit in the empty band between the ship list above and the "Selected Squads:"
+            // header below (which is at y2 - 220), rather than up in the ship area. Anchored
+            // off y2 so it tracks the squads header and never overlaps the ships.
+            var _ssy2 = (y2 - 220) - 14;
+            var _ssy1 = _ssy2 - _ssh - 8;
+            var _ssx2 = x3 + (_ssw / 2) + 8;
+            draw_set_color(CM_GREEN_COLOR);
+            draw_rectangle(_ssx1, _ssy1, _ssx2, _ssy2, true);
+            draw_set_halign(fa_center);
+            draw_set_valign(fa_middle);
+            draw_text(x3, (_ssy1 + _ssy2) / 2, _sector_str);
+            draw_set_halign(fa_left);
+            draw_set_valign(fa_top);
+            if (scr_hit(_ssx1, _ssy1, _ssx2, _ssy2) && mouse_button_clicked()) {
+                var _new_focus = (_seci + 1) mod planet_region_count(p_target, planet_number);
+                region_focus_set(p_target, planet_number, _new_focus);
+                // Stash on the persistent controller too, so the choice survives to launch even if
+                // the star's focus is rebuilt in between (the star-state churn that landed troops
+                // in the capital regardless of selection).
+                obj_controller.pending_battle_region = _new_focus;
+                LOGGER.info($"SECTOR SELECTOR click: was {_seci} -> set {_new_focus} (stashed on controller)");
+            }
+        }
     }
 
     // Back / Purge buttons
@@ -203,6 +306,25 @@ function drop_select_unit_selection() {
         menu = 0;
         purge = 0;
         instance_destroy();
+    }
+
+    // Behead the Warboss (§16f): only in the raid screen, and only when this world actually has an Ork
+    // Warboss present. A decapitation strike — kills the boss (a non-duel death), throwing the clans into a
+    // succession scramble or civil war. Spends the fleet's action, like a raid.
+    if ((purge == eDROP_TYPE.RAIDATTACK) && planet_feature_bool(p_target.p_feature[planet_number], eP_FEATURES.ORKWARBOSS)) {
+        btn_behead.x1 = btn_back.x1;
+        btn_behead.y1 = btn_back.y1 - 45;
+        btn_behead.active = true;
+        btn_behead.update();
+        btn_behead.draw();
+        if (btn_behead.clicked()) {
+            if (sh_target != noone) { sh_target.acted += 1; }
+            var _bh_res = ork_decapitation_strike(p_target, planet_number);
+            scr_popup("Decapitation Strike", _bh_res.text, "waaagh");
+            menu = 0;
+            purge = 0;
+            instance_destroy();
+        }
     }
 
     // Attack / Raid buttons
@@ -221,11 +343,31 @@ function drop_select_unit_selection() {
         if (purge == 0) {
             combating = 1; // Start battle here
 
+            // Hardening: resolve the chosen formation through a single bounds-checked read so a
+            // bad formation_current cannot crash the drop launch. Falls back to formation 0 when
+            // no formations are available.
+            var _chosen_form = 0;
+            if (array_length(formation_possible) > 0) {
+                _chosen_form = formation_possible[clamp(formation_current, 0, array_length(formation_possible) - 1)];
+            }
+
             if (attack == 1) {
-                obj_controller.last_attack_form = formation_possible[formation_current];
+                obj_controller.last_attack_form = _chosen_form;
             }
             if (attack == 0) {
-                obj_controller.last_raid_form = formation_possible[formation_current];
+                obj_controller.last_raid_form = _chosen_form;
+            }
+
+            // The fleet action tick used to run AFTER instance_deactivate_all, writing
+            // to a deactivated instance by id. Whether that write lands is
+            // runtime-dependent, and the tester's repro (unlimited raids from a
+            // stationary fleet, third raid never blocked) matches it silently failing
+            // in the compiled build: acted never climbed, so the raid gate
+            // (acted <= 1) always passed. Ticked before deactivation instead, with a
+            // proof line for the session log.
+            if (sh_target != noone) {
+                sh_target.acted += 1;
+                LOGGER.info($"DROP LAUNCH {((attack == 1) ? "attack" : "raid")}: fleet acted now {sh_target.acted}");
             }
 
             instance_deactivate_all(true);
@@ -233,9 +375,36 @@ function drop_select_unit_selection() {
             instance_activate_object(obj_ini);
             instance_activate_object(obj_drop_select);
 
-            // 135 ; temporary balancing
-            if (sh_target != noone) {
-                sh_target.acted += 1;
+            // Ship assault economy: each distinct ship contributing units to this
+            // ground deployment spends one support use this turn (SHIP_ASSAULTS_PER_TURN
+            // max). This now covers raids as well as attacks (both are RAIDATTACK drops
+            // that land troops from ships), so a raid is gated per ship like an assault
+            // rather than by the fleet-wide acted counter. fleet.acted above still ticks
+            // for movement and the unconverted purge gate. Local planetside forces
+            // (ship id -1) cost nothing here; they spend a local use just below.
+            if (purge == eDROP_TYPE.RAIDATTACK) {
+                var _spent_ships = [];
+                var _local_participated = false;
+                for (var _su = 0; _su < array_length(roster.selected_units); _su++) {
+                    var _sel = roster.selected_units[_su];
+                    var _sel_ship = is_struct(_sel) ? _sel.ship_location : obj_ini.veh_lid[_sel[0]][_sel[1]];
+                    if (_sel_ship > -1) {
+                        if (!array_contains(_spent_ships, _sel_ship)) {
+                            array_push(_spent_ships, _sel_ship);
+                            var _drop_kind = (attack == 1) ? "assault" : "raid";
+                            ship_action_spend(_sel_ship, _drop_kind);
+                            LOGGER.info($"{string_upper(_drop_kind)} SPEND ship {_sel_ship}: uses now {ship_action_used(_sel_ship, _drop_kind)}/{SHIP_ASSAULTS_PER_TURN}");
+                        }
+                    } else {
+                        _local_participated = true;
+                    }
+                }
+                // Planetside forces joining the assault spend one of the planet's
+                // local support uses, so troops cannot be dropped onto the surface
+                // and used for unlimited free attacks.
+                if (_local_participated) {
+                    local_assault_spend(p_target, planet_number);
+                }
             }
 
             if ((attacking == 10) || (attacking == 11)) {
@@ -250,18 +419,73 @@ function drop_select_unit_selection() {
             obj_ncombat.dropping = 1 - attack;
             obj_ncombat.attacking = attack;
             obj_ncombat.enemy = attacking;
-            obj_ncombat.formation_set = formation_possible[formation_current];
+            obj_ncombat.formation_set = _chosen_form;
             obj_ncombat.defending = false;
             obj_ncombat.local_forces = roster.local_button.active;
+            // Foothold: only a ship-launched ground assault (attack, fleet present) can hold
+            // ground; local-only or reinforcement battles do not embark/disembark here.
+            obj_ncombat.hold_ground = ((attack == 1) && (sh_target != noone) && roster.hold_ground_button.active) ? 1 : 0;
+            LOGGER.info($"HOLD GROUND launch: attack={attack} sh_target_ok={(sh_target != noone)} button_active={roster.hold_ground_button.active} -> hold_ground={obj_ncombat.hold_ground} | battle_region={obj_ncombat.battle_region} focus={region_focus_get(p_target, planet_number)} planet={planet_number} regions={planet_region_count(p_target, planet_number)}");
+
+            // Orbital Gun Array toll: a ship-launched assault against a gun-world provokes
+            // the guns unless it targets the safe landing region. Only applies when a fleet
+            // is actually in orbit (a purely planetside local-forces attack risks no ship).
+            // The toll is charged once per launch on the region the assault is aimed at.
+            if (instance_exists(sh_target)) {
+                var _og_region = (planet_region_count(p_target, planet_number) > 1)
+                    ? region_focus_get(p_target, planet_number) : -1;
+                orbital_gun_ship_toll(p_target, planet_number, _og_region);
+            }
+
+            // (Imperial Guard assault bring-along disabled for now: the player-side
+            //  battlefield unit needs real per-model data, so this is being rebuilt.
+            //  Until then we do not touch the embarked Guard, so attacks cost nothing.)
+            obj_ncombat.player_attack_guard = 0;
+
+            // Note: the region the player is pushing into is derived by the conquest overlay
+            // (region_assault_target / regions_sync), which handles per-region defence resistance
+            // and consume-on-capture without touching the fragile combat core. The tactical
+            // obj_ncombat fortification system assumes the PLAYER is the defender, so it is left
+            // alone here; making the battle screen itself region-aware is the deferred Option B.
+
+            // Region commitment: assaulting an OUTLYING sector of a multi-region world
+            // meets only that region's GARRISON (its capped slice, see region_garrison);
+            // the capital, or a foe squeezed into one region, meets the reserve/whole
+            // force. Leaders (Warboss, Farseer) only defend the capital.
+            var _region_partial = false;
+            if ((attack == 1) && (planet_region_count(p_target, planet_number) > 1)) {
+                var _rp_focus = region_focus_get(p_target, planet_number);
+                var _rp_region = region_get(p_target, planet_number, _rp_focus);
+                var _rp_is_capital = is_struct(_rp_region) && _rp_region.is_capital;
+                if (!_rp_is_capital) {
+                    var _rp_held = array_length(regions_owned_by(p_target, planet_number, attacking));
+                    if (_rp_held > 1) {
+                        _region_partial = true;
+                    }
+                }
+            }
+            obj_ncombat.region_partial = _region_partial;
+            // Capture the exact region the assault targets, so the foothold lands there regardless
+            // of any later focus change. -1 on a single-region world (whole-planet battle).
+            if (planet_region_count(p_target, planet_number) > 1) {
+                // Prefer the region stashed on the persistent controller at selector-click time; it
+                // survives the star-state churn that was resetting the live focus before launch.
+                var _pbr = obj_controller.pending_battle_region;
+                var _valid_pbr = is_real(_pbr) && (_pbr >= 0) && (_pbr < planet_region_count(p_target, planet_number));
+                obj_ncombat.battle_region = _valid_pbr ? _pbr : region_focus_get(p_target, planet_number);
+            } else {
+                obj_ncombat.battle_region = -1;
+            }
+            LOGGER.info($"BATTLE_REGION captured: {obj_ncombat.battle_region} (pending={obj_controller.pending_battle_region}, focus={region_focus_get(p_target, planet_number)}, planet={planet_number}, regions={planet_region_count(p_target, planet_number)})");
 
             var _planet = obj_ncombat.battle_object.p_feature[obj_ncombat.battle_id];
             if (obj_ncombat.battle_object.space_hulk == 1) {
                 obj_ncombat.battle_special = "space_hulk";
             }
-            if ((planet_feature_bool(_planet, eP_FEATURES.WARLORD6) == 1) && (obj_ncombat.enemy == eFACTION.ELDAR) && (obj_controller.faction_defeated[6] == 0)) {
+            if ((planet_feature_bool(_planet, eP_FEATURES.WARLORD6) == 1) && (obj_ncombat.enemy == eFACTION.ELDAR) && (obj_controller.faction_defeated[6] == 0) && !_region_partial) {
                 obj_ncombat.leader = 1;
             }
-            if (obj_ncombat.enemy == eFACTION.ORK && planet_feature_bool(_planet, eP_FEATURES.ORKWARBOSS)) {
+            if (obj_ncombat.enemy == eFACTION.ORK && planet_feature_bool(_planet, eP_FEATURES.ORKWARBOSS) && !_region_partial) {
                 obj_ncombat.leader = 1;
                 obj_ncombat.ork_warboss = _planet[search_planet_features(_planet, eP_FEATURES.ORKWARBOSS)[0]];
             }
@@ -329,6 +553,23 @@ function drop_select_unit_selection() {
                 obj_ncombat.threat = 7;
             }
 
+            // Outlying-sector commitment: derive the engaged force level from the
+            // committed share of the real headcount where the population is
+            // modelled; otherwise knock two levels off. Only level-scale battles
+            // (1-6) qualify; Enormicus (7) and Imperium headcount battles pass.
+            if (_region_partial && (obj_ncombat.threat >= 1) && (obj_ncombat.threat <= 6)) {
+                // Engage the focused region's actual GARRISON (capped per-region force),
+                // not a flat fraction of the planet total, so an outlying region fields its
+                // stationed slice and the capital its reserve. See region_garrison.
+                var _rp_focus2 = region_focus_get(p_target, planet_number);
+                var _rp_garrison = region_garrison(p_target, planet_number, _rp_focus2, attacking);
+                if ((count_to_level_anchors(attacking) != -1) && (_rp_garrison > 0)) {
+                    obj_ncombat.threat = max(1, count_to_level(attacking, _rp_garrison));
+                } else {
+                    obj_ncombat.threat = max(1, obj_ncombat.threat - 2);
+                }
+            }
+
             var _battle_place = obj_ncombat.battle_object;
             var _battle_sub_loc = obj_ncombat.battle_id;
             var _chaos_lord_jump_possible = attacking == 0 || attacking == 10 || attacking == 11;
@@ -388,6 +629,26 @@ function drop_select_unit_selection() {
             _p_data.refresh_data();
 
             _p_data.purge(purge, _purge_score);
+
+            // Cleanse by Fire ALSO scours a Fungal Bloom if one has taken root here (§16h): the same
+            // promethium that burns out heretics and xenos torches the Ork spore-bed — removes the bloom
+            // feature and most of the greenskin horde. (Behead's old standalone "Cleanse" button was removed.)
+            if ((purge == eDROP_TYPE.PURGEFIRE) && _p_data.has_feature(eP_FEATURES.FUNGAL_BLOOM)) {
+                var _cleanse_res = ork_cleanse_bloom(p_target, planet_number);
+                scr_popup("Cleanse by Fire", _cleanse_res.text, "");
+            }
+
+            // Bombardment grinds down the TARGETED sector's own defences (region-level), matching the
+            // sector shown/selected on the bombard screen. Guarded so old saves / no-region worlds
+            // are untouched.
+            if ((purge == eDROP_TYPE.PURGEBOMBARD) && variable_instance_exists(p_target, "p_regions")) {
+                var _bombsec = region_focus_get(p_target, planet_number);
+                var _bombrgn = region_get(p_target, planet_number, _bombsec);
+                _bombrgn.fortification = max(0, _bombrgn.fortification - 1);
+                if (_bombrgn.defences > 0) {
+                    _bombrgn.defences = max(0, _bombrgn.defences - 1);
+                }
+            }
         }
     }
 }
@@ -461,6 +722,33 @@ function drop_select_draw() {
 
                 // Planet icon here
                 draw_rectangle(x2 + 459, y2 + 14, x2 + 516, y2 + 71, 0);
+
+                // Target SECTOR for the bombardment (the region whose defences it grinds down).
+                if (planet_region_count(p_target, planet_number) > 1) {
+                    var _bseci = region_focus_get(p_target, planet_number);
+                    var _bsecr = region_get(p_target, planet_number, _bseci);
+                    var _bforti_n = ["None", "Sparse", "Light", "Moderate", "Heavy", "Major", "Extreme"];
+                    var _bsector_str = $"Sector {_bseci + 1}: {_bsecr.name} ({region_faction_name(_bsecr.owner)}, Fort {_bforti_n[clamp(_bsecr.fortification, 0, 6)]}, Def {_bsecr.defences})";
+                    // Drawn directly (centred both ways), below the purge option buttons.
+                    draw_set_font(fnt_40k_14);
+                    var _bcx = x2 + 230;
+                    var _bsw = string_width(_bsector_str);
+                    var _bsh = string_height(_bsector_str);
+                    var _bsx1 = _bcx - (_bsw / 2) - 8;
+                    var _bsy1 = y2 + 340;
+                    var _bsx2 = _bcx + (_bsw / 2) + 8;
+                    var _bsy2 = _bsy1 + _bsh + 8;
+                    draw_set_color(CM_GREEN_COLOR);
+                    draw_rectangle(_bsx1, _bsy1, _bsx2, _bsy2, true);
+                    draw_set_halign(fa_center);
+                    draw_set_valign(fa_middle);
+                    draw_text(_bcx, (_bsy1 + _bsy2) / 2, _bsector_str);
+                    draw_set_halign(fa_left);
+                    draw_set_valign(fa_top);
+                    if (scr_hit(_bsx1, _bsy1, _bsx2, _bsy2) && mouse_button_clicked()) {
+                        region_focus_set(p_target, planet_number, (_bseci + 1) mod planet_region_count(p_target, planet_number));
+                    }
+                }
 
                 draw_set_font(fnt_40k_14);
                 draw_set_color(c_gray);

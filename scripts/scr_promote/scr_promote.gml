@@ -1,6 +1,34 @@
 /// @self Id.Instance.obj_controller
 function setup_promotion_popup() {
     if ((sel_promoting == 1) && (!instance_exists(obj_popup))) {
+        // Auxilia screen (managing 16): Guardsman promotion is a direct role swap to
+        // Veteran Guard (promote_guardsman_to_veteran), not the marine company-move
+        // popup. Promote every selected basic Guardsman with GUARD_VETERAN_XP banked,
+        // mirroring the veteranguard cheat; sergeants, weapons teams, existing
+        // Veterans, and green troopers in the selection are skipped.
+        if (managing == 16) {
+            var _vets = 0;
+            for (var _g = 0; _g < array_length(display_unit); _g++) {
+                if (man_sel[_g] == 1 && man[_g] == "man" && ma_role[_g] == "Guardsman") {
+                    var _grd = display_unit[_g];
+                    if (is_struct(_grd) && _grd.experience >= GUARD_VETERAN_XP) {
+                        promote_guardsman_to_veteran(_grd);
+                        _vets++;
+                    }
+                }
+            }
+            if (_vets > 0) {
+                with (obj_ini) {
+                    scr_company_order(0);
+                }
+                // Rebuild the roster rows so the promoted troopers show their new role
+                // and shed the promotion glow immediately.
+                scr_special_view(managing);
+            }
+            scr_popup("Veteran Guard", $"Promoted {_vets} Guardsmen to Veteran Guard.", "");
+            alarm[6] = 1;
+            exit;
+        }
         /// @self Id.Instance.obj_popup
         var pip = instance_create(0, 0, obj_popup);
         pip.type = 5;

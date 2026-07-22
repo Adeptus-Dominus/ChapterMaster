@@ -21,6 +21,17 @@ function Roster() constructor {
         active: false,
     });
 
+    // Hold Ground: when active, the surviving attackers STAY planetside after the assault
+    // (a foothold) instead of returning to orbit, so the world's contested auto-battle
+    // engages them each turn until they are recalled. Opt-in per assault.
+    hold_ground_button = new ToggleButton({
+        str1: "Hold Ground",
+        text_halign: fa_center,
+        text_color: CM_GREEN_COLOR,
+        button_color: CM_GREEN_COLOR,
+        active: false,
+    });
+
     select_all_ships = new UnitButtonObject({
         x1: 700,
         y1: 299,
@@ -50,6 +61,11 @@ function Roster() constructor {
     };
 
     static add_role_to_roster = function(role) {
+        // An empty or non-string role is an illegal struct key (GML throws on "") and a roleless
+        // unit adds nothing to the tally, so skip it. Mirrors the local-roster guards below.
+        if (!is_string(role) || (role == "")) {
+            return;
+        }
         if (struct_exists(full_roster, role)) {
             full_roster[$ role]++;
         } else {
@@ -58,6 +74,11 @@ function Roster() constructor {
     };
 
     static add_role_to_selected_roster = function(role) {
+        // An empty or non-string role cannot be a struct key (GML throws on ""), and a unit with
+        // no assigned role contributes nothing to the role tally, so skip it.
+        if (!is_string(role) || (role == "")) {
+            return;
+        }
         if (struct_exists(selected_roster, role)) {
             selected_roster[$ role]++;
         } else {
@@ -126,6 +147,11 @@ function Roster() constructor {
                             _valid_type = _allow_dreadnoughts;
                         }
                     }
+                    // Guardsmen answer to their own filter button rather than always passing
+                    var _grd_role = _unit.role();
+                    if (_grd_role == "Guardsman" || _grd_role == "Guard Squad" || _grd_role == "Guard Sergeant" || _grd_role == "Veteran Guard" || _grd_role == "Heavy Weapons Team") {
+                        _valid_type = array_contains(_valid_squad_types, "guardsman");
+                    }
                 }
 
                 if (_unit.ship_location > -1) {
@@ -173,7 +199,7 @@ function Roster() constructor {
     static new_squad_button = function(display, squad_id) {
         var _button = new ToggleButton();
         display = string_replace(display, " Squad", "");
-        if (display != "Command") {
+        if (display != "Command" && display != "Guardsmen") {
             display = string_plural(display);
         }
         _button.str1 = display;
@@ -212,6 +238,12 @@ function Roster() constructor {
             var _ship_loc = (is_struct(_unit)) ? _unit.ship_location : obj_ini.veh_lid[_unit[0]][_unit[1]];
             if (_ship_loc == ship_id) {
                 var _role = (is_struct(_unit)) ? _unit.role() : obj_ini.veh_role[_unit[0]][_unit[1]];
+                // Ghost entries (vehicle slots wiped by the hardcoded whitelists, or
+                // units mid-removal) can carry an empty role; struct keys cannot be
+                // empty strings, so skip them like the battle roster already does.
+                if (_role == "") {
+                    continue;
+                }
                 if (struct_exists(selected_local_roster, _role)) {
                     selected_local_roster[$ _role]++;
                 } else {
@@ -224,6 +256,12 @@ function Roster() constructor {
             var _ship_loc = (is_struct(_unit)) ? _unit.ship_location : obj_ini.veh_lid[_unit[0]][_unit[1]];
             if (_ship_loc == ship_id) {
                 var _role = (is_struct(_unit)) ? _unit.role() : obj_ini.veh_role[_unit[0]][_unit[1]];
+                // Ghost entries (vehicle slots wiped by the hardcoded whitelists, or
+                // units mid-removal) can carry an empty role; struct keys cannot be
+                // empty strings, so skip them like the battle roster already does.
+                if (_role == "") {
+                    continue;
+                }
                 if (struct_exists(possible_local_roster, _role)) {
                     possible_local_roster[$ _role]++;
                 } else {
@@ -308,6 +346,13 @@ function Roster() constructor {
                                 new_squad_button("Dreadnought", "dreadnought");
                             }
                         }
+                        // Guardsmen and Guard Squads have no squad type, so give them their
+                        // own filter button (added once) so they can be selected on their own.
+                        var _grd_role = _unit.role();
+                        if ((_grd_role == "Guardsman" || _grd_role == "Guard Squad" || _grd_role == "Guard Sergeant" || _grd_role == "Veteran Guard" || _grd_role == "Heavy Weapons Team") && !array_contains(_squads, "guardsman")) {
+                            array_push(_squads, "guardsman");
+                            new_squad_button("Guardsmen", "guardsman");
+                        }
                     }
                 }
             }
@@ -370,6 +415,26 @@ function Roster() constructor {
             _ship_index = _ships[s];
             if (obj_ini.ship_carrying[_ship_index] > 0) {
                 new_ship_button(obj_ini.ship[_ship_index], _ship_index);
+                // Ship assault economy: a ship that has already supported its maximum
+                // ground assaults this turn stays listed but locked and red, so the
+                // player can see it is spent. The lock is enforced in
+                // scr_drop_select_function (clicks and Select All are forced back off),
+                // and update_roster only admits units whose ship toggle is active.
+                // Applies to attacks only; raids and purges do not spend uses.
+                if (instance_exists(obj_drop_select)) {
+                    // Attack rosters gate on the ship's assault counter, raid rosters on
+                    // its raid counter (each independent), so a ship spent on one action
+                    // still shows available for the other.
+                    var _dr_used = obj_drop_select.attack ? ship_assaults_used(_ship_index) : ship_raids_used(_ship_index);
+                    if (_dr_used >= ORBITAL_ASSAULTS_PER_TURN) {
+                        var _spent_btn = ships[array_length(ships) - 1];
+                        _spent_btn.assault_locked = true;
+                        _spent_btn.active = false;
+                        _spent_btn.text_color = c_red;
+                        _spent_btn.button_color = c_red;
+                        _spent_btn.tooltip = obj_drop_select.attack ? "This ship has already supported the maximum number of ground assaults this turn." : "This ship has already supported the maximum number of raids this turn.";
+                    }
+                }
             }
         }
     };
@@ -483,6 +548,15 @@ function PurgeButton(purge_image, xx, yy, purge_type) constructor {
         shader_set_uniform_f(shader_get_uniform(light_dark_shader, "highlight"), bright_shader);
         scr_image("purge", purge_image, x1, y1, width, height);
         shader_reset();
+        // The description field existed but was never rendered. Drawn after the
+        // shader resets so the tooltip is not tinted; inactive buttons explain why.
+        if ((description != "") && hover()) {
+            var _tip = description;
+            if (!active) {
+                _tip += "\n\nYour selected force cannot perform this purge.";
+            }
+            tooltip_draw(_tip);
+        }
     };
 
     static clicked = function() {
@@ -538,6 +612,7 @@ function add_unit_to_battle(unit, meeting, is_local) {
     var _wearing_armour = is_struct(_armour_data);
 
     var col = 0, targ = 0, moov = 0;
+    var ftype = "";
     var _unit_role = unit.role();
 
     if (new_combat.battle_special == "space_hulk") {
@@ -545,52 +620,64 @@ function add_unit_to_battle(unit, meeting, is_local) {
     }
 
     if (_unit_role == obj_ini.role[100][18]) {
-        col = obj_controller.bat_tactical_column; //sergeants
+        col = obj_controller.bat_tactical_column;
+        ftype = "tactical"; //sergeants
         new_combat.sgts++;
     } else if (_unit_role == _role[19]) {
         col = obj_controller.bat_veteran_column;
+        ftype = "veteran";
         new_combat.vet_sgts++;
     }
     if (_unit_role == _role[12]) {
         //scouts
         col = obj_controller.bat_scout_column;
+        ftype = "scout";
         new_combat.scouts++;
     } else if (array_contains([obj_ini.role[100][8], $"{_role[15]} Aspirant", $"{_role[14]} Aspirant"], _unit_role)) {
-        col = obj_controller.bat_tactical_column; //tactical_marines
+        col = obj_controller.bat_tactical_column;
+        ftype = "tactical"; //tactical_marines
         new_combat.tacticals++;
     } else if (_unit_role == _role[3]) {
         //veterans and veteran sergeants
         col = obj_controller.bat_veteran_column;
+        ftype = "veteran";
         new_combat.veterans++;
     } else if (_unit_role == _role[9]) {
         //devastators
         col = obj_controller.bat_devastator_column;
+        ftype = "devastator";
         new_combat.devastators++;
     } else if (_unit_role == _role[10]) {
         //assualt marines
         col = obj_controller.bat_assault_column;
+        ftype = "assault";
         new_combat.assaults++;
 
         //librarium roles
     } else if (unit.IsSpecialist(SPECIALISTS_LIBRARIANS, true)) {
-        col = obj_controller.bat_librarian_column; //librarium
+        col = obj_controller.bat_librarian_column;
+        ftype = "librarian"; //librarium
         new_combat.librarians++;
         moov = 1;
     } else if (_unit_role == _role[16]) {
         //techmarines
         col = obj_controller.bat_techmarine_column;
+        ftype = "techmarine";
         new_combat.techmarines++;
         moov = 2;
     } else if (_unit_role == _role[2]) {
         //honour guard
         col = obj_controller.bat_honor_column;
+        ftype = "honor";
         new_combat.honors++;
     } else if (unit.IsSpecialist(SPECIALISTS_DREADNOUGHTS)) {
-        col = obj_controller.bat_dreadnought_column; //dreadnoughts
+        col = obj_controller.bat_dreadnought_column;
+        ftype = "dreadnought"; //dreadnoughts
         new_combat.dreadnoughts++;
     } else if (_unit_role == obj_ini.role[100][4]) {
         //terminators
         col = obj_controller.bat_terminator_column;
+        ftype = "terminator";
         new_combat.terminators++;
     }
 
@@ -598,12 +685,15 @@ function add_unit_to_battle(unit, meeting, is_local) {
         if (((moov == 1) && (obj_controller.command_set[8] == 1)) || ((moov == 2) && (obj_controller.command_set[9] == 1))) {
             if (company >= 2) {
                 col = obj_controller.bat_tactical_column;
+                ftype = "tactical";
             }
             if (company == 10) {
                 col = obj_controller.bat_scout_column;
+                ftype = "scout";
             }
             if (obj_ini.mobi[cooh][va] == "Jump Pack") {
                 col = obj_controller.bat_assault_column;
+                ftype = "assault";
             }
         }
     }
@@ -611,6 +701,7 @@ function add_unit_to_battle(unit, meeting, is_local) {
     if ((_unit_role == _role[15]) || (_unit_role == _role[14]) || unit.IsSpecialist(SPECIALISTS_TRAINEES)) {
         if (_unit_role == string(_role[14]) + " Aspirant") {
             col = obj_controller.bat_tactical_column;
+            ftype = "tactical";
             new_combat.tacticals++;
         }
 
@@ -625,13 +716,16 @@ function add_unit_to_battle(unit, meeting, is_local) {
         }
 
         col = obj_controller.bat_tactical_column;
+        ftype = "tactical";
         if (_wearing_armour) {
             if (_armour_data.has_tag("terminator")) {
                 col = obj_controller.bat_terminator_column;
+                ftype = "terminator";
             }
         }
         if (company == 10) {
             col = obj_controller.bat_scout_column;
+            ftype = "scout";
         }
     }
 
@@ -650,17 +744,21 @@ function add_unit_to_battle(unit, meeting, is_local) {
         }
         if (company >= 2) {
             col = obj_controller.bat_tactical_column;
+            ftype = "tactical";
         }
         if (company == 10) {
             col = obj_controller.bat_scout_column;
+            ftype = "scout";
         }
         if (obj_ini.mobi[cooh][va] == "Jump Pack") {
             col = obj_controller.bat_assault_column;
+            ftype = "assault";
         }
     }
 
     if (_unit_role == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
         col = obj_controller.bat_command_column;
+        ftype = "command";
         new_combat.important_dudes++;
         new_combat.big_mofo = 1;
         if (string_count("0", obj_ini.spe[cooh][va]) > 0) {
@@ -671,6 +769,7 @@ function add_unit_to_battle(unit, meeting, is_local) {
     }
     if (unit.IsSpecialist(SPECIALISTS_HEADS)) {
         col = obj_controller.bat_command_column;
+        ftype = "command";
         new_combat.important_dudes++;
     }
     if (new_combat.big_mofo > 2) {
@@ -684,26 +783,33 @@ function add_unit_to_battle(unit, meeting, is_local) {
         switch (squad.formation_place) {
             case "assault":
                 col = obj_controller.bat_assault_column;
+                ftype = "assault";
                 break;
             case "veteran":
                 col = obj_controller.bat_veteran_column;
+                ftype = "veteran";
                 break;
             case "tactical":
                 col = obj_controller.bat_tactical_column;
+                ftype = "tactical";
                 break;
             case "devastator":
                 col = obj_controller.bat_devastator_column;
+                ftype = "devastator";
                 break;
             case "terminator":
                 col = obj_controller.bat_terminator_column;
+                ftype = "terminator";
                 break;
             case "command":
                 col = obj_controller.bat_command_column;
+                ftype = "command";
                 break;
         }
     }
     if (col == 0) {
         col = obj_controller.bat_hire_column;
+        ftype = "hire";
     }
     if (_unit_role == "Death Company") {
         // Ahahahahah
@@ -718,9 +824,27 @@ function add_unit_to_battle(unit, meeting, is_local) {
             new_combat.really_thirsty++;
         }
         col = max(obj_controller.bat_assault_column, obj_controller.bat_command_column, obj_controller.bat_honor_column, obj_controller.bat_dreadnought_column, obj_controller.bat_veteran_column);
+        ftype = "deathco";
     }
 
-    targ = instance_nearest(col * 10, 240, obj_pnunit);
+    // ===== Guardsmen: "Hirelings" formation =====
+    // Guardsmen go into the movable Hirelings block (bat_hire_column), so the player can position
+    // them anywhere from the formation screen as a single line. This restores the behaviour from
+    // before the positional-screen experiment: every guardsman shares this one column instead of
+    // being pinned to fixed front columns. bat_hire_column was resolved for this formation at the
+    // top of this function and is driven by the Hirelings bar (bat_hire_for, unit_id 12).
+    if (_unit_role == "Heavy Weapons Team") {
+        // Heavy weapons teams fight from the Devastator formation, the chapter's own heavy-weapon
+        // line, instead of the Hirelings block, so the auxilia's heavy guns stand with the Marines'.
+        col = obj_controller.bat_devastator_column;
+        ftype = "devastator";
+        new_combat.devastators++;
+    } else if (_unit_role == "Guardsman" || _unit_role == "Guard Sergeant" || _unit_role == "Veteran Guard") {
+        col = obj_controller.bat_hire_column;
+        ftype = "hire";
+    }
+
+    targ = formation_block(ftype, col);
 
     with (targ) {
         scr_add_unit_to_roster(unit, is_local);
@@ -732,32 +856,51 @@ function add_vehicle_to_battle(company, veh_index, is_local) {
     var v = veh_index;
     new_combat.veh_fighting[company][v] = 1;
     var col = 1, targ = 0;
+    var ftype = "";
 
     switch (obj_ini.veh_role[company][v]) {
         case "Rhino":
             col = obj_controller.bat_rhino_column;
+            ftype = "rhino";
+            new_combat.rhinos++;
+            break;
+        // Chimera (guard transport) screens like a Rhino. This first drop parks it in the Rhino
+        // column; the dedicated Imperial Armor column arrives with the formation drop.
+        case "Chimera":
+            col = obj_controller.bat_rhino_column;
+            ftype = "rhino";
             new_combat.rhinos++;
             break;
         case "Predator":
             col = obj_controller.bat_predator_column;
+            ftype = "predator";
+            new_combat.predators++;
+            break;
+        // Leman Russ (guard battle tank) anchors the armour line alongside the Predators.
+        case "Leman Russ":
+            col = obj_controller.bat_predator_column;
+            ftype = "predator";
             new_combat.predators++;
             break;
         case "Land Raider":
             col = obj_controller.bat_landraider_column;
+            ftype = "landraider";
             new_combat.land_raiders++;
             break;
         case "Land Speeder":
             col = obj_controller.bat_landspeeder_column;
+            ftype = "landspeeder";
             new_combat.land_speeders++;
             break;
         case "Whirlwind":
             col = obj_controller.bat_whirlwind_column;
+            ftype = "whirlwind";
             new_combat.whirlwinds++;
             break;
     }
 
     /// @type {Asset.GMObject.obj_pnunit}
-    targ = instance_nearest(col * 10, 240 / 2, obj_pnunit);
+    targ = formation_block(ftype, col);
     targ.veh++;
     targ.veh_co[targ.veh] = company;
     targ.veh_id[targ.veh] = v;
@@ -785,6 +928,24 @@ function add_vehicle_to_battle(company, veh_index, is_local) {
         targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 4;
         targ.veh_hp_multiplier[targ.veh] = 4;
         targ.veh_ac[targ.veh] = 40;
+    } else if (obj_ini.veh_role[company][v] == "Chimera") {
+        // Mirrors the enemy Chimera: HP 200 (base 100 x2), armour 30.
+        targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 2;
+        targ.veh_hp_multiplier[targ.veh] = 2;
+        targ.veh_ac[targ.veh] = 30;
+    } else if (obj_ini.veh_role[company][v] == "Leman Russ") {
+        // Mirrors the enemy Leman Russ Battle Tank: heavy armour 40, HP 300 (base 100 x3),
+        // so it shrugs off small arms and trades blows with other tanks like a Predator.
+        targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 3;
+        targ.veh_hp_multiplier[targ.veh] = 3;
+        targ.veh_ac[targ.veh] = 40;
+    } else if (obj_ini.veh_role[company][v] == "Basilisk") {
+        // Mirrors the enemy Basilisk: armour 30, HP 150 (base 100 x1.5). A self-propelled
+        // artillery piece, tougher than a Chimera but lighter than a Leman Russ, built to
+        // shell from the rear of the line rather than trade blows at the front.
+        targ.veh_hp[targ.veh] = obj_ini.veh_hp[company][v] * 1.5;
+        targ.veh_hp_multiplier[targ.veh] = 1.5;
+        targ.veh_ac[targ.veh] = 30;
     }
 
     // STC Bonuses
@@ -809,4 +970,61 @@ function add_vehicle_to_battle(company, veh_index, is_local) {
             targ.veh_ac[targ.veh] = round(targ.veh_ac[targ.veh] * 1.1);
         }
     }
+}
+
+/// @function auxilia_roles
+/// @description Single source of truth for which unit roles belong to the Auxilia company
+/// screen (managing 16). These are non-Astartes auxiliary mercenaries mustered into company 0
+/// alongside the Headquarters, but managed on their own screen. Add future merc roles here
+/// (Ogryn, heavy weapons team, etc.) and they will automatically appear under Auxilia and be
+/// excluded from the Headquarters detail view.
+/// @returns {array}
+function auxilia_roles() {
+    return ["Guardsman", "Guard Squad", "Guard Sergeant", "Veteran Guard", "Heavy Weapons Team"];
+}
+
+/// @description Promote one basic Guardsman to Veteran Guard: role swap plus the veteran
+/// stat buff. Shared by promote_auxilia_to_veteran (veteranguard cheat, bulk path) and the
+/// Auxilia screen Promote button (setup_promotion_popup, selection path). No XP gate here;
+/// callers gate on GUARD_VETERAN_XP. The stat_boosts numbers are tunable; additions are
+/// flat, and stat_boosts rebalances constitution into current health.
+/// @param {Struct.TTRPG_stats} _unit  the Guardsman to promote
+function promote_guardsman_to_veteran(_unit) {
+    _unit.update_role("Veteran Guard");
+    _unit.stat_boosts({
+        ballistic_skill: 8,
+        constitution: 6,
+        dexterity: 4
+    });
+}
+
+/// @description Promote every basic Guardsman to Veteran Guard, applying the veteran stat
+/// buff. Veterans keep all Guard behaviour (Auxilia screen, hireling line, volley fire,
+/// tenth-slot berth, guardsman portrait) through the role closure. They receive no free
+/// weapon; Hellguns are forged separately and equip-gated to this role. The Auxilia screen
+/// Promote button wires the per-selection path through promote_guardsman_to_veteran
+/// (setup_promotion_popup); this bulk path serves the veteranguard cheat and future
+/// promote-everything hooks. Pass a company index to limit promotion to one
+/// company, or leave it undefined to promote every auxilia Guardsman. The stat_boosts numbers
+/// are tunable. Additions are flat; stat_boosts rebalances constitution into current health.
+/// @param {real} [_company]  optional company index to limit promotion to
+/// @returns {real} number of troopers promoted
+function promote_auxilia_to_veteran(_company = undefined) {
+    var _troops = collect_role_group("all", "", false, { roles: ["Guardsman"] });
+    var _count = 0;
+    for (var _i = 0; _i < array_length(_troops); _i++) {
+        var _unit = _troops[_i];
+        if (_company != undefined && _unit.company != _company) {
+            continue;
+        }
+        // Only battle-hardened Guardsmen qualify: they must have earned GUARD_VETERAN_XP
+        // experience, roughly GUARD_VETERAN_XP / GUARD_BATTLE_XP survived battles. Fresh
+        // recruits are skipped until they have bled for it.
+        if (_unit.experience < GUARD_VETERAN_XP) {
+            continue;
+        }
+        promote_guardsman_to_veteran(_unit);
+        _count++;
+    }
+    return _count;
 }

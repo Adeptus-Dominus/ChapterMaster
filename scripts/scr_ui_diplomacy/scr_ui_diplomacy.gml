@@ -86,7 +86,8 @@ function exit_diplomacy_dialogue() {
         clear_diplo_choices();
     }
 
-    if ((liscensing == 2) && (repair_ships == 0)) {
+    // Owning the Repair license (repair_ships) must not block Crusade license placement.
+    if (liscensing == 2) {
         cooldown = 8;
         var cru = instance_create(mouse_x, mouse_y, obj_crusade);
         cru.owner = diplomacy;
@@ -131,6 +132,15 @@ function exit_diplomacy_dialogue() {
 }
 
 function draw_diplomacy_diplo_text() {
+    // Upstream's extraction (964e3ff5c/808c2ac1b) left this reading xx/yy, which
+    // nothing sets on the diplomacy draw path, so opening any audience crashed
+    // (verbatim on upstream's own 2026-07-16 build, cc325f591). This runs in the
+    // GUI layer (obj_controller Draw_64): the text above already draws at absolute
+    // GUI coordinates, so the divider line does too, no camera offsets. The
+    // diplo_txt guard covers builds whose controller lost the init.
+    if (!variable_instance_exists(obj_controller, "diplo_txt")) {
+        diplo_txt = "";
+    }
     draw_set_font(fnt_40k_14);
     draw_set_alpha(1);
     draw_set_color(CM_GREEN_COLOR);
@@ -180,10 +190,16 @@ function set_up_diplomacy_buttons() {
         x1: 800,
         y1: 720,
         label: "Discuss",
-        tooltip: "Unfinished",
+        tooltip: "Discuss sector strategy (Imperium)",
         bind_scope: obj_controller,
         style: "pixel",
     });
+
+    diplo_buttons.discuss.bind_method = function() {
+        scr_dialogue(diplomacy == eFACTION.IMPERIUM ? "discuss_directives" : "discuss_unavailable");
+        cooldown = 8;
+        click2 = 1;
+    };
 
     //denounce button setup
     diplo_buttons.denounce = new UnitButtonObject({
@@ -310,7 +326,12 @@ function set_up_diplomacy_persons() {
     diplo_persons.eldar = new ShutterButton();
     var _eldar = diplo_persons.eldar;
     if (faction_gender[eFACTION.ELDAR] == 1) {
-        _eldar.image = known[eFACTION.ELDAR] || global.cheat_debug ? 9 : 10;
+        // 11/12 is the Eldar slot. Every faction here follows known = faction*2-1, unknown = faction*2
+        // (Imperium 3/4, Mechanicus 5/6, Inquisition 7/8, Ecclesiarchy 9/10, Ork 13/14, Tau 15/16), and
+        // 11/12 was the unused gap. A male Eldar leader was reading 9/10, which is the ECCLESIARCHY
+        // portrait, so the Eldar diplomacy panel showed a Sister of Battle. Female Eldar (21/22) was
+        // unaffected, which is why it only appeared on some saves.
+        _eldar.image = known[eFACTION.ELDAR] || global.cheat_debug ? 11 : 12;
     } else {
         _eldar.image = known[eFACTION.ELDAR] || global.cheat_debug ? 21 : 22;
     }
