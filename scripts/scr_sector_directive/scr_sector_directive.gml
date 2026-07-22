@@ -323,6 +323,16 @@ function sector_background_guard_tier(_star, _planet) {
     var _g = 0;
     if (variable_instance_exists(_star, "p_guardsmen")) { _g += _star.p_guardsmen[_planet]; }
     if (variable_instance_exists(_star, "p_pdf")) { _g += _star.p_pdf[_planet] * 0.1; }
+    // An Imperial battlefleet in orbit joins the grind: orbital bombardment and Navy landing parties
+    // do the work a planetary garrison otherwise would. Without this, a world whose Guard had been
+    // wiped out scored tier 0 and could NEVER be ground back, however large the fleet overhead - so
+    // a horde that took a world was permanently untouchable by anyone but the player in person.
+    var _navy = scr_orbiting_fleet([eFACTION.IMPERIUM, eFACTION.MECHANICUS, eFACTION.INQUISITION, eFACTION.ECCLESIARCHY], _star);
+    if (_navy != noone) {
+        _g += _navy.capital_number * SECTOR_NAVY_CAPITAL_GUARD;
+        _g += _navy.frigate_number * SECTOR_NAVY_FRIGATE_GUARD;
+        _g += _navy.escort_number  * SECTOR_NAVY_ESCORT_GUARD;
+    }
     if (_g < SECTOR_BACKGROUND_GUARD_MIN) { return 0; }
     // Bands calibrated to real garrison numbers (thousands to hundreds of thousands when
     // reinforced from orbit), NOT the PDF-defence score table. This is what lets a

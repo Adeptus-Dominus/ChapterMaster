@@ -117,6 +117,16 @@
 // 2 if you want PDF Barracks to be the cheaper pure-defence option.
 #macro GUARD_DEFENCE_WEIGHT 3
 
+// Guard-equivalent weight of an ORBITING Imperial warship in the sector background war
+// (sector_background_guard_tier). Bombardment and Navy landing parties do the grinding a planetary
+// garrison otherwise would, so a battlefleet overhead lets the Imperium keep fighting on a world
+// whose Guard have already been wiped out - previously such a world scored guard tier 0 and the
+// background war could never help retake it. A typical 3 capital / 5 frigate / 8 escort battlefleet
+// is worth ~77,000 Guard, i.e. tier 4: real pressure, but not enough to break a horde on its own.
+#macro SECTOR_NAVY_CAPITAL_GUARD 12000
+#macro SECTOR_NAVY_FRIGATE_GUARD 5000
+#macro SECTOR_NAVY_ESCORT_GUARD  2000
+
 // --- Hive Fleet consumption (how fast a Tyranid swarm strips a world to a dead husk) ---
 // APPETITE: fraction of its own mass the swarm strips from the biomass reserve each turn. The swarm
 // grows on what it eats, so this compounds: the world looks untouched for most of the process, then
