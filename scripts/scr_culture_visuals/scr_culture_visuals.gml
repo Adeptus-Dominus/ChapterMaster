@@ -341,8 +341,18 @@ function set_up_visual_overides() {
                 var _subs = _mod.subcomponents;
                 for (var s = 0; s < array_length(_subs); s++) {
                     for (var ss = 0; ss < array_length(_subs[s]); ss++) {
-                        if (sprite_exists(_subs[s][ss])) {
-                            _flip_mod.subcomponents[s][ss] = return_sprite_mirrored(_subs[s][ss], false);
+                        var _sub_item = _subs[s][ss];
+                        if (is_struct(_sub_item)) {
+                            var _flipped_item = variable_clone(_sub_item);
+                            if (struct_exists(_flipped_item, "sprite") && sprite_exists(_flipped_item.sprite)) {
+                                _flipped_item.sprite = return_sprite_mirrored(_flipped_item.sprite, false);
+                            }
+                            if (struct_exists(_flipped_item, "shadows") && sprite_exists(_flipped_item.shadows)) {
+                                _flipped_item.shadows = return_sprite_mirrored(_flipped_item.shadows, false);
+                            }
+                            _flip_mod.subcomponents[s][ss] = _flipped_item;
+                        } else if (sprite_exists(_sub_item)) {
+                            _flip_mod.subcomponents[s][ss] = return_sprite_mirrored(_sub_item, false);
                         }
                     }
                 }
