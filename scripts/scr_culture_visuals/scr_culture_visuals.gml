@@ -1155,7 +1155,13 @@ global.modular_drawing_items = [
             "mobi": "Jump Pack",
         },
         overides: {
-            "chest_fastening": spr_backpack_fastening,
+            "chest_fastening": {
+                sprite : spr_backpack_fastening,
+                armours_exclude : [
+                    "MK5 Heresy",
+                    "MK6 Corvus",
+                ]
+            }
         },
     },
     {
@@ -1174,7 +1180,13 @@ global.modular_drawing_items = [
             "mobi": "Serpha Jump Pack",
         },
         overides: {
-            "chest_fastening": spr_backpack_fastening,
+            "chest_fastening": {
+                sprite : spr_backpack_fastening,
+                armours_exclude : [
+                    "MK5 Heresy",
+                    "MK6 Corvus",
+                ]
+            }
         },
     },
     {
