@@ -520,6 +520,3 @@ function quality_color(_item_quality) {
     }
 }
 
-function format_number_with_sign(number) {
-    return number > 0 ? "+" + string(number) : string(number);
-}
