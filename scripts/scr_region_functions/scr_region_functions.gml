@@ -2108,21 +2108,19 @@ function tyranid_system_consumed(_star) {
 }
 
 /// @function tyranid_system_needs_fleet
-/// @description True while a food world here is NOT yet infested — the Hive Fleet is still needed to seed it.
-///              Once every food world is Tyranid-infested (and the biomass engine will finish them off with
-///              or without the fleet), this returns false and the fleet is free to migrate on (§16n). This is
-///              the migrate trigger: the swarm advances as soon as it has doomed everything reachable here,
-///              leaving the worlds behind it to be stripped over the following turns.
+/// @description True while ANY food remains in this system. The Hive Fleet does not move on until the system
+///              is stripped: every world reduced to a Dead husk with no population and no biomass reserve
+///              left. It is not enough to have merely seeded a swarm on each world — the fleet stays in
+///              orbit for the whole meal, then advances. (A world the player still holds counts as food, so
+///              the fleet besieges it rather than wandering off, which is also how the swarm should behave.)
 /// @param {Id.Instance.obj_star} _star
 /// @returns {Bool}
 function tyranid_system_needs_fleet(_star) {
     if (!instance_exists(_star) || !variable_instance_exists(_star, "p_race_pop")) { return false; }
     for (var i = 1; i <= _star.planets; i++) {
-        if (!tyranid_planet_is_food(_star, i)) { continue; }
-        var _infested = (_star.p_owner[i] == eFACTION.TYRANIDS) && (_star.p_race_pop[i][eFACTION.TYRANIDS] > 0);
-        if (!_infested) { return true; }   // an un-infested food world remains — stay and seed it
+        if (tyranid_planet_is_food(_star, i)) { return true; }   // still something living here to eat
     }
-    return false;
+    return false;   // every world spent: the tendril advances
 }
 
 /// @function tyranid_fleet_engage
@@ -2141,12 +2139,29 @@ function tyranid_fleet_engage(_star, _max_worlds) {
         if (!tyranid_planet_is_food(_star, i)) { continue; }
         var _already = (_star.p_owner[i] == eFACTION.TYRANIDS) && (_star.p_race_pop[i][eFACTION.TYRANIDS] > 0);
         if (!_already) {
-            if (_star.p_race_pop[i][eFACTION.TYRANIDS] <= 0) {
-                _star.p_race_pop[i][eFACTION.TYRANIDS] = tyranid_swarm_seed(_star.p_type[i]);
-            }
             var _pd = _star.get_planet_data(i);
+            if (_star.p_race_pop[i][eFACTION.TYRANIDS] <= 0) {
+                // Seed the world's biomass reserve FIRST, then land a vanguard scaled to that food supply.
+                // A flat seed can outweigh a small world's entire biomass (a Lava world holds ~4,250 but the
+                // flat seed is 30,000), which makes the reserve reconstruct to nothing and the world is eaten
+                // on arrival. Same capped-vanguard rule the ascension planetfall uses.
+                var _budget = 0;
+                if (variable_instance_exists(_star, "p_biomass")) {
+                    if (_star.p_biomass[i] <= 0) {
+                        var _people = _pd.large_population ? (_pd.population * 1000000000) : _pd.population;
+                        var _caphd  = _pd.large_population ? (_pd.max_population * 1000000000) : _pd.max_population;
+                        _star.p_biomass[i] = tyranid_biomass_budget(_star.p_type[i], _people, _caphd);
+                    }
+                    _budget = _star.p_biomass[i];
+                }
+                _star.p_race_pop[i][eFACTION.TYRANIDS] = tyranid_vanguard(_star.p_type[i], _budget);
+            }
             _pd.set_new_owner(eFACTION.TYRANIDS);
-            _star.p_tyranids[i] = count_to_level(eFACTION.TYRANIDS, _star.p_race_pop[i][eFACTION.TYRANIDS]);
+            // A capped vanguard on a small world sits below the level-1 anchor (50,000), which would read as
+            // level 0 and hand the world straight back before the swarm ever fed. Any swarm holds it at 1+.
+            var _eng_lvl = count_to_level(eFACTION.TYRANIDS, _star.p_race_pop[i][eFACTION.TYRANIDS]);
+            if ((_star.p_race_pop[i][eFACTION.TYRANIDS] > 0) && (_eng_lvl < 1)) { _eng_lvl = 1; }
+            _star.p_tyranids[i] = _eng_lvl;
             scr_event_log("red", $"A Tyranid swarm makes planetfall on {_pd.name()} and begins to consume it.", _star.name);
         }
         _engaged += 1;

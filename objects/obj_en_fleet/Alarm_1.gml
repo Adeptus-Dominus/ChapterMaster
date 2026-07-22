@@ -252,11 +252,12 @@ try {
                 tyranid_fleet_engage(orbiting, capital_number);
             }
 
-            // MIGRATE: once every food world here is infested (the biomass engine
-            // finishes stripping them with or without the fleet), the tendril advances
-            // to the nearest system with un-eaten worlds, leaving husks in its wake.
-            // (Old trigger was is_dead_star(), which the biomass system never sets, so
-            // the swarm never spread.)
+            // MIGRATE: only once this system is STRIPPED — every world a Dead husk with no
+            // population and no biomass reserve left — does the tendril advance to the nearest
+            // system with un-eaten worlds. The fleet sits over the whole meal rather than seeding
+            // and wandering off, so a world the player still holds keeps the swarm besieging it.
+            // (Old trigger was is_dead_star(), which the biomass system never sets, so the swarm
+            // never spread at all.)
             if (instance_exists(orbiting) && !tyranid_system_needs_fleet(orbiting)) {
                 tyranid_fleet_migrate(id);
             }
