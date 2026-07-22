@@ -1965,6 +1965,21 @@ function tyranid_swarm_seed(_type) {
     }
 }
 
+/// @function tyranid_vanguard
+/// @description The swarm that actually makes planetfall: the world-type seed, but never more than
+///              TYRANID_VANGUARD_BIOMASS_CAP of the world's biomass. A flat seed meant a barren world
+///              could receive a vanguard heavier than everything living on it, which it then ate in a
+///              single turn. Scaling the landing force to the food supply fixes that and keeps small
+///              worlds on a sensible timetable.
+/// @param {String} _type     world type
+/// @param {Real}   _biomass  the world's total consumable biomass (0 if unknown / old save)
+/// @returns {Real}
+function tyranid_vanguard(_type, _biomass) {
+    var _seed = tyranid_swarm_seed(_type);
+    if (!is_real(_biomass) || (_biomass <= 0)) { return _seed; }   // no biomass layer: flat seed
+    return max(1, min(_seed, _biomass * TYRANID_VANGUARD_BIOMASS_CAP));
+}
+
 /// @function tyranid_biomass_budget
 /// @description The world's total CONSUMABLE living matter — its people plus its native ecosystem — that a
 ///              Hive Fleet strips and converts into swarm (§16b). Seeded into p_biomass at planetfall; the

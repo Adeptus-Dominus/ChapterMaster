@@ -333,13 +333,18 @@ function PlanetData(_planet, _system) constructor {
                 _beacon.eta = _eta - 1;   // Hive Fleet still crossing the sector
             } else {
                 if (system.p_race_pop[planet][eFACTION.TYRANIDS] <= 0) {
-                    system.p_race_pop[planet][eFACTION.TYRANIDS] = tyranid_swarm_seed(planet_type);   // PLANETFALL
                     // Seed the world's BIOMASS reserve ONCE — its people plus its native ecosystem. The swarm
                     // strips this down over the coming turns; its final size is roughly this x efficiency.
-                    if (variable_instance_exists(system, "p_biomass") && system.p_biomass[planet] <= 0) {
-                        var _human0 = large_population ? (population * 1000000000) : population;
-                        system.p_biomass[planet] = tyranid_biomass_budget(planet_type, _human0, _cap_head);
+                    // Seeded BEFORE planetfall so the landing swarm can be scaled to the food supply.
+                    var _budget0 = 0;
+                    if (variable_instance_exists(system, "p_biomass")) {
+                        if (system.p_biomass[planet] <= 0) {
+                            var _human0 = large_population ? (population * 1000000000) : population;
+                            system.p_biomass[planet] = tyranid_biomass_budget(planet_type, _human0, _cap_head);
+                        }
+                        _budget0 = system.p_biomass[planet];
                     }
+                    system.p_race_pop[planet][eFACTION.TYRANIDS] = tyranid_vanguard(planet_type, _budget0);   // PLANETFALL
                 }
                 _nid_active = true;
             }
@@ -366,7 +371,7 @@ function PlanetData(_planet, _system) constructor {
                 // remains — ~0.55 of the swarm's mass per turn while food is plentiful, tapering to nothing as
                 // the reserve empties. EFFICIENCY ~0.9: biomass converts to swarm slightly lossily. The small
                 // seed-based floor keeps a fresh vanguard growing before it has mass of its own.
-                var _consume = min(_bio, _nid * 0.55 + tyranid_swarm_seed(planet_type) * 0.25);
+                var _consume = min(_bio, _nid * TYRANID_APPETITE + tyranid_vanguard(planet_type, _bio) * 0.25);
                 system.p_biomass[planet] = max(0, _bio - _consume);
                 system.p_race_pop[planet][eFACTION.TYRANIDS] = _nid + round(_consume * 0.9);
                 // The populace is PART of that biomass — people vanish in step with the reserve draining.

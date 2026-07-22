@@ -107,6 +107,18 @@
 // enemy trickles reinforcements up the line instead of teleporting a full garrison in one turn.
 // A region farther from the capital reinforces even slower (the cap is divided by hop distance).
 #macro REGION_REINFORCE_CAP 500
+
+// --- Hive Fleet consumption (how fast a Tyranid swarm strips a world to a dead husk) ---
+// APPETITE: fraction of its own mass the swarm strips from the biomass reserve each turn. The swarm
+// grows on what it eats, so this compounds: the world looks untouched for most of the process, then
+// collapses at the end. Lower = slower devouring. At 0.2025 a hive world dies in ~75 turns (~6 years,
+// a turn is ~1 month) and an Agri world in ~40 turns (~3.4 years). Was 0.55 (hive died in 33 turns).
+#macro TYRANID_APPETITE 0.2025
+// VANGUARD CAP: the landing swarm can never exceed this fraction of the world's total biomass. A flat
+// vanguard drowned small worlds - a Lava world holds ~4,250 biomass but the flat seed was 30,000, so
+// the swarm outweighed everything alive and consumed it on arrival (dead in 1 turn). Capping the
+// vanguard relative to the food supply also makes small worlds take a sane time to strip.
+#macro TYRANID_VANGUARD_BIOMASS_CAP 0.0005
 #macro REGION_GARRISON_FRACTION REGION_ASSAULT_COMMIT_FRACTION
 
 // ---- Orbital Gun Array (capital planetary defence) ----
