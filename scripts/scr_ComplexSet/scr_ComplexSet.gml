@@ -525,7 +525,7 @@ function ComplexSet(_unit) constructor {
                 var _area = _tag_check_areas[i];
 
                 if (!array_contains(equipment_data.present_items, _area)){
-                    break;
+                    continue;
                 }
 
                 var _item = equipment_data.get_item(_area);
