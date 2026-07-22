@@ -326,7 +326,12 @@ function set_up_diplomacy_persons() {
     diplo_persons.eldar = new ShutterButton();
     var _eldar = diplo_persons.eldar;
     if (faction_gender[eFACTION.ELDAR] == 1) {
-        _eldar.image = known[eFACTION.ELDAR] || global.cheat_debug ? 9 : 10;
+        // 11/12 is the Eldar slot. Every faction here follows known = faction*2-1, unknown = faction*2
+        // (Imperium 3/4, Mechanicus 5/6, Inquisition 7/8, Ecclesiarchy 9/10, Ork 13/14, Tau 15/16), and
+        // 11/12 was the unused gap. A male Eldar leader was reading 9/10, which is the ECCLESIARCHY
+        // portrait, so the Eldar diplomacy panel showed a Sister of Battle. Female Eldar (21/22) was
+        // unaffected, which is why it only appeared on some saves.
+        _eldar.image = known[eFACTION.ELDAR] || global.cheat_debug ? 11 : 12;
     } else {
         _eldar.image = known[eFACTION.ELDAR] || global.cheat_debug ? 21 : 22;
     }
