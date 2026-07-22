@@ -108,6 +108,15 @@
 // A region farther from the capital reinforces even slower (the cap is divided by hop distance).
 #macro REGION_REINFORCE_CAP 500
 
+// How many PDF one Guardsman is worth when scoring how hard a world is to INVADE
+// (determine_pdf_defence). Guardsmen are line troops, so they hold ground better than the same
+// number of PDF militia, but the gap is deliberately much narrower here than the 10:1 they carry
+// for offensive attrition in the sector background war (sector_background_guard_tier) - holding a
+// world is the one thing PDF actually exist for. At 3 the two barracks buy identical defence per
+// requisition (PDF Barracks 200/turn for 1000, Guard Barracks 100x3=300/turn for 1500); drop it to
+// 2 if you want PDF Barracks to be the cheaper pure-defence option.
+#macro GUARD_DEFENCE_WEIGHT 3
+
 // --- Hive Fleet consumption (how fast a Tyranid swarm strips a world to a dead husk) ---
 // APPETITE: fraction of its own mass the swarm strips from the biomass reserve each turn. The swarm
 // grows on what it eats, so this compounds: the world looks untouched for most of the process, then

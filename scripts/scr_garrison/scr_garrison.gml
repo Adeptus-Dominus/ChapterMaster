@@ -342,7 +342,10 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
     };
 }
 
-function determine_pdf_defence(pdf, garrison = noone, planet_forti = 0, enemy = 0) {
+function determine_pdf_defence(pdf, garrison = noone, planet_forti = 0, enemy = 0, guardsmen = 0) {
+    // Guardsmen defend the world too, counted at GUARD_DEFENCE_WEIGHT PDF each. Previously only the
+    // PDF militia scored, so an Astra Militarum garrison made a world no harder to invade at all.
+    var _effective_pdf = pdf + (max(0, guardsmen) * GUARD_DEFENCE_WEIGHT);
     var explanations = "";
     var defence_mult = planet_forti * 0.1;
     var pdf_score = 0;
@@ -368,22 +371,25 @@ function determine_pdf_defence(pdf, garrison = noone, planet_forti = 0, enemy = 
         //makes pdf more effective if planet has defences or marines present
     }
 
-    if (pdf >= 50000000) {
+    if (_effective_pdf >= 50000000) {
         pdf_score = 6;
-    } else if (pdf < 50000000 && pdf >= 15000000) {
+    } else if (_effective_pdf < 50000000 && _effective_pdf >= 15000000) {
         pdf_score = 5;
-    } else if (pdf < 15000000 && pdf >= 6000000) {
+    } else if (_effective_pdf < 15000000 && _effective_pdf >= 6000000) {
         pdf_score = 4;
-    } else if (pdf < 6000000 && pdf >= 1000000) {
+    } else if (_effective_pdf < 6000000 && _effective_pdf >= 1000000) {
         pdf_score = 3;
-    } else if (pdf < 1000000 && pdf >= 100000) {
+    } else if (_effective_pdf < 1000000 && _effective_pdf >= 100000) {
         pdf_score = 2;
-    } else if (pdf < 100000 && pdf >= 2000) {
+    } else if (_effective_pdf < 100000 && _effective_pdf >= 2000) {
         pdf_score = 1;
-    } else if (pdf < 2000 && pdf > 500) {
+    } else if (_effective_pdf < 2000 && _effective_pdf > 500) {
         pdf_score = 0.5;
-    } else if (pdf <= 500) {
+    } else if (_effective_pdf <= 500) {
         pdf_score = 0.1;
+    }
+    if (guardsmen > 0) {
+        explanations += $"Guard Garrison: {scr_display_number(guardsmen)} (x{GUARD_DEFENCE_WEIGHT} PDF)#";
     }
     explanations += $"PDF Defence: {pdf_score}#";
     pdf_score *= 1 + defence_mult;

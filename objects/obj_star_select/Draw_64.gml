@@ -322,7 +322,7 @@ try {
                     var half_way = yy + garrison_data_slate.height / 2;
                     draw_set_halign(fa_left);
                     draw_line(xx + 10, half_way, garrison_data_slate.width - 10, half_way);
-                    var defence_data = determine_pdf_defence(target.p_pdf[cur_planet], garrison, target.p_fortified[cur_planet]);
+                    var defence_data = determine_pdf_defence(target.p_pdf[cur_planet], garrison, target.p_fortified[cur_planet], 0, target.p_guardsmen[cur_planet]);
                     var defence_string = $"Planetary Defence : {defence_data[0]}";
                     draw_text(xx + 20, half_way, defence_string);
                     if (scr_hit(xx + 20, half_way + 10, xx + 20 + string_width(defence_string), half_way + 10 + 20)) {

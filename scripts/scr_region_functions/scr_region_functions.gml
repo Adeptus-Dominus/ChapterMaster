@@ -4594,11 +4594,16 @@ function region_building_catalogue() {
         },
         {
             id: "pdf_barracks", name: "PDF Barracks", sprite: spr_holo_pad, cost: 1000, max: 1, types: "all",
-            desc: "Trains local Planetary Defence Force. +200 PDF each turn while you hold this region.",
+            desc: "Trains local Planetary Defence Force. +500 PDF each turn while you hold this region. Cheap mass militia: the most invasion-deterrence you can buy per requisition, though PDF are near-useless offensively.",
             apply: undefined,
             on_turn: function(_star, _planet, _region) {
-                _region.pdf += 200;
-                _star.p_pdf[_planet] += 200; // planet scalar is authoritative; region copy is display
+                // 500/turn for 1000 req makes this the requisition-efficient DEFENCE building: 500
+                // defence-equivalent per turn versus the Guard Barracks' 300 (100 Guard x
+                // GUARD_DEFENCE_WEIGHT) for 1500. Guard still win everywhere else - 10:1 on offensive
+                // attrition in the background war, the renegade loyalty flip, and the Sector Governor
+                // recruitment pool - so each barracks has a reason to exist.
+                _region.pdf += 500;
+                _star.p_pdf[_planet] += 500; // planet scalar is authoritative; region copy is display
             },
         },
         {

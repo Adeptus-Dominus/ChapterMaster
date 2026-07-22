@@ -111,7 +111,7 @@ if ((max_ships > 0) && instance_exists(obj_star_select)) {
         }
         str = floor(p_data.planet_forces[target]);
         if (target == 2.5) {
-            str = determine_pdf_defence(p_data.pdf,, p_data.fortification_level)[0];
+            str = determine_pdf_defence(p_data.pdf, noone, p_data.fortification_level, 0, p_data.guardsmen)[0];
         }
         var _s_strings = global.force_strength_descriptions;
         if (str < array_length(_s_strings)) {

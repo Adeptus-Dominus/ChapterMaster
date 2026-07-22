@@ -115,9 +115,9 @@ function scr_enemy_ai_a() {
             try {
                 if (pdf_with_player && _garrison_force) {
                     //if player supports give _garrison bonus
-                    pdf_score = determine_pdf_defence(_planet_data.pdf, _garrison, _planet_data.fortification_level)[0];
+                    pdf_score = determine_pdf_defence(_planet_data.pdf, _garrison, _planet_data.fortification_level, 0, _planet_data.guardsmen)[0];
                 } else {
-                    pdf_score = determine_pdf_defence(_planet_data.pdf,, _planet_data.fortification_level)[0];
+                    pdf_score = determine_pdf_defence(_planet_data.pdf, noone, _planet_data.fortification_level, 0, _planet_data.guardsmen)[0];
                 }
             } catch (_exception) {
                 ERROR_HANDLER.handle_exception(_exception, "Pdf defence error",, $"{_run}");
