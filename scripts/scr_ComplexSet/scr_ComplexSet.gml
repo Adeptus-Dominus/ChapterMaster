@@ -546,8 +546,6 @@ function ComplexSet(_unit) constructor {
         }
 
         var _is_weapon = _mod.position == "weapon";
-
-        var _is_weapon = false;
         if (!_is_weapon && struct_exists(_mod, "min_quality")) {
             var _viable = false;
             var _quality_check_areas = struct_get_names(_mod.min_quality);
