@@ -216,7 +216,7 @@ function drop_select_unit_selection() {
             _hg_button.update({str1: "Hold Ground"});
             _hg_button.x1 = btn_target.x1 - _hg_button.w - 20;
             _hg_button.y1 = btn_target.y1;
-            _hg_button.tooltip = "HOLD GROUND: your surviving troops stay on the surface in the region you attack, instead of returning to orbit. They hold that territory and an automatic battle is fought there each turn until the region is cleared - either they take it, or they are wiped out. Use 'Reload' in Manage Units to pull them back to their ship. Landing under fire like this is the only way onto an enemy-held region.";
+            _hg_button.tooltip = "HOLD GROUND: your surviving troops stay on the surface in the region you attack, instead of returning to orbit. They hold that territory and an automatic battle is fought there each turn until the region is cleared - either they take it, or they are wiped out. Use 'Recall All' in Manage Units to bring them back to their ships. Landing under fire like this is the only way onto an enemy-held region.";
             _hg_button.update();
             _hg_button.draw();
             // ToggleButton.clicked() already flips `active`; toggling again here cancelled it,

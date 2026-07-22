@@ -1587,10 +1587,13 @@ function draw_manage_selection_buttons(xx, yy) {
     button.y1 = action_button_bottom_y + 30 + _load_button_h_gap;
     button.x2 = button.x1 + button.w;
     button.y2 = button.y1 + button.h;
-    button.label = "Load";
+    var _embarking = (sel_loading == -1);
+    button.label = _embarking ? "Embark" : "Disembark";
     var load_unload_possible = man_size > 0;
     button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("L"));
-    button.tooltip = "Press Shift L";
+    button.tooltip = _embarking
+        ? "Embarks the selected units onto a ship of your choosing. (Shift L)"
+        : "Disembarks the selected units from this ship down onto a planet. (Shift L)";
     if (load_unload_possible) {
         button.alpha = 1;
         if (sel_loading == -1) {
@@ -1598,7 +1601,6 @@ function draw_manage_selection_buttons(xx, yy) {
                 load_selection();
             }
         } else if (sel_loading != -1) {
-            button.label = "Unload";
             if (button.draw()) {
                 unload_selection();
             }
@@ -1610,11 +1612,11 @@ function draw_manage_selection_buttons(xx, yy) {
 
     button.move("right", true);
 
-    button.label = "Reload";
+    button.label = "Reembark";
     button.keystroke = false;
-    button.tooltip = "Load the SELECTED units back onto the ships they came from. (Use 'Recall All' to bring back everyone without selecting.)";
+    button.tooltip = "Reembarks selected units to their origin ships.";
     if (instance_exists(obj_controller) && is_struct(_unit_focus)) {
-        button.tooltip = $"Load the SELECTED units back onto the ships they came from - this one returns to the {_unit_focus.last_ship.name}. (Use 'Recall All' to bring back everyone without selecting.)";
+        button.tooltip = $"Reembarks selected units to their origin ships - this one returns to the {_unit_focus.last_ship.name}.";
     }
     reload_possible = man_size > 0 && sel_loading == -1;
     if (reload_possible) {
@@ -1644,8 +1646,8 @@ function draw_manage_selection_buttons(xx, yy) {
         button.label = "Recall All";
         button.keystroke = false;
         button.tooltip = _region_scoped
-            ? $"Load ALL {_surface_count} units in this sector back onto the ships they came from. No selection needed."
-            : $"Load ALL {_surface_count} units on the surface back onto the ships they came from. No selection needed.";
+            ? $"Reembarks all units to their ships instantly - every one of the {_surface_count} in this sector. No selection needed."
+            : $"Reembarks all units to their ships instantly - all {_surface_count} on the surface. No selection needed.";
         var recall_possible = (_surface_count > 0);
         if (recall_possible) {
             button.alpha = 1;
