@@ -1612,8 +1612,9 @@ function draw_manage_selection_buttons(xx, yy) {
 
     button.label = "Reload";
     button.keystroke = false;
+    button.tooltip = "Load the SELECTED units back onto the ships they came from. (Use 'Recall All' to bring back everyone without selecting.)";
     if (instance_exists(obj_controller) && is_struct(_unit_focus)) {
-        button.tooltip = $"{_unit_focus.last_ship.name}";
+        button.tooltip = $"Load the SELECTED units back onto the ships they came from - this one returns to the {_unit_focus.last_ship.name}. (Use 'Recall All' to bring back everyone without selecting.)";
     }
     reload_possible = man_size > 0 && sel_loading == -1;
     if (reload_possible) {
@@ -1627,21 +1628,35 @@ function draw_manage_selection_buttons(xx, yy) {
         button.draw(false);
     }
 
-    // Recall: shown whenever the units being managed are PLANETSIDE (no ship selected), so it is
-    // available both from a region's "Your Force" manage screen and from the ordinary planet/system
-    // Manage Units menu. It re-embarks the selected surface troops onto the ships they came from.
+    // Recall: a BULK withdraw, shown whenever the units being managed are PLANETSIDE (no ship
+    // selected), so it is available both from a region's "Your Force" manage screen and from the
+    // ordinary planet/system Manage Units menu. Unlike Reload (which acts on the current selection)
+    // this needs no selection at all: it sends EVERY unit standing on a surface here back to the
+    // ship it came from in one click, which is the thing you actually want when abandoning a world.
     var _region_scoped = is_struct(obj_controller.selection_data) && variable_struct_exists(obj_controller.selection_data, "region_scope");
     if (sel_loading == -1) {
+        // Anything standing on a surface here? ma_wid holds the planet a unit is on (0 = aboard ship).
+        var _surface_count = 0;
+        for (var _rq = 0; _rq < array_length(display_unit); _rq++) {
+            if ((_rq < array_length(ma_wid)) && (ma_wid[_rq] > 0)) { _surface_count += 1; }
+        }
         button.move("right", true);
-        button.label = "Recall";
+        button.label = "Recall All";
         button.keystroke = false;
         button.tooltip = _region_scoped
-            ? "Pull the selected troops off the surface and back onto their assigned ship, withdrawing them from this region."
-            : "Pull the selected troops off the surface and back onto the ships they came from, withdrawing them from this world.";
-        var recall_possible = man_size > 0;
+            ? $"Load ALL {_surface_count} units in this sector back onto the ships they came from. No selection needed."
+            : $"Load ALL {_surface_count} units on the surface back onto the ships they came from. No selection needed.";
+        var recall_possible = (_surface_count > 0);
         if (recall_possible) {
             button.alpha = 1;
             if (button.draw()) {
+                // Select every surface unit, then run the standard reload (which acts on man_sel).
+                // No cleanup needed afterwards: load_marines_into_ship clears man_sel per unit it
+                // successfully loads and resets man_size itself. Anything that would not fit stays
+                // selected on purpose, so it is visible what got left behind.
+                for (var _rq = 0; _rq < array_length(display_unit); _rq++) {
+                    man_sel[_rq] = ((_rq < array_length(ma_wid)) && (ma_wid[_rq] > 0)) ? 1 : 0;
+                }
                 scr_company_load(selecting_location);
                 load_marines_into_ship(selecting_location, sh_ide, display_unit, true);
             }
