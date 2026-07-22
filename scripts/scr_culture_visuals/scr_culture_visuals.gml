@@ -227,6 +227,12 @@ function set_up_visual_overides() {
                             }
                         }
                     }
+                    if (!_found_sprite){
+                        if (struct_exists(global.reuseable_drawing_items , _overide)){
+                            _item.subcomponents[s][g] = global.reuseable_drawing_items[$ _overide];
+                            _found_sprite = true;
+                        }
+                    }
                     if (!_found_sprite) {
                         struct_remove(_item.overides, _overide_areas[o]);
                     }
@@ -374,6 +380,13 @@ global.reuseable_drawing_items = {
     "roman_crest" : {
         sprite: spr_roman_centurian_crest,
         shadows: spr_roman_centurian_crest_shadows        
+    },
+    "default_backpack_fastening" :{
+        sprite : spr_backpack_fastening,
+        armours_exclude : [
+            "MK5 Heresy",
+            "MK6 Corvus",
+        ]
     }
 }
 global.modular_drawing_items = [
@@ -1194,13 +1207,7 @@ global.modular_drawing_items = [
             "mobi": "Jump Pack",
         },
         overides: {
-            "chest_fastening": {
-                sprite : spr_backpack_fastening,
-                armours_exclude : [
-                    "MK5 Heresy",
-                    "MK6 Corvus",
-                ]
-            }
+            "chest_fastening" : "default_backpack_fastening"
         },
     },
     {
@@ -1219,13 +1226,7 @@ global.modular_drawing_items = [
             "mobi": "Serpha Jump Pack",
         },
         overides: {
-            "chest_fastening": {
-                sprite : spr_backpack_fastening,
-                armours_exclude : [
-                    "MK5 Heresy",
-                    "MK6 Corvus",
-                ]
-            }
+            "chest_fastening" : "default_backpack_fastening"
         },
     },
     {
