@@ -27,7 +27,7 @@
 
 #macro UNIT_EQUIP_SLOTS_DISPLAY [ "First Weapon", "Second Weapon", "Armour", "Gear", "Back/Mobility", "ALL"]
 
-#macro EQUIPMENT_QUALITITES ["shoddy", "standard", "master_crafted", "artifact"]
+#macro EQUIPMENT_QUALITIES ["shoddy", "standard", "master_crafted", "artifact"]
 
 // Basic, because we don't include Artificer Armour
 global.list_basic_power_armour = ["MK7 Aquila", "MK6 Corvus", "MK5 Heresy", "MK8 Errant", "MK4 Maximus", "MK3 Iron Armour","Power Armour"];

@@ -244,10 +244,13 @@ function set_up_visual_overides() {
                     var _found_sprite = false;
                     var _subimg = _sub_group[g];
                     if (!is_string(_subimg)) {
-                        if (!sprite_exists(_subimg)) {
-                            array_delete(_sub_group, g, 1);
+                        if (!is_struct(_subimg)){
+                            if (!sprite_exists(_subimg)) {
+                                array_delete(_sub_group, g, 1);
+                            }
+                            continue;
                         }
-                        continue;
+                        _found_sprite = true;
                     }
                     if (_subimg == "blank") {
                         _item.subcomponents[s][g] = spr_blank;
@@ -256,10 +259,16 @@ function set_up_visual_overides() {
                         for (var m = 0; m < array_length(_mods); m++) {
                             if (struct_exists(_mods[m], "name")) {
                                 if (_mods[m].name == _subimg) {
-                                    _item.subcomponents[s][g] = _mods[m].sprite;
+                                    _item.subcomponents[s][g] = _mods[m];
                                     _found_sprite = true;
                                     break;
                                 }
+                            }
+                        }
+                        if (!_found_sprite){
+                            if (struct_exists(global.reuseable_drawing_items , _subimg)){
+                                _item.subcomponents[s][g] = global.reuseable_drawing_items[$ _subimg];
+                                _found_sprite = true;
                             }
                         }
                     }
@@ -351,6 +360,12 @@ function set_up_visual_overides() {
     }
 }
 
+global.reuseable_drawing_items = {
+    "roman_crest" : {
+        sprite: spr_roman_centurian_crest,
+        shadows: spr_roman_centurian_crest_shadows        
+    }
+}
 global.modular_drawing_items = [
 	// MK7 Aquila Sprites
 	{
@@ -362,6 +377,20 @@ global.modular_drawing_items = [
         body_types: [0],
         sprite: spr_mk7_chest_variants,
         shadows: spr_mk7_chest_variants_shadow,
+        subcomponents: [[]]
+    },
+    {
+        position: "armour",
+        armours: ["MK5 Heresy",
+                  "MK6 Corvus",
+                  "MK7 Aquila",
+                  "MK8 Errant",
+                  "Artificer Armour"
+        ],
+        traits: ["tinkerer"],
+        body_types: [0],
+        sprite: spr_techmarine_complex,
+        role_type: [SPECIALISTS_TECHS]
     },
 	// Other Stuff
     {
