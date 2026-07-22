@@ -96,11 +96,10 @@ function ComplexSet(_unit) constructor {
     overides = {};
     subcomponents = {};
     unit_armour = _unit.armour();
-    unit = _unit;
+    draw_unit = _unit;
     draw_helms = instance_exists(obj_creation) ? obj_creation.draw_helms : obj_controller.draw_helms;
 
-    equipment_data = unit.unit_equipment_data();
-
+    equipment_data = draw_unit.unit_equipment_data();
     current_texture_draws = {};
     _has_exceptions = false;
     exceptions = [];
@@ -136,54 +135,54 @@ function ComplexSet(_unit) constructor {
     blocked = [];
     banned = [];
     variation_map = {
-        backpack: unit.get_body_data("backpack_variation", "torso"),
-        armour: unit.get_body_data("armour_choice", "torso"),
-        chest_variants: unit.get_body_data("chest_variation", "torso"),
-        thorax_variants: unit.get_body_data("thorax_variation", "torso"),
-        leg_variants: unit.get_body_data("leg_variants", "left_leg"),
-        left_leg: unit.get_body_data("leg_variants", "left_leg"),
-        right_leg: unit.get_body_data("leg_variants", "right_leg"),
-        left_shin: unit.get_body_data("shin_variant", "left_leg"),
-        right_shin: unit.get_body_data("shin_variant", "right_leg"),
-        left_knee: unit.get_body_data("knee_variant", "left_leg"),
-        right_knee: unit.get_body_data("knee_variant", "right_leg"),
-        left_trim: unit.get_body_data("trim_variation", "left_arm"),
-        right_trim: unit.get_body_data("trim_variation", "right_arm"),
-        left_arm: unit.get_body_data("variation", "left_arm"),
-        right_arm: unit.get_body_data("variation", "right_arm"),
-        gorget: unit.get_body_data("variant", "throat"),
-        right_pauldron_icons: unit.get_body_data("pad_variation", "right_arm"),
-        left_pauldron_icons: unit.get_body_data("pad_variation", "left_arm"),
-        right_pauldron_base: unit.get_body_data("pad_variation", "right_arm"),
-        left_pauldron_base: unit.get_body_data("pad_variation", "left_arm"),
-        right_pauldron_embeleshments: unit.get_body_data("pad_variation", "right_arm"),
-        left_pauldron_embeleshments: unit.get_body_data("pad_variation", "left_arm"),
-        right_pauldron_hangings: unit.get_body_data("pad_variation", "right_arm"),
-        left_pauldron_hangings: unit.get_body_data("pad_variation", "left_arm"),
-        left_personal_livery: unit.get_body_data("personal_livery", "left_arm"),
-        tabbard: unit.get_body_data("tabbard_variation", "torso"),
-        robe: unit.get_body_data("tabbard_variation", "torso"),
-        crest: unit.get_body_data("crest_variation", "head"),
-        head: unit.get_body_data("variation", "head"),
-        bare_head: unit.get_body_data("variation", "head"),
-        bare_neck: unit.get_body_data("variation", "head"),
-        bare_eyes: unit.get_body_data("variation", "head"),
-        mouth_variants: unit.get_body_data("variant", "jaw"),
-        left_eye: unit.get_body_data("variant", "left_eye"),
-        right_eye: unit.get_body_data("variant", "right_eye"),
-        crown: unit.get_body_data("crown_variation", "head"),
-        forehead: unit.get_body_data("forehead_variation", "head"),
-        backpack_decoration: unit.get_body_data("backpack_decoration_variation", "torso"),
-        belt: unit.get_body_data("belt_variation", "torso"),
-        cloak: unit.get_body_data("variant", "cloak"),
-        cloak_image: unit.get_body_data("image_0", "cloak"),
-        cloak_trim: unit.get_body_data("image_1", "cloak"),
-        backpack_augment: unit.get_body_data("backpack_augment_variation", "torso"),
-        chest_fastening: unit.get_body_data("chest_fastening", "torso"),
-        left_weapon: unit.get_body_data("weapon_variation", "left_arm"),
-        right_weapon: unit.get_body_data("weapon_variation", "right_arm"),
-        necklace: unit.get_body_data("hanging_variant", "throat"),
-        foreground_item: unit.get_body_data("variant", "throat"),
+        backpack: draw_unit.get_body_data("backpack_variation", "torso"),
+        armour: draw_unit.get_body_data("armour_choice", "torso"),
+        chest_variants: draw_unit.get_body_data("chest_variation", "torso"),
+        thorax_variants: draw_unit.get_body_data("thorax_variation", "torso"),
+        leg_variants: draw_unit.get_body_data("leg_variants", "left_leg"),
+        left_leg: draw_unit.get_body_data("leg_variants", "left_leg"),
+        right_leg: draw_unit.get_body_data("leg_variants", "right_leg"),
+        left_shin: draw_unit.get_body_data("shin_variant", "left_leg"),
+        right_shin: draw_unit.get_body_data("shin_variant", "right_leg"),
+        left_knee: draw_unit.get_body_data("knee_variant", "left_leg"),
+        right_knee: draw_unit.get_body_data("knee_variant", "right_leg"),
+        left_trim: draw_unit.get_body_data("trim_variation", "left_arm"),
+        right_trim: draw_unit.get_body_data("trim_variation", "right_arm"),
+        left_arm: draw_unit.get_body_data("variation", "left_arm"),
+        right_arm: draw_unit.get_body_data("variation", "right_arm"),
+        gorget: draw_unit.get_body_data("variant", "throat"),
+        right_pauldron_icons: draw_unit.get_body_data("pad_variation", "right_arm"),
+        left_pauldron_icons: draw_unit.get_body_data("pad_variation", "left_arm"),
+        right_pauldron_base: draw_unit.get_body_data("pad_variation", "right_arm"),
+        left_pauldron_base: draw_unit.get_body_data("pad_variation", "left_arm"),
+        right_pauldron_embeleshments: draw_unit.get_body_data("pad_variation", "right_arm"),
+        left_pauldron_embeleshments: draw_unit.get_body_data("pad_variation", "left_arm"),
+        right_pauldron_hangings: draw_unit.get_body_data("pad_variation", "right_arm"),
+        left_pauldron_hangings: draw_unit.get_body_data("pad_variation", "left_arm"),
+        left_personal_livery: draw_unit.get_body_data("personal_livery", "left_arm"),
+        tabbard: draw_unit.get_body_data("tabbard_variation", "torso"),
+        robe: draw_unit.get_body_data("tabbard_variation", "torso"),
+        crest: draw_unit.get_body_data("crest_variation", "head"),
+        head: draw_unit.get_body_data("variation", "head"),
+        bare_head: draw_unit.get_body_data("variation", "head"),
+        bare_neck: draw_unit.get_body_data("variation", "head"),
+        bare_eyes: draw_unit.get_body_data("variation", "head"),
+        mouth_variants: draw_unit.get_body_data("variant", "jaw"),
+        left_eye: draw_unit.get_body_data("variant", "left_eye"),
+        right_eye: draw_unit.get_body_data("variant", "right_eye"),
+        crown: draw_unit.get_body_data("crown_variation", "head"),
+        forehead: draw_unit.get_body_data("forehead_variation", "head"),
+        backpack_decoration: draw_unit.get_body_data("backpack_decoration_variation", "torso"),
+        belt: draw_unit.get_body_data("belt_variation", "torso"),
+        cloak: draw_unit.get_body_data("variant", "cloak"),
+        cloak_image: draw_unit.get_body_data("image_0", "cloak"),
+        cloak_trim: draw_unit.get_body_data("image_1", "cloak"),
+        backpack_augment: draw_unit.get_body_data("backpack_augment_variation", "torso"),
+        chest_fastening: draw_unit.get_body_data("chest_fastening", "torso"),
+        left_weapon: draw_unit.get_body_data("weapon_variation", "left_arm"),
+        right_weapon: draw_unit.get_body_data("weapon_variation", "right_arm"),
+        necklace: draw_unit.get_body_data("hanging_variant", "throat"),
+        foreground_item: draw_unit.get_body_data("variant", "throat"),
     };
 
     component_final_draw_x = 0;
@@ -212,9 +211,9 @@ function ComplexSet(_unit) constructor {
 
     base_armour();
 
-    if (unit.IsSpecialist(SPECIALISTS_TECHS)) {
+    if (draw_unit.IsSpecialist(SPECIALISTS_TECHS)) {
         if (array_contains(["MK5 Heresy", "MK6 Corvus", "MK7 Aquila", "MK8 Errant", "Artificer Armour"], unit_armour)) {
-            if (unit.has_trait("tinkerer")) {
+            if (draw_unit.has_trait("tinkerer")) {
                 add_group({"armour": spr_techmarine_complex});
             }
         }
@@ -364,7 +363,7 @@ function ComplexSet(_unit) constructor {
             var _min = 0;
             if (struct_exists(_exp_data, "min")) {
                 _min = _exp_data.min;
-                if (unit.experience < _exp_data.min) {
+                if (draw_unit.experience < _exp_data.min) {
                     if (!check_exception("min_exp")) {
                         return false;
                     }
@@ -375,7 +374,7 @@ function ComplexSet(_unit) constructor {
                 var _increment_count = max(1, floor(_mod.max_saturation / 5));
                 var _increments = (_m_exp - _min) / _increment_count;
                 var _sat_roof = _mod.max_saturation;
-                var _unit_exp = unit.experience;
+                var _unit_exp = draw_unit.experience;
 
                 if (_unit_exp >= _m_exp) {
                     spawn_chance = _mod.max_saturation;
@@ -413,7 +412,7 @@ function ComplexSet(_unit) constructor {
             var _viable = false;
             for (var a = 0; a < array_length(_mod.role_type); a++) {
                 var _r_t = _mod.role_type[a];
-                _viable = unit.IsSpecialist(_r_t);
+                _viable = draw_unit.IsSpecialist(_r_t);
                 if (_viable) {
                     break;
                 }
@@ -425,7 +424,7 @@ function ComplexSet(_unit) constructor {
             }
         }
         if (struct_exists(_mod, "roles")) {
-            if (!array_contains(_mod.roles, unit.role())) {
+            if (!array_contains(_mod.roles, draw_unit.role())) {
                 if (!check_exception("roles")) {
                     return false;
                 }
@@ -439,12 +438,13 @@ function ComplexSet(_unit) constructor {
             }
         }
         if (struct_exists(_mod, "company")) {
-            if (!array_contains(_mod.company, unit.company)) {
+            if (!array_contains(_mod.company, draw_unit.company)) {
                 if (!check_exception("company")) {
                     return false;
                 }
             }
         }
+
         if (struct_exists(_mod, "armours")) {
             if (!array_contains(_mod.armours, unit_armour)) {
                 if (!check_exception("armours")) {
@@ -490,14 +490,14 @@ function ComplexSet(_unit) constructor {
             }
         }
         if (struct_exists(_mod, "stats")) {
-            if (!stat_valuator(_mod.stats, unit)) {
+            if (!stat_valuator(_mod.stats, draw_unit)) {
                 if (!check_exception("stats")) {
                     return false;
                 }
             }
         }
         if (struct_exists(_mod, "equipped")) {
-            if (!unit.has_equipped(_mod.equipped)) {
+            if (!draw_unit.has_equipped(_mod.equipped)) {
                 if (!check_exception("equipped")) {
                     return false;
                 }
@@ -508,7 +508,7 @@ function ComplexSet(_unit) constructor {
             var _viable = false;
             for (var a = 0; a < array_length(_mod.traits); a++) {
                 var _trait = _mod.traits[a];
-                _viable = unit.has_trait(_trait);
+                _viable = draw_unit.has_trait(_trait);
                 if (_viable) {
                     break;
                 }
@@ -526,8 +526,17 @@ function ComplexSet(_unit) constructor {
             var _tag_check_areas = struct_get_names(_mod.equipment_has_tag);
             for (var i = 0; i < array_length(_tag_check_areas); i++) {
                 var _area = _tag_check_areas[i];
+
+                if (!array_contains(equipment_data.present_items, _area)){
+                    break;
+                }
+
+                var _item = equipment_data.get_item(_area);
+                
                 var _tag = _mod.equipment_has_tag[$ _area];
-                _viable = unit.equipment_has_tag(_tag, _area);
+
+                _viable = _item.has_tag(_tag)
+
                 if (_viable) {
                     break;
                 }
@@ -538,19 +547,59 @@ function ComplexSet(_unit) constructor {
                 }
             }
         }
-        /*if (struct_exists(_mod, "equipment_has_rarity")){
-            var _rarities = _mod.equipment_has_rarity
-            var _items = struct_get_names(_rarities);
-            for (var i = 0; i < array_length(_items); i++){
-                switch ()
-                {
-                    case :
-                        
-                    default:
-                        break;
+
+        if (struct_exists(_mod, "min_quality")) {
+            var _viable = false;
+            var _quality_check_areas = struct_get_names(_mod.min_quality);
+            for (var i = 0; i < array_length(_quality_check_areas); i++) {
+                var _area = _quality_check_areas[i];
+                if (!array_contains(equipment_data.present_items, _area)) {
+                    break;
+                }
+                var _item = equipment_data.get_item(_area);
+
+                var _required_quality = _mod.min_quality[$ _area];
+                var _required_index = array_get_index(EQUIPMENT_QUALITITES, _required_quality);
+                var _item_index = array_get_index(EQUIPMENT_QUALITITES, _item.quality);
+
+                _viable = (_item_index >= _required_index);
+                if (_viable) {
+                    break;
                 }
             }
-        }*/
+            if (!_viable) {
+                if (!check_exception("min_quality")) {
+                    return false;
+                }
+            }
+        }
+
+        if (struct_exists(_mod, "max_quality")) {
+            var _viable = false;
+            var _quality_check_areas = struct_get_names(_mod.max_quality);
+            for (var i = 0; i < array_length(_quality_check_areas); i++) {
+                var _area = _quality_check_areas[i];
+                if (!array_contains(equipment_data.present_items, _area)) {
+                    break;
+                }
+                var _item = equipment_data.get_item(_area);
+
+                var _required_quality = _mod.max_quality[$ _area];
+                var _required_index = array_get_index(EQUIPMENT_QUALITITES, _required_quality);
+                var _item_index = array_get_index(EQUIPMENT_QUALITITES, _item.quality);
+
+                _viable = (_item_index <= _required_index);
+                if (_viable) {
+                    break;
+                }
+            }
+            if (!_viable) {
+                if (!check_exception("max_quality")) {
+                    return false;
+                }
+            }
+        }
+
         if (struct_exists(_mod, "chapter")) {
             var chap_name = instance_exists(obj_creation) ? obj_creation.chapter_name : global.chapter_name;
             if (chap_name != _mod.chapter) {
@@ -608,7 +657,7 @@ function ComplexSet(_unit) constructor {
             var _body_areas = struct_get_names(_mod.body_parts);
             for (var b = 0; b < array_length(_body_areas); b++) {
                 var _area = _body_areas[b];
-                if (!struct_exists(unit.body[$ _area], _mod.body_parts[$ _area])) {
+                if (!struct_exists(draw_unit.body[$ _area], _mod.body_parts[$ _area])) {
                     _viable = false;
                     break;
                 }
@@ -677,7 +726,7 @@ function ComplexSet(_unit) constructor {
             if (_unit_tier == 8) {
                 for (var t = 0; t < array_length(tiers); t++) {
                     var tier = tiers[t];
-                    if (array_contains(tier, unit.role())) {
+                    if (array_contains(tier, draw_unit.role())) {
                         _unit_tier = t;
                     }
                 }
@@ -712,10 +761,10 @@ function ComplexSet(_unit) constructor {
                 if (_mod.position != "") {
                     if (_mod.position == "weapon") {
                         var _weapon_map = _mod.weapon_map;
-                        if (unit.weapon_one() == _weapon_map) {
+                        if (draw_unit.weapon_one() == _weapon_map) {
                             array_push(right_arm_data, _mod.weapon_data);
                         }
-                        if (unit.weapon_two() == _weapon_map) {
+                        if (draw_unit.weapon_two() == _weapon_map) {
                             array_push(left_arm_data, _mod.weapon_data);
                         }
                     } else {
@@ -1055,7 +1104,7 @@ function ComplexSet(_unit) constructor {
                 }
 
                 var _arm_string = _right_left == 0 ? "right_arm" : "left_arm";
-                var _bionic_arm = unit.get_body_data("bionic", _arm_string);
+                var _bionic_arm = draw_unit.get_body_data("bionic", _arm_string);
                 var _bio = [];
                 if (eARMOUR_TYPE.TERMINATOR == armour_type) {
                     if (_variant == 2) {
@@ -1276,7 +1325,7 @@ function ComplexSet(_unit) constructor {
         var prep_surface = surface_create(600, 600);
         surface_set_target(prep_surface);
 
-        var _texture_draws = setup_complex_livery_shader(unit.role(), unit);
+        var _texture_draws = setup_complex_livery_shader(draw_unit.role(), draw_unit);
 
         draw_cloaks();
 
@@ -1297,7 +1346,7 @@ function ComplexSet(_unit) constructor {
         ];
         for (var i = 0; i <= 1; i++) {
             var _arm = arms_data[i];
-            var _wep = i == 0 ? unit.weapon_one() : unit.weapon_two();
+            var _wep = i == 0 ? draw_unit.weapon_one() : draw_unit.weapon_two();
             if (struct_exists(_arm, "display_type")) {
                 if (struct_exists(weapon_preset_data, _arm.display_type)) {
                     var _preset = weapon_preset_data[$ _arm.display_type];
@@ -1367,7 +1416,7 @@ function ComplexSet(_unit) constructor {
         }
         draw_unit_arms(_texture_draws);
         var _complex_helm = false;
-        var _unit_role = unit.role();
+        var _unit_role = draw_unit.role();
         var _role = active_roles();
         var _comp_helms = instance_exists(obj_creation) ? obj_creation.complex_livery_data : obj_ini.complex_livery_data;
         if (_unit_role == _role[eROLE.SERGEANT]) {
@@ -1376,7 +1425,7 @@ function ComplexSet(_unit) constructor {
             _complex_helm = _comp_helms.vet_sgt;
         } else if (_unit_role == _role[eROLE.CAPTAIN]) {
             _complex_helm = _comp_helms.captain;
-        } else if (_unit_role == _role[eROLE.VETERAN] || (_unit_role == _role[eROLE.TERMINATOR] && unit.company == 1)) {
+        } else if (_unit_role == _role[eROLE.VETERAN] || (_unit_role == _role[eROLE.TERMINATOR] && draw_unit.company == 1)) {
             _complex_helm = _comp_helms.veteran;
         } else if (struct_exists(_comp_helms, "all_others")) {
             // there's probably room to improve this but consecrators demand the stripe
@@ -1489,9 +1538,9 @@ function ComplexSet(_unit) constructor {
         //TODO imprvoe this logic to be more extendable
 
         if (armour_type == eARMOUR_TYPE.NORMAL || armour_type == eARMOUR_TYPE.TERMINATOR) {
-            var _body = unit.body;
+            var _body = draw_unit.body;
             var _torso_data = _body[$ "torso"];
-            var _exp = unit.experience;
+            var _exp = draw_unit.experience;
             var _x_offset = x_surface_offset + (armour_type == eARMOUR_TYPE.NORMAL ? 0 : -7);
             var _y_offset = y_surface_offset + (armour_type == eARMOUR_TYPE.NORMAL ? 0 : -38);
             if (struct_exists(_torso_data, "purity_seal")) {
@@ -1681,7 +1730,7 @@ function ComplexSet(_unit) constructor {
                 add_group(mk7_bits);
                 break;
         }
-        var type = unit.get_body_data("type", "cloak");
+        var type = draw_unit.get_body_data("type", "cloak");
         if (type != "none" && armour_type != eARMOUR_TYPE.SCOUT) {
             static _cloaks = {
                 "scale": spr_cloak_scale,
@@ -1695,12 +1744,12 @@ function ComplexSet(_unit) constructor {
             }
         }
         assign_modulars();
-        var wep_opts = format_weapon_visuals(unit.weapon_one());
+        var wep_opts = format_weapon_visuals(draw_unit.weapon_one());
         if (array_length(wep_opts)) {
             assign_modulars(wep_opts, "weapon");
         }
-        if (unit.weapon_one() != unit.weapon_two()) {
-            var wep_opts = format_weapon_visuals(unit.weapon_two());
+        if (draw_unit.weapon_one() != draw_unit.weapon_two()) {
+            var wep_opts = format_weapon_visuals(draw_unit.weapon_two());
             if (array_length(wep_opts)) {
                 assign_modulars(wep_opts, "weapon");
             }
