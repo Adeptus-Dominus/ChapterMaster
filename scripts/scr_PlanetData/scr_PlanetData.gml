@@ -356,8 +356,20 @@ function PlanetData(_planet, _system) constructor {
                 }
                 system.p_race_pop[planet][eFACTION.TYRANIDS] = tyranid_vanguard(planet_type, _budget0);
             }
+            // RESISTANCE GATE: a Hive Fleet cannot strip a world while its defenders still hold. So long as
+            // any player force, Guard or PDF remains, the swarm is pinned down and consumes nothing that
+            // turn — it neither feeds nor grows. Landing troops on a Tyranid world therefore STALLS the
+            // devouring, and wiping the defenders is what lets the meal begin. Read live off the system
+            // arrays so this can never act on a stale cached field.
+            // NOTE: the static defence RATING (p_defenses) is deliberately NOT counted. Only player ground
+            // combat ever reduces it, while the AI raises it a point per turn (scr_enemy_ai_e) and turret
+            // buildings add to it — so counting it would leave a conquered world permanently un-devourable
+            // with a rating that only climbs. Manned defenders are what actually hold a world.
+            var _resistance = system.p_player[planet] + system.p_pdf[planet] + system.p_guardsmen[planet];
             var _nid = system.p_race_pop[planet][eFACTION.TYRANIDS];
-            if (!variable_instance_exists(system, "p_biomass")) {
+            if (_resistance > 0) {
+                // Contained. Defenders still hold the world, so nothing is consumed this turn.
+            } else if (!variable_instance_exists(system, "p_biomass")) {
                 // Old save without the biomass layer — fall back to bounded explosive growth so nothing breaks.
                 system.p_race_pop[planet][eFACTION.TYRANIDS] = min(_cap_head, round(_nid * 1.12));
             } else {
