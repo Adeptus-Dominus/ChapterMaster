@@ -744,7 +744,7 @@ function ComplexSet(_unit) constructor {
 
     /// @param {Array<Struct>} modulars
     /// @param {String} position
-    static assign_modulars = function(modulars = global.modular_drawing_items, position = "") {
+    static assign_modulars = function(modulars = global.modular_drawing_items, position = "", replace_by_default = false) {
         try {
             for (var i = 0; i < array_length(modulars); i++) {
                 _sub_comps = "none";
@@ -768,7 +768,12 @@ function ComplexSet(_unit) constructor {
                             array_push(left_arm_data, _mod.weapon_data);
                         }
                     } else {
-                        add_to_area(_mod.position, _mod.sprite, _overides, _sub_comps, _shadows);
+                        if (replace_by_default){
+                            replace_area(_mod.position, _mod.sprite, _overides, _sub_comps, _shadows);
+                        } else {
+                            add_to_area(_mod.position, _mod.sprite, _overides, _sub_comps, _shadows);
+                        }
+                        
                     }
                 }
                 if (struct_exists(_mod, "prevent_others")) {
@@ -791,28 +796,34 @@ function ComplexSet(_unit) constructor {
     /// @param {String} component_name
     /// @param {Real} choice
     static check_component_overides = function(component_name, choice) {
-        if (struct_exists(overides, component_name)) {
-            var _overide_set = overides[$ component_name];
-            for (var i = 0; i < array_length(_overide_set); i++) {
-                var _spec_over = _overide_set[i];
-                if (_spec_over[0] <= choice && _spec_over[1] > choice) {
-                    var _override_data = _spec_over[2];
-                    if (struct_exists(_override_data, "overides")) {
-                        _override_areas = struct_get_names(_override_data.overides);
-                        var _overs = _override_data.overides;
-                        for (var j = 0; j < array_length(_override_areas); j++) {
-                            replace_area(_override_areas[j], _overs[$ _override_areas[j]]);
-                        }
+        if (!struct_exists(overides, component_name)) {
+            return false;
+        }
+
+        var _overide_set = overides[$ component_name];
+        for (var i = 0; i < array_length(_overide_set); i++) {
+            var _spec_over = _overide_set[i];
+            if (_spec_over[0] <= choice && _spec_over[1] > choice) {
+                var _override_data = _spec_over[2];
+                if (struct_exists(_override_data, "overides")) {
+                    _override_areas = struct_get_names(_override_data.overides);
+                    var _overs = _override_data.overides;
+                    for (var j = 0; j < array_length(_override_areas); j++) {
+                        var _area = _override_areas[j]
+                        var _override_packet = _overs[$ _area];
+                        _override_packet = is_struct(_override_packet) ? _override_packet : {sprite : _override_packet};
+                        assign_modulars([_override_packet], _area, true);
                     }
-                    if (struct_exists(_override_data, "offsets")) {
-                        var _offsets = _override_data.offsets;
-                        component_final_draw_x += _offsets[0];
-                        component_final_draw_y += _offsets[1];
-                    }
-                    break;
                 }
+                if (struct_exists(_override_data, "offsets")) {
+                    var _offsets = _override_data.offsets;
+                    component_final_draw_x += _offsets[0];
+                    component_final_draw_y += _offsets[1];
+                }
+                break;
             }
         }
+  
     };
 
     /// @desc Resolves a global frame choice for an area into (source_sprite, local_frame)
