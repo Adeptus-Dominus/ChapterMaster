@@ -334,11 +334,17 @@ function PlanetData(_planet, _system) constructor {
             } else {
                 _nid_active = true;
             }
-        } else if (current_owner == eFACTION.TYRANIDS && !has_feature(eP_FEATURES.GENE_STEALER_CULT)) {
+        } else if (current_owner == eFACTION.TYRANIDS && !has_feature(eP_FEATURES.GENE_STEALER_CULT)
+                && (planet_type != "Space Hulk") && (planet_type != "Dead") && (planet_type != "")) {
             // ANY Tyranid-held world is being devoured, however the Hive Fleet took it. Ascension is only
             // one route in: a fleet that simply conquers a world strips it exactly the same way. (A still-
             // infiltrating Genestealer Cult does NOT devour yet — that waits for Ascension above, so its
             // host just grows as a cult.)
+            // A SPACE HULK is excluded: it is a derelict crawling with xenos, not a biosphere. It spawns
+            // Tyranid-held with zero population and zero biomass, so without this guard it was "devoured"
+            // the turn it appeared - reserve reconstructing to 1, consumed immediately, retyped "Dead"
+            // (which renders as the barren/asteroid planet image) and its swarm wiped. Dead worlds are
+            // likewise already stripped and have nothing left to eat.
             _nid_active = true;
         }
         if (_nid_active) {

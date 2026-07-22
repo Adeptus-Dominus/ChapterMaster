@@ -320,7 +320,7 @@ function scr_flavor2(lost_units_count, target_type, hostile_range, hostile_weapo
                 m1 = $"{_hostile_shots} {_hostile_weapon}z are flung into {target_type}.  ";
             }
         }
-        if ((_hostile_weapon == "Melee1") && (enemy == eFACTION.ORK)) {
+        if ((_hostile_weapon == "Melee1") && (obj_ncombat.enemy == eFACTION.ORK)) {
             flavor = 1;
             var ranz = choose(1, 2, 3);
             if (ranz == 1) {

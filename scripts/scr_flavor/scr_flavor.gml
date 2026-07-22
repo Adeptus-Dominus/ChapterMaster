@@ -754,16 +754,16 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
             leader_message = string_replace(leader_message, "a " + target_name, target_name);
             leader_message = string_replace(leader_message, "the " + target_name, target_name);
             leader_message = string_replace(leader_message, target_name + " ranks , inflicting {casulties}", target_name);
-            if (enemy == 5) {
+            if (obj_ncombat.enemy == 5) {
                 leader_message = string_replace(leader_message, "it", "her");
             }
-            if ((enemy == 6) && (obj_controller.faction_gender[6] == 1)) {
+            if ((obj_ncombat.enemy == 6) && (obj_controller.faction_gender[6] == 1)) {
                 leader_message = string_replace(leader_message, "it", "him");
             }
-            if ((enemy == 6) && (obj_controller.faction_gender[6] == 2)) {
+            if ((obj_ncombat.enemy == 6) && (obj_controller.faction_gender[6] == 2)) {
                 leader_message = string_replace(leader_message, "it", "her");
             }
-            if ((enemy != 6) && (enemy != 5)) {
+            if ((obj_ncombat.enemy != 6) && (obj_ncombat.enemy != 5)) {
                 leader_message = string_replace(leader_message, "it", "him");
             }
             message_color = eMSG_COLOR.YELLOW;
