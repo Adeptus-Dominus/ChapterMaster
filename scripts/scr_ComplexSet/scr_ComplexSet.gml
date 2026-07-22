@@ -976,9 +976,10 @@ function ComplexSet(_unit) constructor {
                     var _sprite = _final_component.sprite;
                     if (_sub_choice_final >= _choice_count && _sub_choice_final < _choice_count + sprite_get_number(_sprite)) {
                         var _final_index = _sub_choice_final - _choice_count ?? 0;
-                        if (struct_exists(_final_component, "shadows")){
-                            set_draw_shadows(_sprite, _final_index,_final_component.shadows, _final_index);
+                        if (struct_exists(_final_component, "shadows")) {
+                            set_draw_shadows(_sprite, _final_index, _final_component.shadows, _final_index);
                         }
+                        shader_set_uniform_i(use_shadow_uniform, shadow_enabled);
                         if (flip_x) {
                             draw_sprite_flipped(_sprite, _sub_choice_final - _choice_count ?? 0, component_final_draw_x, component_final_draw_y);
                         } else {
