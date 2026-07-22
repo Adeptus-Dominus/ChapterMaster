@@ -8,11 +8,7 @@ function scr_add_item(_item_name, _quantity = 1, _quality = "any") {
         return "no_item";
     }
 
-    static qualities = [
-        "standard",
-        "master_crafted",
-        "artifact",
-    ];
+    static qualities = EQUIPMENT_QUALITITES;
 
     static selections = [
         "any",
@@ -20,7 +16,7 @@ function scr_add_item(_item_name, _quantity = 1, _quality = "any") {
         "best",
     ];
 
-    static allowed_qualities = new Set(qualities);
+    static allowed_qualities = new Set(EQUIPMENT_QUALITITES);
 
     static allowed_selection = new Set(selections);
 
