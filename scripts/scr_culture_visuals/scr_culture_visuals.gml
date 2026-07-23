@@ -384,7 +384,8 @@ global.reuseable_drawing_items = {
     "default_backpack_fastening" :{
         sprite : spr_backpack_fastening,
         armours_exclude : [
-            "MK5 Heresy",
+            "MK4 Maximus",
+			"MK5 Heresy",
             "MK6 Corvus",
         ]
     }
@@ -1196,7 +1197,7 @@ global.modular_drawing_items = [
             "mobi": "Heavy Weapons Pack",
         },
         overides: {
-            "chest_fastening": spr_backpack_fastening,
+            "chest_fastening": "default_backpack_fastening"
         },
     },
     {
