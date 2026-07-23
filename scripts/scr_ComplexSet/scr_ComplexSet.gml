@@ -421,7 +421,17 @@ function ComplexSet(_unit) constructor {
             }
         }
         if (struct_exists(_mod, "roles")) {
-            if (!array_contains(_mod.roles, draw_unit.role())) {
+            var _role_match = false;
+            var _active_roles = active_roles();
+
+            for (var a = 0; a < array_length(_mod.roles); a++) {
+                if (draw_unit.role() == _active_roles[_mod.roles[a]]) {
+                    _role_match = true;
+                    break;
+                }
+            }
+
+            if (!_role_match) {
                 if (!check_exception("roles")) {
                     return false;
                 }
