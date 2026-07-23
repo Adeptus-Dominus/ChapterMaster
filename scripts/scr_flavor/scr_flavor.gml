@@ -456,7 +456,7 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
                 }
             }
         }
-    } else if ((weapon_name == "fists") || (weapon_name == "Melee") || (weapon_name == "melee")) {
+    } else if ((weapon_name == "Melee")) {
         flavoured = true;
         var ra = choose(1, 2, 3, 4);
         // This needs to be worked out
