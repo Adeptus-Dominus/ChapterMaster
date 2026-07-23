@@ -305,6 +305,9 @@ function set_up_visual_overides() {
         var _wds_key = _weapon_double_strings[w];
         if (struct_exists(_item, _wds_key)) {
             var _wds_struct = _item[$ _wds_key];
+            if (!is_struct(_wds_struct)){
+                continue;
+            }
             var _wds_areas = struct_get_names(_wds_struct);
             for (var a = 0; a < array_length(_wds_areas); a++) {
                 var _wds_area = _wds_areas[a];
@@ -1726,7 +1729,6 @@ global.modular_drawing_items = [
         ],
         equipped: {
             "gear": "Combat Shield",
-            "weapon" : "banana"
         },
     },
     {
