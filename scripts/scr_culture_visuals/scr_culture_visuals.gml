@@ -568,7 +568,6 @@ global.modular_drawing_items = [
             eROLE.CAPTAIN,
             eROLE.CHAMPION,
         ],
-        assign_by_rank: 2,
         position: "mouth_variants",
     },
     {
@@ -1539,22 +1538,25 @@ global.modular_drawing_items = [
     },
     {
         position: "forehead",
-        sprite: spr_helm_decorations,
-        body_types: [
-            0,
-            2,
-        ],
+        sprite: spr_sgt_skull_term,
+        body_types: [2],
         max_saturation: 50,
         roles: [
             eROLE.SERGEANT,
             eROLE.CHAMPION,
             eROLE.VETERANSERGEANT,
         ],
-        offsets: {
-            "Terminator Armour": {
-                y: -10,
-            },
-        },
+    },
+    {
+        position: "forehead",
+        sprite: spr_sgt_skull,
+        body_types: [0],
+        max_saturation: 50,
+        roles: [
+            eROLE.SERGEANT,
+            eROLE.CHAMPION,
+            eROLE.VETERANSERGEANT,
+        ],
     },
     {
         position: "right_arm",
