@@ -1,6 +1,7 @@
 instance_deactivate_object(obj_star_select);
 instance_deactivate_object(obj_drop_select);
 instance_deactivate_object(obj_bomb_select);
+recalculate_fleet_presence();
 
 keywords = "";
 last_open = 1;

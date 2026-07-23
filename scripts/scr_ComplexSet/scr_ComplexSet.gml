@@ -692,6 +692,7 @@ function ComplexSet(_unit) constructor {
             if (_remaining_checks <= 0) return true;
         }
 
+
         if (struct_exists(_mod, "equipment_has_tag")) {
             _remaining_checks--;
             var _viable = false;

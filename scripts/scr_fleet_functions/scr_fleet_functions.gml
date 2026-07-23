@@ -1359,6 +1359,26 @@ function fleet_unregister_from_star(_fleet) {
     _fleet.orbiting = noone;
 }
 
+/// @desc Rebuilds every star's present_fleet counters from current fleet positions.
+///       Counts only stationary fleets (action == ""), fleets in warp are intentionally not counted.
+/// @returns {undefined}
+function recalculate_fleet_presence() {
+    // Zero only the faction slots; higher indices are maintained elsewhere and must survive the rebuild.
+    with (obj_star) {
+        for (var _i = 0; _i < eFACTION._COUNT; _i++) {
+            present_fleet[_i] = 0;
+        }
+    }
+
+    // Clear orbiting before re-registering: fleet_register_at_star() early-returns when orbiting already matches the target star, which would skip the increment after the zeroing above.
+    with (obj_all_fleet) {
+        orbiting = noone;
+        if (action == "") {
+            fleet_register_at_nearest_star(id);
+        }
+    }
+}
+
 /// @desc Finds the nearest star within _max_distance and registers the fleet there.
 /// @param {Id.Instance.obj_p_fleet|Id.Instance.obj_en_fleet} _fleet  Fleet instance to register
 /// @returns {Id.Instance|noone} The star registered at, or noone if none in range

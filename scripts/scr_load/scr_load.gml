@@ -120,13 +120,6 @@ function scr_load(save_part, save_id) {
                 deserialize(deserialized);
             }
         }
-
-        with (obj_p_fleet) {
-            if (action == "") {
-                fleet_register_at_nearest_star(id);
-            }
-        }
-
         LOGGER.info("PLAYER FLEET OBJECTS loaded");
     }
 
@@ -141,14 +134,10 @@ function scr_load(save_part, save_id) {
                 deserialize(deserialized);
             }
         }
-
-        with (obj_en_fleet) {
-            if (action == "") {
-                fleet_register_at_nearest_star(id);
-            }
-        }
-
         LOGGER.info("ENEMY FLEET OBJECTS loaded");
+
+        // All fleets exist now so recalculate star presence for player and enemy fleets together.
+        recalculate_fleet_presence();
 
         LOGGER.info("Loading EVENT LOG");
         if (!instance_exists(obj_event_log)) {

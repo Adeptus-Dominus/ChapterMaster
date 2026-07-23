@@ -59,10 +59,12 @@ try {
         if ((enemy[op] != 0) && (enemy[op] != 4)) {
             obj_controller.temp[1071] = enemy[op];
 
+            // Park every fleet not fighting at the battle star offmap so the instance_nearest() loop below only finds participants.
+            // Restore after losses are applied.
             with (obj_en_fleet) {
                 if ((owner != obj_controller.temp[1071]) || (orbiting != obj_controller.temp[1070])) {
-                    x -= 10000;
-                    y -= 10000;
+                    x -= FLEET_BATTLE_DISPLACEMENT;
+                    y -= FLEET_BATTLE_DISPLACEMENT;
                 }
             }
 
@@ -73,7 +75,7 @@ try {
                     if (ofleet.trade_goods == "player_hold") {
                         ofleet.trade_goods = "";
                     }
-                    if ((ofleet.x > -7000) && (ofleet.y > -7000) && (ofleet.owner == enemy[op])) {
+                    if (in_room(ofleet) && (ofleet.owner == enemy[op])) {
                         if (en_capital_lost[op] + en_frigate_lost[op] + en_escort_lost[op] >= ofleet.capital_number + ofleet.frigate_number + ofleet.escort_number) {
                             en_capital_lost[op] -= ofleet.capital_number;
                             en_frigate_lost[op] -= ofleet.frigate_number;
@@ -106,9 +108,9 @@ try {
             }
 
             with (obj_en_fleet) {
-                if ((x < -7000) && (y < -7000)) {
-                    x += 10000;
-                    y += 10000;
+                if (!in_room()) {
+                    x += FLEET_BATTLE_DISPLACEMENT;
+                    y += FLEET_BATTLE_DISPLACEMENT;
                 }
             }
         }
@@ -117,8 +119,8 @@ try {
             obj_controller.temp[1071] = enemy[op];
             with (obj_en_fleet) {
                 if ((owner != obj_controller.temp[1071]) || (orbiting != obj_controller.temp[1070])) {
-                    x -= 10000;
-                    y -= 10000;
+                    x -= FLEET_BATTLE_DISPLACEMENT;
+                    y -= FLEET_BATTLE_DISPLACEMENT;
                 }
             }
             var ofleet = instance_nearest(room_width / 2, room_height / 2, obj_en_fleet);
@@ -129,8 +131,10 @@ try {
                 instance_destroy();
             }
             with (obj_en_fleet) {
-                x += 10000;
-                y += 10000;
+                if (!in_room()) {
+                    x += FLEET_BATTLE_DISPLACEMENT;
+                    y += FLEET_BATTLE_DISPLACEMENT;
+                }
             }
         }
     }

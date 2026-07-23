@@ -18,6 +18,9 @@
 // Ground combat message log: per-stage frame timeout before force-advancing.
 #macro COMBAT_STAGE_TIMEOUT_FRAMES 1200
 
+// Offmap shove distance for non-combatant fleets during battle resolution; must exceed room size so they read as !in_room().
+#macro FLEET_BATTLE_DISPLACEMENT 100000
+
 #macro STR_ANY_POWER_ARMOUR "Any Power Armour"
 #macro STR_ANY_TERMINATOR_ARMOUR "Any Terminator Armour"
 

@@ -36,6 +36,7 @@ with (obj_en_husk) {
 }
 
 instance_activate_all();
+recalculate_fleet_presence();
 obj_controller.combat = 0;
 instance_activate_object(obj_turn_end);
 
