@@ -691,23 +691,16 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         if (is_array(_wanted_trait)) {
             var _len = array_length(_wanted_trait);
 
-            if (_any) {
-                for (var i = 0; i < _len; i++) {
-                    if (array_contains(traits, _wanted_trait[i])) {
-                        return true;
-                    }
+            for (var i = 0; i < _len; i++) {
+                var _has = array_contains(traits, _wanted_trait[i]);
+                if (_any && _has) {
+                    return true;
+                } else if (!_any && !_has) {
+                    return false;
                 }
-
-                return false;
-            } else {
-                for (var i = 0; i < _len; i++) {
-                    if (!array_contains(traits, _wanted_trait[i])) {
-                        return false;
-                    }
-                }
-
-                return true;
             }
+
+            return _any ? false : true;
         }
 
         return array_contains(traits, _wanted_trait);
