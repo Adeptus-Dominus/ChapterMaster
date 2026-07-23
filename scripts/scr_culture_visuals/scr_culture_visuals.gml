@@ -551,6 +551,7 @@ global.modular_drawing_items = [
         ],
         position: "crown",
         body_types: [2],
+        prevent_others: true,
     },
     {
         sprite: spr_laurel,
@@ -560,6 +561,7 @@ global.modular_drawing_items = [
             eROLE.CHAMPION,
         ],
         position: "crown",
+        prevent_others: true,
     },
     {
         sprite: spr_special_helm,
@@ -1547,6 +1549,7 @@ global.modular_drawing_items = [
             eROLE.CHAMPION,
             eROLE.VETERANSERGEANT,
         ],
+        prevent_others: true,
     },
     {
         position: "forehead",
@@ -1558,6 +1561,7 @@ global.modular_drawing_items = [
             eROLE.CHAMPION,
             eROLE.VETERANSERGEANT,
         ],
+        prevent_others: true,
     },
     {
         position: "right_arm",
