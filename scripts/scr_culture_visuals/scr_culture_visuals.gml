@@ -1196,8 +1196,15 @@ global.modular_drawing_items = [
             "mobi": "Heavy Weapons Pack",
         },
         overides: {
-            "chest_fastening": spr_backpack_fastening,
-        },
+            "chest_fastening": { 
+				sprite: spr_backpack_fastening,
+				armours_exclude: [
+					"MK4 Maximus",
+					"MK5 Heresy",
+					"MK6 Corvus",
+				],
+			},
+		},
     },
     {
         sprite: spr_jump_pack_complex,
@@ -1206,9 +1213,16 @@ global.modular_drawing_items = [
         equipped: {
             "mobi": "Jump Pack",
         },
-        overides: {
-            "chest_fastening" : "default_backpack_fastening"
-        },
+		overides: {
+            "chest_fastening": { 
+				sprite: spr_backpack_fastening,
+				armours_exclude: [
+					"MK4 Maximus",
+					"MK5 Heresy",
+					"MK6 Corvus",
+				],
+			},
+		},
     },
     {
         sprite: spr_cyclone_launcher,
@@ -1226,8 +1240,15 @@ global.modular_drawing_items = [
             "mobi": "Serpha Jump Pack",
         },
         overides: {
-            "chest_fastening" : "default_backpack_fastening"
-        },
+            "chest_fastening": { 
+				sprite: spr_backpack_fastening,
+				armours_exclude: [
+					"MK4 Maximus",
+					"MK5 Heresy",
+					"MK6 Corvus",
+				],
+			},
+		},
     },
     {
         sprite: spr_gear_hood2,
