@@ -866,12 +866,31 @@ function Armamentarium(_controller) constructor {
             return false;
         }
 
-        var _sold_count = min(_item.stocked, _count);
-        var _sell_price = _item.sell_cost * _sold_count;
+        // Sell what the armoury actually holds, worst quality first, and only pay for
+        // copies genuinely removed. The old code removed "standard" quality blind and
+        // ignored the failure: an item whose only stock was master-crafted (forge
+        // master-craft procs, or a recovered banner) paid out requisition while
+        // removing nothing, and the next catalog refresh restored the count from the
+        // real store. Repeat forever for infinite requisition; this was Tophat's
+        // "restocking Company Standard" (35 master-crafted copies, no standard ones).
+        var _requested = min(_item.stocked, _count);
+        var _sold_count = 0;
+        repeat (_requested) {
+            if (scr_add_item(_item.name, -1, "worst") == "no_item") {
+                break;
+            }
+            _sold_count++;
+        }
 
-        scr_add_item(_item.name, -_sold_count, "standard");
-        _item.stocked -= _sold_count;
-        controller.requisition += _sell_price;
+        if (_sold_count == 0) {
+            return false;
+        }
+
+        controller.requisition += _item.sell_cost * _sold_count;
+
+        // Recount from the equipment store so the row can never drift from reality.
+        _item.stocked = scr_item_count(_item.name);
+        _item.stocked_mc = scr_item_count(_item.name, "master_crafted");
 
         audio_play_sound(snd_click, 10, false);
 

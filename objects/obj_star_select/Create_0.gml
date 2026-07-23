@@ -137,14 +137,26 @@ recall_forces_button.bind_method = function() {
 };
 
 recruiting_button = new PurchaseButton(0);
-recruiting_button.update({tooltip: "Enable recruiting", label: "Recruiting", target: target});
+recruiting_button.update({tooltip: "Designate or withdraw a recruiting world. Designating spends one Recruiting Planet right (bought from the Sector Governor). Withdrawing returns the right so the recruiting ground can be moved elsewhere.", label: "Recruiting", target: target});
 recruiting_button.bind_method = function() {
     if (!p_data.has_feature(eP_FEATURES.RECRUITING_WORLD)) {
+        // Designating spends one bought right. The draw site greys the button out at
+        // zero rights, but keep the guard so no path can designate for free: this
+        // toggle used to be completely ungated, which made the Sector Governor's
+        // Recruiting Planet purchase decorative.
+        if (obj_controller.recruiting_worlds_bought <= 0) {
+            return;
+        }
+        obj_controller.recruiting_worlds_bought -= 1;
         p_data.add_feature(eP_FEATURES.RECRUITING_WORLD);
         obj_controller.recruiting_worlds += $"{planet_numeral_name(obj_controller.selecting_planet, target)}|";
     } else {
+        // Withdrawing returns the right, so a recruiting world can be relocated
+        // without buying again. Every designation spends one and every withdrawal
+        // returns one, so net designated worlds can never exceed rights obtained.
+        obj_controller.recruiting_worlds_bought += 1;
         delete_features(target.p_feature[obj_controller.selecting_planet], eP_FEATURES.RECRUITING_WORLD);
-        obj_controller.recruiting_worlds = string_replace(obj_controller.recruiting_worlds, string(target.name) + " " + scr_roman(obj_controller.selecting_planet) + "|", "");
+        obj_controller.recruiting_worlds = string_replace(obj_controller.recruiting_worlds, planet_numeral_name(obj_controller.selecting_planet, target) + "|", "");
     }
 };
 

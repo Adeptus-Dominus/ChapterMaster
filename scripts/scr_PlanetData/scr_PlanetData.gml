@@ -2179,7 +2179,11 @@ function PlanetData(_planet, _system) constructor {
 
                 _recruit_button.update({x1: xx + (spacing_x * 2) + 15, y1: _half_way, allow_click: true});
 
-                _recruit_button.draw();
+                // Clickable only when there is something legitimate to do: withdraw an
+                // existing designation, or spend a bought Recruiting Planet right. The
+                // old unconditional draw() let any Imperial world be designated free,
+                // which made the Sector Governor's Recruiting Planet purchase decorative.
+                _recruit_button.draw(has_feature(eP_FEATURES.RECRUITING_WORLD) || obj_controller.recruiting_worlds_bought > 0);
 
                 if (!has_feature(eP_FEATURES.RECRUITING_WORLD)) {
                     return;

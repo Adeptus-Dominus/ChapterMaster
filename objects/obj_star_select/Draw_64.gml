@@ -527,13 +527,16 @@ try {
             } else if (current_button == "+Recruiting") {
                 if (obj_controller.recruiting_worlds_bought > 0 && p_data.current_owner <= 5 && !p_data.at_war()) {
                     if (!p_data.has_feature(eP_FEATURES.RECRUITING_WORLD)) {
-                        if (obj_controller.faction_status[eFACTION.IMPERIUM] == "War") {
-                            obj_controller.recruiting_worlds_bought -= 1;
-                        }
+                        // One bought Recruiting Planet right = one designated world. The
+                        // old code only spent the right while at WAR with the Imperium,
+                        // so at peace a single purchase kept designating worlds forever.
+                        obj_controller.recruiting_worlds_bought -= 1;
                         array_push(target.p_feature[obj_controller.selecting_planet], new NewPlanetFeature(eP_FEATURES.RECRUITING_WORLD));
 
                         if (obj_controller.selecting_planet) {
-                            obj_controller.recruiting_worlds += planet_numeral_name(obj_controller.selecting_planet, target);
+                            // The "|" separator was missing here, which desynced the
+                            // recruiting-worlds advisor line (it counts pipes).
+                            obj_controller.recruiting_worlds += planet_numeral_name(obj_controller.selecting_planet, target) + "|";
                         }
                         if (obj_controller.recruiting_worlds_bought == 0) {
                             if (button1 == "+Recruiting") {
