@@ -227,6 +227,12 @@ function set_up_visual_overides() {
                             }
                         }
                     }
+                    if (!_found_sprite){
+                        if (struct_exists(global.reuseable_drawing_items , _overide)){
+                            _item.overides[$ _overide_areas[o]] = global.reuseable_drawing_items[$ _overide];
+                            _found_sprite = true;
+                        }
+                    }
                     if (!_found_sprite) {
                         struct_remove(_item.overides, _overide_areas[o]);
                     }
@@ -244,10 +250,13 @@ function set_up_visual_overides() {
                     var _found_sprite = false;
                     var _subimg = _sub_group[g];
                     if (!is_string(_subimg)) {
-                        if (!sprite_exists(_subimg)) {
-                            array_delete(_sub_group, g, 1);
+                        if (!is_struct(_subimg)){
+                            if (!sprite_exists(_subimg)) {
+                                array_delete(_sub_group, g, 1);
+                            }
+                            continue;
                         }
-                        continue;
+                        _found_sprite = true;
                     }
                     if (_subimg == "blank") {
                         _item.subcomponents[s][g] = spr_blank;
@@ -256,10 +265,16 @@ function set_up_visual_overides() {
                         for (var m = 0; m < array_length(_mods); m++) {
                             if (struct_exists(_mods[m], "name")) {
                                 if (_mods[m].name == _subimg) {
-                                    _item.subcomponents[s][g] = _mods[m].sprite;
+                                    _item.subcomponents[s][g] = _mods[m];
                                     _found_sprite = true;
                                     break;
                                 }
+                            }
+                        }
+                        if (!_found_sprite){
+                            if (struct_exists(global.reuseable_drawing_items , _subimg)){
+                                _item.subcomponents[s][g] = global.reuseable_drawing_items[$ _subimg];
+                                _found_sprite = true;
                             }
                         }
                     }
@@ -332,8 +347,18 @@ function set_up_visual_overides() {
                 var _subs = _mod.subcomponents;
                 for (var s = 0; s < array_length(_subs); s++) {
                     for (var ss = 0; ss < array_length(_subs[s]); ss++) {
-                        if (sprite_exists(_subs[s][ss])) {
-                            _flip_mod.subcomponents[s][ss] = return_sprite_mirrored(_subs[s][ss], false);
+                        var _sub_item = _subs[s][ss];
+                        if (is_struct(_sub_item)) {
+                            var _flipped_item = variable_clone(_sub_item);
+                            if (struct_exists(_flipped_item, "sprite") && sprite_exists(_flipped_item.sprite)) {
+                                _flipped_item.sprite = return_sprite_mirrored(_flipped_item.sprite, false);
+                            }
+                            if (struct_exists(_flipped_item, "shadows") && sprite_exists(_flipped_item.shadows)) {
+                                _flipped_item.shadows = return_sprite_mirrored(_flipped_item.shadows, false);
+                            }
+                            _flip_mod.subcomponents[s][ss] = _flipped_item;
+                        } else if (sprite_exists(_sub_item)) {
+                            _flip_mod.subcomponents[s][ss] = return_sprite_mirrored(_sub_item, false);
                         }
                     }
                 }
@@ -351,6 +376,19 @@ function set_up_visual_overides() {
     }
 }
 
+global.reuseable_drawing_items = {
+    "roman_crest" : {
+        sprite: spr_roman_centurian_crest,
+        shadows: spr_roman_centurian_crest_shadows        
+    },
+    "default_backpack_fastening" :{
+        sprite : spr_backpack_fastening,
+        armours_exclude : [
+            "MK5 Heresy",
+            "MK6 Corvus",
+        ]
+    }
+}
 global.modular_drawing_items = [
 	// MK7 Aquila Sprites
 	{
@@ -362,6 +400,20 @@ global.modular_drawing_items = [
         body_types: [0],
         sprite: spr_mk7_chest_variants,
         shadows: spr_mk7_chest_variants_shadow,
+        subcomponents: [[]]
+    },
+    {
+        position: "armour",
+        armours: ["MK5 Heresy",
+                  "MK6 Corvus",
+                  "MK7 Aquila",
+                  "MK8 Errant",
+                  "Artificer Armour"
+        ],
+        traits: ["tinkerer"],
+        body_types: [0],
+        sprite: spr_techmarine_complex,
+        role_type: [SPECIALISTS_TECHS]
     },
 	// Other Stuff
     {
@@ -1155,7 +1207,7 @@ global.modular_drawing_items = [
             "mobi": "Jump Pack",
         },
         overides: {
-            "chest_fastening": spr_backpack_fastening,
+            "chest_fastening" : "default_backpack_fastening"
         },
     },
     {
@@ -1174,7 +1226,7 @@ global.modular_drawing_items = [
             "mobi": "Serpha Jump Pack",
         },
         overides: {
-            "chest_fastening": spr_backpack_fastening,
+            "chest_fastening" : "default_backpack_fastening"
         },
     },
     {
