@@ -660,17 +660,20 @@ function ComplexSet(_unit) constructor {
         }
 
         if (struct_exists(_mod, "prevent_others")) {
-            replace_area(_mod.position, _mod.sprite, _overides, _sub_comps, _shadows);
+            var _banned = [];
             array_push(blocked, _mod.position);
             if (struct_exists(_mod, "ban")) {
-                for (var b = 0; b < array_length(_mod.ban); b++) {
-                    if (!array_contains(banned, _mod.ban[b])) {
-                        array_push(banned, _mod.ban[b]);
+                _banned = _mod.ban;
+            }
+            if (array_length(_banned)){
+                if (_overides == "none"){
+                    _overides = {
+                        bans : _banned
                     }
+                } else {
+                    _overides.bans = _banned;
                 }
             }
-
-            return false;
         }
         if (struct_exists(_mod, "assign_by_rank")) {
             var _area = _mod.position;
@@ -784,17 +787,6 @@ function ComplexSet(_unit) constructor {
                         
                     }
                 }
-                if (struct_exists(_mod, "prevent_others")) {
-                    replace_area(_mod.position, _mod.sprite, _overides, _sub_comps, _shadows);
-                    array_push(blocked, _mod.position);
-                    if (struct_exists(_mod, "ban")) {
-                        for (var b = 0; b < array_length(_mod.ban); b++) {
-                            if (!array_contains(banned, _mod.ban[b])) {
-                                array_push(banned, _mod.ban[b]);
-                            }
-                        }
-                    }
-                }
             }
         } catch (_exception) {
             ERROR_HANDLER.handle_exception(_exception);
@@ -827,6 +819,11 @@ function ComplexSet(_unit) constructor {
                     var _offsets = _override_data.offsets;
                     component_final_draw_x += _offsets[0];
                     component_final_draw_y += _offsets[1];
+                }
+                if (struct_exists(_override_data, "bans")){
+                    for (var i = 0; i < array_length(_override_data.bans); i++){
+                        array_push(banned, _override_data.bans[i]);
+                    }
                 }
                 break;
             }
