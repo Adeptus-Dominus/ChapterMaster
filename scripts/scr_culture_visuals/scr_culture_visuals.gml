@@ -540,7 +540,7 @@ global.modular_drawing_items = [
         assign_by_rank: 2,
     },
     {
-        sprite: spr_terminator_laurel,
+        sprite: spr_laurel_term,
         armours: [
             "Terminator Armour",
             "Tartaros",
@@ -555,10 +555,6 @@ global.modular_drawing_items = [
     {
         sprite: spr_laurel,
         body_types: [0],
-        armours: [
-            "Terminator Armour",
-            "Tartaros",
-        ],
         roles: [
             eROLE.CAPTAIN,
             eROLE.CHAMPION,
