@@ -1197,7 +1197,9 @@ function ComplexSet(_unit) constructor {
         } else {
             draw_sprite(resolved_sprite, resolved_choice ?? 0, component_final_draw_x, component_final_draw_y);
         }
+        shader_reset();
         draw_surface(global.base_component_surface, 0, 0);
+        shader_set(full_livery_shader);
     };
 
     /// @desc Main function
