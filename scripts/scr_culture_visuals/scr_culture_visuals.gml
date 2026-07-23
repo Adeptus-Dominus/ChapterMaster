@@ -305,9 +305,9 @@ function set_up_visual_overides() {
             if (struct_exists(_flip_mod, "prevent_others")) {
                 if (struct_exists(_flip_mod, "ban")) {
                     for (var b = 0; b < array_length(_flip_mod.ban); b++) {
-                        var _ban_pos = _flip_mod.ban[b];
-                        if (struct_exists(flip_components, _ban_pos)) {
-                            _flip_mod.ban[b] = flip_components[$ _ban_pos];
+                        var _ban_position = _flip_mod.ban[b];
+                        if (struct_exists(flip_components, _ban_position)) {
+                            _flip_mod.ban[b] = flip_components[$ _ban_position];
                         }
                     }
                 }
@@ -315,13 +315,17 @@ function set_up_visual_overides() {
 
             if (struct_exists(_flip_mod, "body_parts")) {
                 var _new_body_parts = {};
-                var _bp_keys = struct_get_names(_flip_mod.body_parts);
+                var _old_body_parts = _flip_mod.body_parts;
+                var _bp_keys = struct_get_names(_old_body_parts);
                 for (var b = 0; b < array_length(_bp_keys); b++) {
                     var _bp_key = _bp_keys[b];
+                    var _old_part_data = _old_body_parts[$ _bp_key];
+
                     if (struct_exists(flip_components, _bp_key)) {
-                        _new_body_parts[$ flip_components[$ _bp_key]] = _flip_mod.body_parts[$ _bp_key];
+                        var _flipped_area = flip_components[$ _bp_key];
+                        _new_body_parts[$ _flipped_area] = _old_part_data;
                     } else {
-                        _new_body_parts[$ _bp_key] = _flip_mod.body_parts[$ _bp_key];
+                        _new_body_parts[$ _bp_key] = _old_part_data;
                     }
                 }
                 _flip_mod.body_parts = _new_body_parts;
@@ -330,11 +334,12 @@ function set_up_visual_overides() {
             if (struct_exists(_flip_mod, "overides")) {
                 var _overides_name = struct_get_names(_flip_mod.overides);
                 for (var o = 0; o < array_length(_overides_name); o++) {
-                    if (struct_exists(flip_components, _overides_name[o])) {
-                        var _flip = flip_components[$ _overides_name[o]];
-                        _flip_mod.overides[$ _flip] = variable_clone(_mod.overides[$ _overides_name[o]]);
+                    var _start_override_area = _overides_name[o];
+                    if (struct_exists(flip_components, _start_override_area)) {
+                        var _flip_area = flip_components[$ _start_override_area];
+                        _flip_mod.overides[$ _flip_area] = variable_clone(_mod.overides[$ _start_override_area]);
 
-                        struct_remove(_flip_mod.overides, _overides_name[o]);
+                        struct_remove(_flip_mod.overides, _start_override_area);
                     }
                 }
             }
