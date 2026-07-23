@@ -293,7 +293,31 @@ function set_up_visual_overides() {
                     array_push(global.culture_styles, _culture);
                 }
             }
+        } 
+    var _weapon_double_strings = [
+        "min_quality",
+        "max_quality",
+        "equipment_has_tag",
+        "equipped",
+    ];
+
+    for (var w = 0; w < array_length(_weapon_double_strings); w++) {
+        var _wds_key = _weapon_double_strings[w];
+        if (struct_exists(_item, _wds_key)) {
+            var _wds_struct = _item[$ _wds_key];
+            var _wds_areas = struct_get_names(_wds_struct);
+            for (var a = 0; a < array_length(_wds_areas); a++) {
+                var _wds_area = _wds_areas[a];
+                if (_wds_area == "weapon") {
+                    var _weapon_value = _wds_struct[$ "weapon"];
+                    _wds_struct[$ "wep1"] = _weapon_value;
+                    _wds_struct[$ "wep2"] = _weapon_value;
+                    struct_remove(_wds_struct, "weapon");
+                }
+            }
         }
+    }
+        
     }
 
     var _new_mods = [];
@@ -1702,6 +1726,7 @@ global.modular_drawing_items = [
         ],
         equipped: {
             "gear": "Combat Shield",
+            "weapon" : "banana"
         },
     },
     {
@@ -1870,6 +1895,7 @@ global.modular_drawing_items = [
         sprite: spr_indomitus_leg_variants,
         shadows: spr_indomitus_leg_variants_shadows,
         body_types: [2],
+        flip: true
     },
     {
         position: "right_shin",

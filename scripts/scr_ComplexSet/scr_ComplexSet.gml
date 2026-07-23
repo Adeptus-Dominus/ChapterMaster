@@ -744,7 +744,7 @@ function ComplexSet(_unit) constructor {
             for (var i = 0; i < array_length(_quality_check_areas); i++) {
                 var _area = _quality_check_areas[i];
                 if (!array_contains(equipment_data.present_items, _area)) {
-                    break;
+                    continue;
                 }
                 var _item = equipment_data.get_item(_area);
 
@@ -770,7 +770,7 @@ function ComplexSet(_unit) constructor {
             for (var i = 0; i < array_length(_quality_check_areas); i++) {
                 var _area = _quality_check_areas[i];
                 if (!array_contains(equipment_data.present_items, _area)) {
-                    break;
+                    continue;
                 }
                 var _item = equipment_data.get_item(_area);
 
@@ -850,58 +850,78 @@ function ComplexSet(_unit) constructor {
         
         return true;
     };
+
+    static validate_modular_item = function(_mod, position){
+        _sub_comps = "none";
+        _shadows = "none";
+        if (position != "") {
+            _mod.position = position;
+        }
+        if (array_contains(restricted, _mod.position)){
+            return false;
+        }
+
+        var _allowed = base_modulars_checks(_mod);
+
+        if (!_allowed) {
+            return false;
+        }
+        var _prevent_others = struct_exists(_mod, "prevent_others");
+        if (_mod.position == "weapon") {
+            var _weapon_map = _mod.weapon_map;
+            var _weapon_one = equipment_data.get_item("wep1");
+            var _weapon_two = equipment_data.get_item("wep2");
+
+            var _quality_ok = function(_item, _mod) {
+                if (struct_exists(_mod, "min_quality")) {
+                    if (!compare_qualities(_item.quality, _mod.min_quality, "more")) {
+                        return false;
+                    }
+                }
+                if (struct_exists(_mod, "max_quality")) {
+                    if (!compare_qualities(_item.quality, _mod.max_quality, "less")) {
+                        return false;
+                    }
+                }
+                return true;
+            };
+
+            if (_weapon_one.name == _weapon_map && _quality_ok(_weapon_one, _mod)) {
+                if (_prevent_others){
+                    right_arm_data = [_mod.weapon_data];
+                } else {
+                    array_push(right_arm_data, _mod.weapon_data);
+                }
+            }
+
+            if (_weapon_two.name == _weapon_map && _quality_ok(_weapon_two, _mod)) {
+                if (_prevent_others){
+                    left_arm_data = [_mod.weapon_data];
+                } else {
+                    array_push(left_arm_data, _mod.weapon_data);
+                }
+            }
+        } else {
+
+            if (replace_by_default || _prevent_others){
+                replace_area(_mod.position, _mod.sprite, _overides, _sub_comps, _shadows);
+            } else {
+                add_to_area(_mod.position, _mod.sprite, _overides, _sub_comps, _shadows);
+            }
+            if (_prevent_others){
+                array_push(restricted, _mod.position);
+            }
+        }
+    }
     /// @param {Array<Struct>} modulars
     /// @param {String} position
     static assign_modulars = function(modulars = global.modular_drawing_items, position = "", replace_by_default = false) {
+        self.replace_by_default = replace_by_default;
+        restricted = [];
         try {
             for (var i = 0; i < array_length(modulars); i++) {
-                _sub_comps = "none";
-                _shadows = "none";
                 var _mod = modulars[i];
-                if (position != "") {
-                    _mod.position = position;
-                }
-                var _allowed = base_modulars_checks(_mod);
-
-                if (!_allowed) {
-                    continue;
-                }
-                if (_mod.position != "") {
-                    if (_mod.position == "weapon") {
-                        var _weapon_map = _mod.weapon_map;
-                        var _weapon_one = equipment_data.get_item("wep1");
-                        var _weapon_two = equipment_data.get_item("wep2");
-
-                        var _quality_ok = function(_item, _mod) {
-                            if (struct_exists(_mod, "min_quality")) {
-                                if (!compare_qualities(_item.quality, _mod.min_quality, "more")) {
-                                    return false;
-                                }
-                            }
-                            if (struct_exists(_mod, "max_quality")) {
-                                if (!compare_qualities(_item.quality, _mod.max_quality, "less")) {
-                                    return false;
-                                }
-                            }
-                            return true;
-                        };
-
-                        if (_weapon_one.name == _weapon_map && _quality_ok(_weapon_one, _mod)) {
-                            array_push(right_arm_data, _mod.weapon_data);
-                        }
-
-                        if (_weapon_two.name == _weapon_map && _quality_ok(_weapon_two, _mod)) {
-                            array_push(left_arm_data, _mod.weapon_data);
-                        }
-                    } else {
-                        if (replace_by_default || struct_exists(_mod, "prevent_others")){
-                            replace_area(_mod.position, _mod.sprite, _overides, _sub_comps, _shadows);
-                        } else {
-                            add_to_area(_mod.position, _mod.sprite, _overides, _sub_comps, _shadows);
-                        }
-                        
-                    }
-                }
+                validate_modular_item(_mod, position)
             }
         } catch (_exception) {
             ERROR_HANDLER.handle_exception(_exception);
