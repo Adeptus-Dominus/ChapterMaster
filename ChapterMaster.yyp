@@ -955,6 +955,7 @@
     {"id":{"name":"scr_zoom","path":"scripts/scr_zoom/scr_zoom.yy",},},
     {"id":{"name":"Set","path":"scripts/Set/Set.yy",},},
     {"id":{"name":"SettingsManager","path":"scripts/SettingsManager/SettingsManager.yy",},},
+    {"id":{"name":"TooltipBuilder","path":"scripts/TooltipBuilder/TooltipBuilder.yy",},},
     {"id":{"name":"turn_towards_point","path":"scripts/turn_towards_point/turn_towards_point.yy",},},
     {"id":{"name":"UIComponents","path":"scripts/UIComponents/UIComponents.yy",},},
     {"id":{"name":"UINodeScripts","path":"scripts/UINodeScripts/UINodeScripts.yy",},},
