@@ -520,6 +520,26 @@ function unit_has_equipped(check_equippment) {
 	}
 }*/
 
+function scr_get_unit_equipment(as_UnitEquipment = true){
+        var armour_data = get_armour_data();
+        var gear_data = get_gear_data();
+        var mobility_data = get_mobility_data();
+        var weapon_one_data = get_weapon_one_data();
+        var weapon_two_data = get_weapon_two_data();
+        var equip_data = {
+            armour: armour_data,
+            gear: gear_data,
+            mobi: mobility_data,
+            wep1: weapon_one_data,
+            wep2: weapon_two_data,
+        };
+        if(as_UnitEquipment){
+            return new UnitEquipment(equip_data, self);
+        } else {
+            return equip_data;
+        }
+}
+
 function UnitEquipment(equipment_set, _unit = noone) constructor{
     self.equipment = equipment_set;
     self.equipping_unit = _unit;
