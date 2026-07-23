@@ -2081,6 +2081,7 @@ function DummyMarine() constructor {
     static unit_profile_text = scr_unit_detail_text;
     static has_equipped = unit_has_equipped;
     static get_body_data = scr_get_body_data;
+    static unit_equipment_data = scr_get_unit_equipment;
     traits = [];
     company = irandom_range(1, 10);
 
