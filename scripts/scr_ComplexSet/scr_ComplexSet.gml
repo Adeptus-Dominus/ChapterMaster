@@ -330,27 +330,11 @@ function ComplexSet(_unit) constructor {
         }
     };
 
-    /// @param {Struct} mod_item
-    /// @return {Bool}
-    static base_modulars_checks = function(mod_item) {
-        _has_exceptions = false;
-        var _mod = mod_item;
-        exceptions = [];
-
-        // Keys that are mandatory / pass-through data, not optional pass-fail checks.
-        var _non_check_keys = [
-            "position", "shadows", "overides", "subcomponents", "body_types",
-            "offsets", "body_parts", "prevent_others", "assign_by_rank",
-        ];
-        var _mod_keys = struct_get_names(_mod);
-        var _remaining_checks = array_length(_mod_keys);
-        for (var nk = 0; nk < array_length(_non_check_keys); nk++) {
-            if (struct_exists(_mod, _non_check_keys[nk])) {
-                _remaining_checks--;
-            }
-        }
-
+    static modular_mandatory_checks = function(mod_item){
         // ---------------- MANDATORY CHECKS (always run, never gated) ----------------
+
+        var _mod = mod_item;
+
 
         if (struct_exists(_mod, "position")) {
             if (array_contains(blocked, _mod.position)) {
@@ -495,6 +479,25 @@ function ComplexSet(_unit) constructor {
                 if (!struct_exists(variation_map, _area) || variation_map[$ _area] % variation_tier != 0) {
                     return false;
                 }
+            }
+        }
+
+        return true;
+    }
+
+
+    static optional_modulars_checks = function(mod_item){
+        var _mod = mod_item;
+    // Keys that are mandatory / pass-through data, not optional pass-fail checks.
+        var _non_check_keys = [
+            "position", "shadows", "overides", "subcomponents", "body_types",
+            "offsets", "body_parts", "prevent_others", "assign_by_rank",
+        ];
+        var _mod_keys = struct_get_names(_mod);
+        var _remaining_checks = array_length(_mod_keys);
+        for (var nk = 0; nk < array_length(_non_check_keys); nk++) {
+            if (struct_exists(_mod, _non_check_keys[nk])) {
+                _remaining_checks--;
             }
         }
 
@@ -784,6 +787,21 @@ function ComplexSet(_unit) constructor {
             if (_remaining_checks <= 0) return true;
         }
 
+        return true;
+    }
+
+    /// @param {Struct} mod_item
+    /// @return {Bool}
+    static base_modulars_checks = function(mod_item) {
+        _has_exceptions = false;
+        exceptions = [];
+        var _optionals = optional_modulars_checks(mod_item);
+        if (!_optionals){
+            return false;
+        } else {
+            return modular_mandatory_checks(mod_item);
+        }
+        
         return true;
     };
     /// @param {Array<Struct>} modulars
