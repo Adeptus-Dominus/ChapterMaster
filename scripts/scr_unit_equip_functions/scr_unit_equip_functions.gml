@@ -542,7 +542,7 @@ function scr_get_unit_equipment(as_UnitEquipment = true){
 
 function UnitEquipment(equipment_set, unit = noone) constructor{
     self.equipment = equipment_set;
-    self.unit = unit;
+    self.equipping_unit = _unit;
     var _slot_keys = UNIT_EQUIP_SLOTS;
     var _slot, _item;
     for (var i = 0; i < 5; i++){
@@ -617,7 +617,7 @@ function UnitEquipment(equipment_set, unit = noone) constructor{
             max_width: 187,
         };
 
-        var _text = unit != noone ? unit.equipments_qual_string(slot, true) : _item.name;
+        var _text = equipping_unit != noone ? equipping_unit.equipments_qual_string(slot, true) : _item.name;
 
         var _string = new ReactiveString(_text, 0, 0, _data);
 
