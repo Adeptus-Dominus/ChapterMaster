@@ -836,11 +836,11 @@ function ComplexSet(_unit) constructor {
             return true;
         }
 
-        // ---------------- OPTIONAL CHECKS (gated, self-terminating) ----------------
         if (struct_exists(_mod, "allow_either")) {
             _has_exceptions = true;
             exceptions = variable_clone(_mod.allow_either);
         }
+
         var _optionals = optional_modulars_checks(mod_item);
         if (!_optionals){
             return false;
