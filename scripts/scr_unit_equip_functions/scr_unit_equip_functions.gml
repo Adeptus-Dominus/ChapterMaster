@@ -540,7 +540,7 @@ function scr_get_unit_equipment(as_UnitEquipment = true){
         }
 }
 
-function UnitEquipment(equipment_set, unit = noone) constructor{
+function UnitEquipment(equipment_set, _unit = noone) constructor{
     self.equipment = equipment_set;
     self.equipping_unit = _unit;
     var _slot_keys = UNIT_EQUIP_SLOTS;
