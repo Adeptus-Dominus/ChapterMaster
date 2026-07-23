@@ -382,12 +382,9 @@ function ComplexSet(_unit) constructor {
             }
         }
 
-        if (struct_exists(_mod, "prevent_others")) {
-            var _banned = [];
-            array_push(blocked, _mod.position);
-            if (struct_exists(_mod, "ban")) {
-                _banned = _mod.ban;
-            }
+        if (struct_exists(_mod, "ban")) {
+
+            _banned = _mod.ban;
             if (array_length(_banned)){
                 if (_overides == "none"){
                     _overides = {
@@ -397,6 +394,7 @@ function ComplexSet(_unit) constructor {
                     _overides.bans = _banned;
                 }
             }
+
         }
 
         return true;
@@ -408,16 +406,16 @@ function ComplexSet(_unit) constructor {
         var _max_sat = 100;
         var _control_max_sat = false;
         if (struct_exists(_mod, "max_saturation")) {
-            _remaining_checks--;
+            remaining_component_checks--;
             _control_max_sat = true;
             _max_sat = _mod.max_saturation;
-            if (_remaining_checks <= 0){
+            if (remaining_component_checks <= 0){
                 return true;
             }
         }
 
         if (struct_exists(_mod, "assign_by_rank")) {
-            _remaining_checks--;
+            remaining_component_checks--;
             var _area = _mod.position;
             var _status_level = _mod.assign_by_rank;
             var _roles = active_roles();
@@ -472,13 +470,13 @@ function ComplexSet(_unit) constructor {
                     return false;
                 }
             }
-            if (_remaining_checks <= 0){
+            if (remaining_component_checks <= 0){
                 return true;
             }
         }
 
         if (struct_exists(_mod, "body_parts")) {
-            _remaining_checks--;
+            remaining_component_checks--;
             var _bp_viable = true;
             var _body_areas = struct_get_names(_mod.body_parts);
             for (var b = 0; b < array_length(_body_areas); b++) {
@@ -493,23 +491,23 @@ function ComplexSet(_unit) constructor {
                     return false;
                 }
             }
-            if (_remaining_checks <= 0){
+            if (remaining_component_checks <= 0){
                 return true;
             }
         }
 
         if (!array_contains(_mod.body_types, armour_type)) {
-            _remaining_checks--;
+            remaining_component_checks--;
             if (!check_exception("body_types")) {
                 return false;
             }
-            if (_remaining_checks <= 0){
+            if (remaining_component_checks <= 0){
                 return true;
             }
         }
 
         if (struct_exists(_mod, "exp")) {
-            _remaining_checks--;
+            remaining_component_checks--;
             var _exp_data = _mod.exp;
             var _min = 0;
             if (struct_exists(_exp_data, "min")) {
@@ -535,7 +533,7 @@ function ComplexSet(_unit) constructor {
                     _max_sat = clamp(_increment * 5, 0, _mod.max_saturation);
                 }
             }
-            if (_remaining_checks <= 0 && !_control_max_sat) return true;
+            if (remaining_component_checks <= 0 && !_control_max_sat) return true;
         }
 
         if (_control_max_sat) {
@@ -546,13 +544,13 @@ function ComplexSet(_unit) constructor {
                     }
                 }
             }
-            if (_remaining_checks <= 0){
+            if (remaining_component_checks <= 0){
                 return true;
             }
         }
 
         if (struct_exists(_mod, "role_type")) {
-            _remaining_checks--;
+            remaining_component_checks--;
             var _viable = false;
             for (var a = 0; a < array_length(_mod.role_type); a++) {
                 var _r_t = _mod.role_type[a];
@@ -566,68 +564,68 @@ function ComplexSet(_unit) constructor {
                     return false;
                 }
             }
-            if (_remaining_checks <= 0){
-                true;
+            if (remaining_component_checks <= 0){
+                return true;
             }
         }
         if (struct_exists(_mod, "roles")) {
-            _remaining_checks--;
+            remaining_component_checks--;
             if (!array_contains(_mod.roles, draw_unit.role())) {
                 if (!check_exception("roles")) {
                     return false;
                 }
             }
-            if (_remaining_checks <= 0){
-                true;
+            if (remaining_component_checks <= 0){
+                return true;
             }
         }
         if (struct_exists(_mod, "cultures")) {
-            _remaining_checks--;
+            remaining_component_checks--;
             if (!scr_has_style(_mod.cultures)) {
                 if (!check_exception("cultures")) {
                     return false;
                 }
             }
-            if (_remaining_checks <= 0){
-                true;
+            if (remaining_component_checks <= 0){
+                return true;
             }
         }
         if (struct_exists(_mod, "company")) {
-            _remaining_checks--;
+            remaining_component_checks--;
             if (!array_contains(_mod.company, draw_unit.company)) {
                 if (!check_exception("company")) {
                     return false;
                 }
             }
-            if (_remaining_checks <= 0){
-                true;
+            if (remaining_component_checks <= 0){
+                return true;
             }
         }
 
         if (struct_exists(_mod, "armours")) {
-            _remaining_checks--;
+            remaining_component_checks--;
             if (!array_contains(_mod.armours, unit_armour)) {
                 if (!check_exception("armours")) {
                     return false;
                 }
             }
-            if (_remaining_checks <= 0){
-                true;
+            if (remaining_component_checks <= 0){
+                return true;
             }
         }
         if (struct_exists(_mod, "armours_exclude")) {
-            _remaining_checks--;
+            remaining_component_checks--;
             if (array_contains(_mod.armours_exclude, unit_armour)) {
                 if (!check_exception("armours_exclude")) {
                     return false;
                 }
             }
-            if (_remaining_checks <= 0){
-                true;
+            if (remaining_component_checks <= 0){
+                return true;
             }
         }
         if (struct_exists(_mod, "chapter_adv")) {
-            _remaining_checks--;
+            remaining_component_checks--;
             var _viable = false;
             for (var a = 0; a < array_length(_mod.chapter_adv); a++) {
                 var _adv = _mod.chapter_adv[a];
@@ -641,12 +639,12 @@ function ComplexSet(_unit) constructor {
                     return false;
                 }
             }
-            if (_remaining_checks <= 0){
-                true;
+            if (remaining_component_checks <= 0){
+                return true;
             }
         }
         if (struct_exists(_mod, "chapter_disadv")) {
-            _remaining_checks--;
+            remaining_component_checks--;
             var _viable = false;
             for (var a = 0; a < array_length(_mod.chapter_disadv); a++) {
                 var _disadv = _mod.chapter_disadv[a];
@@ -660,35 +658,35 @@ function ComplexSet(_unit) constructor {
                     return false;
                 }
             }
-            if (_remaining_checks <= 0){
-                true;
+            if (remaining_component_checks <= 0){
+                return true;
             }
         }
         if (struct_exists(_mod, "stats")) {
-            _remaining_checks--;
+            remaining_component_checks--;
             if (!stat_valuator(_mod.stats, draw_unit)) {
                 if (!check_exception("stats")) {
                     return false;
                 }
             }
-            if (_remaining_checks <= 0){
-                true;
+            if (remaining_component_checks <= 0){
+                return true;
             }
         }
         if (struct_exists(_mod, "equipped")) {
-            _remaining_checks--;
+            remaining_component_checks--;
             if (!draw_unit.has_equipped(_mod.equipped)) {
                 if (!check_exception("equipped")) {
                     return false;
                 }
             }
-            if (_remaining_checks <= 0){
-                true;
+            if (remaining_component_checks <= 0){
+                return true;
             }
         }
 
         if (struct_exists(_mod, "traits")) {
-            _remaining_checks--;
+            remaining_component_checks--;
             var _viable = false;
             for (var a = 0; a < array_length(_mod.traits); a++) {
                 var _trait = _mod.traits[a];
@@ -702,14 +700,14 @@ function ComplexSet(_unit) constructor {
                     return false;
                 }
             }
-            if (_remaining_checks <= 0){
-                true;
+            if (remaining_component_checks <= 0){
+                return true;
             }
         }
 
 
         if (struct_exists(_mod, "equipment_has_tag")) {
-            _remaining_checks--;
+            remaining_component_checks--;
             var _viable = false;
             var _tag_check_areas = struct_get_names(_mod.equipment_has_tag);
             for (var i = 0; i < array_length(_tag_check_areas); i++) {
@@ -733,14 +731,14 @@ function ComplexSet(_unit) constructor {
                     return false;
                 }
             }
-            if (_remaining_checks <= 0){
-                true;
+            if (remaining_component_checks <= 0){
+                return true;
             }
         }
 
         var _is_weapon = _mod.position == "weapon";
         if (!_is_weapon && struct_exists(_mod, "min_quality")) {
-            _remaining_checks--;
+            remaining_component_checks--;
             var _viable = false;
             var _quality_check_areas = struct_get_names(_mod.min_quality);
             for (var i = 0; i < array_length(_quality_check_areas); i++) {
@@ -760,13 +758,13 @@ function ComplexSet(_unit) constructor {
                     return false;
                 }
             }
-            if (_remaining_checks <= 0){
-                true;
+            if (remaining_component_checks <= 0){
+                return true;
             }
         }
 
         if (!_is_weapon && struct_exists(_mod, "max_quality")) {
-            _remaining_checks--;
+            remaining_component_checks--;
             var _viable = false;
             var _quality_check_areas = struct_get_names(_mod.max_quality);
             for (var i = 0; i < array_length(_quality_check_areas); i++) {
@@ -786,21 +784,21 @@ function ComplexSet(_unit) constructor {
                     return false;
                 }
             }
-            if (_remaining_checks <= 0){
-                true;
+            if (remaining_component_checks <= 0){
+                return true;
             }
         }
 
         if (struct_exists(_mod, "chapter")) {
-            _remaining_checks--;
+            remaining_component_checks--;
             var chap_name = instance_exists(obj_creation) ? obj_creation.chapter_name : global.chapter_name;
             if (chap_name != _mod.chapter) {
                 if (!check_exception("chapter")) {
                     return false;
                 }
             }
-            if (_remaining_checks <= 0){
-                true;
+            if (remaining_component_checks <= 0){
+                return true;
             }
         }
 
@@ -810,7 +808,8 @@ function ComplexSet(_unit) constructor {
 
     static mandatory_check_keys = [
             "position", "shadows", "overides", "subcomponents",
-            "offsets" , "prevent_others" ,"sprite","allow_either"
+            "offsets" , "prevent_others" ,"sprite","allow_either",
+            "always_spawn", "ban"
     ];
 
     /// @param {Struct} mod_item
@@ -818,12 +817,12 @@ function ComplexSet(_unit) constructor {
     static base_modulars_checks = function(mod_item) {
         _has_exceptions = false;
         exceptions = [];
-        var __mod = mod_item;
+        var _mod = mod_item;
         var _mod_keys = struct_get_names(_mod);
-        var _remaining_checks = array_length(_mod_keys);
+        remaining_component_checks = array_length(_mod_keys);
         for (var nk = 0; nk < array_length(mandatory_check_keys); nk++) {
             if (struct_exists(_mod, mandatory_check_keys[nk])) {
-                _remaining_checks--;
+                remaining_component_checks--;
             }
         }
 
@@ -832,10 +831,11 @@ function ComplexSet(_unit) constructor {
         }
 
         // Nothing optional left to check - short circuit immediately.
-        if (_remaining_checks <= 0) {
+        if (remaining_component_checks <= 0) {
             return true;
         }
 
+        // ---------------- OPTIONAL CHECKS (gated, self-terminating) ----------------
         if (struct_exists(_mod, "allow_either")) {
             _has_exceptions = true;
             exceptions = variable_clone(_mod.allow_either);
@@ -894,7 +894,7 @@ function ComplexSet(_unit) constructor {
                             array_push(left_arm_data, _mod.weapon_data);
                         }
                     } else {
-                        if (replace_by_default){
+                        if (replace_by_default || struct_exists(_mod, "prevent_others")){
                             replace_area(_mod.position, _mod.sprite, _overides, _sub_comps, _shadows);
                         } else {
                             add_to_area(_mod.position, _mod.sprite, _overides, _sub_comps, _shadows);

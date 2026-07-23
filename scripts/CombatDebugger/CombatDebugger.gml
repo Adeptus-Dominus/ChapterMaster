@@ -59,28 +59,6 @@ function CombatDebugger(_active = false) constructor {
         return self;
     };
 
-    /// @description Returns a short human-readable label for a combat instance.
-    /// @param {Id.Instance.obj_pnunit|Id.Instance.obj_enunit} _inst The instance or value to label.
-    /// @returns {String}
-    static resolve_label = function(_inst) {
-        if (!instance_exists(_inst)) {
-            return string(_inst);
-        }
-
-        var _object_index = _inst.object_index;
-
-        if (_object_index == obj_nfort) {
-            return "Fort";
-        }
-
-        if (_object_index != obj_pnunit && _object_index != obj_enunit) {
-            return $"inst({_inst.id})";
-        }
-
-        var _desc = arrays_to_string_with_counts(_inst.dudes, _inst.dudes_num, true, false);
-        return $"<{_desc}>";
-    };
-
     /// @description Writes to disk, and resets.
     /// @param {Struct} _battle_info Optional battle info struct to include in the header
     static flush = function(_battle_info = undefined) {

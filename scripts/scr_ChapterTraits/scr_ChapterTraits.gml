@@ -426,8 +426,7 @@ function ChapterGameData(data = {}) constructor {
     static calc_equipment_tag_mods = function(tags, characteristic) {
         var _final_result = {
             mult: 0,
-            int_mod: 0,
-            descriptions: "",
+            effects: [],
         };
 
         for (var t = 0; t < array_length(tags); t++) {
@@ -452,12 +451,10 @@ function ChapterGameData(data = {}) constructor {
 
                 if (struct_exists(_c, "mult")) {
                     _final_result.mult += _c.mult - 1;
-                    _final_result.descriptions += $"{_c.name}:X{_c.mult}\n"; // fixed
-                }
-
-                if (struct_exists(_c, "int_mod")) {
-                    _final_result.int_mod += _c.int_mod; // fixed
-                    _final_result.descriptions += $"{_c.name}:{string_plus_minus(_c.int_mod)}{_c.int_mod}\n"; // fixed
+                    array_push(_final_result.effects, {
+                        name: _c.name,
+                        mult: _c.mult,
+                    });
                 }
             }
         }

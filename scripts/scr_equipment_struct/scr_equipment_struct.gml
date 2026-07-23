@@ -18,7 +18,7 @@ global.tag_recovery_values = {
     "terminator": 30,
 };
 
-function EquipmentStruct(item_data, core_type = "", quality_request = "none", arti_struct = -1) constructor {
+function EquipmentStruct(item_data = undefined, core_type = "", quality_request = "none", arti_struct = -1) constructor {
     type = core_type;
 
     if (is_real(arti_struct) && arti_struct > -1) {
@@ -520,6 +520,3 @@ function quality_color(_item_quality) {
     }
 }
 
-function format_number_with_sign(number) {
-    return number > 0 ? "+" + string(number) : string(number);
-}

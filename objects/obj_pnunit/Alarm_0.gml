@@ -1,5 +1,5 @@
 try {
-    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.SYSTEM, $"Player block {obj_ncombat.combat_debugger.resolve_label(id)} at x={x} is picking a target");
+    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.SYSTEM, $"Player block {resolve_block_label(id)} at x={x} is picking a target");
 
     if (!instance_exists(obj_enunit)) {
         obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"no enemy exists, exiting");
@@ -15,7 +15,7 @@ try {
     }
 
     enemy = instance_nearest(0, y, obj_enunit);
-    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"initial target {obj_ncombat.combat_debugger.resolve_label(enemy)} at x={enemy.x}");
+    obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"initial target {resolve_block_label(enemy)} at x={enemy.x}");
 
     if (instance_number(obj_enunit) != 1) {
         obj_ncombat.flank_x = self.x;
@@ -121,7 +121,7 @@ try {
                 continue;
             }
 
-            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"column {obj_ncombat.combat_debugger.resolve_label(_column)}");
+            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"column {resolve_block_label(_column)}");
 
             var _unit_i = scr_target(_column, _priority_data.type);
             if (_unit_i == undefined) {
