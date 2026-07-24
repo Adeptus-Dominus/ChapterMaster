@@ -5735,8 +5735,11 @@ function regions_orbital_guns_tick(_star, _planet) {
 
 /// @function region_candidate_station_bonus
 /// @description Extra recruitment screening points a planet's player-held Candidate Stations grant.
-///              Read by PlanetData.get_local_apothecary_points so recruitment success rises WITHOUT
-///              tying up apothecaries. 15 points per station (tunable).
+///              Added by PlanetData.planet_training (the real recruitment pass) and by
+///              get_local_apothecary_points (the tooltip), so recruitment runs and rises WITHOUT
+///              tying up apothecaries; the specialist pass also visits an ungarrisoned station
+///              world as long as the chapter has any presence in the system. 15 points per
+///              station (tunable).
 /// @param {Id.Instance.obj_star} _star
 /// @param {Real} _planet
 /// @returns {Real}

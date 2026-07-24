@@ -316,7 +316,15 @@ function process_specialist_points() {
             var _cur_units = _loc_slots[_p];
             var _unit_count = array_length(_cur_units);
             if (_unit_count == 0) {
-                continue;
+                // A planet slot with no units is normally skipped, but a player-held
+                // Candidate Station screens aspirants on-site: let its world run the
+                // training pass with an empty apothecary pool (the station's points are
+                // added inside planet_training). Any chapter presence in the SYSTEM (a
+                // ship in orbit is enough) brings the location into this loop at all.
+                var _station_screening = ((_star_inst != pointer_null) && (_p > 0)) ? region_candidate_station_bonus(_star_inst, _p) : 0;
+                if (_station_screening <= 0) {
+                    continue;
+                }
             }
 
             var _cur_apoths = _apoth_spread[$ _cur_loc][_p];

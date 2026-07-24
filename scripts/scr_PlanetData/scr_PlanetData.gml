@@ -1134,12 +1134,22 @@ function PlanetData(_planet, _system) constructor {
             var _point_data = _system_point_use[$ system.name][planet];
             _spare_apoth_points = _point_data.heal_points - _point_data.heal_points_use;
         }
-        return _spare_apoth_points;
+        // Candidate Stations add their on-site screening on top of the apothecaries'
+        // spare time, so the recruitment tooltip shows the same number the training
+        // pass uses. (planet_training adds the same bonus on the REAL recruitment
+        // path; never feed this method's result back into planet_training or the
+        // stations would count twice.)
+        return _spare_apoth_points + region_candidate_station_bonus(system, planet);
     };
 
     static marine_training = planet_training_sequence;
 
     static planet_training = function(local_screening_points) {
+        // Candidate Stations screen aspirants on-site: their points join the
+        // apothecaries' spare time here, on the real recruitment path (the specialist
+        // pass calls this with the raw leftover pool). This is what actually makes the
+        // building do anything: the bonus function existed but nothing ever read it.
+        local_screening_points += region_candidate_station_bonus(system, planet);
         var _training_happend = false;
         if (has_feature(eP_FEATURES.RECRUITING_WORLD)) {
             if (obj_controller.gene_seed == 0 && obj_controller.recruiting > 0) {

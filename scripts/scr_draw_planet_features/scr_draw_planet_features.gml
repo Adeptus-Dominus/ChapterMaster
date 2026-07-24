@@ -250,8 +250,12 @@ function FeatureSelected(_feature, _system, _planet) constructor {
                 var p_data = _star.get_planet_data(_planet);
                 var _recruit_world = p_data.get_features(eP_FEATURES.RECRUITING_WORLD)[0];
                 var _spare_apoth_points = p_data.get_local_apothecary_points();
+                var _station_points = region_candidate_station_bonus(_star, _planet);
                 title = "Marine Recruitment";
                 body = $"There are {_spare_apoth_points} apothecary rescource points available for recruit screening,\n\n";
+                if (_station_points > 0) {
+                    body += $"{_station_points} of these come from Candidate Station on-site screening,\n\n";
+                }
                 var _recruit_find_chance = find_recruit_success_chance(_spare_apoth_points, _star, _planet, 1);
 
                 body += $"There is a {_recruit_find_chance * 100}% of producing a successful recruit this month on the basis of the available apothecary time to screen candidates and the chances of the aspirants passing their trials to an acceptable standard,\n\n";
