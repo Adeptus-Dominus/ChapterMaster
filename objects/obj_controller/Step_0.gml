@@ -3,6 +3,16 @@ try {
     // TODO refactor will wait untill squads PR (#76) is merged
     if ((menu == eMENU.DEFAULT || menu == eMENU.TURN_END) && zoomed == 0 && !instances_exist_any([obj_ingame_menu, obj_ncombat])) {
         scr_zoom_keys();
+    } else if ((menu != eMENU.DEFAULT) && (menu != eMENU.TURN_END) && (zoomed == 0) && (!instance_exists(obj_ncombat))
+        && (camera_get_view_width(view_camera[0]) != global.default_view_width)) {
+        // Every full-screen menu here (Secret Lair, Manage, Diplomacy, the advisors) draws
+        // in WORLD space (obj_controller Draw_0), so it scales with the wheel zoom: a
+        // zoomed-in map rendered the Secret Lair giant, its room list running past the
+        // screen edge and the Back button unreachable, and since the zoom keys above are
+        // gated off while a menu is open, the wheel could not undo it. Snap the camera to
+        // the default framing whenever a menu is open on a zoomed map; the map is free to
+        // re-zoom the moment it is back.
+        set_zoom_to_default();
     }
     if (double_click >= 0) {
         double_click -= 1;
