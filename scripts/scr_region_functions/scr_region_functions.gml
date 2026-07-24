@@ -169,6 +169,54 @@ function region_distribute_total(_regions, _total, _capital_weight, _field) {
     }
 }
 
+/// @function star_var_exists
+/// @description variable_instance_exists that also works on DEACTIVATED stars. Instance
+///              lookups (variable_instance_exists, instance_exists, with) cannot see a
+///              deactivated instance, while direct dot access still can, so during windows
+///              like the drop launch (instance_deactivate_all) every plain check reported
+///              the field missing on a star that had it. regions_ensure then RESET
+///              p_regions for the WHOLE star (all planet slots) and regenerated the touched
+///              planet, wiping stored garrisons, footholds, region owners and buildings;
+///              p_region_names and p_region_focus were re-randomised and reset the same
+///              way. The Molech log shows the signature: nine REGIONS_GENERATE calls in one
+///              launch second, each seeing exists=0 immediately after a successful store.
+///              When the plain lookup fails and the instance is not findable (deactivated),
+///              probe the field by literal dot access, which throws only when the variable
+///              genuinely was never declared (a pre-region save).
+/// @param {Id.Instance.obj_star} _star
+/// @param {String} _name
+/// @returns {Bool}
+function star_var_exists(_star, _name) {
+    if (variable_instance_exists(_star, _name)) {
+        return true;
+    }
+    if (instance_exists(_star)) {
+        return false; // active and genuinely lacks the field
+    }
+    try {
+        switch (_name) {
+            case "p_regions":              return !is_undefined(_star.p_regions);
+            case "p_region_names":         return !is_undefined(_star.p_region_names);
+            case "p_region_focus":         return !is_undefined(_star.p_region_focus);
+            case "p_race_pop":             return !is_undefined(_star.p_race_pop);
+            case "p_ork_clan":             return !is_undefined(_star.p_ork_clan);
+            case "p_ork_loot":             return !is_undefined(_star.p_ork_loot);
+            case "p_orks":                 return !is_undefined(_star.p_orks);
+            case "p_heresy":               return !is_undefined(_star.p_heresy);
+            case "p_heresy_cleansed_turn": return !is_undefined(_star.p_heresy_cleansed_turn);
+            case "p_chaos_god":            return !is_undefined(_star.p_chaos_god);
+            case "p_biomass":              return !is_undefined(_star.p_biomass);
+            case "p_large":                return !is_undefined(_star.p_large);
+            case "p_infra_turns":          return !is_undefined(_star.p_infra_turns);
+            case "p_ground_position":      return !is_undefined(_star.p_ground_position);
+            case "p_enemy_gun_progress":   return !is_undefined(_star.p_enemy_gun_progress);
+        }
+        return false; // unknown field name: behave like the plain lookup
+    } catch (_ex) {
+        return false; // never declared on this star
+    }
+}
+
 /// @function region_names_ensure
 /// @description Returns the planet's persisted outlying-region names, picking them ONCE (randomly,
 ///              no repeats) on first use and storing them on the star so every later regeneration
@@ -180,7 +228,7 @@ function region_distribute_total(_regions, _total, _capital_weight, _field) {
 /// @param {Real} _outlying_count how many non-capital names are needed
 /// @returns {Array<String>}
 function region_names_ensure(_star, _planet, _outlying_count) {
-    if (!variable_instance_exists(_star, "p_region_names")) {
+    if (!star_var_exists(_star, "p_region_names")) {
         _star.p_region_names = array_create_advanced(9, -1);
     }
     var _stored = _star.p_region_names[_planet];
@@ -201,7 +249,7 @@ function region_names_ensure(_star, _planet, _outlying_count) {
 /// @param {Real} _planet
 /// @returns {Array<Struct.Region>}
 function regions_generate(_star, _planet) {
-    var _dbg_exists = variable_instance_exists(_star, "p_regions");
+    var _dbg_exists = star_var_exists(_star, "p_regions");
     var _dbg_len = _dbg_exists ? (is_array(_star.p_regions[_planet]) ? array_length(_star.p_regions[_planet]) : -1) : -2;
     LOGGER.info($"REGIONS_GENERATE star={real(_star)} planet={_planet} p_regions_len_before={_dbg_len} (p_regions exists={_dbg_exists})");
     var _count = region_count_for_planet(_star, _planet);
@@ -260,7 +308,7 @@ function regions_generate(_star, _planet) {
 /// @param {Real} _planet
 /// @returns {Array<Struct.Region>}
 function regions_ensure(_star, _planet) {
-    if (!variable_instance_exists(_star, "p_regions")) {
+    if (!star_var_exists(_star, "p_regions")) {
         // Old save loaded before this field existed. Match the planet array size (9).
         _star.p_regions = array_create_advanced(9, []);
     }
@@ -538,7 +586,7 @@ function regions_sync(_star, _planet) {
         // including Vraks). From turn 2 on, an extinct owner is genuinely extinct.
         var _own_force = planet_faction_force_total(_star, _planet, _owner);
         var _own_pop = 0;
-        if (variable_instance_exists(_star, "p_race_pop") && (count_to_level_anchors(_owner) != -1)) {
+        if (star_var_exists(_star, "p_race_pop") && (count_to_level_anchors(_owner) != -1)) {
             _own_pop = _star.p_race_pop[_planet][_owner];
         }
         if ((_own_force <= 0) && (_own_pop <= 0)) {
@@ -711,7 +759,7 @@ function regions_contest_order(_regions, _focus) {
 /// @param {Real} _planet
 /// @returns {Real} the (validated) focus index for this planet.
 function region_focus_ensure(_star, _planet) {
-    if (!variable_instance_exists(_star, "p_region_focus")) {
+    if (!star_var_exists(_star, "p_region_focus")) {
         _star.p_region_focus = array_create_advanced(9, 0);
     }
     var _count = planet_region_count(_star, _planet);
@@ -1069,7 +1117,7 @@ function faction_levy_rate(_faction) {
 /// @param {Real} _faction  eFACTION value
 /// @returns {Real} headcount (0 if unset)
 function planet_race_pop(_star, _planet, _faction) {
-    if (!variable_instance_exists(_star, "p_race_pop")) {
+    if (!star_var_exists(_star, "p_race_pop")) {
         return 0;
     }
     var _rows = _star.p_race_pop;
@@ -1181,7 +1229,7 @@ function count_to_level(_faction, _count) {
 /// @returns {Real}
 function tau_force_cap_for_world(_star, _planet) {
     // Real-headcount carrying capacity (p_population/max_population use a billions unit on large worlds).
-    var _large = variable_instance_exists(_star, "p_large") && _star.p_large[_planet];
+    var _large = star_var_exists(_star, "p_large") && _star.p_large[_planet];
     var _cap_real = _large ? (_star.p_max_population[_planet] * 1000000000) : _star.p_max_population[_planet];
 
     // Captured-from-Imperium (or any non-T'au first owner): Gue'Vesa only, off the former PDF.
@@ -1341,7 +1389,7 @@ function heretic_brood_seed(_star, _planet) {
 function heretic_purge(_star, _planet) {
     var _pd = _star.get_planet_data(_planet);
     if (_pd.has_feature(eP_FEATURES.HERETIC_ACTIVITY)) { _pd.delete_feature(eP_FEATURES.HERETIC_ACTIVITY); }
-    if (variable_instance_exists(_star, "p_race_pop")) { _star.p_race_pop[_planet][eFACTION.HERETICS] = 0; }
+    if (star_var_exists(_star, "p_race_pop")) { _star.p_race_pop[_planet][eFACTION.HERETICS] = 0; }
     _star.p_traitors[_planet] = 0;
     scr_event_log("green", $"A nascent heretic cult on {_pd.name()} was uncovered and purged.", _star.name);
 }
@@ -1356,7 +1404,7 @@ function heretic_purge(_star, _planet) {
 /// @param {Real} _planet
 /// @returns {Undefined}
 function heretic_concealment_tick(_star, _planet) {
-    if (!variable_instance_exists(_star, "p_race_pop")) { return; }
+    if (!star_var_exists(_star, "p_race_pop")) { return; }
     var _pd = _star.get_planet_data(_planet);
 
     // A deeply corrupted world EXPORTS the taint on its own — it periodically slips out a "trade ship" (a
@@ -1400,7 +1448,7 @@ function heretic_concealment_tick(_star, _planet) {
         if ((_pd.corruption < 25) && (_pop <= 0)) { return; }
         // Cleanse cooldown: a world that just put down its heretics cannot sprout a
         // new cult for HERETIC_RESEED_COOLDOWN turns, however corrupt it remains.
-        if (variable_instance_exists(_star, "p_heresy_cleansed_turn")
+        if (star_var_exists(_star, "p_heresy_cleansed_turn")
         && ((obj_controller.turn - _star.p_heresy_cleansed_turn[_planet]) < HERETIC_RESEED_COOLDOWN)) {
             return;
         }
@@ -1481,7 +1529,7 @@ function spawn_taint_trade_ship(_star, _planet) {
     }
     if (!instance_exists(_dest)) { return false; }
 
-    var _corr0 = variable_instance_exists(_star, "p_heresy") ? _star.p_heresy[_planet] : 0;
+    var _corr0 = star_var_exists(_star, "p_heresy") ? _star.p_heresy[_planet] : 0;
     var _cult = false;
     try {
         var _pd = _star.get_planet_data(_planet);
@@ -1610,7 +1658,7 @@ function chaos_world_present(_star, _planet) {
     // because a scalar reads 0 (§16r). This is what let a fully Chaos world show no "Sect Allegiance".
     var _own = _star.p_owner[_planet];
     if ((_own == eFACTION.CHAOS) || (_own == eFACTION.HERETICS)) { return true; }
-    if (variable_instance_exists(_star, "p_race_pop") && (_planet < array_length(_star.p_race_pop))) {
+    if (star_var_exists(_star, "p_race_pop") && (_planet < array_length(_star.p_race_pop))) {
         if (_star.p_race_pop[_planet][eFACTION.HERETICS] > 0) { return true; }
     }
     return false;
@@ -1621,7 +1669,7 @@ function chaos_world_present(_star, _planet) {
 ///              first time a Chaos-tainted world is read — inheriting a CHAOSWARBAND feature's patron if it
 ///              has one, else rolling a god. Returns -1 if the world has no Chaos presence.
 function planet_chaos_god(_star, _planet) {
-    if (!variable_instance_exists(_star, "p_chaos_god")) { return -1; }
+    if (!star_var_exists(_star, "p_chaos_god")) { return -1; }
     if ((_planet < 0) || (_planet >= array_length(_star.p_chaos_god))) { return -1; }
     if (!chaos_world_present(_star, _planet)) { return -1; }
     if (_star.p_chaos_god[_planet] >= 0) { return _star.p_chaos_god[_planet]; }
@@ -1651,7 +1699,7 @@ function chaos_pick_god_for_new_world() {
 
 /// @function chaos_assign_god
 function chaos_assign_god(_star, _planet, _god) {
-    if (!variable_instance_exists(_star, "p_chaos_god")) { return; }
+    if (!star_var_exists(_star, "p_chaos_god")) { return; }
     if ((_planet < 0) || (_planet >= array_length(_star.p_chaos_god))) { return; }
     _star.p_chaos_god[_planet] = _god;
 }
@@ -1875,7 +1923,7 @@ function faction_pop_composition(_faction, _population, _infra, _shape_level = 6
 /// @param {Real} _planet
 /// @returns {Real}
 function planet_ork_loot(_star, _planet) {
-    if (!variable_instance_exists(_star, "p_ork_loot")) { return 0; }
+    if (!star_var_exists(_star, "p_ork_loot")) { return 0; }
     var _a = _star.p_ork_loot;
     if ((_planet < 0) || (_planet >= array_length(_a))) { return 0; }
     return _a[_planet];
@@ -2091,7 +2139,7 @@ function tyranid_planet_is_food(_star, _planet) {
     var _t = _star.p_type[_planet];
     if (_t == "Dead" || _t == "") { return false; }
     var _pop = _star.p_population[_planet];
-    var _bio = variable_instance_exists(_star, "p_biomass") ? _star.p_biomass[_planet] : 0;
+    var _bio = star_var_exists(_star, "p_biomass") ? _star.p_biomass[_planet] : 0;
     return (_pop > 0) || (_bio > 0);
 }
 
@@ -2116,7 +2164,7 @@ function tyranid_system_consumed(_star) {
 /// @param {Id.Instance.obj_star} _star
 /// @returns {Bool}
 function tyranid_system_needs_fleet(_star) {
-    if (!instance_exists(_star) || !variable_instance_exists(_star, "p_race_pop")) { return false; }
+    if (!instance_exists(_star) || !star_var_exists(_star, "p_race_pop")) { return false; }
     for (var i = 1; i <= _star.planets; i++) {
         if (tyranid_planet_is_food(_star, i)) { return true; }   // still something living here to eat
     }
@@ -2132,7 +2180,7 @@ function tyranid_system_needs_fleet(_star) {
 /// @param {Real} _max_worlds  how many worlds this fleet's bio-ships can engage at once
 /// @returns {Undefined}
 function tyranid_fleet_engage(_star, _max_worlds) {
-    if (!instance_exists(_star) || !variable_instance_exists(_star, "p_race_pop")) { return; }
+    if (!instance_exists(_star) || !star_var_exists(_star, "p_race_pop")) { return; }
     var _engaged = 0;
     for (var i = 1; i <= _star.planets; i++) {
         if (_engaged >= _max_worlds) { break; }
@@ -2146,7 +2194,7 @@ function tyranid_fleet_engage(_star, _max_worlds) {
                 // flat seed is 30,000), which makes the reserve reconstruct to nothing and the world is eaten
                 // on arrival. Same capped-vanguard rule the ascension planetfall uses.
                 var _budget = 0;
-                if (variable_instance_exists(_star, "p_biomass")) {
+                if (star_var_exists(_star, "p_biomass")) {
                     if (_star.p_biomass[i] <= 0) {
                         var _people = _pd.large_population ? (_pd.population * 1000000000) : _pd.population;
                         var _caphd  = _pd.large_population ? (_pd.max_population * 1000000000) : _pd.max_population;
@@ -2223,7 +2271,7 @@ function ork_world_has_meks(_star, _planet) {
 /// @param {Real} _planet
 /// @returns {Real}
 function planet_infra_turns(_star, _planet) {
-    if (!variable_instance_exists(_star, "p_infra_turns")) {
+    if (!star_var_exists(_star, "p_infra_turns")) {
         return 32;
     }
     var _arr = _star.p_infra_turns;
@@ -2407,7 +2455,7 @@ function ork_draw_clan_symbol(_shape, _col, _cx, _cy, _r) {
 /// @param {Id.Instance.obj_star} _star
 /// @returns {Real}
 function system_leading_ork_clan(_star) {
-    if (!variable_instance_exists(_star, "p_race_pop")) { return -1; }
+    if (!star_var_exists(_star, "p_race_pop")) { return -1; }
     var _best_planet = -1, _best_pop = 0;
     for (var _p = 1; _p <= _star.planets; _p++) {
         if (_p >= array_length(_star.p_race_pop)) { break; }
@@ -2424,7 +2472,7 @@ function system_leading_ork_clan(_star) {
 /// @param {Id.Instance.obj_star} _star
 /// @returns {Struct|Real}
 function system_leading_ork_warband(_star) {
-    if (!variable_instance_exists(_star, "p_race_pop")) { return noone; }
+    if (!star_var_exists(_star, "p_race_pop")) { return noone; }
     var _best_planet = -1, _best_pop = 0;
     for (var _p = 1; _p <= _star.planets; _p++) {
         if (_p >= array_length(_star.p_race_pop)) { break; }
@@ -2614,14 +2662,14 @@ function ork_new_warband(_kultur, _weight) {
 /// @param {Real} _planet
 /// @returns {Array<Struct>}
 function planet_ork_clans(_star, _planet) {
-    if (!variable_instance_exists(_star, "p_ork_clan")) { return []; }
+    if (!star_var_exists(_star, "p_ork_clan")) { return []; }
     var _arr = _star.p_ork_clan;
     if ((_planet < 0) || (_planet >= array_length(_arr))) { return []; }
     var _wb = _arr[_planet];
     // Valid warband list = a non-empty array whose first element is a struct. Otherwise seed / migrate.
     var _valid = is_array(_wb) && (array_length(_wb) > 0) && is_struct(_wb[0]);
     if (!_valid) {
-        var _pop = variable_instance_exists(_star, "p_race_pop") ? _star.p_race_pop[_planet][eFACTION.ORK] : 0;
+        var _pop = star_var_exists(_star, "p_race_pop") ? _star.p_race_pop[_planet][eFACTION.ORK] : 0;
         if (_pop > 0) { ork_seed_clans(_star, _planet); _wb = _star.p_ork_clan[_planet]; }
         else { return []; }
     }
@@ -2636,7 +2684,7 @@ function planet_ork_clans(_star, _planet) {
 /// @param {Real} _planet
 /// @returns {Undefined}
 function ork_seed_clans(_star, _planet) {
-    if (!variable_instance_exists(_star, "p_ork_clan")) { return; }
+    if (!star_var_exists(_star, "p_ork_clan")) { return; }
     if ((_planet < 0) || (_planet >= array_length(_star.p_ork_clan))) { return; }
     var _founder = ork_new_warband(irandom(ork_clan_count() - 1), irandom_range(50, 70));   // the founding clan
     _founder.leads = true;                                                                  // its boss leads
@@ -2652,7 +2700,7 @@ function ork_seed_clans(_star, _planet) {
 /// @param {Real} _planet
 /// @returns {Undefined}
 function ork_add_landing_warband(_star, _planet) {
-    if (!variable_instance_exists(_star, "p_ork_clan")) { return; }
+    if (!star_var_exists(_star, "p_ork_clan")) { return; }
     var _wb = planet_ork_clans(_star, _planet);   // lazy-seeds a pure founder if the world was empty
     if (array_length(_wb) == 0) { return; }
     if (array_length(_wb) >= 5) { return; }        // already a crowded WAAAGH
@@ -2761,7 +2809,7 @@ function ork_grow_clans(_star, _planet) {
     if ((array_length(_wb) < 5) && (irandom(199) < 2)) {
         var _break = ork_new_warband(irandom(ork_clan_count() - 1), max(4, _maxw * 0.05));
         array_push(_wb, _break);
-        var _bpop = variable_instance_exists(_star, "p_race_pop") ? _star.p_race_pop[_planet][eFACTION.ORK] : 0;
+        var _bpop = star_var_exists(_star, "p_race_pop") ? _star.p_race_pop[_planet][eFACTION.ORK] : 0;
         if (_bpop > 250000) {
             var _bpd = _star.get_planet_data(_planet);
             scr_event_log("red", $"A breakaway mob — {_break.name} under Warboss {ork_wb_boss(_break)} — splits off on {_bpd.name()}.", _star.name);
@@ -2788,7 +2836,7 @@ function ork_grow_clans(_star, _planet) {
             var _is_joined = variable_struct_exists(_wj, "joined") && _wj.joined;
             if (!_is_joined && (_wj.weight < _cj_leader.weight * 0.25)) {
                 _wj.joined = true;    // bends the knee — submits to the WAAAGH, still its own clan
-                var _jpop = variable_instance_exists(_star, "p_race_pop") ? _star.p_race_pop[_planet][eFACTION.ORK] : 0;
+                var _jpop = star_var_exists(_star, "p_race_pop") ? _star.p_race_pop[_planet][eFACTION.ORK] : 0;
                 if (_jpop > 250000) {
                     var _jpd = _star.get_planet_data(_planet);
                     scr_event_log("red", $"Warboss {ork_wb_boss(_wj)} of {_wj.name} bends the knee and joins the WAAAGH under Warboss {ork_wb_boss(_cj_leader)} on {_jpd.name()}.", _star.name);
@@ -2811,7 +2859,7 @@ function ork_grow_clans(_star, _planet) {
     if (_chal_i < 0) { return; }                       // no one dares — the boss's grip holds
 
     // Settle the challenge with a DUEL between the two Warbosses (announced on a sizeable WAAAGH).
-    var _pop = variable_instance_exists(_star, "p_race_pop") ? _star.p_race_pop[_planet][eFACTION.ORK] : 0;
+    var _pop = star_var_exists(_star, "p_race_pop") ? _star.p_race_pop[_planet][eFACTION.ORK] : 0;
     ork_resolve_duel(_star, _planet, _lead_i, _chal_i, (_pop > 250000));
 }
 
@@ -2884,7 +2932,7 @@ function ork_resolve_duel(_star, _planet, _lead_i, _chal_i, _announce) {
 /// @param {Real} _planet
 /// @returns {Struct|Undefined}
 function ork_civil_war(_star, _planet) {
-    if (!variable_instance_exists(_star, "p_race_pop")) { return undefined; }
+    if (!star_var_exists(_star, "p_race_pop")) { return undefined; }
     var _wb = planet_ork_clans(_star, _planet);
     if (array_length(_wb) < 2) { return undefined; }
     var _pop = _star.p_race_pop[_planet][eFACTION.ORK];
@@ -2907,7 +2955,7 @@ function ork_civil_war(_star, _planet) {
     var _cas = clamp(0.30 + (1 - _top_share) * 0.40, 0.30, 0.65);
     var _new_pop = max(1, round(_pop * (1 - _cas)));
     _star.p_race_pop[_planet][eFACTION.ORK] = _new_pop;
-    if (variable_instance_exists(_star, "p_orks")) { _star.p_orks[_planet] = count_to_level(eFACTION.ORK, _new_pop); }
+    if (star_var_exists(_star, "p_orks")) { _star.p_orks[_planet] = count_to_level(eFACTION.ORK, _new_pop); }
 
     // The victor unites the survivors; the losing warbands are crushed and THEIR bosses die in the fighting
     // (fights to the death) — a new git leads each battered remnant.
@@ -2965,7 +3013,7 @@ function ork_succession_crisis(_star, _planet, _cause) {
     if (_top_share >= 0.55) {
         // Clear successor: the biggest boss krumps the rest into line — a brief, bloody scramble.
         _wb[_top_i].leads = true;
-        if (variable_instance_exists(_star, "p_race_pop")) {
+        if (star_var_exists(_star, "p_race_pop")) {
             _star.p_race_pop[_planet][eFACTION.ORK] = max(1, round(_star.p_race_pop[_planet][eFACTION.ORK] * 0.9));
             _star.p_orks[_planet] = count_to_level(eFACTION.ORK, _star.p_race_pop[_planet][eFACTION.ORK]);
         }
@@ -3023,7 +3071,7 @@ function ork_decapitation_strike(_star, _planet) {
         return { kind: "killed", text: "Your strike force cuts its way to Warboss " + _boss + " and puts him down. " + _sc.text };
     }
     // Failed — the boss survives; the strike still bloodies the horde.
-    if (variable_instance_exists(_star, "p_race_pop")) {
+    if (star_var_exists(_star, "p_race_pop")) {
         _star.p_race_pop[_planet][eFACTION.ORK] = max(1, round(_star.p_race_pop[_planet][eFACTION.ORK] * 0.95));
         _star.p_orks[_planet] = count_to_level(eFACTION.ORK, _star.p_race_pop[_planet][eFACTION.ORK]);
     }
@@ -3042,8 +3090,8 @@ function ork_decapitation_strike(_star, _planet) {
 /// @param {String} _cause  short flavour for the log
 /// @returns {Bool} true if the boss was killed
 function ork_maybe_behead(_star, _planet, _chance, _cause) {
-    if (!variable_instance_exists(_star, "p_ork_clan")) { return false; }
-    if (!variable_instance_exists(_star, "p_race_pop")) { return false; }
+    if (!star_var_exists(_star, "p_ork_clan")) { return false; }
+    if (!star_var_exists(_star, "p_race_pop")) { return false; }
     if (_star.p_race_pop[_planet][eFACTION.ORK] <= 0) { return false; }
     var _wb = planet_ork_clans(_star, _planet);
     if (array_length(_wb) == 0) { return false; }
@@ -3067,7 +3115,7 @@ function ork_cleanse_bloom(_star, _planet) {
     var _pd = _star.get_planet_data(_planet);
     var _where = _pd.name();
     var _had_bloom = _pd.has_feature(eP_FEATURES.FUNGAL_BLOOM);
-    var _pop0 = variable_instance_exists(_star, "p_race_pop") ? _star.p_race_pop[_planet][eFACTION.ORK] : 0;
+    var _pop0 = star_var_exists(_star, "p_race_pop") ? _star.p_race_pop[_planet][eFACTION.ORK] : 0;
     if (!_had_bloom && (_pop0 <= 0)) {
         return { kind: "none", text: "There is no Fungal Bloom on " + _where + " to scour." };
     }
@@ -3077,7 +3125,7 @@ function ork_cleanse_bloom(_star, _planet) {
 
     // Burn most of the greenskin horde with it.
     var _remnant = 0;
-    if (variable_instance_exists(_star, "p_race_pop")) {
+    if (star_var_exists(_star, "p_race_pop")) {
         _remnant = round(_pop0 * 0.20);
         _star.p_race_pop[_planet][eFACTION.ORK] = _remnant;
         _star.p_orks[_planet] = count_to_level(eFACTION.ORK, _remnant);
@@ -3086,7 +3134,7 @@ function ork_cleanse_bloom(_star, _planet) {
     // The fire is aimed at the FUNGUS and the greenskins, not the world's people — no populace collateral.
 
     // If the horde is essentially gone, the WAAAGH is scoured — clear its warbands (no clans left here).
-    if ((_remnant <= 0) && variable_instance_exists(_star, "p_ork_clan") && (_planet < array_length(_star.p_ork_clan))) {
+    if ((_remnant <= 0) && star_var_exists(_star, "p_ork_clan") && (_planet < array_length(_star.p_ork_clan))) {
         _star.p_ork_clan[_planet] = [];
     }
 
@@ -3205,7 +3253,7 @@ function ork_clan_style_desc(_clan, _kultur_name = "") {
 /// @returns {Undefined}
 function ork_sync_stronghold(_star, _planet) {
     var _pd = _star.get_planet_data(_planet);
-    var _pop = variable_instance_exists(_star, "p_race_pop") ? _star.p_race_pop[_planet][eFACTION.ORK] : 0;
+    var _pop = star_var_exists(_star, "p_race_pop") ? _star.p_race_pop[_planet][eFACTION.ORK] : 0;
     var _owns = (_star.p_owner[_planet] == eFACTION.ORK);
 
     if (_owns && (_pop > 0)) {
@@ -5133,7 +5181,7 @@ function orbital_gun_ship_toll(_star, _planet, _target_region) {
 /// @param {Real} _planet
 /// @returns {Real}
 function region_ground_position_ensure(_star, _planet) {
-    if (!variable_instance_exists(_star, "p_ground_position")) {
+    if (!star_var_exists(_star, "p_ground_position")) {
         _star.p_ground_position = array_create(_star.planets + 1, -1);
     }
     if (_planet >= array_length(_star.p_ground_position)) {
@@ -5303,7 +5351,7 @@ function tau_orbital_gun_tick() {
 /// @param {Real} _planet
 /// @returns {Real}
 function region_enemy_gun_progress_ensure(_star, _planet) {
-    if (!variable_instance_exists(_star, "p_enemy_gun_progress")) {
+    if (!star_var_exists(_star, "p_enemy_gun_progress")) {
         _star.p_enemy_gun_progress = array_create(_star.planets + 1, 0);
     }
     if (_planet >= array_length(_star.p_enemy_gun_progress)) {
@@ -5968,7 +6016,7 @@ function count_to_level_anchors(_faction) {
 /// @param {Real} _faction
 /// @returns {Undefined}
 function faction_pop_clamp_to_level(_star, _planet, _faction) {
-    if (!instance_exists(_star) || !variable_instance_exists(_star, "p_race_pop")) { return; }
+    if (!instance_exists(_star) || !star_var_exists(_star, "p_race_pop")) { return; }
     var _anchors = count_to_level_anchors(_faction);
     if (_anchors == -1) { return; }
     var _lvl = 0;
@@ -6144,7 +6192,7 @@ function region_building_price(_star, _planet, _def) {
 /// @returns {Undefined}
 function heresy_cleansed_stamp(_star, _planet) {
     if (!instance_exists(_star)) { return; }
-    if (!variable_instance_exists(_star, "p_heresy_cleansed_turn")) {
+    if (!star_var_exists(_star, "p_heresy_cleansed_turn")) {
         _star.p_heresy_cleansed_turn = array_create(_star.planets + 1, -9999);
     }
     _star.p_heresy_cleansed_turn[_planet] = obj_controller.turn;
