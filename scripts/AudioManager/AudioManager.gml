@@ -3,8 +3,8 @@
 /// crossfading, and volume control.
 ///
 /// Audio loading tiers (user overrides shipped):
-/// 1. Shipped: `working_directory/Audio/`
-/// 2. User: `Audio/` (relative -> AppData/Local/ChapterMaster/Audio/)
+/// 1. Shipped: `ChapterMaster/Audio/`
+/// 2. User: `AppData/Local/ChapterMaster/Custom Files/Audio/`
 ///
 /// Music uses a context/playlist system. Context folders under `Audio/Music/<context>/`
 /// are scanned on discovery. Each context picks a random track from its folder.
@@ -40,13 +40,13 @@
 function AudioManager() constructor {
     // ###### Constants ######
 
-    AUDIO_DIR = working_directory + "/Custom Files/Audio/";
+    AUDIO_DIR = working_directory + "Audio/";
     MUSIC_DIR = AUDIO_DIR + "Music/";
     SFX_DIR = AUDIO_DIR + "SFX/";
 
-    USER_AUDIO_DIR = program_directory + "Audio/";
+    USER_AUDIO_DIR = "Custom Files/Audio/";
     USER_MUSIC_DIR = USER_AUDIO_DIR + "Music/";
-    USER_SFX_DIR = USER_AUDIO_DIR + "SFX//";
+    USER_SFX_DIR = USER_AUDIO_DIR + "SFX/";
 
     DEFAULT_CROSSFADE_MS = 2000;
     DEFAULT_STOP_FADE_MS = 500;
