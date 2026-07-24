@@ -9,7 +9,9 @@ on:
 jobs:
   opencode:
     if: |
-      contains(github.event.comment.body, '/oc') ||
+    if: |
+      startsWith(github.event.comment.body, '/oc') ||
+      startsWith(github.event.comment.body, '/opencode')
       contains(github.event.comment.body, '/opencode')
     runs-on: ubuntu-latest
     permissions:
