@@ -460,6 +460,16 @@ function hold_ground_disembark() {
         if (marine_dead[i] == 1) {
             continue;
         }
+        // Idempotence: a unit already standing on this world stays where it is. Covers
+        // local planetside forces that joined the assault (already counted into the
+        // foothold store by their original landing) and any unit the fill registered
+        // into more than one block. The Molech log landed 444 units from a 345-marine
+        // assault and 44 vehicles from 26 fielded; every duplicate re-added its full
+        // size to the region force (p_player 0 -> 970).
+        var _now = _unit.marine_location();
+        if ((_now[0] == eLOCATION_TYPES.PLANET) && (_now[1] == _planet)) {
+            continue;
+        }
         // Opposed landing: place the unit planetside DIRECTLY (bypassing the gated regular
         // unload(), since Hold Ground is precisely how you land under fire on enemy soil). Handle
         // the ship_carrying bookkeeping ourselves so nothing is lost.
@@ -519,5 +529,5 @@ function hold_ground_disembark() {
     // becomes the authoritative planet total and supersedes the per-unit p_player writes unload()
     // may have made (so the force is counted once, and now has a region location).
     region_player_force_add(_star, _planet, _land_region, _region_force_added);
-    LOGGER.info($"HOLD GROUND disembark on {_star.name} {_planet}: {_landed} of {_n_us} landed into region {_land_region} with {_veh_landed} vehicle(s), region force +{_region_force_added}, p_player {_p_before} -> {_star.p_player[_planet]}");
+    LOGGER.info($"HOLD GROUND disembark on {_star.name} {_planet} [{formation_display_name(formation_type)}]: {_landed} of {_n_us} landed into region {_land_region} with {_veh_landed} vehicle(s), region force +{_region_force_added}, p_player {_p_before} -> {_star.p_player[_planet]}");
 }
