@@ -5,9 +5,7 @@ if (instance_number(obj_ncombat) > 1) {
 set_zoom_to_default();
 LOGGER.info("Ground Combat Started");
 
-audio_stop_sound(snd_royal);
-audio_play_sound(snd_battle, 0, true);
-audio_sound_gain(snd_battle, 1, 5000);
+global.audio_manager.play_playlist(CONTEXT_BATTLE, 5000);
 
 hue = 0;
 turn_count = 0;

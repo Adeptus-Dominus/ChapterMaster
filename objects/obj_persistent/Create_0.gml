@@ -1,5 +1,11 @@
 randomize();
 
+audio_group_load(audiogroup_sfx);
+audio_group_load(audiogroup_music);
+
+global.audio_manager = new AudioManager();
+global.audio_manager.discover();
+
 global.settings = new SettingsManager();
 global.settings.load();
 global.settings.apply_video();
@@ -11,7 +17,6 @@ USERNAME_PROMPT.prompt();
 global.save_version = 0;
 global.returned = 0;
 global.debug = false;
-global.current_music = -1;
 global.load = 0;
 global.cheat_req = false;
 global.cheat_gene = false;
@@ -22,5 +27,4 @@ global.language = "en";
 instance_create_depth(0, 0, 0, obj_garbage_collector);
 instance_create_depth(0, 0, 0, obj_img);
 
-audio_group_load(audiogroup_sfx);
-audio_group_load(audiogroup_music);
+

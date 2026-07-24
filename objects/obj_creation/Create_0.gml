@@ -41,9 +41,7 @@ custom_icon = 0;
 /// Stores the chapter icon in one spot so we dont have to keep checking whether we're using a custom image or not every time we wanna display it somewhere
 global.chapter_id = 0;
 
-audio_stop_all();
-audio_play_sound(snd_diboz, 0, true, 0.1);
-audio_sound_gain(snd_diboz, 1, 5000);
+global.audio_manager.play_playlist(CONTEXT_CREATION, 5000);
 
 global.load = -1;
 planet_types = global.planet_types;

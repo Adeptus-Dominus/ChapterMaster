@@ -55,22 +55,6 @@ try {
         }
         formating = 0;
     }
-    // Sounds
-    if (sound_in >= 0) {
-        sound_in -= 1;
-    }
-    if ((sound_in == 0) && (sound_to != "")) {
-        audio_stop_all();
-        var nope = false;
-        if (sound_to == "blood") {
-            global.sound_playing = audio_play_sound(snd_blood, 0, true);
-            audio_sound_gain(global.sound_playing, 1, 5000);
-        }
-        if (sound_to == "royal") {
-            global.sound_playing = audio_play_sound(snd_royal, 0, true);
-            audio_sound_gain(global.sound_playing, 1, 5000);
-        }
-    }
     // Cheat codes
     if (cheatcode != "") {
         cheatyface = 1;
@@ -380,11 +364,11 @@ try {
     // Sound controls
     if (click > 0) {
         click = -1;
-        audio_play_sound(snd_click, -80, false);
+        global.audio_manager.play_sfx(SFX_CLICK);
     }
     if (click2 > 0) {
         click2 = -1;
-        audio_play_sound(snd_click_small, -80, 0);
+        global.audio_manager.play_sfx(SFX_CLICK_SMALL);
     }
     // Return artifact
     if (qsfx == 1) {

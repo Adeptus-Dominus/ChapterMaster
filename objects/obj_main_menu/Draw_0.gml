@@ -24,7 +24,7 @@ if (global.game_version != "unknown version") {
 
 if (point_and_click([1400, 830, 1600, 900])) {
     clipboard_set_text($"{_build_date_line}\n{_version_line}");
-    audio_play_sound(snd_click_small, 0, false);
+    global.audio_manager.play_sfx(SFX_CLICK_SMALL);
 }
 
 // Update notification
@@ -35,7 +35,7 @@ if (UPDATE_CHECKER.update_available) {
 
     if (point_and_click([1400, 780, 1600, 830])) {
         url_open(UPDATE_CHECKER.latest_release_url);
-        audio_play_sound(snd_click_small, 0, false);
+        global.audio_manager.play_sfx(SFX_CLICK_SMALL);
     }
 }
 

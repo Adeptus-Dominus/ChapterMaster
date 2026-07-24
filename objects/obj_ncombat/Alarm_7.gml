@@ -1,7 +1,5 @@
 try {
-    audio_stop_sound(snd_battle);
-    audio_play_sound(snd_royal, 0, true);
-    audio_sound_gain(snd_royal, 1, 5000);
+    global.audio_manager.play_playlist(CONTEXT_POSTBATTLE, 5000);
 
     // Execute the cleaning scripts
     // Check for any more battles

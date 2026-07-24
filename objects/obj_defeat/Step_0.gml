@@ -6,7 +6,7 @@ if (goodbye > 0) {
 }
 
 if (fadeout == 1) {
-    audio_sound_gain(snd_defeat, 0, 2000);
+    global.audio_manager.stop_music(2000)
 }
 
 if (fadeout == 60) {

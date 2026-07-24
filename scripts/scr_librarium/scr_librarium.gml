@@ -51,7 +51,7 @@ function scr_librarium_gui() {
                     requisition -= 150;
                     cooldown = 8000;
                     identifiable = 0;
-                    audio_play_sound(snd_identify, -500, false);
+                    global.audio_manager.play_sfx(SFX_IDENTIFY);
                 }
             }
         } else if (cur_arti.identified() < 1) {

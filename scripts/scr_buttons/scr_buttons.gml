@@ -433,7 +433,7 @@ function SpriteButton(data) constructor {
     alpha_idle = 0.8;
     alpha_disabled = 0.5;
 
-    sound_click = snd_click;
+    sound_click = SFX_CLICK;
     tooltip_text = "";
     tooltip_w = 300;
 
@@ -461,8 +461,8 @@ function SpriteButton(data) constructor {
                 tooltip_draw(tooltip_text, tooltip_w);
             }
 
-            if (is_clicked && sound_click != undefined) {
-                audio_play_sound(sound_click, 10, false);
+            if (is_clicked && sound_click != "") {
+                global.audio_manager.play_sfx(sound_click);
             }
         }
 
@@ -924,7 +924,7 @@ function UIDropdown(_options, _width = 180, _on_change = undefined) constructor 
 
         if (_is_hovering_main && mouse_button_clicked()) {
             is_open = !is_open;
-            audio_play_sound(snd_click, 10, false);
+            global.audio_manager.play_sfx(SFX_CLICK);
         }
 
         if (!is_open) {
@@ -980,7 +980,7 @@ function UIDropdown(_options, _width = 180, _on_change = undefined) constructor 
                     selected_index = i;
                     is_open = false;
                     _selection = options[i].value;
-                    audio_play_sound(snd_click, 10, false);
+                    global.audio_manager.play_sfx(SFX_CLICK);
 
                     if (is_callable(on_change)) {
                         on_change(_selection);
@@ -1390,7 +1390,7 @@ function ToggleButton(data = {}) constructor {
     static clicked = function() {
         if (hover() && mouse_button_clicked()) {
             active = !active;
-            audio_play_sound(snd_click_small, 10, false);
+            global.audio_manager.play_sfx(SFX_CLICK_SMALL);
             return true;
         } else {
             return false;
@@ -1521,10 +1521,10 @@ function InteractiveButton(data = {}) constructor {
     static clicked = function() {
         if (hover() && mouse_button_clicked()) {
             if (!active) {
-                audio_play_sound(snd_error, 10, false);
+                global.audio_manager.play_sfx(SFX_ERROR);
                 return false;
             } else {
-                audio_play_sound(snd_click_small, 10, false);
+                global.audio_manager.play_sfx(SFX_CLICK_SMALL);
                 return true;
             }
         } else {

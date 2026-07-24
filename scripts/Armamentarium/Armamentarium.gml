@@ -305,7 +305,7 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
 
             if (mouse_button_clicked()) {
                 controller.stc_research.research_focus = _cat;
-                audio_play_sound(snd_click, 10, false);
+                global.audio_manager.play_sfx(SFX_CLICK);
                 refresh_eta();
             }
         }
@@ -430,7 +430,7 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
 
         advance_stc_research(_target);
 
-        audio_play_sound(snd_stc, -500, false);
+        global.audio_manager.play_sfx(SFX_STC);
 
         if (is_method(on_change)) {
             on_change();
@@ -867,7 +867,7 @@ function Armamentarium(_controller) constructor {
         _item.stocked -= _sold_count;
         controller.requisition += _sell_price;
 
-        audio_play_sound(snd_click, 10, false);
+        global.audio_manager.play_sfx(SFX_CLICK);
 
         return true;
     };
@@ -882,7 +882,7 @@ function Armamentarium(_controller) constructor {
         // 1. Warships
         if (shop_type == "ships") {
             add_event({e_id: "ship_construction", ship_class: _item.name, duration: _item.request_duration});
-            audio_play_sound(snd_click, 10, false);
+            global.audio_manager.play_sfx(SFX_CLICK);
             return;
         }
 
@@ -900,7 +900,7 @@ function Armamentarium(_controller) constructor {
         }
 
         _item.stocked += _count;
-        audio_play_sound(snd_click, 10, false);
+        global.audio_manager.play_sfx(SFX_CLICK);
     };
 
     /// @desc Switches the current shop category.
@@ -1051,7 +1051,7 @@ function Armamentarium(_controller) constructor {
                 if (array_length(_queue) < FORGE_QUEUE_MAX) {
                     array_push(_queue, {item: _item, count: _count, forge_points: _cost, ordered: controller.turn});
                 } else {
-                    audio_play_sound(snd_error, 10, false);
+                    global.audio_manager.play_sfx(SFX_ERROR);
                 }
             }
 

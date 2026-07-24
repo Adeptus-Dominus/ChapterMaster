@@ -50,8 +50,8 @@ function intro_to_diplomacy(faction_enum) {
 
 function exit_diplomacy_dialogue() {
     obj_controller.menu_lock = false;
-    if (audio_is_playing(snd_blood) == true) {
-        scr_music("royal", 2000);
+    if (global.audio_manager.current_context == CONTEXT_DIPLOMACY) {
+        global.audio_manager.play_playlist(CONTEXT_SECTOR, 2000);
     }
 
     var _close_diplomacy = true;
