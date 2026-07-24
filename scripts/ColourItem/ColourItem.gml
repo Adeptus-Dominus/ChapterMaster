@@ -15,7 +15,7 @@ function fetch_marine_components_to_memory() {
             }
         } catch (_exception) {
             // Sprite prefetch failure logged but non-fatal
-            show_debug_message($"Sprite prefetch failed for element at index {_index}: {_exception}");
+            LOGGER.debug($"Sprite prefetch failed for element at index {_index}: {_exception}");
         }
     });
 }
