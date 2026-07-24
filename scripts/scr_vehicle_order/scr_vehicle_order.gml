@@ -15,13 +15,17 @@ function reset_vehicle_variable_arrays(company_number, i) {
     veh_hp[company_number][i] = 100;
     veh_chaos[company_number][i] = 0;
     veh_uid[company_number][i] = -1;
+    last_ship[company_number][i] = {
+        uid: "",
+        name: "",
+    };
 }
 
 /// @self Asset.GMObject.obj_ini
 function scr_vehicle_order(company_number) {
     // Once it's actually fucking working it should probably join the scr_company_order script in the Interface folder
     var vehicle_count = 0;
-    var temp_race, temp_loc, temp_name, temp_role, temp_wep1, temp_lid, temp_wid, temp_wep2, temp_wep3, temp_upgrade, temp_acc, temp_hp, temp_chaos, temp_uid;
+    var temp_race, temp_loc, temp_name, temp_role, temp_wep1, temp_lid, temp_wid, temp_wep2, temp_wep3, temp_upgrade, temp_acc, temp_hp, temp_chaos, temp_uid, temp_last_ship;
 
     // init arrays
     for (var i = 0; i < array_length(obj_ini.veh_role[company_number]); i++) {
@@ -39,6 +43,10 @@ function scr_vehicle_order(company_number) {
         temp_hp[company_number][i] = 100;
         temp_chaos[company_number][i] = 0;
         temp_uid[company_number][i] = -1;
+        temp_last_ship[company_number][i] = {
+            uid: "",
+            name: "",
+        };
     }
 
     // Check for vehicles
@@ -67,6 +75,12 @@ function scr_vehicle_order(company_number) {
             temp_hp[company_number][vehicle_count] = veh_hp[company_number][i];
             temp_chaos[company_number][vehicle_count] = veh_chaos[company_number][i];
             temp_uid[company_number][vehicle_count] = veh_uid[company_number][i];
+            // Carry the vehicle's last-ship record through the compaction. It was dropped
+            // here, so after any battle with vehicle losses every surviving vehicle's
+            // Reembark record pointed at the wrong slot (or a cleared one).
+            temp_last_ship[company_number][vehicle_count] = ((company_number < array_length(last_ship)) && (i < array_length(last_ship[company_number])))
+                ? last_ship[company_number][i]
+                : {uid: "", name: ""};
             vehicle_count++;
         }
         reset_vehicle_variable_arrays(company_number, i);
@@ -87,5 +101,6 @@ function scr_vehicle_order(company_number) {
         veh_hp[company_number][i] = temp_hp[company_number][i];
         veh_chaos[company_number][i] = temp_chaos[company_number][i];
         veh_uid[company_number][i] = temp_uid[company_number][i];
+        last_ship[company_number][i] = temp_last_ship[company_number][i];
     }
 }

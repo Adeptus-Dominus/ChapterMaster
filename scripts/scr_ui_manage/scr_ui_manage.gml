@@ -30,7 +30,11 @@ function load_marines_into_ship(system, ship, units, reload = false) {
             obj_ini.ship_carrying[sh_ide[ship]] += size;
 
             if (start_planet) {
-                load_from_star.p_player[start_planet] -= size;
+                // Debit the foothold store, mirroring the marine path: the raw p_player
+                // write drifted from the store (ghost force), and since the old vehicle
+                // disembark never added what this subtracted, every vehicle round trip
+                // also leaked planet force downward.
+                region_player_force_debit(load_from_star, start_planet, -1, size);
             } else if (start_ship) {
                 obj_ini.ship_carrying[start_ship] -= size;
             }

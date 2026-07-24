@@ -477,10 +477,47 @@ function hold_ground_disembark() {
         _region_force_added += _unit.size;
         _landed++;
     }
+    // Land this block's surviving vehicles too: the armour that fought the assault holds
+    // the ground with the infantry. Only ship-borne, player-owned, living vehicles land.
+    // A vehicle disabled in the fight returns to the fleet for repair (Alarm_5's techmarine
+    // recovery runs after this), mirroring how critically injured marines are evacuated.
+    // Local garrison armour (veh_wid already set) was never aboard and is untouched.
+    var _veh_landed = 0;
+    for (var _vi = 1; _vi <= veh; _vi++) {
+        if (veh_dead[_vi]) {
+            continue;
+        }
+        if (veh_ally[_vi]) {
+            continue;
+        }
+        var _vc = veh_co[_vi];
+        var _vv = veh_id[_vi];
+        if (obj_ini.veh_role[_vc][_vv] == "") {
+            continue;
+        }
+        if (obj_ini.veh_wid[_vc][_vv] != 0) {
+            continue;
+        }
+        var _vship = obj_ini.veh_lid[_vc][_vv];
+        if ((_vship < 0) || (_vship >= array_length(obj_ini.ship_carrying))) {
+            continue;
+        }
+        var _vsize = scr_unit_size("", obj_ini.veh_role[_vc][_vv], true);
+        // Remember the ship it launched from BEFORE clearing veh_lid, so Recall All can
+        // send it back to its own transport.
+        set_vehicle_last_ship([_vc, _vv], false);
+        obj_ini.ship_carrying[_vship] = max(0, obj_ini.ship_carrying[_vship] - _vsize);
+        obj_ini.veh_loc[_vc][_vv] = _star.name;
+        obj_ini.veh_lid[_vc][_vv] = -1;
+        obj_ini.veh_wid[_vc][_vv] = _planet;
+        obj_ini.veh_uid[_vc][_vv] = 0;
+        _region_force_added += _vsize;
+        _veh_landed++;
+    }
     // Deposit the whole landed force into the TARGETED region, then set p_player from the
     // per-region sum. region_player_force_add re-syncs p_player to the sum of footholds, which
     // becomes the authoritative planet total and supersedes the per-unit p_player writes unload()
     // may have made (so the force is counted once, and now has a region location).
     region_player_force_add(_star, _planet, _land_region, _region_force_added);
-    LOGGER.info($"HOLD GROUND disembark on {_star.name} {_planet}: {_landed} of {_n_us} landed into region {_land_region}, region force +{_region_force_added}, p_player {_p_before} -> {_star.p_player[_planet]}");
+    LOGGER.info($"HOLD GROUND disembark on {_star.name} {_planet}: {_landed} of {_n_us} landed into region {_land_region} with {_veh_landed} vehicle(s), region force +{_region_force_added}, p_player {_p_before} -> {_star.p_player[_planet]}");
 }

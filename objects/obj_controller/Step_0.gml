@@ -475,19 +475,31 @@ try {
                 // contested. A hostile region refuses the landing (Hold Ground is the only way in).
                 var _unload_star = find_star_by_name(selecting_location);
                 var _multi = instance_exists(_unload_star) && (planet_region_count(_unload_star, unload) > 1);
-                var _land_region = _multi ? region_focus_get(_unload_star, unload) : -1;
+                var _land_region = _multi ? region_focus_get(_unload_star, unload) : 0;
+                if (!is_real(_land_region) || (_land_region < 0) || (instance_exists(_unload_star) && (_land_region >= planet_region_count(_unload_star, unload)))) {
+                    _land_region = 0;
+                }
                 if (_multi && !region_allows_regular_unload(_unload_star, unload, _land_region)) {
                     continue; // cannot casually land into an enemy/contested region
                 }
+                var _from_ship = ma_lid[q];
                 unit.location_string = obj_ini.ship_location[b];
                 unit.ship_location = -1;
                 unit.planet_location = unload;
                 unit.region_location = _land_region;
                 obj_ini.uid[company][unit_id] = 0;
-                // Keep the per-region force tally in step with the units on the ground.
-                if (_multi) {
-                    unit.get_unit_size();
-                    region_player_force_add(_unload_star, unload, _land_region, unit.size);
+                // Book the landing into the foothold store (region 0 on a single-region
+                // world). The store is authoritative and re-derives p_player; this path
+                // previously never counted single-region landings at all.
+                unit.get_unit_size();
+                if (instance_exists(_unload_star)) {
+                    region_player_force_book(_unload_star, unload, _land_region, unit.size);
+                }
+                // Free the space on the ship this unit actually leaves. The old batch
+                // decrement at the end of the loop took the whole selection's man_size
+                // off ONE latched ship, even for units the region gate refused.
+                if ((_from_ship > -1) && (_from_ship < array_length(obj_ini.ship_carrying))) {
+                    obj_ini.ship_carrying[_from_ship] = max(0, obj_ini.ship_carrying[_from_ship] - unit.size);
                 }
 
                 ma_loc[q] = obj_ini.ship_location[b];
@@ -499,10 +511,31 @@ try {
                 }
                 var unit_id = display_unit[q][1];
                 var company = display_unit[q][0];
+                // Same landing-region rules and foothold booking as the marines above.
+                // Vehicles were previously ungated (free landings into hostile regions)
+                // and never counted into any force tally, while re-embarking them DID
+                // subtract, so every vehicle round trip leaked player force.
+                var _unload_star_v = find_star_by_name(selecting_location);
+                var _multi_v = instance_exists(_unload_star_v) && (planet_region_count(_unload_star_v, unload) > 1);
+                var _land_region_v = _multi_v ? region_focus_get(_unload_star_v, unload) : 0;
+                if (!is_real(_land_region_v) || (_land_region_v < 0) || (instance_exists(_unload_star_v) && (_land_region_v >= planet_region_count(_unload_star_v, unload)))) {
+                    _land_region_v = 0;
+                }
+                if (_multi_v && !region_allows_regular_unload(_unload_star_v, unload, _land_region_v)) {
+                    continue; // cannot casually land into an enemy/contested region
+                }
+                var _from_ship_v = ma_lid[q];
+                var _veh_size = scr_unit_size("", obj_ini.veh_role[company][unit_id], true);
                 obj_ini.veh_loc[company][unit_id] = obj_ini.ship_location[b];
                 obj_ini.veh_lid[company][unit_id] = -1;
                 obj_ini.veh_wid[company][unit_id] = unload;
                 obj_ini.veh_uid[company][unit_id] = 0;
+                if (instance_exists(_unload_star_v)) {
+                    region_player_force_book(_unload_star_v, unload, _land_region_v, _veh_size);
+                }
+                if ((_from_ship_v > -1) && (_from_ship_v < array_length(obj_ini.ship_carrying))) {
+                    obj_ini.ship_carrying[_from_ship_v] = max(0, obj_ini.ship_carrying[_from_ship_v] - _veh_size);
+                }
 
                 ma_loc[q] = obj_ini.ship_location[b];
                 ma_lid[q] = -1;
@@ -512,9 +545,6 @@ try {
         selecting_location = "";
         for (var i = 0; i < array_length(display_unit); i++) {
             man_sel[i] = 0;
-        }
-        if (b > -1 && b < array_length(obj_ini.ship_carrying)) {
-            obj_ini.ship_carrying[b] -= man_size;
         }
         reset_ship_manage_arrays();
         cooldown = 10;
