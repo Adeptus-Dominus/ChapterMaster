@@ -18,6 +18,11 @@ formation_type = "";
 fire_target_line = 0;
 // One leap per battle for an ordered Assault formation (see move_player_block).
 assault_jumped = false;
+// Set while this block has genuinely stepped during the current movement sweep; reset by
+// move_player_blocks at sweep start. Drives the lockstep merge: an auto-advancing block
+// may enter a column only if every friendly already standing there moved this sweep too,
+// so stacked segments step off together instead of staggering one turn per segment.
+moved_this_sweep = false;
 // Set once a retreating formation reaches the field edge and withdraws.
 retreat_departed = false;
 // Movement passes spent as the last fighting formation (rear-guard delay).

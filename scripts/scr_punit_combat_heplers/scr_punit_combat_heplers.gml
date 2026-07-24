@@ -371,7 +371,9 @@ function move_player_block() {
         // lines (never onto an enemy), unable to fire and heavily protected (see
         // RETREAT_DAMAGE_MULT), until the formation leaves the field edge.
         if (x > 10) {
-            move_unit_block("west", 1, false, true);
+            if (move_unit_block("west", 1, false, true)) {
+                moved_this_sweep = true;
+            }
         } else if (!retreat_departed) {
             retreat_departed = true;
             obj_ncombat.combat_log.push($"The {formation_display_name(formation_type)} have withdrawn from the field.", eMSG_COLOR.WHITE);
@@ -399,13 +401,50 @@ function move_player_block() {
             if (((_front_x - x) > 10) && ((_front_x - x) <= ASSAULT_JUMP_RANGE)) {
                 x = _front_x - 10;
                 assault_jumped = true;
+                moved_this_sweep = true;
                 obj_ncombat.combat_log.push($"The {formation_display_name(formation_type)} leap into the fray!", eMSG_COLOR.AQUA);
             }
         }
         if (order_manual) {
-            move_unit_block("east", 1, false, true);
+            if (move_unit_block("east", 1, false, true)) {
+                moved_this_sweep = true;
+            }
         } else if (!obj_ncombat.player_front_contact) {
-            move_unit_block("east", 1, false, false);
+            if (move_unit_block("east", 1, false, false)) {
+                moved_this_sweep = true;
+            } else {
+                // Lockstep for stacked segments. The plain auto-advance keeps the vanilla
+                // stall (a block never enters an occupied column), which made segments
+                // sharing a column step off one turn apart: on turn one only stack leaders
+                // and solo blocks (the lone Predator) moved, the line advanced as an
+                // arrowhead, and once the front-contact latch tripped the trailing
+                // segments froze mid-field for the rest of the battle. Merge into the
+                // destination column only when NO enemy holds it and EVERY friendly block
+                // standing there moved during this same sweep: a stack follows its leader
+                // in the same turn and advances as one line, while a HOLDING block still
+                // dams everything behind it exactly as before.
+                var _dest_x = x + 10;
+                if (collision_point(_dest_x, y, obj_enunit, 0, 1) == noone) {
+                    var _any_friendly = false;
+                    var _all_moved = true;
+                    with (obj_pnunit) {
+                        if (id == other.id) {
+                            continue;
+                        }
+                        if ((_dest_x >= bbox_left) && (_dest_x <= bbox_right) && (other.y >= bbox_top) && (other.y <= bbox_bottom)) {
+                            _any_friendly = true;
+                            if (!moved_this_sweep) {
+                                _all_moved = false;
+                                break;
+                            }
+                        }
+                    }
+                    if (_any_friendly && _all_moved) {
+                        x = _dest_x;
+                        moved_this_sweep = true;
+                    }
+                }
+            }
         }
     }
     if (collision_point(x + 14, y, obj_enunit, 0, 1)) {
@@ -421,6 +460,11 @@ function move_player_block() {
 /// block has not vacated yet and drift out of the line. Replaces the old arbitrary
 /// instance-order per-block advance in obj_pnunit Alarm_0.
 function move_player_blocks() {
+    // Fresh sweep: nobody has moved yet. The lockstep merge in move_player_block only
+    // follows blocks that genuinely stepped during THIS sweep.
+    with (obj_pnunit) {
+        moved_this_sweep = false;
+    }
     var _player_movement_queue = ds_priority_create();
     with (obj_pnunit) {
         ds_priority_add(_player_movement_queue, id, x);
