@@ -405,6 +405,16 @@ function damage_infantry(_damage_data, _shots, _damage, _weapon_index, _splash, 
         // no damage. Only whole shots are saved, so a save never partially wounds. Rate is
         // the unit's own (Guard auxilia get more cover than bulky Astartes).
         var _cover_save = (unit_role_is_guard(marine.role()) ? GUARD_COVER_SAVE : MARINE_COVER_SAVE) * _cover_dist_factor;
+        // Walkers do not duck. A Dreadnought chassis cannot crouch behind rubble, so any
+        // unit in dreadnought-tagged armour gets no cover save at all (the "Dreadnought
+        // weather the fire from effective cover" log line was this rolling through).
+        // When the per-race ENEMY cover system is built, the same rule applies to their
+        // walker and monstrous types: Deff Dreads, Wraithlords, Helbrutes, and T'au
+        // Crisis/Broadside/Ghostkeel battlesuits take no cover either.
+        var _cover_armour = marine.get_armour_data();
+        if (is_struct(_cover_armour) && _cover_armour.has_tag("dreadnought")) {
+            _cover_save = 0;
+        }
         if ((_cover_save > 0) && (random(1) < _cover_save)) {
             _cover_saved++;
             _cover_role = marine.role();
