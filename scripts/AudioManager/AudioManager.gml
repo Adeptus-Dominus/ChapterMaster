@@ -38,6 +38,9 @@
 #macro SFX_STC "stc"
 
 function AudioManager() constructor {
+    audio_group_set_gain(audiogroup_music, 1.0);
+    audio_group_set_gain(audiogroup_sfx, 1.0);
+
     // ###### Constants ######
 
     AUDIO_DIR = working_directory + "Audio/";
@@ -53,8 +56,39 @@ function AudioManager() constructor {
 
     FILE_EXT = ".ogg";
 
-    audio_group_set_gain(audiogroup_music, 1.0);
-    audio_group_set_gain(audiogroup_sfx, 1.0);
+    // Maps a logical name to the compile-time `snd_*` asset.
+    // Used when no external file exists for that name.
+    BUILTIN_MUSIC = {
+        MUSIC_PROLOGUE: snd_prologue,
+        MUSIC_ROYAL: snd_royal,
+        MUSIC_BLOOD: snd_blood,
+        MUSIC_BATTLE: snd_battle,
+        MUSIC_DIBOZ: snd_diboz,
+        MUSIC_DEFEAT: snd_defeat,
+        MUSIC_POSTBATTLE: snd_postbattle,
+    };
+
+    BUILTIN_SFX = {
+        SFX_CLICK: snd_click,
+        SFX_CLICK_SMALL: snd_click_small,
+        SFX_ERROR: snd_error,
+        SFX_BUZZ: snd_buzz,
+        SFX_END_TURN: snd_end_turn,
+        SFX_IDENTIFY: snd_identify,
+        SFX_STC: snd_stc,
+    };
+
+    // Maps context name to built-in track names for fallback.
+    // When no external files are found, a random track from this list is used.
+    CONTEXT_FALLBACK = {
+        CONTEXT_MENU: [MUSIC_PROLOGUE],
+        CONTEXT_SECTOR: [MUSIC_ROYAL],
+        CONTEXT_BATTLE: [MUSIC_BATTLE],
+        CONTEXT_CREATION: [MUSIC_DIBOZ],
+        CONTEXT_DEFEAT: [MUSIC_DEFEAT],
+        CONTEXT_DIPLOMACY: [MUSIC_BLOOD],
+        CONTEXT_POSTBATTLE: [MUSIC_POSTBATTLE],
+    };
 
     // ###### Public ######
 
@@ -91,40 +125,6 @@ function AudioManager() constructor {
     // Map: context name -> last played track name (avoid consecutive repeat).
     __last_context_track = {};
 
-    // Maps a logical name to the compile-time `snd_*` asset.
-    // Used when no external file exists for that name.
-    __builtin_music = {
-        MUSIC_PROLOGUE: snd_prologue,
-        MUSIC_ROYAL: snd_royal,
-        MUSIC_BLOOD: snd_blood,
-        MUSIC_BATTLE: snd_battle,
-        MUSIC_DIBOZ: snd_diboz,
-        MUSIC_DEFEAT: snd_defeat,
-        MUSIC_POSTBATTLE: snd_postbattle,
-    };
-
-    __builtin_sfx = {
-        SFX_CLICK: snd_click,
-        SFX_CLICK_SMALL: snd_click_small,
-        SFX_ERROR: snd_error,
-        SFX_BUZZ: snd_buzz,
-        SFX_END_TURN: snd_end_turn,
-        SFX_IDENTIFY: snd_identify,
-        SFX_STC: snd_stc,
-    };
-
-    // Maps context name to built-in track names for fallback.
-    // When no external files are found, a random track from this list is used.
-    __context_fallback = {
-        CONTEXT_MENU: [MUSIC_PROLOGUE],
-        CONTEXT_SECTOR: [MUSIC_ROYAL],
-        CONTEXT_BATTLE: [MUSIC_BATTLE],
-        CONTEXT_CREATION: [MUSIC_DIBOZ],
-        CONTEXT_DEFEAT: [MUSIC_DEFEAT],
-        CONTEXT_DIPLOMACY: [MUSIC_BLOOD],
-        CONTEXT_POSTBATTLE: [MUSIC_POSTBATTLE],
-    };
-
     // ###### Private Methods ######
 
     /// @desc Scans a directory for .ogg files and adds their names (without extension) to a map.
@@ -136,8 +136,8 @@ function AudioManager() constructor {
         var _file = file_find_first(_dir + "*" + FILE_EXT, fa_none);
 
         while (_file != "") {
-            // Strip the 4-character ".ogg"
-            var _name = string_copy(_file, 1, string_length(_file) - 4);
+            var _name = filename_name(_file);
+            _name = string_replace(_name, FILE_EXT, "");
             _map[$ _name] = true;
             _count++;
             _file = file_find_next();
@@ -194,8 +194,8 @@ function AudioManager() constructor {
             return _id;
         }
 
-        if (struct_exists(__builtin_music, _name)) {
-            return __builtin_music[$ _name];
+        if (struct_exists(BUILTIN_MUSIC, _name)) {
+            return BUILTIN_MUSIC[$ _name];
         }
 
         return -1;
@@ -214,8 +214,8 @@ function AudioManager() constructor {
             return _id;
         }
 
-        if (struct_exists(__builtin_sfx, _name)) {
-            return __builtin_sfx[$ _name];
+        if (struct_exists(BUILTIN_SFX, _name)) {
+            return BUILTIN_SFX[$ _name];
         }
 
         return -1;
@@ -250,7 +250,8 @@ function AudioManager() constructor {
     /// root music/SFX and per-context playlists. Safe to call multiple times.
     /// @returns {Real} total number of audio files found
     static discover = function() {
-        __context_playlists = {};
+        __flush_cache();
+
         var _total = 0;
         var _map;
 
@@ -262,7 +263,7 @@ function AudioManager() constructor {
         file_ensure_directory(USER_MUSIC_DIR);
         file_ensure_directory(USER_SFX_DIR);
 
-        var _contexts = struct_get_names(__context_fallback);
+        var _contexts = struct_get_names(CONTEXT_FALLBACK);
         for (var i = 0; i < array_length(_contexts); i++) {
             file_ensure_directory(MUSIC_DIR + _contexts[i] + "/");
             file_ensure_directory(USER_MUSIC_DIR + _contexts[i] + "/");
@@ -301,7 +302,7 @@ function AudioManager() constructor {
     /// @param {Real} _audio_id optional pre-resolved audio index (internal)
     /// @param {String} _context optional context name (internal)
     /// @returns {Real} audio instance index, or -1 on failure
-    static play_track = function(_name, _fade_ms = 2000, _audio_id = -1, _context = "") {    
+    static play_track = function(_name, _fade_ms = DEFAULT_CROSSFADE_MS, _audio_id = -1, _context = "") {    
         if (_name == current_audio_name && current_audio_id >= 0 && audio_is_playing(current_audio_id)) {
             return current_audio_id;
         }
@@ -367,8 +368,8 @@ function AudioManager() constructor {
             _audio_id = __resolve_context_track(_context, _chosen);
         }
 
-        if (_audio_id < 0 && struct_exists(__context_fallback, _context)) {
-            var _fallbacks = __context_fallback[$ _context];
+        if (_audio_id < 0 && struct_exists(CONTEXT_FALLBACK, _context)) {
+            var _fallbacks = CONTEXT_FALLBACK[$ _context];
             _chosen = _fallbacks[irandom(array_length(_fallbacks) - 1)];
         }
 

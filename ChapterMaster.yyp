@@ -114,6 +114,7 @@
     {"link":"io.gamemaker.sdfshaders-1.0.0","name":"io.gamemaker.sdfshaders-1.0.0","path":"io.gamemaker.sdfshaders-1.0.0.yyp",},
   ],
   "IncludedFiles":[
+    {"$GMIncludedFile":"","%Name":"audio_modding.md","CopyToMask":-1,"filePath":"datafiles","name":"audio_modding.md","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"armour.json","CopyToMask":-1,"filePath":"datafiles/data","name":"armour.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"sisters.json","CopyToMask":-1,"filePath":"datafiles/data/dialogue","name":"sisters.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"gear.json","CopyToMask":-1,"filePath":"datafiles/data","name":"gear.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
