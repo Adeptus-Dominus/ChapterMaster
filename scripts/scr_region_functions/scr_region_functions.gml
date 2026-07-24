@@ -3667,6 +3667,57 @@ function region_player_force_add(_star, _planet, _region_index, _amount) {
     region_player_force_sync(_star, _planet);
 }
 
+/// @function region_player_force_book
+/// @description Book a landing INTO a region's foothold, adopting any legacy planet-level
+///              p_player into that region first (worlds from before the store existed, or
+///              paths that still write p_player raw), so the first synced booking cannot
+///              wipe an existing garrison. Every landing path should come through here.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _region_index
+/// @param {Real} _amount
+/// @returns {Undefined}
+function region_player_force_book(_star, _planet, _region_index, _amount) {
+    if ((regions_player_force_total(_star, _planet) <= 0) && (_star.p_player[_planet] > 0)) {
+        region_player_force_add(_star, _planet, _region_index, _star.p_player[_planet]);
+    }
+    region_player_force_add(_star, _planet, _region_index, _amount);
+}
+
+/// @function region_player_force_debit
+/// @description Take a departing unit OFF the foothold store: its own region when that
+///              region has force recorded, else the largest foothold (units landed before
+///              regions tracked them), else the legacy raw p_player count on worlds with no
+///              store at all. The store is authoritative (its sync re-derives p_player), so
+///              a raw p_player decrement alone leaves a ghost foothold that the next sync
+///              restores.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _preferred_region
+/// @param {Real} _amount
+/// @returns {Undefined}
+function region_player_force_debit(_star, _planet, _preferred_region, _amount) {
+    if (regions_player_force_total(_star, _planet) > 0) {
+        var _region = _preferred_region;
+        if ((!is_real(_region)) || (_region < 0) || (_region >= planet_region_count(_star, _planet)) || (region_player_force(_star, _planet, _region) <= 0)) {
+            var _regions = regions_ensure(_star, _planet);
+            _region = -1;
+            var _big_force = 0;
+            for (var _ri = 0; _ri < array_length(_regions); _ri++) {
+                if (_regions[_ri].player_force > _big_force) {
+                    _region = _ri;
+                    _big_force = _regions[_ri].player_force;
+                }
+            }
+        }
+        if (_region >= 0) {
+            region_player_force_add(_star, _planet, _region, -_amount);
+        }
+    } else if (_star.p_player[_planet] > 0) {
+        _star.p_player[_planet] = max(0, _star.p_player[_planet] - _amount);
+    }
+}
+
 /// @function region_player_force_scale_to_total
 /// @description Proportionally rescale the per-region player forces so they sum to _new_total,
 ///              preserving how the foothold is distributed across regions. Used when combat

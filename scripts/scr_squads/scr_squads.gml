@@ -1122,10 +1122,18 @@ function set_member_loc(loc_data) {
             unload(wid, system);
         } else if (member_location[0] == eLOCATION_TYPES.PLANET && member_location[1] != wid && member_location[2] == loc) {
             get_unit_size();
-            system.p_player[member_location[1]] -= size;
-            system.p_player[wid] += size;
+            // Move the foothold with the unit. The raw p_player writes this used to make
+            // drifted from the per-region store on both worlds: the source kept a ghost
+            // foothold and the destination's raw share was eaten by the next store sync.
+            region_player_force_debit(system, member_location[1], region_location, size);
             planet_location = wid;
             ship_location = -1;
+            var _to_region = region_focus_get(system, wid);
+            if ((!is_real(_to_region)) || (_to_region < 0) || (_to_region >= planet_region_count(system, wid))) {
+                _to_region = 0;
+            }
+            region_location = _to_region;
+            region_player_force_book(system, wid, _to_region, size);
         }
     } else {
         if (wid == 0 && lid > -1) {

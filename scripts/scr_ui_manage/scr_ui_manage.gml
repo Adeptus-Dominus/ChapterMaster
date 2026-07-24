@@ -5,9 +5,15 @@ function load_marines_into_ship(system, ship, units, reload = false) {
         var load_from_star = find_star_by_name(system);
         if (is_struct(units[loop])) {
             units[loop].load_marine(sh_ide[ship], load_from_star);
-            ma_loc[loop] = sh_loc[ship];
-            ma_lid[loop] = sh_ide[ship];
-            ma_wid[loop] = 0;
+            // Mirror the display arrays only if the marine actually boarded. load_marine can
+            // decline silently (on assignment, or its own live capacity check), and blindly
+            // marking the row as aboard showed a loaded unit that was still standing
+            // planetside until the menu was reopened.
+            if (units[loop].ship_location == sh_ide[ship]) {
+                ma_loc[loop] = sh_loc[ship];
+                ma_lid[loop] = sh_ide[ship];
+                ma_wid[loop] = 0;
+            }
         } else if (is_array(units[loop]) && ma_loc[loop] == system && sh_loc[ship] == system) {
             var vehicle = units[loop];
             var _get = fetch_deep_array;
@@ -33,6 +39,11 @@ function load_marines_into_ship(system, ship, units, reload = false) {
         }
     };
 
+    // Bulk-pass accounting for the reload/Recall summary log.
+    var _boarded_count = 0;
+    var _fallbacks = 0;
+    var _stranded = 0;
+
     for (var q = 0; q < array_length(units); q++) {
         if (man_sel[q] == 1) {
             var _unit_ship_id = -1;
@@ -51,32 +62,59 @@ function load_marines_into_ship(system, ship, units, reload = false) {
 
             var _unit_size = 0;
             if (_is_marine) {
-                _unit_size = man_size;
+                // The unit's OWN size, not man_size: man_size is the whole selection's total
+                // (and zero during Recall All, which selects programmatically), so the
+                // capacity gate below compared every marine against the wrong number in
+                // both directions.
+                _unit.get_unit_size();
+                _unit_size = _unit.size;
             } else {
                 var _vehic_size = scr_unit_size("", ma_role[q], true);
                 _unit_size = _vehic_size;
             }
 
+            if (reload && (_unit_ship_id == -1)) {
+                // Origin ship not at this location (moved on, destroyed, or renamed): board
+                // any friendly ship here with room instead of stranding the unit. The old
+                // code skipped the unit AND wiped its last_ship, so one failed Recall left
+                // it permanently unable to reembark, even by hand.
+                for (var _s = 0; _s < array_length(sh_ide); _s++) {
+                    if ((obj_ini.ship_carrying[sh_ide[_s]] + _unit_size) <= obj_ini.ship_capacity[sh_ide[_s]]) {
+                        _unit_ship_id = _s;
+                        _fallbacks += 1;
+                        break;
+                    }
+                }
+            }
             if (_unit_ship_id == -1) {
                 if (reload) {
-                    if (_is_marine) {
-                        _unit.last_ship = {
-                            uid: "",
-                            name: "",
-                        };
-                    } else {
-                        set_vehicle_last_ship(_unit, true);
-                    }
+                    _stranded += 1;
                 }
                 continue;
             }
-            if (_unit_ship_id < array_length(sh_cargo_max)) {
-                if (sh_cargo[_unit_ship_id] + _unit_size <= sh_cargo_max[_unit_ship_id]) {
+            if (_unit_ship_id < array_length(sh_ide)) {
+                // Gate on the LIVE hold, not the sh_cargo snapshot taken when the menu was
+                // opened: the snapshot does not grow as this loop loads units, so a bulk
+                // pass could overfill a ship (marines were saved only by load_marine's own
+                // live check; vehicles had no second check at all).
+                var _tid = sh_ide[_unit_ship_id];
+                if ((obj_ini.ship_carrying[_tid] + _unit_size) <= obj_ini.ship_capacity[_tid]) {
                     _load_into_ship(system, _unit_ship_id, units, _unit_size, q, reload);
-                    man_sel[q] = 0;
+                    var _boarded = _is_marine ? (_unit.ship_location == _tid) : (ma_wid[q] == 0);
+                    if (_boarded) {
+                        man_sel[q] = 0;
+                        _boarded_count += 1;
+                    } else if (reload) {
+                        _stranded += 1;
+                    }
+                } else if (reload) {
+                    _stranded += 1;
                 }
             }
         }
+    }
+    if (reload) {
+        LOGGER.info($"RECALL at {system}: {_boarded_count} unit(s) reembarked ({_fallbacks} onto fallback ships), {_stranded} left on the surface (no room, on assignment, or nothing to board)");
     }
     system = "";
     man_size = 0;

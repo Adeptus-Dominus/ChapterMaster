@@ -1951,6 +1951,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             }
             //check if ship is in the same location as marine and has enough space;
             if ((target_ship_location == system) && ((obj_ini.ship_carrying[ship] + size) <= obj_ini.ship_capacity[ship])) {
+                var _from_region = region_location;
                 planet_location = 0; //mark marine as no longer on planet
                 region_location = -1; //no longer in any region
                 ship_location = ship; //id of ship marine is now loaded on
@@ -1960,9 +1961,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                     star = find_star_by_name(system);
                 }
                 if (star != noone) {
-                    if (star.p_player[current_location[1]] > 0) {
-                        star.p_player[current_location[1]] -= size;
-                    }
+                    // Debit the foothold store, not just p_player: the store is authoritative
+                    // (its sync re-derives p_player from the region sums), so a raw p_player
+                    // decrement left a ghost foothold behind and the next sync restored it,
+                    // and recalled troops kept fighting the contested world they had left.
+                    region_player_force_debit(star, current_location[1], _from_region, size);
                 }
             }
         } else if (current_location[0] == eLOCATION_TYPES.SHIP) {
@@ -2000,6 +2003,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         // Ground assault. The chosen region is the world's stored focus (what the player selected).
         var _multi = (planet_region_count(system, planet_number) > 1);
         var _land_region = _multi ? region_focus_get(system, planet_number) : 0;
+        if (!is_real(_land_region) || (_land_region < 0) || (_land_region >= planet_region_count(system, planet_number))) {
+            _land_region = 0; // a stale focus must not book the landing into a region that does not exist
+        }
         if (_multi && !_force && !region_allows_regular_unload(system, planet_number, _land_region)) {
             return false; // cannot casually land into an enemy/contested region (Hold Ground required)
         }
@@ -2008,12 +2014,13 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 location_string = obj_ini.ship_location[current_location[1]];
                 planet_location = planet_number;
                 ship_location = -1;
+                region_location = _land_region; // record where they stand, so Recall debits the right region
                 get_unit_size();
-                if (_multi) {
-                    region_player_force_add(system, planet_number, _land_region, size);
-                } else {
-                    system.p_player[planet_number] += size;
-                }
+                // Book the landing into the foothold store (region 0 on a single-region
+                // world). The store is authoritative: its sync re-derives p_player, so raw
+                // p_player adds on one path and store adds on another drifted apart and the
+                // next sync ate the raw share. Booking adopts any legacy garrison first.
+                region_player_force_book(system, planet_number, _land_region, size);
                 obj_ini.ship_carrying[current_location[1]] -= size;
                 return true;
             }
@@ -2022,12 +2029,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             ship_location = -1;
             location_string = system.name;
             planet_location = planet_number;
+            region_location = _land_region; // record where they stand, so Recall debits the right region
             get_unit_size();
-            if (_multi) {
-                region_player_force_add(system, planet_number, _land_region, size);
-            } else {
-                system.p_player[planet_number] += size;
-            }
+            // Same store booking as the ship branch above.
+            region_player_force_book(system, planet_number, _land_region, size);
             return true;
         }
     };
