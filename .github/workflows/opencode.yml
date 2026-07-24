@@ -9,10 +9,8 @@ on:
 jobs:
   opencode:
     if: |
-    if: |
       startsWith(github.event.comment.body, '/oc') ||
       startsWith(github.event.comment.body, '/opencode')
-      contains(github.event.comment.body, '/opencode')
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -24,7 +22,7 @@ jobs:
           persist-credentials: false
 
       - name: Run OpenCode
-        uses: anomalyco/opencode/github@latest
+        uses: anomalyco/opencode/github@v1.18.4
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         with:
