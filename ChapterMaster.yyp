@@ -713,6 +713,7 @@
     {"id":{"name":"__gml_pragma_global","path":"scripts/__gml_pragma_global/__gml_pragma_global.yy",},},
     {"id":{"name":"__init","path":"scripts/__init/__init.yy",},},
     {"id":{"name":"Armamentarium","path":"scripts/Armamentarium/Armamentarium.yy",},},
+    {"id":{"name":"AudioManager","path":"scripts/AudioManager/AudioManager.yy",},},
     {"id":{"name":"ColourItem","path":"scripts/ColourItem/ColourItem.yy",},},
     {"id":{"name":"ColourPicker","path":"scripts/ColourPicker/ColourPicker.yy",},},
     {"id":{"name":"CombatDebugger","path":"scripts/CombatDebugger/CombatDebugger.yy",},},
