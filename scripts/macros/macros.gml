@@ -17,6 +17,12 @@
 // Astartes are bulky and hide poorly, so their save is much weaker than the Guard's.
 #macro GUARD_COVER_SAVE 0.4
 #macro MARINE_COVER_SAVE 0.15
+// Posture multipliers on the cover save (player formations only; the enemy AI has no
+// posture control so it neither suffers the moving penalty nor enjoys the holding bonus):
+// a formation that stepped this sweep is caught between cover, one ordered to Hold has
+// dug in. Advance-ordered but stationary formations stay at the base rate.
+#macro COVER_SAVE_MOVING_MULT 0.75
+#macro COVER_SAVE_HOLDING_MULT 1.25
 
 // Guardsman veterancy: surviving a victory at the battle site earns GUARD_BATTLE_XP,
 // and every kill made by Guard small-arms volleys awards GUARD_KILL_XP to one random

@@ -176,7 +176,7 @@ function at_penetration_multiplier(_veh_type) {
 
 /// @self Id.Instance.obj_pnunit
 /// @param {Id.Instance.obj_pnunit} target_object
-function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_damage, hostile_weapon, hostile_range, hostile_splash, weapon_index_position, hostile_arp = 0, hostile_dist = 0) {
+function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_damage, hostile_weapon, hostile_range, hostile_splash, weapon_index_position, hostile_arp = 0, hostile_dist = 0, hostile_is_melee = false) {
     // Retreating formations take heavily reduced damage as they withdraw (see
     // RETREAT_DAMAGE_MULT): they cannot fight back, but they are hard to catch.
     if (target_object.move_order == "retreat") {
@@ -233,7 +233,7 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
 
             // ### Marine + Dreadnought Processing ###
             if (target_is_infantry && (men + dreads > 0)) {
-                damage_infantry(damage_data, hostile_shots, hostile_damage, weapon_index_position, hostile_splash, hostile_arp, hostile_dist);
+                damage_infantry(damage_data, hostile_shots, hostile_damage, weapon_index_position, hostile_splash, hostile_arp, hostile_dist, hostile_is_melee);
             }
 
             if (damage_data.hits < hostile_shots) {
@@ -250,7 +250,7 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
 
                 // ### Marine + Dreadnought Processing ###
                 if (!target_is_infantry && (men + dreads > 0)) {
-                    damage_infantry(damage_data, _remaining_shots, hostile_damage, weapon_index_position, hostile_splash, hostile_arp, hostile_dist);
+                    damage_infantry(damage_data, _remaining_shots, hostile_damage, weapon_index_position, hostile_splash, hostile_arp, hostile_dist, hostile_is_melee);
                 }
             }
 
@@ -269,7 +269,7 @@ function scr_clean(target_object, target_is_infantry, hostile_shots, hostile_dam
 }
 
 /// @self Asset.GMObject.obj_pnunit
-function damage_infantry(_damage_data, _shots, _damage, _weapon_index, _splash, _arp = 0, _dist = 0) {
+function damage_infantry(_damage_data, _shots, _damage, _weapon_index, _splash, _arp = 0, _dist = 0, _is_melee = false) {
     // _arp is the ATTACKER's armour pierce, passed down from scr_shoot. This used to read
     // apa[_weapon_index], but this function runs in the TARGET obj_pnunit's context, so
     // that indexed the PLAYER's own weapon-stack arp table with the ENEMY's stack number.
@@ -385,6 +385,18 @@ function damage_infantry(_damage_data, _shots, _damage, _weapon_index, _splash, 
     // COVER_SAVE_MIN_FACTOR). Rolled per shot below, after armour, so it also blunts
     // armour-piercing weapons that ignore Flak entirely.
     var _cover_dist_factor = clamp(_dist / COVER_SAVE_FULL_RANGE, COVER_SAVE_MIN_FACTOR, 1);
+    if (_is_melee) {
+        // Melee strips cover from EVERYONE: there is no rubble between locked blades.
+        _cover_dist_factor = 0;
+    } else if (moved_this_sweep) {
+        // Posture, player formations only (this path only processes player blocks, so
+        // the enemy AI structurally gets neither the penalty nor the bonus). A block
+        // that stepped this sweep is caught moving between cover.
+        _cover_dist_factor *= COVER_SAVE_MOVING_MULT;
+    } else if (move_order == "hold") {
+        // A block deliberately ordered to Hold has dug in.
+        _cover_dist_factor *= COVER_SAVE_HOLDING_MULT;
+    }
     var _cover_saved = 0;
     var _cover_role = "";
 
@@ -412,7 +424,9 @@ function damage_infantry(_damage_data, _shots, _damage, _weapon_index, _splash, 
         // walker and monstrous types: Deff Dreads, Wraithlords, Helbrutes, and T'au
         // Crisis/Broadside/Ghostkeel battlesuits take no cover either.
         var _cover_armour = marine.get_armour_data();
-        if (is_struct(_cover_armour) && _cover_armour.has_tag("dreadnought")) {
+        if (is_struct(_cover_armour) && (_cover_armour.has_tag("dreadnought") || _cover_armour.has_tag("terminator"))) {
+            // Walkers do not duck, and massive tactical plate does not crouch behind
+            // rubble either: dreadnought and terminator armour take no cover, ever.
             _cover_save = 0;
         }
         if ((_cover_save > 0) && (random(1) < _cover_save)) {
