@@ -811,6 +811,7 @@
     {"id":{"name":"scr_event_gossip","path":"scripts/scr_event_gossip/scr_event_gossip.yy",},},
     {"id":{"name":"scr_event_log","path":"scripts/scr_event_log/scr_event_log.yy",},},
     {"id":{"name":"scr_event_newlines","path":"scripts/scr_event_newlines/scr_event_newlines.yy",},},
+    {"id":{"name":"scr_filesystem_functions","path":"scripts/scr_filesystem_functions/scr_filesystem_functions.yy",},},
     {"id":{"name":"scr_flavor","path":"scripts/scr_flavor/scr_flavor.yy",},},
     {"id":{"name":"scr_flavor2","path":"scripts/scr_flavor2/scr_flavor2.yy",},},
     {"id":{"name":"scr_fleet_advisor","path":"scripts/scr_fleet_advisor/scr_fleet_advisor.yy",},},

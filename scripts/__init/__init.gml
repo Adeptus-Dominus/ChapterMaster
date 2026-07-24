@@ -31,15 +31,11 @@ function __init() {
     }
     // ========================
 
-    if (!directory_exists("Logs")) {
-        directory_create("Logs");
-    }
-    if (!directory_exists("Custom Files/Custom Icons")) {
-        directory_create("Custom Files/Custom Icons");
-    }
-    if (!directory_exists("Save Files")) {
-        directory_create("Save Files");
-    }
+    file_ensure_directory("Logs");
+
+    file_ensure_directory("Custom Files/Custom Icons");
+
+    file_ensure_directory("Save Files");
 
     global.chapter_icons_map = ds_map_create();
 

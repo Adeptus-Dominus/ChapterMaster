@@ -127,18 +127,14 @@ function ErrorHandler() constructor {
             return;
         }
 
-        if (!directory_exists(PATH_LOG_DIRECTORY)) {
-            directory_create(PATH_LOG_DIRECTORY);
-        }
+        file_ensure_directory(PATH_LOG_DIRECTORY);
 
         var _log_file = file_text_open_write($"{PATH_LOG_DIRECTORY}{DATE_TIME_1}_error.log");
         file_text_write_string(_log_file, _file_text);
         file_text_close(_log_file);
 
         if (file_exists(PATH_LAST_MESSAGES)) {
-            if (!directory_exists(PATH_LOG_DIRECTORY)) {
-                directory_create(PATH_LOG_DIRECTORY);
-            }
+            file_ensure_directory(PATH_LOG_DIRECTORY);
             file_copy(PATH_LAST_MESSAGES, $"{PATH_LOG_DIRECTORY}{DATE_TIME_1}_messages.log");
         }
     };

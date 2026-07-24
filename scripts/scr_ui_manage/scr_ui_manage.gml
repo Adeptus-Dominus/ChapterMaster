@@ -581,9 +581,7 @@ function alternative_manage_views(x1, y1) {
 
             // save to local game folder
             var main_dir = working_directory + "/Screenshots";
-            if (!directory_exists(main_dir)) {
-                directory_create(main_dir);
-            }
+            file_ensure_directory(main_dir);
             var base_name = main_dir + $"/marine_capture_{_unit.name()}_id{_unit.marine_number}_co{_unit.company}";
             var extension = ".png";
             var index = 0;

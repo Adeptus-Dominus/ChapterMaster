@@ -127,13 +127,6 @@ function AudioManager() constructor {
 
     // ###### Private Methods ######
 
-    /// @desc Ensures audio directories exist for user file drops.
-    static __ensure_dir = function(_path) {
-        if (!directory_exists(_path)) {
-            directory_create(_path);
-        }
-    };
-
     /// @desc Scans a directory for .ogg files and adds their names (without extension) to a map.
     /// @param {String} _dir The directory to scan (must end with a slash)
     /// @param {Struct} _map The struct to populate with track names
@@ -262,17 +255,17 @@ function AudioManager() constructor {
         var _map;
 
         // Ensure all base directories exist
-        __ensure_dir(AUDIO_DIR);
-        __ensure_dir(MUSIC_DIR);
-        __ensure_dir(SFX_DIR);
-        __ensure_dir(USER_AUDIO_DIR);
-        __ensure_dir(USER_MUSIC_DIR);
-        __ensure_dir(USER_SFX_DIR);
+        file_ensure_directory(AUDIO_DIR);
+        file_ensure_directory(MUSIC_DIR);
+        file_ensure_directory(SFX_DIR);
+        file_ensure_directory(USER_AUDIO_DIR);
+        file_ensure_directory(USER_MUSIC_DIR);
+        file_ensure_directory(USER_SFX_DIR);
 
         var _contexts = struct_get_names(__context_fallback);
         for (var i = 0; i < array_length(_contexts); i++) {
-            __ensure_dir(MUSIC_DIR + _contexts[i] + "/");
-            __ensure_dir(USER_MUSIC_DIR + _contexts[i] + "/");
+            file_ensure_directory(MUSIC_DIR + _contexts[i] + "/");
+            file_ensure_directory(USER_MUSIC_DIR + _contexts[i] + "/");
         }
 
         // Root music files (shipped + user)
