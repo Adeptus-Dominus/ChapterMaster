@@ -2049,7 +2049,7 @@ global.modular_drawing_items = [
     },
     {
         position: "backpack",
-        armours: ["MK5 heresy"],
+        armours: ["MK5 Heresy"],
         body_types: [0],
         sprite: spr_mk5_complex_backpack,
         shadows: spr_mk5_complex_backpack_shadow,
