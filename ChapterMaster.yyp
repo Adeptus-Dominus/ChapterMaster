@@ -594,7 +594,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2026.100.0.1083",
+    "IDEVersion":"2026.0.0.16",
   },
   "name":"ChapterMaster",
   "resources":[
@@ -1427,7 +1427,9 @@
     {"id":{"name":"spr_mk4_right_trim","path":"sprites/spr_mk4_right_trim/spr_mk4_right_trim.yy",},},
     {"id":{"name":"spr_mk5_chest_variants","path":"sprites/spr_mk5_chest_variants/spr_mk5_chest_variants.yy",},},
     {"id":{"name":"spr_mk5_colors","path":"sprites/spr_mk5_colors/spr_mk5_colors.yy",},},
+    {"id":{"name":"spr_mk5_complex_backpack_shadow","path":"sprites/spr_mk5_complex_backpack_shadow/spr_mk5_complex_backpack_shadow.yy",},},
     {"id":{"name":"spr_mk5_complex_backpack","path":"sprites/spr_mk5_complex_backpack/spr_mk5_complex_backpack.yy",},},
+    {"id":{"name":"spr_mk5_complex_shadow","path":"sprites/spr_mk5_complex_shadow/spr_mk5_complex_shadow.yy",},},
     {"id":{"name":"spr_mk5_complex","path":"sprites/spr_mk5_complex/spr_mk5_complex.yy",},},
     {"id":{"name":"spr_mk5_head_variants","path":"sprites/spr_mk5_head_variants/spr_mk5_head_variants.yy",},},
     {"id":{"name":"spr_mk5_left_arm","path":"sprites/spr_mk5_left_arm/spr_mk5_left_arm.yy",},},
