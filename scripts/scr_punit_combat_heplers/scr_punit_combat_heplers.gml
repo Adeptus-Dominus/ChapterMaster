@@ -409,22 +409,36 @@ function move_player_block() {
             if (move_unit_block("east", 1, false, true)) {
                 moved_this_sweep = true;
             }
-        } else if (!obj_ncombat.player_front_contact) {
-            if (move_unit_block("east", 1, false, false)) {
-                moved_this_sweep = true;
-            } else {
-                // Lockstep for stacked segments. The plain auto-advance keeps the vanilla
-                // stall (a block never enters an occupied column), which made segments
-                // sharing a column step off one turn apart: on turn one only stack leaders
-                // and solo blocks (the lone Predator) moved, the line advanced as an
-                // arrowhead, and once the front-contact latch tripped the trailing
-                // segments froze mid-field for the rest of the battle. Merge into the
-                // destination column only when NO enemy holds it and EVERY friendly block
-                // standing there moved during this same sweep: a stack follows its leader
-                // in the same turn and advances as one line, while a HOLDING block still
-                // dams everything behind it exactly as before.
-                var _dest_x = x + 10;
-                if (collision_point(_dest_x, y, obj_enunit, 0, 1) == noone) {
+        } else {
+            // Advance-to-contact in two regimes sharing one movement body. BEFORE the
+            // line meets the enemy (latch clear), every block advances. AFTER the latch,
+            // blocks may still CLOSE UP into empty columns strictly behind the frontmost
+            // player block, never while engaged, packing the formation into ranks. The
+            // latch used to stop ALL auto-advance the instant the first block touched
+            // the line, and since it trips MID-SWEEP, the turn the front block reached
+            // the enemy every block processed after it froze on the spot: the squeeze
+            // parks the line two columns out, the front block closes to one on the first
+            // sweep, trips the latch, and the rest of that sweep and every later one is
+            // frozen ("only the Predator advances"). Surging is still impossible under
+            // the new rule: nothing may enter or pass the front column, so gaps opened
+            // by dying enemies stay unentered.
+            var _latched = obj_ncombat.player_front_contact;
+            var _front_x = x;
+            with (obj_pnunit) {
+                if (x > _front_x) {
+                    _front_x = x;
+                }
+            }
+            var _dest_x = x + 10;
+            var _may_step = (!_latched) || ((_dest_x < _front_x) && (!engaged));
+            if (_may_step) {
+                if (move_unit_block("east", 1, false, false)) {
+                    moved_this_sweep = true;
+                } else if (collision_point(_dest_x, y, obj_enunit, 0, 1) == noone) {
+                    // Lockstep for stacked segments: merge into the destination column
+                    // only when NO enemy holds it and EVERY friendly standing there moved
+                    // during this same sweep, so a stack follows its leader in the same
+                    // turn while a HOLDING block still dams everything behind it.
                     var _any_friendly = false;
                     var _all_moved = true;
                     with (obj_pnunit) {
@@ -465,6 +479,7 @@ function move_player_blocks() {
     with (obj_pnunit) {
         moved_this_sweep = false;
     }
+    var _latch_before = instance_exists(obj_ncombat) ? obj_ncombat.player_front_contact : false;
     var _player_movement_queue = ds_priority_create();
     with (obj_pnunit) {
         ds_priority_add(_player_movement_queue, id, x);
@@ -478,6 +493,25 @@ function move_player_blocks() {
         }
     }
     ds_priority_destroy(_player_movement_queue);
+    // Sweep summary for tester logs: who stepped, whether the front-contact latch
+    // changed, and which ADVANCE blocks stood still (hold, retreat and defenses are
+    // intended to stand and are not listed).
+    var _stepped = 0;
+    var _stood = [];
+    with (obj_pnunit) {
+        if (moved_this_sweep) {
+            _stepped += 1;
+        } else if ((move_order == "advance") && (veh_type[1] != "Defenses") && (!order_manual)) {
+            array_push(_stood, formation_display_name(formation_type));
+        }
+    }
+    var _standing_str = "none";
+    for (var _si = 0; _si < array_length(_stood); _si++) {
+        _standing_str = (_si == 0) ? _stood[_si] : (_standing_str + ", " + _stood[_si]);
+    }
+    if (instance_exists(obj_ncombat)) {
+        LOGGER.info($"MOVE SWEEP turn {obj_ncombat.turn_count}: {_stepped} block(s) stepped, latch {_latch_before} -> {obj_ncombat.player_front_contact}, standing: {_standing_str}");
+    }
 }
 
 /// @self Asset.GMObject.obj_enunit|Asset.GMObject.obj_pnunit
