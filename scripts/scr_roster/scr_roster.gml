@@ -204,8 +204,16 @@ function Roster() constructor {
     static spent_ship_stranded_count = function() {
         var _locked_ships = [];
         for (var i = 0; i < array_length(ships); i++) {
-            if (ships[i].assault_locked) {
-                array_push(_locked_ships, ships[i].ship_id);
+            // Not every roster path builds ship buttons with the assault economy fields
+            // (the Necron tomb / Dead-world attack roster does not), so probe before
+            // reading: a button without the field is simply not locked, and the
+            // stranded count for such paths is correctly zero.
+            var _sb = ships[i];
+            if (!is_struct(_sb) || !variable_struct_exists(_sb, "assault_locked")) {
+                continue;
+            }
+            if (_sb.assault_locked && variable_struct_exists(_sb, "ship_id")) {
+                array_push(_locked_ships, _sb.ship_id);
             }
         }
         if (array_length(_locked_ships) == 0) {
