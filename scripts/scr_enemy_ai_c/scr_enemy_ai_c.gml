@@ -256,7 +256,12 @@ function scr_enemy_ai_c() {
                 }
             }
 
-            if ((p_pdf[i] > 0) || (p_guardsmen[i] > 0) || (p_orks[i] > 0) || (p_traitors[i] > 0) || (p_eldar[i] > 2) || (p_tau[i] < 2)) {
+            // A cut-off invasion cannot export fresh landings: without a T'au fleet in
+            // orbit there are no transports, so the spread to neighbouring planets is
+            // disqualified (mirroring the CSM landing's present_fleet gate). The troops
+            // already on the ground stay and fight on as a stranded force for the
+            // Imperium, or the chapter, to mop up.
+            if ((p_pdf[i] > 0) || (p_guardsmen[i] > 0) || (p_orks[i] > 0) || (p_traitors[i] > 0) || (p_eldar[i] > 2) || (p_tau[i] < 2) || (present_fleet[eFACTION.TAU] == 0)) {
                 contin = 500;
             }
 
