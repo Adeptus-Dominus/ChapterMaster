@@ -82,9 +82,9 @@ ship_front_armour = [];
 ship_other_armour = [];
 ship_weapons = [];
 
-ship_wep = array_create(6, "");
-ship_wep_facing = array_create(6, "");
-ship_wep_condition = array_create(6, "");
+ship_wep = array_create_2d(6, 6, "")
+ship_wep_facing = array_create_2d(6, 6, "")
+ship_wep_condition = array_create_2d(6, 6, "")
 
 ship_capacity = [];
 ship_carrying = [];
@@ -117,30 +117,30 @@ veh_acc = array_create_2d(_max_companies, _max_vehicles, "");
 // Unit Init
 defaults_slot = 100;
 
-/// @type {Array<Array>}
-race = [[]];
-/// @type {Array<Array<String>>}
-name = [[]];
-/// @type {Array<Array<String>>}
-role = [[]];
-/// @type {Array<Array<String>>}
-wep1 = [[]];
-/// @type {Array<Array<String>>}
-spe = [[]];
-/// @type {Array<Array<String>>}
-wep2 = [[]];
-/// @type {Array<Array<String>>}
-armour = [[]];
-/// @type {Array<Array<String>>}
-gear = [[]];
-/// @type {Array<Array<String>>}
-mobi = [[]];
 /// @type {Array<Array<Real>>}
-age = [[]];
+race = array_create_2d(11, 501, 0);
+/// @type {Array<Array<String>>}
+name = array_create_2d(11, 501, "");
+/// @type {Array<Array<String>>}
+role = array_create_2d(11, 501, "");
+/// @type {Array<Array<String>>}
+wep1 = array_create_2d(11, 501, "");
+/// @type {Array<Array<String>>}
+spe = array_create_2d(11, 501, "");
+/// @type {Array<Array<String>>}
+wep2 = array_create_2d(11, 501, "");
+/// @type {Array<Array<String>>}
+armour = array_create_2d(11, 501, "");
+/// @type {Array<Array<String>>}
+gear = array_create_2d(11, 501, "");
+/// @type {Array<Array<String>>}
+mobi = array_create_2d(11, 501, "");
 /// @type {Array<Array<Real>>}
-god = [[]];
+age = array_create_2d(11, 501, 0);
+/// @type {Array<Array<Real>>}
+god = array_create_2d(11, 501, 0);
 /// @type {Array<Array<Struct.TTRPG_stats>>}
-TTRPG = [[]];
+TTRPG = array_create_2d(11, 501, undefined);
 
 load_default_gear = function(_role_id, _role_name, _wep1, _wep2, _armour, _mobi, _gear) {
     role[defaults_slot][_role_id] = _role_name;
@@ -308,7 +308,6 @@ deserialize = function(save_data) {
         obj_ini.TTRPG[company][marine].load_json_data(struct);
     }
 
-    obj_ini.TTRPG = array_create(11, array_create(501, {}));
     for (var _coy = 0; _coy <= 10; _coy++) {
         for (var _mar = 0; _mar <= 500; _mar++) {
             obj_ini.TTRPG[_coy][_mar] = new TTRPG_stats("chapter", _coy, _mar, "blank");
