@@ -122,8 +122,8 @@ function AudioManager() constructor {
     // Map: context name -> array of track names in that context's playlist.
     __context_playlists = {};
 
-    // Map: context name -> last played track name (avoid consecutive repeat).
-    __last_context_track = {};
+    // Map: context name -> array of tracks
+    __context_queues = {};
 
     // ###### Private Methods ######
 
@@ -133,18 +133,23 @@ function AudioManager() constructor {
     /// @returns {Real} The number of files found in this directory
     static __scan_audio_dir = function(_dir, _map) {
         var _count = 0;
-        var _file = file_find_first(_dir + "*" + FILE_EXT, fa_none);
+        try {
+            var _file = file_find_first(_dir + "*" + FILE_EXT, fa_none);    
+            while (_file != "") {
+                var _name = filename_name(_file);
+                _name = string_replace(_name, FILE_EXT, "");
+                _map[$ _name] = true;
+                _count++;
+                _file = file_find_next();
+            }
 
-        while (_file != "") {
-            var _name = filename_name(_file);
-            _name = string_replace(_name, FILE_EXT, "");
-            _map[$ _name] = true;
-            _count++;
-            _file = file_find_next();
+            return _count;
+        } catch (_ex) {
+            ERROR_HANDLER.handle_exception(_ex);
+            return _count;
+        } finally {
+            file_find_close();
         }
-
-        file_find_close();
-        return _count;
     };
 
     /// @desc Attempts to load and cache a streamed sound from two candidate paths.
@@ -157,26 +162,26 @@ function AudioManager() constructor {
         if (struct_exists(_cache, _key)) {
             return _cache[$ _key];
         }
-    
+
         var _paths = [
             _user_path,
             _shipped_path,
         ];
-    
+
         for (var i = 0; i < 2; i++) {
             if (!file_exists(_paths[i])) {
                 continue;
             }
-    
+
             var _id = audio_create_stream(_paths[i]);
             if (_id >= 0) {
                 _cache[$ _key] = _id;
                 return _id;
             }
-    
+
             LOGGER.warning($"AudioManager: failed to stream '{_key}' from ${_paths[i]}");
         }
-    
+
         return -1;
     };
 
@@ -240,7 +245,9 @@ function AudioManager() constructor {
         var _keys = struct_get_names(_cache);
         for (var i = 0; i < array_length(_keys); i++) {
             var _id = _cache[$ _keys[i]];
-            if (_id >= 0) audio_destroy_stream(_id);
+            if (_id >= 0) {
+                audio_destroy_stream(_id);
+            }
         }
     };
 
@@ -250,10 +257,10 @@ function AudioManager() constructor {
     /// root music/SFX and per-context playlists. Safe to call multiple times.
     /// @returns {Real} total number of audio files found
     static discover = function() {
-        __flush_cache();
+        cleanup();
 
         var _total = 0;
-        var _map;
+        var _map = {};
 
         // Ensure all base directories exist
         file_ensure_directory(AUDIO_DIR);
@@ -302,11 +309,11 @@ function AudioManager() constructor {
     /// @param {Real} _audio_id optional pre-resolved audio index (internal)
     /// @param {String} _context optional context name (internal)
     /// @returns {Real} audio instance index, or -1 on failure
-    static play_track = function(_name, _fade_ms = DEFAULT_CROSSFADE_MS, _audio_id = -1, _context = "") {    
+    static play_track = function(_name, _fade_ms = DEFAULT_CROSSFADE_MS, _audio_id = -1, _context = "") {
         if (_name == current_audio_name && current_audio_id >= 0 && audio_is_playing(current_audio_id)) {
             return current_audio_id;
         }
-    
+
         var _id = _audio_id;
         if (_id < 0) {
             _id = __get_music(_name);
@@ -314,7 +321,7 @@ function AudioManager() constructor {
                 return -1;
             }
         }
-    
+
         if (current_audio_id >= 0 && audio_is_playing(current_audio_id)) {
             audio_sound_gain(current_audio_id, 0, _fade_ms);
 
@@ -324,10 +331,10 @@ function AudioManager() constructor {
                     audio_stop_sound(_id_to_stop);
                 }
             });
-            
+
             call_later(_fade_ms / 1000, time_source_units_seconds, _callback);
         }
-    
+
         current_context = _context;
         current_audio_name = _name;
         current_audio_id = audio_play_sound(_id, 0, true, 0);
@@ -342,40 +349,43 @@ function AudioManager() constructor {
     /// @param {Real} _fade_ms crossfade duration in ms (default DEFAULT_CROSSFADE_MS)
     /// @returns {Real} audio instance index, or -1 on failure
     static play_playlist = function(_context, _fade_ms = DEFAULT_CROSSFADE_MS) {
-        var _track_names = struct_exists(__context_playlists, _context) ? __context_playlists[$ _context] : [];
+        if (!struct_exists(__context_queues, _context) || array_length(__context_queues[$ _context]) == 0) {
+            var _tracks = struct_exists(__context_playlists, _context) ? __context_playlists[$ _context] : [];
 
-        var _chosen = "";
-        var _audio_id = -1;
-
-        if (array_length(_track_names) > 0) {
-            var _last = struct_exists(__last_context_track, _context) ? __last_context_track[$ _context] : "";
-
-            if (_last != "" && array_length(_track_names) > 1) {
-                var _candidates = [];
-                for (var i = 0; i < array_length(_track_names); i++) {
-                    if (_track_names[i] != _last) {
-                        array_push(_candidates, _track_names[i]);
-                    }
+            if (array_length(_tracks) == 0) {
+                if (!struct_exists(CONTEXT_FALLBACK, _context)) {
+                    LOGGER.warning($"AudioManager: no tracks or fallbacks for context '{_context}'");
+                    return -1;
                 }
 
-                _chosen = _candidates[irandom(array_length(_candidates) - 1)];
-            } else {
-                _chosen = _track_names[irandom(array_length(_track_names) - 1)];
+                var _fallbacks = CONTEXT_FALLBACK[$ _context];
+                return play_track(_fallbacks[irandom(array_length(_fallbacks) - 1)], _fade_ms, -1, _context);
             }
 
-            __last_context_track[$ _context] = _chosen;
+            var _queue = array_create(array_length(_tracks));
+            array_copy(_queue, 0, _tracks, 0, array_length(_tracks));
 
-            _audio_id = __resolve_context_track(_context, _chosen);
+            for (var i = array_length(_queue) - 1; i > 0; i--) {
+                var j = irandom(i);
+                var _temp = _queue[i];
+                _queue[i] = _queue[j];
+                _queue[j] = _temp;
+            }
+
+            // Prevent immediate repeat when the queue refills:
+            // if the next-to-pop track matches the currently playing one, swap it out.
+            if (current_audio_name != "" && array_length(_queue) > 1 && _queue[array_length(_queue) - 1] == current_audio_name) {
+                var _swap = irandom(array_length(_queue) - 2);
+                var _temp = _queue[array_length(_queue) - 1];
+                _queue[array_length(_queue) - 1] = _queue[_swap];
+                _queue[_swap] = _temp;
+            }
+
+            __context_queues[$ _context] = _queue;
         }
 
-        if (_audio_id < 0 && struct_exists(CONTEXT_FALLBACK, _context)) {
-            var _fallbacks = CONTEXT_FALLBACK[$ _context];
-            _chosen = _fallbacks[irandom(array_length(_fallbacks) - 1)];
-        }
-
-        if (_chosen == "") {
-            _chosen = _context;
-        }
+        var _chosen = array_pop(__context_queues[$ _context]);
+        var _audio_id = __resolve_context_track(_context, _chosen);
 
         current_context = _context;
         return play_track(_chosen, _fade_ms, _audio_id, _context);
@@ -409,7 +419,7 @@ function AudioManager() constructor {
                     audio_stop_sound(_id_to_stop);
                 }
             });
-            
+
             call_later(_fade_ms / 1000, time_source_units_seconds, _callback);
         }
 
@@ -444,7 +454,7 @@ function AudioManager() constructor {
         __music_cache = {};
         __sfx_cache = {};
         __context_playlists = {};
-        __last_context_track = {};
+        __context_queues = {};
         current_audio_name = "";
         current_context = "";
         current_audio_id = -1;
