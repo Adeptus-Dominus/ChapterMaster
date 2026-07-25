@@ -24,13 +24,6 @@
 #macro STR_ANY_POWER_ARMOUR "Any Power Armour"
 #macro STR_ANY_TERMINATOR_ARMOUR "Any Terminator Armour"
 
-//slots align with enum eEQUIPMENT_SLOT ordering for cross compatability
-#macro UNIT_EQUIP_SLOTS [ "wep1", "wep2", "armour", "gear", "mobi", "all"]
-
-#macro UNIT_EQUIP_SLOTS_DISPLAY [ "First Weapon", "Second Weapon", "Armour", "Gear", "Back/Mobility", "ALL"]
-
-#macro EQUIPMENT_QUALITIES ["shoddy", "standard", "master_crafted", "artifact"]
-
 #macro SHIP_WEAPON_SLOTS 8
 
 #macro PATH_SAVE_FILES "Save Files/save{0}.json"

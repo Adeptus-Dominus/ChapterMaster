@@ -210,7 +210,7 @@ function SquadEquipmentSorting(squad, from_armoury = true, to_armoury = true) co
 
         ignore_units = [];
         for (var i = 0; i < 5; i++) {
-            current_load_slot = UNIT_EQUIP_SLOTS[i];
+            current_load_slot = global.unit_equip_slots[i];
             equip_loudouts_specific_equip_slot();
         }
     };

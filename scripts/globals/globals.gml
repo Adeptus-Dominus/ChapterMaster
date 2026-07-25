@@ -120,3 +120,31 @@ global.star_name_colors = [
     #AD5272, // why 12 is skipped in general, we will never know
     #80FF00, // Necrons
 ];
+
+// Equipment slot keys, aligned with enum eEQUIPMENT_SLOT ordering.
+global.unit_equip_slots = [
+    "wep1",
+    "wep2",
+    "armour",
+    "gear",
+    "mobi",
+    "all",
+];
+
+// Human-readable labels for equipment slots.
+global.unit_equip_slots_display = [
+    "First Weapon",
+    "Second Weapon",
+    "Armour",
+    "Gear",
+    "Back/Mobility",
+    "ALL",
+];
+
+// Ordered quality tiers for equipment.
+global.equipment_qualities = [
+    "shoddy",
+    "standard",
+    "master_crafted",
+    "artifact",
+];

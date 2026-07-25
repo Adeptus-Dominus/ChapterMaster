@@ -142,7 +142,7 @@ function reset_manage_unit_constants(unit) {
         unit_manage_constants.current_data = unit.uid;
         var _damage_res = unit.damage_resistance();
 
-        var _slot_defs = UNIT_EQUIP_SLOTS;
+        var _slot_defs = global.unit_equip_slots;
 
         for (var i = 0; i < 5; i++) {
             var _slot = _slot_defs[i];
