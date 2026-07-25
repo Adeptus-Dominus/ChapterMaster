@@ -3,7 +3,7 @@ function DataSlate(data = {}) constructor {
     title = "";
     sub_title = "";
     body_text = "";
-    inside_method = "";
+    inside_method = undefined;
     XX = 0;
     YY = 0;
     width = 0;
@@ -23,7 +23,7 @@ function DataSlate(data = {}) constructor {
 
     tooltip_drawing = [];
 
-    blend_col = 5998382;
+    blend_col = #5B872E;
     draw_top_piece = true;
     move_data_to_current_scope(data, true);
 
@@ -109,10 +109,6 @@ function DataSlate(data = {}) constructor {
             }
         }
 
-        /*if (draggable && scr_hit(XX+(width/2)-(60*decoration_scale,) YY-(60*decoration_scale) ,XX+(width/2)+(60*decoration_scale),YY)){
-			
-		}*/
-
         switch (style) {
             case "default":
                 draw_sprite_ext(spr_slate_featureless, 1, XX, YY, scale_x, scale_y, 0, c_white, 1);
@@ -138,7 +134,7 @@ function DataSlate(data = {}) constructor {
         if (static_line > 10) {
             draw_set_alpha(1 - ((static_line - 10) / 10));
         }
-        draw_set_color(5998382);
+        draw_set_color(blend_col);
         var line_move = YY + (70 * scale_y) + ((36 * scale_y) * static_line);
         draw_line(XX + (30 * scale_x), line_move, XX + (820 * scale_x), line_move);
         draw_set_alpha(1);
@@ -189,9 +185,9 @@ function DataSlate(data = {}) constructor {
         YY = yy;
         draw_sprite_part_ext(spr_data_slate, 1, 0, 0, 850, 69, XX, YY, scale_x, scale_y, c_white, 1);
         draw_sprite_part_ext(spr_data_slate, 1, 0, 69, 850, 683 * (middle_percent / 100), XX, YY + (69 * scale_y), scale_x, scale_y, c_white, 1);
-        draw_sprite_part_ext(spr_data_slate, 1, 0, 752, 850, 98, XX, YY + (69 + 683 * (middle_percent / 100)) * scale_y, scale_x, scale_y, c_white, 1);
+        draw_sprite_part_ext(spr_data_slate, 1, 0, 752, 850, 98, XX, YY + ((69 + (683 * (middle_percent / 100))) * scale_y), scale_x, scale_y, c_white, 1);
         width = 860 * scale_x;
-        height = (69 + (683 * (middle_percent / 100)) + 98) * scale_y;
+        height = (167 + (683 * (middle_percent / 100))) * scale_y;
         if (is_callable(inside_method)) {
             inside_method();
         }
@@ -247,7 +243,6 @@ function DataSlateMKTwo() constructor {
         draw_sprite_ext(spr_slate_2, 1, xx, yy, x_scale, y_scale, 0, c_white, 1);
         draw_sprite_ext(spr_slate_2, 0, xx, yy, x_scale, y_scale, 0, c_white, 1);
         draw_sprite_ext(spr_slate_2, 2, xx, yy, x_scale, y_scale, 0, c_white, 1);
-        //draw_sprite_ext(spr_slate_2, 0, xx, yy, 1, 1, 0, c_white, 1)
     };
 }
 
@@ -332,7 +327,7 @@ function SpeedingDot(XX, YY, limit) constructor {
         stack += 3;
     };
     current_y = function() {
-        return yy + stack;
+        return yyy + stack;
     };
 }
 
@@ -405,10 +400,6 @@ function ShutterButton() constructor {
     tooltip = "";
     text_color = c_red;
 
-    /*cover_sprite = spr_shutter_button_cover;
-	static make_custom_cover(){
-
-	}*/
     right_rack = new RackAndPinion();
     left_rack = new RackAndPinion("backward");
     background = new DataSlate();
@@ -436,9 +427,6 @@ function ShutterButton() constructor {
     background.style = "plain";
     style = "plain";
 
-    /*draw_with_dimensions = function(xx,yy, ,width, entered){
-		draw_shutter();
-	}*/
     inside_method = function() {
         var yy = YY;
         var xx = XX;
@@ -459,7 +447,7 @@ function ShutterButton() constructor {
         }
     };
 
-    draw_shutter = function(xx = -1, yy = -1, text, scale = 1, entered = "") {
+    draw_shutter = function(xx = -1, yy = -1, _text = "", _scale = 1, entered = false) {
         add_draw_return_values();
         if (xx != -1) {
             XX = xx;
@@ -468,21 +456,19 @@ function ShutterButton() constructor {
             YY = yy;
         }
         draw_set_alpha(1);
-        self.scale = scale;
-        self.text = text;
+        scale = _scale;
+        text = _text;
         draw_set_font(fnt_40k_12);
         draw_set_halign(fa_left);
         draw_set_color(c_gray);
         width = Width * scale;
         height = Height * scale;
-        if (text == "") {
-            entered = false;
+        if (!entered) {
+            entered = scr_hit(xx, yy, xx + width, yy + height);
         }
 
-        if (entered == "") {
-            entered = scr_hit(xx, yy, xx + width, yy + height);
-        } else {
-            entered = entered;
+        if (text == "") {
+            entered = false;
         }
 
         if (tooltip != "" && scr_hit(xx, yy, xx + width, yy + height)) {
