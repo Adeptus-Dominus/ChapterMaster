@@ -1,5 +1,3 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 global.stat_list = [
     "constitution",
     "strength",
@@ -90,6 +88,7 @@ function eval_trait_stat_data(trait_stat_data) {
 }
 
 /// @self Struct.TTRPG_stats
+/// @return {Struct}
 function unit_stat_growth(grow_stat = false) {
     var base_group_growth_sets = {
         astartes: [
@@ -263,7 +262,6 @@ function unit_stat_growth(grow_stat = false) {
         var _levels = int64(stat_point_exp_marker / 15);
         for (var _lvl = 0; _lvl < _levels; _lvl++) {
             stat_gains = undefined;
-            //var extra_stats_earned = d100_roll(false);
             var stat_gain_choice = random(100);
             for (var i = 0; i < array_length(chance_list) - 1; i++) {
                 if (stat_gain_choice >= chance_list[i] && stat_gain_choice < chance_list[i + 1]) {
@@ -297,7 +295,6 @@ function unit_stat_growth(grow_stat = false) {
             return undefined;
         }
     } else {
-        // LOGGER.debug($"{total_traited}")
         return stat_gain_chances;
     }
 }
