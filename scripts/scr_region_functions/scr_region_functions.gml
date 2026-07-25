@@ -73,10 +73,15 @@ function region_count_for_planet(_star, _planet) {
     var _large = _star.p_large[_planet];
     var _max_pop = _star.p_max_population[_planet];
 
-    if ((_type == "Dead") || (_type == "Daemon") || (_type == "Craftworld") || (_max_pop <= 0)) {
+    if ((_type == "Dead") || (_type == "Daemon") || (_type == "Craftworld")) {
         return 1;
     }
 
+    // The TYPE decides before any population reading: region generation can run in the
+    // load window before a star's population fields are restored (they read as zero),
+    // and the old max_pop gate here turned full Hive worlds into permanent capital-only
+    // layouts (the Sinophia II report). Unknown types still fall through to the
+    // size-based fallback below, where the zero gate remains.
     switch (_type) {
         case "Hive":
         case "Forge":
@@ -91,6 +96,10 @@ function region_count_for_planet(_star, _planet) {
             return 3; // capital + 2
         case "Lava":
             return 2; // capital + 1
+    }
+
+    if (_max_pop <= 0) {
+        return 1;
     }
 
     // Fallback by raw size proxy for any unlisted type.
@@ -315,6 +324,39 @@ function regions_ensure(_star, _planet) {
     var _existing = _star.p_regions[_planet];
     if (!is_array(_existing) || (array_length(_existing) == 0)) {
         return regions_generate(_star, _planet);
+    }
+    // Heal undersized layouts: worlds whose regions were generated while the count
+    // derivation misread them (the load-window zero-population artifact) stored a
+    // capital-only layout forever, since a non-empty array never regenerates. Append
+    // the missing outlying regions exactly as regions_generate builds them and
+    // re-spread the civil totals; everything already on the existing regions
+    // (footholds, garrisons, buildings, owners) is untouched, and layouts never
+    // shrink.
+    var _want = region_count_for_planet(_star, _planet);
+    var _old_len = array_length(_existing);
+    if (_old_len < _want) {
+        var _owner = _star.p_owner[_planet];
+        var _first = _star.p_first[_planet];
+        var _zone_names = region_names_ensure(_star, _planet, max(0, _want - 1));
+        for (var i = _old_len; i < _want; i++) {
+            var _region = new Region((i == 0) ? "Capital" : _zone_names[i - 1], (i == 0), _owner);
+            _region.first_owner = _first;
+            array_push(_existing, _region);
+        }
+        region_distribute_total(_existing, _star.p_population[_planet], 2, "population");
+        region_distribute_total(_existing, _star.p_max_population[_planet], 2, "max_population");
+        region_distribute_total(_existing, _star.p_pdf[_planet], 2, "pdf");
+        region_distribute_total(_existing, _star.p_guardsmen[_planet], 2, "guardsmen");
+        var _force_level = region_dominant_force_level(_star, _planet);
+        var _fortified = _star.p_fortified[_planet];
+        for (var i = _old_len; i < _want; i++) {
+            _existing[i].force_level = _force_level;
+            _existing[i].fortification = max(0, _fortified - 1);
+            _existing[i].defences = 0;
+        }
+        regions_seed_force_weights(_existing);
+        regions_build_adjacency(_existing);
+        LOGGER.info($"REGIONS_HEAL star={real(_star)} planet={_planet} regions {_old_len} -> {_want}");
     }
     return _existing;
 }
