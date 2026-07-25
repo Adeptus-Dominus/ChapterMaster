@@ -1,5 +1,3 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 /// @self Asset.GMObject.obj_controller
 function scr_fleet_advisor() {
     //TODO swap this xx yy stuff out for a surface
@@ -7,41 +5,46 @@ function scr_fleet_advisor() {
     var yy = camera_get_view_y(view_camera[0]);
     draw_sprite(spr_rock_bg, 0, xx, yy);
     draw_set_alpha(0.75);
-    draw_set_color(0);
-    draw_rectangle(xx + 326 + 16, yy + 66, xx + 887 + 16, yy + 818, 0);
+    draw_set_color(c_black);
+    draw_rectangle(xx + 342, yy + 66, xx + 903, yy + 818, 0);
     draw_set_alpha(1);
     draw_set_color(c_gray);
-    draw_rectangle(xx + 326 + 16, yy + 66, xx + 887 + 16, yy + 818, 1);
-    draw_line(xx + 326 + 16, yy + 426, xx + 887 + 16, yy + 426);
+    draw_rectangle(xx + 342, yy + 66, xx + 903, yy + 818, 1);
+    draw_line(xx + 342, yy + 426, xx + 903, yy + 426);
     draw_set_alpha(0.75);
-    draw_set_color(0);
+    draw_set_color(c_black);
     draw_rectangle(xx + 945, yy + 66, xx + 1580, yy + 818, 0);
     draw_set_alpha(1);
     draw_set_color(c_gray);
     draw_rectangle(xx + 945, yy + 66, xx + 1580, yy + 818, 1);
 
+    var ini = instance_find(obj_ini, 0);
+    if (ini == noone) {
+        return;
+    }
+    var cn = id;
+    
     if (menu_adept == 0) {
-        if (struct_exists(obj_ini.custom_advisors, "admiral")) {
-            scr_image("advisor/splash", obj_ini.custom_advisors.admiral, xx + 16, yy + 43, 310, 828);
+        if (struct_exists(ini.custom_advisors, "admiral")) {
+            scr_image("advisor/splash", ini.custom_advisors.admiral, xx + 16, yy + 43, 310, 828);
         } else {
             scr_image("advisor/splash", 7, xx + 16, yy + 43, 310, 828);
-        } // draw_sprite(spr_advisors,6,xx+16,yy+43);
+        }
         draw_set_halign(fa_left);
         draw_set_color(c_gray);
         draw_set_font(fnt_40k_30b);
-        draw_text_transformed(xx + 336 + 16, yy + 66, "Flagship Bridge", 1, 1, 0);
-        draw_text_transformed(xx + 336 + 16, yy + 100, $"Master of the Fleet {obj_ini.lord_admiral_name}", 0.6, 0.6, 0);
+        draw_text_transformed(xx + 352, yy + 66, "Flagship Bridge", 1, 1, 0);
+        draw_text_transformed(xx + 352, yy + 100, $"Master of the Fleet {ini.lord_admiral_name}", 0.6, 0.6, 0);
         draw_set_font(fnt_40k_14);
         blurp = "Greetings, Chapter Master.\n\nYou requested a report?  Our fleet contains ";
     }
     if (menu_adept == 1) {
         scr_image("advisor/splash", 1, xx + 16, yy + 43, 310, 828);
-        // draw_sprite(spr_advisors,0,xx+16,yy+43);
         draw_set_halign(fa_left);
         draw_set_color(c_gray);
         draw_set_font(fnt_40k_30b);
-        draw_text_transformed(xx + 336 + 16, yy + 40, "Flagship Bridge", 1, 1, 0);
-        draw_text_transformed(xx + 336 + 16, yy + 100, $"Adept {obj_controller.adept_name}", 0.6, 0.6, 0);
+        draw_text_transformed(xx + 352, yy + 40, "Flagship Bridge", 1, 1, 0);
+        draw_text_transformed(xx + 352, yy + 100, $"Adept {cn.adept_name}", 0.6, 0.6, 0);
         draw_set_font(fnt_40k_14);
         blurp = "Your fleet contains ";
     }
@@ -74,7 +77,7 @@ function scr_fleet_advisor() {
         blurp = string_replace(blurp, "We", "You");
     }
 
-    draw_text_ext(xx + 336 + 16, yy + 130, blurp, -1, 536);
+    draw_text_ext(xx + 352, yy + 130, blurp, -1, 536);
 
     draw_set_font(fnt_40k_30b);
     draw_set_halign(fa_center);
@@ -82,8 +85,6 @@ function scr_fleet_advisor() {
 
     draw_set_font(fnt_40k_14);
     draw_set_halign(fa_left);
-
-    var cn = obj_controller;
 
     // TODO: Probably a good idea to turn this whole interactive list/sheet generating logic into a constructor, that can be reused on many screens.
     // I have no passion for this atm.
@@ -154,10 +155,10 @@ function scr_fleet_advisor() {
         var _row_height = 20;
         var _row_gap = 2;
         for (var i = ship_current; i < ship_current + 34; i++) {
-            if (i >= array_length(obj_ini.ship)) {
+            if (i >= array_length(ini.ship)) {
                 continue;
             }
-            if (obj_ini.ship[i] != "") {
+            if (ini.ship[i] != "") {
                 var _row_y = _columns[$ "name"].y1 + _row_height + (i * (_row_height + _row_gap));
                 draw_rectangle(xx + 950, _row_y, xx + 1546, _row_y + _row_height, 1);
 
@@ -178,11 +179,11 @@ function scr_fleet_advisor() {
                 }
 
                 with (_columns) {
-                    name.contents = string_truncate(obj_ini.ship[i], _columns.name.w - 6);
-                    class.contents = obj_ini.ship_class[i];
-                    location.contents = obj_ini.ship_location[i];
-                    hp.contents = $"{round(obj_ini.ship_hp[i] / obj_ini.ship_maxhp[i] * 100)}%";
-                    carrying.contents = $"{obj_ini.ship_carrying[i]}/{obj_ini.ship_capacity[i]}";
+                    name.contents = string_truncate(ini.ship[i], _columns.name.w - 6);
+                    class.contents = ini.ship_class[i];
+                    location.contents = ini.ship_location[i];
+                    hp.contents = $"{round(ini.ship_hp[i] / ini.ship_maxhp[i] * 100)}%";
+                    carrying.contents = $"{ini.ship_carrying[i]}/{ini.ship_capacity[i]}";
                 }
 
                 for (var g = 0; g < array_length(_columns_array); g++) {
@@ -204,33 +205,33 @@ function scr_fleet_advisor() {
                 }
 
                 if (scr_hit(xx + 950, _row_y, xx + 1546, _row_y + _row_height)) {
-                    if (cn.temp[101] != obj_ini.ship[i]) {
-                        cn.temp[101] = obj_ini.ship[i];
-                        cn.temp[102] = obj_ini.ship_class[i];
+                    if (cn.temp[101] != ini.ship[i]) {
+                        cn.temp[101] = ini.ship[i];
+                        cn.temp[102] = ini.ship_class[i];
 
-                        cn.temp[103] = string(obj_ini.ship_hp[i]);
-                        cn.temp[104] = string(obj_ini.ship_maxhp[i]);
-                        cn.temp[105] = string(obj_ini.ship_shields[i] * 100);
+                        cn.temp[103] = string(ini.ship_hp[i]);
+                        cn.temp[104] = string(ini.ship_maxhp[i]);
+                        cn.temp[105] = string(ini.ship_shields[i] * 100);
 
-                        cn.temp[106] = string(obj_ini.ship_speed[i]);
+                        cn.temp[106] = string(ini.ship_speed[i]);
 
-                        cn.temp[107] = string(obj_ini.ship_front_armour[i]);
-                        cn.temp[108] = string(obj_ini.ship_other_armour[i]);
+                        cn.temp[107] = string(ini.ship_front_armour[i]);
+                        cn.temp[108] = string(ini.ship_other_armour[i]);
 
-                        cn.temp[109] = string(obj_ini.ship_turrets[i]);
+                        cn.temp[109] = string(ini.ship_turrets[i]);
 
-                        var facing_length = array_length(obj_ini.ship_wep_facing[i]);
-                        var wep_length = array_length(obj_ini.ship_wep[i]);
+                        var facing_length = array_length(ini.ship_wep_facing[i]);
+                        var wep_length = array_length(ini.ship_wep[i]);
                         var max_weapons = min(facing_length, wep_length, 5);
 
                         for (var s = 1; s < max_weapons; s++) {
-                            cn.temp[110 + ((s - 1) * 2)] = obj_ini.ship_wep[i][s];
-                            cn.temp[110 + ((s - 1) * 2) + 1] = obj_ini.ship_wep_facing[i][s];
+                            cn.temp[110 + ((s - 1) * 2)] = ini.ship_wep[i][s];
+                            cn.temp[110 + ((s - 1) * 2) + 1] = ini.ship_wep_facing[i][s];
                         }
 
-                        cn.temp[118] = $"{obj_ini.ship_carrying[i]}/{obj_ini.ship_capacity[i]}";
+                        cn.temp[118] = $"{ini.ship_carrying[i]}/{ini.ship_capacity[i]}";
                         cn.temp[119] = "";
-                        if (obj_ini.ship_carrying[i] > 0) {
+                        if (ini.ship_carrying[i] > 0) {
                             cn.temp[119] = scr_ship_occupants(i);
                         }
                     }
@@ -239,9 +240,9 @@ function scr_fleet_advisor() {
                         with (obj_p_fleet) {
                             var _fleet_ships = fleet_full_ship_array();
                             if (array_contains(_fleet_ships, i)) {
-                                obj_controller.x = x;
-                                obj_controller.y = y;
-                                obj_controller.menu = 0;
+                                cn.x = x;
+                                cn.y = y;
+                                cn.menu = 0;
                                 with (obj_fleet_show) {
                                     instance_destroy();
                                 }
@@ -292,17 +293,16 @@ function scr_fleet_advisor() {
                 draw_text(xx + 383, yy + 705, $"-{cn.temp[110]} ({cn.temp[111]})");
             }
             if (cn.temp[112] != "") {
-                draw_text(xx + 383, yy + 725, "-" + cn.temp[112] + " (" + string(cn.temp[113]) + ")");
+                draw_text(xx + 383, yy + 725, $"-{cn.temp[112]} ({cn.temp[113]})");
             }
             if (cn.temp[114] != "") {
-                draw_text(xx + 383, yy + 745, "-" + cn.temp[114] + " (" + string(cn.temp[115]) + ")");
+                draw_text(xx + 383, yy + 745, $"-{cn.temp[114]} ({cn.temp[115]})");
             }
             if (cn.temp[116] != "") {
-                draw_text(xx + 383, yy + 765, "-" + cn.temp[116] + " (" + string(cn.temp[117]) + ")");
+                draw_text(xx + 383, yy + 765, $"-{cn.temp[116]} ({cn.temp[117]})");
             }
 
             draw_set_font(fnt_40k_12);
-            // draw_text_ext(xx + 352, 775, $"Carrying ({cn.temp[118]}): {cn.temp[119]}", -1, 542);
             draw_set_font(fnt_40k_14);
         }
     }
