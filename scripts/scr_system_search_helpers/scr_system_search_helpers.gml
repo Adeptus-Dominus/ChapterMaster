@@ -1,6 +1,3 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
-
 function stars_with_help_requests() {
     var _stars = [];
 
@@ -227,8 +224,9 @@ function find_star_by_name(search_name) {
 /// @description
 /// Returns an array of all planet indices in a random (unordered) order.
 ///
-/// @returns {Array}
+/// @returns {Array<Real>}
 /// A shuffled array containing all planet indices from 1 to `planets`.
+/// @self Asset.GMObject.obj_star
 function shuffled_planet_array() {
     var _planets = [];
     for (var i = 1; i <= planets; i++) {
@@ -238,34 +236,15 @@ function shuffled_planet_array() {
     return _planets;
 }
 
-/// @function distance_removed_star(origional_x, origional_y, [star_offset=choose(2,3)], [disclude_hulk=true], [disclude_elder=true], [disclude_deads=true], [warp_concious=true])
-/// @description
-/// Finds a star that is a certain distance away from the given coordinates, skipping over certain disallowed star types.
-///
-/// @param {Real} origional_x
-/// The x-coordinate to start searching from.
-///
-/// @param {Real} origional_y
-/// The y-coordinate to start searching from.
-///
-/// @param {Real} [star_offset=choose(2,3)]
-/// The number of nearest stars to skip before returning a result.
-///
-/// @param {Boolean} [disclude_hulk=true]
-/// Placeholder flag to potentially exclude hulk-type stars (not yet used).
-///
-/// @param {Boolean} [disclude_elder=true]
-/// If `true`, excludes stars owned by the `eFACTION.ELDAR` faction.
-///
-/// @param {Boolean} [disclude_deads=true]
-/// If `true`, excludes any stars detected as dead via `is_dead_star()`.
-///
-/// @param {Boolean} [warp_concious=true]
-/// Placeholder flag for future warp-lane aware selection logic (currently unused).
-///
-/// @returns {Instance}
-/// Returns the `obj_star` instance found after skipping the specified number of nearby stars,
-/// ignoring any that are disqualified by the exclusion conditions.
+/// @description Finds a star that is a certain distance away from the given coordinates, skipping over certain disallowed star types.
+/// @param {Real} origional_x The x-coordinate to start searching from.
+/// @param {Real} origional_y The y-coordinate to start searching from.
+/// @param {Real} star_offset The number of nearest stars to skip before returning a result.
+/// @param {Bool} disclude_hulk Placeholder flag to potentially exclude hulk-type stars (not yet used).
+/// @param {Bool} disclude_elder If `true`, excludes stars owned by the `eFACTION.ELDAR` faction.
+/// @param {Bool} disclude_deads If `true`, excludes any stars detected as dead via `is_dead_star()`.
+/// @param {Bool} warp_concious Placeholder flag for future warp-lane aware selection logic (currently unused).
+/// @returns {Instance} Returns the `obj_star` instance found after skipping the specified number of nearby stars, ignoring any that are disqualified by the exclusion conditions.
 function distance_removed_star(origional_x, origional_y, star_offset = choose(2, 3), disclude_hulk = true, disclude_elder = true, disclude_deads = true, warp_concious = true) {
     var from = instance_nearest(origional_x, origional_y, obj_star);
     var _deactivated = [];
@@ -293,7 +272,6 @@ function distance_removed_star(origional_x, origional_y, star_offset = choose(2,
             }
         }
     }
-    //from=instance_nearest(origional_x,origional_y,obj_star);
     for (var i = 0; i < array_length(_deactivated); i++) {
         instance_activate_object(_deactivated[i]);
     }
@@ -311,9 +289,9 @@ function nearest_star_proper(xx, yy) {
         cur_star = instance_nearest(xx, yy, obj_star);
         if (!cur_star.craftworld && !cur_star.space_hulk) {
             instance_activate_object(obj_star);
-            return cur_star.id;
+            return cur_star;
         }
-        instance_deactivate_object(cur_star.id);
+        instance_deactivate_object(cur_star);
     }
     return noone;
 }
@@ -333,17 +311,17 @@ function nearest_star_with_ownership(xx, yy, ownership, start_star = noone, igno
             break;
         }
         if (start_star != noone) {
-            if (start_star.id == cur_star.id || (ignore_dead && is_dead_star(cur_star))) {
-                array_push(_deactivated, cur_star.id);
-                instance_deactivate_object(cur_star.id);
+            if (start_star == cur_star || (ignore_dead && is_dead_star(cur_star))) {
+                array_push(_deactivated, cur_star);
+                instance_deactivate_object(cur_star);
                 continue;
             }
         }
         if (array_contains(ownership, cur_star.owner)) {
-            nearest = cur_star.id;
+            nearest = cur_star;
         } else {
-            array_push(_deactivated, cur_star.id);
-            instance_deactivate_object(cur_star.id);
+            array_push(_deactivated, cur_star);
+            instance_deactivate_object(cur_star);
         }
     }
     for (i = 0; i < array_length(_deactivated); i++) {
@@ -352,10 +330,10 @@ function nearest_star_with_ownership(xx, yy, ownership, start_star = noone, igno
     return nearest;
 }
 
-function find_population_doners(doner_to = 0) {
+function find_population_doners(doner_to = noone) {
     var pop_doner_options = [];
     with (obj_star) {
-        if (obj_star.id == doner_to) {
+        if (id == doner_to) {
             continue;
         }
         for (var r = 1; r <= planets; r++) {
@@ -416,28 +394,28 @@ function scr_create_space_hulk(xx, yy) {
 }
 
 function scr_faction_string_name(faction) {
-    name = "";
+    var _name = "";
     switch (faction) {
         case eFACTION.IMPERIUM:
-            name = "Imperium";
+            _name = "Imperium";
             break;
         case eFACTION.MECHANICUS:
-            name = "Mechanicus";
+            _name = "Mechanicus";
             break;
         case eFACTION.INQUISITION:
-            name = "Inquisition";
+            _name = "Inquisition";
             break;
         case eFACTION.ECCLESIARCHY:
-            name = "Ecclesiarchy";
+            _name = "Ecclesiarchy";
             break;
         case eFACTION.ELDAR:
-            name = "Eldar";
+            _name = "Eldar";
             break;
         case eFACTION.TAU:
-            name = "Tau";
+            _name = "Tau";
             break;
     }
-    return name;
+    return _name;
 }
 
 function meet_system_governors(system) {
