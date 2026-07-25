@@ -1,6 +1,3 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
-
 function new_ork_fleet(xx, yy) {
     fleet = create_enemy_fleet(xx, yy, eFACTION.ORK);
     fleet.sprite_index = spr_fleet_ork;
@@ -10,6 +7,7 @@ function new_ork_fleet(xx, yy) {
     return fleet;
 }
 
+/// @self Asset.GMObject.obj_star
 function orks_end_turn_growth() {
     for (i = 1; i <= planets; i++) {
         var _pdata = get_planet_data(i);
@@ -49,22 +47,22 @@ function ork_fleet_move() {
     exit;
 }
 
+/// @self Asset.GMObject.obj_star
 function ork_fleet_arrive_target() {
     instance_activate_object(obj_en_fleet);
     var _ork_fleet = scr_orbiting_fleet(eFACTION.ORK);
     if (_ork_fleet == noone) {
         return;
     }
-    var aler = 0;
 
     var _imperial_ship = scr_orbiting_fleet([eFACTION.IMPERIUM, eFACTION.MECHANICUS]);
     if (_imperial_ship == noone && planets > 0 && !has_orbiting_player_fleet()) {
-        var _allow_landing = true, ork_attack_planet = 0, l = 0;
+        var ork_attack_planet = 0;
         var _planets = shuffled_planet_array();
         for (var i = 0; i < array_length(_planets); i++) {
-            l = _planets[i];
-            if ((ork_attack_planet == 0) && (p_tyranids[l] > 0)) {
-                ork_attack_planet = l;
+            var _planet = _planets[i];
+            if ((ork_attack_planet == 0) && (p_tyranids[_planet] > 0)) {
+                ork_attack_planet = _planet;
                 break;
             }
         }
@@ -77,21 +75,22 @@ function ork_fleet_arrive_target() {
             if (p_tyranids[ork_attack_planet] <= 0) {
                 if (planet_feature_bool(p_feature[ork_attack_planet], eP_FEATURES.GENE_STEALER_CULT)) {
                     _pdata.delete_feature(eP_FEATURES.GENE_STEALER_CULT);
-                    adjust_influence(eFACTION.TYRANIDS, -25, ork_attack_planet, self);
-                    var nearest_imperial = nearest_star_with_ownership(x, y, eFACTION.IMPERIUM, self.id);
+                    adjust_influence(eFACTION.TYRANIDS, -25, ork_attack_planet, id);
+                    var nearest_imperial = nearest_star_with_ownership(x, y, eFACTION.IMPERIUM, id);
                     if (nearest_imperial != noone) {
                         var targ_planet = scr_get_planet_with_owner(nearest_imperial, eFACTION.IMPERIUM);
                         if (targ_planet == -1) {
                             targ_planet = irandom_range(1, nearest_imperial.planets);
                         }
-                        _pdata.send_colony_ship(nearest_imperial.id, targ_planet, "refugee");
+                        _pdata.send_colony_ship(nearest_imperial, targ_planet, "refugee");
                     }
                 }
             }
         }
 
-        _allow_landing = !is_dead_star();
+        var _allow_landing = !is_dead_star();
         var _fleet_persists = false;
+        var _alert_triggered = false;
         if (_allow_landing) {
             for (var i = 0; i < planets; i++) {
                 var _planet = _planets[i];
@@ -114,14 +113,14 @@ function ork_fleet_arrive_target() {
                                 instance_destroy();
                             }
                         }
-                        aler = 1;
+                        _alert_triggered = true;
                         break;
                     }
                 }
             }
         }
 
-        if (aler > 0) {
+        if (_alert_triggered) {
             if (!_fleet_persists) {
                 scr_alert("green", "owner", $"Ork ships have crashed across the {name} system.", x, y);
             } else {
@@ -200,7 +199,7 @@ function init_ork_waagh(override = false) {
         }
     }
 
-    var _waaagh_star = noone;
+    var _waaagh_star = [];
     var _waaagh_star_found = false;
     if (array_length(ork_waagh_activity)) {
         _waaagh_star = array_random_element(ork_waagh_activity);
@@ -210,7 +209,7 @@ function init_ork_waagh(override = false) {
         _waaagh_star_found = true;
     }
 
-    var _pdata = noone;
+    var _pdata = undefined;
     if (_waaagh_star_found) {
         _pdata = _waaagh_star[0].get_planet_data(_waaagh_star[1]);
         var _boss = _pdata.add_feature(eP_FEATURES.ORKWARBOSS);
@@ -243,11 +242,7 @@ function init_ork_waagh(override = false) {
 function out_of_system_warboss(overide = false) {
     with (obj_controller) {
         // More Testing
-        // peace_check=2;
-
-        var did_so = false;
-
-        if ((did_so == false) && (faction_defeated[7] == 1 || known[eFACTION.ORK] == 0 || overide)) {
+        if ((faction_defeated[7] == 1 || known[eFACTION.ORK] == 0 || overide)) {
             known[eFACTION.ORK] = 0;
             var _warboss = new NewPlanetFeature(eP_FEATURES.ORKWARBOSS);
             if (faction_defeated[7] == 1) {
@@ -273,7 +268,8 @@ function out_of_system_warboss(overide = false) {
             faction_gender[7] = gnew;
             starf = 0;
 
-            var x3 = 0, y3 = 0, fnum = 0;
+            var x3 = 0;
+            var y3 = 0;
 
             var side = choose("left", "right", "up", "down");
             if (side == "left") {
@@ -303,12 +299,10 @@ function out_of_system_warboss(overide = false) {
                 }
             }
 
-            repeat (8) {
-                fnum += 1;
-                var x4, y4, dire;
-                x4 = 0;
-                y4 = 0;
-                dire = 0;
+            for (var fnum = 1; fnum <= 8; fnum++) {
+                var x4 = 0;
+                var y4 = 0;
+                var dire = 0;
                 if (fnum == 1) {
                     dire = point_direction(x4, y4, room_width / 2, room_height / 2);
                     x4 = x3 + lengthdir_x(60, dire);
@@ -333,7 +327,7 @@ function out_of_system_warboss(overide = false) {
                     capital_number = 4;
                     set_fleet_movement();
                 }
-                instance_deactivate_object(tplan.id);
+                instance_deactivate_object(tplan);
             }
 
             instance_activate_object(obj_star);
