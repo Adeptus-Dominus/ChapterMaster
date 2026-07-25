@@ -1,5 +1,3 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function UnitQuickFindPanel() constructor {
     main_panel = new DataSlate();
     garrison_log = {};
@@ -75,15 +73,13 @@ function UnitQuickFindPanel() constructor {
     };
 
     static evaluate_unit_for_garrison_log = function(unit) {
-        var unit_location, group;
-
         if (unit.name() == "" || !unit.controllable()) {
             return;
         }
-        unit_location = unit.marine_location();
+        var unit_location = unit.marine_location();
         if (unit_location[0] == eLOCATION_TYPES.PLANET && unit_location[2] != "") {
             add_unit_to_garrison_log(unit, unit_location);
-            group = garrison_log[$ unit_location[2]];
+            var group = garrison_log[$ unit_location[2]];
             if (unit.IsSpecialist(SPECIALISTS_APOTHECARIES)) {
                 group.healers++;
             } else if (unit.IsSpecialist(SPECIALISTS_TECHS)) {
@@ -131,7 +127,6 @@ function UnitQuickFindPanel() constructor {
             for (var i = 0; i < array_length(obj_ini.ship_carrying); i++) {
                 obj_ini.ship_carrying[i] = 0;
             }
-            var _unit;
             delete garrison_log;
             garrison_log = {};
             obj_controller.specialist_point_handler.calculate_research_points(false);
@@ -139,7 +134,7 @@ function UnitQuickFindPanel() constructor {
             for (var co = 0; co <= obj_ini.companies; co++) {
                 for (var u = 0; u < array_length(obj_ini.TTRPG[co]); u++) {
                     /// @type {Struct.TTRPG_stats}
-                    _unit = fetch_unit([co, u]);
+                    var _unit = fetch_unit([co, u]);
                     evaluate_unit_for_garrison_log(_unit);
                 }
                 try {
@@ -232,7 +227,7 @@ function UnitQuickFindPanel() constructor {
         if (hovered_fleet_data != undefined) {
             var _fpd = hovered_fleet_data;
             var _sx = main_panel.XX + main_panel.width - 10;
-            var _sy = yy + 90 + 18;
+            var _sy = yy + 108;
             detail_slate.draw(_sx, _sy, 1.5, 1.5);
 
             draw_set_font(fnt_40k_12i);
@@ -383,15 +378,15 @@ function UnitQuickFindPanel() constructor {
                 var loc = hover_item.location;
                 hover_entered = scr_hit(loc[0], loc[1], loc[2], loc[3]);
             }
-            while (i < array_length(system_names) && (yy + 90 + (20 * i) + 12 + 20) < main_panel.YY + yy + main_panel.height) {
+            while (i < array_length(system_names) && (yy + 122 + (20 * i)) < main_panel.YY + yy + main_panel.height) {
                 var _sys_name = system_names[i];
                 system_data = garrison_log[$ _sys_name];
                 registered_hover = false;
-                var _sys_item_y = yy + 90 + (20 * i) + 18;
+                var _sys_item_y = yy + 108 + (20 * i);
                 if (scr_hit(xx + 10, yy + 90 + (20 * i), xx + main_panel.width, _sys_item_y)) {
                     if (!hover_entered) {
                         draw_set_color(c_gray);
-                        draw_rectangle(xx + 10 + 20, yy + 90 + (20 * i) - 2, xx + main_panel.width - 20, yy + 90 + (20 * i) + 18, 0);
+                        draw_rectangle(xx + 30, yy + 88 + (20 * i), xx + main_panel.width - 20, yy + 108 + (20 * i), 0);
                         draw_set_color(c_white);
                         if (current_hover > -1 && current_hover != i) {
                             registered_hover = false;
@@ -402,7 +397,7 @@ function UnitQuickFindPanel() constructor {
                         }
                     } else {
                         if (hover_item.root_item == i) {
-                            draw_rectangle(xx + 10 + 20, yy + 90 + (20 * i) - 2, xx + main_panel.width - 20, yy + 90 + (20 * i) + 18, 0);
+                            draw_rectangle(xx + 30, yy + 88 + (20 * i), xx + main_panel.width - 20, yy + 108 + (20 * i), 0);
                         }
                     }
                     detail_slate.draw(xx + main_panel.width - 10, _sys_item_y - 20, 1.5, 1.5);
@@ -437,7 +432,7 @@ function UnitQuickFindPanel() constructor {
                 draw_text(xx + 310, yy + 90 + (20 * i), system_data.techies);
 
                 if (!hover_entered) {
-                    if (point_and_click([xx + 10, yy + 90 + (20 * i) - 2, xx + main_panel.width, yy + 90 + (20 * i) + 18])) {
+                    if (point_and_click([xx + 10, yy + 88 + (20 * i), xx + main_panel.width, yy + 108 + (20 * i)])) {
                         var star = find_star_by_name(system_names[i]);
                         if (star != noone) {
                             travel_target = [
@@ -482,7 +477,7 @@ function UnitQuickFindPanel() constructor {
     static draw = function() {
         try {
             add_draw_return_values();
-            if (obj_controller.menu == eMENU.DEFAULT && obj_controller.zoomed == 0) {
+            if (obj_controller.menu == eMENU.DEFAULT && !obj_controller.zoomed) {
                 if (!instances_exist_any([obj_fleet_select, obj_star_select])) {
                     var x_draw = 0;
                     var lower_draw = main_panel.height + 110;
@@ -695,7 +690,7 @@ function jail_selection() {
 function load_selection() {
     if (man_size > 0 && !location_out_of_player_control(selecting_location)) {
         scr_company_load(selecting_location);
-        menu = 30;
+        menu = eMENU.GAME_HELP;
         top = 1;
     }
 }
@@ -704,7 +699,6 @@ function load_selection() {
 function unload_selection() {
     if (man_size > 0 && obj_controller.selecting_ship >= 0 && !instance_exists(obj_star_select) && !location_out_of_player_control(selecting_location) && selecting_location != "Warp") {
         cooldown = 8000;
-        var boba = 0;
         var unload_star = find_star_by_name(selecting_location);
         if (unload_star != noone) {
             if (unload_star.space_hulk != 1) {
@@ -718,7 +712,7 @@ function unload_selection() {
                         }
                     }
                 }
-                boba = instance_create(unload_star.x, unload_star.y, obj_star_select);
+                var boba = instance_create(unload_star.x, unload_star.y, obj_star_select);
                 boba.loading = 1;
                 // selecting location is the ship right now; get it's orbit location
                 boba.loading_name = selecting_location;
@@ -974,6 +968,6 @@ function HelpfulPlaces() constructor {
     static draw = function() {
         x1 = main_panel.XX;
         y1 = main_panel.YY;
-        main_panel.draw(,, 0.35, 0.6);
+        main_panel.draw(x1, y1, 0.35, 0.6);
     };
 }
