@@ -330,14 +330,14 @@ function ArtifactStruct(Index) constructor {
     static is_identifiable = function() {
         var identifiable = false;
         if (loc() == obj_ini.home_name) {
-            identifiable = 1;
+            identifiable = true;
         }
         if (sid() >= 500) {
             if (obj_ini.ship_location[ship_id()] == obj_ini.home_name) {
-                identifiable = 1;
+                identifiable = true;
             }
             if (obj_ini.ship_class[ship_id()] == "Battle Barge") {
-                identifiable = 1;
+                identifiable = true;
             }
         }
         return identifiable;
