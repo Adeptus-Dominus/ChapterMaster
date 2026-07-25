@@ -600,12 +600,137 @@ function br_side_strength(_star, _planet, _side) {
 function br_apply_alliance_casualties(_star, _planet, _side, _surv) {
     _surv = clamp(_surv, 0, 1);
     if (_side == "IMP") {
+        var _pdf_before = _star.p_pdf[_planet];
         _star.p_pdf[_planet] = floor(_star.p_pdf[_planet] * _surv);
         _star.p_guardsmen[_planet] = floor(_star.p_guardsmen[_planet] * _surv);
+        // Manpower depth: the engaged militia is a slice of the world's levy; the
+        // reserve behind it replaces part of every round's losses until it runs dry.
+        br_pdf_reserve_refill(_star, _planet, _pdf_before - _star.p_pdf[_planet]);
     }
     var _facs = br_side_factions(_side);
     for (var i = 0; i < array_length(_facs); i++) {
         br_apply_side_casualties(_star, _planet, _facs[i], false, _surv); // pop vs level handled within
+        // Fleet-fed war: a faction with its fleet still in orbit feeds the ground
+        // fight from the reserves aboard; a stranded force fights with what it has.
+        br_invasion_sustain(_star, _planet, _facs[i], _surv);
+    }
+}
+
+// ===== Manpower depth: the "Losing is fun" war economy =============================
+// The engaged force on a world is a SLICE; the mass behind it is a reserve pool.
+// Defenders: p_pdf_reserve per planet, seeded once from the garrison's deterrent tier
+// (br_pdf_tier), so a tier-6 fortress keeps roughly 21x its engaged force in depth
+// and takes several full invasions to drain. Attackers: invasion_reserve aboard the
+// fleet in orbit, sized by hulls and master with heavy variance; Tyranid bioships
+// REGENERATE their reserve while they hold orbit, so the only respite is another
+// fleet coming in and killing them. No fleet, no feeding: a stranded invasion fights
+// with what it landed (see the Tau spread gate in scr_enemy_ai_c for the same rule
+// on expansion).
+
+/// @function br_pdf_tier
+/// @description Deterrent tier from the PDF's force points (lore anchors in the macro
+///              comment: tier 1 ~ 2,000 souls ... tier 6 ~ 50,000,000).
+function br_pdf_tier(_pdf) {
+    if (_pdf >= 12000) { return 6; }
+    if (_pdf >= 8000) { return 5; }
+    if (_pdf >= 5000) { return 4; }
+    if (_pdf >= 3000) { return 3; }
+    if (_pdf >= 1500) { return 2; }
+    if (_pdf >= 500) { return 1; }
+    return 0;
+}
+
+/// @function br_pdf_reserve_ensure
+/// @description Seed the planet's PDF reserve once, from the FIRST observed garrison.
+function br_pdf_reserve_ensure(_star, _planet) {
+    if (!variable_instance_exists(_star, "p_pdf_reserve")) {
+        _star.p_pdf_reserve = array_create(9, -1);
+    }
+    if (_star.p_pdf_reserve[_planet] < 0) {
+        var _pdf = _star.p_pdf[_planet];
+        var _tier = br_pdf_tier(_pdf);
+        _star.p_pdf_reserve[_planet] = (_pdf > 0) ? floor(_pdf * (PDF_RESERVE_DEPTH_BASE + (_tier * PDF_RESERVE_DEPTH_PER_TIER))) : 0;
+    }
+}
+
+/// @function br_pdf_reserve_refill
+/// @description Replace part of a round's PDF losses from the reserve; announce when
+///              the reserve is finally spent.
+function br_pdf_reserve_refill(_star, _planet, _losses) {
+    br_pdf_reserve_ensure(_star, _planet);
+    if ((_losses <= 0) || (_star.p_pdf_reserve[_planet] <= 0)) {
+        return;
+    }
+    var _refill = min(_star.p_pdf_reserve[_planet], floor(_losses * PDF_REFILL_RATE));
+    if (_refill <= 0) {
+        return;
+    }
+    _star.p_pdf[_planet] += _refill;
+    _star.p_pdf_reserve[_planet] -= _refill;
+    if (_star.p_pdf_reserve[_planet] <= 0) {
+        scr_event_log("red", $"The last PDF reserves of {_star.name} {scr_roman(_planet)} are spent; the militia fights on with what still stands.", _star.name);
+    }
+}
+
+/// @function br_fleet_fed_faction
+function br_fleet_fed_faction(_faction) {
+    return (_faction == eFACTION.ORK) || (_faction == eFACTION.TYRANIDS) || (_faction == eFACTION.CHAOS)
+        || (_faction == eFACTION.ELDAR) || (_faction == eFACTION.TAU) || (_faction == eFACTION.NECRONS);
+}
+
+/// @function br_invasion_sustain
+/// @description Feed a faction's ground fight from its fleet in orbit. Total-war races
+///              refill their real headcount; levy races are topped back up one strength
+///              level. Pools initialise lazily per fleet (old saves covered), sized by
+///              hull count and faction with heavy variance, and the pool size is logged
+///              once so campaign reports carry the numbers.
+function br_invasion_sustain(_star, _planet, _faction, _surv) {
+    if (!br_fleet_fed_faction(_faction) || (_surv >= 1)) {
+        return;
+    }
+    var _fleet = noone;
+    with (obj_en_fleet) {
+        if ((orbiting == _star) && (owner == _faction)) {
+            _fleet = id;
+            break;
+        }
+    }
+    if (_fleet == noone) {
+        return;
+    }
+    with (_fleet) {
+        if (!variable_instance_exists(id, "invasion_reserve") || (invasion_reserve < 0)) {
+            var _hulls = 1 + (capital_number * 3) + frigate_number + (escort_number * 0.5);
+            var _mult = INVASION_RESERVE_CIV_MULT;
+            if (owner == eFACTION.ORK) { _mult = INVASION_RESERVE_ORK_MULT; }
+            if (owner == eFACTION.TYRANIDS) { _mult = INVASION_RESERVE_NID_MULT; }
+            invasion_reserve = max(0, floor(_hulls * INVASION_RESERVE_HULL_FORCE * _mult * (1 + random_range(-INVASION_RESERVE_VARIANCE, INVASION_RESERVE_VARIANCE))));
+            invasion_ceiling = max(1, invasion_reserve);
+            LOGGER.info($"INVASION POOL {region_faction_name(owner)} at {other.name}: reserve {invasion_reserve}");
+        }
+        if ((owner == eFACTION.TYRANIDS) && (invasion_reserve < invasion_ceiling)) {
+            // Bioships spawn: the hive rebuilds its reserve while it holds orbit.
+            invasion_reserve = min(invasion_ceiling, invasion_reserve + ceil(invasion_ceiling * NID_ORBIT_REGEN_RATE));
+        }
+    }
+    if (_fleet.invasion_reserve <= 0) {
+        return;
+    }
+    var _feed = min(_fleet.invasion_reserve, ceil(_fleet.invasion_ceiling * INVASION_FEED_RATE));
+    if (_feed <= 0) {
+        return;
+    }
+    var _pop = planet_race_pop(_star, _planet, _faction);
+    if (faction_is_total_war(_faction) && (_pop > 0)) {
+        _star.p_race_pop[_planet][_faction] = _pop + _feed;
+        br_faction_level_set(_star, _planet, _faction, count_to_level(_faction, _pop + _feed));
+        _fleet.invasion_reserve -= _feed;
+    } else {
+        var _lvl = faction_planet_level(_star, _planet, _faction);
+        if ((_lvl > 0) && (_lvl < 6)) {
+            br_faction_level_set(_star, _planet, _faction, _lvl + 1);
+            _fleet.invasion_reserve -= _feed;
+        }
     }
 }
 

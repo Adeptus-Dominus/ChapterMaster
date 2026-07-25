@@ -320,6 +320,24 @@
 #macro ORBITAL_ASSAULTS_PER_TURN 2
 #macro GROUND_ASSAULTS_PER_TURN 3
 #macro SHIP_ASSAULTS_PER_TURN ORBITAL_ASSAULTS_PER_TURN
+
+// ===== Manpower depth: the "Losing is fun" war economy ==============================
+// The engaged force on a world is a SLICE; the mass behind it is a reserve. Defender
+// PDF reserves seed from the garrison's deterrent tier (lore anchors: tier 1 ~ 2,000
+// souls ... tier 6 ~ 50,000,000; battles stay at force-point scale, the reserve holds
+// the depth), so a fortress world takes several full invasions to truly drain.
+// Attacker reserves ride aboard the fleet in orbit, sized by hulls and master with
+// heavy variance: some WAAAGHs are raids, some end worlds.
+#macro PDF_RESERVE_DEPTH_BASE 3
+#macro PDF_RESERVE_DEPTH_PER_TIER 3
+#macro PDF_REFILL_RATE 0.6
+#macro INVASION_RESERVE_HULL_FORCE 400
+#macro INVASION_RESERVE_ORK_MULT 12
+#macro INVASION_RESERVE_NID_MULT 40
+#macro INVASION_RESERVE_CIV_MULT 4
+#macro INVASION_RESERVE_VARIANCE 0.7
+#macro INVASION_FEED_RATE 0.12
+#macro NID_ORBIT_REGEN_RATE 0.05
 // Disposition drop a full indiscriminate fire purge (100% of the population burned)
 // inflicts on a world's regard for the Chapter. Scaled down by the actual share killed
 // per purge, so a light burn costs a little and a total one costs this much. Selective
