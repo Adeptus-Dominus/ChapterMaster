@@ -5,4 +5,3 @@
 // or perform any operations that require a room (or anything in a room) to function.
 
 gml_pragma("global", "__global_object_depths()");
-gml_pragma("global", "__init();");

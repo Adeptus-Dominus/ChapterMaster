@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"__init",
+  "%Name":"scr_boot_sequence",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"__init",
+  "name":"scr_boot_sequence",
   "parent":{
     "name":"Scripts",
     "path":"folders/Scripts.yy",

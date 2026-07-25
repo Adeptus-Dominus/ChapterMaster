@@ -839,3 +839,7 @@ function necron_tomb_mission_sequence() {
 
     exit;
 }
+
+function set_gender(){
+    return choose(eGENDER.FEMALE, eGENDER.MALE);
+}

@@ -32,3 +32,13 @@
 #macro EQUIPMENT_QUALITIES ["shoddy", "standard", "master_crafted", "artifact"]
 
 #macro SHIP_WEAPON_SLOTS 8
+
+#macro PATH_SAVE_FILES "Save Files/save{0}.json"
+#macro PATH_AUTOSAVE_FILE "Save Files/save0.json"
+#macro PATH_CUSTOM_ICONS "Custom Files/Custom Icons/"
+#macro PATH_CHAPTER_ICONS working_directory + "/images/creation/chapters/icons/"
+#macro PATH_INCLUDED_ICONS working_directory + "/images/creation/customicons/"
+#macro PATH_LOG_DIRECTORY "Logs/"
+#macro LAST_MESSAGES_LOG "last_messages.log"
+#macro PATH_LAST_MESSAGES PATH_LOG_DIRECTORY + LAST_MESSAGES_LOG
+#macro PATH_HELP_INI "main/help.ini"
