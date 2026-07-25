@@ -143,6 +143,17 @@ function drop_select_unit_selection() {
         y1: y2 - 220,
     };
     draw_text(_squads_box.x1, _squads_box.y1, _squads_box.header);
+    // Spent-ship warning: troops locked aboard ships that already supported their maximum
+    // assaults this turn cannot join, and before this line the launch simply proceeded
+    // with whatever remained (on a follow-up assault, often just the planetside foothold)
+    // and fed it to a full region garrison: the "all forces present but only some fight,
+    // unpreventable losses" report. Painted red beside the header so it cannot be missed.
+    var _stranded = roster.spent_ship_stranded_count();
+    if (_stranded > 0) {
+        draw_set_color(c_red);
+        draw_text(_squads_box.x1 + string_width(_squads_box.header) + 14, _squads_box.y1, $"{_stranded} unit(s) locked aboard spent ships cannot join this turn");
+        draw_set_color(CM_GREEN_COLOR);
+    }
     var _x_offset = 0;
     var _row = 0;
     var loop_cycle = array_length(roster.squad_buttons);
@@ -368,6 +379,7 @@ function drop_select_unit_selection() {
             if (sh_target != noone) {
                 sh_target.acted += 1;
                 LOGGER.info($"DROP LAUNCH {((attack == 1) ? "attack" : "raid")}: fleet acted now {sh_target.acted}");
+                LOGGER.info($"DROP ROSTER: {roster.selected_count()} unit(s) launching, {roster.spent_ship_stranded_count()} locked aboard spent ships, {array_length(roster.full_roster_units)} left behind in total");
             }
 
             instance_deactivate_all(true);

@@ -196,6 +196,37 @@ function Roster() constructor {
         return array_length(selected_units);
     };
 
+    /// How many units are stranded aboard ships whose action economy is spent for this
+    /// turn (locked red in the ship list). update_roster only admits units from ACTIVE
+    /// ship toggles, so these troops silently sit a battle out; the drop select shows
+    /// this count so a follow-up assault launched with a fraction of the fleet is a
+    /// choice the player makes with open eyes, never a surprise.
+    static spent_ship_stranded_count = function() {
+        var _locked_ships = [];
+        for (var i = 0; i < array_length(ships); i++) {
+            if (ships[i].assault_locked) {
+                array_push(_locked_ships, ships[i].ship_id);
+            }
+        }
+        if (array_length(_locked_ships) == 0) {
+            return 0;
+        }
+        var _stranded = 0;
+        for (var i = 0; i < array_length(full_roster_units); i++) {
+            var _u = full_roster_units[i];
+            if (is_struct(_u)) {
+                if (array_contains(_locked_ships, _u.ship_location)) {
+                    _stranded += 1;
+                }
+            } else {
+                if (array_contains(_locked_ships, obj_ini.veh_lid[_u[0]][_u[1]])) {
+                    _stranded += 1;
+                }
+            }
+        }
+        return _stranded;
+    };
+
     static new_squad_button = function(display, squad_id) {
         var _button = new ToggleButton();
         display = string_replace(display, " Squad", "");
