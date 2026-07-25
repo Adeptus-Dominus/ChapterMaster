@@ -591,14 +591,20 @@ function damage_vehicles(_damage_data, _shots, _damage, _weapon_index, _arp = 0)
             _armour_mod = 2;
             break;
         case 2:
-            _armour_mod = 4;
+            // Was 4, which soaked HARDER than arp 1's mod 3: a mid-grade piercing weapon
+            // pierced worse than a low-grade one. Re-laddered to sit between arp 1 (3)
+            // and arp 3 (2). In the LIVE enemy weapon table (the scr_en_weapon switch,
+            // built into stacks by obj_enunit Alarm_1) arp 2 is essentially the Eldar
+            // arsenal (shuriken family, long rifles, singing spears) plus a few melee
+            // entries; true AT (Kannon, Rokkit, Lascannon) is arp 4 and bypasses soak
+            // entirely, gated by the per-hull penetration roll below.
+            _armour_mod = 2.5;
             break;
         case 1:
-            // Was 6, identical to no armour pierce at all. Nearly every enemy anti-tank
-            // weapon (Rokkit Launcha, Lascannon, Missile Launcher, Kannon) is arp 1, so
-            // enemy AT fire did literally nothing to player vehicles: a Rokkit at att 150
-            // against a Rhino (AC 30 x 6 = 180) resolved to 0. At mod 3 the same Rokkit
-            // does 60 per shot to a Rhino and still bounces off heavier hulls.
+            // Was 6, identical to no armour pierce at all, so arp 1 fire did literally
+            // nothing to player vehicles: att 150 against a Rhino (AC 30 x 6 = 180)
+            // resolved to 0. At mod 3 the same shot does 60 to a Rhino and still
+            // bounces off heavier hulls.
             _armour_mod = 3;
             break;
         default:
