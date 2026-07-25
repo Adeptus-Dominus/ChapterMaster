@@ -589,7 +589,15 @@ function regions_sync(_star, _planet) {
         if (star_var_exists(_star, "p_race_pop") && (count_to_level_anchors(_owner) != -1)) {
             _own_pop = _star.p_race_pop[_planet][_owner];
         }
-        if ((_own_force <= 0) && (_own_pop <= 0)) {
+        // The AI battle resolver fights on the p_<race> LEVEL scalars, while the two
+        // checks above read the population model. An invader that had just conquered
+        // the world (level > 0, no settled population yet) therefore looked extinct
+        // here, so the liberation stripped the deed the turn after every AI conquest
+        // and the resolver took the world again next round: the endless "have taken"
+        // and "authority is restored" event loop. A faction with a live force level
+        // is not extinct.
+        var _own_level = faction_planet_level(_star, _planet, _owner);
+        if ((_own_force <= 0) && (_own_pop <= 0) && (_own_level <= 0)) {
             if ((_owner == eFACTION.HERETICS) || (_owner == eFACTION.CHAOS)) {
                 heresy_cleansed_stamp(_star, _planet);
             }
@@ -3860,6 +3868,53 @@ function region_force_count(_star, _planet, _region_index) {
     var _planet_total = planet_faction_force_total(_star, _planet, _owner);
     var _share = region_faction_share(_star, _planet, _region_index, _owner);
     return round(_planet_total * _share);
+}
+
+/// @function region_npc_conquer_step
+/// @description One step of an AI faction's region-staged conquest: overrun the LOWEST region
+///              first (the highest index) and climb toward the capital, so the front is
+///              visible region by region on the map and the world only changes hands when the
+///              capital falls. Player-held regions are skipped: the chapter's footholds are not
+///              part of the NPC melee and must be taken by fighting the chapter. The fallen
+///              region's stored garrison resets to the unseeded sentinel, so the winner's
+///              garrison re-derives from its own faction level and both sides' numbers stay
+///              visible through the campaign. Buildings in a fallen region go dormant
+///              automatically, since every building effect gates on the region's owner (see
+///              region_candidate_station_bonus). FUTURE, deliberately not built yet: when the
+///              enemy takes the WHOLE planet it may decide to destroy the buildings the loser
+///              had built; that hook belongs at the capital step once the balance is decided.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _winner_faction
+/// @returns {String} "capital" when the capital fell (the caller flips the planet), "region"
+///                   for an ordinary step, "none" when nothing was left to take.
+function region_npc_conquer_step(_star, _planet, _winner_faction) {
+    var _regions = regions_ensure(_star, _planet);
+    var _target = -1;
+    for (var i = array_length(_regions) - 1; i >= 0; i--) {
+        if (_regions[i].owner == eFACTION.PLAYER) {
+            continue;
+        }
+        if (_regions[i].owner == _winner_faction) {
+            continue;
+        }
+        _target = i;
+        break;
+    }
+    if (_target < 0) {
+        return "none";
+    }
+    var _old_owner = _regions[_target].owner;
+    _regions[_target].owner = _winner_faction;
+    _regions[_target].enemy_force = -1; // unseeded: the winner's garrison re-derives from its level
+    var _rname = "the capital";
+    if (_target > 0) {
+        var _names = region_names_ensure(_star, _planet, max(1, array_length(_regions) - 1));
+        _rname = (is_array(_names) && ((_target - 1) < array_length(_names))) ? _names[_target - 1] : $"region {_target + 1}";
+    }
+    var _colour = (_winner_faction == eFACTION.IMPERIUM) ? "green" : "red";
+    scr_event_log(_colour, $"{region_faction_name(_winner_faction)} overrun {_rname} on {_star.name} {scr_roman(_planet)}; the {region_faction_name(_old_owner)} line falls back.", _star.name);
+    return (_target == 0) ? "capital" : "region";
 }
 
 /// @function region_enemy_force_ensure

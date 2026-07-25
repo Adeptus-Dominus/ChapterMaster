@@ -726,23 +726,33 @@ function resolve_ai_planet_battle(_star, _planet) {
             if (_post > _win_str) { _win_str = _post; _win = _present[s]; }
         }
         if (_win != "" && _win_str > 0) {
-            _star.p_owner[_planet] = br_side_representative(_win);
-            // New owner develops the world from scratch (§16c) — revert to the basic tier.
-            if (variable_instance_exists(_star, "p_infra_turns")) { _star.p_infra_turns[_planet] = 0; }
-            if (_owner_side == "IMP") { _star.p_pdf[_planet] = 0; _star.p_guardsmen[_planet] = 0; }
-            var _ofacs = br_side_factions(_owner_side);
-            for (var j = 0; j < array_length(_ofacs); j++) {
-                br_faction_level_set(_star, _planet, _ofacs[j], 0);
-                if (faction_is_total_war(_ofacs[j]) && variable_instance_exists(_star, "p_race_pop")) {
-                    _star.p_race_pop[_planet][_ofacs[j]] = 0;   // wiped total-war owner: clear its pop too
+            // Region-staged conquest: a crushing round overruns ONE region (lowest region
+            // first, capital last, player footholds untouched) instead of flipping the
+            // world outright. The planet changes hands only when the capital falls, so
+            // the front is visible region by region on the map, a world takes several
+            // winning rounds to clear, and the old instant flip (which the region
+            // layer's extinct-owner liberation reverted every turn, re-firing the
+            // "have taken" event endlessly) cannot loop.
+            var _step = region_npc_conquer_step(_star, _planet, br_side_representative(_win));
+            if ((_step == "capital") || (_step == "none")) {
+                _star.p_owner[_planet] = br_side_representative(_win);
+                // New owner develops the world from scratch (§16c) — revert to the basic tier.
+                if (variable_instance_exists(_star, "p_infra_turns")) { _star.p_infra_turns[_planet] = 0; }
+                if (_owner_side == "IMP") { _star.p_pdf[_planet] = 0; _star.p_guardsmen[_planet] = 0; }
+                var _ofacs = br_side_factions(_owner_side);
+                for (var j = 0; j < array_length(_ofacs); j++) {
+                    br_faction_level_set(_star, _planet, _ofacs[j], 0);
+                    if (faction_is_total_war(_ofacs[j]) && variable_instance_exists(_star, "p_race_pop")) {
+                        _star.p_race_pop[_planet][_ofacs[j]] = 0;   // wiped total-war owner: clear its pop too
+                    }
                 }
+                if (_owner_side == "ORK" && variable_instance_exists(_star, "p_ork_loot")) {
+                    _star.p_ork_loot[_planet] = 0;                  // looted wagons lost with the world
+                }
+                _flipped = true;
+                var _wname = variable_instance_exists(_star, "name") ? string(_star.name) : "a world";
+                scr_event_log((_win == "IMP") ? "green" : "red", $"{br_side_name(_win)} have taken {_wname} {scr_roman(_planet)} from {br_side_name(_owner_side)}.");
             }
-            if (_owner_side == "ORK" && variable_instance_exists(_star, "p_ork_loot")) {
-                _star.p_ork_loot[_planet] = 0;                  // looted wagons lost with the world
-            }
-            _flipped = true;
-            var _wname = variable_instance_exists(_star, "name") ? string(_star.name) : "a world";
-            scr_event_log((_win == "IMP") ? "green" : "red", $"{br_side_name(_win)} have taken {_wname} {scr_roman(_planet)} from {br_side_name(_owner_side)}.");
         }
     }
 
