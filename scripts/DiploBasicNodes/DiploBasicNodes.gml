@@ -1,5 +1,3 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function diplo_root_screen() {
     static ui = new UINode(0, 0, display_get_gui_width(), display_get_gui_height());
     return ui;

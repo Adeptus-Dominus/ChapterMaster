@@ -1,6 +1,3 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
-
 /// @desc Adds a common rock background renderer component to the UI node
 /// @param {struct.UINode} node A Diplomacy UI node, or one of a few others [need to document still]
 /// @returns {struct.UISpriteRendererComponent}

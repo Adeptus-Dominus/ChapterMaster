@@ -1,6 +1,3 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
-
 //enums in GML are global regardless of where they are declared, but declaring it here for clarity
 
 enum UINODE_STATUS {
