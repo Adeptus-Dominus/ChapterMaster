@@ -1,3 +1,4 @@
+/// @self Struct.TTRPG_stats
 function scr_unit_detail_text() {
     var unit_data_string = "";
     var is_astartes = false;
