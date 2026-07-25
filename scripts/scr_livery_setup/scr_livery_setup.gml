@@ -1,5 +1,3 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 /// @self Asset.GMObject.obj_creation
 function scr_livery_setup() {
     add_draw_return_values();
@@ -8,8 +6,6 @@ function scr_livery_setup() {
     draw_set_alpha(1);
     draw_set_color(CM_GREEN_COLOR);
 
-    tooltip = "";
-    tooltip2 = "";
     obj_cursor.image_index = 0;
 
     draw_text_color_simple(800, 80, chapter_name, CM_GREEN_COLOR);
@@ -25,28 +21,11 @@ function scr_livery_setup() {
     colour_selection_options.update({x1: preview_box.x1 + 20, y1: 200});
     colour_selection_options.draw();
 
-    /*draw_sprite_stretched(spr_creation_arrow,0,preview_box.x1,preview_box.y1,32,32);// Left Arrow
-    draw_sprite_stretched(spr_creation_arrow,1,preview_box.x2-32,preview_box.y1,32,32);// Right Arrow 
-    if (point_and_click([preview_box.x1,preview_box.y1,preview_box.x1+32,preview_box.y1+32])){
-        test_sprite++;
-        if (test_sprite==array_length(draw_sprites)) then test_sprite=0;
-    }   
-    if (point_and_click([preview_box.x2-32,preview_box.y1,preview_box.x2, preview_box.y1+32])){
-        test_sprite--;
-        if (test_sprite<0) then test_sprite=(array_length(draw_sprites)-1);
-    }*/
     livery_picker.draw_base();
-    draw_set_alpha(1);
 
-    draw_set_font(fnt_40k_30b);
-    draw_set_halign(fa_center);
-    draw_set_alpha(1);
-    draw_set_color(CM_GREEN_COLOR);
     var company_radio = buttons.company_liveries_choice;
     company_radio.draw_title = false;
-    var comp_change = false;
 
-    draw_set_color(CM_GREEN_COLOR);
     draw_set_halign(fa_left);
     draw_text_transformed(580, 118, "Battle Cry:", 0.6, 0.6, 0);
     draw_set_font(fnt_40k_14b);
@@ -55,12 +34,7 @@ function scr_livery_setup() {
     draw_rectangle(445, 200, 1125, 202, 0);
 
     draw_set_font(fnt_40k_30b);
-    var button_alpha = custom != eCHAPTER_TYPE.CUSTOM ? 0.5 : 1;
 
-    var _livery_switch = buttons.livery_switch;
-
-    var str, str_width, hei, x8 = 0;
-    y8 = 0;
     //Dont ask why the pauldron colours are switched i guess duke got confused between left and right at some point
     //TODO extract this function somewhere
     /*function draw_checkbox (cords, text, main_alpha, checked){
@@ -103,8 +77,6 @@ function scr_livery_setup() {
             livery_picker.set_default_armour(struct_cols, col_special);
         }
 
-        var _tooltip_add_on = ". You can change this value as much as you want in order to update the marine role, company and default options on the left but remember to set this value back to your desired base value before continuing";
-
         for (var i = 0; i < array_length(bulk_buttons); i++) {
             if (bulk_buttons[i].draw(custom == eCHAPTER_TYPE.CUSTOM)) {
                 instance_destroy(obj_creation_popup);
@@ -127,16 +99,14 @@ function scr_livery_setup() {
                 pp.role = _button.role_id;
             }
         }
-        draw_set_color(CM_GREEN_COLOR);
         advanced_helmet_livery.draw();
         complex_depth_selection = advanced_helmet_livery.current_selection;
     }
-    draw_set_alpha(1);
 
     draw_rectangle(844, 204, 846, 740, 0);
     draw_set_font(fnt_40k_14b);
-    var c = 100, role_id, spacing = 30;
     draw_set_halign(fa_left);
+    var spacing = 30;
     var xxx = 862;
     var yyy = 255 - spacing;
 
@@ -180,8 +150,6 @@ function scr_livery_setup() {
 
     draw_set_font(fnt_40k_30b);
     draw_set_halign(fa_center);
-    draw_set_alpha(1);
-    draw_set_color(CM_GREEN_COLOR);
     if (_livery_type != 2) {
         var liv_string = $"Full Livery \n{livery_picker.role_set == 0 ? "default" : role[100][livery_picker.role_set]}";
         draw_text(160, 100, liv_string);
@@ -191,8 +159,6 @@ function scr_livery_setup() {
 
     draw_set_font(fnt_40k_14b);
     draw_set_halign(fa_left);
-    draw_set_alpha(1);
-    draw_set_color(CM_GREEN_COLOR);
     right_data_slate.inside_method = function() {
         var _cultures = buttons.culture_styles;
         _cultures.x1 = right_data_slate.XX + 30;
