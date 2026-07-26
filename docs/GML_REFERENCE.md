@@ -77,7 +77,7 @@ GML provides several built-in constants. Some act as special data type values, w
 
 ### Operators
 
-**Standard:** `+`, `-`, `*`, `/`, `%` (`mod`), `div` (integer division), `&&` (`and`), `||` (`or`), `^^` (`xor`), `!` (`not`).
+**Standard:** `+`, `++`, `-`, `--`, `*`, `/`, `%` (`mod`), `div` (integer division), `&&` (`and`), `||` (`or`), `^^` (`xor`), `!` (`not`).
 
 **Ternary:** `condition ? true_val : false_val`
 
@@ -106,18 +106,18 @@ string("text {0} and {1}", a, b)          // Deferred placeholder substitution
 
 ## Variables and Scope
 
-### Variable Kinds
+### Variable Categories
 
-Resolution order: **local -> instance -> global -> built-in**.
+Variables in GML fall into three conceptual categories. The resolution order at runtime is **local -> instance -> global -> built-in**.
 
-| Kind | Declaration | Scope |
-|---|---|---|
-| **Local** | `var x = 0;` | Current function/event body only. |
-| **Instance** | No keyword, e.g. `health = 100;` | The current instance/struct (`self`). |
-| **Global** | `global.variable` | Entire game. |
-| **Constant** | `#macro`, `enum`, or literal | Compile-time replacement / named value. |
+| Category | Declaration | Scope | Notes |
+|---|---|---|---|
+| **Local** | `var x = 0;` | Ephemeral, strictly the current function or event body. | - |
+| **Instance** | `hp = 100;` or via context `self.hp = 100;` | Instance/struct. | - |
+| **Global** | `global.score = 0;` | Entire game. | *De facto* an application singleton struct. It simply stores an instance variable on the global struct. |
+| **Independent** | `#macro`, `enum`, Asset IDs | Compile-time replacement / named value. | True compile-time globals. Not tied to any struct. Includes macros, enums, asset references (e.g., `obj_player`), and built-in function identifiers. |
 
-### Block Scoping
+### Local Scoping
 
 `var` is scoped to the **function body**, not to individual blocks. Control-flow constructs (`if`, `for`, `switch`, `try`) do **not** create a new local scope.
 
@@ -132,36 +132,9 @@ function example() {
 
 Only function bodies introduce a new local scope.
 
-### Symbol Categories
+### Static Variables and Methods
 
-Beyond the four scopes, symbols fall into three conceptual categories:
-
-| Category | Description |
-|---|---|
-| **Local** | Ephemeral, scoped to a function/event. |
-| **Self** | Members of a data structure (global, object instance, struct instance). |
-| **Independent** | Globally available but not a member of any struct - enums, macros, asset IDs, built-in function identifiers. |
-
-### `self` Context Changes
-
-`self` (~ JS `this`) changes depending on context:
-
-- **Struct literal body** -> `self` is the struct being defined.
-- **Function body** -> `self` is the instance/struct the function was called on or bound to.
-- **`with` statement** -> `self` becomes the argument's value for the block duration.
-- **Accessor chain** -> `self` implicitly follows the accessed value.
-
-```gml
-with (obj_player) {
-    x += 10;  // self is obj_player instance
-}
-```
-
-Instance variables written without `self.` are implicitly on `self`. Undefined variables return `undefined` (access produces no error, but using the value may).
-
-### Static Variables
-
-The `static` keyword declares a variable that is initialized **only once** and persists across multiple calls to the function or constructor. Static variables are stored in the function's hidden "static struct" rather than in the local scope.
+The `static` keyword declares a variable or method that is initialized **only once**, on the very first call to the function, and persists across subsequent calls. Static variables are stored in the function's hidden "static struct" rather than in the local scope.
 
 ```gml
 function counter() {
@@ -174,8 +147,76 @@ counter(); // returns 1
 counter(); // returns 2
 ```
 
-- **Access:** Inside the function, you can read static variables directly as if they were local or instance variables.
-- **Inheritance:** In constructors, `static` methods/variables are shared across all instances created by that constructor (and its descendants) unless explicitly overridden. This is conceptually similar to attaching methods to a JS `prototype`.
+**Initialization order & behavior:**
+- Static variable initializers run at the **very top** of the function body, *before* any other code executes. This means they are always evaluated regardless of conditionals, wrapping them in an `if` statement does nothing to prevent their initialization.
+- You can reference a static variable before its declaration line in the same function due to this top-of-function hoisting.
+
+**Accessing static variables from outside:**
+You can read a static variable from outside its function using dot syntax, but **you must call the function at least once first**, otherwise, the static struct does not yet exist:
+
+```gml
+counter();               // Must call it first to create the static struct
+show_debug_message(counter._count); // -> 1 (access via function name)
+```
+
+**Static Variables and Inheritance (Critical):**
+Contrary to how a JS `prototype` works, static variables are **scoped strictly to the function/constructor where they are defined**. A child constructor does **not** inherit the parent's static variable as a shared mutable reference, it has its own separate static scope.
+- **Reading** a static variable from a child instance will traverse the inheritance chain to find the parent's static value if the child doesn't have its own.
+- **Writing** (assigning) to a static variable through a child context **creates or modifies a variable on the child's own static struct**, shadowing the parent and leaving the parent's value completely untouched.
+
+```gml
+function Parent() constructor {
+    static value = 10;
+}
+function Child() : Parent() constructor { }
+
+show_debug_message(Child.value); // -> 10 (reads from Parent)
+Child.value = 20;                // Writes to Child's OWN static struct
+show_debug_message(Parent.value);// -> 10 (Parent unchanged!)
+```
+
+**Static Methods:**
+You can also use `static` to define functions inside constructors. These methods are created only once (rather than re-created for every new instance), which saves memory and improves performance when you have many instances:
+
+```gml
+function Player() constructor {
+    static say_hello = function() {
+        show_debug_message("Hello!");
+    };
+}
+var _p1 = new Player();
+var _p2 = new Player();
+// _p1.say_hello and _p2.say_hello reference the exact same function.
+```
+
+**Utility functions:**
+For advanced dynamic manipulation, GML provides `static_get` and `static_set` to programmatically access a function's static struct.
+
+---
+
+## Context Keywords: `self` and `other`
+
+GML uses `self` and `other` to manage scope dynamically. Understanding their behavior is crucial for working with instances, structs, and methods.
+
+### `self`
+`self` refers to the **current scope** of the code being executed. This can be
+- Struct literal body -> self is the struct being defined.
+- Function body -> self is the instance/struct the function was called on or bound to.
+- with statement -> self becomes the argument's value for the block duration.
+- Accessor chain -> self implicitly follows the accessed value.
+
+`self` is the GML equivalent of `this` in JavaScript, but with important differences in how it changes.
+
+### `other`
+`other` refers to the **previous scope** before `self` was changed. Its meaning is **context-dependent**:
+
+| Context | What `other` Refers To | Example |
+|---|---|---|
+| **Collision Event** | The other instance involved in the collision. | `hp -= other.damage;` |
+| **`with` statement** | The instance or struct that called `with`. | `with (obj) { x = other.x; }` |
+| **Bound Method** | The caller of the method (not the bound context). | See example above. |
+| **Constructor (unbound)** | The caller of the constructor. | See example above. |
+| **Elsewhere** | Usually the same as `self`. | |
 
 ---
 
@@ -231,6 +272,11 @@ function Marine(_name, _chapter) constructor {
     static greet = function() {
         return $"For the {chapter}!";
     };
+}
+
+// Inheritance (equivalent to JS `extends`)
+function Apothecary(_name) : Marine(_name) constructor {
+    static heal = function() { /* ... */ };
 }
 
 var _marine = new Marine("Brother Cassius", "Ultramarines");
@@ -374,7 +420,7 @@ Primitives have no internal methods; use library functions instead.
 `min`, `max`, `abs`, `round`, `floor`, `ceil`, `clamp`, `lerp`, `sin`, `cos`, `tan`, `darcsin`, `darccos`, `darctan`, `point_distance`, `point_direction`, `random`, `irandom`, `random_range`, `irandom_range`
 
 **Type checking/conversion:**
-`typeof(x)` (function, not operator), `is_instanceof(x, Constructor)` (checks inheritance chain), `instanceof(x)` (gets the constructor used to create a struct), `bool(x)`, `is_array(x)`, `is_bool(x)`, `is_string(x)`, `is_numeric(x)`, `is_struct(x)`, `is_undefined(x)`, `is_ptr(x)`, `is_int32(x)`, `is_int64(x)`, `is_handle(x)`.
+`typeof(x)` (function, not operator), `is_instanceof(x, Constructor)` (checks inheritance chain), `instanceof(x)` (gets the constructor used to create a struct), `bool(x)`, `is_array(x)`, `is_bool(x)`, `is_string(x)`, `is_numeric(x)`, `is_struct(x)`, `is_undefined(x)`, `is_ptr(x)`, `is_int32(x)`, `is_int64(x)`, `is_handle(x)`, `is_method(x)`, `is_callable(x)`
 
 ---
 
