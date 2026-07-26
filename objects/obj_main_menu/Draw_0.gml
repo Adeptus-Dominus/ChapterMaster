@@ -2,7 +2,6 @@ add_draw_return_values();
 
 draw_set_alpha(title_alpha);
 scr_image("title_splash", 0, 0, 0, room_width, room_height);
-draw_set_alpha(1);
 
 draw_set_alpha(0.6);
 draw_set_font(fnt_cul_14);
@@ -29,7 +28,6 @@ if (point_and_click([1400, 830, 1600, 900])) {
 
 // Update notification
 if (UPDATE_CHECKER.update_available) {
-    draw_set_font(fnt_cul_14);
     draw_set_color(update_blink_visible ? c_yellow : c_gray);
     draw_text(1598, 790, $"Update: {UPDATE_CHECKER.latest_version}\nClick to open download page");
 
@@ -39,13 +37,11 @@ if (UPDATE_CHECKER.update_available) {
     }
 }
 
-draw_set_halign(fa_left);
-draw_set_alpha(1);
 
 if (fade_alpha > 0) {
+    draw_set_halign(fa_left);
     draw_set_alpha(fade_alpha);
     draw_set_color(c_black);
     draw_rectangle(0, 0, room_width, room_height, false);
-    draw_set_alpha(1);
 }
 pop_draw_return_values();
