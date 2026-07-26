@@ -5,7 +5,7 @@
       "mode": "primary",
       "model": "opencode/deepseek-v4-flash-free",
       "permission": {
-        "doom_loop ": "deny",
+        "doom_loop": "deny",
         "external_directory": "deny",
         "edit": "deny",
         "lsp": "deny",
