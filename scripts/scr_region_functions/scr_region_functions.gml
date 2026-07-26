@@ -6113,6 +6113,50 @@ function count_to_level_anchors(_faction) {
     return -1;
 }
 
+/// @function faction_pop_host_is_concealed
+/// @description True when a faction's headcount on this world is a DELIBERATELY hidden host: an
+///              infiltrating Genestealer Cult or an unrisen heretic cult. Such a host legitimately
+///              carries population with a ZERO 0-6 level (it fields no force and the resolver
+///              ignores it), so nothing may clear it as orphaned residue and nothing may display
+///              it as an army in the field.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _faction
+/// @returns {Bool}
+function faction_pop_host_is_concealed(_star, _planet, _faction) {
+    if (_faction == eFACTION.TYRANIDS) { return genestealer_is_hidden(_star, _planet); }
+    if (_faction == eFACTION.HERETICS) { return heretic_is_hidden(_star, _planet); }
+    return false;
+}
+
+/// @function faction_pop_orphan_sweep
+/// @description GHOST ARMIES. The two force models can desync: a cleanse that zeroed only the legacy
+///              0-6 level leaves p_race_pop standing, and the survivors then read as present to every
+///              population consumer (the regions panel's assault line, force totals) while every
+///              level-gated consumer (the player's attack option, the AI resolver's roster) sees
+///              nothing. The result is an army that cannot be fought, cannot be bled, and outlives
+///              even a rival invasion (figherhigher's Quarth I). Level 0 means annihilated here, per
+///              faction_pop_clamp_to_level's contract, so orphaned population is cleanse residue and
+///              is cleared. Concealed cults are exempt: their zero level is by design.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @returns {Undefined}
+function faction_pop_orphan_sweep(_star, _planet) {
+    if (!instance_exists(_star) || !star_var_exists(_star, "p_race_pop")) { return; }
+    if (!is_array(_star.p_race_pop[_planet])) { return; }
+    var _facs = [eFACTION.ORK, eFACTION.NECRONS, eFACTION.HERETICS, eFACTION.TYRANIDS];
+    for (var i = 0; i < array_length(_facs); i++) {
+        var _f = _facs[i];
+        if (_f >= array_length(_star.p_race_pop[_planet])) { continue; }
+        var _pop = _star.p_race_pop[_planet][_f];
+        if (_pop <= 0) { continue; }
+        if (faction_planet_level(_star, _planet, _f) > 0) { continue; }
+        if (faction_pop_host_is_concealed(_star, _planet, _f)) { continue; }
+        _star.p_race_pop[_planet][_f] = 0;
+        LOGGER.info($"POP ORPHAN CLEARED {_star.name} {_planet}: {region_faction_name(_f)} pop {_pop} had no force level");
+    }
+}
+
 /// @function faction_pop_clamp_to_level
 /// @description WAR LOSSES MUST KILL PEOPLE, not just the 0-6 scalar. Player-driven kills (bombardment,
 ///              ground battle victories, sector directive strikes) historically wrote only the legacy
@@ -6129,6 +6173,9 @@ function faction_pop_clamp_to_level(_star, _planet, _faction) {
     if (!instance_exists(_star) || !star_var_exists(_star, "p_race_pop")) { return; }
     var _anchors = count_to_level_anchors(_faction);
     if (_anchors == -1) { return; }
+    // A concealed cult legitimately holds population at level 0; clamping would wipe the
+    // hidden host that the concealment design depends on.
+    if (faction_pop_host_is_concealed(_star, _planet, _faction)) { return; }
     var _lvl = 0;
     switch (_faction) {
         case eFACTION.ORK:      _lvl = _star.p_orks[_planet]; break;
@@ -6283,6 +6330,12 @@ function planet_strongest_attacker(_star, _planet) {
     for (var c = 0; c < array_length(_candidates); c++) {
         var _f = _candidates[c];
         if (_f == _owner) {
+            continue;
+        }
+        // A hidden cult fields no force and takes no part in battles: showing its host as an
+        // assaulting army exposed a number the player is not meant to see and framed a secret
+        // infiltration as a front-line attack (the "ghost Tyranid army" report).
+        if (faction_pop_host_is_concealed(_star, _planet, _f)) {
             continue;
         }
         var _force = planet_faction_pop(_star, _planet, _f);

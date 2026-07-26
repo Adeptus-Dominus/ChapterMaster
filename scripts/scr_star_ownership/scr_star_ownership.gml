@@ -133,6 +133,9 @@ function scr_star_ownership(argument0) {
             // Anti-orbital guns fire for whoever holds their region (can turn on the player). §16
             regions_orbital_guns_tick(id, run);
             regions_ground_advance_tick(id, run);
+            // Ghost armies: clear population left standing by a cleanse that only zeroed the
+            // legacy 0-6 level, so no world carries a force that cannot be fought or bled.
+            faction_pop_orphan_sweep(id, run);
             if (array_length(p_feature[run]) != 0) {
                 if (planet_feature_bool(p_feature[run], eP_FEATURES.DAEMONIC_INCURSION)) {
                     p_heresy[run] += 2;
