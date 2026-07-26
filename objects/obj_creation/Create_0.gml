@@ -352,7 +352,7 @@ secretions = 0;
 occulobe = 0;
 mucranoid = 0;
 
-disposition = array_create(14, 0);
+disposition = array_create(eFACTION._COUNT, 0);
 
 chapter_master_name = global.name_generator.ChapterMemberNameGeneration();
 chapter_master_melee = 1;

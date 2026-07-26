@@ -36,7 +36,7 @@ function PlanetData(_planet, _system) constructor {
         ground_defences = system.p_defenses[planet];
         upgrades = system.p_upgrades[planet];
         // v how much of a problem they are from 1-5
-        planet_forces = array_create(14, 0);
+        planet_forces = array_create(eFACTION._COUNT, 0);
         guardsmen = system.p_guardsmen[planet];
         pdf = system.p_pdf[planet];
 
@@ -289,7 +289,7 @@ function PlanetData(_planet, _system) constructor {
     ground_defences = system.p_defenses[planet];
     upgrades = system.p_upgrades[planet];
     // v how much of a problem they are from 1-5
-    planet_forces = array_create(14, 0);
+    planet_forces = array_create(eFACTION._COUNT, 0);
 
     try {
         planet_forces[eFACTION.PLAYER] = player_forces;

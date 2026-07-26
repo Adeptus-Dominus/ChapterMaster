@@ -877,8 +877,8 @@ imperial_factions = [
     eFACTION.ECCLESIARCHY,
 ];
 
-faction = array_create(14, "");
-disposition = array_create(14, 0);
+faction = array_create(eFACTION._COUNT, "");
+disposition = array_create(eFACTION._COUNT, 0);
 
 // Faction Names
 faction[eFACTION.PLAYER] = "Player";
@@ -914,7 +914,7 @@ if (instance_exists(obj_ini)) {
 }
 
 // ** Max disposition **
-disposition_max = array_create(14, 0);
+disposition_max = array_create(eFACTION._COUNT, 0);
 disposition_max[2] = 40;
 disposition_max[3] = 40;
 disposition_max[4] = 40;
@@ -938,9 +938,9 @@ if (instance_exists(obj_ini)) {
     }
 }
 // ** Sets up faction leader names as well as player faction stuff **
-faction_leader = array_create(14, "");
-faction_title = array_create(14, "");
-faction_status = array_create(14, "");
+faction_leader = array_create(eFACTION._COUNT, "");
+faction_title = array_create(eFACTION._COUNT, "");
+faction_status = array_create(eFACTION._COUNT, "");
 // Sector Command faction
 faction_leader[eFACTION.IMPERIUM] = _name_gen.GenerateFromSet($"imperial_male");
 faction_title[eFACTION.IMPERIUM] = "Sector Commander";
@@ -984,7 +984,7 @@ faction_status[eFACTION.HERETICS] = "War";
 faction_status[eFACTION.GENESTEALER] = "War";
 faction_status[eFACTION.NECRONS] = "War";
 // ** Sets faction gender for names **
-faction_gender = array_create(14, 1);
+faction_gender = array_create(eFACTION._COUNT, 1);
 faction_gender[eFACTION.ELDAR] = set_gender();
 faction_gender[eFACTION.TAU] = set_gender();
 
@@ -1005,20 +1005,20 @@ if (faction_leader[eFACTION.CHAOS] == "2") {
     faction_leader[eFACTION.CHAOS] = _name_gen.GenerateFromSet("chaos");
 }
 
-known = array_create(14, 0);
+known = array_create(eFACTION._COUNT, 0);
 known[0] = 2;
 known[eFACTION.PLAYER] = 999;
 known[eFACTION.IMPERIUM] = 1;
 known[eFACTION.MECHANICUS] = 1;
 
 // ** Sets diplomacy annoyed status **
-annoyed = array_create(14, 0);
+annoyed = array_create(eFACTION._COUNT, 0);
 // ** Sets diplomacy ignore status **
-ignore = array_create(14, 0);
+ignore = array_create(eFACTION._COUNT, 0);
 // ** Sets diplomacy turns to be ignored **
-turns_ignored = array_create(14, 0);
+turns_ignored = array_create(eFACTION._COUNT, 0);
 // ** Sets faction defeated **
-faction_defeated = array_create(14, 0);
+faction_defeated = array_create(eFACTION._COUNT, 0);
 
 // **** CHAPTER CREATION VARS ****
 // ** Sets up Chapter configuration variables **
