@@ -55,15 +55,25 @@ GameMaker Language (GML) is syntactically similar to JavaScript ES3 but has sign
 | `pointer` | Memory address; used only in specific native-function contexts (`buffer_get_address`, etc.). |
 | `handle` | 64-bit reference to assets, instances, buffers, data structures, etc. |
 
-**Special values:**
 
-| Value | Notes |
-|---|---|
-| `undefined` | Uninitialised variable value. Falsy. |
-| `NaN` | Not-a-number. Not equal to itself (`NaN == NaN` -> `false`). |
-| `infinity` | Positive infinity (all lower-case). |
-| `pointer_null` | Null pointer (~ JS `null`). Falsy. |
-| `pointer_invalid` | Invalid pointer sentinel. |
+### Built-in Constants & Special Values
+
+GML provides several built-in constants. Some act as special data type values, while others act as sentinels for instances and contexts.
+
+| Value | Category | Notes |
+|---|---|---|
+| `true` / `false` | Boolean | Resolves to `1` and `0`. |
+| `undefined` | Special Value | Uninitialised variable value. Falsy. |
+| `NaN` | Special Value | Not-a-number. Not equal to itself (`NaN == NaN` -> `false`). |
+| `infinity` | Special Value | Positive infinity (all lower-case). |
+| `pi` | Math Constant | 3.14159... |
+| `pointer_null` | Pointer | Null pointer (~ JS `null`). Falsy. |
+| `pointer_invalid` | Pointer | Invalid pointer sentinel. |
+| `noone` | Instance Sentinel | "No instance" (legacy value: `-4`). Returned by collision/instance functions when nothing is found. |
+| `all` | Instance Sentinel | "All instances" (legacy value: `-3`). Used in `with()` or instance functions to target everything. |
+| `self` | Context | Current context struct/instance (legacy value: `-1`). |
+| `other` | Context | Other context (event-triggering instance, legacy: `-2`). |
+| `global` | Context | The global struct. |
 
 ### Operators
 
@@ -319,24 +329,6 @@ var             while           with            xor
 ---
 
 ## Constants and Macros
-
-### Core Constants
-
-| Constant | Value |
-|---|---|
-| `true` | `1` |
-| `false` | `0` |
-| `pi` | 3.14159... |
-| `NaN` | Not-a-number |
-| `infinity` | infinity |
-| `self` | Current context struct/instance (legacy numeric value: `-1`) |
-| `other` | Other context (event-triggering instance, legacy: `-2`) |
-| `noone` | No instance (sentinel, legacy: `-4`) |
-| `all` | All instances (legacy: `-3`) |
-| `global` | The global struct |
-| `undefined` | Uninitialised |
-| `pointer_invalid` | Invalid pointer sentinel |
-| `pointer_null` | Null pointer |
 
 ### Enums
 
