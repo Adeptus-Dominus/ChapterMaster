@@ -29,3 +29,9 @@ jobs:
           variant: max
           agent: pr_review
           share: false
+          prompt: |
+            Review this pull request:
+            - Check for code quality issues
+            - Look for potential bugs and regressions
+            - Suggest improvements
+            Respond terse. All technical substance stays. Only fluff dies.
