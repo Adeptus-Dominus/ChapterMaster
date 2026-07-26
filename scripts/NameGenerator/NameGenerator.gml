@@ -299,7 +299,7 @@ function NameGenerator() constructor {
             }
 
             if (_name == "") {
-                GenerateFromSet("imperial_male");
+                _name = GenerateFromSet("imperial_male");
             }
             return _name;
         } catch (_exception) {
