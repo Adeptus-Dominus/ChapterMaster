@@ -1,0 +1,27 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "agent": {
+    "pr_review": {
+      "mode": "primary",
+      "model": "opencode/deepseek-v4-flash-free",
+      "permission": {
+        "doom_loop ": "deny",
+        "external_directory": "deny",
+        "edit": "deny",
+        "lsp": "deny",
+        "question": "deny",
+      },
+    }
+  },
+  "compaction": {
+    "auto": true,
+    "prune": true,
+    "reserved": 120000
+  },
+  "formatter": false,
+  "instructions": [
+    "docs/CODE_STYLE.md",
+    "docs/AGENTS.md"
+  ],
+  "snapshot": false
+}
