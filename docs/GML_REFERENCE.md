@@ -6,6 +6,8 @@ This guide covers the language for developers familiar with JavaScript or other 
 
 ## Table of Contents
 
+- [Quick Comparison: GML vs JavaScript](#comparison-gml-vs-javascript)
+- [Asset Types](#asset-types)
 - [Syntax Basics](#syntax-basics)
 - [Variable Scope](#variable-scope)
 - [Variable Categories](#variable-categories)
@@ -13,11 +15,55 @@ This guide covers the language for developers familiar with JavaScript or other 
 - [Constructors](#constructors)
 - [Methods and Binding](#methods-and-binding)
 - [Data Structures and Accessors](#data-structures-and-accessors)
-- [Keywords](#keywords)
 - [Constants and Macros](#constants-and-macros)
-- [Built-in Functions](#built-in-functions)
-- [Assets](#assets)
-- [Comparison: GML vs JavaScript](#comparison-gml-vs-javascript)
+- [Built-in Functions List](#built-in-functions-list)
+- [Keywords List](#keywords-list)
+
+---
+
+## Comparison: GML vs JavaScript
+
+| GML | JavaScript |
+|---|---|
+| `self` | `this` |
+| `struct` | `object` / `{}` |
+| `real` | `number` |
+| `bool` values are `real` (1/0) | distinct `boolean` type |
+| `pointer_null` | `null` |
+| `infinity` | `Infinity` |
+| `typeof(x)` - function | `typeof x` - operator |
+| `instanceof(x, y)` - function | `x instanceof y` - operator |
+| `///` JSDoc | `/** */` JSDoc |
+| `function ... constructor` + `new` | `class` |
+| `var` only | `var`, `let`, `const` |
+| Block scoping: function-level only | Block scoping with `let`/`const` |
+| `#macro` for compile-time constants | No preprocessor |
+| `array_length(a)`, `string_length(s)` | `a.length`, `s.length` |
+| `struct[$ "key"]` | `obj["key"]` |
+| `^^` - logical XOR | `^` - bitwise XOR only |
+| `$` hex prefix | `0x` hex prefix |
+| `switch` - fallthrough (uses `break`) | `switch` - fallthrough (uses `break`) |
+| `do...until(condition)` | `do...while(condition)` |
+| `repeat(n) { }` | no equivalent |
+| 0-based array indexing (default) | 0-based array indexing |
+
+---
+
+## Asset Types
+
+GameMaker projects consist of globally referenceable assets. The primary code-carrying assets:
+
+### Scripts
+
+- Named `.gml` files under `scripts/` in the project.
+- Functions and enums defined at the top level are **globally available** - no import/export statements.
+- Loaded early in boot; function definitions are hoisted before any script statements execute.
+
+### Objects
+
+- Class-like assets from which **Instances** are created at runtime.
+- Have **events** (Create, Step, Draw, Alarm, etc.) where code runs.
+- Objects have built-in instance variables (`x`, `y`, `speed`, `direction`, `image_index`, etc.).
 
 ---
 
@@ -341,6 +387,8 @@ When using explicit binding via `method()`, there are specific rules regarding s
 - `static_set(the_method, struct)` has **no effect** - the static struct of the function behind a method cannot be replaced.
 - Variables attached directly to a method via `.` accessor (e.g. `_bound.tag = "x"`) are stored opaquely - not in the static struct.
 
+---
+
 ## Data Structures and Accessors
 
 ### Arrays
@@ -383,36 +431,6 @@ DS structures must be manually destroyed or they leak memory. GML documentation 
 
 ---
 
-## Keywords
-
-Complete GML keyword list:
-
-```
-and             begin           break           case
-catch           constructor     continue        default
-delete          div             do              else
-end             enum            exit            for
-function        global          globalvar       if
-mod             new             not             or
-repeat          return          static          switch
-then            throw           try             until
-var             while           with            xor
-```
-
-- `begin`/`end` are alternative tokens for `{`/`}`.
-- `globalvar` is deprecated; use `global.` instead.
-
-### Preprocessor Directives
-
-```
-#macro      #region     #endregion
-```
-
-- `#region` / `#endregion` create code-folding blocks in the IDE.
-- `#macro NAME value` - compile-time textual replacement. Can span lines with trailing `\`.
-
----
-
 ## Constants and Macros
 
 ### Enums
@@ -439,7 +457,7 @@ Values start at 0 and auto-increment.
 
 ---
 
-## Built-in Functions
+## Built-in Functions List
 
 Primitives have no internal methods; use library functions instead.
 
@@ -457,46 +475,30 @@ Primitives have no internal methods; use library functions instead.
 
 ---
 
-## Assets
+## Keywords List
 
-GameMaker projects consist of globally referenceable assets. The primary code-carrying assets:
+Complete GML keyword list:
 
-### Scripts
+```
+and             begin           break           case
+catch           constructor     continue        default
+delete          div             do              else
+end             enum            exit            for
+function        global          globalvar       if
+mod             new             not             or
+repeat          return          static          switch
+then            throw           try             until
+var             while           with            xor
+```
 
-- Named `.gml` files under `scripts/` in the project.
-- Functions and enums defined at the top level are **globally available** - no import/export statements.
-- Loaded early in boot; function definitions are hoisted before any script statements execute.
+- `begin`/`end` are alternative tokens for `{`/`}`.
+- `globalvar` is deprecated; use `global.` instead.
 
-### Objects
+### Preprocessor Directives
 
-- Class-like assets from which **Instances** are created at runtime.
-- Have **events** (Create, Step, Draw, Alarm, etc.) where code runs.
-- Objects have built-in instance variables (`x`, `y`, `speed`, `direction`, `image_index`, etc.).
+```
+#macro      #region     #endregion
+```
 
----
-
-## Comparison: GML vs JavaScript
-
-| GML | JavaScript |
-|---|---|
-| `self` | `this` |
-| `struct` | `object` / `{}` |
-| `real` | `number` |
-| `bool` values are `real` (1/0) | distinct `boolean` type |
-| `pointer_null` | `null` |
-| `infinity` | `Infinity` |
-| `typeof(x)` - function | `typeof x` - operator |
-| `instanceof(x, y)` - function | `x instanceof y` - operator |
-| `///` JSDoc | `/** */` JSDoc |
-| `function ... constructor` + `new` | `class` |
-| `var` only | `var`, `let`, `const` |
-| Block scoping: function-level only | Block scoping with `let`/`const` |
-| `#macro` for compile-time constants | No preprocessor |
-| `array_length(a)`, `string_length(s)` | `a.length`, `s.length` |
-| `struct[$ "key"]` | `obj["key"]` |
-| `^^` - logical XOR | `^` - bitwise XOR only |
-| `$` hex prefix | `0x` hex prefix |
-| `switch` - fallthrough (uses `break`) | `switch` - fallthrough (uses `break`) |
-| `do...until(condition)` | `do...while(condition)` |
-| `repeat(n) { }` | no equivalent |
-| 0-based array indexing (default) | 0-based array indexing |
+- `#region` / `#endregion` create code-folding blocks in the IDE.
+- `#macro NAME value` - compile-time textual replacement. Can span lines with trailing `\`.
