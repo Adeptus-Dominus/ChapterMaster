@@ -866,6 +866,16 @@ function scr_ui_manage() {
     }
     // This is the draw script for showing the main management screen or individual company screens
 
+    // Selection array elasticity: man_sel only grows when an index is WRITTEN, but the
+    // display roster can grow while the screen is open (promoting a techmarine into a
+    // new company appends a row), and every read past the high-water mark throws
+    // (Variable Index out of range, the draw_marine_squad_rows report). One write to
+    // the last display index extends the array zero-filled, covering every read site
+    // in this file for the frame.
+    if (is_array(display_unit) && (array_length(display_unit) > 0) && (array_length(man_sel) < array_length(display_unit))) {
+        man_sel[array_length(display_unit) - 1] = 0;
+    }
+
     if ((zoomed == 0) && (menu == 1) && (managing >= 0)) {
         if (managing > 0) {
             company_manage_actions();
