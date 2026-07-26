@@ -11,7 +11,7 @@ This guide covers the language for developers familiar with JavaScript or other 
 - [Variable Categories](#variable-categories)
 - [Functions](#functions)
 - [Constructors](#constructors)
-- [Methods](#methods)
+- [Methods and Binding](#methods-and-binding)
 - [Data Structures and Accessors](#data-structures-and-accessors)
 - [Keywords](#keywords)
 - [Constants and Macros](#constants-and-macros)
