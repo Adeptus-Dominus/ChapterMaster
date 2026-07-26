@@ -36,7 +36,7 @@ This guide covers the language for developers familiar with JavaScript or other 
 | `/** */` JSDoc | `///` JSDoc |
 | `class` | `function ... constructor` + `new` |
 | `var`, `let`, `const` | `var` only |
-| Block scoping with `let`/`const` | Block scoping: function-level only |
+| Block scoping with `let`/`const` | Function-level only |
 | No preprocessor | `#macro` for compile-time constants |
 | `a.length`, `s.length` | `array_length(a)`, `string_length(s)` |
 | `obj["key"]` | `struct[$ "key"]` |
@@ -45,7 +45,6 @@ This guide covers the language for developers familiar with JavaScript or other 
 | `switch` - fallthrough (uses `break`) | `switch` - fallthrough (uses `break`) |
 | `do...while(condition)` | `do...until(condition)` |
 | no equivalent | `repeat(n) { }` |
-| 0-based array indexing | 0-based array indexing (default) |
 
 ---
 
