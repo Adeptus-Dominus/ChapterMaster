@@ -972,6 +972,12 @@ function draw_regions_panel(_star, _planet, _px, _py) {
 
     draw_set_font(fnt_40k_14);
 
+    // The invader line: who is grinding this world, how strong they still are, and which
+    // region the front stands in. Both this number and the defenders' fall each turn as
+    // the background war bleeds the pools.
+    var _atk = planet_strongest_attacker(_star, _planet);
+    var _atk_front = (_atk.faction >= 0) ? region_npc_front(_star, _planet, _atk.faction) : -1;
+
     for (var i = 0; i < _n; i++) {
         var _region = _regions[i];
         var _rx = _px + 8;
@@ -1043,6 +1049,17 @@ function draw_regions_panel(_star, _planet, _px, _py) {
         }
         draw_set_color(_col);
         draw_text(_rx + 18, _ry + 16, region_faction_name(_region.owner));
+        if ((i == _atk_front) && (_atk.force > 0)) {
+            // The front: the invading army's remaining strength, on the region it is
+            // currently fighting for, left-aligned so it coexists with the right-aligned
+            // "Your Force" line on the same row.
+            draw_set_color(c_red);
+            var _atk_str = region_faction_name(_atk.faction) + " assault " + scr_display_number(_atk.force);
+            draw_text(_rx + 18, _ry + 30, _atk_str);
+            if (scr_hit(_rx + 18, _ry + 30, _rx + 18 + string_width(_atk_str), _ry + 44)) {
+                tooltip_draw("An invading army is grinding this world region by region, from the outlying zones toward the capital. This is its remaining strength and the region the front currently stands in. Both sides' numbers fall each turn as the war bleeds them; the world falls when the capital does.", 300);
+            }
+        }
 
         // Fortification on the right; below it a clickable forces label opens the section's force
         // breakdown (draw_force_panel) — this replaces the old raw garrison number.
@@ -1053,6 +1070,12 @@ function draw_regions_panel(_star, _planet, _px, _py) {
         var _f_imperial = (_region.owner == eFACTION.PLAYER) || (_region.owner == eFACTION.IMPERIUM) || (_region.owner == eFACTION.MECHANICUS) || (_region.owner == eFACTION.INQUISITION) || (_region.owner == eFACTION.ECCLESIARCHY);
         var _gar_faction_name = _f_imperial ? "Imperium" : region_faction_name(_region.owner);
         var _gar_count = region_enemy_force(_star, _planet, i);
+        if ((_gar_count <= 0) && _f_imperial && (_region.owner != eFACTION.PLAYER)) {
+            // Imperial defense lives in the live PDF + Guard pools, not the stored hostile
+            // garrison records: derive this region's share so the number is real and falls
+            // as the war grinds (holding while the PDF reserve feeds the line).
+            _gar_count = region_imperial_garrison_share(_star, _planet, i);
+        }
         var _gar_str = (_gar_count > 0) ? (_gar_faction_name + " " + scr_display_number(_gar_count)) : (_gar_faction_name + " Forces");
         var _gar_x1 = _row_x2 - 2 - string_width(_gar_str);
         var _gar_y1 = _ry + 16;
@@ -3932,17 +3955,7 @@ function region_force_count(_star, _planet, _region_index) {
 ///                   for an ordinary step, "none" when nothing was left to take.
 function region_npc_conquer_step(_star, _planet, _winner_faction) {
     var _regions = regions_ensure(_star, _planet);
-    var _target = -1;
-    for (var i = array_length(_regions) - 1; i >= 0; i--) {
-        if (_regions[i].owner == eFACTION.PLAYER) {
-            continue;
-        }
-        if (_regions[i].owner == _winner_faction) {
-            continue;
-        }
-        _target = i;
-        break;
-    }
+    var _target = region_npc_front(_star, _planet, _winner_faction);
     if (_target < 0) {
         return "none";
     }
@@ -6194,6 +6207,91 @@ function region_garrison(_star, _planet, _index, _faction) {
         }
     }
     return max(0, _total - _outlying_held);
+}
+
+/// @function region_imperial_garrison_share
+/// @description The Imperium's stationed force in one of its regions, split from the world's
+///              live PDF + Guardsmen pools with the same capital-remainder rule as
+///              region_garrison, so imperial regions show a real, falling number as the
+///              background war bleeds the pools (and holds while the PDF reserve feeds them).
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _index
+/// @returns {Real}
+function region_imperial_garrison_share(_star, _planet, _index) {
+    var _regions = regions_ensure(_star, _planet);
+    if ((_index < 0) || (_index >= array_length(_regions))) {
+        return 0;
+    }
+    var _region = _regions[_index];
+    var _total = _star.p_pdf[_planet] + _star.p_guardsmen[_planet];
+    if (_total <= 0) {
+        return 0;
+    }
+    var _n = array_length(_regions);
+    if (_n <= 1) {
+        return _total;
+    }
+    var _cap = min(REGION_GARRISON_CEILING, round(_total * REGION_GARRISON_FRACTION));
+    if (!_region.is_capital) {
+        return min(_cap, _total);
+    }
+    var _outlying = 0;
+    for (var r = 0; r < _n; r++) {
+        if (!_regions[r].is_capital) {
+            _outlying += min(_cap, _total);
+        }
+    }
+    return max(0, _total - _outlying);
+}
+
+/// @function region_npc_front
+/// @description Where an attacker's ground war stands on this world: the highest-index region
+///              it does not yet hold (player footholds skipped), i.e. the region the next
+///              crushing round would overrun. -1 when nothing is left to take. The single
+///              source of the front rule, shared with region_npc_conquer_step.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _attacker
+/// @returns {Real}
+function region_npc_front(_star, _planet, _attacker) {
+    var _regions = regions_ensure(_star, _planet);
+    for (var i = array_length(_regions) - 1; i >= 0; i--) {
+        if (_regions[i].owner == eFACTION.PLAYER) {
+            continue;
+        }
+        if (_regions[i].owner == _attacker) {
+            continue;
+        }
+        return i;
+    }
+    return -1;
+}
+
+/// @function planet_strongest_attacker
+/// @description The strongest hostile faction contesting a world it does not own, and its
+///              headcount, for the regions panel's invader line. Returns { faction, force };
+///              faction -1 when the world is not being invaded.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @returns {Struct}
+function planet_strongest_attacker(_star, _planet) {
+    var _owner = _star.p_owner[_planet];
+    var _candidates = [eFACTION.ORK, eFACTION.TYRANIDS, eFACTION.CHAOS, eFACTION.ELDAR, eFACTION.TAU, eFACTION.NECRONS, eFACTION.HERETICS];
+    var _best = -1;
+    var _best_force = 0;
+    for (var c = 0; c < array_length(_candidates); c++) {
+        var _f = _candidates[c];
+        if (_f == _owner) {
+            continue;
+        }
+        var _force = planet_faction_pop(_star, _planet, _f);
+        if (_force > _best_force) {
+            _best = _f;
+            _best_force = _force;
+        }
+    }
+    return { faction: _best, force: _best_force };
 }
 
 /// @function region_field_slice
