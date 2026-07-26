@@ -38,5 +38,6 @@ jobs:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         with:
           model: opencode/deepseek-v4-flash-free
+          variant: max
           share: false
           prompt: ${{ inputs.prompt || '' }}
