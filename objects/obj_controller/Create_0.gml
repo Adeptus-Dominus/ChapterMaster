@@ -79,7 +79,6 @@ target_navy_number = 5;
 global.defeat = 0;
 tutorial = 0;
 fix_right = 0;
-text_bar = 0;
 bar_fix = false;
 last_attack_form = 1;
 last_raid_form = 3;
@@ -380,7 +379,6 @@ helpful_places = false;
 
 instance_create(x, y, obj_planet_map);
 new_button_highlight = "";
-// new_button_highlighting=0;
 new_buttons_hide = 0;
 new_buttons_frame = 0;
 
@@ -668,19 +666,12 @@ recruiting_worlds = "";
 recruit_trial = eTRIALS.BLOODDUEL;
 recruit_last = 0;
 
-recruit_name = [];
-recruit_corruption = [];
-recruit_distance = [];
-recruit_training = [];
-recruit_exp = [];
-recruit_data = [];
-
-recruit_name[0] = "";
-recruit_corruption[0] = 0;
-recruit_distance[0] = 0;
-recruit_training[0] = 0;
-recruit_exp[0] = 0;
-recruit_data[0] = {};
+recruit_name = array_create(2, "");
+recruit_corruption = array_create(2, 0);
+recruit_distance = array_create(2, 0);
+recruit_training = array_create(2, 0);
+recruit_exp = array_create(2, 0);
+recruit_data = array_create(2, undefined);
 
 // ** Sets loyalty variables **
 loyal = array_create(51, "");
@@ -1602,7 +1593,7 @@ for (var i = 0; i < welcome_pages; i++) {
     temp[tman] = string(temp[60]) + string(temp[61]) + string(temp[62]);
 }
 
-var lig = 0, remov = 0, stahp = 0;
+var lig = 0;
 
 if (welcome_pages >= 1) {
     for (var i = 0; i < 4000; i++) {
@@ -1612,7 +1603,7 @@ if (welcome_pages >= 1) {
         }
     }
 }
-remov = string_length(string(temp[65])) + 1;
+var remov = string_length(string(temp[65])) + 1;
 
 if (welcome_pages >= 2) {
     temp[66] = string_delete(temp[66], 1, remov);
@@ -1671,6 +1662,6 @@ alarm_set(0, 2);
 //ensure fleet tab isup to date at gae start
 location_viewer.update_fleet_table();
 
-armamentarium = new Armamentarium(self);
+armamentarium = new Armamentarium(id);
 #endregion
 //**! DO NOT PUT THINGS AT THE BOTTOM OF THIS FILE IF YOU NEED THEM TO WORK AFTER LOADING FROM A SAVE, SEE LINE 1550 -ish   */ 
