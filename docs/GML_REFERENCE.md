@@ -60,9 +60,16 @@ GameMaker projects consist of globally referenceable assets. The primary code-ca
 
 ### Objects
 
-- Class-like assets from which **Instances** are created at runtime.
-- Have **events** (Create, Step, Draw, Alarm, etc.) where code runs.
-- Objects have built-in instance variables (`x`, `y`, `speed`, `direction`, `image_index`, etc.).
+Objects in GameMaker are **blueprints** (similar to JavaScript classes) from which **Instances** are spawned at runtime. Each Object asset defines:
+
+- **Events** - a set of named code blocks that the engine calls automatically under specific conditions. Think of them as predefined lifecycle methods that GameMaker's runtime invokes for you:
+  - `Create` - runs once when an instance is first created (like a constructor).
+  - `Step` - runs every frame (like an `update()` loop).
+  - `Draw` - runs every frame when the instance is visible (like a `render()` method).
+  - `Alarm` - timed callbacks, set with `alarm[0] = frames;`.
+  - Collision events, Input events, etc. - triggered by engine‑detected interactions.
+- **Built‑in Instance Variables** - every Object comes with a rich set of default fields (e.g., `x`, `y`, `speed`, `direction`, `image_index`, `visible`, `solid`). These are analogous to predefined properties on a class that the engine uses for movement, rendering, and collision. You can also define your own custom variables inside events (e.g., `hp = 100` in the `Create` event).
+- **Inheritance** - Objects can have a **Parent** Object. A child inherits all events and instance variables from its parent, and can override them by defining its own events. The child's events can call the parent's version with `event_inherited()`.
 
 ---
 
