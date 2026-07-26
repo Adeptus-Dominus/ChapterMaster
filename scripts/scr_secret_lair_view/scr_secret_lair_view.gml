@@ -646,7 +646,7 @@ function scr_secret_lair_view() {
         if (obj_controller.requisition < 1000) {
             draw_set_color(c_red);
         } else {
-            draw_set_color(#F89823);
+            draw_set_color(COL_REQUISITION);
         }
 
         draw_text(xx + 180, yy + 47, "1000");
@@ -674,7 +674,7 @@ function scr_secret_lair_view() {
         if (obj_controller.requisition < 1500) {
             draw_set_color(c_red);
         } else {
-            draw_set_color(#F89823);
+            draw_set_color(COL_REQUISITION);
         }
 
         draw_text(xx + 180, yy + 112, "1500");
@@ -702,7 +702,7 @@ function scr_secret_lair_view() {
         if (obj_controller.requisition < 4000) {
             draw_set_color(c_red);
         } else {
-            draw_set_color(#F89823);
+            draw_set_color(COL_REQUISITION);
         }
 
         draw_text(xx + 180, yy + 177, "4000");

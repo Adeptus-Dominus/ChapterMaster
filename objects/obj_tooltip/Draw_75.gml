@@ -110,7 +110,7 @@ for (var i = 0; i < array_length(tooltip_data); i++) {
         draw_set_font(_footer_font);
         draw_text_ext_transformed_colour(_content_x, _footer_y, _footer, DEFAULT_LINE_GAP, _footer_w, 1, 1, 0, _text_color, _text_color, _text_color, _text_color, 1);
         if (_cost != 0) {
-            var _cost_color = (obj_controller.requisition < _cost) ? c_red : #F89823;
+            var _cost_color = (obj_controller.requisition < _cost) ? c_red : COL_REQUISITION;
             draw_sprite(spr_requisition, 0, _content_x, _cost_y);
             draw_text_ext_transformed_colour(_content_x + sprite_get_width(spr_requisition), _cost_y, _cost, DEFAULT_LINE_GAP, string_width(string(_cost)), 1, 1, 0, _cost_color, _cost_color, _cost_color, _cost_color, 1);
         }

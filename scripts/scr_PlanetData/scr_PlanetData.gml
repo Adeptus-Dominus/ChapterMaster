@@ -1252,7 +1252,7 @@ function PlanetData(_planet, _system) constructor {
                     improve_cost = 1100;
                 }
 
-                draw_text_glow(xx + 671, yy + 281, improve_cost, #F89823, 0);
+                draw_text_glow(xx + 671, yy + 281, improve_cost, COL_REQUISITION, 0);
 
                 if (scr_hit(xx + 481, yy + 282, xx + 716, yy + 300)) {
                     draw_set_color(c_black);

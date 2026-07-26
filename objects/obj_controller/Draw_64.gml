@@ -189,12 +189,12 @@ if (!zoomed && !zui) {
     draw_set_halign(fa_left);
     // Draws the requisition amount
     draw_sprite(spr_new_resource, 0, 14, 16);
-    draw_set_color(#F89823);
+    draw_set_color(COL_REQUISITION);
     draw_text(36, 16, string(floor(requisition)) + string(inc));
     draw_text(36.5, 16.5, string(floor(requisition)) + string(inc));
     // Draws forge points
     draw_sprite_ext(spr_forge_points_icon, 0, 160, 15, 0.3, 0.3, 0, c_white, 1);
-    draw_set_color(#af5a00);
+    draw_set_color(COL_FORGE_POINTS);
     draw_text(180, 16, string(forge_points));
     draw_text(180.5, 16.5, string(forge_points));
     // Draws apothecary points
@@ -203,7 +203,7 @@ if (!zoomed && !zui) {
     // draw_text(180.5, 32.5, _apoth_string);
     // Draws the current loyalty
     draw_sprite(spr_new_resource, 1, 267, 17);
-    draw_set_color(#11C2E1);
+    draw_set_color(#E1C211);
     draw_text(290, 16, string(loyalty));
     draw_text(290.5, 16.5, string(loyalty));
     // Draws the current gene seed
@@ -213,7 +213,7 @@ if (!zoomed && !zui) {
     draw_text(370.5, 16.5, string(gene_seed));
     // Draws the current marines in your command
     draw_sprite(spr_new_resource, 3, 465, 17);
-    draw_set_color(#F89823);
+    draw_set_color(COL_REQUISITION);
     draw_text(485, 16, string(marines) + "/" + string(command));
     draw_text(485.5, 16.5, string(marines) + "/" + string(command));
     pop_draw_return_values();

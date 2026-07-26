@@ -34,10 +34,10 @@ function scr_librarium_gui() {
     if (cur_arti.type() != "") {
         var artif_descr = $"This artifact is an unidentified {cur_arti.type()}.##It is stored on {cur_arti.ship_id() >= 0 ? "the ship" : ""} '{cur_arti.location_string()}'.";
         if ((cur_arti.identified() > 0) && (!identifiable)) {
-            draw_set_color(#0D735F);
+            draw_set_color(#5F730D);
             artif_descr += $"#To be identified it must be brought to a fleet with a Battle Barge or your Homeworld.";
         } else if ((cur_arti.identified() > 0) && (identifiable)) {
-            draw_set_color(#0D735F);
+            draw_set_color(#5F730D);
             artif_descr += $"##It will be identified in {cur_arti.identified()} turns. #You may spend 150 Requisition to identify it immediately.";
 
             //TODO solidify following button into a proper styled struct button
@@ -52,7 +52,7 @@ function scr_librarium_gui() {
                 }
             }
         } else if (cur_arti.identified() < 1) {
-            draw_set_color(#0D735F);
+            draw_set_color(#5F730D);
             artif_descr = "";
 
             try {
@@ -224,7 +224,7 @@ function scr_librarium() {
         draw_text_ext(xx + 352, yy + 130, string_hash_to_newline($"Your Chapter contains {temp[36]} {obj_ini.role[100][17]}s, {temp[37]} Codiceries, and {temp[38]} Lexicanum.##Training of more {obj_ini.role[100][17]}s is {blurp}.##Your chapter has {artif}"), -1, 536);
     }
 
-    draw_set_color(#0D735F);
+    draw_set_color(#5F730D);
     draw_set_halign(fa_center);
     identifiable = false;
     if (artifacts > 0) {
