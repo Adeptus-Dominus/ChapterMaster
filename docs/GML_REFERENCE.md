@@ -1,6 +1,8 @@
-# GameMaker Language (GML) Guide
+# GameMaker Language (GML) Reference
 
 This guide covers the language for developers familiar with JavaScript or other C-family languages.
+
+GameMaker Language (GML) is syntactically similar to JavaScript ES3 but has significant differences.
 
 ---
 
@@ -54,7 +56,6 @@ GameMaker projects consist of globally referenceable assets. The primary code-ca
 
 ### Scripts
 
-- Named `.gml` files under `scripts/` in the project.
 - Functions and enums defined at the top level are **globally available** - no import/export statements.
 - Loaded early in boot; function definitions are hoisted before any script statements execute.
 
@@ -66,7 +67,7 @@ Objects in GameMaker are **blueprints** (similar to JavaScript classes) from whi
   - `Create` - runs once when an instance is first created (like a constructor).
   - `Step` - runs every frame (like an `update()` loop).
   - `Draw` - runs every frame when the instance is visible (like a `render()` method).
-  - `Alarm` - timed callbacks, set with `alarm[0] = frames;`.
+  - `Alarm` - timed callbacks, set with `alarm[0] = steps;`.
   - Collision events, Input events, etc. - triggered by engine‑detected interactions.
 - **Built‑in Instance Variables** - every Object comes with a rich set of default fields (e.g., `x`, `y`, `speed`, `direction`, `image_index`, `visible`, `solid`). These are analogous to predefined properties on a class that the engine uses for movement, rendering, and collision. You can also define your own custom variables inside events (e.g., `hp = 100` in the `Create` event).
 - **Inheritance** - Objects can have a **Parent** Object. A child inherits all events and instance variables from its parent, and can override them by defining its own events. The child's events can call the parent's version with `event_inherited()`.
@@ -74,8 +75,6 @@ Objects in GameMaker are **blueprints** (similar to JavaScript classes) from whi
 ---
 
 ## Syntax Basics
-
-GameMaker Language (GML) is syntactically similar to JavaScript ES3 but has significant differences.
 
 ### Comments
 
@@ -149,11 +148,9 @@ GML provides several built-in constants. Some act as special data type values, w
 ### String Interpolation
 
 ```gml
-$"Hello {name}"                           // Template string
-string("text {0} and {1}", a, b)          // Deferred placeholder substitution
+$"Hello {name}" // Template string
+string("text {0} and {1}", a, b) // Deferred placeholder substitution
 ```
-
-**Note:** String character positions are **1-indexed** (`string_char_at(s, 1)` gets the first character), while arrays are 0-indexed.
 
 ---
 
@@ -167,9 +164,9 @@ GML has three primary runtime scopes. At runtime, variable names are resolved in
 
 ### Local Scope
 
-Declared with `var`. Exists only during the current function or event execution. 
+Declared with `var`. Scoped to the **function body**, not to individual blocks. Exists only during the current function or event execution.
 
-`var` is scoped to the **function body**, not to individual blocks. Control-flow constructs (`if`, `for`, `switch`, `try`) do **not** create a new local scope.
+Control-flow constructs (`if`, `for`, `switch`, `try`) do **not** create a new local scope.
 
 ```gml
 function example() {
