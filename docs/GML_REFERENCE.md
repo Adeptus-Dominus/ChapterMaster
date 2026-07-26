@@ -412,9 +412,9 @@ No `.length` property - use `array_length(_arr)`.
 ```gml
 function modify(_arr) {
     _arr[@ 1] = 200;    // Bypasses CoW, modifies original
+    _arr[1] = 200;    // Creates a copy, reference lost
 }
 ```
-With CoW enabled, use `@` to modify arrays in-place inside functions, or return the modified copy.
 
 ### Structs
 
