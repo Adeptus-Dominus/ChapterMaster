@@ -352,14 +352,7 @@ secretions = 0;
 occulobe = 0;
 mucranoid = 0;
 
-disposition[0] = 0;
-disposition[1] = 0; // Prog
-disposition[2] = 0; // Imp
-disposition[3] = 0; // Mech
-disposition[4] = 0; // Inq
-disposition[5] = 0; // Ecclesiarchy
-disposition[6] = 0; // Astartes
-disposition[7] = 0; // Reserved
+disposition = array_create(14, 0);
 
 chapter_master_name = global.name_generator.ChapterMemberNameGeneration();
 chapter_master_melee = 1;
