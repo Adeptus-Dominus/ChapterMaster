@@ -23,29 +23,29 @@ This guide covers the language for developers familiar with JavaScript or other 
 
 ## Comparison: GML vs JavaScript
 
-| GML | JavaScript |
+| JavaScript | GML |
 |---|---|
-| `self` | `this` |
-| `struct` | `object` / `{}` |
-| `real` | `number` |
-| `bool` values are `real` (1/0) | distinct `boolean` type |
-| `pointer_null` | `null` |
-| `infinity` | `Infinity` |
-| `typeof(x)` - function | `typeof x` - operator |
-| `instanceof(x, y)` - function | `x instanceof y` - operator |
-| `///` JSDoc | `/** */` JSDoc |
-| `function ... constructor` + `new` | `class` |
-| `var` only | `var`, `let`, `const` |
-| Block scoping: function-level only | Block scoping with `let`/`const` |
-| `#macro` for compile-time constants | No preprocessor |
-| `array_length(a)`, `string_length(s)` | `a.length`, `s.length` |
-| `struct[$ "key"]` | `obj["key"]` |
-| `^^` - logical XOR | `^` - bitwise XOR only |
-| `$` hex prefix | `0x` hex prefix |
+| `this` | `self` |
+| `object` / `{}` | `struct` |
+| `number` | `real` |
+| distinct `boolean` type | `bool` values are `real` (1/0) |
+| `null` | `pointer_null` |
+| `Infinity` | `infinity` |
+| `typeof x` - operator | `typeof(x)` - function |
+| `x instanceof y` - operator | `instanceof(x, y)` - function |
+| `/** */` JSDoc | `///` JSDoc |
+| `class` | `function ... constructor` + `new` |
+| `var`, `let`, `const` | `var` only |
+| Block scoping with `let`/`const` | Block scoping: function-level only |
+| No preprocessor | `#macro` for compile-time constants |
+| `a.length`, `s.length` | `array_length(a)`, `string_length(s)` |
+| `obj["key"]` | `struct[$ "key"]` |
+| `^` - bitwise XOR only | `^^` - logical XOR |
+| `0x` hex prefix | `$` hex prefix |
 | `switch` - fallthrough (uses `break`) | `switch` - fallthrough (uses `break`) |
-| `do...until(condition)` | `do...while(condition)` |
-| `repeat(n) { }` | no equivalent |
-| 0-based array indexing (default) | 0-based array indexing |
+| `do...while(condition)` | `do...until(condition)` |
+| no equivalent | `repeat(n) { }` |
+| 0-based array indexing | 0-based array indexing (default) |
 
 ---
 
