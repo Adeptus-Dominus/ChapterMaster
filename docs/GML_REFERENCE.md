@@ -296,25 +296,50 @@ var _marine = new Marine("Brother Cassius", "Ultramarines");
 
 ---
 
-## Methods
+## Methods and Binding
 
-A **method** binds a function to a specific context so `self` inside the function refers to that context.
+In GML, a **method** is a function that is bound to a specific context (a struct or instance), meaning `self` inside the function refers to that context. 
+
+There are two ways to create a method:
+
+### 1. Implicit Binding (Standard Methods)
+When you define a function inside a struct or constructor, GML automatically binds it to that struct. This is the standard way to create methods, similar to JavaScript.
 
 ```gml
-var _bound = method(_context, function() {
-    return self.some_value;
-});
+// Using a struct literal
+var _my_struct = {
+    hp = 100,
+    get_hp = function() { return self.hp; }
+};
+
+// Using a constructor (best practice for instances)
+function Player() constructor {
+    hp = 100;
+    
+    // Static ensures the method is created once, not copied per instance
+    static get_hp = function() { 
+        return self.hp; 
+    };
+}
 ```
 
-**Behaviour:**
+### 2. Explicit Binding (The `method()` Function)
+You can explicitly bind an existing, unbound function to a specific context using the built-in `method()` function. This behaves like JavaScript's `Function.prototype.bind()` and is useful for callbacks or assigning methods dynamically.
 
+```gml
+var _context = { name: "Cassius" };
+var _unbound_fn = function() { return self.name; };
+
+var _bound = method(_context, _unbound_fn);
+// _bound() will return "Cassius"
+```
+
+**Quirks of `method()` and Static Structs:**
+When using explicit binding via `method()`, there are specific rules regarding static structs:
 - Methods share the **static struct** of the original function they were created from. Chaining `method()` on a method still shares the original function's static struct.
 - `static_get(the_method)` returns the **actual** static struct of the function behind the method (not a copy).
 - `static_set(the_method, struct)` has **no effect** - the static struct of the function behind a method cannot be replaced.
 - Variables attached directly to a method via `.` accessor (e.g. `_bound.tag = "x"`) are stored opaquely - not in the static struct.
-- Use `self` inside a method to reference the bound context.
-
----
 
 ## Data Structures and Accessors
 
