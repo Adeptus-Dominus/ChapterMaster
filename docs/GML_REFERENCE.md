@@ -7,7 +7,8 @@ This guide covers the language for developers familiar with JavaScript or other 
 ## Table of Contents
 
 - [Syntax Basics](#syntax-basics)
-- [Variables and Scope](#variables-and-scope)
+- [Variable Scope](#variable-scope)
+- [Variable Categories](#variable-categories)
 - [Functions](#functions)
 - [Constructors](#constructors)
 - [Methods](#methods)
@@ -104,20 +105,17 @@ string("text {0} and {1}", a, b)          // Deferred placeholder substitution
 
 ---
 
-## Variables and Scope
+## Variable Scope
 
-### Variable Categories
+GML has three primary runtime scopes. At runtime, variable names are resolved in this order (the first match wins):
+1. **local**
+2. **instance**
+3. **global**
+4. **built-in**
 
-Variables in GML fall into three conceptual categories. The resolution order at runtime is **local -> instance -> global -> built-in**.
+### Local Scope
 
-| Category | Declaration | Scope | Notes |
-|---|---|---|---|
-| **Local** | `var x = 0;` | Ephemeral, strictly the current function or event body. | - |
-| **Instance** | `hp = 100;` or via context `self.hp = 100;` | Instance/struct. | - |
-| **Global** | `global.score = 0;` | Entire game. | *De facto* an application singleton struct. It simply stores an instance variable on the global struct. |
-| **Independent** | `#macro`, `enum`, Asset IDs | Compile-time replacement / named value. | True compile-time globals. Not tied to any struct. Includes macros, enums, asset references (e.g., `obj_player`), and built-in function identifiers. |
-
-### Local Scoping
+Declared with `var`. Exists only during the current function or event execution. 
 
 `var` is scoped to the **function body**, not to individual blocks. Control-flow constructs (`if`, `for`, `switch`, `try`) do **not** create a new local scope.
 
@@ -130,27 +128,38 @@ function example() {
 }
 ```
 
-Only function bodies introduce a new local scope.
+### Instance Scope
+
+Declared without a keyword (e.g., `hp = 100;`) or via context (`self.hp = 100;`). Tied to the lifetime of the specific instance or struct executing the code.
+
+### Global Scope
+
+Declared on the `global` struct (e.g., `global.score = 0;`). Accessible anywhere in the game. The `global` struct acts as a de facto application singleton.
 
 ### Context Keywords: `self` and `other`
 
-GML uses `self` and `other` to manage scope dynamically. Understanding their behavior is crucial for working with instances, structs, and methods.
+GML uses `self` and `other` to manage scope dynamically.
 
-`self` is the GML equivalent of `this` in JavaScript, and refers to the **current scope** of the code being executed. This can be:
-- Struct literal body -> self is the struct being defined.
-- Function body -> self is the instance/struct the function was called on or bound to.
-- with statement -> self becomes the argument's value for the block duration.
-- Accessor chain -> self implicitly follows the accessed value.
+`self` is the GML equivalent of `this` in JavaScript, referring to the **current scope** of the code being executed.
 
-`other` refers to the **previous scope** before `self` was changed. Its meaning is **context-dependent**:
+`other` refers to the **previous scope** before `self` was changed. 
 
-| Context | What `other` Refers To | Example |
+Their behavior is context-dependent:
+
+| Context | `self` refers to... | `other` refers to... |
 |---|---|---|
-| **Collision Event** | The other instance involved in the collision. | `hp -= other.damage;` |
-| **`with` statement** | The instance or struct that called `with`. | `with (obj) { x = other.x; }` |
-| **Bound Method** | The caller of the method (not the bound context). | See example above. |
-| **Constructor (unbound)** | The caller of the constructor. | See example above. |
-| **Elsewhere** | Usually the same as `self`. | |
+| **Collision Event** | The current instance. | The other instance involved in the collision. |
+| **`with` statement** | The instance or struct passed to `with`. | The instance or struct that executed the `with` block. |
+| **Method / Constructor** | The instance or struct the function is bound to or called on. | The caller of the method/constructor (not the bound context). |
+| **Struct literal body** | The struct being defined. | Usually the same as `self`. |
+| **Accessor chain** | Implicitly follows the accessed value. | Usually the same as `self`. |
+| **Elsewhere** | The current instance or struct. | Usually the same as `self`. |
+
+---
+
+## Variable Categories
+
+While scope defines *where* a variable can be accessed, GML features distinct categories of variables based on how they are initialized and stored.
 
 ### Static Variables and Methods
 
@@ -208,6 +217,14 @@ var _p1 = new Player();
 var _p2 = new Player();
 // _p1.say_hello and _p2.say_hello reference the exact same function.
 ```
+
+### Compile-Time Values (Independent)
+
+Not true variables in the runtime memory sense, but named values resolved at compile-time. They are globally available and not tied to any struct:
+- **Macros:** `#macro NAME value` - Compile-time textual replacement. (Do not use for arrays; each reference creates a new array instance).
+- **Enums:** Named integer constants.
+- **Asset IDs:** References to objects, sprites, sounds, etc. (e.g., `obj_player`).
+- **Built-in function identifiers:** The names of globally hoisted script functions.
 
 ---
 
