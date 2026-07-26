@@ -423,7 +423,7 @@ global.reuseable_drawing_items = {
     }
 }
 global.modular_drawing_items = [
-	// MK7 Aquila Sprites
+	// MK7 Aquila Sprites (used across decent amount of other armors as baselines)
 	{
         position: "chest_variants",
         armours: ["MK7 Aquila",
@@ -434,6 +434,18 @@ global.modular_drawing_items = [
         sprite: spr_mk7_chest_variants,
         shadows: spr_mk7_chest_variants_shadow,
         subcomponents: [[]]
+    },
+	{
+        position: "right_knee",
+        armours: ["MK5 Heresy",
+				  "MK7 Aquila",
+				  "MK8 Errant",
+				  "Artificer Armour"
+		],
+        body_types: [0],
+        sprite: spr_mk7_complex_right_knee,
+        shadows: spr_mk7_complex_right_knee_shadow,
+        flip: true
     },
     {
         position: "armour",
@@ -1233,6 +1245,7 @@ global.modular_drawing_items = [
     },
     {
         sprite: spr_jump_pack_complex,
+		shadows: spr_jump_pack_complex_shadow,
         body_types: [0],
         position: "backpack_augment",
         equipped: {
@@ -1252,6 +1265,7 @@ global.modular_drawing_items = [
     },
     {
         sprite: spr_jump_pack_serpha_complex,
+		shadows: spr_jump_pack_serpha_complex_shadow,
         body_types: [0],
         position: "backpack_augment",
         equipped: {
