@@ -159,6 +159,24 @@ with (obj_player) {
 
 Instance variables written without `self.` are implicitly on `self`. Undefined variables return `undefined` (access produces no error, but using the value may).
 
+### Static Variables
+
+The `static` keyword declares a variable that is initialized **only once** and persists across multiple calls to the function or constructor. Static variables are stored in the function's hidden "static struct" rather than in the local scope.
+
+```gml
+function counter() {
+    static _count = 0; // Evaluated only on the first call
+    _count++;
+    return _count;
+}
+
+counter(); // returns 1
+counter(); // returns 2
+```
+
+- **Access:** Inside the function, you can read static variables directly as if they were local or instance variables.
+- **Inheritance:** In constructors, `static` methods/variables are shared across all instances created by that constructor (and its descendants) unless explicitly overridden. This is conceptually similar to attaching methods to a JS `prototype`.
+
 ---
 
 ## Functions
@@ -185,7 +203,7 @@ function greet(_name = "Unknown") {
 
 ### Hoisting
 
-Functions defined at the top level of **Script** assets are hoisted during boot (`ScriptPrepare()`) before any script statements execute. Cross-script circular references work. Functions defined inside Objects or nested blocks are **not** hoisted.
+Functions defined at the top level of **Script** assets are hoisted globally during boot before any script statements execute (cross-script circular references work). See [Assets](#assets). Functions defined inside Objects or nested blocks are **not** hoisted.
 
 ### Returning
 
@@ -194,17 +212,10 @@ Functions defined at the top level of **Script** assets are hoisted during boot 
 
 ### Static Struct
 
-Every function has an associated static struct for function-level persistent variables:
+Every function has an associated static struct where its `static` variables live. You can retrieve or replace this entire struct using built-in functions:
 
-```gml
-function counter() {
-    static _count = 0;   // Initialised once, persists across calls
-    _count++;
-    return _count;
-}
-```
-
-Retrieve/overwrite with `static_get(function)` / `static_set(function, struct)`.
+- `static_get(function)` - Returns the static struct of the function.
+- `static_set(function, struct)` - Overwrites the function's static struct.
 
 ---
 
@@ -227,6 +238,7 @@ var _marine = new Marine("Brother Cassius", "Ultramarines");
 
 - Inside a constructor, `self` refers to the struct being created.
 - Constructor functions are globally available like any script function.
+- Use `static` for methods inside a constructor. This attaches the method to the constructor's static struct once, rather than copying it into every new instance (similar to JS prototype methods).
 
 ---
 
@@ -309,13 +321,7 @@ var             while           with            xor
 ```
 
 - `begin`/`end` are alternative tokens for `{`/`}`.
-- `and`, `or`, `not`, `xor`, `mod`, `div` are keyword operators.
 - `globalvar` is deprecated; use `global.` instead.
-- `delete` de-references a struct, flagging it for garbage collection. Does **not** remove individual fields or array entries.
-- `repeat (n) { ... }` executes the block `n` times.
-- `do { ... } until (condition)` - note `until`, not `while`.
-- `switch` in GML **has fallthrough** (like C/JS). Each `case` must end with an explicit `break` unless you intentionally want to fall through to the next case.
-- `with (expr) { ... }` changes `self` to the given expression.
 
 ### Preprocessor Directives
 
