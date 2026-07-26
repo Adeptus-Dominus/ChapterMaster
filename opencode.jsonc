@@ -9,8 +9,8 @@
         "external_directory": "deny",
         "edit": "deny",
         "lsp": "deny",
-        "question": "deny",
-      },
+        "question": "deny"
+      }
     }
   },
   "compaction": {
@@ -20,6 +20,7 @@
   },
   "formatter": false,
   "instructions": [
+    "docs/GML_REFERENCE.md",
     "docs/CODE_STYLE.md",
     "docs/AGENTS.md"
   ],
