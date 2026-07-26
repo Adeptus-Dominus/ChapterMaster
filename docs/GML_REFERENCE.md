@@ -428,7 +428,7 @@ _s[$ "name"];         // Struct accessor (bracket with $)
 ### Legacy DS Structures
 
 | Type | Accessor | Creation |
-|---|---|---|---|
+|---|---|---|
 | `ds_list` | `[\| index]` | `ds_list_create()` |
 | `ds_map` | `[? key]` | `ds_map_create()` |
 | `ds_grid` | `[# x, y]` | `ds_grid_create(w, h)` |
