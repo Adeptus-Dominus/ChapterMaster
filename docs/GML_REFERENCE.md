@@ -421,13 +421,16 @@ _s[$ "name"];         // Struct accessor (bracket with $)
 
 ### Legacy DS Structures
 
-| Type | Accessor | Creation | Notes |
+| Type | Accessor | Creation |
 |---|---|---|---|
-| `ds_list` | `[| index]` | `ds_list_create()` | Manual `ds_destroy()` required |
-| `ds_map` | `[? key]` | `ds_map_create()` | Manual `ds_destroy()` required |
-| `ds_grid` | `[# x, y]` | `ds_grid_create(w, h)` | Manual `ds_destroy()` required |
+| `ds_list` | `[\| index]` | `ds_list_create()` |
+| `ds_map` | `[? key]` | `ds_map_create()` |
+| `ds_grid` | `[# x, y]` | `ds_grid_create(w, h)` |
+| `ds_stack` | Built-in functions | `ds_stack_create()` |
+| `ds_queue` | Built-in functions | `ds_queue_create()` |
+| `ds_priority` | Built-in functions | `ds_priority_create()` |
 
-DS structures must be manually destroyed or they leak memory. GML documentation recommends arrays and structs instead, where possible.
+DS structures must be manually destroyed with `ds_destroy()` or they leak memory. GML documentation recommends arrays and structs instead, where possible.
 
 ---
 
