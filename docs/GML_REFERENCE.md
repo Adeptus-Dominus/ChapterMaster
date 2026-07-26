@@ -132,6 +132,26 @@ function example() {
 
 Only function bodies introduce a new local scope.
 
+### Context Keywords: `self` and `other`
+
+GML uses `self` and `other` to manage scope dynamically. Understanding their behavior is crucial for working with instances, structs, and methods.
+
+`self` is the GML equivalent of `this` in JavaScript, and refers to the **current scope** of the code being executed. This can be:
+- Struct literal body -> self is the struct being defined.
+- Function body -> self is the instance/struct the function was called on or bound to.
+- with statement -> self becomes the argument's value for the block duration.
+- Accessor chain -> self implicitly follows the accessed value.
+
+`other` refers to the **previous scope** before `self` was changed. Its meaning is **context-dependent**:
+
+| Context | What `other` Refers To | Example |
+|---|---|---|
+| **Collision Event** | The other instance involved in the collision. | `hp -= other.damage;` |
+| **`with` statement** | The instance or struct that called `with`. | `with (obj) { x = other.x; }` |
+| **Bound Method** | The caller of the method (not the bound context). | See example above. |
+| **Constructor (unbound)** | The caller of the constructor. | See example above. |
+| **Elsewhere** | Usually the same as `self`. | |
+
 ### Static Variables and Methods
 
 The `static` keyword declares a variable or method that is initialized **only once**, on the very first call to the function, and persists across subsequent calls. Static variables are stored in the function's hidden "static struct" rather than in the local scope.
@@ -160,7 +180,7 @@ show_debug_message(counter._count); // -> 1 (access via function name)
 ```
 
 **Static Variables and Inheritance (Critical):**
-Contrary to how a JS `prototype` works, static variables are **scoped strictly to the function/constructor where they are defined**. A child constructor does **not** inherit the parent's static variable as a shared mutable reference, it has its own separate static scope.
+Unlike JS prototypes, static variables are strictly scoped to the constructor they are defined in. Child constructors have their own separate static scopes.
 - **Reading** a static variable from a child instance will traverse the inheritance chain to find the parent's static value if the child doesn't have its own.
 - **Writing** (assigning) to a static variable through a child context **creates or modifies a variable on the child's own static struct**, shadowing the parent and leaving the parent's value completely untouched.
 
@@ -188,35 +208,6 @@ var _p1 = new Player();
 var _p2 = new Player();
 // _p1.say_hello and _p2.say_hello reference the exact same function.
 ```
-
-**Utility functions:**
-For advanced dynamic manipulation, GML provides `static_get` and `static_set` to programmatically access a function's static struct.
-
----
-
-## Context Keywords: `self` and `other`
-
-GML uses `self` and `other` to manage scope dynamically. Understanding their behavior is crucial for working with instances, structs, and methods.
-
-### `self`
-`self` refers to the **current scope** of the code being executed. This can be
-- Struct literal body -> self is the struct being defined.
-- Function body -> self is the instance/struct the function was called on or bound to.
-- with statement -> self becomes the argument's value for the block duration.
-- Accessor chain -> self implicitly follows the accessed value.
-
-`self` is the GML equivalent of `this` in JavaScript, but with important differences in how it changes.
-
-### `other`
-`other` refers to the **previous scope** before `self` was changed. Its meaning is **context-dependent**:
-
-| Context | What `other` Refers To | Example |
-|---|---|---|
-| **Collision Event** | The other instance involved in the collision. | `hp -= other.damage;` |
-| **`with` statement** | The instance or struct that called `with`. | `with (obj) { x = other.x; }` |
-| **Bound Method** | The caller of the method (not the bound context). | See example above. |
-| **Constructor (unbound)** | The caller of the constructor. | See example above. |
-| **Elsewhere** | Usually the same as `self`. | |
 
 ---
 
