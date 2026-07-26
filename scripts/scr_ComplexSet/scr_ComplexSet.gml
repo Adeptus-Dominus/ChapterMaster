@@ -830,9 +830,13 @@ function ComplexSet(_unit) constructor {
             _mod.body_types = [0, 1, 2];
         }
 
-        // Nothing optional left to check - short circuit immediately.
+        // Nothing OPTIONAL left to check, but the mandatory pass still has to run: it
+        // is what applies the item's own overides, shadows, subcomponents, offsets and
+        // bans, and what honours the blocked-position list. Returning bare true here
+        // skipped all of that for all-mandatory-key items. (blocked is empty in the
+        // current build, so this restores intent without changing today's output.)
         if (remaining_component_checks <= 0) {
-            return true;
+            return modular_mandatory_checks(mod_item);
         }
 
         // ---------------- OPTIONAL CHECKS (gated, self-terminating) ----------------
@@ -852,6 +856,15 @@ function ComplexSet(_unit) constructor {
     static validate_modular_item = function(_mod, position){
         _sub_comps = "none";
         _shadows = "none";
+        // _overides belongs in this per-item reset with its two siblings, and its
+        // absence was the bug: it is only ever written inside modular_mandatory_checks,
+        // which base_modulars_checks skips for any item whose keys are all mandatory
+        // (bare_head, bare_neck, bare_eyes). Drawing a bare-headed marine therefore read
+        // an unset _overides and threw. The exception is caught in assign_modulars, so
+        // the loop ABORTS: the bare head and every modular item after index 89 of 156
+        // silently vanished from the sprite. Resetting here also stops the previous
+        // item's offsets and bans from bleeding onto a later short-circuit item.
+        _overides = "none";
         if (position != "") {
             _mod.position = position;
         }
