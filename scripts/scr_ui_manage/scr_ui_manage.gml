@@ -1896,7 +1896,22 @@ function draw_auxilia_squad_rows(xx, yy, _stats_displayed = false) {
         }
 
         var _members = _row.squad_members;
+        // A promotion mid-screen can leave squad rows holding member indices past the
+        // rebuilt display roster (the techmarine promote window report), and no amount
+        // of array-growing makes a stale index valid: drop out-of-range members before
+        // any read. The click-toggle loop below shares this filtered array, so every
+        // access in the row is covered.
+        var _safe_members = [];
+        for (var _sm = 0; _sm < array_length(_members); _sm++) {
+            if ((_members[_sm] >= 0) && (_members[_sm] < array_length(display_unit)) && (_members[_sm] < array_length(man_sel))) {
+                array_push(_safe_members, _members[_sm]);
+            }
+        }
+        _members = _safe_members;
         var _count = array_length(_members);
+        if (_count == 0) {
+            continue;
+        }
         var _sel_count = 0;
         var _size_sum = 0;
         for (var m = 0; m < _count; m++) {
@@ -2288,7 +2303,22 @@ function draw_marine_squad_rows(xx, yy, _stats_displayed = false, _command_slots
         }
 
         var _members = _row.squad_members;
+        // A promotion mid-screen can leave squad rows holding member indices past the
+        // rebuilt display roster (the techmarine promote window report), and no amount
+        // of array-growing makes a stale index valid: drop out-of-range members before
+        // any read. The click-toggle loop below shares this filtered array, so every
+        // access in the row is covered.
+        var _safe_members = [];
+        for (var _sm = 0; _sm < array_length(_members); _sm++) {
+            if ((_members[_sm] >= 0) && (_members[_sm] < array_length(display_unit)) && (_members[_sm] < array_length(man_sel))) {
+                array_push(_safe_members, _members[_sm]);
+            }
+        }
+        _members = _safe_members;
         var _count = array_length(_members);
+        if (_count == 0) {
+            continue;
+        }
         var _sel_count = 0;
         var _size_sum = 0;
         var _sgt = noone;
