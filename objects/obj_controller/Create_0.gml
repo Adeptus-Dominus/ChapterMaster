@@ -75,7 +75,6 @@
 var _name_gen = global.name_generator;
 LOGGER.info("Creating Controller");
 scr_colors_initialize();
-is_test_map = false;
 target_navy_number = 5;
 global.defeat = 0;
 tutorial = 0;
@@ -299,9 +298,6 @@ for (var i = 101; i < 103; i++) {
 // ** Sets cheatcode values **
 cheatcode = "";
 cheatyface = 0;
-if (is_test_map) {
-    global.cheat_debug = true;
-}
 
 // ** Sets play variables **
 info_fragments = 0;
@@ -812,9 +808,6 @@ if (instance_exists(obj_ini)) {
         requisition = 2000;
     }
 }
-if (is_test_map == true) {
-    requisition = 50000;
-}
 
 chapter_master = new scr_chapter_master();
 
@@ -838,26 +831,26 @@ recruiting_worlds_bought = 0;
 
 LOGGER.info("Set Battle Formations");
 // ** BATTLE FORMATIONS **
-var _count = 16;
-bat_formation = array_create(_count, "");
-bat_formation_type = array_create(_count, 0);
-bat_deva_for = array_create(_count, 3);
-bat_assa_for = array_create(_count, 5);
-bat_tact_for = array_create(_count, 4);
-bat_vete_for = array_create(_count, 3);
-bat_hire_for = array_create(_count, 3);
-bat_libr_for = array_create(_count, 2);
-bat_comm_for = array_create(_count, 2);
-bat_tech_for = array_create(_count, 2);
-bat_term_for = array_create(_count, 5);
-bat_hono_for = array_create(_count, 2);
-bat_drea_for = array_create(_count, 6);
-bat_rhin_for = array_create(_count, 6);
-bat_pred_for = array_create(_count, 6);
-bat_landraid_for = array_create(_count, 6);
-bat_landspee_for = array_create(_count, 5);
-bat_whirl_for = array_create(_count, 1);
-bat_scou_for = array_create(_count, 3);
+var _formation_amount = 16;
+bat_formation = array_create(_formation_amount, "");
+bat_formation_type = array_create(_formation_amount, 0);
+bat_deva_for = array_create(_formation_amount, 3);
+bat_assa_for = array_create(_formation_amount, 5);
+bat_tact_for = array_create(_formation_amount, 4);
+bat_vete_for = array_create(_formation_amount, 3);
+bat_hire_for = array_create(_formation_amount, 3);
+bat_libr_for = array_create(_formation_amount, 2);
+bat_comm_for = array_create(_formation_amount, 2);
+bat_tech_for = array_create(_formation_amount, 2);
+bat_term_for = array_create(_formation_amount, 5);
+bat_hono_for = array_create(_formation_amount, 2);
+bat_drea_for = array_create(_formation_amount, 6);
+bat_rhin_for = array_create(_formation_amount, 6);
+bat_pred_for = array_create(_formation_amount, 6);
+bat_landraid_for = array_create(_formation_amount, 6);
+bat_landspee_for = array_create(_formation_amount, 5);
+bat_whirl_for = array_create(_formation_amount, 1);
+bat_scou_for = array_create(_formation_amount, 3);
 // ground=1    raid=2
 // 1: Attack        type=1
 // 2: Defend        type=1
@@ -1322,9 +1315,6 @@ if (instance_exists(obj_ini)) {
 // ** Sets the star for the chapter ? **
 instance_create(irandom_range(400, room_width - 400), irandom_range(400, room_height - 400), obj_star);
 var _number_of_systems = 100;
-if (is_test_map == true) {
-    _number_of_systems = 20;
-}
 mask_index = spr_star;
 while (instance_number(obj_star) < _number_of_systems) {
     var xx = irandom_range(200, room_width - 150); // dictates how far away from the edge stars spawn

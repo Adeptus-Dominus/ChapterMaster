@@ -12,12 +12,6 @@ if (invis) {
 }
 
 add_draw_return_values();
-if (is_test_map) {
-    draw_set_color(c_yellow);
-    draw_set_alpha(0.5);
-    draw_line_width(room_width / 2, room_height / 2, (room_width / 2) + lengthdir_x(3000, terra_direction), (room_height / 2) + lengthdir_y(3000, terra_direction), 4);
-    draw_set_alpha(1);
-}
 
 try {
     if (menu == eMENU.ARMAMENTARIUM) {

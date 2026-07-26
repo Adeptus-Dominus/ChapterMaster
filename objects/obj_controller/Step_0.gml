@@ -159,16 +159,6 @@ try {
 
     main_map_move_keys();
 
-    // For testing purposes
-    if (is_test_map == true) {
-        with (obj_en_fleet) {
-            if (owner == eFACTION.IMPERIUM) {
-                capital_number = 0;
-                frigate_number = 1;
-                escort_number = 2;
-            }
-        }
-    }
     // Menu selection screens
     var freq = 150;
     if (l_options > 0) {

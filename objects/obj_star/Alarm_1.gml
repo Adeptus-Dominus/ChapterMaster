@@ -468,7 +468,7 @@ if ((!hyu) && (owner == eFACTION.TYRANIDS)) {
 
 scr_star_ownership(false);
 
-if ((obj_controller.is_test_map != true) && (p_owner[2] != eFACTION.PLAYER)) {
+if (p_owner[2] != eFACTION.PLAYER) {
     for (var i = 1; i <= 4; i++) {
         p_guardsmen[i] = 0;
     }
