@@ -1,8 +1,6 @@
 name: opencode_review
 
 on:
-  issue_comment:
-    types: [created]
   pull_request_review_comment:
     types: [created]
 
@@ -15,7 +13,6 @@ jobs:
     permissions:
       id-token: write
       pull-requests: write
-      issues: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
