@@ -353,7 +353,7 @@ function NameGenerator() constructor {
         }
     };
 
-    /// @return {String}
+    /// @return {String|Struct.NameTracker}
     static get_name_set = function(set_name) {
         if (!struct_exists(name_sets, set_name)) {
             return "No Set Name";
