@@ -52,7 +52,9 @@ GameMaker Language (GML) is syntactically similar to JavaScript ES3 but has sign
 
 ## Asset Types
 
-GameMaker projects consist of globally referenceable assets. The primary code-carrying assets:
+GameMaker projects consist of globally referenceable assets.
+
+The primary code-carrying assets:
 
 ### Scripts
 
@@ -69,7 +71,7 @@ Objects in GameMaker are **blueprints** (similar to JavaScript classes) from whi
   - `Draw` - runs every frame when the instance is visible (like a `render()` method).
   - `Alarm` - timed callbacks, set with `alarm[0] = steps;`.
   - Collision events, Input events, etc. - triggered by engine‑detected interactions.
-- **Built‑in Instance Variables** - every Object comes with a rich set of default fields (e.g., `x`, `y`, `speed`, `direction`, `image_index`, `visible`, `solid`). These are analogous to predefined properties on a class that the engine uses for movement, rendering, and collision. You can also define your own custom variables inside events (e.g., `hp = 100` in the `Create` event).
+- **Built‑in Instance Variables** - every Object comes with a rich set of default fields (e.g., `x`, `y`, `speed`, `direction`, `image_index`, `visible`, `solid`). These are analogous to predefined properties on a class that the engine uses for movement, rendering, and collision.
 - **Inheritance** - Objects can have a **Parent** Object. A child inherits all events and instance variables from its parent, and can override them by defining its own events. The child's events can call the parent's version with `event_inherited()`.
 
 ---
@@ -82,7 +84,6 @@ Objects in GameMaker are **blueprints** (similar to JavaScript classes) from whi
 // Single-line comment
 /* Multi-line comment */
 
-/// GML JSDoc uses triple-slash single-line comments, not /** */
 /// @param {real} value
 /// @returns {bool}
 ```
@@ -129,21 +130,15 @@ GML provides several built-in constants. Some act as special data type values, w
 
 ### Operators
 
-**Standard:** `+`, `++`, `-`, `--`, `*`, `/`, `%` (`mod`), `div` (integer division), `&&` (`and`), `||` (`or`), `^^` (`xor`), `!` (`not`).
-
-**Ternary:** `condition ? true_val : false_val`
-
-**Comparison:** `<`, `>`, `<=`, `>=`, `==`, `!=`
-
-**Nullish coalescing:** `??`, with assignment `??=`
-
-**Bitwise:** `|`, `&`, `^`, `<<`, `>>`
-
-**Compound assignment:** `+=`, `-=`, `*=`, `/=`, `|=`, `&=`, `^=`, `??=`
-
-**Literal prefixes:**
-- Binary: `0b10` -> `2`
-- Hex: `0x001122` or `$001122`
+- **Standard:** `+`, `++`, `-`, `--`, `*`, `/`, `%` (`mod`), `div` (integer division), `&&` (`and`), `||` (`or`), `^^` (`xor`), `!` (`not`).
+- **Ternary:** `condition ? true_val : false_val`
+- **Comparison:** `<`, `>`, `<=`, `>=`, `==`, `!=`
+- **Nullish coalescing:** `??`, with assignment `??=`
+- **Bitwise:** `|`, `&`, `^`, `<<`, `>>`
+- **Compound assignment:** `+=`, `-=`, `*=`, `/=`, `|=`, `&=`, `^=`, `??=`
+- **Literal prefixes:**
+  - Binary: `0b10` -> `2`
+  - Hex: `0x001122` or `$001122`
 
 ### String Interpolation
 
@@ -156,7 +151,7 @@ string("text {0} and {1}", a, b) // Deferred placeholder substitution
 
 ## Variable Scope
 
-GML has three primary runtime scopes. At runtime, variable names are resolved in this order (the first match wins):
+GML has three primary runtime scopes. At runtime, variable names are resolved in this order (the first match overshadows):
 1. **local**
 2. **instance**
 3. **global**
@@ -164,9 +159,8 @@ GML has three primary runtime scopes. At runtime, variable names are resolved in
 
 ### Local Scope
 
-Declared with `var`. Scoped to the **function body**, not to individual blocks. Exists only during the current function or event execution.
-
-Control-flow constructs (`if`, `for`, `switch`, `try`) do **not** create a new local scope.
+- Created by function or event body.
+- Control-flow constructs (`if`, `for`, `switch`, `try`) do **not** create a new local scope.
 
 ```gml
 function example() {
@@ -179,13 +173,9 @@ function example() {
 
 ### Instance Scope
 
-Declared without a keyword (e.g., `hp = 100;`) or via context (`self.hp = 100;`). Tied to the lifetime of the specific instance or struct executing the code.
+- Created by events and structs.
 
-### Global Scope
-
-Declared on the `global` struct (e.g., `global.score = 0;`). Accessible anywhere in the game. The `global` struct acts as a de facto application singleton.
-
-### Context Keywords: `self` and `other`
+**Context Keywords: `self` and `other`**
 
 GML uses `self` and `other` to manage scope dynamically.
 
@@ -204,13 +194,27 @@ Their behavior is context-dependent:
 | **Accessor chain** | Implicitly follows the accessed value. | Usually the same as `self`. |
 | **Elsewhere** | The current instance or struct. | Usually the same as `self`. |
 
+### Global Scope
+
+- Global functions, `global.` struct, and constants live here.
+
 ---
 
 ## Variable Categories
 
 While scope defines *where* a variable can be accessed, GML features distinct categories of variables based on how they are initialized and stored.
 
-### Static Variables and Methods
+### Local
+
+- Declared with `var`.
+- Scoped to the **function body**, not to individual blocks.
+- Exists only during the current function or event execution.
+
+### Instance
+
+Declared without a keyword (e.g., `hp = 100;`) or via context (`self.hp = 100;`). Tied to the lifetime of the specific instance or struct executing the code.
+
+### Static
 
 The `static` keyword declares a variable or method that is initialized **only once**, on the very first call to the function, and persists across subsequent calls. Static variables are stored in the function's hidden "static struct" rather than in the local scope.
 
@@ -267,7 +271,11 @@ var _p2 = new Player();
 // _p1.say_hello and _p2.say_hello reference the exact same function.
 ```
 
-### Compile-Time Values (Independent)
+### Global
+
+Declared on the `global` struct (e.g., `global.score = 0;`). Accessible anywhere in the game. The `global` struct acts as a de facto application singleton.
+
+### Compile-Time
 
 Not true variables in the runtime memory sense, but named values resolved at compile-time. They are globally available and not tied to any struct:
 - **Macros:** `#macro NAME value` - Compile-time textual replacement. (Do not use for arrays; each reference creates a new array instance).
