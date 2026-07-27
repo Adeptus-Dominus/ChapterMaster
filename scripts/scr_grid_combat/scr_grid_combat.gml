@@ -1869,8 +1869,11 @@ function grid_reinforce(ctrl) {
 /// battle context with the camera it took from obj_controller, so the camera is
 /// handed back before the object is released.
 function grid_exit(ctrl) {
-    grid_commit_losses(ctrl);
+    // Order matters: the campaign objects are deactivated while the grid runs,
+    // and scr_kill_unit and fetch_unit_uid both reach into obj_ini and
+    // obj_controller. Reactivate first, write the losses second.
     instance_activate_all();
+    grid_commit_losses(ctrl);
     if (ctrl.pending_live && instance_exists(obj_ncombat)) {
         obj_controller.x = obj_ncombat.view_x;
         obj_controller.y = obj_ncombat.view_y;
