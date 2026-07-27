@@ -63,6 +63,12 @@ zoom_mode = 0;
 feed = [];
 floaters = [];
 
+// Living, deployed squads per side, rebuilt once a tick by grid_refresh_live.
+// Declared here because the deploy phase reads them before any tick has run, and
+// an uninitialised read is a crash in this build rather than a zero.
+live0 = [];
+live1 = [];
+
 agg_ekills = 0;
 agg_pkills = 0;
 // Outcome tallies behind the periodic exchange line, indexed by GRIDHIT_*.

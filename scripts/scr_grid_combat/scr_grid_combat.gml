@@ -1340,6 +1340,14 @@ function grid_form_speed(ctrl, _f) {
 /// @description True once any squad in the block can reach the enemy. Until
 /// then the block holds its shape; after it, squads fight for themselves.
 function grid_form_contact(ctrl, _f) {
+    // Once a block is engaged it stays engaged for the rest of the battle, so
+    // there is nothing to recompute; this is the single hottest call in the tick.
+    if (_f.engaged) {
+        return true;
+    }
+    if (array_length(grid_foe_list(ctrl, _f.side)) <= 0) {
+        return false;
+    }
     for (var _i = 0; _i < array_length(_f.members); _i++) {
         var _s = ctrl.squads[_f.members[_i]];
         if (!_s.alive || !_s.deployed) {
@@ -1373,9 +1381,11 @@ function grid_form_advance(ctrl, _fi) {
     // Aim the block at the nearest enemy to its anchor.
     var _bi = -1;
     var _bd = 99999;
-    for (var _i = 0; _i < array_length(ctrl.squads); _i++) {
+    var _foes = grid_foe_list(ctrl, _f.side);
+    for (var _q = 0; _q < array_length(_foes); _q++) {
+        var _i = _foes[_q];
         var _t = ctrl.squads[_i];
-        if (!_t.alive || !_t.deployed || (_t.side == _f.side)) {
+        if (!_t.alive || !_t.deployed) {
             continue;
         }
         var _dd = grid_dist(_f.anchor_col, _f.anchor_row, _t.col, _t.row);
@@ -1421,14 +1431,47 @@ function grid_follow_anchor(ctrl, _si, _f) {
     return true;
 }
 
+/// @function grid_refresh_live
+/// @description Rebuilds the per side list of squads actually on the field, once
+/// a tick. Every target search used to walk the whole squad array, reserves and
+/// dead included, for every squad and again for every formation's contact test,
+/// which is the same list scanned dozens of times a tick for no reason.
+function grid_refresh_live(ctrl) {
+    var _l0 = [];
+    var _l1 = [];
+    for (var _i = 0; _i < array_length(ctrl.squads); _i++) {
+        var _s = ctrl.squads[_i];
+        if (!_s.alive || !_s.deployed) {
+            continue;
+        }
+        if (_s.side == 0) {
+            array_push(_l0, _i);
+        } else {
+            array_push(_l1, _i);
+        }
+    }
+    ctrl.live0 = _l0;
+    ctrl.live1 = _l1;
+}
+
+/// @function grid_foe_list
+/// @description The living enemies of a given side. Squads can die inside a tick
+/// after the list is built, so every caller still checks alive before acting on
+/// what it finds.
+function grid_foe_list(ctrl, _side) {
+    return (_side == 0) ? ctrl.live1 : ctrl.live0;
+}
+
 /// @function grid_nearest_foe
 function grid_nearest_foe(ctrl, _si, _limit) {
     var _s = ctrl.squads[_si];
     var _best = -1;
     var _bd = 99999;
-    for (var _i = 0; _i < array_length(ctrl.squads); _i++) {
+    var _foes = grid_foe_list(ctrl, _s.side);
+    for (var _f = 0; _f < array_length(_foes); _f++) {
+        var _i = _foes[_f];
         var _t = ctrl.squads[_i];
-        if (!_t.alive || !_t.deployed || (_t.side == _s.side)) {
+        if (!_t.alive || !_t.deployed) {
             continue;
         }
         var _dd = grid_dist(_s.col, _s.row, _t.col, _t.row);
@@ -1734,9 +1777,11 @@ function grid_act_enemy(ctrl, _si) {
         if (_s.zap_cd <= 0) {
             var _best = -1;
             var _bp = -1;
-            for (var _i = 0; _i < array_length(ctrl.squads); _i++) {
+            var _pl = grid_foe_list(ctrl, 1);
+            for (var _pi = 0; _pi < array_length(_pl); _pi++) {
+                var _i = _pl[_pi];
                 var _p = ctrl.squads[_i];
-                if ((_p.side != 0) || !_p.alive || !_p.deployed) {
+                if (!_p.alive || !_p.deployed) {
                     continue;
                 }
                 if (grid_dist(_s.col, _s.row, _p.col, _p.row) > 8) {
@@ -1788,6 +1833,7 @@ function grid_battle_tick(ctrl) {
     ctrl.ticks += 1;
     ctrl.agg_ekills = 0;
     ctrl.agg_pkills = 0;
+    grid_refresh_live(ctrl);
 
     var _order = [];
     for (var _i = 0; _i < array_length(ctrl.squads); _i++) {
@@ -1856,6 +1902,8 @@ function grid_battle_tick(ctrl) {
         grid_spawn_wave(ctrl);
     }
 
+    // Reserves still count as a living chapter, so the wipe test walks the whole
+    // roster, but only the two fields that decide it.
     var _pl = 0;
     var _en = 0;
     for (var _c = 0; _c < array_length(ctrl.squads); _c++) {
@@ -1863,11 +1911,8 @@ function grid_battle_tick(ctrl) {
         if (!_q.alive || !_q.deployed) {
             continue;
         }
-        if (_q.side == 0) {
-            _pl += 1;
-        } else {
-            _en += 1;
-        }
+        _pl += (_q.side == 0);
+        _en += (_q.side != 0);
     }
     if (_pl <= 0) {
         ctrl.phase = GRIDPH_END;
@@ -2675,6 +2720,16 @@ function grid_handoff_result(ctrl) {
         instance_activate_object(obj_enunit);
         instance_activate_object(obj_star);
         instance_activate_object(obj_event_log);
+        // Report only: the grid fought the battle, so the vanilla battlefield has
+        // nothing to show. The blocks stay alive because Alarm_5 and Alarm_6 read
+        // them, they simply stop drawing, and Draw_0 skips the field panel.
+        grid_report_only = true;
+        with (obj_pnunit) {
+            visible = false;
+        }
+        with (obj_enunit) {
+            visible = false;
+        }
         alarm[5] = 6;
     }
     return true;
