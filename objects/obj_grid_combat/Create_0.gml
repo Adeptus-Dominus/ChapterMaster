@@ -13,6 +13,20 @@ boot_done = false;
 if (!variable_instance_exists(id, "pending_width")) {
     pending_width = 12;
 }
+// Real battle context, filled in by the launcher between instance_create and
+// the first Step. Empty force means the generated test roster is used instead.
+if (!variable_instance_exists(id, "pending_force")) {
+    pending_force = [];
+}
+if (!variable_instance_exists(id, "pending_enemy")) {
+    pending_enemy = "orks";
+}
+if (!variable_instance_exists(id, "pending_loc")) {
+    pending_loc = "";
+}
+if (!variable_instance_exists(id, "pending_live")) {
+    pending_live = false;
+}
 
 phase = GRIDPH_DEPLOY;
 result = 0;

@@ -10,10 +10,20 @@ if (!boot_done) {
 
     grid_setup_field(id, pending_width);
     grid_gen_cover(id);
-    grid_gen_player_pool(id);
+    if (array_length(pending_force) > 0) {
+        grid_import_force(id, pending_force);
+    } else {
+        grid_gen_player_pool(id);
+    }
     grid_spawn_enemy_force(id);
     grid_centre_view(id, GRIDC_DEPLOY_COLS, floor(rows / 2));
-    grid_log(id, $"Grid combat: front width {combat_width}, {points} deployment points.", GRIDC_COL_FEED);
+    if (pending_loc != "") {
+        grid_log(id, $"Battle for {pending_loc}.", GRIDC_COL_FEED);
+    }
+    grid_log(id, $"The ground holds {combat_width} squads on the line. The rest follow as reserves.", GRIDC_COL_FEED);
+    if (pending_live) {
+        grid_log(id, "Tactical layer only: losses are not yet written back.", GRIDC_COL_WARN);
+    }
     grid_log(id, "Left click selects, drag selects, right click orders.", GRIDC_COL_ORDER);
     grid_log(id, "WASD pans the field. Tab toggles the overview.", GRIDC_COL_ORDER);
 }
@@ -96,8 +106,9 @@ if (popup_open) {
                     _sq.picked = false;
                 } else {
                     var _ps0 = grid_picked_stats(id);
-                    if (_ps0.cost + _sq.cost > points) {
-                        grid_log(id, "Not enough deployment points for that squad.", GRIDC_COL_WARN);
+                    var _room0 = combat_width - grid_deployed_count(id);
+                    if (_ps0.n >= _room0) {
+                        grid_log(id, $"Only {_room0} squads still fit on the line.", GRIDC_COL_WARN);
                     } else {
                         _sq.picked = true;
                     }

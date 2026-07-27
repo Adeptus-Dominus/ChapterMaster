@@ -29,12 +29,14 @@
 #macro GRIDC_LOG_Y1 648
 #macro GRIDC_LOG_Y2 892
 #macro GRIDC_PANEL_Y2 892
+#macro GRIDC_LIST_Y1 150
 
 // ---------------------------------------------------------------------------
 // Tuning.
 // ---------------------------------------------------------------------------
 #macro GRIDC_TILE 40
 #macro GRIDC_TILE_MIN 9
+#macro GRIDC_TILE_MAX 96
 #macro GRIDC_TICK_FRAMES 18
 #macro GRIDC_SCROLL_SPEED 14
 #macro GRIDC_DEPLOY_COLS 4
@@ -248,13 +250,15 @@ function grid_squad_at(ctrl, _c, _r) {
 /// @description Pixels per tile at the current zoom. Overview shrinks tiles until
 /// the whole field fits the viewport; there are only these two steps by design.
 function grid_tile_px(ctrl) {
-    if (ctrl.zoom_mode == 0) {
-        return GRIDC_TILE;
-    }
     var _vw = GRIDC_BF_X2 - GRIDC_BF_X1;
     var _vh = GRIDC_BF_Y2 - GRIDC_BF_Y1;
     var _fit = floor(min(_vw / max(1, ctrl.cols), _vh / max(1, ctrl.rows)));
-    return clamp(_fit, GRIDC_TILE_MIN, GRIDC_TILE);
+    if (ctrl.zoom_mode == 1) {
+        return clamp(_fit, GRIDC_TILE_MIN, GRIDC_TILE_MAX);
+    }
+    // Battle view never leaves dead space: a field smaller than the viewport
+    // grows its tiles to fill it, a larger one sits at the base size and scrolls.
+    return clamp(max(GRIDC_TILE, _fit), GRIDC_TILE_MIN, GRIDC_TILE_MAX);
 }
 
 /// @function grid_clamp_view
@@ -509,6 +513,18 @@ function grid_picked_stats(ctrl) {
     return { n: _n, cost: _cost, pow: round(_pow), mv: (_n > 0) ? _mv : 0 };
 }
 
+/// @function grid_reserve_count
+function grid_reserve_count(ctrl) {
+    var _n = 0;
+    for (var _i = 0; _i < array_length(ctrl.squads); _i++) {
+        var _s = ctrl.squads[_i];
+        if ((_s.side == 0) && !_s.deployed && _s.alive) {
+            _n += 1;
+        }
+    }
+    return _n;
+}
+
 /// @function grid_clear_picks
 function grid_clear_picks(ctrl) {
     for (var _i = 0; _i < array_length(ctrl.squads); _i++) {
@@ -611,12 +627,11 @@ function grid_place_formation(ctrl, _ac, _ar) {
     if (!grid_placement_valid(ctrl, _list, _ac, _ar)) {
         return false;
     }
-    var _cost = 0;
-    for (var _i = 0; _i < _n; _i++) {
-        _cost += ctrl.squads[_list[_i]].cost;
-    }
-    if (_cost > ctrl.points) {
-        grid_log(ctrl, "Not enough deployment points.", GRIDC_COL_WARN);
+    // The ground, not a budget, decides how much can be brought to bear: only
+    // combat_width squads fit on the line, and the rest wait in reserve.
+    if (grid_deployed_count(ctrl) + _n > ctrl.combat_width) {
+        var _room = max(0, ctrl.combat_width - grid_deployed_count(ctrl));
+        grid_log(ctrl, $"The front holds {ctrl.combat_width} squads: room for {_room} more.", GRIDC_COL_WARN);
         return false;
     }
     var _fi = grid_new_formation(ctrl, ctrl.squads[_list[0]].type);
@@ -644,14 +659,13 @@ function grid_place_formation(ctrl, _ac, _ar) {
             _k += 1;
         }
     }
-    ctrl.points -= _cost;
     ctrl.placing = false;
     ctrl.placing_list = [];
     if (_tele) {
         grid_log(ctrl, $"{_f.name} teleports onto the field.", GRIDC_COL_ORDER);
         grid_floater(ctrl, _ac, _ar, "TELEPORT", GRIDC_COL_ORDER);
     } else {
-        grid_log(ctrl, $"{_f.name} deploys: {_n} squads, {_cost} points.", GRIDC_COL_ORDER);
+        grid_log(ctrl, $"{_f.name} moves up: {_n} squads on the line.", GRIDC_COL_ORDER);
     }
     return true;
 }
@@ -662,7 +676,7 @@ function grid_undeploy_formation(ctrl, _fi) {
         return;
     }
     var _f = ctrl.formations[_fi];
-    var _refund = 0;
+    var _back = 0;
     for (var _i = 0; _i < array_length(_f.members); _i++) {
         var _si = _f.members[_i];
         var _s = ctrl.squads[_si];
@@ -673,12 +687,11 @@ function grid_undeploy_formation(ctrl, _fi) {
         _s.row = -1;
         _s.deployed = false;
         _s.formation = -1;
-        _refund += _s.cost;
+        _back += 1;
     }
     _f.members = [];
     _f.alive = false;
-    ctrl.points += _refund;
-    grid_log(ctrl, $"{_f.name} recalled: {_refund} points returned.", GRIDC_COL_ORDER);
+    grid_log(ctrl, $"{_f.name} pulled back: {_back} squads return to reserve.", GRIDC_COL_ORDER);
 }
 
 /// @function grid_deploy_all
@@ -690,14 +703,13 @@ function grid_deploy_all(ctrl) {
         if (array_length(_pool) <= 0) {
             continue;
         }
+        var _room = ctrl.combat_width - grid_deployed_count(ctrl);
+        if (_room <= 0) {
+            break;
+        }
         var _afford = [];
-        var _spend = 0;
-        for (var _k = 0; _k < array_length(_pool); _k++) {
-            var _c = ctrl.squads[_pool[_k]].cost;
-            if (_spend + _c <= ctrl.points) {
-                array_push(_afford, _pool[_k]);
-                _spend += _c;
-            }
+        for (var _k = 0; (_k < array_length(_pool)) && (_k < _room); _k++) {
+            array_push(_afford, _pool[_k]);
         }
         if (array_length(_afford) <= 0) {
             continue;
@@ -719,7 +731,7 @@ function grid_deploy_all(ctrl) {
         }
     }
     if (!_any) {
-        grid_log(ctrl, "No room or no points left to deploy.", GRIDC_COL_WARN);
+        grid_log(ctrl, "No room left on the line.", GRIDC_COL_WARN);
     }
 }
 
@@ -1152,6 +1164,10 @@ function grid_battle_tick(ctrl) {
         grid_log(ctrl, $"Exchange: {ctrl.agg_ekills} greenskins slain, {ctrl.agg_pkills} of ours lost.", GRIDC_COL_FEED);
     }
 
+    // Feed the line before checking for a wipe, so a chapter with reserves left
+    // is never declared beaten just because its front rank fell.
+    grid_reinforce(ctrl);
+
     if ((ctrl.waves_left > 0) && (ctrl.ticks >= GRIDC_WAVE_TICK)) {
         grid_spawn_wave(ctrl);
     }
@@ -1413,20 +1429,20 @@ function grid_buttons(ctrl) {
     var _field = _deploy || _battle;
 
     var _types = grid_type_list();
-    var _y = 96;
+    var _y = GRIDC_LIST_Y1;
     for (var _i = 0; _i < array_length(_types); _i++) {
         var _key = _types[_i];
         var _d = grid_unit_def(_key);
         var _cnt = grid_pool_count(ctrl, _key);
         array_push(_b, {
-            bx: GRIDC_LP_X1 + 8, by: _y, bw: 240, bh: 34,
+            bx: GRIDC_LP_X1 + 8, by: _y, bw: 240, bh: 24,
             bid: "type:" + _key,
-            blabel: $"{_d.disp} ({_cnt}) {_d.cost}pt",
+            blabel: $"{_d.disp} ({_cnt})",
             benabled: _field && (_cnt > 0),
         });
-        _y += 38;
+        _y += 27;
     }
-    array_push(_b, { bx: GRIDC_LP_X1 + 8, by: 782, bw: 240, bh: 36, bid: "deployall", blabel: "Deploy All", benabled: _field });
+    array_push(_b, { bx: GRIDC_LP_X1 + 8, by: GRIDC_PANEL_Y2 - 46, bw: 240, bh: 34, bid: "deployall", blabel: "Deploy All", benabled: _field });
 
     var _spd = "Normal";
     if (ctrl.speed_mult == 0.5) {
@@ -1455,4 +1471,222 @@ function grid_buttons(ctrl) {
     }
     array_push(_b, { bx: 1336, by: 772, bw: 248, bh: 36, bid: "exit", blabel: (ctrl.exit_arm > 0) ? "Confirm Exit" : "Exit Battle", benabled: true });
     return _b;
+}
+
+/// @function grid_deployed_count
+function grid_deployed_count(ctrl) {
+    var _n = 0;
+    for (var _i = 0; _i < array_length(ctrl.squads); _i++) {
+        var _s = ctrl.squads[_i];
+        if ((_s.side == 0) && _s.deployed && _s.alive) {
+            _n += 1;
+        }
+    }
+    return _n;
+}
+
+// ---------------------------------------------------------------------------
+// Vanilla integration. The grid replaces the tactical layer only: it is handed
+// the force the player actually committed and the front the ground actually
+// allows, so the fight is the same fight the drop screen promised.
+// ---------------------------------------------------------------------------
+
+/// @function grid_combat_enabled
+/// @description Toggle so a bad build is always one cheat away from vanilla.
+/// Set with "gridcombat on" / "gridcombat off".
+function grid_combat_enabled() {
+    if (!variable_global_exists("grid_combat_enabled")) {
+        global.grid_combat_enabled = false;
+    }
+    return global.grid_combat_enabled;
+}
+
+/// @function grid_role_to_type
+/// @description Maps a vanilla role string onto a grid unit type. Anything
+/// unrecognised falls back to Tacticals rather than vanishing from the battle.
+function grid_role_to_type(_role) {
+    var _r = string_lower(string(_role));
+    if (string_count("terminator", _r) > 0) {
+        return (string_count("assault", _r) > 0) ? "assault_term" : "terminator";
+    }
+    if (string_count("assault", _r) > 0) {
+        return "assault";
+    }
+    if (string_count("devastator", _r) > 0) {
+        return "devastator";
+    }
+    if (string_count("scout", _r) > 0) {
+        return "scout";
+    }
+    if (string_count("veteran", _r) > 0) {
+        return "veteran";
+    }
+    if (string_count("tactical", _r) > 0) {
+        return "tactical";
+    }
+    if (string_count("guardsman", _r) > 0) {
+        return "guardsmen";
+    }
+    if (string_count("heavy weapon", _r) > 0) {
+        return "heavy_weapons";
+    }
+    if (string_count("dread", _r) > 0) {
+        return "dreadnought";
+    }
+    if (string_count("land raider", _r) > 0) {
+        return "land_raider";
+    }
+    if (string_count("land speeder", _r) > 0) {
+        return "land_speeder";
+    }
+    if (string_count("whirlwind", _r) > 0) {
+        return "whirlwind";
+    }
+    if (string_count("predator", _r) > 0) {
+        return "predator";
+    }
+    if (string_count("vindicator", _r) > 0) {
+        return "predator";
+    }
+    if (string_count("razorback", _r) > 0) {
+        return "rhino";
+    }
+    if (string_count("rhino", _r) > 0) {
+        return "rhino";
+    }
+    if (string_count("chimera", _r) > 0) {
+        return "chimera";
+    }
+    // Command roles: everything with rank folds into the Command profile.
+    if ((string_count("captain", _r) > 0) || (string_count("chapter master", _r) > 0)
+        || (string_count("chaplain", _r) > 0) || (string_count("librarian", _r) > 0)
+        || (string_count("apothecary", _r) > 0) || (string_count("techmarine", _r) > 0)
+        || (string_count("honour guard", _r) > 0) || (string_count("lexicanum", _r) > 0)
+        || (string_count("codicier", _r) > 0) || (string_count("champion", _r) > 0)
+        || (string_count("ancient", _r) > 0) || (string_count("consul", _r) > 0)) {
+        return "hq";
+    }
+    return "tactical";
+}
+
+/// @function grid_collect_force
+/// @description Reads the committed roster into a plain array of type keys, one
+/// entry per squad. Handles both unit structs and the [company, id] vehicle
+/// pairs the roster mixes together, and skips the empty ghost roles the battle
+/// roster already filters out.
+function grid_collect_force(_roster) {
+    var _out = [];
+    if (!is_struct(_roster)) {
+        return _out;
+    }
+    if (!variable_struct_exists(_roster, "selected_units")) {
+        return _out;
+    }
+    var _units = _roster.selected_units;
+    for (var _i = 0; _i < array_length(_units); _i++) {
+        var _u = _units[_i];
+        var _role = "";
+        if (is_struct(_u)) {
+            _role = _u.role();
+        } else if (is_array(_u) && (array_length(_u) >= 2)) {
+            _role = obj_ini.veh_role[_u[0]][_u[1]];
+        }
+        if (_role == "") {
+            continue;
+        }
+        array_push(_out, grid_role_to_type(_role));
+    }
+    return _out;
+}
+
+/// @function grid_import_force
+/// @description Builds the player pool from a collected force instead of the
+/// generated test roster. Models are grouped into squads of the type's own size,
+/// so a hundred Tacticals become ten squads rather than a hundred single men.
+function grid_import_force(ctrl, _force) {
+    var _counts = {};
+    for (var _i = 0; _i < array_length(_force); _i++) {
+        var _k = _force[_i];
+        if (variable_struct_exists(_counts, _k)) {
+            _counts[$ _k] += 1;
+        } else {
+            _counts[$ _k] = 1;
+        }
+    }
+    var _keys = variable_struct_get_names(_counts);
+    for (var _n = 0; _n < array_length(_keys); _n++) {
+        var _key = _keys[_n];
+        var _def = grid_unit_def(_key);
+        var _models = _counts[$ _key];
+        var _squads = _def.vehicle ? _models : max(1, ceil(_models / _def.men));
+        for (var _s = 0; _s < _squads; _s++) {
+            var _sq = new GridSquad(0, _key, $"{_def.disp} {_s + 1}");
+            array_push(ctrl.squads, _sq);
+        }
+    }
+}
+
+/// @function grid_enemy_set
+/// @description Enemy profiles per faction. Every set keeps the same shape:
+/// a line unit, a close assault unit, an elite, a walker, and a transport, so
+/// force generation is faction agnostic until real enemy rosters are wired in.
+function grid_enemy_set(_faction) {
+    // eFACTION values are not assumed here; the caller passes a lowered name.
+    var _f = string_lower(string(_faction));
+    if (string_count("ork", _f) > 0) {
+        return ["ork_shoota", "ork_slugga", "ork_nob", "ork_dread", "ork_wagon", "ork_weirdboy"];
+    }
+    // Fallback profile: the Ork stat shapes stand in for other factions until
+    // their own rosters exist, rather than leaving the battle empty.
+    return ["ork_shoota", "ork_slugga", "ork_nob", "ork_dread", "ork_wagon", "ork_weirdboy"];
+}
+
+/// @function grid_reinforce
+/// @description Keeps the line full. As squads die the ground frees up, and the
+/// next reserves march on through the deployment edge under their own formation.
+/// This is what stops a huge chapter from swamping a narrow front: everyone
+/// still fights, just in sequence rather than all at once.
+function grid_reinforce(ctrl) {
+    var _free = ctrl.combat_width - grid_deployed_count(ctrl);
+    if (_free <= 0) {
+        return 0;
+    }
+    var _fi = -1;
+    var _sent = 0;
+    for (var _i = 0; _i < array_length(ctrl.squads); _i++) {
+        if (_free <= 0) {
+            break;
+        }
+        var _s = ctrl.squads[_i];
+        if ((_s.side != 0) || _s.deployed || !_s.alive) {
+            continue;
+        }
+        var _spot = [-1, -1];
+        for (var _c = 0; (_c < GRIDC_DEPLOY_COLS) && (_spot[0] < 0); _c++) {
+            for (var _r = ctrl.band_r1; (_r <= ctrl.band_r2) && (_spot[0] < 0); _r++) {
+                if (ctrl.occ[_c][_r] == -1) {
+                    _spot = [_c, _r];
+                }
+            }
+        }
+        if (_spot[0] < 0) {
+            break;
+        }
+        if (_fi < 0) {
+            _fi = grid_new_formation(ctrl, _s.type);
+        }
+        _s.col = _spot[0];
+        _s.row = _spot[1];
+        _s.deployed = true;
+        _s.formation = _fi;
+        ctrl.occ[_s.col][_s.row] = _i;
+        array_push(ctrl.formations[_fi].members, _i);
+        _free -= 1;
+        _sent += 1;
+    }
+    if (_sent > 0) {
+        var _fname = ctrl.formations[_fi].name;
+        grid_log(ctrl, $"Reserves committed: {_fname} advances with {_sent} squads.", GRIDC_COL_ORDER);
+    }
+    return _sent;
 }

@@ -25,7 +25,9 @@ draw_rectangle(GRIDC_LP_X1, 8, GRIDC_RP_X2, 48, true);
 var _ph_name = (phase == GRIDPH_DEPLOY) ? "Deployment" : ((phase == GRIDPH_BATTLE) ? "Battle" : "Resolved");
 draw_text(GRIDC_LP_X1 + 10, 16, $"Grid Combat ( Front {combat_width} ) - {_ph_name} - Tick {ticks}");
 draw_set_halign(fa_right);
-draw_text(GRIDC_RP_X2 - 10, 16, $"Deployment Points: {points}");
+var _online = grid_deployed_count(id);
+var _inres = grid_reserve_count(id);
+draw_text(GRIDC_RP_X2 - 10, 16, $"On the line {_online} / {combat_width}   Reserve {_inres}");
 draw_set_halign(fa_left);
 
 // ---------------------------------------------------------------------------
@@ -273,13 +275,13 @@ draw_rectangle(GRIDC_LP_X1, GRIDC_BF_Y1, GRIDC_LP_X2, GRIDC_PANEL_Y2, false);
 draw_set_color(GRIDC_GREEN);
 draw_rectangle(GRIDC_LP_X1, GRIDC_BF_Y1, GRIDC_LP_X2, GRIDC_PANEL_Y2, true);
 draw_set_font(fnt_40k_14);
-draw_text(GRIDC_LP_X1 + 10, GRIDC_BF_Y1 + 6, "Available Forces:");
+draw_text(GRIDC_LP_X1 + 10, GRIDC_BF_Y1 + 8, "Available Forces:");
 draw_set_font(fnt_40k_12);
-if (phase == GRIDPH_BATTLE) {
-    draw_text(GRIDC_LP_X1 + 10, GRIDC_BF_Y1 + 30, $"Reinforcements: {points} pts");
-} else {
-    draw_text(GRIDC_LP_X1 + 10, GRIDC_BF_Y1 + 30, $"Front holds {combat_width} squads");
-}
+draw_set_color(GRIDC_DIM);
+draw_text(GRIDC_LP_X1 + 10, GRIDC_BF_Y1 + 40, $"Front holds {combat_width} squads");
+draw_text(GRIDC_LP_X1 + 10, GRIDC_BF_Y1 + 62, $"On the line {_online}, reserve {_inres}");
+draw_set_color(GRIDC_GREEN);
+draw_line(GRIDC_LP_X1 + 8, GRIDC_LIST_Y1 - 12, GRIDC_LP_X2 - 8, GRIDC_LIST_Y1 - 12);
 
 // ---------------------------------------------------------------------------
 // Right panel: orders and controls.
@@ -434,19 +436,17 @@ if (popup_open) {
         draw_text(_px + 46, _ry + 30, $"HP {_hp}   Armour {_ar}   Melee {_ml}   Ballistic {_bl}   Speed {_mv}");
         draw_set_font(fnt_40k_12);
         draw_set_color(GRIDC_GREEN);
-        draw_set_halign(fa_right);
-        draw_text(_px + _pw - 20, _ry + 16, $"{_sq.cost}pt");
-        draw_set_halign(fa_left);
+
     }
 
     var _ps = grid_picked_stats(id);
     var _pn2 = _ps.n;
-    var _pc2 = _ps.cost;
+
     var _pp2 = _ps.pow;
     var _pm2 = _ps.mv;
     draw_set_font(fnt_40k_12);
     draw_set_color(GRIDC_GREEN);
-    draw_text(_px + 14, _py + _ph - 44, $"Formation: {_pn2} squads   Power {_pp2}   Speed {_pm2}   Cost {_pc2}pt");
+    draw_text(_px + 14, _py + _ph - 44, $"Formation: {_pn2} squads   Power {_pp2}   Speed {_pm2}");
     draw_set_color((_pn2 > 0) ? GRIDC_GREEN : GRIDC_DIM);
     draw_rectangle(_px + _pw - 190, _py + _ph - 58, _px + _pw - 14, _py + _ph - 12, true);
     draw_set_halign(fa_center);
