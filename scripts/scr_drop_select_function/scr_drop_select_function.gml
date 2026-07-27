@@ -137,10 +137,12 @@ function drop_select_unit_selection() {
     draw_set_halign(fa_left);
 
     // Unit types buttons;
+    // Dropped from y2 - 220 so the front-width readout under the sector selector has clear
+    // air above this header instead of the two lines colliding.
     var _squads_box = {
         header: "Selected Squads:",
         x1: x1 + 40,
-        y1: y2 - 220,
+        y1: y2 - 196,
     };
     draw_text(_squads_box.x1, _squads_box.y1, _squads_box.header);
     // Spent-ship warning: troops locked aboard ships that already supported their maximum

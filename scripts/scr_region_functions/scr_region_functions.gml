@@ -18,6 +18,72 @@
 
 #region generation
 
+/// @function region_terrain_name_pool
+/// @description Zone names for one terrain. Every name deliberately carries a keyword that
+///              region_terrain recognises, which is what keeps the name and the ground it
+///              describes in agreement: the terrain is chosen FIRST from the planet type, then
+///              the name is drawn from that terrain's pool. Reading the terrain back out of
+///              the name means no new persisted field and old saves keep working unchanged.
+/// @param {String} _terrain
+/// @returns {Array<String>}
+function region_terrain_name_pool(_terrain) {
+    switch (_terrain) {
+        case "mountain": return [
+            "The Iron Peaks", "Ridgeback Highlands", "Cragspire Reach", "The Shattered Summit",
+            "Ashen Cliffs", "The Broken Ridge", "Stormcrag Highlands", "The Spine of Dust",
+        ];
+        case "marsh": return [
+            "Saltmarsh Expanse", "The Great Mire", "Blackfen Delta", "The Drowned Moor",
+            "Rotwater Bog", "The Sunken Marsh", "Corpsefen Wetlands", "The Weeping Mire",
+        ];
+        case "forest": return [
+            "The Verdant Canopy", "Deadwood Thicket", "The Choking Jungle", "Thornthicket Reach",
+            "The Silent Grove", "Ironbark Forest", "The Timber Marches", "Serpent Canopy",
+        ];
+        case "urban": return [
+            "Blackspire District", "Grimhold District", "The Rust Sprawl", "Foundry Quarter",
+            "The Undercity Warrens", "Manufactorum Reach", "Hab-Stack Nine", "The Spire Districts",
+        ];
+        case "coastal": return [
+            "Sundered Coast", "Stormwall Coast", "The Broken Shore", "Kraken Bay",
+            "The Iron Strand", "Reefbreak Harbour", "The Grey Shore", "Tidewrack Coast",
+        ];
+        case "open": return [
+            "Duststorm Barrens", "The Pale Wastes", "Ferrous Flats", "The Shattered Plains",
+            "The Glasslands", "Ember Flats", "The Ashlands", "Cinder Barrens",
+            "Saltpan Expanse", "The Rust Barrens", "Ironsand Basin", "Windscour Steppe",
+        ];
+    }
+    return ["The Hollow Vale", "Umbral Reaches", "Northern Reaches", "Southern Expanse"];
+}
+
+/// @function region_terrain_planet_mix
+/// @description The terrains a planet type actually offers, listed with repeats to weight the
+///              draw. A Death world is mostly killing jungle, a Hive world is city all the way
+///              down, an ice or desert world is open ground with a few highlands. Unknown types
+///              get a mixed temperate spread.
+/// @param {String} _type
+/// @returns {Array<String>}
+function region_terrain_planet_mix(_type) {
+    switch (_type) {
+        case "Death":     return ["forest", "forest", "forest", "forest", "forest", "marsh", "marsh", "mountain", "mountain", "open"];
+        case "Jungle":    return ["forest", "forest", "forest", "forest", "forest", "forest", "marsh", "marsh"];
+        case "Hive":      return ["urban", "urban", "urban", "urban", "urban", "open", "coastal"];
+        case "Forge":     return ["urban", "urban", "urban", "urban", "urban", "mountain", "open"];
+        case "Desert":    return ["open", "open", "open", "open", "open", "open", "mountain"];
+        case "Ice":       return ["open", "open", "open", "open", "open", "mountain", "mountain", "coastal"];
+        case "Agri":      return ["open", "open", "open", "forest", "forest", "coastal", "coastal", "marsh"];
+        case "Temperate": return ["forest", "forest", "open", "open", "coastal", "coastal", "mountain", "marsh"];
+        case "Lava":      return ["mountain", "mountain", "mountain", "open", "open", "open"];
+        case "Ocean":
+        case "Aquatic":   return ["coastal", "coastal", "coastal", "coastal", "coastal", "marsh", "marsh"];
+        case "Dead":      return ["open", "open", "open", "open", "mountain", "mountain"];
+        case "Shrine":
+        case "Feudal":    return ["forest", "forest", "open", "open", "mountain", "urban"];
+    }
+    return ["forest", "open", "open", "coastal", "mountain", "marsh"];
+}
+
 /// @function region_name_pool
 /// @description Static pool of outlying-region display names (capital is named separately).
 ///              Names are drawn RANDOMLY and without repeats per planet (see region_pick_zone_names),
@@ -42,21 +108,41 @@ function region_name_pool() {
 ///              than names are ever needed, falls back to numbered "Zone N".
 /// @param {Real} _count
 /// @returns {Array<String>}
-function region_pick_zone_names(_count) {
-    var _pool = region_name_pool();
-    var _n = array_length(_pool);
-    var _avail = array_create(_n);
-    array_copy(_avail, 0, _pool, 0, _n);
-
+function region_pick_zone_names(_count, _planet_type = "") {
+    // Terrain FIRST, then a name that describes it. The old order picked a name from one flat
+    // pool and let the terrain be whatever the name happened to imply, so a desert world could
+    // field a drowned moor and a hive world a verdant belt. Drawing the terrain from the
+    // planet's own mix means a Death world reads as jungle, a Forge world as foundries, and
+    // the front width that terrain implies matches what the player is looking at.
+    var _mix = region_terrain_planet_mix(_planet_type);
     var _names = [];
+    var _used = [];
     for (var i = 0; i < _count; i++) {
-        if (array_length(_avail) > 0) {
-            var _idx = irandom(array_length(_avail) - 1);
-            array_push(_names, _avail[_idx]);
-            array_delete(_avail, _idx, 1);
-        } else {
-            array_push(_names, "Zone " + string(i + 1));
+        var _terrain = _mix[irandom(array_length(_mix) - 1)];
+        var _pool = region_terrain_name_pool(_terrain);
+        var _picked = "";
+        // Try the terrain's own pool for an unused name, then any pool, then a numbered zone.
+        for (var _try = 0; _try < array_length(_pool) * 3; _try++) {
+            var _cand = _pool[irandom(array_length(_pool) - 1)];
+            if (!array_contains(_used, _cand)) {
+                _picked = _cand;
+                break;
+            }
         }
+        if (_picked == "") {
+            var _fallback = region_name_pool();
+            for (var _f = 0; _f < array_length(_fallback); _f++) {
+                if (!array_contains(_used, _fallback[_f])) {
+                    _picked = _fallback[_f];
+                    break;
+                }
+            }
+        }
+        if (_picked == "") {
+            _picked = "Zone " + string(i + 1);
+        }
+        array_push(_used, _picked);
+        array_push(_names, _picked);
     }
     return _names;
 }
@@ -245,7 +331,7 @@ function region_names_ensure(_star, _planet, _outlying_count) {
     if (is_array(_stored) && (array_length(_stored) >= _outlying_count)) {
         return _stored;
     }
-    var _names = region_pick_zone_names(_outlying_count);
+    var _names = region_pick_zone_names(_outlying_count, string(_star.p_type[_planet]));
     _star.p_region_names[_planet] = _names;
     return _names;
 }
@@ -6433,6 +6519,12 @@ function region_garrison(_star, _planet, _index, _faction) {
 /// @returns {String} "mountain" | "marsh" | "forest" | "urban" | "coastal" | "open"
 function region_terrain(_star, _planet, _index) {
     var _region = region_get(_star, _planet, _index);
+    // The seat of power is a city wherever it stands: hive spires, a forge's foundry district,
+    // a feudal fortress-town. Always urban, so the capital reads and fights the same way on
+    // every world type.
+    if (is_struct(_region) && variable_struct_exists(_region, "is_capital") && _region.is_capital) {
+        return "urban";
+    }
     var _name = (is_struct(_region) && variable_struct_exists(_region, "name")) ? string_lower(string(_region.name)) : "";
     if (enemy_name_has(_name, ["mount", "high", "crag", "peak", "ridge", "spine", "summit", "cliff"])) { return "mountain"; }
     if (enemy_name_has(_name, ["marsh", "mire", "bog", "fen", "swamp", "delta", "wetland", "moor"])) { return "marsh"; }

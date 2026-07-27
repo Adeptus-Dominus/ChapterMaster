@@ -117,6 +117,29 @@ if (!engaged) {
                         // to shooting the men instead of idling. The original code gated
                         // this whole fallback behind a multi-block check, so a lone
                         // men-only block left every AP weapon firing zero shots.
+                        // Same-rank mirror: a vehicle block can sit BESIDE the men-only block
+                        // that was returned, not behind it, and armour in the same rank is not
+                        // screened by the men next to it.
+                        var _ap_same_rank = noone;
+                        with (obj_pnunit) {
+                            if (id == other.enemy) {
+                                continue;
+                            }
+                            if (x != other.enemy.x) {
+                                continue;
+                            }
+                            if (!block_has_armour(id) && (veh_type[1] != "Defenses")) {
+                                continue;
+                            }
+                            _ap_same_rank = id;
+                            break;
+                        }
+                        if ((_ap_same_rank != noone) && target_block_is_valid(_ap_same_rank, obj_pnunit)
+                            && (range[i] >= get_block_distance(_ap_same_rank))) {
+                            obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"AP -> vehicle beside the front block in the same rank {resolve_block_label(_ap_same_rank)}, firing");
+                            scr_shoot(i, _ap_same_rank, target_unit_index, "arp", "ranged");
+                            continue;
+                        }
                         if (instance_number(obj_pnunit) > 1) { // Upstream (4bd385330): Orks look behind the front line too
                             var _column_size_value = enemy.column_size;
                             var x2 = enemy.x;
@@ -201,6 +224,35 @@ if (!engaged) {
                     // nearest-behind first, and the first two men-bearing blocks in
                     // weapon range become rank 2 and rank 3.
                     var _front_x = enemy.x;
+                    // SAME RANK FIRST. Per-type formations and the close-up advance both pack
+                    // several blocks into one column, so the block get_rightmost returned can
+                    // be a tank while infantry stands BESIDE it at the same x. Those men are
+                    // not screened by the armour, they are next to it, so they are shot
+                    // directly with no soak. The pierce walk below only ever considered
+                    // strictly-lower x, so once formations started sharing columns it could
+                    // not see them at all: every anti-infantry volley found no men, fell
+                    // through to the armour fallback, and spent the battle plinking hulls
+                    // ("the enemy mainly shoot at tanks").
+                    var _same_rank = noone;
+                    with (obj_pnunit) {
+                        if (id == other.enemy) {
+                            continue;
+                        }
+                        if (x != _front_x) {
+                            continue;
+                        }
+                        if (men <= 0) {
+                            continue;
+                        }
+                        _same_rank = id;
+                        break;
+                    }
+                    if ((_same_rank != noone) && target_block_is_valid(_same_rank, obj_pnunit)
+                        && (range[i] >= get_block_distance(_same_rank))) {
+                        obj_ncombat.combat_debugger.add(eCOMBAT_CATEGORY.TARGETING, $"non-AP -> infantry beside the armour in the same rank {resolve_block_label(_same_rank)}, firing");
+                        scr_shoot(i, _same_rank, target_unit_index, "att", "ranged");
+                        continue;
+                    }
                     var _behind = [];
                     with (obj_pnunit) {
                         if (id == other.enemy) {
