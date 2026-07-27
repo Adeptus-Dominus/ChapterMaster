@@ -139,10 +139,21 @@ try {
     // Battle-size clamp (see ENEMY_BATTLE_THREAT_CAP in macros.gml): level-scale
     // threats (1-6) are capped for spawn sizing; 7 (Enormicus) and raw garrison
     // headcounts (Imperial worlds pass guardsmen counts through threat) pass free.
-    // The capital fields the world's full weight; an outlying sector meets the bounded
-    // slice. battle_region 0 is the capital and -1 is a single-region world (also a full
-    // fight), so both lift to the capital cap.
-    var _threat_cap = (battle_region <= 0) ? ENEMY_BATTLE_THREAT_CAP_CAPITAL : ENEMY_BATTLE_THREAT_CAP;
+    // The capital fields the world's full weight, and so does a defender cornered on its
+    // LAST region: both are the fight where the enemy has nothing left to hold back for.
+    // battle_region 0 is the capital and -1 is a single-region world (also a full fight).
+    // The last-stand test runs for every faction on every world, so the final battle of a
+    // planetary campaign is the hardest one even when it happens in an outlying sector.
+    last_stand = false;
+    if (instance_exists(battle_object) && is_real(battle_region) && (battle_region >= 0)) {
+        last_stand = (planet_faction_last_region(battle_object, battle_id, enemy) == battle_region);
+    }
+    var _threat_cap = ENEMY_BATTLE_THREAT_CAP;
+    if (battle_region <= 0) {
+        _threat_cap = ENEMY_BATTLE_THREAT_CAP_CAPITAL;
+    } else if (last_stand) {
+        _threat_cap = ENEMY_BATTLE_THREAT_CAP_LAST_STAND;
+    }
     var _threat_raw = threat;
     if ((threat >= 1) && (threat <= 6) && (threat > _threat_cap)) {
         threat = _threat_cap;
@@ -153,7 +164,10 @@ try {
     // Liberation failure mode: it punishes committing force and collapses play into
     // min-maxing a tiny stack. Logging the whole decision means any future change that
     // sneaks a player-force term into the spawn shows up in the very next tester log.
-    LOGGER.info($"ENEMY SPAWN: faction {enemy}, threat {_threat_raw} -> {threat} (cap {_threat_cap}, battle_region {battle_region}, capital={(battle_region <= 0)}); sizing inputs are world tier and region only");
+    LOGGER.info($"ENEMY SPAWN: faction {enemy}, threat {_threat_raw} -> {threat} (cap {_threat_cap}, battle_region {battle_region}, capital={(battle_region <= 0)}, last_stand={last_stand}); sizing inputs are world tier and region only");
+    if (last_stand && (battle_region > 0)) {
+        combat_log.push("The foe is cornered on their last ground here. They throw in everything that still stands.", eMSG_COLOR.YELLOW);
+    }
 
     var _num = xxx / 10;
     for (var j = 1; j <= 10; j++) {
@@ -3494,6 +3508,10 @@ try {
 
     // Every faction fill is done: divide the spawned blocks into per-category formation
     // segments before any block's Alarm_1 builds its weapon stacks and force accounting.
+    // Trim the spawned army to what this ground can hold in contact, then split what remains
+    // into formation segments. Order matters: the clamp scales raw dudes_num, and the split
+    // moves those entries between blocks.
+    enemy_front_width_clamp();
     enemy_formation_split();
 
     instance_activate_object(obj_enunit);

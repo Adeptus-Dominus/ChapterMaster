@@ -85,6 +85,12 @@
 // is what makes a decapitation strike the hard battle without making outlying grinding
 // unwinnable, and it is why region garrisons no longer need a stored headcount cap.
 #macro ENEMY_BATTLE_THREAT_CAP_CAPITAL 6
+// LAST STAND. Cornered on the final region it holds on a world, with nowhere to fall back
+// to, a faction throws in everything rather than feeding the line a slice at a time. Same
+// ceiling as the capital, which is the top of the tier ladder, but reached from an
+// OUTLYING region, where the fight would otherwise have been capped two tiers lower. This
+// is what stops a foe with a seven-figure reserve evaporating to one ordinary battle.
+#macro ENEMY_BATTLE_THREAT_CAP_LAST_STAND 6
 // Region commitment (assault balance): attacking an OUTLYING sector of a
 // multi-region world engages only this share of the enemy's real headcount;
 // they hold the rest back to garrison their other ground. Assaulting the
@@ -152,6 +158,16 @@
 // enemy trickles reinforcements up the line instead of teleporting a full garrison in one turn.
 // A region farther from the capital reinforces even slower (the cap is divided by hop distance).
 #macro REGION_REINFORCE_CAP 500
+
+// ---- Front width and terrain (Paradox-style regional war) ----
+// A region can only feed so many troops into contact at once: its FRONT WIDTH. The rest of
+// the garrison is reserve, trickling forward at the region's reinforcement rate. Terrain
+// decides both, so where you fight matters as much as who: open desert is a wide front that
+// reinforces fast, a mountain pass is a narrow one that starves. Each region also carries a
+// persistent random modifier so no two of the same terrain read alike.
+#macro REGION_FRONT_WIDTH_MIN 500
+#macro REGION_FRONT_WIDTH_MAX 3000
+#macro REGION_FRONT_VARIANCE 0.25
 
 // How many PDF one Guardsman is worth when scoring how hard a world is to INVADE
 // (determine_pdf_defence). Guardsmen are line troops, so they hold ground better than the same

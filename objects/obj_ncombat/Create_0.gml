@@ -145,6 +145,9 @@ enemy_fortified = 0;
 // victory cuts their strategic level by 1 instead of 2 (Alarm_5). Declared here
 // or the Alarm_5 read crashes (no default-zero in this codebase).
 region_partial = false;
+// Last stand: the defender is cornered on the final region it holds on this world and
+// fights at full strength (see ENEMY_BATTLE_THREAT_CAP_LAST_STAND).
+last_stand = false;
 // The region index this ground battle is being fought over (captured at launch from the player's
 // focus), so post-battle landing/attrition use the SAME region the assault targeted rather than
 // re-reading the focus at battle end (which can drift or reset). -1 = whole planet / not regional.

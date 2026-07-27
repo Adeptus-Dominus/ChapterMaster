@@ -4145,7 +4145,7 @@ function regions_reinforce_tick(_star, _planet) {
         // per-turn reinforcement throughput, which shrinks the farther the region is from the
         // capital (a distant region takes several turns to build back up).
         var _hops = max(1, region_hops_from_capital(_star, _planet, i));
-        var _turn_cap = max(1, floor(REGION_REINFORCE_CAP / _hops));
+        var _turn_cap = max(1, floor(region_reinforce_rate(_star, _planet, i) / _hops));
         var _move = max(0, min(min(_deficit, _best_surplus), _turn_cap));
         if (_move <= 0) { continue; }
         _regions[_best].enemy_force -= _move;
@@ -6420,6 +6420,121 @@ function region_garrison(_star, _planet, _index, _faction) {
         return 0;
     }
     return max(1, round(_total * (_weight_self / _weight_total)));
+}
+
+/// @function region_terrain
+/// @description The terrain a region fights over, read from its generated NAME first (the names
+///              already describe the ground: Duststorm Barrens, Saltmarsh Expanse, Ironhold
+///              Basin) and falling back to the planet type. Terrain drives front width and
+///              reinforcement rate, so where a battle happens matters as much as who is in it.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _index
+/// @returns {String} "mountain" | "marsh" | "forest" | "urban" | "coastal" | "open"
+function region_terrain(_star, _planet, _index) {
+    var _region = region_get(_star, _planet, _index);
+    var _name = (is_struct(_region) && variable_struct_exists(_region, "name")) ? string_lower(string(_region.name)) : "";
+    if (enemy_name_has(_name, ["mount", "high", "crag", "peak", "ridge", "spine", "summit", "cliff"])) { return "mountain"; }
+    if (enemy_name_has(_name, ["marsh", "mire", "bog", "fen", "swamp", "delta", "wetland", "moor"])) { return "marsh"; }
+    if (enemy_name_has(_name, ["forest", "jungle", "wood", "canopy", "timber", "thicket", "grove"])) { return "forest"; }
+    if (enemy_name_has(_name, ["hive", "sprawl", "hold", "city", "urban", "spire", "manufact", "foundry", "stack", "warren"])) { return "urban"; }
+    if (enemy_name_has(_name, ["coast", "shore", "strand", "bay", "sound", "reef", "harbour", "harbor"])) { return "coastal"; }
+    if (enemy_name_has(_name, ["waste", "barren", "flat", "plain", "expanse", "steppe", "dust", "sand", "desert", "salt", "glass", "ash", "basin"])) { return "open"; }
+    switch (string(_star.p_type[_planet])) {
+        case "Hive": case "Forge": return "urban";
+        case "Jungle": case "Death": return "forest";
+        case "Desert": case "Ice": case "Dead": case "Lava": return "open";
+    }
+    return "coastal"; // middling default
+}
+
+/// @function region_terrain_front_base
+/// @description Base front width for a terrain, before the region's own random modifier.
+/// @param {String} _terrain
+/// @returns {Real}
+function region_terrain_front_base(_terrain) {
+    switch (_terrain) {
+        case "mountain": return 600;   // passes: a handful of companies decide it
+        case "marsh":    return 800;
+        case "forest":   return 1100;
+        case "urban":    return 1600;  // dense, but channelled street by street
+        case "coastal":  return 2000;
+        case "open":     return 2800;  // armies deploy in the open and everyone fights
+    }
+    return 1600;
+}
+
+/// @function region_terrain_reinforce_factor
+/// @description How readily reserves reach the line here. Open ground moves an army; a mountain
+///              pass or a swamp starves the front, so a narrow region is doubly punishing.
+/// @param {String} _terrain
+/// @returns {Real}
+function region_terrain_reinforce_factor(_terrain) {
+    switch (_terrain) {
+        case "mountain": return 0.4;
+        case "marsh":    return 0.5;
+        case "forest":   return 0.7;
+        case "urban":    return 0.9;
+        case "coastal":  return 1.1;
+        case "open":     return 1.5;
+    }
+    return 1;
+}
+
+/// @function region_front_width
+/// @description How many troops this region can hold in contact at once. The rest of whoever
+///              holds it is reserve, fed forward at the region's reinforcement rate. Seeded
+///              once from terrain times a persistent random modifier and stored, guarded for
+///              old saves (Region is plain data restored raw from p_regions).
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _index
+/// @returns {Real}
+function region_front_width(_star, _planet, _index) {
+    var _regions = regions_ensure(_star, _planet);
+    if ((_index < 0) || (_index >= array_length(_regions))) {
+        return REGION_FRONT_WIDTH_MAX;
+    }
+    var _region = _regions[_index];
+    if (!variable_struct_exists(_region, "front_width") || !is_real(_region.front_width) || (_region.front_width <= 0)) {
+        var _base = region_terrain_front_base(region_terrain(_star, _planet, _index));
+        var _roll = _base * (1 + random_range(-REGION_FRONT_VARIANCE, REGION_FRONT_VARIANCE));
+        _region.front_width = round(clamp(_roll, REGION_FRONT_WIDTH_MIN, REGION_FRONT_WIDTH_MAX));
+    }
+    return _region.front_width;
+}
+
+/// @function region_reinforce_rate
+/// @description Force this region can pull forward from reserve in one turn, terrain-scaled.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _index
+/// @returns {Real}
+function region_reinforce_rate(_star, _planet, _index) {
+    return max(1, round(REGION_REINFORCE_CAP * region_terrain_reinforce_factor(region_terrain(_star, _planet, _index))));
+}
+
+/// @function planet_faction_last_region
+/// @description The index of the ONLY region a faction still holds on this world, or -1 when
+///              it holds none or more than one. A faction down to its last region has nowhere
+///              to send reserves and nothing left to hold back: that battle is its last stand.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _faction
+/// @returns {Real}
+function planet_faction_last_region(_star, _planet, _faction) {
+    var _regions = regions_ensure(_star, _planet);
+    var _found = -1;
+    for (var i = 0, l = array_length(_regions); i < l; i++) {
+        if (_regions[i].owner != _faction) {
+            continue;
+        }
+        if (_found >= 0) {
+            return -1; // holds more than one: still has somewhere to fall back to
+        }
+        _found = i;
+    }
+    return _found;
 }
 
 /// @function region_garrison_modifier

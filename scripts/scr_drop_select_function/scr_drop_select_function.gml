@@ -279,7 +279,12 @@ function drop_select_unit_selection() {
             // Front line: say why a sector cannot be struck, so cycling past a locked one
             // reads as a campaign rule rather than a dead click.
             if (!region_can_assault_index(p_target, planet_number, _seci)) {
-                _sector_str += (_secr.owner == eFACTION.PLAYER) ? " [HELD]" : " [NO FRONT]";
+                _sector_str += region_owner_is_friendly(p_target, planet_number, _seci) ? " [HELD]" : " [NO FRONT]";
+            }
+            // Warn before committing: cornered on their final ground, the foe fights with
+            // everything left on the world instead of holding a reserve back.
+            if ((_secr.owner == attacking) && (planet_faction_last_region(p_target, planet_number, attacking) == _seci)) {
+                _sector_str += " [LAST STAND]";
             }
             // Drawn directly (not via InteractiveButton, whose width-based text padding pushes a
             // wide label to the box bottom): a centred box with the text centred both ways inside it.
@@ -301,11 +306,21 @@ function drop_select_unit_selection() {
             draw_text(x3, (_ssy1 + _ssy2) / 2, _sector_str);
             draw_set_halign(fa_left);
             draw_set_valign(fa_top);
+            // Combat width: the ground itself limits how many troops either side can hold in
+            // contact, so the shape of the fight is readable before committing and an
+            // oversized force is visibly surplus rather than silently wasted.
+            var _front_w = region_front_width(p_target, planet_number, _seci);
+            var _front_str = $"Front ({region_terrain(p_target, planet_number, _seci)}): {scr_display_number(_front_w)} hold the line | you commit {scr_display_number(roster.selected_count())}";
+            if (roster.selected_count() > _front_w) {
+                draw_set_color(c_yellow);
+                _front_str += " - surplus waits in reserve";
+            }
+            draw_text(_ssx1, _ssy2 + 6, _front_str);
+            draw_set_color(CM_GREEN_COLOR);
             if (scr_hit(_ssx1, _ssy1, _ssx2, _ssy2) && mouse_button_clicked()) {
                 // Cycle to the next sector the front actually allows, so the selector only
-                // ever lands on a region the assault can be launched at. Falls back to the
-                // plain next index when nothing is assaultable, leaving the launch gate to
-                // explain why.
+                // lands on a region the assault can be launched at. Falls back to the plain
+                // next index when nothing is assaultable, leaving the launch gate to explain.
                 var _region_count = planet_region_count(p_target, planet_number);
                 var _new_focus = (_seci + 1) mod _region_count;
                 for (var _try = 0; _try < _region_count; _try++) {
@@ -396,6 +411,7 @@ function drop_select_unit_selection() {
             if (sh_target != noone) {
                 sh_target.acted += 1;
                 LOGGER.info($"DROP LAUNCH {((attack == 1) ? "attack" : "raid")}: fleet acted now {sh_target.acted}");
+                LOGGER.info($"DROP ROSTER: {roster.selected_count()} unit(s) launching, {roster.spent_ship_stranded_count()} locked aboard spent ships, {array_length(roster.full_roster_units)} left behind in total");
                 LOGGER.info($"DROP ROSTER: {roster.selected_count()} unit(s) launching, {roster.spent_ship_stranded_count()} locked aboard spent ships, {array_length(roster.full_roster_units)} left behind in total");
             }
 

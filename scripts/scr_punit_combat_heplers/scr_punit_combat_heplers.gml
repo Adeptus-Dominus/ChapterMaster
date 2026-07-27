@@ -552,6 +552,55 @@ function enemy_formation_split() {
     LOGGER.info($"ENEMY FORMATIONS: {array_length(_origins)} spawned block(s) split into {array_length(_origins) + _segments} formation segment(s)");
 }
 
+/// @desc Trim the spawned enemy army to the region's FRONT WIDTH. The spawn tables size an
+/// army from the world's strength tier, which says how much the faction HAS, not how much of
+/// it can stand in contact on this particular ground. Terrain decides that: an open desert
+/// basin fields thousands abreast, a mountain pass a few hundred, and the remainder is
+/// reserve that trickles forward between turns (regions_reinforce_tick). Scaling the whole
+/// roster preserves its composition, so a trimmed army is the same army with fewer bodies in
+/// each block rather than a different one. Skipped entirely on a LAST STAND, where the
+/// defender has no reserve left to hold back and throws everything into the line at once.
+/// @returns {Undefined}
+function enemy_front_width_clamp() {
+    if (!instance_exists(obj_enunit) || !instance_exists(obj_ncombat)) {
+        return;
+    }
+    if (obj_ncombat.last_stand) {
+        LOGGER.info("FRONT WIDTH: last stand, the defender commits everything and the width clamp is lifted");
+        return;
+    }
+    var _star = obj_ncombat.battle_object;
+    if (!instance_exists(_star)) {
+        return;
+    }
+    var _region = obj_ncombat.battle_region;
+    if (!is_real(_region) || (_region < 0) || (_region >= planet_region_count(_star, obj_ncombat.battle_id))) {
+        return; // single-region world or no region context: nothing to bound it by
+    }
+    var _width = region_front_width(_star, obj_ncombat.battle_id, _region);
+    var _total = 0;
+    with (obj_enunit) {
+        for (var _j = 1; _j <= 700; _j++) {
+            if (dudes_num[_j] > 0) {
+                _total += dudes_num[_j];
+            }
+        }
+    }
+    if ((_total <= _width) || (_total <= 0)) {
+        LOGGER.info($"FRONT WIDTH: region {_region} ({region_terrain(_star, obj_ncombat.battle_id, _region)}) width {_width}, enemy fielded {_total}, under the line");
+        return;
+    }
+    var _scale = _width / _total;
+    with (obj_enunit) {
+        for (var _j = 1; _j <= 700; _j++) {
+            if (dudes_num[_j] > 0) {
+                dudes_num[_j] = max(1, floor(dudes_num[_j] * _scale));
+            }
+        }
+    }
+    LOGGER.info($"FRONT WIDTH: region {_region} ({region_terrain(_star, obj_ncombat.battle_id, _region)}) width {_width}, enemy {_total} trimmed to the line, the rest holds in reserve");
+}
+
 /// @desc Melee-doctrine races never form a gunline: an Ork or Tyranid horde brings its
 /// heavy weapons forward with everything else. Every other race's fire support holds
 /// position and shoots, which is what makes their line worth flanking.
