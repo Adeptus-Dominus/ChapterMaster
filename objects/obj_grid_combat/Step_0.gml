@@ -21,21 +21,26 @@ if (!boot_done) {
     grid_spawn_enemy_force(id);
     grid_centre_view(id, GRIDC_DEPLOY_COLS, floor(rows / 2));
     if (pending_loc != "") {
-        grid_log(id, $"Battle for {pending_loc}.", GRIDC_COL_FEED);
+        grid_log(id, $"Battle for {pending_loc}.", eMSG_COLOR.BRIGHT_BLUE);
     }
-    grid_log(id, $"The ground holds {combat_width} squads on the line. The rest follow as reserves.", GRIDC_COL_FEED);
+    grid_log(id, $"The ground holds {combat_width} squads on the line. The rest follow as reserves.", eMSG_COLOR.BRIGHT_BLUE);
     if (pending_live) {
-        grid_log(id, "Live battle: these are your real companies and your losses are permanent.", GRIDC_COL_WARN);
+        grid_log(id, "Live battle: these are your real companies and your losses are permanent.", eMSG_COLOR.YELLOW);
     }
-    grid_log(id, "Left click selects, drag a box to select several, right click orders.", GRIDC_COL_ORDER);
-    grid_log(id, "Deploying: drag out the front rank and the block forms along it.", GRIDC_COL_ORDER);
-    grid_log(id, "Ctrl and a number binds a control group, the number recalls it.", GRIDC_COL_ORDER);
-    grid_log(id, "WASD pans the field. Tab toggles the overview.", GRIDC_COL_ORDER);
+    grid_log(id, "Left click selects, drag a box to select several, right click orders.", eMSG_COLOR.AQUA);
+    grid_log(id, "Deploying: drag out the front rank and the block forms along it.", eMSG_COLOR.AQUA);
+    grid_log(id, "Ctrl and a number binds a control group, the number recalls it.", eMSG_COLOR.AQUA);
+    grid_log(id, "WASD pans the field. Tab toggles the overview.", eMSG_COLOR.AQUA);
 }
 
 if (exit_arm > 0) {
     exit_arm -= 1;
 }
+
+// Scrollback over the log strip, same wheel and scrollbar handling as a vanilla
+// battle. Scoped to the strip, so it never competes with the deployment popup's
+// own wheel scrolling.
+log.update_scroll(GRIDC_BF_X1 + 4, GRIDC_LOG_Y1, GRIDC_BF_X2 - GRIDC_BF_X1, GRIDC_LOG_Y2 - GRIDC_LOG_Y1);
 
 var _mgx = device_mouse_x_to_gui(0);
 var _mgy = device_mouse_y_to_gui(0);
@@ -118,7 +123,7 @@ if (popup_open) {
                     var _ps0 = grid_picked_stats(id);
                     var _room0 = combat_width - grid_deployed_count(id);
                     if (_ps0.n >= _room0) {
-                        grid_log(id, $"Only {_room0} squads still fit on the line.", GRIDC_COL_WARN);
+                        grid_log(id, $"Only {_room0} squads still fit on the line.", eMSG_COLOR.YELLOW);
                     } else {
                         _sq.picked = true;
                     }
@@ -176,7 +181,7 @@ if (placing) {
             }
         }
         if (!_put) {
-            grid_log(id, "Cannot deploy there.", GRIDC_COL_WARN);
+            grid_log(id, "Cannot deploy there.", eMSG_COLOR.YELLOW);
         }
         place_c0 = -1;
         place_r0 = -1;
@@ -214,7 +219,7 @@ if (_lc) {
             grid_deploy_all(id);
         } else if (_bid == "start") {
             phase = GRIDPH_BATTLE;
-            grid_log(id, "Battle begins. The greenskins advance!", GRIDC_COL_WARN);
+            grid_log(id, "Battle begins. The greenskins advance!", eMSG_COLOR.YELLOW);
         } else if (_bid == "pause") {
             paused = !paused;
         } else if (_bid == "speed") {
@@ -229,12 +234,12 @@ if (_lc) {
                 formations[selected[_oa]].order = GRIDORD_ADVANCE;
                 formations[selected[_oa]].order_target = -1;
             }
-            grid_log(id, "Advance and engage.", GRIDC_COL_ORDER);
+            grid_log(id, "Advance and engage.", eMSG_COLOR.AQUA);
         } else if (_bid == "ord_hold") {
             for (var _oh = 0; _oh < array_length(selected); _oh++) {
                 formations[selected[_oh]].order = GRIDORD_HOLD;
             }
-            grid_log(id, "Hold position.", GRIDC_COL_ORDER);
+            grid_log(id, "Hold position.", eMSG_COLOR.AQUA);
         } else if (_bid == "stance") {
             for (var _os = 0; _os < array_length(selected); _os++) {
                 var _fs = formations[selected[_os]];
@@ -243,7 +248,7 @@ if (_lc) {
             if (array_length(selected) > 0) {
                 var _sv = formations[selected[0]].stance;
                 var _sl = (_sv == 1) ? "seek melee" : ((_sv == 2) ? "avoid melee" : "melee at will");
-                grid_log(id, $"Stance: {_sl}.", GRIDC_COL_ORDER);
+                grid_log(id, $"Stance: {_sl}.", eMSG_COLOR.AQUA);
             }
         } else if (_bid == "exit") {
             if (exit_arm > 0) {
@@ -252,9 +257,9 @@ if (_lc) {
             }
             exit_arm = 90;
             if (pending_live) {
-                grid_log(id, "Withdrawing hands the field to the enemy and is recorded as a defeat. Click again to confirm.", GRIDC_COL_WARN);
+                grid_log(id, "Withdrawing hands the field to the enemy and is recorded as a defeat. Click again to confirm.", eMSG_COLOR.YELLOW);
             } else {
-                grid_log(id, "Click Exit again to leave the prototype.", GRIDC_COL_WARN);
+                grid_log(id, "Click Exit again to leave the prototype.", eMSG_COLOR.YELLOW);
             }
         }
         break;
@@ -274,16 +279,16 @@ if (!_consumed && grid_in_viewport(_mgx, _mgy)) {
         var _hit = grid_squad_at(id, hover_c, hover_r);
         if ((_hit >= 0) && (squads[_hit].side == 1) && (array_length(selected) > 0)) {
             grid_order_attack(id, _hit);
-            grid_log(id, $"Concentrate fire on {squads[_hit].name}!", GRIDC_COL_ORDER);
+            grid_log(id, $"Concentrate fire on {squads[_hit].name}!", eMSG_COLOR.AQUA);
         } else if ((_hit >= 0) && (squads[_hit].side == 0) && (phase == GRIDPH_DEPLOY)) {
             grid_undeploy_formation(id, squads[_hit].formation);
             grid_sel_prune(id);
         } else if ((hover_c >= 0) && (array_length(selected) > 0)) {
             grid_order_move(id, hover_c, hover_r);
             if (array_length(selected) > 1) {
-                grid_log(id, $"{array_length(selected)} formations advance on {hover_c}, {hover_r} in formation.", GRIDC_COL_ORDER);
+                grid_log(id, $"{array_length(selected)} formations advance on {hover_c}, {hover_r} in formation.", eMSG_COLOR.AQUA);
             } else {
-                grid_log(id, $"Move to {hover_c}, {hover_r}.", GRIDC_COL_ORDER);
+                grid_log(id, $"Move to {hover_c}, {hover_r}.", eMSG_COLOR.AQUA);
             }
         }
     }
@@ -296,19 +301,19 @@ if (drag_active && _lrel) {
     if (point_distance(drag_x0, drag_y0, _mgx, _mgy) >= GRIDC_DRAG_MIN) {
         var _n = grid_sel_box(id, drag_x0, drag_y0, _mgx, _mgy);
         if (_n > 0) {
-            grid_log(id, $"{_n} formations selected.", GRIDC_COL_ORDER);
+            grid_log(id, $"{_n} formations selected.", eMSG_COLOR.AQUA);
         } else {
-            grid_log(id, "Nothing in the box: selection cleared.", GRIDC_COL_WARN);
+            grid_log(id, "Nothing in the box: selection cleared.", eMSG_COLOR.YELLOW);
         }
     } else {
         var _pick = grid_squad_at(id, hover_c, hover_r);
         if ((_pick >= 0) && (squads[_pick].side == 0) && (squads[_pick].formation >= 0)) {
             grid_sel_clear(id);
             grid_sel_add(id, squads[_pick].formation);
-            grid_log(id, $"{formations[squads[_pick].formation].name} selected.", GRIDC_COL_ORDER);
+            grid_log(id, $"{formations[squads[_pick].formation].name} selected.", eMSG_COLOR.AQUA);
         } else {
             grid_sel_clear(id);
-            grid_log(id, "Selection cleared.", GRIDC_COL_WARN);
+            grid_log(id, "Selection cleared.", eMSG_COLOR.YELLOW);
         }
     }
 }
@@ -347,7 +352,7 @@ for (var _gk = 0; _gk <= 9; _gk++) {
     } else {
         var _gn = grid_group_recall(id, _gk);
         if (_gn > 0) {
-            grid_log(id, $"Group {_gk} selected: {_gn} formations.", GRIDC_COL_ORDER);
+            grid_log(id, $"Group {_gk} selected: {_gn} formations.", eMSG_COLOR.AQUA);
         }
     }
 }

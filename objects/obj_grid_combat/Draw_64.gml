@@ -428,15 +428,9 @@ draw_set_color(GRIDC_PANEL);
 draw_rectangle(GRIDC_BF_X1, GRIDC_LOG_Y1, GRIDC_BF_X2, GRIDC_LOG_Y2, false);
 draw_set_color(GRIDC_GREEN);
 draw_rectangle(GRIDC_BF_X1, GRIDC_LOG_Y1, GRIDC_BF_X2, GRIDC_LOG_Y2, true);
-draw_set_font(fnt_40k_12);
-var _lines = 13;
-var _start = max(0, array_length(feed) - _lines);
-var _ly = GRIDC_LOG_Y1 + 8;
-for (var _li = _start; _li < array_length(feed); _li++) {
-    draw_set_color(feed[_li].lcol);
-    draw_text(GRIDC_BF_X1 + 10, _ly, feed[_li].ltxt);
-    _ly += 18;
-}
+// draw() drains the pending queue itself and restores the draw state after, so
+// the first line lands on GRIDC_LOG_Y1 + 8 exactly where the old feed drew it.
+log.draw(GRIDC_BF_X1 + 4, GRIDC_LOG_Y1);
 
 // ---------------------------------------------------------------------------
 // Buttons, drawn from the same table the Step event hit tests.

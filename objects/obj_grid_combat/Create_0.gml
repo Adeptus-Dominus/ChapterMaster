@@ -60,7 +60,15 @@ view_x = 0;
 view_y = 0;
 zoom_mode = 0;
 
-feed = [];
+// The game's own combat readout, so the grid reports in the same colours, with
+// the same wrapping, drain pacing, scrollback and scrollbar as a vanilla battle.
+// Sized to the strip under the battlefield rather than the vanilla side panel.
+log = new CombatLog();
+log.log_font = fnt_40k_12;
+log.log_line_height = 18;
+log.log_view_lines = 13;
+log.log_max_width = GRIDC_BF_X2 - GRIDC_BF_X1 - 24;
+
 floaters = [];
 // Shot marks: tracers, beams and shells in flight. Purely visual, decayed per
 // frame like the floaters so pausing the sim does not freeze them mid-air.

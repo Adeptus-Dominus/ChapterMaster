@@ -396,11 +396,14 @@ function GridFormation(_side, _name, _colr) constructor {
 }
 
 /// @function grid_log
-function grid_log(ctrl, _txt, _col) {
-    array_push(ctrl.feed, { ltxt: _txt, lcol: _col });
-    if (array_length(ctrl.feed) > 200) {
-        array_delete(ctrl.feed, 0, 1);
-    }
+/// @description Everything the grid reports goes through the game's own
+/// CombatLog, so the readout has the same colours, wrapping, drain pacing,
+/// history and scrollbar as a vanilla battle. The colour argument is an
+/// eMSG_COLOR, following the established rule: aqua for order confirmations,
+/// yellow for warnings, red for our own losses, bright blue for the continuous
+/// narration, and light green for the enemy coming apart.
+function grid_log(ctrl, _txt, _col = eMSG_COLOR.DEFAULT) {
+    ctrl.log.push(_txt, _col);
 }
 
 /// @function grid_floater
@@ -737,7 +740,7 @@ function grid_spawn_wave(ctrl) {
         grid_spawn_enemy_squad(ctrl, (_i mod 2 == 0) ? "ork_shoota" : "ork_slugga", _base + _i);
     }
     ctrl.waves_left -= 1;
-    grid_log(ctrl, "More greenskins pour onto the field!", GRIDC_COL_WARN);
+    grid_log(ctrl, "More greenskins pour onto the field!", eMSG_COLOR.YELLOW);
 }
 
 // ---------------------------------------------------------------------------
@@ -907,7 +910,7 @@ function grid_place_formation(ctrl, _ac, _ar) {
     // combat_width squads fit on the line, and the rest wait in reserve.
     if (grid_deployed_count(ctrl) + _n > ctrl.combat_width) {
         var _room = max(0, ctrl.combat_width - grid_deployed_count(ctrl));
-        grid_log(ctrl, $"The front holds {ctrl.combat_width} squads: room for {_room} more.", GRIDC_COL_WARN);
+        grid_log(ctrl, $"The front holds {ctrl.combat_width} squads: room for {_room} more.", eMSG_COLOR.YELLOW);
         return false;
     }
     var _fi = grid_new_formation(ctrl, ctrl.squads[_list[0]].type);
@@ -942,10 +945,10 @@ function grid_place_formation(ctrl, _ac, _ar) {
     ctrl.placing = false;
     ctrl.placing_list = [];
     if (_tele) {
-        grid_log(ctrl, $"{_f.name} teleports onto the field.", GRIDC_COL_ORDER);
+        grid_log(ctrl, $"{_f.name} teleports onto the field.", eMSG_COLOR.AQUA);
         grid_floater(ctrl, _ac, _ar, "TELEPORT", GRIDC_COL_ORDER);
     } else {
-        grid_log(ctrl, $"{_f.name} moves up: {_n} squads on the line.", GRIDC_COL_ORDER);
+        grid_log(ctrl, $"{_f.name} moves up: {_n} squads on the line.", eMSG_COLOR.AQUA);
     }
     return true;
 }
@@ -1040,7 +1043,7 @@ function grid_place_formation_slots(ctrl, _slots) {
     }
     if (grid_deployed_count(ctrl) + _n > ctrl.combat_width) {
         var _room = max(0, ctrl.combat_width - grid_deployed_count(ctrl));
-        grid_log(ctrl, $"The front holds {ctrl.combat_width} squads: room for {_room} more.", GRIDC_COL_WARN);
+        grid_log(ctrl, $"The front holds {ctrl.combat_width} squads: room for {_room} more.", eMSG_COLOR.YELLOW);
         return false;
     }
     var _fi = grid_new_formation(ctrl, ctrl.squads[_list[0]].type);
@@ -1067,10 +1070,10 @@ function grid_place_formation_slots(ctrl, _slots) {
     ctrl.placing = false;
     ctrl.placing_list = [];
     if (_tele) {
-        grid_log(ctrl, $"{_f.name} teleports onto the field.", GRIDC_COL_ORDER);
+        grid_log(ctrl, $"{_f.name} teleports onto the field.", eMSG_COLOR.AQUA);
         grid_floater(ctrl, _f.anchor_col, _f.anchor_row, "TELEPORT", GRIDC_COL_ORDER);
     } else {
-        grid_log(ctrl, $"{_f.name} forms up: {_n} squads on the line.", GRIDC_COL_ORDER);
+        grid_log(ctrl, $"{_f.name} forms up: {_n} squads on the line.", eMSG_COLOR.AQUA);
     }
     return true;
 }
@@ -1096,7 +1099,7 @@ function grid_undeploy_formation(ctrl, _fi) {
     }
     _f.members = [];
     _f.alive = false;
-    grid_log(ctrl, $"{_f.name} pulled back: {_back} squads return to reserve.", GRIDC_COL_ORDER);
+    grid_log(ctrl, $"{_f.name} pulled back: {_back} squads return to reserve.", eMSG_COLOR.AQUA);
 }
 
 /// @function grid_deploy_all
@@ -1136,7 +1139,7 @@ function grid_deploy_all(ctrl) {
         }
     }
     if (!_any) {
-        grid_log(ctrl, "No room left on the line.", GRIDC_COL_WARN);
+        grid_log(ctrl, "No room left on the line.", eMSG_COLOR.YELLOW);
     }
 }
 
@@ -1254,7 +1257,7 @@ function grid_apply_damage(ctrl, _di, _dmg, _ai) {
         if ((_d.sgt_hp > 0) && (random(1) < min(0.5, GRIDC_SGT_HIT_CHANCE * _killed))) {
             _d.sgt_hp -= 1;
             if (_d.sgt_hp == 0) {
-                grid_log(ctrl, $"{_d.name}: Sergeant {_d.sgt_name} is down!", GRIDC_COL_WARN);
+                grid_log(ctrl, $"{_d.name}: Sergeant {_d.sgt_name} is down!", eMSG_COLOR.YELLOW);
                 grid_floater(ctrl, _d.col, _d.row, "Sgt down!", GRIDC_COL_WARN);
             }
         }
@@ -1270,11 +1273,11 @@ function grid_apply_damage(ctrl, _di, _dmg, _ai) {
         }
         if (_d.side == 1) {
             ctrl.wiped_e += 1;
-            grid_log(ctrl, $"{_d.name} destroyed!", GRIDC_COL_FEED);
+            grid_log(ctrl, $"{_d.name} destroyed!", eMSG_COLOR.LIGHTGREEN);
             grid_floater(ctrl, _d.col, _d.row, "DESTROYED", GRIDC_COL_FEED);
         } else {
             ctrl.wiped_p += 1;
-            grid_log(ctrl, $"{_d.name} wiped out!", GRIDC_COL_ENEMY);
+            grid_log(ctrl, $"{_d.name} wiped out!", eMSG_COLOR.RED);
             grid_floater(ctrl, _d.col, _d.row, "WIPED", GRIDC_COL_ENEMY);
         }
     }
@@ -1715,7 +1718,7 @@ function grid_try_jump(ctrl, _si, _ti) {
     ctrl.occ[_s.col][_s.row] = _si;
     _s.jumped = true;
     grid_floater(ctrl, _s.col, _s.row, "LEAP!", GRIDC_COL_ORDER);
-    grid_log(ctrl, $"{_s.name} descends on {_t.name}!", GRIDC_COL_ORDER);
+    grid_log(ctrl, $"{_s.name} descends on {_t.name}!", eMSG_COLOR.AQUA);
     return true;
 }
 
@@ -1982,7 +1985,7 @@ function grid_act_enemy(ctrl, _si) {
             if (_best >= 0) {
                 var _zd = 55 + irandom(25);
                 var _kk = grid_apply_damage(ctrl, _best, _zd, _si);
-                grid_log(ctrl, $"Weirdboy zzap scorches {ctrl.squads[_best].name}: {_kk} down!", GRIDC_COL_ENEMY);
+                grid_log(ctrl, $"Weirdboy zzap scorches {ctrl.squads[_best].name}: {_kk} down!", eMSG_COLOR.RED);
                 grid_floater(ctrl, ctrl.squads[_best].col, ctrl.squads[_best].row, "ZZAP!", make_color_rgb(208, 110, 230));
                 _s.zap_cd = 6;
                 return;
@@ -2066,7 +2069,7 @@ function grid_battle_tick(ctrl) {
     }
 
     if ((ctrl.ticks mod 5) == 0) {
-        grid_log(ctrl, $"Exchange: {ctrl.agg_ekills} of the enemy slain, {ctrl.agg_pkills} of ours lost.", GRIDC_COL_FEED);
+        grid_log(ctrl, $"Exchange: {ctrl.agg_ekills} of the enemy slain, {ctrl.agg_pkills} of ours lost.", eMSG_COLOR.BRIGHT_BLUE);
         // The same events the floating text showed, gathered up, so the log and
         // the field are always telling one story.
         var _tmiss = ctrl.tally_p[GRIDHIT_MISS] + ctrl.tally_e[GRIDHIT_MISS];
@@ -2074,7 +2077,7 @@ function grid_battle_tick(ctrl) {
         var _tdodg = ctrl.tally_p[GRIDHIT_DODGE] + ctrl.tally_e[GRIDHIT_DODGE];
         var _tgraz = ctrl.tally_p[GRIDHIT_GRAZE] + ctrl.tally_e[GRIDHIT_GRAZE];
         if ((_tmiss + _tdefl + _tdodg + _tgraz) > 0) {
-            grid_log(ctrl, $"{_tmiss} shots went wide, {_tdefl} turned by armour, {_tdodg} lost in cover, {_tgraz} drew blood without a kill.", GRIDC_COL_GREY);
+            grid_log(ctrl, $"{_tmiss} shots went wide, {_tdefl} turned by armour, {_tdodg} lost in cover, {_tgraz} drew blood without a kill.", eMSG_COLOR.WHITE);
         }
         ctrl.tally_p = array_create(GRIDHIT_WOUND + 1, 0);
         ctrl.tally_e = array_create(GRIDHIT_WOUND + 1, 0);
@@ -2254,7 +2257,7 @@ function grid_group_bind(ctrl, _n) {
         array_push(_g, ctrl.selected[_i]);
     }
     ctrl.groups[_n] = _g;
-    grid_log(ctrl, $"Group {_n} bound: {array_length(_g)} formations.", GRIDC_COL_ORDER);
+    grid_log(ctrl, $"Group {_n} bound: {array_length(_g)} formations.", eMSG_COLOR.AQUA);
 }
 
 /// @function grid_group_recall
@@ -2871,7 +2874,7 @@ function grid_commit_losses(ctrl) {
         }
     }
     var _summary = $"Casualties recorded: {_dead} lost, {_veh_dead} vehicles knocked out.";
-    grid_log(ctrl, _summary, GRIDC_COL_ENEMY);
+    grid_log(ctrl, _summary, eMSG_COLOR.RED);
     if (instance_exists(obj_ncombat)) {
         obj_ncombat.combat_log.push(_summary, eMSG_COLOR.YELLOW);
         if (_veh_hurt > 0) {
@@ -2881,7 +2884,7 @@ function grid_commit_losses(ctrl) {
     if (_missing > 0) {
         // Not fatal, and worth seeing rather than silently swallowing: it means
         // a squad held a unit the battlefield blocks no longer had a slot for.
-        grid_log(ctrl, $"{_missing} casualties had no battlefield slot and were skipped.", GRIDC_COL_WARN);
+        grid_log(ctrl, $"{_missing} casualties had no battlefield slot and were skipped.", eMSG_COLOR.YELLOW);
     }
     return _dead;
 }
@@ -3192,7 +3195,7 @@ function grid_reinforce(ctrl) {
     }
     if (_sent > 0) {
         var _fname = ctrl.formations[_fi].name;
-        grid_log(ctrl, $"Reserves committed: {_fname} advances with {_sent} squads.", GRIDC_COL_ORDER);
+        grid_log(ctrl, $"Reserves committed: {_fname} advances with {_sent} squads.", eMSG_COLOR.AQUA);
     }
     return _sent;
 }
