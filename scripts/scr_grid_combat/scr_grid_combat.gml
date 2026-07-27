@@ -1573,11 +1573,12 @@ function grid_deployed_count(ctrl) {
 // ---------------------------------------------------------------------------
 
 /// @function grid_combat_enabled
-/// @description Toggle so a bad build is always one cheat away from vanilla.
-/// Set with "gridcombat on" / "gridcombat off".
+/// @description Grid combat is the default battle system. "gridcombat off"
+/// falls back to the original obj_ncombat screen for comparison or if a build
+/// misbehaves, and "gridcombat on" returns.
 function grid_combat_enabled() {
     if (!variable_global_exists("grid_combat_enabled")) {
-        global.grid_combat_enabled = false;
+        global.grid_combat_enabled = true;
     }
     return global.grid_combat_enabled;
 }

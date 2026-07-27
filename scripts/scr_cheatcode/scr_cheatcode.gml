@@ -223,7 +223,7 @@ function scr_cheatcode(argument0) {
                     // restores it. Default is off so a bad build is one word away
                     // from the original battle screen.
                     if (!variable_global_exists("grid_combat_enabled")) {
-                        global.grid_combat_enabled = false;
+                        global.grid_combat_enabled = true;
                     }
                     if (array_length(cheat_arguments) > 0) {
                         global.grid_combat_enabled = (string_lower(string(cheat_arguments[0])) == "on");
