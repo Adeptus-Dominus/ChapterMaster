@@ -5822,7 +5822,13 @@ function region_adjacent_to_friendly_hold(_star, _planet, _index) {
 function region_contested_beachhead(_star, _planet) {
     var _regions = regions_ensure(_star, _planet);
     for (var i = 0, l = array_length(_regions); i < l; i++) {
-        if (_regions[i].owner == eFACTION.PLAYER) {
+        // FRIENDLY ground, not just the chapter's own. Troops standing in an Imperial-held
+        // region are a garrison reinforcing an ally, not a landing force mid-battle; the
+        // earlier owner == PLAYER test read them as an unfinished fight and locked the
+        // whole world (troops sat in Imperium-held Sundered Coast and every other region
+        // reported "already committed"). A beachhead is only contested where the ground
+        // still belongs to someone shooting at you.
+        if (region_owner_is_friendly(_star, _planet, i)) {
             continue;
         }
         if (region_player_force(_star, _planet, i) > 0) {
