@@ -264,11 +264,70 @@ if (drag_active && (point_distance(drag_x0, drag_y0, _mx, _my) >= GRIDC_DRAG_MIN
     draw_rectangle(drag_x0, drag_y0, _mx, _my, false);
     draw_set_alpha(1);
     draw_rectangle(drag_x0, drag_y0, _mx, _my, true);
+    // Live count and outline of what the box has caught, so a drag that selects
+    // nothing is visibly a drag that selected nothing rather than dead input.
+    var _boxf = grid_box_formations(id, drag_x0, drag_y0, _mx, _my);
+    for (var _bs = 0; _bs < array_length(squads); _bs++) {
+        var _bq = squads[_bs];
+        if ((_bq.side != 0) || !_bq.alive || !_bq.deployed) {
+            continue;
+        }
+        if (!array_contains(_boxf, _bq.formation)) {
+            continue;
+        }
+        var _bqx = grid_sx(id, _bq.col);
+        var _bqy = grid_sy(id, _bq.row);
+        draw_rectangle(_bqx + 1, _bqy + 1, _bqx + _tp - 1, _bqy + _tp - 1, true);
+    }
+    draw_set_font(fnt_40k_12);
+    draw_text(_mx + 10, _my + 10, $"{array_length(_boxf)}");
 }
 
 // floating combat text, clipped to the viewport
 draw_set_font(fnt_small);
 draw_set_halign(fa_center);
+// shot marks
+for (var _fx = 0; _fx < array_length(shots); _fx++) {
+    var _sh = shots[_fx];
+    var _prog = 1 - (_sh.life / max(1, _sh.maxlife));
+    var _sax = grid_sx(id, _sh.c0) + (_tp / 2);
+    var _say = grid_sy(id, _sh.r0) + (_tp / 2);
+    var _sbx = grid_sx(id, _sh.c1) + (_tp / 2);
+    var _sby = grid_sy(id, _sh.r1) + (_tp / 2);
+    draw_set_color(_sh.col);
+    if (_sh.kind == GRIDFX_BEAM) {
+        draw_set_alpha(0.85 * (1 - _prog));
+        draw_line_width(_sax, _say, _sbx, _sby, 2);
+    } else if (_sh.kind == GRIDFX_TRACER) {
+        draw_set_alpha(0.9);
+        var _t0 = max(0, _prog - 0.22);
+        draw_line_width(lerp(_sax, _sbx, _t0), lerp(_say, _sby, _t0),
+            lerp(_sax, _sbx, _prog), lerp(_say, _sby, _prog), 2);
+    } else if (_sh.kind == GRIDFX_MISSILE) {
+        if (_prog < 0.6) {
+            var _mp = _prog / 0.6;
+            draw_set_alpha(0.9);
+            draw_circle(lerp(_sax, _sbx, _mp), lerp(_say, _sby, _mp), 3, false);
+        } else {
+            // The ring is drawn at the blast radius the splash actually used, so
+            // what you see is what got hit.
+            var _ep = (_prog - 0.6) / 0.4;
+            var _rad = (_sh.blast + 0.5) * _tp * _ep;
+            draw_set_alpha(0.45 * (1 - _ep));
+            draw_circle(_sbx, _sby, _rad, false);
+            draw_set_alpha(0.9 * (1 - _ep));
+            draw_circle(_sbx, _sby, _rad, true);
+        }
+    } else {
+        draw_set_alpha(0.8 * (1 - _prog));
+        var _mx2 = lerp(_sax, _sbx, 0.5);
+        var _my2 = lerp(_say, _sby, 0.5);
+        draw_line_width(_mx2 - 5, _my2 - 5, _mx2 + 5, _my2 + 5, 2);
+        draw_line_width(_mx2 - 5, _my2 + 5, _mx2 + 5, _my2 - 5, 2);
+    }
+}
+draw_set_alpha(1);
+
 for (var _fd = 0; _fd < array_length(floaters); _fd++) {
     var _fe = floaters[_fd];
     var _fx = grid_sx(id, _fe.fc) + _tp / 2 + _fe.fjit;

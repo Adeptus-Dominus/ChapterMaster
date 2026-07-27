@@ -62,6 +62,9 @@ zoom_mode = 0;
 
 feed = [];
 floaters = [];
+// Shot marks: tracers, beams and shells in flight. Purely visual, decayed per
+// frame like the floaters so pausing the sim does not freeze them mid-air.
+shots = [];
 
 // Living, deployed squads per side, rebuilt once a tick by grid_refresh_live.
 // Declared here because the deploy phase reads them before any tick has run, and

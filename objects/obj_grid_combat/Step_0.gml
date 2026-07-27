@@ -59,6 +59,12 @@ for (var _hf = 0; _hf < array_length(squads); _hf++) {
         squads[_hf].hit_flash -= 1;
     }
 }
+for (var _su = array_length(shots) - 1; _su >= 0; _su--) {
+    shots[_su].life -= 1;
+    if (shots[_su].life <= 0) {
+        array_delete(shots, _su, 1);
+    }
+}
 
 if (phase == GRIDPH_END) {
     if (_lc && point_in_rectangle(_mgx, _mgy, 660, 560, 940, 616)) {
@@ -285,18 +291,24 @@ if (!_consumed && grid_in_viewport(_mgx, _mgy)) {
 
 if (drag_active && _lrel) {
     drag_active = false;
+    // Every outcome is reported, including the empty ones. Silence on a failed
+    // selection is indistinguishable from the input never arriving.
     if (point_distance(drag_x0, drag_y0, _mgx, _mgy) >= GRIDC_DRAG_MIN) {
         var _n = grid_sel_box(id, drag_x0, drag_y0, _mgx, _mgy);
         if (_n > 0) {
             grid_log(id, $"{_n} formations selected.", GRIDC_COL_ORDER);
+        } else {
+            grid_log(id, "Nothing in the box: selection cleared.", GRIDC_COL_WARN);
         }
     } else {
         var _pick = grid_squad_at(id, hover_c, hover_r);
         if ((_pick >= 0) && (squads[_pick].side == 0) && (squads[_pick].formation >= 0)) {
             grid_sel_clear(id);
             grid_sel_add(id, squads[_pick].formation);
+            grid_log(id, $"{formations[squads[_pick].formation].name} selected.", GRIDC_COL_ORDER);
         } else {
             grid_sel_clear(id);
+            grid_log(id, "Selection cleared.", GRIDC_COL_WARN);
         }
     }
 }

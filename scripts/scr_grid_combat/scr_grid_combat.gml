@@ -87,6 +87,18 @@
 #macro GRIDC_COL_WOUND make_color_rgb(186, 38, 34)
 #macro GRIDC_COL_KILL make_color_rgb(170, 255, 190)
 
+// Shot effects. One mark per firing squad per tick, short lived, so the field
+// reads as a firefight without burying the units under it.
+#macro GRIDFX_BEAM 0
+#macro GRIDFX_TRACER 1
+#macro GRIDFX_MISSILE 2
+#macro GRIDFX_MELEE 3
+#macro GRIDC_FX_MAX 90
+// Share of a burst weapon's damage that goes to everything else in the blast
+// instead of the squad aimed at. Taken out of the primary hit, not added on top,
+// so a missile is an area weapon rather than a straight damage increase.
+#macro GRIDC_SPLASH_SHARE 0.35
+
 // Health a man is left on when the grid kills him. It has to be negative so the
 // vanilla checks read him as down, but well above the -3000 "incapacitated"
 // threshold in after_battle_part1, which un-kills anyone below it. Alarm_5's
@@ -1214,6 +1226,106 @@ function grid_apply_damage(ctrl, _di, _dmg, _ai) {
     return _killed;
 }
 
+/// @function grid_shot_style
+/// @description What a squad's fire looks like. Keyed off the profile name, so a
+/// faction's whole roster shoots in its own colour without 79 table edits.
+function grid_shot_style(_key) {
+    // Anything that lobs rather than aims arcs in and bursts.
+    if (grid_is_artillery(_key) || (_key == "devastator") || (_key == "heavy_weapons")
+        || (_key == "ig_hwt") || (_key == "tau_broadside") || (_key == "ty_zoanthrope")
+        || (_key == "el_wraithlord") || (_key == "ch_hellbrute")) {
+        return {
+            kind: GRIDFX_MISSILE,
+            col: make_color_rgb(255, 178, 72),
+            blast: grid_is_artillery(_key) ? 2 : 1,
+        };
+    }
+    var _p = string_copy(_key, 1, 3);
+    // Lasguns: the Guard's red.
+    if ((_p == "ig_") || (_key == "he_elite")) {
+        return { kind: GRIDFX_BEAM, col: make_color_rgb(255, 62, 48), blast: 0 };
+    }
+    // Sluggas, autoguns, cultist rifles and everything Chaos: dirty yellow.
+    if ((_p == "ork") || (_p == "he_") || (_p == "ch_") || (_p == "gs_")) {
+        return { kind: GRIDFX_TRACER, col: make_color_rgb(248, 214, 84), blast: 0 };
+    }
+    if (_p == "tau") {
+        return { kind: GRIDFX_BEAM, col: make_color_rgb(96, 190, 255), blast: 0 };
+    }
+    if (_p == "el_") {
+        return { kind: GRIDFX_TRACER, col: make_color_rgb(226, 240, 255), blast: 0 };
+    }
+    if (_p == "ne_") {
+        return { kind: GRIDFX_BEAM, col: make_color_rgb(110, 255, 130), blast: 0 };
+    }
+    if (_p == "ty_") {
+        return { kind: GRIDFX_TRACER, col: make_color_rgb(186, 226, 96), blast: 0 };
+    }
+    if (_p == "ad_") {
+        return { kind: GRIDFX_BEAM, col: make_color_rgb(180, 220, 255), blast: 0 };
+    }
+    // Bolt weapons, ours and the Sororitas': a heavy orange slug.
+    return { kind: GRIDFX_TRACER, col: make_color_rgb(255, 156, 60), blast: 0 };
+}
+
+/// @function grid_shot_fx
+/// @description Queues one shot mark. Oldest is dropped past the cap, so a big
+/// battle never accumulates effects faster than it can clear them.
+function grid_shot_fx(ctrl, _c0, _r0, _c1, _r1, _kind, _col, _blast) {
+    var _life = 10;
+    if (_kind == GRIDFX_MISSILE) {
+        _life = 26;
+    } else if (_kind == GRIDFX_MELEE) {
+        _life = 12;
+    }
+    array_push(ctrl.shots, {
+        c0: _c0, r0: _r0, c1: _c1, r1: _r1,
+        kind: _kind, col: _col, blast: _blast,
+        life: _life, maxlife: _life,
+    });
+    if (array_length(ctrl.shots) > GRIDC_FX_MAX) {
+        array_delete(ctrl.shots, 0, 1);
+    }
+}
+
+/// @function grid_blast_splash
+/// @description Spreads a burst's share across everything else inside the blast,
+/// which is what the explosion circle is drawn around. Damage is divided among
+/// what it catches rather than dealt to each, so a shell landing in a crowd is
+/// spread thin and one landing on a lone squad is nearly wasted.
+function grid_blast_splash(ctrl, _ai, _di, _dmg, _blast) {
+    if ((_blast <= 0) || (_dmg <= 0)) {
+        return 0;
+    }
+    var _t = ctrl.squads[_di];
+    var _foes = grid_foe_list(ctrl, ctrl.squads[_ai].side);
+    var _hits = [];
+    for (var _i = 0; _i < array_length(_foes); _i++) {
+        var _k = _foes[_i];
+        if (_k == _di) {
+            continue;
+        }
+        var _o = ctrl.squads[_k];
+        if (!_o.alive || !_o.deployed) {
+            continue;
+        }
+        if (grid_dist(_t.col, _t.row, _o.col, _o.row) > _blast) {
+            continue;
+        }
+        array_push(_hits, _k);
+    }
+    var _n = array_length(_hits);
+    if (_n <= 0) {
+        return 0;
+    }
+    var _each = _dmg / _n;
+    var _kills = 0;
+    for (var _h = 0; _h < _n; _h++) {
+        _kills += grid_apply_damage(ctrl, _hits[_h], _each, _ai);
+    }
+    return _kills;
+}
+
 /// @function grid_attack
 /// @description One squad's volley or charge, resolved as a sequence of things
 /// that can stop it: the shot can miss, the cover can eat it, a friendly hull
@@ -1231,6 +1343,14 @@ function grid_attack(ctrl, _ai, _di, _melee) {
     var _raw = _stat * _eff * random_range(0.8, 1.2);
     if (_a.sgt_hp == 0) {
         _raw *= 0.9;
+    }
+    // The mark goes out now, before anything can stop the shot, so a miss still
+    // shows a round crossing the field and then reads MISS on the target.
+    var _style = grid_shot_style(_a.type);
+    if (_melee) {
+        grid_shot_fx(ctrl, _a.col, _a.row, _d.col, _d.row, GRIDFX_MELEE, GRIDC_COL_GREY, 0);
+    } else {
+        grid_shot_fx(ctrl, _a.col, _a.row, _d.col, _d.row, _style.kind, _style.col, _style.blast);
     }
     _raw *= grid_hq_aura(ctrl, _a);
     // The base spread is variance, not a nerf. Every other roll below replaces a
@@ -1291,7 +1411,12 @@ function grid_attack(ctrl, _ai, _di, _melee) {
     }
     _raw *= _ev[1];
 
-    return grid_apply_damage(ctrl, _di, _raw, _ai);
+    var _blast = (!_melee && (_style.kind == GRIDFX_MISSILE)) ? _style.blast : 0;
+    if (_blast <= 0) {
+        return grid_apply_damage(ctrl, _di, _raw, _ai);
+    }
+    var _kills = grid_apply_damage(ctrl, _di, _raw * (1 - GRIDC_SPLASH_SHARE), _ai);
+    return _kills + grid_blast_splash(ctrl, _ai, _di, _raw * GRIDC_SPLASH_SHARE, _blast);
 }
 
 /// @function grid_hull_cover
@@ -1992,23 +2117,36 @@ function grid_sel_prune(ctrl) {
 /// @function grid_sel_box
 /// @description Drag select: any player formation with a living squad inside the
 /// dragged rectangle joins the selection.
-function grid_sel_box(ctrl, _x1, _y1, _x2, _y2) {
+function grid_box_formations(ctrl, _x1, _y1, _x2, _y2) {
     var _lx = min(_x1, _x2);
     var _rx = max(_x1, _x2);
     var _ty = min(_y1, _y2);
-    var _by = max(_y1, _y2);
+    var _bot = max(_y1, _y2);
     var _tp = grid_tile_px(ctrl);
-    grid_sel_clear(ctrl);
+    var _out = [];
     for (var _i = 0; _i < array_length(ctrl.squads); _i++) {
         var _s = ctrl.squads[_i];
         if ((_s.side != 0) || !_s.alive || !_s.deployed || (_s.formation < 0)) {
             continue;
         }
-        var _px = grid_sx(ctrl, _s.col) + _tp / 2;
-        var _py = grid_sy(ctrl, _s.row) + _tp / 2;
-        if (point_in_rectangle(_px, _py, _lx, _ty, _rx, _by)) {
-            grid_sel_add(ctrl, _s.formation);
+        var _px = grid_sx(ctrl, _s.col) + (_tp / 2);
+        var _py = grid_sy(ctrl, _s.row) + (_tp / 2);
+        if (!point_in_rectangle(_px, _py, _lx, _ty, _rx, _bot)) {
+            continue;
         }
+        if (!array_contains(_out, _s.formation)) {
+            array_push(_out, _s.formation);
+        }
+    }
+    return _out;
+}
+
+/// @function grid_sel_box
+function grid_sel_box(ctrl, _x1, _y1, _x2, _y2) {
+    var _hit = grid_box_formations(ctrl, _x1, _y1, _x2, _y2);
+    grid_sel_clear(ctrl);
+    for (var _i = 0; _i < array_length(_hit); _i++) {
+        grid_sel_add(ctrl, _hit[_i]);
     }
     return array_length(ctrl.selected);
 }
