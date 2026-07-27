@@ -1,509 +1,497 @@
-/// Grid combat prototype: full GUI-layer rendering. The GUI surface is fixed
-/// at 1600x900, so camera zoom never affects this overlay.
+/// @description All rendering. Fixed 1600x900 GUI, vanilla green on black.
+
+// The field is built in the first Step; Draw can fire before that on the frame
+// the object is created, so there is nothing to render yet.
+if (!boot_done) {
+    exit;
+}
 
 var _mx = device_mouse_x_to_gui(0);
 var _my = device_mouse_y_to_gui(0);
+var _tp = grid_tile_px(id);
 
-// Backdrop
 draw_set_alpha(1);
-draw_set_valign(fa_top);
+draw_set_font(fnt_40k_14);
 draw_set_halign(fa_left);
-draw_set_color(make_color_rgb(13, 15, 20));
+draw_set_valign(fa_top);
+
+// backdrop
+draw_set_color(GRIDC_BG);
 draw_rectangle(0, 0, 1600, 900, false);
 
-// Title bar
-draw_set_font(fnt_40k_14);
-draw_set_color(c_white);
-var _phn = "Deployment";
-if (phase == GRIDPH_BATTLE) {
-    _phn = "Battle";
-}
-if (phase == GRIDPH_END) {
-    _phn = "Resolution";
-}
-draw_text(292, 14, $"GRID COMBAT PROTOTYPE   |   Phase: {_phn}   |   Tick {ticks}");
+// title bar
+draw_set_color(GRIDC_GREEN);
+draw_rectangle(GRIDC_LP_X1, 8, GRIDC_RP_X2, 48, true);
+var _ph_name = (phase == GRIDPH_DEPLOY) ? "Deployment" : ((phase == GRIDPH_BATTLE) ? "Battle" : "Resolved");
+draw_text(GRIDC_LP_X1 + 10, 16, $"Grid Combat ( Front {combat_width} ) - {_ph_name} - Tick {ticks}");
 draw_set_halign(fa_right);
-draw_text(1536, 14, $"Deployment Points: {points} / {GRIDC_POINTS}");
+draw_text(GRIDC_RP_X2 - 10, 16, $"Deployment Points: {points}");
 draw_set_halign(fa_left);
 
-// Battlefield frame, zone tints, grid lines
-var _bx = GRIDC_BF_X;
-var _by = GRIDC_BF_Y;
-var _bw = GRIDC_COLS * GRIDC_TILE;
-var _bh = GRIDC_ROWS * GRIDC_TILE;
-draw_set_color(make_color_rgb(24, 28, 36));
-draw_rectangle(_bx, _by, _bx + _bw, _by + _bh, false);
+// ---------------------------------------------------------------------------
+// Battlefield
+// ---------------------------------------------------------------------------
+draw_set_color(GRIDC_PANEL);
+draw_rectangle(GRIDC_BF_X1, GRIDC_BF_Y1, GRIDC_BF_X2, GRIDC_BF_Y2, false);
 
-draw_set_alpha(0.10);
-draw_set_color(make_color_rgb(70, 120, 220));
-draw_rectangle(_bx, _by, _bx + GRIDC_DEPLOY_COLS * GRIDC_TILE, _by + _bh, false);
-draw_set_color(make_color_rgb(220, 70, 70));
-draw_rectangle(_bx + (GRIDC_COLS - GRIDC_ENEMY_COLS) * GRIDC_TILE, _by, _bx + _bw, _by + _bh, false);
-draw_set_alpha(1);
+var _c0 = clamp(floor(view_x / _tp), 0, max(0, cols - 1));
+var _c1 = clamp(ceil((view_x + (GRIDC_BF_X2 - GRIDC_BF_X1)) / _tp), 0, cols);
+var _r0 = clamp(floor(view_y / _tp), 0, max(0, rows - 1));
+var _r1 = clamp(ceil((view_y + (GRIDC_BF_Y2 - GRIDC_BF_Y1)) / _tp), 0, rows);
 
-draw_set_font(fnt_tiny);
-draw_set_color(make_color_rgb(120, 160, 230));
-draw_text(_bx + 4, _by + 2, "DEPLOY");
-draw_set_color(make_color_rgb(230, 120, 120));
-draw_set_halign(fa_right);
-draw_text(_bx + _bw - 4, _by + 2, "ENEMY");
-draw_set_halign(fa_left);
-
+// zone tints
 draw_set_alpha(0.14);
-draw_set_color(make_color_rgb(120, 130, 150));
-for (var _gl1 = 0; _gl1 <= GRIDC_COLS; _gl1++) {
-    draw_line(_bx + _gl1 * GRIDC_TILE, _by, _bx + _gl1 * GRIDC_TILE, _by + _bh);
+draw_set_color(GRIDC_GREEN);
+var _dzx1 = max(GRIDC_BF_X1, grid_sx(id, 0));
+var _dzx2 = min(GRIDC_BF_X2, grid_sx(id, GRIDC_DEPLOY_COLS));
+var _dzy1 = max(GRIDC_BF_Y1, grid_sy(id, band_r1));
+var _dzy2 = min(GRIDC_BF_Y2, grid_sy(id, band_r2 + 1));
+if ((_dzx2 > _dzx1) && (_dzy2 > _dzy1)) {
+    draw_rectangle(_dzx1, _dzy1, _dzx2, _dzy2, false);
 }
-for (var _gl2 = 0; _gl2 <= GRIDC_ROWS; _gl2++) {
-    draw_line(_bx, _by + _gl2 * GRIDC_TILE, _bx + _bw, _by + _gl2 * GRIDC_TILE);
+draw_set_color(GRIDC_RED);
+var _ezx1 = max(GRIDC_BF_X1, grid_sx(id, cols - GRIDC_ENEMY_COLS));
+var _ezx2 = min(GRIDC_BF_X2, grid_sx(id, cols));
+if (_ezx2 > _ezx1) {
+    draw_rectangle(_ezx1, max(GRIDC_BF_Y1, grid_sy(id, 0)), _ezx2, min(GRIDC_BF_Y2, grid_sy(id, rows)), false);
+}
+
+// grid dividers
+draw_set_alpha(0.30);
+draw_set_color(GRIDC_DIM);
+for (var _gc = _c0; _gc <= _c1; _gc++) {
+    var _gx = grid_sx(id, _gc);
+    if ((_gx >= GRIDC_BF_X1) && (_gx <= GRIDC_BF_X2)) {
+        draw_line(_gx, max(GRIDC_BF_Y1, grid_sy(id, 0)), _gx, min(GRIDC_BF_Y2, grid_sy(id, rows)));
+    }
+}
+for (var _gr = _r0; _gr <= _r1; _gr++) {
+    var _gy = grid_sy(id, _gr);
+    if ((_gy >= GRIDC_BF_Y1) && (_gy <= GRIDC_BF_Y2)) {
+        draw_line(max(GRIDC_BF_X1, grid_sx(id, 0)), _gy, min(GRIDC_BF_X2, grid_sx(id, cols)), _gy);
+    }
 }
 draw_set_alpha(1);
 
-// Cover squiggles: green helps, red hurts (ranged fire only)
-draw_set_font(fnt_small);
-for (var _cc1 = 0; _cc1 < GRIDC_COLS; _cc1++) {
-    for (var _cr1 = 0; _cr1 < GRIDC_ROWS; _cr1++) {
-        var _cv1 = cov[_cc1][_cr1];
-        if (_cv1 == 0) {
-            continue;
-        }
-        if (_cv1 > 0) {
-            draw_set_color(make_color_rgb(90, 200, 110));
-        } else {
-            draw_set_color(make_color_rgb(220, 90, 90));
-        }
-        draw_text(_bx + _cc1 * GRIDC_TILE + 6, _by + _cr1 * GRIDC_TILE + 30, "~~");
-    }
-}
-
-// Hover highlight
-if ((hover_c >= 0) && (phase != GRIDPH_END)) {
-    draw_set_alpha(0.22);
-    draw_set_color(c_white);
-    draw_rectangle(_bx + hover_c * GRIDC_TILE, _by + hover_r * GRIDC_TILE, _bx + (hover_c + 1) * GRIDC_TILE - 1, _by + (hover_r + 1) * GRIDC_TILE - 1, false);
-    draw_set_alpha(1);
-}
-
-// Formation move markers and focus fire lines
-for (var _fd1 = 0; _fd1 < array_length(formations); _fd1++) {
-    var _fm1 = formations[_fd1];
-    if (!_fm1.alive) {
-        continue;
-    }
-    if ((_fm1.order == GRIDORD_MOVE) && grid_in_bounds(_fm1.dest_col, _fm1.dest_row)) {
-        draw_set_alpha(0.8);
-        draw_set_color(c_aqua);
-        draw_rectangle(_bx + _fm1.dest_col * GRIDC_TILE + 8, _by + _fm1.dest_row * GRIDC_TILE + 8, _bx + (_fm1.dest_col + 1) * GRIDC_TILE - 8, _by + (_fm1.dest_row + 1) * GRIDC_TILE - 8, true);
-        draw_set_alpha(1);
-    }
-    if ((_fm1.order == GRIDORD_ATTACK) && (_fm1.order_target >= 0)) {
-        var _tgt1 = squads[_fm1.order_target];
-        if (_tgt1.alive && _tgt1.deployed) {
-            var _cx1 = 0;
-            var _cy1 = 0;
-            var _cn1 = 0;
-            for (var _mm1 = 0; _mm1 < array_length(_fm1.members); _mm1++) {
-                var _msq1 = squads[_fm1.members[_mm1]];
-                if (_msq1.alive && _msq1.deployed) {
-                    _cx1 += _bx + _msq1.col * GRIDC_TILE + GRIDC_TILE / 2;
-                    _cy1 += _by + _msq1.row * GRIDC_TILE + GRIDC_TILE / 2;
-                    _cn1 += 1;
-                }
-            }
-            if (_cn1 > 0) {
-                var _tpx1 = _bx + _tgt1.col * GRIDC_TILE + GRIDC_TILE / 2;
-                var _tpy1 = _by + _tgt1.row * GRIDC_TILE + GRIDC_TILE / 2;
-                draw_set_alpha(0.45);
-                draw_set_color(c_red);
-                draw_line_width(_cx1 / _cn1, _cy1 / _cn1, _tpx1, _tpy1, 2);
-                draw_set_alpha(0.9);
-                draw_rectangle(_bx + _tgt1.col * GRIDC_TILE + 2, _by + _tgt1.row * GRIDC_TILE + 2, _bx + (_tgt1.col + 1) * GRIDC_TILE - 2, _by + (_tgt1.row + 1) * GRIDC_TILE - 2, true);
-                draw_set_alpha(1);
-            }
-        }
-    }
-}
-
-// Squads
-for (var _si2 = 0; _si2 < array_length(squads); _si2++) {
-    var _s2 = squads[_si2];
-    if (!_s2.alive || !_s2.deployed) {
-        continue;
-    }
-    var _px2 = _bx + _s2.col * GRIDC_TILE;
-    var _py2 = _by + _s2.row * GRIDC_TILE;
-    if (_s2.side == 0) {
-        var _fc2 = (_s2.formation >= 0) ? formations[_s2.formation].colr : _s2.colr;
-        draw_set_alpha(0.85);
-        draw_set_color(_fc2);
-        draw_rectangle(_px2 + 3, _py2 + 3, _px2 + GRIDC_TILE - 3, _py2 + GRIDC_TILE - 3, false);
-        draw_set_alpha(1);
-        draw_set_color(merge_color(_fc2, c_black, 0.5));
-        draw_rectangle(_px2 + 3, _py2 + 3, _px2 + GRIDC_TILE - 3, _py2 + GRIDC_TILE - 3, true);
-        // squad label and strength counter (design point 7)
-        draw_set_font(fnt_small);
-        draw_set_color(c_white);
-        draw_set_halign(fa_center);
-        draw_text(_px2 + GRIDC_TILE / 2, _py2 + 12, _s2.label);
-        draw_set_halign(fa_right);
-        draw_set_font(fnt_tiny);
-        if (_s2.is_vehicle) {
-            var _pct2 = (_s2.hp_max > 0) ? ceil(100 * _s2.hp_pool / _s2.hp_max) : 0;
-            draw_text(_px2 + GRIDC_TILE - 5, _py2 + GRIDC_TILE - 16, $"{_pct2}%");
-        } else {
-            draw_text(_px2 + GRIDC_TILE - 5, _py2 + GRIDC_TILE - 16, string(_s2.men));
-        }
-        draw_set_halign(fa_left);
-        // sergeant pip: green fine, red wounded, black with red border down
-        if (_s2.sgt_hp >= 0) {
-            if (_s2.sgt_hp >= 2) {
-                draw_set_color(c_lime);
-                draw_circle(_px2 + 9, _py2 + 9, 4, false);
-            } else if (_s2.sgt_hp == 1) {
-                draw_set_color(c_red);
-                draw_circle(_px2 + 9, _py2 + 9, 4, false);
-            } else {
-                draw_set_color(c_black);
-                draw_circle(_px2 + 9, _py2 + 9, 4, false);
-                draw_set_color(c_red);
-                draw_circle(_px2 + 9, _py2 + 9, 4, true);
-            }
-        }
-        // selection highlight
-        if ((selected_form >= 0) && (_s2.formation == selected_form)) {
-            draw_set_color(c_white);
-            draw_rectangle(_px2 + 1, _py2 + 1, _px2 + GRIDC_TILE - 1, _py2 + GRIDC_TILE - 1, true);
-        }
-    } else {
-        // enemy squads as ASCII glyphs (design point 8)
-        draw_set_alpha(0.35);
-        draw_set_color(make_color_rgb(60, 40, 40));
-        draw_rectangle(_px2 + 4, _py2 + 4, _px2 + GRIDC_TILE - 4, _py2 + GRIDC_TILE - 4, false);
-        draw_set_alpha(1);
-        draw_set_font(fnt_40k_14);
-        draw_set_color(_s2.colr);
-        draw_set_halign(fa_center);
-        draw_text(_px2 + GRIDC_TILE / 2, _py2 + 8, _s2.ascii);
-        draw_set_font(fnt_tiny);
-        draw_set_halign(fa_right);
-        draw_text(_px2 + GRIDC_TILE - 5, _py2 + GRIDC_TILE - 16, string(_s2.men));
-        draw_set_halign(fa_left);
-    }
-    // red hit flash: immediate feedback on whoever is being struck
-    if (_s2.hit_flash > 0) {
-        draw_set_alpha(0.40 * _s2.hit_flash / GRIDC_FLASH_FRAMES);
-        draw_set_color(c_red);
-        draw_rectangle(_px2 + 2, _py2 + 2, _px2 + GRIDC_TILE - 2, _py2 + GRIDC_TILE - 2, false);
-        draw_set_alpha(1);
-    }
-}
-
-// Formation name tags above the topmost-left member (design point 10 naming)
-draw_set_font(fnt_tiny);
-for (var _ft3 = 0; _ft3 < array_length(formations); _ft3++) {
-    var _f3 = formations[_ft3];
-    if (!_f3.alive) {
-        continue;
-    }
-    var _bk3 = 999999;
-    var _bs3 = -1;
-    for (var _bm3 = 0; _bm3 < array_length(_f3.members); _bm3++) {
-        var _ms3 = squads[_f3.members[_bm3]];
-        if (_ms3.alive && _ms3.deployed) {
-            if (_ms3.row * 1000 + _ms3.col < _bk3) {
-                _bk3 = _ms3.row * 1000 + _ms3.col;
-                _bs3 = _f3.members[_bm3];
-            }
-        }
-    }
-    if (_bs3 < 0) {
-        continue;
-    }
-    var _tx3 = _bx + squads[_bs3].col * GRIDC_TILE;
-    var _ty3 = _by + squads[_bs3].row * GRIDC_TILE - 14;
-    if (squads[_bs3].row == 0) {
-        _ty3 = _by + squads[_bs3].row * GRIDC_TILE + GRIDC_TILE + 1;
-    }
-    var _tw3 = string_width(_f3.name) + 8;
-    draw_set_alpha(0.7);
-    draw_set_color(c_black);
-    draw_rectangle(_tx3, _ty3, _tx3 + _tw3, _ty3 + 13, false);
-    draw_set_alpha(1);
-    draw_set_color(_f3.colr);
-    draw_text(_tx3 + 4, _ty3 + 1, _f3.name);
-}
-
-// Floating combat text, Caves of Qud style: rises and fades above the units
-draw_set_font(fnt_small);
-draw_set_halign(fa_center);
-for (var _fd9 = 0; _fd9 < array_length(floaters); _fd9++) {
-    var _fe9 = floaters[_fd9];
-    draw_set_alpha(min(1, _fe9.flife / 30));
-    draw_set_color(_fe9.fcol);
-    draw_text(_fe9.fx, _fe9.fy, _fe9.ftxt);
-}
-draw_set_alpha(1);
-draw_set_halign(fa_left);
-
-// Placement ghost (design point 6): green cells legal, red cells blocked
-if (placing) {
-    var _pn4 = array_length(placing_list);
-    if ((_pn4 > 0) && (hover_c >= 0)) {
-        var _fp4 = grid_footprint(id, _pn4);
-        var _valid4 = grid_placement_valid(id, hover_c, hover_r);
-        for (var _k4 = 0; _k4 < _pn4; _k4++) {
-            var _c4 = hover_c + (_k4 mod _fp4[0]);
-            var _r4 = hover_r + (_k4 div _fp4[0]);
-            if (!grid_in_bounds(_c4, _r4)) {
+// cover
+if (_tp >= 14) {
+    draw_set_font(fnt_tiny);
+    for (var _cc = _c0; _cc < _c1; _cc++) {
+        for (var _cr = _r0; _cr < _r1; _cr++) {
+            var _cv = cov[_cc][_cr];
+            if (_cv == 0) {
                 continue;
             }
-            var _gx4 = _bx + _c4 * GRIDC_TILE;
-            var _gy4 = _by + _r4 * GRIDC_TILE;
-            draw_set_alpha(0.18);
-            draw_set_color(_valid4 ? c_lime : c_red);
-            draw_rectangle(_gx4 + 2, _gy4 + 2, _gx4 + GRIDC_TILE - 2, _gy4 + GRIDC_TILE - 2, false);
-            draw_set_alpha(0.9);
-            draw_rectangle(_gx4 + 2, _gy4 + 2, _gx4 + GRIDC_TILE - 2, _gy4 + GRIDC_TILE - 2, true);
-            draw_set_alpha(1);
+            draw_set_color((_cv == 1) ? GRIDC_GREEN : GRIDC_RED);
+            draw_set_alpha(0.55);
+            draw_text(grid_sx(id, _cc) + 3, grid_sy(id, _cr) + 2, (_cv == 1) ? "~~" : "xx");
         }
+    }
+    draw_set_alpha(1);
+}
+
+// hover
+if ((hover_c >= 0) && (phase != GRIDPH_END)) {
+    draw_set_alpha(0.20);
+    draw_set_color(GRIDC_GREEN);
+    draw_rectangle(grid_sx(id, hover_c), grid_sy(id, hover_r), grid_sx(id, hover_c) + _tp, grid_sy(id, hover_r) + _tp, false);
+    draw_set_alpha(1);
+}
+
+// order markers for selected formations
+for (var _sf = 0; _sf < array_length(selected); _sf++) {
+    var _fo = formations[selected[_sf]];
+    if (_fo.order == GRIDORD_MOVE) {
+        draw_set_color(GRIDC_COL_ORDER);
+        var _dx = grid_sx(id, _fo.dest_col);
+        var _dy = grid_sy(id, _fo.dest_row);
+        draw_rectangle(_dx + 3, _dy + 3, _dx + _tp - 3, _dy + _tp - 3, true);
+    }
+    if ((_fo.order == GRIDORD_ATTACK) && (_fo.order_target >= 0) && squads[_fo.order_target].alive) {
+        var _tg = squads[_fo.order_target];
+        draw_set_color(GRIDC_RED);
+        var _tx = grid_sx(id, _tg.col);
+        var _ty = grid_sy(id, _tg.row);
+        draw_rectangle(_tx + 2, _ty + 2, _tx + _tp - 2, _ty + _tp - 2, true);
     }
 }
 
-// Left panel: the Deployment Bar (design point 1)
-draw_set_color(make_color_rgb(18, 21, 28));
-draw_rectangle(8, 8, 272, 892, false);
-draw_set_color(make_color_rgb(70, 80, 95));
-draw_rectangle(8, 8, 272, 892, true);
-draw_set_font(fnt_40k_14);
-draw_set_color(c_white);
-draw_text(20, 18, "STRIKE FORCE");
-draw_set_font(fnt_small);
-draw_set_color(make_color_rgb(180, 190, 205));
-draw_text(20, 52, $"Points remaining: {points}");
-if (phase == GRIDPH_DEPLOY) {
-    draw_text(20, 76, "Pick a type to form a group.");
-} else if (phase == GRIDPH_BATTLE) {
-    draw_text(20, 76, "Reinforcements ready to field.");
-} else {
-    draw_text(20, 76, "Deployment locked.");
-}
+// units
+for (var _ui = 0; _ui < array_length(squads); _ui++) {
+    var _s = squads[_ui];
+    if (!_s.alive || !_s.deployed) {
+        continue;
+    }
+    if ((_s.col < _c0 - 1) || (_s.col > _c1) || (_s.row < _r0 - 1) || (_s.row > _r1)) {
+        continue;
+    }
+    var _ux = grid_sx(id, _s.col);
+    var _uy = grid_sy(id, _s.row);
+    if ((_ux + _tp < GRIDC_BF_X1) || (_ux > GRIDC_BF_X2) || (_uy + _tp < GRIDC_BF_Y1) || (_uy > GRIDC_BF_Y2)) {
+        continue;
+    }
+    var _base = (_s.side == 0) ? ((_s.formation >= 0) ? formations[_s.formation].colr : GRIDC_GREEN) : GRIDC_RED;
 
-// Bottom left: battle log (design point 9)
-draw_set_color(make_color_rgb(18, 21, 28));
-draw_rectangle(288, 736, 980, 892, false);
-draw_set_color(make_color_rgb(70, 80, 95));
-draw_rectangle(288, 736, 980, 892, true);
-draw_set_font(fnt_tiny);
-draw_set_color(make_color_rgb(150, 160, 175));
-draw_text(296, 740, "BATTLE LOG");
-draw_set_font(fnt_small);
-var _st5 = max(0, array_length(feed) - 8);
-var _ly5 = 758;
-for (var _l5 = _st5; _l5 < array_length(feed); _l5++) {
-    var _e5 = feed[_l5];
-    draw_set_color(_e5.c);
-    draw_text(296, _ly5, _e5.t);
-    _ly5 += 16;
-}
+    // strength shading behind the glyph
+    var _frac = clamp(_s.hp_pool / max(1, _s.hp_max), 0, 1);
+    draw_set_alpha(0.10 + 0.20 * _frac);
+    draw_set_color(_base);
+    draw_rectangle(_ux + 1, _uy + 1, _ux + _tp - 1, _uy + _tp - 1, false);
+    draw_set_alpha(1);
 
-// Bottom middle: orders and info context panel
-draw_set_color(make_color_rgb(18, 21, 28));
-draw_rectangle(986, 736, 1336, 892, false);
-draw_set_color(make_color_rgb(70, 80, 95));
-draw_rectangle(986, 736, 1336, 892, true);
-draw_set_font(fnt_tiny);
-draw_set_color(make_color_rgb(150, 160, 175));
-draw_text(994, 740, "ORDERS / INFO");
-draw_set_font(fnt_small);
-if (selected_form >= 0) {
-    var _cf6 = formations[selected_form];
-    var _ot6 = "Advance";
-    if (_cf6.order == GRIDORD_HOLD) {
-        _ot6 = "Hold position";
-    }
-    if (_cf6.order == GRIDORD_MOVE) {
-        _ot6 = $"Move to {_cf6.dest_col},{_cf6.dest_row}";
-    }
-    if ((_cf6.order == GRIDORD_ATTACK) && (_cf6.order_target >= 0)) {
-        var _tn6 = squads[_cf6.order_target].name;
-        _ot6 = $"Attack {_tn6}";
-    }
-    var _mem6 = 0;
-    var _men6 = 0;
-    for (var _m6 = 0; _m6 < array_length(_cf6.members); _m6++) {
-        var _ms6 = squads[_cf6.members[_m6]];
-        if (_ms6.alive && _ms6.deployed) {
-            _mem6 += 1;
-            _men6 += _ms6.men;
-        }
-    }
-    draw_set_color(_cf6.colr);
-    draw_text(994, 760, $"Formation {_cf6.name}");
-    draw_set_color(c_white);
-    draw_text(994, 782, $"Order: {_ot6}");
-    draw_text(994, 804, $"Squads: {_mem6}   Men: {_men6}");
-    draw_set_color(make_color_rgb(150, 160, 175));
-    draw_text(994, 826, "Right-click a foe to focus fire.");
-} else if (phase == GRIDPH_DEPLOY) {
-    draw_set_color(make_color_rgb(180, 190, 205));
-    draw_text(994, 760, "Left bar: pick a type, build a group.");
-    draw_text(994, 782, "Right-click a placed squad: recall it.");
-    draw_text(994, 804, "Terminators may deep strike anywhere.");
-    draw_text(994, 826, "Begin Battle when ready.");
-    draw_text(994, 848, "Wheel reshapes a block, R rotates it.");
-} else {
-    draw_set_color(make_color_rgb(180, 190, 205));
-    draw_text(994, 760, "Click a squad to select its group.");
-    draw_text(994, 782, "Click open ground: reposition.");
-    draw_text(994, 804, "Right-click a foe: focus fire.");
-    draw_text(994, 826, "H hold, A advance, Space pause.");
-    draw_text(994, 848, "Left bar fields reinforcements.");
-}
+    grid_draw_unit(_s, _ux + _tp / 2, _uy + _tp / 2, _tp, _base);
 
-// Buttons: rendered from the same rect list the Step event hit-tests
-var _blist7 = grid_buttons(id);
-draw_set_font(fnt_small);
-for (var _b7 = 0; _b7 < array_length(_blist7); _b7++) {
-    var _bt7 = _blist7[_b7];
-    var _hov7 = point_in_rectangle(_mx, _my, _bt7.bx, _bt7.by, _bt7.bx + _bt7.bw, _bt7.by + _bt7.bh);
-    var _fill7 = _bt7.benabled ? make_color_rgb(40, 60, 90) : make_color_rgb(30, 33, 40);
-    if (_bt7.benabled && _hov7) {
-        _fill7 = make_color_rgb(58, 84, 122);
-    }
-    draw_set_color(_fill7);
-    draw_rectangle(_bt7.bx, _bt7.by, _bt7.bx + _bt7.bw, _bt7.by + _bt7.bh, false);
-    draw_set_color(make_color_rgb(90, 105, 130));
-    draw_rectangle(_bt7.bx, _bt7.by, _bt7.bx + _bt7.bw, _bt7.by + _bt7.bh, true);
-    draw_set_color(_bt7.benabled ? c_white : make_color_rgb(120, 125, 135));
-    draw_set_halign(fa_center);
-    draw_set_valign(fa_middle);
-    draw_text(_bt7.bx + _bt7.bw / 2, _bt7.by + _bt7.bh / 2, _bt7.blabel);
-    draw_set_halign(fa_left);
-    draw_set_valign(fa_top);
-}
-
-// Formation creation popup (design point 5)
-if (popup_open) {
-    var _prc8 = grid_popup_rect();
-    var _px8 = _prc8[0];
-    var _py8 = _prc8[1];
-    var _pw8 = _prc8[2];
-    var _ph8 = _prc8[3];
-    draw_set_color(make_color_rgb(22, 26, 34));
-    draw_rectangle(_px8, _py8, _px8 + _pw8, _py8 + _ph8, false);
-    draw_set_color(make_color_rgb(110, 125, 150));
-    draw_rectangle(_px8, _py8, _px8 + _pw8, _py8 + _ph8, true);
-    var _rows8 = grid_pool_indices(id, popup_type);
-    var _dd8 = grid_unit_def(popup_type);
-    draw_set_font(fnt_small);
-    draw_set_color(c_white);
-    draw_text(_px8 + 12, _py8 + 8, $"{_dd8.disp} squads: pick members ({array_length(_rows8)} available)");
-    draw_set_color(make_color_rgb(150, 160, 175));
-    draw_text(_px8 + 12, _py8 + 26, "Wheel scrolls. Right-click closes.");
-    var _vis8 = 8;
-    for (var _i8 = 0; _i8 < _vis8; _i8++) {
-        var _ri8 = popup_scroll + _i8;
-        if (_ri8 >= array_length(_rows8)) {
-            break;
-        }
-        var _ry8 = _py8 + 46 + _i8 * 56;
-        var _sq8 = squads[_rows8[_ri8]];
-        if (_sq8.picked) {
-            draw_set_alpha(0.25);
-            draw_set_color(c_aqua);
-            draw_rectangle(_px8 + 8, _ry8, _px8 + _pw8 - 8, _ry8 + 52, false);
-            draw_set_alpha(1);
-        }
-        draw_set_color(make_color_rgb(70, 80, 95));
-        draw_rectangle(_px8 + 8, _ry8, _px8 + _pw8 - 8, _ry8 + 52, true);
-        // checkbox
-        draw_set_color(make_color_rgb(110, 125, 150));
-        draw_rectangle(_px8 + 16, _ry8 + 18, _px8 + 32, _ry8 + 34, true);
-        if (_sq8.picked) {
-            draw_set_color(c_aqua);
-            draw_rectangle(_px8 + 19, _ry8 + 21, _px8 + 29, _ry8 + 31, false);
-        }
-        draw_set_font(fnt_small);
-        draw_set_color(_sq8.picked ? c_aqua : c_white);
-        draw_text(_px8 + 44, _ry8 + 6, _sq8.name);
+    if (_tp >= 22) {
         draw_set_font(fnt_tiny);
-        draw_set_color(make_color_rgb(170, 180, 195));
-        draw_text(_px8 + 44, _ry8 + 30, $"HP {_sq8.hp_pool}  Armour {_sq8.armor}  Melee {_sq8.mel}  Ballistic {_sq8.bal}  Move {_sq8.mv}");
-        draw_set_font(fnt_small);
+        draw_set_color(_base);
         draw_set_halign(fa_right);
-        draw_set_color(c_white);
-        draw_text(_px8 + _pw8 - 18, _ry8 + 6, $"{_sq8.cost}pt");
+        var _cnt_txt = _s.is_vehicle ? $"{round(_frac * 100)}%" : string(_s.men);
+        draw_text(_ux + _tp - 3, _uy + _tp - 13, _cnt_txt);
         draw_set_halign(fa_left);
     }
-    // finalisation footer (design point 11)
-    var _ps8 = grid_picked_stats(id);
-    draw_set_color(make_color_rgb(70, 80, 95));
-    draw_line(_px8 + 8, _py8 + _ph8 - 70, _px8 + _pw8 - 8, _py8 + _ph8 - 70);
-    draw_set_font(fnt_small);
-    draw_set_color(c_white);
-    draw_text(_px8 + 14, _py8 + _ph8 - 58, $"Formation: {_ps8.n} squads   Power {_ps8.pow}");
-    draw_text(_px8 + 14, _py8 + _ph8 - 36, $"Move {_ps8.mv}   Cost {_ps8.cost}pt");
-    var _den8 = (_ps8.n > 0);
-    var _dhov8 = point_in_rectangle(_mx, _my, _px8 + _pw8 - 190, _py8 + _ph8 - 58, _px8 + _pw8 - 14, _py8 + _ph8 - 12);
-    draw_set_color(_den8 ? (_dhov8 ? make_color_rgb(58, 84, 122) : make_color_rgb(40, 60, 90)) : make_color_rgb(30, 33, 40));
-    draw_rectangle(_px8 + _pw8 - 190, _py8 + _ph8 - 58, _px8 + _pw8 - 14, _py8 + _ph8 - 12, false);
-    draw_set_color(make_color_rgb(90, 105, 130));
-    draw_rectangle(_px8 + _pw8 - 190, _py8 + _ph8 - 58, _px8 + _pw8 - 14, _py8 + _ph8 - 12, true);
-    draw_set_color(_den8 ? c_white : make_color_rgb(120, 125, 135));
+
+    // sergeant pip
+    if ((_s.sgt_hp >= 0) && (_tp >= 22)) {
+        var _pc = (_s.sgt_hp == 2) ? GRIDC_GREEN : ((_s.sgt_hp == 1) ? GRIDC_RED : c_black);
+        draw_set_color(_pc);
+        draw_circle(_ux + 7, _uy + 7, 3, false);
+        if (_s.sgt_hp == 0) {
+            draw_set_color(GRIDC_RED);
+            draw_circle(_ux + 7, _uy + 7, 3, true);
+        }
+    }
+
+    // selection outline
+    if ((_s.side == 0) && (_s.formation >= 0) && grid_sel_has(id, _s.formation)) {
+        draw_set_color(c_white);
+        draw_rectangle(_ux + 1, _uy + 1, _ux + _tp - 1, _uy + _tp - 1, true);
+    }
+
+    if (_s.hit_flash > 0) {
+        draw_set_alpha(0.40 * _s.hit_flash / GRIDC_FLASH_FRAMES);
+        draw_set_color(GRIDC_RED);
+        draw_rectangle(_ux + 2, _uy + 2, _ux + _tp - 2, _uy + _tp - 2, false);
+        draw_set_alpha(1);
+    }
+}
+
+// formation name tags
+if (_tp >= 20) {
+    draw_set_font(fnt_tiny);
+    for (var _fi = 0; _fi < array_length(formations); _fi++) {
+        var _f = formations[_fi];
+        if (!_f.alive || (array_length(_f.members) <= 0)) {
+            continue;
+        }
+        var _tc = -1;
+        var _tr = -1;
+        for (var _mi = 0; _mi < array_length(_f.members); _mi++) {
+            var _m = squads[_f.members[_mi]];
+            if (!_m.alive) {
+                continue;
+            }
+            if ((_tc < 0) || (_m.row < _tr) || ((_m.row == _tr) && (_m.col < _tc))) {
+                _tc = _m.col;
+                _tr = _m.row;
+            }
+        }
+        if (_tc < 0) {
+            continue;
+        }
+        var _tgx = grid_sx(id, _tc);
+        var _tgy = grid_sy(id, _tr) - 13;
+        if ((_tgx < GRIDC_BF_X1) || (_tgx > GRIDC_BF_X2 - 20) || (_tgy < GRIDC_BF_Y1) || (_tgy > GRIDC_BF_Y2)) {
+            continue;
+        }
+        draw_set_color(GRIDC_PANEL);
+        draw_rectangle(_tgx, _tgy, _tgx + string_width(_f.name) + 6, _tgy + 12, false);
+        draw_set_color(_f.colr);
+        draw_text(_tgx + 3, _tgy, _f.name);
+    }
+}
+
+// placement ghost
+if (placing) {
+    var _pn = array_length(placing_list);
+    var _fp = grid_footprint(id, _pn);
+    var _ok = (hover_c >= 0) && grid_placement_valid(id, placing_list, hover_c, hover_r);
+    if (hover_c >= 0) {
+        var _kk = 0;
+        for (var _gy2 = 0; _gy2 < _fp[1]; _gy2++) {
+            for (var _gx2 = 0; _gx2 < _fp[0]; _gx2++) {
+                if (_kk >= _pn) {
+                    break;
+                }
+                var _bx = grid_sx(id, hover_c + _gx2);
+                var _by = grid_sy(id, hover_r + _gy2);
+                draw_set_alpha(0.25);
+                draw_set_color(_ok ? GRIDC_GREEN : GRIDC_RED);
+                draw_rectangle(_bx + 2, _by + 2, _bx + _tp - 2, _by + _tp - 2, false);
+                draw_set_alpha(1);
+                draw_rectangle(_bx + 2, _by + 2, _bx + _tp - 2, _by + _tp - 2, true);
+                _kk += 1;
+            }
+        }
+    }
+}
+
+// drag selection box
+if (drag_active && (point_distance(drag_x0, drag_y0, _mx, _my) >= GRIDC_DRAG_MIN)) {
+    draw_set_color(GRIDC_GREEN);
+    draw_set_alpha(0.15);
+    draw_rectangle(drag_x0, drag_y0, _mx, _my, false);
+    draw_set_alpha(1);
+    draw_rectangle(drag_x0, drag_y0, _mx, _my, true);
+}
+
+// floating combat text, clipped to the viewport
+draw_set_font(fnt_small);
+draw_set_halign(fa_center);
+for (var _fd = 0; _fd < array_length(floaters); _fd++) {
+    var _fe = floaters[_fd];
+    var _fx = grid_sx(id, _fe.fc) + _tp / 2 + _fe.fjit;
+    var _fy = grid_sy(id, _fe.fr) - 2 - _fe.frise;
+    if (!point_in_rectangle(_fx, _fy, GRIDC_BF_X1, GRIDC_BF_Y1, GRIDC_BF_X2, GRIDC_BF_Y2)) {
+        continue;
+    }
+    draw_set_alpha(min(1, _fe.flife / 30));
+    draw_set_color(_fe.fcol);
+    draw_text(_fx, _fy, _fe.ftxt);
+}
+draw_set_alpha(1);
+draw_set_halign(fa_left);
+
+// viewport frame drawn last so units never spill over the border
+draw_set_color(GRIDC_GREEN);
+draw_rectangle(GRIDC_BF_X1, GRIDC_BF_Y1, GRIDC_BF_X2, GRIDC_BF_Y2, true);
+
+// ---------------------------------------------------------------------------
+// Left panel: the deployment bar.
+// ---------------------------------------------------------------------------
+draw_set_color(GRIDC_PANEL);
+draw_rectangle(GRIDC_LP_X1, GRIDC_BF_Y1, GRIDC_LP_X2, GRIDC_PANEL_Y2, false);
+draw_set_color(GRIDC_GREEN);
+draw_rectangle(GRIDC_LP_X1, GRIDC_BF_Y1, GRIDC_LP_X2, GRIDC_PANEL_Y2, true);
+draw_set_font(fnt_40k_14);
+draw_text(GRIDC_LP_X1 + 10, GRIDC_BF_Y1 + 6, "Available Forces:");
+draw_set_font(fnt_40k_12);
+if (phase == GRIDPH_BATTLE) {
+    draw_text(GRIDC_LP_X1 + 10, GRIDC_BF_Y1 + 30, $"Reinforcements: {points} pts");
+} else {
+    draw_text(GRIDC_LP_X1 + 10, GRIDC_BF_Y1 + 30, $"Front holds {combat_width} squads");
+}
+
+// ---------------------------------------------------------------------------
+// Right panel: orders and controls.
+// ---------------------------------------------------------------------------
+draw_set_color(GRIDC_PANEL);
+draw_rectangle(GRIDC_RP_X1, GRIDC_BF_Y1, GRIDC_RP_X2, GRIDC_PANEL_Y2, false);
+draw_set_color(GRIDC_GREEN);
+draw_rectangle(GRIDC_RP_X1, GRIDC_BF_Y1, GRIDC_RP_X2, GRIDC_PANEL_Y2, true);
+draw_set_font(fnt_40k_14);
+draw_text(GRIDC_RP_X1 + 10, GRIDC_BF_Y1 + 6, "Orders");
+draw_set_font(fnt_40k_12);
+
+var _iy = GRIDC_BF_Y1 + 36;
+if (array_length(selected) > 0) {
+    var _sel0 = formations[selected[0]];
+    var _men = 0;
+    var _live = 0;
+    for (var _q = 0; _q < array_length(_sel0.members); _q++) {
+        var _qs = squads[_sel0.members[_q]];
+        if (_qs.alive) {
+            _live += 1;
+            _men += _qs.men;
+        }
+    }
+    var _ostr = "Advance and engage";
+    if (_sel0.order == GRIDORD_HOLD) {
+        _ostr = "Holding position";
+    } else if (_sel0.order == GRIDORD_MOVE) {
+        _ostr = $"Moving to {_sel0.dest_col}, {_sel0.dest_row}";
+    } else if ((_sel0.order == GRIDORD_ATTACK) && (_sel0.order_target >= 0)) {
+        _ostr = $"Attacking {squads[_sel0.order_target].name}";
+    }
+    draw_set_color(GRIDC_GREEN);
+    if (array_length(selected) > 1) {
+        draw_text(GRIDC_RP_X1 + 10, _iy, $"{array_length(selected)} formations selected");
+    } else {
+        draw_text(GRIDC_RP_X1 + 10, _iy, $"Formation {_sel0.name}");
+    }
+    draw_text(GRIDC_RP_X1 + 10, _iy + 22, $"{_live} squads, {_men} models");
+    draw_text(GRIDC_RP_X1 + 10, _iy + 44, _ostr);
+    var _stt = (_sel0.stance == 1) ? "Charge" : ((_sel0.stance == 2) ? "Avoid melee" : "Auto");
+    draw_text(GRIDC_RP_X1 + 10, _iy + 66, $"Stance: {_stt}");
+} else {
+    draw_set_color(GRIDC_DIM);
+    if (phase == GRIDPH_DEPLOY) {
+        draw_text(GRIDC_RP_X1 + 10, _iy, "Pick a type on the left.");
+        draw_text(GRIDC_RP_X1 + 10, _iy + 22, "Wheel reshapes a block.");
+        draw_text(GRIDC_RP_X1 + 10, _iy + 44, "R rotates it.");
+        draw_text(GRIDC_RP_X1 + 10, _iy + 66, "Terminators drop anywhere.");
+        draw_text(GRIDC_RP_X1 + 10, _iy + 88, "Right click a squad: recall.");
+    } else {
+        draw_text(GRIDC_RP_X1 + 10, _iy, "Left click: select.");
+        draw_text(GRIDC_RP_X1 + 10, _iy + 22, "Left drag: box select.");
+        draw_text(GRIDC_RP_X1 + 10, _iy + 44, "Right click ground: move.");
+        draw_text(GRIDC_RP_X1 + 10, _iy + 66, "Right click foe: focus fire.");
+        draw_text(GRIDC_RP_X1 + 10, _iy + 88, "Assaults leap on focus fire.");
+    }
+    draw_text(GRIDC_RP_X1 + 10, _iy + 110, "WASD pans, Tab zooms.");
+}
+
+// ---------------------------------------------------------------------------
+// Bottom log: the full feed, vanilla combat readout style.
+// ---------------------------------------------------------------------------
+draw_set_color(GRIDC_PANEL);
+draw_rectangle(GRIDC_BF_X1, GRIDC_LOG_Y1, GRIDC_BF_X2, GRIDC_LOG_Y2, false);
+draw_set_color(GRIDC_GREEN);
+draw_rectangle(GRIDC_BF_X1, GRIDC_LOG_Y1, GRIDC_BF_X2, GRIDC_LOG_Y2, true);
+draw_set_font(fnt_40k_12);
+var _lines = 13;
+var _start = max(0, array_length(feed) - _lines);
+var _ly = GRIDC_LOG_Y1 + 8;
+for (var _li = _start; _li < array_length(feed); _li++) {
+    draw_set_color(feed[_li].lcol);
+    draw_text(GRIDC_BF_X1 + 10, _ly, feed[_li].ltxt);
+    _ly += 18;
+}
+
+// ---------------------------------------------------------------------------
+// Buttons, drawn from the same table the Step event hit tests.
+// ---------------------------------------------------------------------------
+draw_set_font(fnt_40k_12);
+draw_set_halign(fa_center);
+draw_set_valign(fa_middle);
+var _btns = grid_buttons(id);
+for (var _bi = 0; _bi < array_length(_btns); _bi++) {
+    var _bt = _btns[_bi];
+    var _hov = _bt.benabled && point_in_rectangle(_mx, _my, _bt.bx, _bt.by, _bt.bx + _bt.bw, _bt.by + _bt.bh);
+    if (_hov) {
+        draw_set_alpha(0.18);
+        draw_set_color(GRIDC_GREEN);
+        draw_rectangle(_bt.bx, _bt.by, _bt.bx + _bt.bw, _bt.by + _bt.bh, false);
+        draw_set_alpha(1);
+    }
+    draw_set_color(_bt.benabled ? GRIDC_GREEN : GRIDC_DIM);
+    draw_rectangle(_bt.bx, _bt.by, _bt.bx + _bt.bw, _bt.by + _bt.bh, true);
+    draw_text(_bt.bx + _bt.bw / 2, _bt.by + _bt.bh / 2, _bt.blabel);
+}
+draw_set_halign(fa_left);
+draw_set_valign(fa_top);
+
+// ---------------------------------------------------------------------------
+// Deployment popup.
+// ---------------------------------------------------------------------------
+if (popup_open) {
+    var _pr = grid_popup_rect();
+    var _px = _pr[0];
+    var _py = _pr[1];
+    var _pw = _pr[2] - _pr[0];
+    var _ph = _pr[3] - _pr[1];
+    draw_set_color(GRIDC_PANEL);
+    draw_rectangle(_px, _py, _px + _pw, _py + _ph, false);
+    draw_set_color(GRIDC_GREEN);
+    draw_rectangle(_px, _py, _px + _pw, _py + _ph, true);
+    var _pd = grid_unit_def(popup_type);
+    var _pool = grid_pool_indices(id, popup_type);
+    draw_set_font(fnt_40k_14);
+    draw_text(_px + 12, _py + 10, $"{_pd.disp}: choose members ({array_length(_pool)} available)");
+    draw_set_font(fnt_tiny);
+    draw_set_color(GRIDC_DIM);
+    draw_text(_px + 12, _py + 34, "Wheel scrolls. Right click or click outside to cancel.");
+
+    draw_set_font(fnt_40k_12);
+    for (var _i = 0; _i < 8; _i++) {
+        var _idx = popup_scroll + _i;
+        if (_idx >= array_length(_pool)) {
+            break;
+        }
+        var _sq = squads[_pool[_idx]];
+        var _ry = _py + 52 + _i * 56;
+        if (_sq.picked) {
+            draw_set_alpha(0.12);
+            draw_set_color(GRIDC_GREEN);
+            draw_rectangle(_px + 8, _ry, _px + _pw - 8, _ry + 52, false);
+            draw_set_alpha(1);
+        }
+        draw_set_color(_sq.picked ? GRIDC_GREEN : GRIDC_DIM);
+        draw_rectangle(_px + 8, _ry, _px + _pw - 8, _ry + 52, true);
+        draw_rectangle(_px + 18, _ry + 18, _px + 34, _ry + 34, true);
+        if (_sq.picked) {
+            draw_line(_px + 20, _ry + 26, _px + 26, _ry + 32);
+            draw_line(_px + 26, _ry + 32, _px + 32, _ry + 20);
+        }
+        draw_set_color(GRIDC_GREEN);
+        draw_text(_px + 46, _ry + 6, _sq.name);
+        draw_set_font(fnt_tiny);
+        draw_set_color(GRIDC_DIM);
+        var _hp = _sq.hp_pool;
+        var _ar = _sq.armour;
+        var _ml = _sq.mel;
+        var _bl = _sq.bal;
+        var _mv = _sq.spd;
+        draw_text(_px + 46, _ry + 30, $"HP {_hp}   Armour {_ar}   Melee {_ml}   Ballistic {_bl}   Speed {_mv}");
+        draw_set_font(fnt_40k_12);
+        draw_set_color(GRIDC_GREEN);
+        draw_set_halign(fa_right);
+        draw_text(_px + _pw - 20, _ry + 16, $"{_sq.cost}pt");
+        draw_set_halign(fa_left);
+    }
+
+    var _ps = grid_picked_stats(id);
+    var _pn2 = _ps.n;
+    var _pc2 = _ps.cost;
+    var _pp2 = _ps.pow;
+    var _pm2 = _ps.mv;
+    draw_set_font(fnt_40k_12);
+    draw_set_color(GRIDC_GREEN);
+    draw_text(_px + 14, _py + _ph - 44, $"Formation: {_pn2} squads   Power {_pp2}   Speed {_pm2}   Cost {_pc2}pt");
+    draw_set_color((_pn2 > 0) ? GRIDC_GREEN : GRIDC_DIM);
+    draw_rectangle(_px + _pw - 190, _py + _ph - 58, _px + _pw - 14, _py + _ph - 12, true);
     draw_set_halign(fa_center);
     draw_set_valign(fa_middle);
-    draw_text(_px8 + _pw8 - 102, _py8 + _ph8 - 35, "DEPLOY");
+    draw_text(_px + _pw - 102, _py + _ph - 35, "Deploy");
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
 }
 
-// End overlay
+// ---------------------------------------------------------------------------
+// End screen.
+// ---------------------------------------------------------------------------
 if (phase == GRIDPH_END) {
-    draw_set_alpha(0.6);
+    draw_set_alpha(0.72);
     draw_set_color(c_black);
     draw_rectangle(0, 0, 1600, 900, false);
     draw_set_alpha(1);
-    draw_set_color(make_color_rgb(18, 21, 28));
+    draw_set_color(GRIDC_PANEL);
     draw_rectangle(560, 300, 1040, 640, false);
-    draw_set_color(make_color_rgb(110, 125, 150));
+    draw_set_color(GRIDC_GREEN);
     draw_rectangle(560, 300, 1040, 640, true);
     draw_set_font(fnt_40k_30b);
     draw_set_halign(fa_center);
-    if (result == 1) {
-        draw_set_color(c_lime);
-        draw_text(800, 324, "VICTORY");
-    } else {
-        draw_set_color(c_red);
-        draw_text(800, 324, "DEFEAT");
-    }
+    draw_set_color((result > 0) ? GRIDC_GREEN : GRIDC_RED);
+    draw_text(800, 330, (result > 0) ? "VICTORY" : "DEFEAT");
     draw_set_font(fnt_40k_12);
-    draw_set_color(c_white);
-    draw_text(800, 396, $"Greenskins slain: {total_ekills}");
-    draw_text(800, 424, $"Brothers and auxiliaries lost: {total_pkills}");
-    draw_text(800, 452, $"Enemy mobs wiped: {wiped_e}");
-    draw_text(800, 480, $"Our squads lost: {wiped_p}");
-    draw_text(800, 508, $"Duration: {ticks} ticks");
-    var _rhov9 = point_in_rectangle(_mx, _my, 660, 560, 940, 616);
-    draw_set_color(_rhov9 ? make_color_rgb(58, 84, 122) : make_color_rgb(40, 60, 90));
-    draw_rectangle(660, 560, 940, 616, false);
-    draw_set_color(make_color_rgb(90, 105, 130));
+    draw_set_color(GRIDC_GREEN);
+    draw_text(800, 400, $"Greenskins slain: {total_ekills}");
+    draw_text(800, 424, $"Battle brothers lost: {total_pkills}");
+    draw_text(800, 448, $"Mobs wiped out: {wiped_e}");
+    draw_text(800, 472, $"Squads lost: {wiped_p}");
+    draw_text(800, 496, $"Duration: {ticks} ticks");
     draw_rectangle(660, 560, 940, 616, true);
-    draw_set_color(c_white);
     draw_set_valign(fa_middle);
     draw_text(800, 588, "Return to Map");
     draw_set_valign(fa_top);
     draw_set_halign(fa_left);
 }
 
-// Reset draw state for anything else on the GUI layer (the cursor)
+// Reset draw state for the cursor, which draws on top of this overlay.
 draw_set_alpha(1);
 draw_set_color(c_white);
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 draw_set_font(fnt_small);
-
-// Fallback pointer: obj_cursor normally draws itself on top of this overlay,
-// but if no cursor instance is active the pointer must never vanish.
 if (!instance_exists(obj_cursor)) {
     draw_sprite(spr_cursor, 0, _mx, _my);
 }

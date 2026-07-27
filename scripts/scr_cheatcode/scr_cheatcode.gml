@@ -222,8 +222,21 @@ function scr_cheatcode(argument0) {
                     // Launch the standalone grid combat prototype (Uxie redesign test bed).
                     // Fully self contained: deactivates the campaign while open and restores
                     // it on exit. No campaign state is read or written.
+                    // "gridbattle" alone is a medium fight; "gridbattle small|large|huge" or
+                    // "gridbattle 30" sets the combat width, which drives the grid size and
+                    // the deployment point budget together.
                     if (!instance_exists(obj_grid_combat)) {
-                        instance_create(0, 0, obj_grid_combat);
+                        var _gw = 12;
+                        if (array_length(cheat_arguments) > 0) {
+                            var _garg = string_lower(string(cheat_arguments[0]));
+                            if (string_digits(_garg) == _garg && _garg != "") {
+                                _gw = real(_garg);
+                            } else {
+                                _gw = grid_size_width(_garg);
+                            }
+                        }
+                        var _ginst = instance_create(0, 0, obj_grid_combat);
+                        _ginst.pending_width = clamp(_gw, 6, 40);
                     }
                     break;
                 case "chaosfleetspawn":

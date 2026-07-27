@@ -1,6 +1,4 @@
-/// Grid combat prototype controller, launched by the "gridbattle" cheat.
-/// Every instance variable is initialized here; this build crashes on
-/// uninitialized reads, so nothing may be left implicit.
+/// @description Grid combat prototype: self contained state, no campaign reads.
 
 if (instance_number(obj_grid_combat) > 1) {
     instance_destroy();
@@ -10,6 +8,12 @@ if (instance_number(obj_grid_combat) > 1) {
 depth = -15000;
 boot_done = false;
 
+// Battle scale. The cheat can override this before the first Step by setting
+// pending_width, so "gridbattle large" and "gridbattle 30" both work.
+if (!variable_instance_exists(id, "pending_width")) {
+    pending_width = 12;
+}
+
 phase = GRIDPH_DEPLOY;
 result = 0;
 ticks = 0;
@@ -17,8 +21,6 @@ frame_ctr = 0;
 paused = false;
 speed_mult = 1;
 exit_arm = 0;
-
-points = GRIDC_POINTS;
 waves_left = GRIDC_WAVES;
 
 squads = [];
@@ -26,16 +28,22 @@ formations = [];
 form_counters = {};
 form_color_idx = 0;
 
-occ = array_create(GRIDC_COLS);
-cov = array_create(GRIDC_COLS);
-var _c;
-for (_c = 0; _c < GRIDC_COLS; _c++) {
-    occ[_c] = array_create(GRIDC_ROWS, -1);
-    cov[_c] = array_create(GRIDC_ROWS, 0);
-}
+cols = 0;
+rows = 0;
+combat_width = 0;
+points = 0;
+band_r1 = 0;
+band_r2 = 0;
+occ = [];
+cov = [];
+
+view_x = 0;
+view_y = 0;
+zoom_mode = 0;
 
 feed = [];
 floaters = [];
+
 agg_ekills = 0;
 agg_pkills = 0;
 total_ekills = 0;
@@ -46,16 +54,19 @@ wiped_p = 0;
 popup_open = false;
 popup_type = "";
 popup_scroll = 0;
+
 placing = false;
 placing_list = [];
 placing_w = 1;
-selected_form = -1;
+
+selected = [];
+drag_active = false;
+drag_x0 = 0;
+drag_y0 = 0;
+
 hover_c = -1;
 hover_r = -1;
 
-grid_gen_cover(id);
-grid_gen_player_pool(id);
-grid_spawn_enemy_force(id);
-
-grid_log(id, "Grid Combat Prototype: Uxie redesign, first playable slice.", c_white);
-grid_log(id, "Deploy from the left bar into the blue zone, then Begin Battle.", GRIDC_COL_ORDER);
+// The field itself is built on the first Step, not here: instance_create runs
+// this event immediately, so the cheat has not yet had a chance to set
+// pending_width when Create fires.
