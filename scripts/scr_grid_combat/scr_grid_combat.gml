@@ -2699,7 +2699,15 @@ function grid_handoff_result(ctrl) {
     var _ticks = ctrl.ticks;
     with (obj_ncombat) {
         defeat = _lost_field ? 1 : 0;
-        turn_count = max(turn_count, _ticks);
+        // turn_count must NOT be the grid's tick count. Vanilla counts tactical
+        // rounds, and 50 means "stalemate": Alarm_5 relabels the report a
+        // fighting retreat at that number, and KeyPress_13 forces started back
+        // to 2 on every Enter, which re-arms alarm[5] and re-runs the whole
+        // summary instead of exiting. A grid battle ticks past 50 in fifteen
+        // seconds and past a thousand in a long fight, so the report could never
+        // be dismissed. Ticks are scaled onto the vanilla scale and capped well
+        // short of the stalemate threshold.
+        turn_count = clamp(round(_ticks / 8), 1, 45);
         // The tactical stages never ran, so they are parked at their finished
         // values and the "Chapter Defeated" / "Enemy Forces Defeated" poll in
         // Step_0 is switched off: the grid has already said which it was.
@@ -2726,16 +2734,6 @@ function grid_handoff_result(ctrl) {
         instance_activate_object(obj_enunit);
         instance_activate_object(obj_star);
         instance_activate_object(obj_event_log);
-        // Report only: the grid fought the battle, so the vanilla battlefield has
-        // nothing to show. The blocks stay alive because Alarm_5 and Alarm_6 read
-        // them, they simply stop drawing, and Draw_0 skips the field panel.
-        grid_report_only = true;
-        with (obj_pnunit) {
-            visible = false;
-        }
-        with (obj_enunit) {
-            visible = false;
-        }
         alarm[5] = 6;
     }
     return true;
