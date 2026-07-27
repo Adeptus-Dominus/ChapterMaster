@@ -60,11 +60,19 @@
 // with a hull and a gun doubles it, and artillery reaches across half the field,
 // which is the whole point of artillery.
 #macro GRIDC_TANK_RANGE_MULT 2
-#macro GRIDC_ARTY_RANGE_FRAC 0.5
-// A block counts as arrived when something in it can reach the enemy, but that
-// test has to ignore the long guns: an artillery piece would otherwise declare
-// contact from the deployment zone and break the whole formation on turn one.
-#macro GRIDC_CONTACT_MAX 8
+#macro GRIDC_ARTY_RANGE_FRAC 0.38
+
+// Rate of fire, in ticks between shots. Reach is paid for with rate: the guns
+// that shoot furthest shoot least often. Melee is never gated by these.
+#macro GRIDC_CD_ARTILLERY 5
+#macro GRIDC_CD_LANDRAIDER 3
+#macro GRIDC_CD_TANK 2
+#macro GRIDC_CD_HEAVY 2
+// How close the lines must be before a block gives up its shape. A formation now
+// fires from the line while it still holds together, so this is the distance at
+// which the fighting becomes close enough that squads start manoeuvring for
+// themselves. Being shot at from further out no longer breaks anyone up.
+#macro GRIDC_CONTACT_MAX 3
 // Hysteresis on the contact latch. A block engages at CONTACT_MAX but only
 // breaks off once the nearest enemy is this much further out again, so a block
 // trading fire at the edge of its reach does not flicker in and out of
@@ -367,6 +375,10 @@ function GridSquad(_side, _type, _name) constructor {
     // who actually died rather than to an anonymous count.
     roster_refs = [];
     zap_cd = 3;
+    // Reload. fire_cd counts down each tick; ranged attacks are blocked while it
+    // is running, melee is not.
+    fire_int = grid_fire_interval(_type, _d);
+    fire_cd = 0;
     kills = 0;
     // Worst thing that happened to this squad this tick, so the floating text
     // shows the outcome that mattered rather than whichever landed last.
@@ -560,6 +572,67 @@ function grid_is_artillery(_key) {
     return ((_key == "whirlwind") || (_key == "ig_basilisk"));
 }
 
+/// @function grid_is_heavy_weapon
+/// @description Support weapons: the ones that reach out and are slow to
+/// reload. Devastators and Heavy Weapons Teams on our side, the enemy's rokkit
+/// and missile carriers on theirs.
+function grid_is_heavy_weapon(_key) {
+    switch (_key) {
+        case "devastator":
+        case "heavy_weapons":
+        case "ig_hwt":
+        case "tau_broadside":
+        case "ty_zoanthrope":
+        case "ne_destroyer":
+            return true;
+    }
+    return false;
+}
+
+/// @function grid_range_bonus
+/// @description Reach the raw weapon table understates. Bolt weapons carry
+/// further than their listed range suggests, and support weapons further still.
+function grid_range_bonus(_key) {
+    if (grid_is_heavy_weapon(_key)) {
+        return 3;
+    }
+    switch (_key) {
+        case "tactical":
+        case "veteran":
+        case "terminator":
+        case "assault_term":
+        case "hq":
+        case "scout":
+        case "ec_sister":
+        case "ec_celestian":
+        case "ch_marine":
+        case "ch_terminator":
+            return 2;
+    }
+    return 0;
+}
+
+/// @function grid_fire_interval
+/// @description Ticks between shots. A Whirlwind ranges across the field and
+/// reloads for five ticks; a battle tank fires every other tick; a Land Raider
+/// sits between them. Transports carry men rather than guns and fire every tick,
+/// as does every rifle on the field.
+function grid_fire_interval(_key, _def) {
+    if (grid_is_artillery(_key)) {
+        return GRIDC_CD_ARTILLERY;
+    }
+    if (_key == "land_raider") {
+        return GRIDC_CD_LANDRAIDER;
+    }
+    if (_def.vehicle && (_def.glyph != "transport")) {
+        return GRIDC_CD_TANK;
+    }
+    if (grid_is_heavy_weapon(_key)) {
+        return GRIDC_CD_HEAVY;
+    }
+    return 1;
+}
+
 /// @function grid_apply_range_class
 /// @description Sets a squad's reach from its class once the field size is
 /// known, since artillery range is a fraction of the map rather than a fixed
@@ -573,7 +646,9 @@ function grid_apply_range_class(ctrl, _sq) {
     // Transports carry men, not guns, so they keep the reach on their profile.
     if (_sq.is_vehicle && (_sq.glyph != "transport")) {
         _sq.rng = min(round(_sq.rng * GRIDC_TANK_RANGE_MULT), max(2, _arty - 2));
+        return;
     }
+    _sq.rng += grid_range_bonus(_sq.type);
 }
 
 /// @function grid_gen_cover
@@ -1412,10 +1487,18 @@ function grid_attack(ctrl, _ai, _di, _melee) {
     if (_stat <= 0) {
         return 0;
     }
+    if (!_melee && (_a.fire_cd > 0)) {
+        return 0;
+    }
     var _eff = max(1, _a.men);
     var _raw = _stat * _eff * random_range(0.8, 1.2);
     if (_a.sgt_hp == 0) {
         _raw *= 0.9;
+    }
+    if (!_melee) {
+        // The round is spent whether or not it lands, so the reload starts here
+        // rather than after the outcome is known.
+        _a.fire_cd = max(0, _a.fire_int - 1);
     }
     // The mark goes out now, before anything can stop the shot, so a miss still
     // shows a round crossing the field and then reads MISS on the target.
@@ -1555,8 +1638,10 @@ function grid_form_contact(ctrl, _f) {
         if (!_s.alive || !_s.deployed) {
             continue;
         }
-        var _lim = _f.engaged ? _reach : min(max(1, _s.rng), _reach);
-        if (grid_nearest_foe(ctrl, _f.members[_i], _lim) >= 0) {
+        // Measured on the ground between the lines, not on weapon reach. A block
+        // holds its shape and shoots from it; only closing to this distance
+        // breaks it up, so taking fire from across the field changes nothing.
+        if (grid_nearest_foe(ctrl, _f.members[_i], _reach) >= 0) {
             return true;
         }
     }
@@ -2044,9 +2129,15 @@ function grid_act_player(ctrl, _si) {
         return;
     }
 
+    var _t = ctrl.squads[_ti];
     // Out of contact under a plain advance, the squad keeps its place in the
-    // block rather than racing ahead on its own legs.
+    // block rather than racing ahead on its own legs. The guns still work
+    // though: it fires from the line at anything already in reach, which is what
+    // lets a formation trade shots without coming apart.
     if ((_ord == GRIDORD_ADVANCE) && (_f != undefined) && !_f.engaged) {
+        if ((_s.bal > 0) && (grid_dist(_s.col, _s.row, _t.col, _t.row) <= _s.rng)) {
+            grid_attack(ctrl, _si, _ti, false);
+        }
         grid_follow_anchor(ctrl, _si, _f);
         return;
     }
@@ -2056,7 +2147,6 @@ function grid_act_player(ctrl, _si) {
         return;
     }
 
-    var _t = ctrl.squads[_ti];
     var _dd = grid_dist(_s.col, _s.row, _t.col, _t.row);
     var _seek = (_stance == 1) || ((_stance == 0) && grid_wants_melee(_s));
 
@@ -2107,6 +2197,11 @@ function grid_act_enemy(ctrl, _si) {
     var _s = ctrl.squads[_si];
     var _ef = (_s.formation >= 0) ? ctrl.formations[_s.formation] : undefined;
     if ((_ef != undefined) && !_ef.engaged) {
+        // Same rule as ours: shoot from the line, keep the shape.
+        var _lt = grid_nearest_foe(ctrl, _si, _s.rng);
+        if ((_lt >= 0) && (_s.bal > 0)) {
+            grid_attack(ctrl, _si, _lt, false);
+        }
         grid_follow_anchor(ctrl, _si, _ef);
         return;
     }
@@ -2173,6 +2268,11 @@ function grid_battle_tick(ctrl) {
     ctrl.agg_ekills = 0;
     ctrl.agg_pkills = 0;
     grid_refresh_live(ctrl);
+    for (var _rl = 0; _rl < array_length(ctrl.squads); _rl++) {
+        if (ctrl.squads[_rl].fire_cd > 0) {
+            ctrl.squads[_rl].fire_cd -= 1;
+        }
+    }
 
     var _order = [];
     for (var _i = 0; _i < array_length(ctrl.squads); _i++) {
@@ -2733,50 +2833,87 @@ function grid_role_to_type(_role) {
     return "tactical";
 }
 
-/// @function grid_collect_force
-/// @description Reads the committed roster into a plain array of type keys, one
-/// entry per squad. Handles both unit structs and the [company, id] vehicle
-/// pairs the roster mixes together, and skips the empty ghost roles the battle
-/// roster already filters out.
-function grid_collect_force(_roster) {
+// grid_collect_force, which read the drop screen's roster, was removed when the
+// takeover moved into obj_ncombat. Only an assault has a roster to read; every
+// other battle builds one locally and deletes it. grid_collect_blocks reads the
+// battlefield blocks instead, which every spawner produces.
+
+/// @function grid_collect_blocks
+/// @description Reads the fighting force straight off the battlefield blocks
+/// rather than the drop screen's roster. Every battle spawner builds those
+/// blocks, but only an assault launched from the drop screen still has a roster
+/// to read: a defence builds a local one and deletes it immediately. Collecting
+/// from the blocks is what lets defending, missions, ruins and hulks reach the
+/// grid at all. Allies are carried so they fight, and flagged so the writeback
+/// leaves them alone.
+function grid_collect_blocks() {
     var _out = [];
-    if (!is_struct(_roster)) {
-        return _out;
-    }
-    if (!variable_struct_exists(_roster, "selected_units")) {
-        return _out;
-    }
-    var _units = _roster.selected_units;
-    for (var _i = 0; _i < array_length(_units); _i++) {
-        var _u = _units[_i];
-        var _role = "";
-        var _uid = "";
-        var _co = -1;
-        var _slot = -1;
-        var _veh = false;
-        if (is_struct(_u)) {
-            _role = _u.role();
-            _uid = variable_struct_exists(_u, "uid") ? _u.uid : "";
-            _co = _u.company;
-            _slot = _u.marine_number;
-        } else if (is_array(_u) && (array_length(_u) >= 2)) {
-            _role = obj_ini.veh_role[_u[0]][_u[1]];
-            _co = _u[0];
-            _slot = _u[1];
-            _veh = true;
+    with (obj_pnunit) {
+        for (var _i = 0; _i < array_length(unit_struct); _i++) {
+            var _u = unit_struct[_i];
+            if (!is_struct(_u)) {
+                continue;
+            }
+            if ((_i >= array_length(marine_type)) || (marine_type[_i] == "")) {
+                continue;
+            }
+            var _role = _u.role();
+            if (_role == "") {
+                continue;
+            }
+            array_push(_out, {
+                gtype: grid_role_to_type(_role),
+                uid: variable_struct_exists(_u, "uid") ? _u.uid : "",
+                co: _u.company,
+                slot: _u.marine_number,
+                veh: false,
+                ally: ally[_i],
+            });
         }
-        if (_role == "") {
-            continue;
+        for (var _v = 0; _v < array_length(veh_type); _v++) {
+            if (veh_type[_v] == "") {
+                continue;
+            }
+            array_push(_out, {
+                gtype: grid_role_to_type(veh_type[_v]),
+                uid: "",
+                co: veh_co[_v],
+                slot: veh_id[_v],
+                veh: true,
+                ally: veh_ally[_v],
+            });
         }
-        array_push(_out, {
-            gtype: grid_role_to_type(_role),
-            uid: _uid,
-            co: _co,
-            slot: _slot,
-            veh: _veh,
-        });
     }
     return _out;
+}
+
+/// @function grid_take_over
+/// @description Hands a fully built vanilla battle to the grid. obj_ncombat is
+/// silenced and hidden but kept alive, since it is what the resolution pass
+/// reads back through afterwards.
+function grid_take_over(_nc) {
+    var _loc = "";
+    if (instance_exists(_nc.battle_object) && variable_instance_exists(_nc.battle_object, "name")) {
+        _loc = string(_nc.battle_object.name);
+    }
+    var _threat = clamp(_nc.threat, 1, 7);
+    var _width = variable_instance_exists(_nc, "grid_width")
+        ? _nc.grid_width
+        : clamp(6 + (_threat * 3), 8, 32);
+    with (_nc) {
+        for (var _ga = 0; _ga < 12; _ga++) {
+            alarm[_ga] = -1;
+        }
+        visible = false;
+    }
+    var _gc = instance_create(0, 0, obj_grid_combat);
+    _gc.pending_width = _width;
+    _gc.pending_force = grid_collect_blocks();
+    _gc.pending_enemy = string(_nc.enemy);
+    _gc.pending_threat = _threat;
+    _gc.pending_loc = _loc;
+    _gc.pending_live = true;
+    return true;
 }
 
 /// @function grid_import_force
@@ -2998,6 +3135,9 @@ function grid_commit_losses(ctrl) {
         for (var _k = 0; (_k < _lost) && (_k < array_length(_s.roster_refs)); _k++) {
             var _ref = _s.roster_refs[array_length(_s.roster_refs) - 1 - _k];
             if (_ref.veh) {
+                if (variable_struct_exists(_ref, "ally") && _ref.ally) {
+                    continue;
+                }
                 var _vslot = grid_block_slot_for_vehicle(_ref.co, _ref.slot);
                 if (_vslot[1] < 0) {
                     _missing += 1;
@@ -3006,6 +3146,10 @@ function grid_commit_losses(ctrl) {
                 if (grid_wreck_block_vehicle(_vslot[0], _vslot[1])) {
                     _veh_dead += 1;
                 }
+                continue;
+            }
+            if (variable_struct_exists(_ref, "ally") && _ref.ally) {
+                // Allied contingents are not ours to bury.
                 continue;
             }
             var _slot = grid_block_slot_for_uid(_ref.uid);

@@ -1,3 +1,27 @@
+// ---------------------------------------------------------------------------
+// Grid combat takeover. Every battle spawner creates obj_ncombat and then fills
+// in the context and builds the blocks, so the first frame the player blocks
+// exist is the first moment the fight is fully described. Hooking here rather
+// than inside one spawner is what makes defending, missions, ruins and hulks use
+// the grid too, and not just an assault launched from the drop screen. It waits
+// a few frames because a spawner may build its blocks after creating this
+// object, and gives up rather than hanging if they never arrive.
+// ---------------------------------------------------------------------------
+if (!variable_instance_exists(id, "grid_wait")) {
+    grid_wait = 0;
+}
+if (grid_wait >= 0) {
+    if (grid_combat_enabled() && (started == 0) && instance_exists(obj_pnunit)) {
+        grid_wait = -1;
+        grid_take_over(id);
+        exit;
+    }
+    grid_wait += 1;
+    if (grid_wait > 30) {
+        grid_wait = -1;
+    }
+}
+
 // R: general retreat. Every formation withdraws except the rear guard: the block
 // under the cursor if any, otherwise the block closest to the enemy line. The rear
 // guard may follow once it has delayed the enemy (see RETREAT_REARGUARD_HOLD).

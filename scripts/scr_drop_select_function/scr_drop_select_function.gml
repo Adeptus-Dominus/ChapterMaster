@@ -659,27 +659,13 @@ function drop_select_unit_selection() {
             setup_battle_formations();
             roster.add_to_battle();
 
-            // Grid combat takeover. The vanilla setup above runs untouched, so
-            // obj_ncombat holds the full, correctly built battle context; the
-            // grid then takes over the tactical layer by silencing obj_ncombat's
-            // own alarms and hiding it, while staying alive as the object the
-            // resolution pass will later read back through. Toggle with the
-            // "gridcombat on" / "gridcombat off" cheat; default is vanilla.
+            // The grid takes over from obj_ncombat's own Step event, so every
+            // battle reaches it and not just this one. All this path adds is a
+            // better field size than threat alone can give: the assault knows
+            // the region's real front width.
             if (grid_combat_enabled()) {
-                with (obj_ncombat) {
-                    for (var _ga = 0; _ga < 12; _ga++) {
-                        alarm[_ga] = -1;
-                    }
-                    visible = false;
-                }
                 var _gfront = region_front_width(p_target, planet_number, region_focus_get(p_target, planet_number));
-                var _gc = instance_create(0, 0, obj_grid_combat);
-                _gc.pending_width = clamp(round(_gfront / 200), 8, 32);
-                _gc.pending_force = grid_collect_force(roster);
-                _gc.pending_enemy = string(attacking);
-                _gc.pending_threat = obj_ncombat.threat;
-                _gc.pending_loc = p_target.name;
-                _gc.pending_live = true;
+                obj_ncombat.grid_width = clamp(round(_gfront / 200), 8, 32);
             }
         } else if (purge > 1) {
             draw_set_alpha(0.2);
