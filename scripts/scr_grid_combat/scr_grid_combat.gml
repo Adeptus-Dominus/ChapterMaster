@@ -1140,12 +1140,18 @@ function grid_hit_label(_s) {
             return ["DEFLECTED", GRIDC_COL_GREY];
         case GRIDHIT_DODGE:
             return ["DODGED", GRIDC_COL_DODGE];
+        // The label is built into a local first. An array literal that opens
+        // straight onto a template string is a compile error: GameMaker lexes
+        // the two characters [$ as the struct accessor, not as an array bracket
+        // followed by a template string.
         case GRIDHIT_GRAZE:
             var _chip = _s.is_vehicle ? $" -{round(_s.hit_dmg)}" : "";
-            return [$"GRAZED{_chip}", _mine ? GRIDC_COL_GRAZE : GRIDC_COL_FEED];
+            var _graze_txt = $"GRAZED{_chip}";
+            return [_graze_txt, _mine ? GRIDC_COL_GRAZE : GRIDC_COL_FEED];
         case GRIDHIT_WOUND:
             var _n = _s.is_vehicle ? round(_s.hit_dmg) : _s.hit_kills;
-            return [$"WOUNDED -{_n}", _mine ? GRIDC_COL_WOUND : GRIDC_COL_KILL];
+            var _wound_txt = $"WOUNDED -{_n}";
+            return [_wound_txt, _mine ? GRIDC_COL_WOUND : GRIDC_COL_KILL];
     }
     return ["", GRIDC_COL_GREY];
 }
