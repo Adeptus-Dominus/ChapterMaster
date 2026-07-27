@@ -427,7 +427,7 @@ Primitives have no internal methods; use library functions instead.
 
 ### Strings
 
-string_length, string_copy, string_pos, string_repeat, string_upper, string_lower, string_hash_to_newline, string_delete, string_insert, string_replace, string_count, string, string_ext, ansi_char, chr, ord, string_byte_at, string_byte_length, string_set_byte_at, string_char_at, string_ord_at, string_pos_ext, string_last_pos, string_last_pos_ext, string_starts_with, string_ends_with, string_digits, string_format, string_letters, string_lettersdigits, string_replace_all, string_trim, string_trim_start, string_trim_end, string_split, string_split_ext, string_join, string_join_ext, string_concat, string_concat_ext, string_width, string_width_ext, string_height, string_height_ext, string_foreach
+string_length, string_copy, string_pos, string_repeat, string_upper, string_lower, string_hash_to_newline, string_delete, string_insert, string_replace, string_count, string_ext, ansi_char, chr, ord, string_byte_at, string_byte_length, string_set_byte_at, string_char_at, string_ord_at, string_pos_ext, string_last_pos, string_last_pos_ext, string_starts_with, string_ends_with, string_digits, string_format, string_letters, string_lettersdigits, string_replace_all, string_trim, string_trim_start, string_trim_end, string_split, string_split_ext, string_join, string_join_ext, string_concat, string_concat_ext, string_width, string_width_ext, string_height, string_height_ext, string_foreach
 
 ### Arrays
 
@@ -439,15 +439,27 @@ struct_exists, struct_get, struct_set, struct_remove, struct_get_names, struct_n
 
 ### Math
 
-min, max, abs, round, floor, ceil, clamp, lerp, sin, cos, tan, darcsin, darccos, darctan, point_distance, point_direction, random, irandom, random_range, irandom_range, choose, randomise, random_set_seed, random_get_seed, frac, sign, mean, median, math_set_epsilon, math_get_epsilon, exp, ln, power, sqr, sqrt, log2, log10, logn
+min, max, abs, round, floor, ceil, clamp, lerp, sin, cos, tan, darcsin, darccos, darctan, point_distance, point_direction, frac, sign, mean, median, math_set_epsilon, math_get_epsilon, exp, ln, power, sqr, sqrt, log2, log10, logn
+
+### Random
+
+random, irandom, random_range, irandom_range, choose, randomise, random_set_seed, random_get_seed
 
 ### Variables
 
 variable_instance_exists, variable_instance_get_names, variable_instance_names_count, variable_instance_get, variable_instance_set, variable_global_exists, variable_global_get, variable_global_set
 
-### Type checking/conversion
+### Type Checking
 
-typeof(x) (function, not operator), is_instanceof(x, Constructor) (checks inheritance chain), instanceof(x) (gets the constructor used to create a struct), bool(x), is_array(x), is_bool(x), is_string(x), is_numeric(x), is_struct(x), is_undefined(x), is_ptr(x), is_int32(x), is_int64(x), is_handle(x), is_method(x), is_callable(x), is_real, is_nan, is_infinity, real, ptr, ref_create, int64, handle_parse
+nameof(x), typeof(x) (function, not operator), is_instanceof(x, Constructor) (checks inheritance chain), instanceof(x) (gets the constructor used to create a struct), is_array(x), is_bool(x), is_string(x), is_numeric(x), is_struct(x), is_undefined(x), is_ptr(x), is_int32(x), is_int64(x), is_handle(x), is_method(x), is_callable(x), is_real(x), is_nan(x), is_infinity(x)
+
+### Type Conversion
+
+string(x), bool(x), real(x), ptr(x), ref_create(dbgrefOrStruct, dbgrefOrIndex[, index]), int64(x), handle_parse(x)
+
+### Methods
+
+method, method_get_self, method_get_index, method_call
 
 ---
 
