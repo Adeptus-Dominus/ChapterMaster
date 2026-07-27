@@ -217,6 +217,15 @@ function scr_cheatcode(argument0) {
                     }
                     scr_popup("Guard XP", $"Granted {_xp_amt} experience to {array_length(_grd_all)} Guardsmen.", "");
                     break;
+                case "gridbattle":
+                case "gridtest":
+                    // Launch the standalone grid combat prototype (Uxie redesign test bed).
+                    // Fully self contained: deactivates the campaign while open and restores
+                    // it on exit. No campaign state is read or written.
+                    if (!instance_exists(obj_grid_combat)) {
+                        instance_create(0, 0, obj_grid_combat);
+                    }
+                    break;
                 case "chaosfleetspawn":
                     spawn_chaos_warlord();
                     break;
