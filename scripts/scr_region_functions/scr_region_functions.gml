@@ -5713,9 +5713,21 @@ function region_can_assault_index(_star, _planet, _index) {
     if (_n <= 1) {
         return true;
     }
-    // Already holding this region? Nothing to assault here.
-    if ((_index >= 0) && (_index < _n) && (_regions[_index].owner == eFACTION.PLAYER)) {
-        return false;
+    // Allied ground is not a target. Your own regions were already excluded; the Imperium's
+    // are excluded too while you are not at war with it. Without this the sector selector
+    // happily aimed an assault at a loyalist-held region: the battle spawner sizes the
+    // enemy from the PLANET's strength tier rather than the region's stored garrison, so
+    // you would fight a full hostile army in ground the enemy does not hold, and winning
+    // would then seize the region from your own allies. Landing to reinforce an ally is a
+    // real idea, but it needs its own action, not the assault flow.
+    if ((_index >= 0) && (_index < _n)) {
+        var _owner_here = _regions[_index].owner;
+        if (_owner_here == eFACTION.PLAYER) {
+            return false;
+        }
+        if ((_owner_here == eFACTION.IMPERIUM) && (obj_controller.faction_status[eFACTION.IMPERIUM] != "War")) {
+            return false;
+        }
     }
     if (planet_is_positional_siege(_star, _planet)) {
         var _front = region_ground_front(_star, _planet);
