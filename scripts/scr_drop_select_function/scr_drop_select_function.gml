@@ -415,7 +415,6 @@ function drop_select_unit_selection() {
                 sh_target.acted += 1;
                 LOGGER.info($"DROP LAUNCH {((attack == 1) ? "attack" : "raid")}: fleet acted now {sh_target.acted}");
                 LOGGER.info($"DROP ROSTER: {roster.selected_count()} unit(s) launching, {roster.spent_ship_stranded_count()} locked aboard spent ships, {array_length(roster.full_roster_units)} left behind in total");
-                LOGGER.info($"DROP ROSTER: {roster.selected_count()} unit(s) launching, {roster.spent_ship_stranded_count()} locked aboard spent ships, {array_length(roster.full_roster_units)} left behind in total");
             }
 
             instance_deactivate_all(true);

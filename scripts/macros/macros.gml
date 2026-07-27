@@ -369,8 +369,15 @@
 // ~66% of the shots reach the infantry, through two walls ~33%, and infantry behind
 // three or more lines cannot be reached at all. Men-behind-men screening is unchanged:
 // a front block with men in it still absorbs the whole volley.
+// Each armour RANK the volley passes soaks this share of what is still flying, not of the
+// original volley. A flat share of the original meant three armour ranks at 0.33 absorbed
+// 99% and a fourth was impossible, so parking two or three lines of tanks in front made an
+// army literally unshootable ("I took their capital with 0 losses"). Geometric falloff always
+// leaves something: three ranks pass ~30% through, five ~13%, and it never reaches zero.
 #macro PIERCE_LINE_SOAK 0.33
-#macro PIERCE_MAX_DEPTH 3
+// How many RANKS (distinct columns, not blocks) a volley may search through. Raised now the
+// soak self-limits, so infantry behind a deep armour wall can still be reached, badly thinned.
+#macro PIERCE_MAX_DEPTH 6
 
 // Basic combat orders: an advancing block that finds a friendly block directly
 // ahead may leapfrog over it, landing on the first free slot beyond, probing at

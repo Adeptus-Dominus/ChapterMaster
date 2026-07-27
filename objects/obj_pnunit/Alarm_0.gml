@@ -185,12 +185,18 @@ try {
                             scr_shoot(i, enemy, good, "arp", "ranged");
                         }
                         if ((good == 0) && (instance_number(obj_enunit) > 1)) {
-                            // First target does not have vehicles, cycle through objects to find one that has vehicles
-                            var x2 = enemy.x;
-                            repeat (instance_number(obj_enunit) - 1) {
+                            // First target has no vehicles: enumerate the other enemy blocks
+                            // and find one that does. Since the enemy formation split, several
+                            // enemy segments share a column, so the old position probe
+                            // (x2 += 10, instance_nearest) could return the same segment on
+                            // every step and never see the vehicle segment stacked beside it.
+                            var _cands_veh = blocks_in_scan_order(obj_enunit, enemy, true);
+                            for (var _ci = 0; _ci < array_length(_cands_veh); _ci++) {
                                 if (good == 0) {
-                                    x2 += 10;
-                                    var enemy2 = instance_nearest(x2, y, obj_enunit);
+                                    var enemy2 = _cands_veh[_ci];
+                                    if (!instance_exists(enemy2)) {
+                                        continue;
+                                    }
                                     if ((enemy2.veh > 0) && (good == 0)) {
                                         good = scr_target(enemy2, "veh"); // This target has vehicles, blow it to hell
                                         if (instance_exists(enemy2)) {
@@ -213,12 +219,15 @@ try {
                         scr_shoot(i, enemy, good, "medi", "ranged");
 
                         if ((good == 0) && (instance_number(obj_enunit) > 1)) {
-                            // First target does not have vehicles, cycle through objects to find one that has vehicles
-                            var x2 = enemy.x;
-                            repeat (instance_number(obj_enunit) - 1) {
+                            // Same enumeration as the vehicle pass above: probing positions
+                            // cannot see segments that share a column.
+                            var _cands_medi = blocks_in_scan_order(obj_enunit, enemy, true);
+                            for (var _ci = 0; _ci < array_length(_cands_medi); _ci++) {
                                 if (good == 0) {
-                                    x2 += 10;
-                                    var enemy2 = instance_nearest(x2, y, obj_enunit);
+                                    var enemy2 = _cands_medi[_ci];
+                                    if (!instance_exists(enemy2)) {
+                                        continue;
+                                    }
                                     if ((enemy2.veh > 0) && (good == 0)) {
                                         good = scr_target(enemy2, "medi"); // This target has vehicles, blow it to hell
                                         if (instance_exists(enemy2)) {

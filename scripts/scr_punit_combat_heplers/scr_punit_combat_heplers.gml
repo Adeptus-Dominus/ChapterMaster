@@ -552,6 +552,41 @@ function enemy_formation_split() {
     LOGGER.info($"ENEMY FORMATIONS: {array_length(_origins)} spawned block(s) split into {array_length(_origins) + _segments} formation segment(s)");
 }
 
+/// @desc Candidate target blocks of one object type, nearest first along the scan direction,
+/// excluding the block already being fired at. Target searches historically probed POSITIONS
+/// (x2 += 10, then instance_nearest at that spot), which was exact when every column held one
+/// block. Formations broke that: several blocks now share an x, so instance_nearest can hand
+/// back the same block on every step of the walk and can never see the others standing beside
+/// it. Enumerating the blocks themselves is exact under any packing, and including the
+/// shooter's own column (>= rather than >) is what lets a search find the unit standing
+/// alongside its first target rather than only the ranks behind.
+/// @param {Asset.GMObject} _object_index
+/// @param {Id.Instance} _from  the block already targeted, excluded from the result
+/// @param {Bool} _forward  true to scan toward increasing x, false toward decreasing
+/// @returns {Array<Id.Instance>}
+function blocks_in_scan_order(_object_index, _from, _forward) {
+    var _out = [];
+    var _from_x = instance_exists(_from) ? _from.x : 0;
+    with (_object_index) {
+        if (id == _from) {
+            continue;
+        }
+        if (x < -100) {
+            continue; // withdrawn off the field
+        }
+        var _ahead = _forward ? (x >= _from_x) : (x <= _from_x);
+        if (_ahead) {
+            array_push(_out, id);
+        }
+    }
+    if (_forward) {
+        array_sort(_out, function(_a, _b) { return _a.x - _b.x; });
+    } else {
+        array_sort(_out, function(_a, _b) { return _b.x - _a.x; });
+    }
+    return _out;
+}
+
 /// @desc Size the spawned enemy army to the region's FRONT WIDTH. The spawn tables size an
 /// army from the world's strength TIER, which says how much the faction has in the abstract,
 /// not how much of it can stand in contact on this particular ground. Terrain decides that,

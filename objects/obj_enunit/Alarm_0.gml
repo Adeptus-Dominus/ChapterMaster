@@ -280,8 +280,11 @@ if (!engaged) {
                     // Collect the lines the volley can interact with: the front wall plus
                     // blocks behind it, valid and in range, capped at PIERCE_MAX_DEPTH.
                     var _lines = [enemy];
+                    var _depth_xs = [enemy.x];
                     for (var b = 0; b < array_length(_behind); b++) {
-                        if (array_length(_lines) >= PIERCE_MAX_DEPTH) {
+                        // Depth counts RANKS: blocks sharing a column are one rank, so a wide
+                        // line does not eat the search budget the way it used to.
+                        if ((array_length(_depth_xs) >= PIERCE_MAX_DEPTH) && !array_contains(_depth_xs, _behind[b].x)) {
                             break;
                         }
                         enemy2 = _behind[b];
@@ -292,22 +295,63 @@ if (!engaged) {
                             break;
                         }
                         array_push(_lines, enemy2);
+                        if (!array_contains(_depth_xs, enemy2.x)) {
+                            array_push(_depth_xs, enemy2.x);
+                        }
                     }
                     var _total_shots = wep_num[i];
-                    var _soak_shots = max(1, floor(_total_shots * PIERCE_LINE_SOAK));
                     var _remaining = _total_shots;
                     var _rank_block = noone;
+                    // Walk by RANK, not by block. Two rules were wrong together and made a
+                    // tank wall literally unshootable. First, several blocks now share a
+                    // column, so three vehicle blocks standing side by side were counted as
+                    // three separate armour lines and soaked three times over for what is
+                    // physically one rank. Second, each line soaked a flat share of the
+                    // ORIGINAL volley, so three ranks at 0.33 absorbed 99% and a fourth could
+                    // not exist. Group the lines by column, soak once per armour RANK, and
+                    // take that share of what is still flying rather than of the original, so
+                    // the volley thins geometrically and something always gets through to the
+                    // men behind.
+                    var _rank_xs = [];
                     for (var l = 0; l < array_length(_lines); l++) {
-                        var _line = _lines[l];
-                        if (_line.men > 0) {
-                            _rank_block = _line;
+                        if (!array_contains(_rank_xs, _lines[l].x)) {
+                            array_push(_rank_xs, _lines[l].x);
+                        }
+                    }
+                    for (var r = 0; r < array_length(_rank_xs); r++) {
+                        var _rx = _rank_xs[r];
+                        // Men anywhere in this rank end the search: they are the target, and
+                        // the biggest body of them takes the volley.
+                        var _best_men = noone;
+                        var _rank_armour = false;
+                        for (var l = 0; l < array_length(_lines); l++) {
+                            var _line = _lines[l];
+                            if (_line.x != _rx) {
+                                continue;
+                            }
+                            if (_line.men > 0) {
+                                if ((_best_men == noone) || (_line.men > _best_men.men)) {
+                                    _best_men = _line;
+                                }
+                            } else if (block_has_armour(_line) || (_line.veh_type[1] == "Defenses")) {
+                                _rank_armour = true;
+                            }
+                        }
+                        if (_best_men != noone) {
+                            _rank_block = _best_men;
                             break;
                         }
-                        if (block_has_armour(_line) || (_line.veh_type[1] == "Defenses")) {
-                            var _w_soak = min(_soak_shots, _remaining);
+                        if (_rank_armour) {
+                            var _w_soak = min(_remaining, max(1, ceil(_remaining * PIERCE_LINE_SOAK)));
                             if (_w_soak > 0) {
-                                array_push(_wall_blocks, _line);
-                                array_push(_wall_shots, _w_soak);
+                                // Spread the bounced chip fire over the armour blocks of this rank.
+                                for (var l = 0; l < array_length(_lines); l++) {
+                                    if ((_lines[l].x == _rx) && (_lines[l].men <= 0)) {
+                                        array_push(_wall_blocks, _lines[l]);
+                                        array_push(_wall_shots, max(1, floor(_w_soak / max(1, array_length(_rank_xs)))));
+                                        break;
+                                    }
+                                }
                                 _remaining -= _w_soak;
                             }
                             if (_remaining <= 0) {
@@ -341,10 +385,12 @@ if (!engaged) {
                             scr_shoot(i, enemy, target_unit_index, "att", "ranged");
                             continue;
                         } else if (instance_number(obj_pnunit) > 1) { // Upstream (4bd385330): Orks retarget like everyone else
-                            var x2 = enemy.x;
-                            repeat (instance_number(obj_pnunit) - 1) {
-                                x2 += flank == 0 ? -10 : 10;
-                                enemy2 = instance_nearest(x2, y, obj_pnunit);
+                            // Enumerate the blocks instead of probing positions: formations
+                            // share columns, so the old x2 walk could resolve the same block
+                            // repeatedly and miss the armour standing beside it.
+                            var _fb_cands = blocks_in_scan_order(obj_pnunit, enemy, flank != 0);
+                            for (var _fi = 0; _fi < array_length(_fb_cands); _fi++) {
+                                enemy2 = _fb_cands[_fi];
                                 if (!target_block_is_valid(enemy2, obj_pnunit)) {
                                     continue;
                                 }
