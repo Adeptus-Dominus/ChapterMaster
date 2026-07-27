@@ -65,6 +65,15 @@
 // test has to ignore the long guns: an artillery piece would otherwise declare
 // contact from the deployment zone and break the whole formation on turn one.
 #macro GRIDC_CONTACT_MAX 8
+// Hysteresis on the contact latch. A block engages at CONTACT_MAX but only
+// breaks off once the nearest enemy is this much further out again, so a block
+// trading fire at the edge of its reach does not flicker in and out of
+// formation every tick.
+#macro GRIDC_DISENGAGE_SLACK 5
+// How far a block may get ahead of the rest of its side before it waits. This is
+// what stops the fastest formation from arriving alone and being surrounded
+// while the heavies are still crossing the field.
+#macro GRIDC_LINE_SLACK 4
 
 // Hit resolution. Reductions are rolled as visible events rather than applied
 // silently: EVENT_SHARE is how much of a reduction becomes a chance of the shot
@@ -393,6 +402,12 @@ function GridFormation(_side, _name, _colr) constructor {
     anchor_row = -1;
     mv_acc = 0;
     engaged = false;
+    // Closing back up after breaking contact. While this is set the anchor holds
+    // still so the men can catch it, rather than marching away from them.
+    reforming = false;
+    // Shared marching pace for formations ordered together, so a group moves at
+    // the speed of its slowest block. -1 means each block uses its own.
+    pace = -1;
 }
 
 /// @function grid_log
@@ -1529,25 +1544,71 @@ function grid_form_speed(ctrl, _f) {
 /// @description True once any squad in the block can reach the enemy. Until
 /// then the block holds its shape; after it, squads fight for themselves.
 function grid_form_contact(ctrl, _f) {
-    // Once a block is engaged it stays engaged for the rest of the battle, so
-    // there is nothing to recompute; this is the single hottest call in the tick.
-    if (_f.engaged) {
-        return true;
-    }
     if (array_length(grid_foe_list(ctrl, _f.side)) <= 0) {
         return false;
     }
+    // Engaging is instant; breaking off needs the enemy to be a good deal
+    // further away than the range that pulled the block into the fight.
+    var _reach = _f.engaged ? (GRIDC_CONTACT_MAX + GRIDC_DISENGAGE_SLACK) : GRIDC_CONTACT_MAX;
     for (var _i = 0; _i < array_length(_f.members); _i++) {
         var _s = ctrl.squads[_f.members[_i]];
         if (!_s.alive || !_s.deployed) {
             continue;
         }
-        var _foe = grid_nearest_foe(ctrl, _f.members[_i], min(max(1, _s.rng), GRIDC_CONTACT_MAX));
-        if (_foe >= 0) {
+        var _lim = _f.engaged ? _reach : min(max(1, _s.rng), _reach);
+        if (grid_nearest_foe(ctrl, _f.members[_i], _lim) >= 0) {
             return true;
         }
     }
     return false;
+}
+
+/// @function grid_form_in_shape
+/// @description True when every living squad is standing in, or one tile from,
+/// its slot in the block.
+function grid_form_in_shape(ctrl, _f) {
+    for (var _i = 0; _i < array_length(_f.members); _i++) {
+        var _s = ctrl.squads[_f.members[_i]];
+        if (!_s.alive || !_s.deployed) {
+            continue;
+        }
+        var _c = clamp(_f.anchor_col + _s.off_c, 0, ctrl.cols - 1);
+        var _r = clamp(_f.anchor_row + _s.off_r, 0, ctrl.rows - 1);
+        if (grid_dist(_s.col, _s.row, _c, _r) > 1) {
+            return false;
+        }
+    }
+    return true;
+}
+
+/// @function grid_form_reanchor
+/// @description Re-seats the block's anchor on where its survivors actually
+/// stand, keeping the offsets they deployed with. Reforming then pulls them back
+/// into the shape they started in, from where the fighting left them, instead of
+/// dragging them across the field to an anchor they abandoned ten ticks ago.
+function grid_form_reanchor(ctrl, _f) {
+    var _n = 0;
+    var _sc = 0;
+    var _sr = 0;
+    var _oc = 0;
+    var _or = 0;
+    for (var _i = 0; _i < array_length(_f.members); _i++) {
+        var _s = ctrl.squads[_f.members[_i]];
+        if (!_s.alive || !_s.deployed) {
+            continue;
+        }
+        _sc += _s.col;
+        _sr += _s.row;
+        _oc += _s.off_c;
+        _or += _s.off_r;
+        _n += 1;
+    }
+    if (_n <= 0) {
+        return false;
+    }
+    _f.anchor_col = clamp(round((_sc - _oc) / _n), 0, ctrl.cols - 1);
+    _f.anchor_row = clamp(round((_sr - _or) / _n), 0, ctrl.rows - 1);
+    return true;
 }
 
 /// @function grid_form_advance
@@ -1558,7 +1619,23 @@ function grid_form_advance(ctrl, _fi) {
     if (!_f.alive || (array_length(_f.members) <= 0)) {
         return;
     }
-    _f.engaged = grid_form_contact(ctrl, _f);
+    // Breaking contact is only rechecked every third tick. Engaging must be
+    // instant, but a block has no reason to notice the enemy has gone the very
+    // frame it happens, and this is the hottest test in the tick.
+    var _was = _f.engaged;
+    if (!_was || ((ctrl.ticks mod 3) == 0)) {
+        _f.engaged = grid_form_contact(ctrl, _f);
+    }
+    if (_was && !_f.engaged) {
+        // The fight has moved on. Re-seat the anchor on the survivors and close
+        // ranks before doing anything else; an attack order is stale by now.
+        if (grid_form_reanchor(ctrl, _f)) {
+            _f.reforming = true;
+            _f.order = GRIDORD_ADVANCE;
+            _f.order_target = -1;
+            grid_log(ctrl, $"{_f.name} breaks off and reforms.", eMSG_COLOR.AQUA);
+        }
+    }
     if (_f.engaged || (_f.order != GRIDORD_ADVANCE)) {
         return;
     }
@@ -1566,6 +1643,26 @@ function grid_form_advance(ctrl, _fi) {
         var _lead = ctrl.squads[_f.members[0]];
         _f.anchor_col = _lead.col;
         _f.anchor_row = _lead.row;
+    }
+    // Dress the ranks first. While the block is still closing up the anchor
+    // stays put, or it marches away from the men trying to reach it.
+    if (_f.reforming) {
+        if (!grid_form_in_shape(ctrl, _f)) {
+            return;
+        }
+        _f.reforming = false;
+    }
+    // Do not outrun the rest of the line. A block that has pulled well ahead of
+    // its side's average waits a tick, so the army arrives together instead of
+    // feeding itself to the enemy one formation at a time.
+    var _line = (_f.side == 0) ? ctrl.line0 : ctrl.line1;
+    if (_line >= 0) {
+        if ((_f.side == 0) && (_f.anchor_col > (_line + GRIDC_LINE_SLACK))) {
+            return;
+        }
+        if ((_f.side != 0) && (_f.anchor_col < (_line - GRIDC_LINE_SLACK))) {
+            return;
+        }
     }
     // Aim the block at the nearest enemy to its anchor.
     var _bi = -1;
@@ -1586,7 +1683,11 @@ function grid_form_advance(ctrl, _fi) {
     if (_bi < 0) {
         return;
     }
-    _f.mv_acc += grid_form_speed(ctrl, _f);
+    var _sp = grid_form_speed(ctrl, _f);
+    if (_f.pace > 0) {
+        _sp = min(_sp, _f.pace);
+    }
+    _f.mv_acc += _sp;
     var _steps = floor(_f.mv_acc);
     _f.mv_acc -= _steps;
     var _tgt = ctrl.squads[_bi];
@@ -1641,6 +1742,40 @@ function grid_refresh_live(ctrl) {
     }
     ctrl.live0 = _l0;
     ctrl.live1 = _l1;
+
+    // Where each side's line currently stands, as the mean anchor column of its
+    // living formations. grid_form_advance measures against this so no single
+    // block runs far ahead of the army it belongs to.
+    var _n0 = 0;
+    var _t0 = 0;
+    var _n1 = 0;
+    var _t1 = 0;
+    for (var _fi = 0; _fi < array_length(ctrl.formations); _fi++) {
+        var _fm = ctrl.formations[_fi];
+        if (!_fm.alive || (_fm.anchor_col < 0)) {
+            continue;
+        }
+        var _has = false;
+        for (var _mi = 0; _mi < array_length(_fm.members); _mi++) {
+            var _ms = ctrl.squads[_fm.members[_mi]];
+            if (_ms.alive && _ms.deployed) {
+                _has = true;
+                break;
+            }
+        }
+        if (!_has) {
+            continue;
+        }
+        if (_fm.side == 0) {
+            _t0 += _fm.anchor_col;
+            _n0 += 1;
+        } else {
+            _t1 += _fm.anchor_col;
+            _n1 += 1;
+        }
+    }
+    ctrl.line0 = (_n0 > 0) ? (_t0 / _n0) : -1;
+    ctrl.line1 = (_n1 > 0) ? (_t1 / _n1) : -1;
 }
 
 /// @function grid_foe_list
@@ -1836,13 +1971,28 @@ function grid_should_back_off(_s, _t) {
     return (_t.mel > (_s.mel * 1.5));
 }
 
+/// @function grid_pace_budget
+/// @description Steps a squad may take this tick. Formations ordered together
+/// carry a shared pace, so the group marches at the speed of its slowest block
+/// and a Rhino does not arrive three tiles ahead of the Devastators it was sent
+/// with. Without a shared pace the squad uses its own legs as before.
+function grid_pace_budget(_s, _f) {
+    if ((_f == undefined) || (_f.pace <= 0)) {
+        return grid_move_budget(_s);
+    }
+    _s.mv_acc += min(_s.spd, _f.pace);
+    var _steps = floor(_s.mv_acc);
+    _s.mv_acc -= _steps;
+    return _steps;
+}
+
 /// @function grid_act_player
 function grid_act_player(ctrl, _si) {
     var _s = ctrl.squads[_si];
     var _f = (_s.formation >= 0) ? ctrl.formations[_s.formation] : undefined;
     var _ord = (_f == undefined) ? GRIDORD_ADVANCE : _f.order;
     var _stance = (_f == undefined) ? 0 : _f.stance;
-    var _steps = grid_move_budget(_s);
+    var _steps = grid_pace_budget(_s, _f);
 
     if (_ord == GRIDORD_MOVE) {
         // Each squad walks to its own slot in the block, so the formation keeps
@@ -2237,12 +2387,20 @@ function grid_order_move(ctrl, _c, _r) {
     }
     _cx = round(_cx / _n);
     _cy = round(_cy / _n);
+    // One pace for the whole selection: the slowest block sets it, and every
+    // other block is held to it for as long as the order stands.
+    var _pace = 99;
+    for (var _q = 0; _q < _n; _q++) {
+        _pace = min(_pace, grid_form_speed(ctrl, ctrl.formations[ctrl.selected[_q]]));
+    }
     for (var _k = 0; _k < _n; _k++) {
         var _f = ctrl.formations[ctrl.selected[_k]];
         _f.order = GRIDORD_MOVE;
         _f.dest_col = clamp(_c + (_px[_k] - _cx), 0, ctrl.cols - 1);
         _f.dest_row = clamp(_r + (_py[_k] - _cy), 0, ctrl.rows - 1);
         _f.order_target = -1;
+        _f.reforming = false;
+        _f.pace = (_n > 1) ? _pace : -1;
     }
 }
 

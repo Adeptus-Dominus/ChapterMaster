@@ -79,6 +79,9 @@ shots = [];
 // an uninitialised read is a crash in this build rather than a zero.
 live0 = [];
 live1 = [];
+// Mean anchor column of each side's formations: where its line currently is.
+line0 = -1;
+line1 = -1;
 
 agg_ekills = 0;
 agg_pkills = 0;
