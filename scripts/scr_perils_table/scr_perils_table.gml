@@ -171,6 +171,13 @@ function scr_perils_table(perils_strength, unit, psy_discipline, power_name, uni
 
                 var dem = choose("Slaanesh", "Nurgle", "Tzeentch");
                 var d1 = instance_nearest(x, y, obj_enunit);
+                // No enemy block left to manifest into: the peril can fire on the same turn
+                // the last enemy formation dies, and instance_nearest then returns noone,
+                // which threw on the first dudes read (object index -4). The daemon still
+                // claims the psyker, it simply has nothing to burst out of.
+                if (!instance_exists(d1)) {
+                    return "The marine's flesh begins to twist and rip, but with the foe already broken the thing clawing its way out finds no world to enter. He collapses, hollowed.";
+                }
                 var d2 = 0;
                 var d3 = 0;
                 repeat (30) {
@@ -180,6 +187,11 @@ function scr_perils_table(perils_strength, unit, psy_discipline, power_name, uni
                             d3 = d2;
                         }
                     }
+                }
+                if (d3 == 0) {
+                    // Every scanned slot is occupied: writing to index 0 would corrupt the
+                    // block's first stack rather than add a daemon.
+                    return "The marine's flesh twists and rips, but the enemy ranks are packed too tight for the thing to take form. He dies screaming.";
                 }
                 d1.dudes[d3] = "Greater Daemon of " + string(dem);
                 d1.dudes_special[d3] = "";

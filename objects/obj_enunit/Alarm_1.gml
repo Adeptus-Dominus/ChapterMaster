@@ -1094,7 +1094,7 @@ if (obj_ncombat.enemy == eFACTION.TYRANIDS || obj_ncombat.enemy == eFACTION.GENE
     for (var j = 1; j <= 20; j++) {
         if (dudes[j] == "Hive Tyrant") {
             scr_en_weapon("Bonesword", true, dudes_num[j], dudes[j], j);
-            scr_en_weapon("Lashwhip", true, dudes_num[j], dudes[j], j);
+            scr_en_weapon("Lash Whip", true, dudes_num[j], dudes[j], j);
             scr_en_weapon("Heavy Venom Cannon", true, dudes_num[j], dudes[j], j);
             dudes_ac[j] = 25;
             dudes_hp[j] = 400;

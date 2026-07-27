@@ -67,6 +67,11 @@
 // spawns far past the old "single engagement" scale (~1000 men). Clamp the level
 // used for battle sizing; 7 (Enormicus) and raw garrison counts are untouched.
 #macro ENEMY_BATTLE_THREAT_CAP 4
+// The CAPITAL is the one fight that may field the world's full weight: an outlying sector
+// meets a bounded slice, the seat of power meets everything the tier ladder allows. This
+// is what makes a decapitation strike the hard battle without making outlying grinding
+// unwinnable, and it is why region garrisons no longer need a stored headcount cap.
+#macro ENEMY_BATTLE_THREAT_CAP_CAPITAL 6
 // Region commitment (assault balance): attacking an OUTLYING sector of a
 // multi-region world engages only this share of the enemy's real headcount;
 // they hold the rest back to garrison their other ground. Assaulting the
@@ -76,6 +81,15 @@
 // Alarm_5), so chipping outlying sectors is safer but slower than a
 // decapitation strike.
 #macro REGION_ASSAULT_COMMIT_FRACTION 0.35
+
+// ---- T'au fleet doctrine ----
+// The T'au expand with a few real expeditionary fleets and a lot of small system-defence
+// pickets, not a galaxy of doomstacks. A fleet may only grow past TAU_DEFENSE_FLEET_HULLS
+// while fewer than TAU_WAR_FLEETS_MAX fleets already have, so the sector settles at a
+// handful of dangerous fleets and many 2-3 ship patrols. Evaluated live, so it needs no
+// stored role and applies to existing saves.
+#macro TAU_DEFENSE_FLEET_HULLS 3
+#macro TAU_WAR_FLEETS_MAX 3
 
 // ---- Background sector war (Guard vs xenos/heretic attrition) ----
 // Each turn, on every world where the Imperium (Guard/PDF) and a level-modelled enemy
@@ -108,7 +122,19 @@
 // world's outlying regions hold a modest slice and a huge world's are capped at the ceiling.
 // This makes clearing an outlying region a bounded objective and leaves the bulk in the
 // capital as a visible reserve. See region_garrison.
+// Retained for the Imperial PDF/Guard split (region_imperial_garrison_share), whose pools
+// are small enough that the ceiling rarely binds. The HOSTILE garrison no longer uses it:
+// the tactical battle spawn is bounded by ENEMY_BATTLE_THREAT_CAP, so a flat 10,000 cap on
+// what a region may STORE was gating the campaign without protecting the battle. Regions
+// now take a weighted share of the planet pool (see region_garrison).
 #macro REGION_GARRISON_CEILING 10000
+// Per-region garrison spread. Each region the faction holds takes a share of the planet
+// pool proportional to its doctrine weight (faction_deployment_weight) times a persistent
+// per-region random modifier, so no two worlds garrison alike and the capital is always
+// the strongpoint. Raise the bias to concentrate more in the capital.
+#macro REGION_CAPITAL_GARRISON_BIAS 2.5
+#macro REGION_GARRISON_VARIANCE_MIN 0.7
+#macro REGION_GARRISON_VARIANCE_MAX 1.4
 // Max enemy force that can move INTO one region per turn (a transport-throughput ceiling), so the
 // enemy trickles reinforcements up the line instead of teleporting a full garrison in one turn.
 // A region farther from the capital reinforces even slower (the cap is divided by hop distance).

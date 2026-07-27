@@ -470,6 +470,21 @@ if (defeat == 0 && _reduce_power) {
             var _here = region_enemy_force(battle_object, battle_id, _atk_region);
             if (new_power <= 0) {
                 region_enemy_force_deplete(battle_object, battle_id, _atk_region, _here); // enemy wiped: clear region
+                // TAKE the ground. region_set_owner was written as the entry point for exactly
+                // this and was never called from anywhere, so no region ever became
+                // player-owned: the adjacency advance could not start (it tests for
+                // player-owned neighbours), a cleared region stayed nominally hostile, and
+                // Hold Ground bought a foothold that the campaign layer could not see. A
+                // region is taken only when the chapter actually STAYS: troops booked ashore
+                // here (Hold Ground). Win and re-embark and it remains enemy ground, which is
+                // the difference between a raid and a conquest.
+                if (region_player_force(battle_object, battle_id, _atk_region) > 0) {
+                    region_set_owner(battle_object, battle_id, _atk_region, eFACTION.PLAYER);
+                    var _taken_r = region_get(battle_object, battle_id, _atk_region);
+                    var _taken_nm = is_struct(_taken_r) ? _taken_r.name : $"region {_atk_region + 1}";
+                    scr_event_log("green", $"{_taken_nm} on {battle_object.name} {scr_roman(battle_id)} is in Chapter hands.", battle_object.name);
+                    LOGGER.info($"REGION TAKEN {battle_object.name} {battle_id}: region {_atk_region} ({_taken_nm}) flipped to the player");
+                }
             } else if (enemy_power > 0) {
                 // Take off the same fraction of this region's garrison as the tier reduction represents.
                 var _frac = clamp(power_reduction / enemy_power, 0, 1);

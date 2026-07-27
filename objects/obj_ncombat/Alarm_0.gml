@@ -139,8 +139,12 @@ try {
     // Battle-size clamp (see ENEMY_BATTLE_THREAT_CAP in macros.gml): level-scale
     // threats (1-6) are capped for spawn sizing; 7 (Enormicus) and raw garrison
     // headcounts (Imperial worlds pass guardsmen counts through threat) pass free.
-    if ((threat >= 1) && (threat <= 6) && (threat > ENEMY_BATTLE_THREAT_CAP)) {
-        threat = ENEMY_BATTLE_THREAT_CAP;
+    // The capital fields the world's full weight; an outlying sector meets the bounded
+    // slice. battle_region 0 is the capital and -1 is a single-region world (also a full
+    // fight), so both lift to the capital cap.
+    var _threat_cap = (battle_region <= 0) ? ENEMY_BATTLE_THREAT_CAP_CAPITAL : ENEMY_BATTLE_THREAT_CAP;
+    if ((threat >= 1) && (threat <= 6) && (threat > _threat_cap)) {
+        threat = _threat_cap;
     }
 
     var _num = xxx / 10;

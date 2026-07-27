@@ -476,6 +476,11 @@ try {
                         scr_popup("Orbital Gun Array", $"The capital's guns command the approaches. You must make planetfall at {_safe_nm} (the farthest zone) before you can push inland. Select that region, or bombard it to clear the way.", "");
                     } else if (is_struct(_focus_r) && (_focus_r.owner == eFACTION.PLAYER)) {
                         scr_popup("Ground Advance", "You already hold that region. Select an adjacent enemy region to push into.", "");
+                    } else if (region_contested_beachhead(target, obj_controller.selecting_planet) >= 0) {
+                        var _beach_i = region_contested_beachhead(target, obj_controller.selecting_planet);
+                        var _beach_r = region_get(target, obj_controller.selecting_planet, _beach_i);
+                        var _beach_nm = is_struct(_beach_r) ? _beach_r.name : "your beachhead";
+                        scr_popup("Ground Advance", $"Your forces are already committed at {_beach_nm} and cannot open a second front while that fight is unfinished. Clear it, then push into a bordering region.", "");
                     } else {
                         scr_popup("Ground Advance", "Your forces can only strike a region bordering one they already hold. Select a region adjacent to your front line.", "");
                     }

@@ -276,6 +276,11 @@ function drop_select_unit_selection() {
             } else {
                 _sector_str += " [partial enemy force]";
             }
+            // Front line: say why a sector cannot be struck, so cycling past a locked one
+            // reads as a campaign rule rather than a dead click.
+            if (!region_can_assault_index(p_target, planet_number, _seci)) {
+                _sector_str += (_secr.owner == eFACTION.PLAYER) ? " [HELD]" : " [NO FRONT]";
+            }
             // Drawn directly (not via InteractiveButton, whose width-based text padding pushes a
             // wide label to the box bottom): a centred box with the text centred both ways inside it.
             // Click cycles the conquest focus (shared with the system-view regions panel).
@@ -297,7 +302,19 @@ function drop_select_unit_selection() {
             draw_set_halign(fa_left);
             draw_set_valign(fa_top);
             if (scr_hit(_ssx1, _ssy1, _ssx2, _ssy2) && mouse_button_clicked()) {
-                var _new_focus = (_seci + 1) mod planet_region_count(p_target, planet_number);
+                // Cycle to the next sector the front actually allows, so the selector only
+                // ever lands on a region the assault can be launched at. Falls back to the
+                // plain next index when nothing is assaultable, leaving the launch gate to
+                // explain why.
+                var _region_count = planet_region_count(p_target, planet_number);
+                var _new_focus = (_seci + 1) mod _region_count;
+                for (var _try = 0; _try < _region_count; _try++) {
+                    var _cand = (_seci + 1 + _try) mod _region_count;
+                    if (region_can_assault_index(p_target, planet_number, _cand)) {
+                        _new_focus = _cand;
+                        break;
+                    }
+                }
                 region_focus_set(p_target, planet_number, _new_focus);
                 // Stash on the persistent controller too, so the choice survives to launch even if
                 // the star's focus is rebuilt in between (the star-state churn that landed troops

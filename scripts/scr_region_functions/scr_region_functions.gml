@@ -5683,22 +5683,72 @@ function region_ground_front(_star, _planet) {
 /// @param {Real} _index
 /// @returns {Bool}
 function region_can_assault_index(_star, _planet, _index) {
-    if (!planet_is_positional_siege(_star, _planet)) {
+    var _regions = regions_ensure(_star, _planet);
+    var _n = array_length(_regions);
+    if (_n <= 1) {
         return true;
     }
     // Already holding this region? Nothing to assault here.
-    var _regions = regions_ensure(_star, _planet);
-    if ((_index >= 0) && (_index < array_length(_regions)) && (_regions[_index].owner == eFACTION.PLAYER)) {
+    if ((_index >= 0) && (_index < _n) && (_regions[_index].owner == eFACTION.PLAYER)) {
         return false;
     }
-    var _front = region_ground_front(_star, _planet);
-    if (_front < 0) {
-        // No landing yet: only the safe landing zone can be assaulted (or bombarded clear).
-        return (_index == planet_safe_landing_region(_star, _planet));
+    if (planet_is_positional_siege(_star, _planet)) {
+        var _front = region_ground_front(_star, _planet);
+        if (_front < 0) {
+            // No landing yet: only the safe landing zone can be assaulted (or bombarded clear).
+            return (_index == planet_safe_landing_region(_star, _planet));
+        }
+        // Landed: graph-based advance. You may assault any region that BORDERS a region you already
+        // hold (the adjacency graph replaces the old single-file line, so flanking is possible).
+        return region_adjacent_to_player_hold(_star, _planet, _index);
     }
-    // Landed: graph-based advance. You may assault any region that BORDERS a region you already
-    // hold (the adjacency graph replaces the old single-file line, so flanking is possible).
+    // Beachhead rule, every multi-region world: once boots are on the ground the campaign is
+    // a front, not a menu of free strikes. A landing force that has not yet cleared its
+    // region is committed to that fight; once the region is taken the front advances into
+    // any region bordering ground the chapter holds.
+    var _beach = region_contested_beachhead(_star, _planet);
+    if (_beach >= 0) {
+        return (_index == _beach);
+    }
+    if (!planet_player_holds_any_region(_star, _planet)) {
+        return true; // no foothold anywhere: the first landing may go where it likes
+    }
     return region_adjacent_to_player_hold(_star, _planet, _index);
+}
+
+/// @function region_contested_beachhead
+/// @description The region where the chapter has landed troops that has NOT yet been taken,
+///              or -1 if there is none. While one exists it is the only region that may be
+///              assaulted: the force ashore has to finish the fight it started.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @returns {Real}
+function region_contested_beachhead(_star, _planet) {
+    var _regions = regions_ensure(_star, _planet);
+    for (var i = 0, l = array_length(_regions); i < l; i++) {
+        if (_regions[i].owner == eFACTION.PLAYER) {
+            continue;
+        }
+        if (region_player_force(_star, _planet, i) > 0) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+/// @function planet_player_holds_any_region
+/// @description True when the chapter owns at least one region on this world.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @returns {Bool}
+function planet_player_holds_any_region(_star, _planet) {
+    var _regions = regions_ensure(_star, _planet);
+    for (var i = 0, l = array_length(_regions); i < l; i++) {
+        if (_regions[i].owner == eFACTION.PLAYER) {
+            return true;
+        }
+    }
+    return false;
 }
 
 /// @function region_ground_land
@@ -6240,20 +6290,55 @@ function region_garrison(_star, _planet, _index, _faction) {
     if (_n <= 1) {
         return _total; // single-region world: the capital holds everything
     }
-    // Per-outlying cap: a size-scaled share, ceilinged.
-    var _cap = min(REGION_GARRISON_CEILING, round(_total * REGION_GARRISON_FRACTION));
-    if (!_region.is_capital) {
-        return min(_cap, _total);
-    }
-    // Capital holds the remainder after every OUTLYING region THIS faction still holds takes
-    // its capped share. Regions the faction has lost do not draw from the capital's reserve.
-    var _outlying_held = 0;
+    // Weighted spread across the regions this faction still holds. The old rule gave every
+    // outlying region a flat cap (10,000) and dumped the entire remainder in the capital,
+    // which read as a wall of identical numbers and gated the campaign for no benefit: the
+    // TACTICAL fight is bounded by the threat cap, not by what a region stores, so capping
+    // the store only hid the war's real shape. Each held region now takes a share
+    // proportional to its owner's deployment doctrine times a persistent per-region random
+    // modifier, with the capital biased heavily on top, so the capital is always the
+    // strongpoint, outlying regions hold real armies that differ from world to world, and
+    // ground the faction has LOST stops drawing a share at all (the survivors consolidate).
+    var _weight_self = 0;
+    var _weight_total = 0;
     for (var r = 0; r < _n; r++) {
-        if (!_regions[r].is_capital && (_regions[r].owner == _faction)) {
-            _outlying_held += min(_cap, _total);
+        if (_regions[r].owner != _faction) {
+            continue;
+        }
+        var _w = faction_deployment_weight(_faction, _regions[r]) * region_garrison_modifier(_star, _planet, r);
+        if (_regions[r].is_capital) {
+            _w *= REGION_CAPITAL_GARRISON_BIAS;
+        }
+        _weight_total += _w;
+        if (r == _index) {
+            _weight_self = _w;
         }
     }
-    return max(0, _total - _outlying_held);
+    if ((_weight_total <= 0) || (_weight_self <= 0)) {
+        return 0;
+    }
+    return max(1, round(_total * (_weight_self / _weight_total)));
+}
+
+/// @function region_garrison_modifier
+/// @description This region's persistent garrison modifier: a random factor rolled once and
+///              stored, so every world's regions garrison differently and stay that way
+///              across turns and saves. Region is plain data restored raw from p_regions, so
+///              the field is guarded and seeded lazily (old saves included).
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _index
+/// @returns {Real}
+function region_garrison_modifier(_star, _planet, _index) {
+    var _regions = regions_ensure(_star, _planet);
+    if ((_index < 0) || (_index >= array_length(_regions))) {
+        return 1;
+    }
+    var _region = _regions[_index];
+    if (!variable_struct_exists(_region, "garrison_mod") || !is_real(_region.garrison_mod) || (_region.garrison_mod <= 0)) {
+        _region.garrison_mod = random_range(REGION_GARRISON_VARIANCE_MIN, REGION_GARRISON_VARIANCE_MAX);
+    }
+    return _region.garrison_mod;
 }
 
 /// @function region_imperial_garrison_share

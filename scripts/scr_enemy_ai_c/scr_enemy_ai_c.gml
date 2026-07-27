@@ -351,7 +351,7 @@ function scr_enemy_ai_c() {
                             }
                             if ((fleet != noone) && (contin != 3)) {
                                 // Increase ship number for this object?
-                                if ((rando <= 10) && (fleet.image_index < 5)) {
+                                if ((rando <= 10) && (fleet.image_index < 5) && tau_fleet_may_grow(fleet)) {
                                     rando = choose(1, 2, 2, 3, 3, 3, 3);
                                     if (rando == 1) {
                                         fleet.capital_number += 1;
@@ -495,4 +495,34 @@ function scr_enemy_ai_c() {
             y += 20000;
         }
     }
+}
+
+/// @function tau_fleet_may_grow
+/// @description T'au fleet doctrine: a few real expeditionary fleets, the rest system-defence
+///              pickets. Every T'au fleet started at one hull and grew every turn it rolled
+///              well, with nothing to stop it, so a long game ended with a sector full of
+///              doomstacks no chapter could meet. A fleet below the picket size always fills
+///              out; past it, it may only keep growing while fewer than TAU_WAR_FLEETS_MAX
+///              fleets already have. Counted live from the fleets on the map, so it needs no
+///              stored role and governs existing saves from the next turn.
+/// @param {Id.Instance.obj_en_fleet} _fleet
+/// @returns {Bool}
+function tau_fleet_may_grow(_fleet) {
+    if (!instance_exists(_fleet)) {
+        return false;
+    }
+    var _hulls = _fleet.capital_number + _fleet.frigate_number + _fleet.escort_number;
+    if (_hulls < TAU_DEFENSE_FLEET_HULLS) {
+        return true;
+    }
+    var _expeditionary = 0;
+    with (obj_en_fleet) {
+        if (owner != eFACTION.TAU) {
+            continue;
+        }
+        if ((capital_number + frigate_number + escort_number) >= TAU_DEFENSE_FLEET_HULLS) {
+            _expeditionary += 1;
+        }
+    }
+    return (_expeditionary <= TAU_WAR_FLEETS_MAX);
 }
