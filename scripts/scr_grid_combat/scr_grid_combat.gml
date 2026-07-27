@@ -39,7 +39,7 @@
 #macro GRIDC_TILE_MAX 96
 #macro GRIDC_TICK_FRAMES 18
 #macro GRIDC_SCROLL_SPEED 14
-#macro GRIDC_DEPLOY_COLS 4
+#macro GRIDC_DEPLOY_COLS 6
 #macro GRIDC_ENEMY_COLS 4
 #macro GRIDC_SGT_HIT_CHANCE 0.12
 #macro GRIDC_COVER_GOOD 0.70
@@ -204,6 +204,12 @@ function GridFormation(_side, _name, _colr) constructor {
     dest_row = -1;
     stance = 0;
     alive = true;
+    // The block marches as one: the anchor is the formation's own position and
+    // every squad holds its offset from it until the fighting starts.
+    anchor_col = -1;
+    anchor_row = -1;
+    mv_acc = 0;
+    engaged = false;
 }
 
 /// @function grid_log
@@ -455,9 +461,28 @@ function grid_spawn_enemy_force(ctrl) {
     ];
     var _n = 1;
     for (var _i = 0; _i < array_length(_mix); _i++) {
+        // One mob type, one formation: the horde advances in blocks and only
+        // scatters into individual fights once it reaches the line.
+        var _fi = -1;
+        var _slot = 0;
         for (var _k = 0; _k < _mix[_i][1]; _k++) {
-            grid_spawn_enemy_squad(ctrl, _mix[_i][0], _n);
+            var _si = grid_spawn_enemy_squad(ctrl, _mix[_i][0], _n);
             _n += 1;
+            if (_si < 0) {
+                continue;
+            }
+            var _sq = ctrl.squads[_si];
+            if (_fi < 0) {
+                _fi = grid_new_formation(ctrl, _mix[_i][0], 1);
+                ctrl.formations[_fi].anchor_col = _sq.col;
+                ctrl.formations[_fi].anchor_row = _sq.row;
+            }
+            var _anc = ctrl.formations[_fi];
+            _sq.formation = _fi;
+            _sq.off_c = _sq.col - _anc.anchor_col;
+            _sq.off_r = _sq.row - _anc.anchor_row;
+            array_push(_anc.members, _si);
+            _slot += 1;
         }
     }
 }
@@ -562,7 +587,7 @@ function grid_any_deployed(ctrl) {
 // ---------------------------------------------------------------------------
 
 /// @function grid_new_formation
-function grid_new_formation(ctrl, _type) {
+function grid_new_formation(ctrl, _type, _side = 0) {
     var _d = grid_unit_def(_type);
     var _letters = string_upper(string_copy(_d.disp, 1, 1));
     if (string_length(_d.ascii) > 1) {
@@ -574,7 +599,7 @@ function grid_new_formation(ctrl, _type) {
     }
     ctrl.form_counters[$ _letters] = _cnt;
     var _pal = grid_form_palette();
-    var _f = new GridFormation(0, $"{_letters}{_cnt}", _pal[ctrl.form_color_idx mod array_length(_pal)]);
+    var _f = new GridFormation(_side, $"{_letters}{_cnt}", _pal[ctrl.form_color_idx mod array_length(_pal)]);
     ctrl.form_color_idx += 1;
     array_push(ctrl.formations, _f);
     return array_length(ctrl.formations) - 1;
@@ -645,6 +670,8 @@ function grid_place_formation(ctrl, _ac, _ar) {
     }
     var _fi = grid_new_formation(ctrl, ctrl.squads[_list[0]].type);
     var _f = ctrl.formations[_fi];
+    _f.anchor_col = _ac;
+    _f.anchor_row = _ar;
     var _fp = grid_footprint(ctrl, _n);
     var _k = 0;
     var _tele = false;
@@ -893,6 +920,105 @@ function grid_slot_target(ctrl, _s, _f) {
     return [_c, _r];
 }
 
+/// @function grid_form_speed
+/// @description A block moves at the pace of its slowest squad, so a Land
+/// Raider does not leave its escort behind.
+function grid_form_speed(ctrl, _f) {
+    var _sp = 99;
+    for (var _i = 0; _i < array_length(_f.members); _i++) {
+        var _s = ctrl.squads[_f.members[_i]];
+        if (_s.alive) {
+            _sp = min(_sp, _s.spd);
+        }
+    }
+    return (_sp >= 99) ? 1 : _sp;
+}
+
+/// @function grid_form_contact
+/// @description True once any squad in the block can reach the enemy. Until
+/// then the block holds its shape; after it, squads fight for themselves.
+function grid_form_contact(ctrl, _f) {
+    for (var _i = 0; _i < array_length(_f.members); _i++) {
+        var _s = ctrl.squads[_f.members[_i]];
+        if (!_s.alive || !_s.deployed) {
+            continue;
+        }
+        var _foe = grid_nearest_foe(ctrl, _f.members[_i], max(1, _s.rng));
+        if (_foe >= 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/// @function grid_form_advance
+/// @description Walks the anchor toward the enemy at the block's own speed.
+/// The squads follow their offsets, so the formation arrives intact.
+function grid_form_advance(ctrl, _fi) {
+    var _f = ctrl.formations[_fi];
+    if (!_f.alive || (array_length(_f.members) <= 0)) {
+        return;
+    }
+    _f.engaged = grid_form_contact(ctrl, _f);
+    if (_f.engaged || (_f.order != GRIDORD_ADVANCE)) {
+        return;
+    }
+    if (_f.anchor_col < 0) {
+        var _lead = ctrl.squads[_f.members[0]];
+        _f.anchor_col = _lead.col;
+        _f.anchor_row = _lead.row;
+    }
+    // Aim the block at the nearest enemy to its anchor.
+    var _bi = -1;
+    var _bd = 99999;
+    for (var _i = 0; _i < array_length(ctrl.squads); _i++) {
+        var _t = ctrl.squads[_i];
+        if (!_t.alive || !_t.deployed || (_t.side == _f.side)) {
+            continue;
+        }
+        var _dd = grid_dist(_f.anchor_col, _f.anchor_row, _t.col, _t.row);
+        if (_dd < _bd) {
+            _bd = _dd;
+            _bi = _i;
+        }
+    }
+    if (_bi < 0) {
+        return;
+    }
+    _f.mv_acc += grid_form_speed(ctrl, _f);
+    var _steps = floor(_f.mv_acc);
+    _f.mv_acc -= _steps;
+    var _tgt = ctrl.squads[_bi];
+    for (var _m = 0; _m < _steps; _m++) {
+        var _dc = sign(_tgt.col - _f.anchor_col);
+        var _dr = sign(_tgt.row - _f.anchor_row);
+        if ((_dc == 0) && (_dr == 0)) {
+            break;
+        }
+        _f.anchor_col = clamp(_f.anchor_col + _dc, 0, ctrl.cols - 1);
+        _f.anchor_row = clamp(_f.anchor_row + _dr, 0, ctrl.rows - 1);
+    }
+}
+
+/// @function grid_follow_anchor
+/// @description Moves one squad toward its slot in the block. Returns true when
+/// it still has ground to cover, so callers know it is not yet in position.
+function grid_follow_anchor(ctrl, _si, _f) {
+    var _s = ctrl.squads[_si];
+    var _c = clamp(_f.anchor_col + _s.off_c, 0, ctrl.cols - 1);
+    var _r = clamp(_f.anchor_row + _s.off_r, 0, ctrl.rows - 1);
+    if ((_s.col == _c) && (_s.row == _r)) {
+        return false;
+    }
+    var _steps = grid_move_budget(_s);
+    for (var _m = 0; _m < _steps; _m++) {
+        if (!grid_step_toward(ctrl, _si, _c, _r)) {
+            break;
+        }
+    }
+    return true;
+}
+
 /// @function grid_nearest_foe
 function grid_nearest_foe(ctrl, _si, _limit) {
     var _s = ctrl.squads[_si];
@@ -1101,6 +1227,13 @@ function grid_act_player(ctrl, _si) {
         return;
     }
 
+    // Out of contact under a plain advance, the squad keeps its place in the
+    // block rather than racing ahead on its own legs.
+    if ((_ord == GRIDORD_ADVANCE) && (_f != undefined) && !_f.engaged) {
+        grid_follow_anchor(ctrl, _si, _f);
+        return;
+    }
+
     if ((_ord == GRIDORD_ATTACK) && grid_try_jump(ctrl, _si, _ti)) {
         grid_attack(ctrl, _si, _ti, true);
         return;
@@ -1145,6 +1278,11 @@ function grid_act_player(ctrl, _si) {
 /// @function grid_act_enemy
 function grid_act_enemy(ctrl, _si) {
     var _s = ctrl.squads[_si];
+    var _ef = (_s.formation >= 0) ? ctrl.formations[_s.formation] : undefined;
+    if ((_ef != undefined) && !_ef.engaged) {
+        grid_follow_anchor(ctrl, _si, _ef);
+        return;
+    }
     var _steps = grid_move_budget(_s);
     if (_s.type == "ork_weirdboy") {
         _s.zap_cd -= 1;
@@ -1209,6 +1347,10 @@ function grid_battle_tick(ctrl) {
         var _tmp = _order[_sh];
         _order[_sh] = _order[_j];
         _order[_j] = _tmp;
+    }
+
+    for (var _af = 0; _af < array_length(ctrl.formations); _af++) {
+        grid_form_advance(ctrl, _af);
     }
 
     for (var _k = 0; _k < array_length(_order); _k++) {
@@ -1846,6 +1988,8 @@ function grid_reinforce(ctrl) {
         }
         if (_fi < 0) {
             _fi = grid_new_formation(ctrl, _s.type);
+            ctrl.formations[_fi].anchor_col = _spot[0];
+            ctrl.formations[_fi].anchor_row = _spot[1];
         }
         _s.col = _spot[0];
         _s.row = _spot[1];
