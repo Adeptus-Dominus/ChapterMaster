@@ -229,6 +229,58 @@ function grid_unit_def(_key) {
     return _t.tactical;
 }
 
+/// @function grid_head_art
+/// @description Portrait art per unit type, with its crop rectangle, because the
+/// helm sprites are 167x232 sheets built for the portrait compositor with the
+/// head tucked into one corner. Drawing the whole canvas into a tile would put a
+/// speck in an empty square, so the crop is part of the data. Boxes were measured
+/// off the alpha channel: the sheets also carry near-invisible stray pixels in
+/// the far corners that fool sprite_get_bbox into reporting the whole canvas.
+/// Returns undefined for anything with no art, which falls back to the glyph.
+function grid_head_art(_key) {
+    switch (_key) {
+        case "tactical":
+            return { spr: spr_ba_mk7_helm, sub: 0, x1: 67, y1: 12, x2: 99, y2: 43 };
+        case "assault":
+            return { spr: spr_ba_mk6_helm, sub: 0, x1: 66, y1: 14, x2: 100, y2: 47 };
+        case "devastator":
+            return { spr: spr_ba_mk5_helm, sub: 0, x1: 68, y1: 13, x2: 98, y2: 43 };
+        case "scout":
+            // Frame 0 is the full head; frame 1 is the bare face underneath it.
+            return { spr: spr_scout_heads, sub: 0, x1: 73, y1: 28, x2: 97, y2: 62 };
+        case "guardsmen":
+            return grid_guardsman_head();
+    }
+    return undefined;
+}
+
+/// @function grid_guardsman_head
+/// @description The Guard have no compiled sprite asset, so their head is loaded
+/// from images\units at runtime and cached, the same way the Guardsman portrait
+/// already works in scr_draw_unit_image. Returns undefined if the file is
+/// missing rather than drawing a broken sprite.
+function grid_guardsman_head() {
+    if (!variable_global_exists("grid_guardsman_head_spr")) {
+        global.grid_guardsman_head_spr = -1;
+    }
+    if (!sprite_exists(global.grid_guardsman_head_spr)) {
+        global.grid_guardsman_head_spr = sprite_add(
+            working_directory + "/images/units/guardsman_head.png", 1, false, false, 0, 0);
+    }
+    if (!sprite_exists(global.grid_guardsman_head_spr)) {
+        return undefined;
+    }
+    var _g = global.grid_guardsman_head_spr;
+    return {
+        spr: _g,
+        sub: 0,
+        x1: 0,
+        y1: 0,
+        x2: sprite_get_width(_g) - 1,
+        y2: sprite_get_height(_g) - 1,
+    };
+}
+
 /// @function grid_type_list
 /// @description Player deployable types, in the order the left bar lists them.
 function grid_type_list() {
@@ -288,6 +340,9 @@ function GridSquad(_side, _type, _name) constructor {
     glyph = _d.glyph;
     ascii = _d.ascii;
     sprite_hook = _d.sprite;
+    // Resolved once per squad rather than per frame: the Guard head is a runtime
+    // sprite_add and the crop boxes are fixed.
+    head = grid_head_art(_type);
     col = -1;
     row = -1;
     alive = true;
@@ -2320,11 +2375,8 @@ function grid_draw_glyph(_kind, _cx, _cy, _s, _col) {
 /// index is set on the type; below a readable size it falls back to the vanilla
 /// style letter code so an overview zoom stays legible.
 function grid_draw_unit(_s, _cx, _cy, _tp, _col) {
-    if ((_s.sprite_hook != -1) && sprite_exists(_s.sprite_hook)) {
-        var _sc = (_tp * 0.8) / max(1, sprite_get_width(_s.sprite_hook));
-        draw_sprite_ext(_s.sprite_hook, 0, _cx, _cy, _sc, _sc, 0, c_white, 1);
-        return;
-    }
+    // Overview zoom stays as letters. A nine pixel tile cannot show a face, and
+    // scaling a head down to it is just a smudge.
     if (_tp < 18) {
         draw_set_color(_col);
         draw_set_font(fnt_small);
@@ -2333,6 +2385,23 @@ function grid_draw_unit(_s, _cx, _cy, _tp, _col) {
         draw_text(_cx, _cy, _s.ascii);
         draw_set_halign(fa_left);
         draw_set_valign(fa_top);
+        return;
+    }
+    var _h = _s.head;
+    if (is_struct(_h) && sprite_exists(_h.spr)) {
+        var _pw = _h.x2 - _h.x1 + 1;
+        var _ph = _h.y2 - _h.y1 + 1;
+        // Fit by the longer side so a tall head and a wide helm both sit inside
+        // the tile, and centre the cropped piece rather than the sprite origin,
+        // which on these sheets is the far corner of an empty canvas.
+        var _sc = (_tp * 0.86) / max(1, max(_pw, _ph));
+        draw_sprite_part_ext(_h.spr, _h.sub, _h.x1, _h.y1, _pw, _ph,
+            _cx - (_pw * _sc * 0.5), _cy - (_ph * _sc * 0.5), _sc, _sc, c_white, 1);
+        return;
+    }
+    if ((_s.sprite_hook != -1) && sprite_exists(_s.sprite_hook)) {
+        var _sc2 = (_tp * 0.8) / max(1, sprite_get_width(_s.sprite_hook));
+        draw_sprite_ext(_s.sprite_hook, 0, _cx, _cy, _sc2, _sc2, 0, c_white, 1);
         return;
     }
     grid_draw_glyph(_s.glyph, _cx, _cy, _tp * 0.72, _col);
