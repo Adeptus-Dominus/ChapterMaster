@@ -309,12 +309,13 @@ function drop_select_unit_selection() {
             // Combat width: the ground itself limits how many troops either side can hold in
             // contact, so the shape of the fight is readable before committing and an
             // oversized force is visibly surplus rather than silently wasted.
+            // What the ground will actually let the DEFENDER field here: the narrower the
+            // front, the smaller the battle, whatever their reserve. The chapter's own
+            // number is shown beside it for scale and is never capped by the line.
             var _front_w = region_front_width(p_target, planet_number, _seci);
-            var _front_str = $"Front ({region_terrain(p_target, planet_number, _seci)}): {scr_display_number(_front_w)} hold the line | you commit {scr_display_number(roster.selected_count())}";
-            if (roster.selected_count() > _front_w) {
-                draw_set_color(c_yellow);
-                _front_str += " - surplus waits in reserve";
-            }
+            var _front_garr = region_garrison(p_target, planet_number, _seci, _secr.owner);
+            var _front_engaged = (_front_garr > 0) ? min(_front_w, _front_garr) : _front_w;
+            var _front_str = $"Front ({region_terrain(p_target, planet_number, _seci)}): up to {scr_display_number(_front_engaged)} can hold the line here | you commit {scr_display_number(roster.selected_count())}";
             draw_text(_ssx1, _ssy2 + 6, _front_str);
             draw_set_color(CM_GREEN_COLOR);
             if (scr_hit(_ssx1, _ssy1, _ssx2, _ssy2) && mouse_button_clicked()) {

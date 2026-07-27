@@ -552,32 +552,31 @@ function enemy_formation_split() {
     LOGGER.info($"ENEMY FORMATIONS: {array_length(_origins)} spawned block(s) split into {array_length(_origins) + _segments} formation segment(s)");
 }
 
-/// @desc Trim the spawned enemy army to the region's FRONT WIDTH. The spawn tables size an
-/// army from the world's strength tier, which says how much the faction HAS, not how much of
-/// it can stand in contact on this particular ground. Terrain decides that: an open desert
-/// basin fields thousands abreast, a mountain pass a few hundred, and the remainder is
-/// reserve that trickles forward between turns (regions_reinforce_tick). Scaling the whole
-/// roster preserves its composition, so a trimmed army is the same army with fewer bodies in
-/// each block rather than a different one. Skipped entirely on a LAST STAND, where the
-/// defender has no reserve left to hold back and throws everything into the line at once.
+/// @desc Size the spawned enemy army to the region's FRONT WIDTH. The spawn tables size an
+/// army from the world's strength TIER, which says how much the faction has in the abstract,
+/// not how much of it can stand in contact on this particular ground. Terrain decides that,
+/// and the width is a target rather than only a ceiling: on a narrow front a huge garrison is
+/// trimmed to what fits and the rest is reserve, while on a wide front a modest tier roll is
+/// scaled UP toward the width, bounded by the garrison that actually exists there. That is
+/// what makes the largest battles both bigger and genuinely variable by where they happen.
+/// Scaling the whole roster preserves composition, so the result is the same army at a
+/// different size rather than a different army. The chapter is never bound by this: its few
+/// hundred bodies would need a width small enough to make every enemy trivial. On a LAST
+/// STAND the width is lifted entirely and the defender commits its whole regional garrison.
 /// @returns {Undefined}
 function enemy_front_width_clamp() {
     if (!instance_exists(obj_enunit) || !instance_exists(obj_ncombat)) {
-        return;
-    }
-    if (obj_ncombat.last_stand) {
-        LOGGER.info("FRONT WIDTH: last stand, the defender commits everything and the width clamp is lifted");
         return;
     }
     var _star = obj_ncombat.battle_object;
     if (!instance_exists(_star)) {
         return;
     }
+    var _planet = obj_ncombat.battle_id;
     var _region = obj_ncombat.battle_region;
-    if (!is_real(_region) || (_region < 0) || (_region >= planet_region_count(_star, obj_ncombat.battle_id))) {
+    if (!is_real(_region) || (_region < 0) || (_region >= planet_region_count(_star, _planet))) {
         return; // single-region world or no region context: nothing to bound it by
     }
-    var _width = region_front_width(_star, obj_ncombat.battle_id, _region);
     var _total = 0;
     with (obj_enunit) {
         for (var _j = 1; _j <= 700; _j++) {
@@ -586,19 +585,42 @@ function enemy_front_width_clamp() {
             }
         }
     }
-    if ((_total <= _width) || (_total <= 0)) {
-        LOGGER.info($"FRONT WIDTH: region {_region} ({region_terrain(_star, obj_ncombat.battle_id, _region)}) width {_width}, enemy fielded {_total}, under the line");
+    if (_total <= 0) {
         return;
     }
-    var _scale = _width / _total;
+    var _terrain = region_terrain(_star, _planet, _region);
+    var _width = region_front_width(_star, _planet, _region);
+    // Never field more than the garrison that is actually stationed here: the width says how
+    // much ground there is to fight over, the garrison says how many bodies exist to fill it.
+    var _garrison = region_garrison(_star, _planet, _region, obj_ncombat.enemy);
+    if (_garrison <= 0) {
+        LOGGER.info($"FRONT WIDTH: region {_region} ({_terrain}) width {_width}, no stored garrison for faction {obj_ncombat.enemy}, spawn left at {_total}");
+        return;
+    }
+    var _target = obj_ncombat.last_stand ? _garrison : min(_width, _garrison);
+    _target = min(_target, ENEMY_FRONT_ENGAGED_CAP);
+    if (_target <= 0) {
+        return;
+    }
+    var _scale = _target / _total;
+    if (_scale > ENEMY_FRONT_SCALE_UP_MAX) {
+        _scale = ENEMY_FRONT_SCALE_UP_MAX;
+    }
+    if ((_scale > 0.98) && (_scale < 1.02)) {
+        LOGGER.info($"FRONT WIDTH: region {_region} ({_terrain}) width {_width}, garrison {_garrison}, enemy fielded {_total}, already at the line");
+        return;
+    }
+    var _final = 0;
     with (obj_enunit) {
         for (var _j = 1; _j <= 700; _j++) {
             if (dudes_num[_j] > 0) {
-                dudes_num[_j] = max(1, floor(dudes_num[_j] * _scale));
+                dudes_num[_j] = max(1, round(dudes_num[_j] * _scale));
+                _final += dudes_num[_j];
             }
         }
     }
-    LOGGER.info($"FRONT WIDTH: region {_region} ({region_terrain(_star, obj_ncombat.battle_id, _region)}) width {_width}, enemy {_total} trimmed to the line, the rest holds in reserve");
+    var _verb = (_scale < 1) ? "trimmed to the line, the rest holds in reserve" : "reinforced up to fill the line";
+    LOGGER.info($"FRONT WIDTH: region {_region} ({_terrain}) width {_width}, garrison {_garrison}, last_stand={obj_ncombat.last_stand}: enemy {_total} {_verb} -> {_final}");
 }
 
 /// @desc Melee-doctrine races never form a gunline: an Ork or Tyranid horde brings its

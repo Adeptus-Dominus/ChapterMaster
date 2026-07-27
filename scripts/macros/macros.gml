@@ -161,13 +161,30 @@
 
 // ---- Front width and terrain (Paradox-style regional war) ----
 // A region can only feed so many troops into contact at once: its FRONT WIDTH. The rest of
-// the garrison is reserve, trickling forward at the region's reinforcement rate. Terrain
-// decides both, so where you fight matters as much as who: open desert is a wide front that
-// reinforces fast, a mountain pass is a narrow one that starves. Each region also carries a
-// persistent random modifier so no two of the same terrain read alike.
-#macro REGION_FRONT_WIDTH_MIN 500
-#macro REGION_FRONT_WIDTH_MAX 3000
+// whoever holds it is reserve, trickling forward at the region's reinforcement rate.
+// Terrain decides both, so WHERE you fight matters as much as who: an open plain is a wide
+// front that reinforces fast, a mountain pass is a narrow one that starves. Each region
+// also carries a persistent random modifier so no two of the same terrain read alike.
+//
+// This governs the ENEMY only. The chapter never fields more than a few hundred bodies, so
+// a width that could bind it would have to be small enough to throttle the enemy into
+// triviality; the drop select shows the player their own number against the line for
+// information instead. (Guard auxilia are the one player-side force numerous enough to be
+// worth binding later, once their headcounts are settled.)
+//
+// The width is a TARGET, not just a ceiling: the spawn tables size an army from the world's
+// strength tier, which is often far below what a region's garrison could actually put in
+// the line. On wide ground against a deep garrison the engagement scales UP toward the
+// width (bounded by the garrison that really exists and by the scale cap below), which is
+// what makes the largest battles both bigger and genuinely variable by terrain.
+#macro REGION_FRONT_WIDTH_MIN 2000
+#macro REGION_FRONT_WIDTH_MAX 25000
 #macro REGION_FRONT_VARIANCE 0.25
+// How far a battle may be scaled UP from what the tier tables produced. Stops a ground-down
+// remnant ballooning back into an army just because it stands on an open plain.
+#macro ENEMY_FRONT_SCALE_UP_MAX 3
+// Absolute ceiling on bodies fielded in one battle, a safety valve on the arithmetic above.
+#macro ENEMY_FRONT_ENGAGED_CAP 60000
 
 // How many PDF one Guardsman is worth when scoring how hard a world is to INVADE
 // (determine_pdf_defence). Guardsmen are line troops, so they hold ground better than the same

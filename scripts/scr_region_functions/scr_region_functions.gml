@@ -6454,14 +6454,14 @@ function region_terrain(_star, _planet, _index) {
 /// @returns {Real}
 function region_terrain_front_base(_terrain) {
     switch (_terrain) {
-        case "mountain": return 600;   // passes: a handful of companies decide it
-        case "marsh":    return 800;
-        case "forest":   return 1100;
-        case "urban":    return 1600;  // dense, but channelled street by street
-        case "coastal":  return 2000;
-        case "open":     return 2800;  // armies deploy in the open and everyone fights
+        case "mountain": return 2500;   // passes: a few thousand decide it, whatever else exists
+        case "marsh":    return 4000;
+        case "forest":   return 7000;
+        case "urban":    return 11000;  // dense, but channelled street by street
+        case "coastal":  return 15000;
+        case "open":     return 24000;  // armies deploy in the open and everyone fights at once
     }
-    return 1600;
+    return 11000;
 }
 
 /// @function region_terrain_reinforce_factor
