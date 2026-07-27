@@ -105,6 +105,80 @@ function grid_unit_def(_key) {
         ork_weirdboy:  { disp: "Weirdboy",        men: 4,  hp_man: 12, armour: 4,  mel: 10, bal: 4,  rng: 3, spd: 1.0, cost: 0, glyph: "psyker",    ascii: "WB", vehicle: false, melee: false, tele: false, jump: false, sprite: -1 },
         ork_dread:     { disp: "Deff Dread",      men: 1,  hp_man: 170, armour: 20, mel: 24, bal: 12, rng: 4, spd: 1.0, cost: 0, glyph: "orkwalker",ascii: "DD", vehicle: true,  melee: true,  tele: false, jump: false, sprite: -1 },
         ork_wagon:     { disp: "Battlewagon",     men: 1,  hp_man: 200, armour: 22, mel: 10, bal: 16, rng: 6, spd: 2.0, cost: 0, glyph: "transport",ascii: "BW", vehicle: true,  melee: false, tele: false, jump: false, sprite: -1 },
+
+        // ------------------------------------------------------------------
+        // Enemy rosters. Every profile below is derived from that unit's own
+        // vanilla stats rather than invented: armour and hit points come from
+        // dudes_ac / dudes_hp / dudes_dr in objects\obj_enunit\Alarm_1, and
+        // melee, ballistic and range come from its weapons' atta and rang in
+        // scr_en_weapon. The conversions, calibrated so the existing Ork
+        // profiles reproduce exactly:
+        //   hp_man  = hp * (2 - dr) / 15   infantry, / 2.5 for vehicles
+        //   armour  = ac * 0.62            infantry, * 0.70 for vehicles
+        //   mel     = best melee atta / 10 , bal = best ranged atta / 12
+        //   rng     = 1.9 * sqrt(vanilla range), which compresses the 1-20
+        //             vanilla band onto the grid's 1-12 one
+        // A handful of units carry weapons that have no case in scr_en_weapon
+        // at all (Eviscerator, Close Combat Weapon, Twin Linked Heavy Flamers,
+        // Multi-Laster, Melee2), the same class of bug as the old Melee1. Those
+        // are marked with an explicit value here instead of deriving to zero.
+        // ------------------------------------------------------------------
+        ig_guardsman:   { disp: "Guardsmen",           men: 20 , hp_man: 3   , armour: 3  , mel: 4  , bal: 5  , rng: 5 , spd: 1.0, cost: 0, glyph: "guard",      ascii: "IG",  vehicle: false , melee: false , tele: false , jump: false , sprite: -1 },
+        ig_ogryn:       { disp: "Ogryns",              men: 10 , hp_man: 10  , armour: 9  , mel: 9  , bal: 10 , rng: 3 , spd: 1.0, cost: 0, glyph: "orkbig",     ascii: "OG",  vehicle: false , melee: true  , tele: false , jump: false , sprite: -1 },
+        ig_hwt:         { disp: "Heavy Wpn Teams",     men: 12 , hp_man: 7   , armour: 6  , mel: 2  , bal: 10 , rng: 8 , spd: 0.5, cost: 0, glyph: "heavy",      ascii: "HW",  vehicle: false , melee: false , tele: false , jump: false , sprite: -1 },
+        ig_russ:        { disp: "Leman Russ",          men: 1  , hp_man: 150 , armour: 28 , mel: 2  , bal: 30 , rng: 8 , spd: 1.0, cost: 0, glyph: "tank",       ascii: "LR",  vehicle: true  , melee: false , tele: false , jump: false , sprite: -1 },
+        ig_chimera:     { disp: "Chimeras",            men: 1  , hp_man: 120 , armour: 21 , mel: 2  , bal: 10 , rng: 8 , spd: 2.0, cost: 0, glyph: "transport",  ascii: "CM",  vehicle: true  , melee: false , tele: false , jump: false , sprite: -1 },
+        ig_basilisk:    { disp: "Basilisks",           men: 1  , hp_man: 90  , armour: 21 , mel: 2  , bal: 21 , rng: 7 , spd: 0.5, cost: 0, glyph: "tank",       ascii: "BA",  vehicle: true  , melee: false , tele: false , jump: false , sprite: -1 },
+        ad_thallax:     { disp: "Thallax",             men: 10 , hp_man: 8   , armour: 16 , mel: 8  , bal: 7  , rng: 5 , spd: 1.0, cost: 0, glyph: "term",       ascii: "TX",  vehicle: false , melee: false , tele: false , jump: false , sprite: -1 },
+        ad_servitor:    { disp: "Praetorians",         men: 8  , hp_man: 12  , armour: 9  , mel: 2  , bal: 7  , rng: 5 , spd: 0.5, cost: 0, glyph: "heavy",      ascii: "PS",  vehicle: false , melee: false , tele: false , jump: false , sprite: -1 },
+        ec_sister:      { disp: "Battle Sisters",      men: 10 , hp_man: 5   , armour: 9  , mel: 6  , bal: 10 , rng: 7 , spd: 1.0, cost: 0, glyph: "infantry",   ascii: "SI",  vehicle: false , melee: false , tele: false , jump: false , sprite: -1 },
+        ec_repentia:    { disp: "Repentia",            men: 10 , hp_man: 6   , armour: 3  , mel: 20 , bal: 1  , rng: 1 , spd: 1.0, cost: 0, glyph: "infantry",   ascii: "RP",  vehicle: false , melee: true  , tele: false , jump: false , sprite: -1 },
+        ec_celestian:   { disp: "Celestians",          men: 10 , hp_man: 5   , armour: 9  , mel: 12 , bal: 10 , rng: 7 , spd: 1.0, cost: 0, glyph: "infantry",   ascii: "CL",  vehicle: false , melee: false , tele: false , jump: false , sprite: -1 },
+        ec_penitent:    { disp: "Penitent Engines",    men: 1  , hp_man: 72  , armour: 14 , mel: 22 , bal: 17 , rng: 2 , spd: 1.0, cost: 0, glyph: "walker",     ascii: "PE",  vehicle: true  , melee: true  , tele: false , jump: false , sprite: -1 },
+        ec_immolator:   { disp: "Immolators",          men: 1  , hp_man: 162 , armour: 28 , mel: 4  , bal: 17 , rng: 2 , spd: 2.0, cost: 0, glyph: "transport",  ascii: "IM",  vehicle: true  , melee: false , tele: false , jump: false , sprite: -1 },
+        ec_arco:        { disp: "Arco-Flagellants",    men: 10 , hp_man: 13  , armour: 3  , mel: 12 , bal: 1  , rng: 1 , spd: 1.0, cost: 0, glyph: "infantry",   ascii: "AF",  vehicle: false , melee: true  , tele: false , jump: false , sprite: -1 },
+        el_guardian:    { disp: "Guardians",           men: 20 , hp_man: 2   , armour: 3  , mel: 4  , bal: 4  , rng: 3 , spd: 1.0, cost: 0, glyph: "infantry",   ascii: "GD",  vehicle: false , melee: false , tele: false , jump: false , sprite: -1 },
+        el_banshee:     { disp: "Howling Banshees",    men: 10 , hp_man: 3   , armour: 6  , mel: 12 , bal: 4  , rng: 3 , spd: 1.0, cost: 0, glyph: "infantry",   ascii: "HB",  vehicle: false , melee: true  , tele: false , jump: false , sprite: -1 },
+        el_avenger:     { disp: "Dire Avengers",       men: 10 , hp_man: 3   , armour: 6  , mel: 4  , bal: 8  , rng: 3 , spd: 1.0, cost: 0, glyph: "infantry",   ascii: "DA",  vehicle: false , melee: false , tele: false , jump: false , sprite: -1 },
+        el_wraithlord:  { disp: "Wraithlords",         men: 1  , hp_man: 112 , armour: 21 , mel: 28 , bal: 21 , rng: 5 , spd: 1.0, cost: 0, glyph: "walker",     ascii: "WL",  vehicle: true  , melee: false , tele: false , jump: false , sprite: -1 },
+        el_falcon:      { disp: "Falcons",             men: 1  , hp_man: 112 , armour: 21 , mel: 2  , bal: 17 , rng: 5 , spd: 3.0, cost: 0, glyph: "speeder",    ascii: "FA",  vehicle: true  , melee: false , tele: false , jump: false , sprite: -1 },
+        el_warlock:     { disp: "Warlocks",            men: 5  , hp_man: 7   , armour: 6  , mel: 13 , bal: 7  , rng: 3 , spd: 1.0, cost: 0, glyph: "psyker",     ascii: "WK",  vehicle: false , melee: false , tele: false , jump: false , sprite: -1 },
+        tau_firewarrior:{ disp: "Fire Warriors",       men: 20 , hp_man: 3   , armour: 6  , mel: 2  , bal: 7  , rng: 7 , spd: 1.0, cost: 0, glyph: "infantry",   ascii: "FW",  vehicle: false , melee: false , tele: false , jump: false , sprite: -1 },
+        tau_kroot:      { disp: "Kroot",               men: 20 , hp_man: 3   , armour: 3  , mel: 8  , bal: 8  , rng: 5 , spd: 1.0, cost: 0, glyph: "infantry",   ascii: "KR",  vehicle: false , melee: true  , tele: false , jump: false , sprite: -1 },
+        tau_crisis:     { disp: "XV8 Crisis",          men: 5  , hp_man: 12  , armour: 9  , mel: 2  , bal: 12 , rng: 7 , spd: 1.0, cost: 0, glyph: "term",       ascii: "XV",  vehicle: false , melee: false , tele: false , jump: false , sprite: -1 },
+        tau_broadside:  { disp: "XV88 Broadsides",     men: 5  , hp_man: 22  , armour: 16 , mel: 2  , bal: 12 , rng: 7 , spd: 0.5, cost: 0, glyph: "heavy",      ascii: "BS",  vehicle: false , melee: false , tele: false , jump: false , sprite: -1 },
+        tau_devilfish:  { disp: "Devilfish",           men: 1  , hp_man: 84  , armour: 21 , mel: 2  , bal: 12 , rng: 7 , spd: 2.0, cost: 0, glyph: "transport",  ascii: "DF",  vehicle: true  , melee: false , tele: false , jump: false , sprite: -1 },
+        tau_hammerhead: { disp: "Hammerheads",         men: 1  , hp_man: 84  , armour: 21 , mel: 2  , bal: 21 , rng: 8 , spd: 1.0, cost: 0, glyph: "tank",       ascii: "HH",  vehicle: true  , melee: false , tele: false , jump: false , sprite: -1 },
+        ty_termagaunt:  { disp: "Termagaunts",         men: 30 , hp_man: 2   , armour: 3  , mel: 2  , bal: 6  , rng: 3 , spd: 1.0, cost: 0, glyph: "infantry",   ascii: "TG",  vehicle: false , melee: false , tele: false , jump: false , sprite: -1 },
+        ty_hormagaunt:  { disp: "Hormagaunts",         men: 30 , hp_man: 2   , armour: 3  , mel: 4  , bal: 1  , rng: 1 , spd: 1.0, cost: 0, glyph: "infantry",   ascii: "HG",  vehicle: false , melee: true  , tele: false , jump: false , sprite: -1 },
+        ty_warrior:     { disp: "Tyranid Warriors",    men: 10 , hp_man: 7   , armour: 9  , mel: 8  , bal: 8  , rng: 4 , spd: 1.0, cost: 0, glyph: "orkbig",     ascii: "TW",  vehicle: false , melee: false , tele: false , jump: false , sprite: -1 },
+        ty_carnifex:    { disp: "Carnifexes",          men: 1  , hp_man: 168 , armour: 21 , mel: 25 , bal: 8  , rng: 4 , spd: 1.0, cost: 0, glyph: "orkwalker",  ascii: "CX",  vehicle: true  , melee: true  , tele: false , jump: false , sprite: -1 },
+        ty_lictor:      { disp: "Lictors",             men: 3  , hp_man: 26  , armour: 9  , mel: 28 , bal: 8  , rng: 3 , spd: 1.0, cost: 0, glyph: "orkbig",     ascii: "LI",  vehicle: false , melee: true  , tele: false , jump: false , sprite: -1 },
+        ty_zoanthrope:  { disp: "Zoanthropes",         men: 3  , hp_man: 30  , armour: 6  , mel: 2  , bal: 21 , rng: 5 , spd: 1.0, cost: 0, glyph: "psyker",     ascii: "ZO",  vehicle: false , melee: false , tele: false , jump: false , sprite: -1 },
+        ch_marine:      { disp: "Chaos Marines",       men: 10 , hp_man: 7   , armour: 9  , mel: 12 , bal: 10 , rng: 7 , spd: 1.0, cost: 0, glyph: "infantry",   ascii: "CS",  vehicle: false , melee: false , tele: false , jump: false , sprite: -1 },
+        ch_berzerker:   { disp: "Khorne Berzerkers",   men: 10 , hp_man: 18  , armour: 9  , mel: 14 , bal: 8  , rng: 3 , spd: 1.0, cost: 0, glyph: "infantry",   ascii: "KB",  vehicle: false , melee: true  , tele: false , jump: false , sprite: -1 },
+        ch_terminator:  { disp: "Chaos Terminators",   men: 5  , hp_man: 12  , armour: 22 , mel: 25 , bal: 13 , rng: 3 , spd: 0.5, cost: 0, glyph: "term",       ascii: "CT",  vehicle: false , melee: false , tele: true  , jump: false , sprite: -1 },
+        ch_hellbrute:   { disp: "Hellbrutes",          men: 1  , hp_man: 168 , armour: 28 , mel: 28 , bal: 17 , rng: 2 , spd: 1.0, cost: 0, glyph: "walker",     ascii: "HL",  vehicle: true  , melee: false , tele: false , jump: false , sprite: -1 },
+        ch_rhino:       { disp: "Chaos Rhinos",        men: 1  , hp_man: 100 , armour: 21 , mel: 2  , bal: 15 , rng: 5 , spd: 2.0, cost: 0, glyph: "transport",  ascii: "RH",  vehicle: true  , melee: false , tele: false , jump: false , sprite: -1 },
+        ch_sorcerer:    { disp: "Chaos Sorcerers",     men: 5  , hp_man: 15  , armour: 16 , mel: 10 , bal: 8  , rng: 3 , spd: 1.0, cost: 0, glyph: "psyker",     ascii: "SO",  vehicle: false , melee: false , tele: false , jump: false , sprite: -1 },
+        he_cultist:     { disp: "Cultists",            men: 30 , hp_man: 2   , armour: 6  , mel: 6  , bal: 5  , rng: 5 , spd: 1.0, cost: 0, glyph: "infantry",   ascii: "CU",  vehicle: false , melee: false , tele: false , jump: false , sprite: -1 },
+        he_mutant:      { disp: "Mutants",             men: 20 , hp_man: 3   , armour: 3  , mel: 8  , bal: 8  , rng: 3 , spd: 1.0, cost: 0, glyph: "infantry",   ascii: "MU",  vehicle: false , melee: true  , tele: false , jump: false , sprite: -1 },
+        he_elite:       { disp: "Cultist Elites",      men: 15 , hp_man: 3   , armour: 6  , mel: 14 , bal: 5  , rng: 5 , spd: 1.0, cost: 0, glyph: "infantry",   ascii: "CE",  vehicle: false , melee: false , tele: false , jump: false , sprite: -1 },
+        he_russ:        { disp: "Chaos Leman Russ",    men: 1  , hp_man: 150 , armour: 28 , mel: 2  , bal: 25 , rng: 7 , spd: 1.0, cost: 0, glyph: "tank",       ascii: "CR",  vehicle: true  , melee: false , tele: false , jump: false , sprite: -1 },
+        he_technical:   { disp: "Technicals",          men: 1  , hp_man: 50  , armour: 14 , mel: 2  , bal: 10 , rng: 8 , spd: 3.0, cost: 0, glyph: "transport",  ascii: "TC",  vehicle: true  , melee: false , tele: false , jump: false , sprite: -1 },
+        he_possessed:   { disp: "Possessed",           men: 8  , hp_man: 8   , armour: 6  , mel: 15 , bal: 1  , rng: 1 , spd: 1.0, cost: 0, glyph: "psyker",     ascii: "PO",  vehicle: false , melee: true  , tele: false , jump: false , sprite: -1 },
+        gs_hybrid:      { disp: "Hybrids",             men: 20 , hp_man: 3   , armour: 6  , mel: 5  , bal: 5  , rng: 5 , spd: 1.0, cost: 0, glyph: "infantry",   ascii: "HY",  vehicle: false , melee: false , tele: false , jump: false , sprite: -1 },
+        gs_stealer:     { disp: "Genestealers",        men: 15 , hp_man: 5   , armour: 6  , mel: 7  , bal: 1  , rng: 1 , spd: 1.0, cost: 0, glyph: "infantry",   ascii: "GS",  vehicle: false , melee: true  , tele: false , jump: false , sprite: -1 },
+        gs_aberrant:    { disp: "Aberrants",           men: 10 , hp_man: 7   , armour: 3  , mel: 8  , bal: 1  , rng: 1 , spd: 1.0, cost: 0, glyph: "orkbig",     ascii: "AB",  vehicle: false , melee: true  , tele: false , jump: false , sprite: -1 },
+        gs_rockgrinder: { disp: "Rockgrinders",        men: 1  , hp_man: 150 , armour: 21 , mel: 14 , bal: 8  , rng: 4 , spd: 1.0, cost: 0, glyph: "walker",     ascii: "RG",  vehicle: true  , melee: true  , tele: false , jump: false , sprite: -1 },
+        gs_truck:       { disp: "Goliath Trucks",      men: 1  , hp_man: 117 , armour: 21 , mel: 2  , bal: 8  , rng: 5 , spd: 3.0, cost: 0, glyph: "transport",  ascii: "GT",  vehicle: true  , melee: false , tele: false , jump: false , sprite: -1 },
+        gs_magus:       { disp: "Magus",               men: 4  , hp_man: 7   , armour: 6  , mel: 10 , bal: 5  , rng: 5 , spd: 1.0, cost: 0, glyph: "psyker",     ascii: "MG",  vehicle: false , melee: false , tele: false , jump: false , sprite: -1 },
+        ne_warrior:     { disp: "Necron Warriors",     men: 20 , hp_man: 6   , armour: 6  , mel: 6  , bal: 4  , rng: 5 , spd: 1.0, cost: 0, glyph: "infantry",   ascii: "NW",  vehicle: false , melee: false , tele: false , jump: false , sprite: -1 },
+        ne_flayed:      { disp: "Flayed Ones",         men: 15 , hp_man: 6   , armour: 6  , mel: 6  , bal: 1  , rng: 1 , spd: 1.0, cost: 0, glyph: "infantry",   ascii: "FO",  vehicle: false , melee: true  , tele: false , jump: false , sprite: -1 },
+        ne_lychguard:   { disp: "Lychguard",           men: 10 , hp_man: 8   , armour: 16 , mel: 20 , bal: 1  , rng: 1 , spd: 1.0, cost: 0, glyph: "term",       ascii: "LG",  vehicle: false , melee: true  , tele: false , jump: false , sprite: -1 },
+        ne_stalker:     { disp: "Tomb Stalkers",       men: 1  , hp_man: 162 , armour: 21 , mel: 28 , bal: 21 , rng: 6 , spd: 1.0, cost: 0, glyph: "orkwalker",  ascii: "TS",  vehicle: true  , melee: false , tele: false , jump: false , sprite: -1 },
+        ne_spyder:      { disp: "Canoptek Spyders",    men: 1  , hp_man: 96  , armour: 14 , mel: 17 , bal: 1  , rng: 1 , spd: 2.0, cost: 0, glyph: "walker",     ascii: "SP",  vehicle: true  , melee: true  , tele: false , jump: false , sprite: -1 },
+        ne_destroyer:   { disp: "Necron Destroyers",   men: 5  , hp_man: 21  , armour: 16 , mel: 6  , bal: 10 , rng: 6 , spd: 3.0, cost: 0, glyph: "speeder",    ascii: "ND",  vehicle: false , melee: false , tele: false , jump: false , sprite: -1 },
     };
     if (variable_struct_exists(_t, _key)) {
         return _t[$ _key];
@@ -2188,21 +2262,70 @@ function grid_handoff_result(ctrl) {
 function grid_enemy_set(_faction) {
     // The launcher hands over the raw eFACTION index as a string, so a plain
     // name match would never fire and every battle would silently take the
-    // fallback. Numbers are resolved as the enum, names as text, so the cheat's
+    // fallback. Numbers resolve as the enum and names as text, so the cheat's
     // "orks" and the campaign's "7" both land in the same place.
-    var _greenskin = ["ork_shoota", "ork_slugga", "ork_nob", "ork_dread", "ork_wagon", "ork_weirdboy"];
     var _f = string_lower(string(_faction));
     var _idx = -1;
     if ((_f != "") && (string_digits(_f) == _f)) {
         _idx = real(_f);
     }
-    if ((_idx == eFACTION.ORK) || (string_count("ork", _f) > 0)) {
-        return _greenskin;
+    if (string_count("ork", _f) > 0) {
+        _idx = eFACTION.ORK;
+    } else if (string_count("eldar", _f) > 0) {
+        _idx = eFACTION.ELDAR;
+    } else if (string_count("tau", _f) > 0) {
+        _idx = eFACTION.TAU;
+    } else if (string_count("tyranid", _f) > 0) {
+        _idx = eFACTION.TYRANIDS;
+    } else if (string_count("necron", _f) > 0) {
+        _idx = eFACTION.NECRONS;
+    } else if (string_count("heretic", _f) > 0) {
+        _idx = eFACTION.HERETICS;
+    } else if (string_count("chaos", _f) > 0) {
+        _idx = eFACTION.CHAOS;
+    } else if (string_count("genestealer", _f) > 0) {
+        _idx = eFACTION.GENESTEALER;
+    } else if (string_count("sister", _f) > 0) {
+        _idx = eFACTION.ECCLESIARCHY;
+    } else if (string_count("guard", _f) > 0) {
+        _idx = eFACTION.IMPERIUM;
     }
-    // Every other faction still borrows the greenskin stat shapes. This is the
-    // one place to add real rosters: keep the order (line, close assault, elite,
-    // walker, transport, psyker) and grid_spawn_enemy_force needs no changes.
-    return _greenskin;
+
+    // One shape of force per faction, always in the same order, because
+    // grid_spawn_enemy_force weights the slots positionally:
+    //   line, close assault, elite, walker, transport, special.
+    switch (_idx) {
+        case eFACTION.PLAYER:
+            // A rival Chapter fields the player's own profiles.
+            return ["tactical", "assault", "terminator", "dreadnought", "rhino", "hq"];
+        case eFACTION.IMPERIUM:
+        case eFACTION.INQUISITION:
+            return ["ig_guardsman", "ig_ogryn", "ig_hwt", "ig_russ", "ig_chimera", "ig_basilisk"];
+        case eFACTION.MECHANICUS:
+            // The Mechanicus borrows the Guard's armour, which is what the
+            // vanilla rosters do too.
+            return ["ad_thallax", "ig_ogryn", "ad_servitor", "ig_russ", "ig_chimera", "ig_basilisk"];
+        case eFACTION.ECCLESIARCHY:
+            return ["ec_sister", "ec_repentia", "ec_celestian", "ec_penitent", "ec_immolator", "ec_arco"];
+        case eFACTION.ELDAR:
+            return ["el_guardian", "el_banshee", "el_avenger", "el_wraithlord", "el_falcon", "el_warlock"];
+        case eFACTION.TAU:
+            return ["tau_firewarrior", "tau_kroot", "tau_crisis", "tau_broadside", "tau_devilfish", "tau_hammerhead"];
+        case eFACTION.TYRANIDS:
+            return ["ty_termagaunt", "ty_hormagaunt", "ty_warrior", "ty_carnifex", "ty_lictor", "ty_zoanthrope"];
+        case eFACTION.CHAOS:
+            // Index 10 is the one that spawns the CSM warband in obj_ncombat
+            // Alarm_0, and index 11 the cult. That pairing is inverted against
+            // the enum names and is deliberate; do not "correct" it.
+            return ["ch_marine", "ch_berzerker", "ch_terminator", "ch_hellbrute", "ch_rhino", "ch_sorcerer"];
+        case eFACTION.HERETICS:
+            return ["he_cultist", "he_mutant", "he_elite", "he_russ", "he_technical", "he_possessed"];
+        case eFACTION.GENESTEALER:
+            return ["gs_hybrid", "gs_stealer", "gs_aberrant", "gs_rockgrinder", "gs_truck", "gs_magus"];
+        case eFACTION.NECRONS:
+            return ["ne_warrior", "ne_flayed", "ne_lychguard", "ne_stalker", "ne_spyder", "ne_destroyer"];
+    }
+    return ["ork_shoota", "ork_slugga", "ork_nob", "ork_dread", "ork_wagon", "ork_weirdboy"];
 }
 
 /// @function grid_reinforce
