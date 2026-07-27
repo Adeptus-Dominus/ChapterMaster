@@ -56,6 +56,37 @@
 #macro GRIDC_FLASH_FRAMES 24
 #macro GRIDC_DRAG_MIN 8
 
+// Weapon reach by class. Infantry keep the range on their profile. Anything
+// with a hull and a gun doubles it, and artillery reaches across half the field,
+// which is the whole point of artillery.
+#macro GRIDC_TANK_RANGE_MULT 2
+#macro GRIDC_ARTY_RANGE_FRAC 0.5
+// A block counts as arrived when something in it can reach the enemy, but that
+// test has to ignore the long guns: an artillery piece would otherwise declare
+// contact from the deployment zone and break the whole formation on turn one.
+#macro GRIDC_CONTACT_MAX 8
+
+// Hit resolution. Reductions are rolled as visible events rather than applied
+// silently: EVENT_SHARE is how much of a reduction becomes a chance of the shot
+// being stopped outright, with the rest left as a multiplier. The survivor is
+// scaled back up, so the average damage is exactly what the plain multiplier
+// gave and only the variance changes.
+#macro GRIDC_HIT_BASE 0.92
+#macro GRIDC_EVENT_SHARE 0.6
+
+#macro GRIDHIT_NONE 0
+#macro GRIDHIT_MISS 1
+#macro GRIDHIT_DEFLECT 2
+#macro GRIDHIT_DODGE 3
+#macro GRIDHIT_GRAZE 4
+#macro GRIDHIT_WOUND 5
+
+#macro GRIDC_COL_GREY make_color_rgb(152, 156, 150)
+#macro GRIDC_COL_DODGE make_color_rgb(232, 208, 96)
+#macro GRIDC_COL_GRAZE make_color_rgb(255, 104, 92)
+#macro GRIDC_COL_WOUND make_color_rgb(186, 38, 34)
+#macro GRIDC_COL_KILL make_color_rgb(170, 255, 190)
+
 // Health a man is left on when the grid kills him. It has to be negative so the
 // vanilla checks read him as down, but well above the -3000 "incapacitated"
 // threshold in after_battle_part1, which un-kills anyone below it. Alarm_5's
@@ -261,6 +292,9 @@ function GridSquad(_side, _type, _name) constructor {
     roster_refs = [];
     zap_cd = 3;
     kills = 0;
+    // Worst thing that happened to this squad this tick, so the floating text
+    // shows the outcome that mattered rather than whichever landed last.
+    hit_kind = GRIDHIT_NONE;
     hit_kills = 0;
     hit_dmg = 0;
     hit_flash = 0;
@@ -434,6 +468,29 @@ function grid_setup_field(ctrl, _width) {
     }
 }
 
+/// @function grid_is_artillery
+/// @description Indirect fire pieces, which reach across the field rather than
+/// down a lane. Everything else with a hull is handled by the tank rule.
+function grid_is_artillery(_key) {
+    return ((_key == "whirlwind") || (_key == "ig_basilisk"));
+}
+
+/// @function grid_apply_range_class
+/// @description Sets a squad's reach from its class once the field size is
+/// known, since artillery range is a fraction of the map rather than a fixed
+/// number of tiles. Called on every squad as it is built.
+function grid_apply_range_class(ctrl, _sq) {
+    var _arty = max(1, round(ctrl.cols * GRIDC_ARTY_RANGE_FRAC));
+    if (grid_is_artillery(_sq.type)) {
+        _sq.rng = max(_sq.rng, _arty);
+        return;
+    }
+    // Transports carry men, not guns, so they keep the reach on their profile.
+    if (_sq.is_vehicle && (_sq.glyph != "transport")) {
+        _sq.rng = min(round(_sq.rng * GRIDC_TANK_RANGE_MULT), max(2, _arty - 2));
+    }
+}
+
 /// @function grid_gen_cover
 function grid_gen_cover(ctrl) {
     for (var _c = 0; _c < ctrl.cols; _c++) {
@@ -483,6 +540,7 @@ function grid_gen_player_pool(ctrl) {
         for (var _k = 0; _k < _n; _k++) {
             var _d = grid_unit_def(_key);
             var _sq = new GridSquad(0, _key, $"{_d.disp} {_k + 1}");
+            grid_apply_range_class(ctrl, _sq);
             array_push(ctrl.squads, _sq);
         }
     }
@@ -492,6 +550,7 @@ function grid_gen_player_pool(ctrl) {
 function grid_spawn_enemy_squad(ctrl, _key, _idx, _pc = -1, _pr = -1) {
     var _d = grid_unit_def(_key);
     var _sq = new GridSquad(1, _key, $"{_d.disp} {_idx}");
+    grid_apply_range_class(ctrl, _sq);
     var _placed = false;
     // A shaped force asks for a particular tile. If it is taken the squad falls
     // in beside it rather than being flung to the far side of the field, so a
@@ -1032,6 +1091,65 @@ function grid_hq_aura(ctrl, _s) {
     return 1;
 }
 
+/// @function grid_roll_event
+/// @description Turns a damage multiplier into something the player can watch.
+/// Part of the reduction becomes a chance of the shot being stopped outright,
+/// the rest stays a multiplier, and whatever survives is scaled back up by the
+/// same amount. Average damage is therefore identical to the plain multiplier it
+/// replaces: only the variance changes, and the reduction becomes readable.
+/// Returns [stopped, residual multiplier].
+function grid_roll_event(_mult, _share) {
+    if (_mult >= 1) {
+        return [false, _mult];
+    }
+    var _stop = clamp((1 - _mult) * _share, 0, 0.85);
+    if (_stop <= 0) {
+        return [false, _mult];
+    }
+    if (random(1) < _stop) {
+        return [true, 0];
+    }
+    return [false, _mult / (1 - _stop)];
+}
+
+/// @function grid_mark_outcome
+/// @description Records what happened to a squad this tick. The worst outcome
+/// wins, so a squad shot at five times shows the wound rather than the miss, and
+/// the same event is tallied for the combat log so the field and the log never
+/// disagree about what just happened.
+function grid_mark_outcome(ctrl, _di, _kind) {
+    var _d = ctrl.squads[_di];
+    if (_kind > _d.hit_kind) {
+        _d.hit_kind = _kind;
+    }
+    var _tally = (_d.side == 0) ? ctrl.tally_p : ctrl.tally_e;
+    _tally[_kind] += 1;
+}
+
+/// @function grid_hit_label
+/// @description The floating word and its colour. Grey for a shot that never
+/// landed or never got through, yellow for one the cover ate, and red for our
+/// own blood: bright for a graze, dark for a real wound. The enemy's losses read
+/// green, keeping the log's rule that green is good news for the Chapter.
+function grid_hit_label(_s) {
+    var _mine = (_s.side == 0);
+    switch (_s.hit_kind) {
+        case GRIDHIT_MISS:
+            return ["MISS", GRIDC_COL_GREY];
+        case GRIDHIT_DEFLECT:
+            return ["DEFLECTED", GRIDC_COL_GREY];
+        case GRIDHIT_DODGE:
+            return ["DODGED", GRIDC_COL_DODGE];
+        case GRIDHIT_GRAZE:
+            var _chip = _s.is_vehicle ? $" -{round(_s.hit_dmg)}" : "";
+            return [$"GRAZED{_chip}", _mine ? GRIDC_COL_GRAZE : GRIDC_COL_FEED];
+        case GRIDHIT_WOUND:
+            var _n = _s.is_vehicle ? round(_s.hit_dmg) : _s.hit_kills;
+            return [$"WOUNDED -{_n}", _mine ? GRIDC_COL_WOUND : GRIDC_COL_KILL];
+    }
+    return ["", GRIDC_COL_GREY];
+}
+
 /// @function grid_apply_damage
 function grid_apply_damage(ctrl, _di, _dmg, _ai) {
     var _d = ctrl.squads[_di];
@@ -1047,6 +1165,7 @@ function grid_apply_damage(ctrl, _di, _dmg, _ai) {
     }
     _d.men = _after;
     var _killed = _before - _after;
+    grid_mark_outcome(ctrl, _di, (_killed > 0) ? GRIDHIT_WOUND : GRIDHIT_GRAZE);
     if (_killed > 0) {
         _d.hit_kills += _killed;
         if (_ai >= 0) {
@@ -1090,6 +1209,11 @@ function grid_apply_damage(ctrl, _di, _dmg, _ai) {
 }
 
 /// @function grid_attack
+/// @description One squad's volley or charge, resolved as a sequence of things
+/// that can stop it: the shot can miss, the cover can eat it, a friendly hull
+/// can take it, or the target's own armour can turn it. Each is rolled through
+/// grid_roll_event, so the expected damage is unchanged from the old silent
+/// multipliers and every reduction now announces itself on the field.
 function grid_attack(ctrl, _ai, _di, _melee) {
     var _a = ctrl.squads[_ai];
     var _d = ctrl.squads[_di];
@@ -1103,27 +1227,64 @@ function grid_attack(ctrl, _ai, _di, _melee) {
         _raw *= 0.9;
     }
     _raw *= grid_hq_aura(ctrl, _a);
-    _raw *= 100 / (100 + _d.armour * 2);
+    // The base spread is variance, not a nerf. Every other roll below replaces a
+    // multiplier that already existed, but the flat chance of a shot simply
+    // going wide is new, so the volley is scaled up by exactly that much first.
+    // The shots that land carry the damage the misses would have done, and the
+    // average output is what it was before any of this was visible.
+    _raw /= GRIDC_HIT_BASE;
+    var _ev;
+
+    // To hit. Distance is what makes a shot go wide, so the old falloff feeds
+    // the same roll rather than quietly shaving the damage.
+    var _acc = GRIDC_HIT_BASE;
     if (!_melee) {
-        // Damage falls off toward the edge of a weapon's envelope rather than
-        // hitting equally hard at every range inside it.
         var _rd = grid_dist(_a.col, _a.row, _d.col, _d.row);
         var _reach = max(1, _a.rng);
-        _raw *= max(GRIDC_FALLOFF_MIN, 1 - 0.45 * (max(0, _rd - 1) / _reach));
+        _acc *= max(GRIDC_FALLOFF_MIN, 1 - 0.45 * (max(0, _rd - 1) / _reach));
+    }
+    _ev = grid_roll_event(_acc, GRIDC_EVENT_SHARE);
+    if (_ev[0]) {
+        grid_mark_outcome(ctrl, _di, GRIDHIT_MISS);
+        return 0;
+    }
+    _raw *= _ev[1];
+
+    if (!_melee) {
         if (grid_in_bounds(ctrl, _d.col, _d.row)) {
             var _cv = ctrl.cov[_d.col][_d.row];
             if (_cv == 1) {
-                _raw *= GRIDC_COVER_GOOD;
+                _ev = grid_roll_event(GRIDC_COVER_GOOD, GRIDC_EVENT_SHARE);
+                if (_ev[0]) {
+                    grid_mark_outcome(ctrl, _di, GRIDHIT_DODGE);
+                    return 0;
+                }
+                _raw *= _ev[1];
             } else if (_cv == -1) {
+                // Open ground has nothing to roll: it simply hurts more.
                 _raw *= GRIDC_COVER_BAD;
             }
         }
         // Armour as terrain: infantry sheltering against a friendly hull get a
         // save, so parking a Rhino in front of a squad is a real tactic.
         if (!_d.is_vehicle && grid_hull_cover(ctrl, _di, _ai)) {
-            _raw *= GRIDC_COVER_HULL;
+            _ev = grid_roll_event(GRIDC_COVER_HULL, GRIDC_EVENT_SHARE);
+            if (_ev[0]) {
+                grid_mark_outcome(ctrl, _di, GRIDHIT_DEFLECT);
+                return 0;
+            }
+            _raw *= _ev[1];
         }
     }
+
+    // The target's own plate, the reduction that reads as a deflection.
+    _ev = grid_roll_event(100 / (100 + _d.armour * 2), GRIDC_EVENT_SHARE);
+    if (_ev[0]) {
+        grid_mark_outcome(ctrl, _di, GRIDHIT_DEFLECT);
+        return 0;
+    }
+    _raw *= _ev[1];
+
     return grid_apply_damage(ctrl, _di, _raw, _ai);
 }
 
@@ -1184,7 +1345,7 @@ function grid_form_contact(ctrl, _f) {
         if (!_s.alive || !_s.deployed) {
             continue;
         }
-        var _foe = grid_nearest_foe(ctrl, _f.members[_i], max(1, _s.rng));
+        var _foe = grid_nearest_foe(ctrl, _f.members[_i], min(max(1, _s.rng), GRIDC_CONTACT_MAX));
         if (_foe >= 0) {
             return true;
         }
@@ -1658,23 +1819,33 @@ function grid_battle_tick(ctrl) {
 
     for (var _fl = 0; _fl < array_length(ctrl.squads); _fl++) {
         var _fq = ctrl.squads[_fl];
-        if ((_fq.hit_kills <= 0) && (_fq.hit_dmg <= 0)) {
+        if (_fq.hit_kind == GRIDHIT_NONE) {
             continue;
         }
         if (grid_in_bounds(ctrl, _fq.col, _fq.row)) {
-            var _fcol = (_fq.side == 1) ? GRIDC_COL_FEED : GRIDC_COL_ENEMY;
-            if (_fq.is_vehicle) {
-                grid_floater(ctrl, _fq.col, _fq.row, $"-{round(_fq.hit_dmg)}", _fcol);
-            } else if (_fq.hit_kills > 0) {
-                grid_floater(ctrl, _fq.col, _fq.row, $"-{_fq.hit_kills}", _fcol);
+            var _lab = grid_hit_label(_fq);
+            if (_lab[0] != "") {
+                grid_floater(ctrl, _fq.col, _fq.row, _lab[0], _lab[1]);
             }
         }
+        _fq.hit_kind = GRIDHIT_NONE;
         _fq.hit_kills = 0;
         _fq.hit_dmg = 0;
     }
 
     if ((ctrl.ticks mod 5) == 0) {
         grid_log(ctrl, $"Exchange: {ctrl.agg_ekills} of the enemy slain, {ctrl.agg_pkills} of ours lost.", GRIDC_COL_FEED);
+        // The same events the floating text showed, gathered up, so the log and
+        // the field are always telling one story.
+        var _tmiss = ctrl.tally_p[GRIDHIT_MISS] + ctrl.tally_e[GRIDHIT_MISS];
+        var _tdefl = ctrl.tally_p[GRIDHIT_DEFLECT] + ctrl.tally_e[GRIDHIT_DEFLECT];
+        var _tdodg = ctrl.tally_p[GRIDHIT_DODGE] + ctrl.tally_e[GRIDHIT_DODGE];
+        var _tgraz = ctrl.tally_p[GRIDHIT_GRAZE] + ctrl.tally_e[GRIDHIT_GRAZE];
+        if ((_tmiss + _tdefl + _tdodg + _tgraz) > 0) {
+            grid_log(ctrl, $"{_tmiss} shots went wide, {_tdefl} turned by armour, {_tdodg} lost in cover, {_tgraz} drew blood without a kill.", GRIDC_COL_GREY);
+        }
+        ctrl.tally_p = array_create(GRIDHIT_WOUND + 1, 0);
+        ctrl.tally_e = array_create(GRIDHIT_WOUND + 1, 0);
     }
 
     // Feed the line before checking for a wipe, so a chapter with reserves left
@@ -2212,6 +2383,7 @@ function grid_import_force(ctrl, _force) {
         var _squads = max(1, ceil(array_length(_list) / _per));
         for (var _s = 0; _s < _squads; _s++) {
             var _sq = new GridSquad(0, _key, $"{_def.disp} {_s + 1}");
+            grid_apply_range_class(ctrl, _sq);
             var _refs = [];
             for (var _m = _s * _per; (_m < (_s + 1) * _per) && (_m < array_length(_list)); _m++) {
                 array_push(_refs, _list[_m]);

@@ -65,6 +65,9 @@ floaters = [];
 
 agg_ekills = 0;
 agg_pkills = 0;
+// Outcome tallies behind the periodic exchange line, indexed by GRIDHIT_*.
+tally_p = array_create(GRIDHIT_WOUND + 1, 0);
+tally_e = array_create(GRIDHIT_WOUND + 1, 0);
 total_ekills = 0;
 total_pkills = 0;
 wiped_e = 0;
