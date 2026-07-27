@@ -66,7 +66,20 @@
 // levels now sit at 5-6 permanently on big worlds, which inflated tactical battle
 // spawns far past the old "single engagement" scale (~1000 men). Clamp the level
 // used for battle sizing; 7 (Enormicus) and raw garrison counts are untouched.
-#macro ENEMY_BATTLE_THREAT_CAP 4
+// Measured spawn weight per tier (total bodies declared in the spawn tables):
+//   tier:      1     2     3      4      5      6
+//   Necrons    11    54    238    423    957    1303
+//   Eldar      55    102   296    948    2188   4368
+//   Tau        41    178   465    1559   4012   5988
+//   Chaos      91    269   1207   2241   5118   8026
+//   Orks       102   347   1090   3748   7616   8070
+//   Heretics   186   554   1447   4950   9882   14641
+//   Tyranids   100   460   966    7093   15034  42683
+// Tier 4 was the ceiling for every fight, which read as thin against a world holding
+// millions. Tier 5 roughly doubles the engagement across every race without approaching
+// the strategic pool, and the capital lifts to 6 (see below), where the Tyranid curve
+// finally shows a hive fleet's true weight.
+#macro ENEMY_BATTLE_THREAT_CAP 5
 // The CAPITAL is the one fight that may field the world's full weight: an outlying sector
 // meets a bounded slice, the seat of power meets everything the tier ladder allows. This
 // is what makes a decapitation strike the hard battle without making outlying grinding

@@ -143,9 +143,17 @@ try {
     // slice. battle_region 0 is the capital and -1 is a single-region world (also a full
     // fight), so both lift to the capital cap.
     var _threat_cap = (battle_region <= 0) ? ENEMY_BATTLE_THREAT_CAP_CAPITAL : ENEMY_BATTLE_THREAT_CAP;
+    var _threat_raw = threat;
     if ((threat >= 1) && (threat <= 6) && (threat > _threat_cap)) {
         threat = _threat_cap;
     }
+    // Regression guard for the rule that matters most in this system: enemy size is a
+    // function of the WORLD (its faction strength tier and which region is attacked) and
+    // never of what the chapter brings. Scaling the defender to the attacker is the Final
+    // Liberation failure mode: it punishes committing force and collapses play into
+    // min-maxing a tiny stack. Logging the whole decision means any future change that
+    // sneaks a player-force term into the spawn shows up in the very next tester log.
+    LOGGER.info($"ENEMY SPAWN: faction {enemy}, threat {_threat_raw} -> {threat} (cap {_threat_cap}, battle_region {battle_region}, capital={(battle_region <= 0)}); sizing inputs are world tier and region only");
 
     var _num = xxx / 10;
     for (var j = 1; j <= 10; j++) {
