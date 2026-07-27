@@ -57,8 +57,7 @@ for (var _hf = 0; _hf < array_length(squads); _hf++) {
 
 if (phase == GRIDPH_END) {
     if (_lc && point_in_rectangle(_mgx, _mgy, 660, 560, 940, 616)) {
-        instance_activate_all();
-        instance_destroy();
+        grid_exit(id);
     }
     exit;
 }
@@ -212,8 +211,7 @@ if (_lc) {
             }
         } else if (_bid == "exit") {
             if (exit_arm > 0) {
-                instance_activate_all();
-                instance_destroy();
+                grid_exit(id);
                 exit;
             }
             exit_arm = 90;

@@ -44,6 +44,8 @@
 #macro GRIDC_SGT_HIT_CHANCE 0.12
 #macro GRIDC_COVER_GOOD 0.70
 #macro GRIDC_COVER_BAD 1.25
+#macro GRIDC_COVER_HULL 0.62
+#macro GRIDC_FALLOFF_MIN 0.55
 #macro GRIDC_HQ_AURA 1.10
 #macro GRIDC_HQ_RANGE 3
 #macro GRIDC_JUMP_RANGE 8
@@ -168,6 +170,13 @@ function GridSquad(_side, _type, _name) constructor {
     formation = -1;
     picked = false;
     mv_acc = 0;
+    // Position within the formation block, so a move order shifts the whole
+    // shape instead of collapsing every squad onto one tile.
+    off_c = 0;
+    off_r = 0;
+    // Real campaign units making up this squad, so losses map back to the men
+    // who actually died rather than to an anonymous count.
+    roster_refs = [];
     zap_cd = 3;
     kills = 0;
     hit_kills = 0;
@@ -651,6 +660,8 @@ function grid_place_formation(ctrl, _ac, _ar) {
             _s.deployed = true;
             _s.picked = false;
             _s.formation = _fi;
+            _s.off_c = _dx;
+            _s.off_r = _dy;
             ctrl.occ[_s.col][_s.row] = _si;
             array_push(_f.members, _si);
             if (_s.can_tele && !grid_in_deploy_zone(ctrl, _s.col, _s.row)) {
@@ -825,15 +836,61 @@ function grid_attack(ctrl, _ai, _di, _melee) {
     }
     _raw *= grid_hq_aura(ctrl, _a);
     _raw *= 100 / (100 + _d.armour * 2);
-    if (!_melee && grid_in_bounds(ctrl, _d.col, _d.row)) {
-        var _cv = ctrl.cov[_d.col][_d.row];
-        if (_cv == 1) {
-            _raw *= GRIDC_COVER_GOOD;
-        } else if (_cv == -1) {
-            _raw *= GRIDC_COVER_BAD;
+    if (!_melee) {
+        // Damage falls off toward the edge of a weapon's envelope rather than
+        // hitting equally hard at every range inside it.
+        var _rd = grid_dist(_a.col, _a.row, _d.col, _d.row);
+        var _reach = max(1, _a.rng);
+        _raw *= max(GRIDC_FALLOFF_MIN, 1 - 0.45 * (max(0, _rd - 1) / _reach));
+        if (grid_in_bounds(ctrl, _d.col, _d.row)) {
+            var _cv = ctrl.cov[_d.col][_d.row];
+            if (_cv == 1) {
+                _raw *= GRIDC_COVER_GOOD;
+            } else if (_cv == -1) {
+                _raw *= GRIDC_COVER_BAD;
+            }
+        }
+        // Armour as terrain: infantry sheltering against a friendly hull get a
+        // save, so parking a Rhino in front of a squad is a real tactic.
+        if (!_d.is_vehicle && grid_hull_cover(ctrl, _di, _ai)) {
+            _raw *= GRIDC_COVER_HULL;
         }
     }
     return grid_apply_damage(ctrl, _di, _raw, _ai);
+}
+
+/// @function grid_hull_cover
+/// @description True when a friendly vehicle sits between the target and the
+/// shooter, on the tile the fire has to cross. No line piercing is involved:
+/// the hull simply shields the men behind it.
+function grid_hull_cover(ctrl, _di, _ai) {
+    var _d = ctrl.squads[_di];
+    var _a = ctrl.squads[_ai];
+    var _dc = sign(_a.col - _d.col);
+    var _dr = sign(_a.row - _d.row);
+    if ((_dc == 0) && (_dr == 0)) {
+        return false;
+    }
+    var _c = _d.col + _dc;
+    var _r = _d.row + _dr;
+    if (!grid_in_bounds(ctrl, _c, _r)) {
+        return false;
+    }
+    var _oi = ctrl.occ[_c][_r];
+    if (_oi < 0) {
+        return false;
+    }
+    var _o = ctrl.squads[_oi];
+    return (_o.alive && _o.is_vehicle && (_o.side == _d.side));
+}
+
+/// @function grid_slot_target
+/// @description Where a squad personally belongs when its formation is ordered
+/// somewhere: the destination plus its own offset in the block.
+function grid_slot_target(ctrl, _s, _f) {
+    var _c = clamp(_f.dest_col + _s.off_c, 0, ctrl.cols - 1);
+    var _r = clamp(_f.dest_row + _s.off_r, 0, ctrl.rows - 1);
+    return [_c, _r];
 }
 
 /// @function grid_nearest_foe
@@ -1000,9 +1057,33 @@ function grid_act_player(ctrl, _si) {
     var _steps = grid_move_budget(_s);
 
     if (_ord == GRIDORD_MOVE) {
+        // Each squad walks to its own slot in the block, so the formation keeps
+        // its shape on the move instead of funnelling onto a single tile.
+        var _slot = grid_slot_target(ctrl, _s, _f);
         for (var _m = 0; _m < _steps; _m++) {
-            if (!grid_step_toward(ctrl, _si, _f.dest_col, _f.dest_row)) {
+            if ((_s.col == _slot[0]) && (_s.row == _slot[1])) {
                 break;
+            }
+            if (!grid_step_toward(ctrl, _si, _slot[0], _slot[1])) {
+                break;
+            }
+        }
+        // Once the whole block has arrived it reverts to fighting.
+        if (grid_dist(_s.col, _s.row, _slot[0], _slot[1]) <= 1) {
+            var _far = false;
+            for (var _q = 0; _q < array_length(_f.members); _q++) {
+                var _qs = ctrl.squads[_f.members[_q]];
+                if (!_qs.alive) {
+                    continue;
+                }
+                var _qsl = grid_slot_target(ctrl, _qs, _f);
+                if (grid_dist(_qs.col, _qs.row, _qsl[0], _qsl[1]) > 1) {
+                    _far = true;
+                    break;
+                }
+            }
+            if (!_far) {
+                _f.order = GRIDORD_HOLD;
             }
         }
         return;
@@ -1586,15 +1667,31 @@ function grid_collect_force(_roster) {
     for (var _i = 0; _i < array_length(_units); _i++) {
         var _u = _units[_i];
         var _role = "";
+        var _uid = "";
+        var _co = -1;
+        var _slot = -1;
+        var _veh = false;
         if (is_struct(_u)) {
             _role = _u.role();
+            _uid = variable_struct_exists(_u, "uid") ? _u.uid : "";
+            _co = _u.company;
+            _slot = _u.marine_number;
         } else if (is_array(_u) && (array_length(_u) >= 2)) {
             _role = obj_ini.veh_role[_u[0]][_u[1]];
+            _co = _u[0];
+            _slot = _u[1];
+            _veh = true;
         }
         if (_role == "") {
             continue;
         }
-        array_push(_out, grid_role_to_type(_role));
+        array_push(_out, {
+            gtype: grid_role_to_type(_role),
+            uid: _uid,
+            co: _co,
+            slot: _slot,
+            veh: _veh,
+        });
     }
     return _out;
 }
@@ -1604,26 +1701,100 @@ function grid_collect_force(_roster) {
 /// generated test roster. Models are grouped into squads of the type's own size,
 /// so a hundred Tacticals become ten squads rather than a hundred single men.
 function grid_import_force(ctrl, _force) {
-    var _counts = {};
+    var _buckets = {};
     for (var _i = 0; _i < array_length(_force); _i++) {
-        var _k = _force[_i];
-        if (variable_struct_exists(_counts, _k)) {
-            _counts[$ _k] += 1;
-        } else {
-            _counts[$ _k] = 1;
+        var _ref = _force[_i];
+        var _k = _ref.gtype;
+        if (!variable_struct_exists(_buckets, _k)) {
+            _buckets[$ _k] = [];
         }
+        array_push(_buckets[$ _k], _ref);
     }
-    var _keys = variable_struct_get_names(_counts);
+    var _keys = variable_struct_get_names(_buckets);
     for (var _n = 0; _n < array_length(_keys); _n++) {
         var _key = _keys[_n];
         var _def = grid_unit_def(_key);
-        var _models = _counts[$ _key];
-        var _squads = _def.vehicle ? _models : max(1, ceil(_models / _def.men));
+        var _list = _buckets[$ _key];
+        var _per = _def.vehicle ? 1 : max(1, _def.men);
+        var _squads = max(1, ceil(array_length(_list) / _per));
         for (var _s = 0; _s < _squads; _s++) {
             var _sq = new GridSquad(0, _key, $"{_def.disp} {_s + 1}");
+            var _refs = [];
+            for (var _m = _s * _per; (_m < (_s + 1) * _per) && (_m < array_length(_list)); _m++) {
+                array_push(_refs, _list[_m]);
+            }
+            if (array_length(_refs) <= 0) {
+                continue;
+            }
+            _sq.roster_refs = _refs;
+            // A squad is only as strong as the men actually in it: a half filled
+            // final squad fields the models it has, not a full ten.
+            if (!_def.vehicle) {
+                _sq.men = array_length(_refs);
+                _sq.men0 = _sq.men;
+                _sq.hp_pool = _sq.men * _sq.hp_man;
+                _sq.hp_max = _sq.hp_pool;
+            }
             array_push(ctrl.squads, _sq);
         }
     }
+}
+
+/// @function grid_commit_losses
+/// @description Writes the battle back into the campaign. Each squad knows the
+/// real units standing in it, so the men it lost are the men who die, resolved
+/// by uid at the moment of death because killing a unit reshuffles the slots
+/// behind it. Runs once, guarded by ctrl.losses_written.
+function grid_commit_losses(ctrl) {
+    if (ctrl.losses_written || !ctrl.pending_live) {
+        return 0;
+    }
+    ctrl.losses_written = true;
+    var _dead = 0;
+    var _veh_dead = 0;
+    for (var _i = 0; _i < array_length(ctrl.squads); _i++) {
+        var _s = ctrl.squads[_i];
+        if ((_s.side != 0) || (array_length(_s.roster_refs) <= 0)) {
+            continue;
+        }
+        var _lost = _s.is_vehicle ? (_s.alive ? 0 : 1) : max(0, _s.men0 - _s.men);
+        if (!_s.alive && !_s.is_vehicle) {
+            _lost = array_length(_s.roster_refs);
+        }
+        for (var _k = 0; (_k < _lost) && (_k < array_length(_s.roster_refs)); _k++) {
+            var _ref = _s.roster_refs[_k];
+            if (_ref.veh) {
+                // Vehicle wrecks are counted but not yet removed: the vehicle
+                // arrays have their own hardcoded whitelists and want a pass of
+                // their own rather than a guess here.
+                _veh_dead += 1;
+                continue;
+            }
+            var _co = _ref.co;
+            var _slot = _ref.slot;
+            if (_ref.uid != "") {
+                var _live = fetch_unit_uid(_ref.uid);
+                if (is_struct(_live)) {
+                    _co = _live.company;
+                    _slot = _live.marine_number;
+                } else {
+                    continue;
+                }
+            }
+            if ((_co < 0) || (_slot < 0)) {
+                continue;
+            }
+            with (obj_controller) {
+                scr_kill_unit(_co, _slot);
+            }
+            _dead += 1;
+        }
+    }
+    grid_log(ctrl, $"Casualties recorded: {_dead} battle brothers lost.", GRIDC_COL_ENEMY);
+    if (_veh_dead > 0) {
+        grid_log(ctrl, $"{_veh_dead} vehicles wrecked (not yet struck from the motor pool).", GRIDC_COL_WARN);
+    }
+    return _dead;
 }
 
 /// @function grid_enemy_set
@@ -1679,6 +1850,8 @@ function grid_reinforce(ctrl) {
         _s.row = _spot[1];
         _s.deployed = true;
         _s.formation = _fi;
+        _s.off_c = 0;
+        _s.off_r = _sent;
         ctrl.occ[_s.col][_s.row] = _i;
         array_push(ctrl.formations[_fi].members, _i);
         _free -= 1;
@@ -1689,4 +1862,23 @@ function grid_reinforce(ctrl) {
         grid_log(ctrl, $"Reserves committed: {_fname} advances with {_sent} squads.", GRIDC_COL_ORDER);
     }
     return _sent;
+}
+
+/// @function grid_exit
+/// @description Single exit path. In live mode obj_ncombat is still holding the
+/// battle context with the camera it took from obj_controller, so the camera is
+/// handed back before the object is released.
+function grid_exit(ctrl) {
+    grid_commit_losses(ctrl);
+    instance_activate_all();
+    if (ctrl.pending_live && instance_exists(obj_ncombat)) {
+        obj_controller.x = obj_ncombat.view_x;
+        obj_controller.y = obj_ncombat.view_y;
+        with (obj_ncombat) {
+            instance_destroy();
+        }
+    }
+    with (ctrl) {
+        instance_destroy();
+    }
 }

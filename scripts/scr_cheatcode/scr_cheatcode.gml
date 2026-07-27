@@ -217,6 +217,21 @@ function scr_cheatcode(argument0) {
                     }
                     scr_popup("Guard XP", $"Granted {_xp_amt} experience to {array_length(_grd_all)} Guardsmen.", "");
                     break;
+                case "gridcombat":
+                    // Route real planetary battles through the grid system.
+                    // "gridcombat on" replaces vanilla combat, "gridcombat off"
+                    // restores it. Default is off so a bad build is one word away
+                    // from the original battle screen.
+                    if (!variable_global_exists("grid_combat_enabled")) {
+                        global.grid_combat_enabled = false;
+                    }
+                    if (array_length(cheat_arguments) > 0) {
+                        global.grid_combat_enabled = (string_lower(string(cheat_arguments[0])) == "on");
+                    } else {
+                        global.grid_combat_enabled = !global.grid_combat_enabled;
+                    }
+                    scr_popup("Grid Combat", global.grid_combat_enabled ? "Planetary battles now use the grid combat system." : "Planetary battles restored to the vanilla system.", "");
+                    break;
                 case "gridbattle":
                 case "gridtest":
                     // Launch the standalone grid combat prototype (Uxie redesign test bed).

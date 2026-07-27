@@ -74,6 +74,7 @@ placing_list = [];
 placing_w = 1;
 
 selected = [];
+losses_written = false;
 drag_active = false;
 drag_x0 = 0;
 drag_y0 = 0;
