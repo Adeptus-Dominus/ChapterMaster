@@ -9,12 +9,17 @@ function scr_ui_tooltip() {
         exit;
     }
 
-    var xx = camera_get_view_x(view_camera[0]);
-    var yy = camera_get_view_y(view_camera[0]);
+    // The resource bar and banner draw on the GUI layer (Draw_64, fixed 1600x900 design
+    // space), but these hover rects were anchored to the CAMERA VIEW: identical at the
+    // default framing, drifting apart at any wheel zoom. Zoomed out, the banner's Turn
+    // rect slid under the top-left bar and the gene-seed rect slid over the Forge Points
+    // box (the wrong-tooltip report), and the true rects shrank off their boxes ("hard
+    // to mouse over"). Test in GUI space (scr_hit force_gui) so the rects sit on the
+    // pixels the bar actually occupies at every zoom.
     var tooltip = "";
 
     // Requisition income tooltip
-    if (scr_hit(xx + 5, yy + 10, xx + 137, yy + 38)) {
+    if (scr_hit(5, 10, 137, 38, true)) {
         tooltip = "Requisition Points";
         tooltip += string("#Base Income: {0}{1}", income_base > 0 ? "+" : "", income_base);
         if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
@@ -50,7 +55,7 @@ function scr_ui_tooltip() {
     }
 
     // Current Loyalty tooltip
-    if (scr_hit(xx + 247, yy + 10, xx + 328, yy + 38)) {
+    if (scr_hit(247, 10, 328, 38, true)) {
         for (var i = 1; i <= 20; i++) {
             if (loyal_num[i] > 1) {
                 tooltip += string(loyal[i]) + ": -" + string(loyal_num[i]) + "#";
@@ -65,29 +70,29 @@ function scr_ui_tooltip() {
     }
 
     // Stored Gene-Seed tooltip
-    if (scr_hit(xx + 373, yy + 10, xx + 443, yy + 38)) {
+    if (scr_hit(373, 10, 443, 38, true)) {
         tooltip = "Gene-Seed#" + obj_controller.apothecary_string;
         tooltip_draw(tooltip);
     }
     // Current Astartes tooltip
-    if (scr_hit(xx + 478, yy + 3, xx + 552, yy + 38)) {
+    if (scr_hit(478, 3, 552, 38, true)) {
         tooltip = "Astartes (Normal/Command)#" + string(obj_controller.marines);
         tooltip_draw(tooltip);
     }
     // Turn tooltip
     if ((menu == eMENU.DEFAULT) && (diplomacy <= 0)) {
-        if (scr_hit(xx + 1435, yy + 40, xx + 1580, yy + 267)) {
+        if (scr_hit(1435, 40, 1580, 267, true)) {
             tooltip = $"Turn :{obj_controller.turn}";
             tooltip_draw(tooltip);
         }
     }
     // Forge Points income tooltip
-    if (scr_hit(xx + 153, yy + 10, xx + 241, yy + 38)) {
+    if (scr_hit(153, 10, 241, 38, true)) {
         tooltip_draw(obj_controller.forge_string);
     }
 
     // Penitence/Blood Debt tooltip
-    if (scr_hit(xx + 923, yy + 10, xx + 1060, yy + 38) && (penitent == 1)) {
+    if (scr_hit(923, 10, 1060, 38, true) && (penitent == 1)) {
         var bd_decay_rate = min(0, (((penitent_turn + 1) * (penitent_turn + 1)) - 512) * -1);
 
         if (obj_controller.blood_debt == 1) {
