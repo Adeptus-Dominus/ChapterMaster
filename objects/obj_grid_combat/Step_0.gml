@@ -29,6 +29,22 @@ if ((_mx >= GRIDC_BF_X) && (_my >= GRIDC_BF_Y) && (_mx < GRIDC_BF_X + GRIDC_COLS
 var _lc = mouse_check_button_pressed(mb_left);
 var _rc = mouse_check_button_pressed(mb_right);
 
+// Floating combat text drifts and fades every frame, independent of sim
+// speed, pause, popups, and the end screen; hit flashes decay alongside.
+for (var _fu = array_length(floaters) - 1; _fu >= 0; _fu--) {
+    var _fe = floaters[_fu];
+    _fe.fy -= GRIDC_FLOAT_RISE;
+    _fe.flife -= 1;
+    if (_fe.flife <= 0) {
+        array_delete(floaters, _fu, 1);
+    }
+}
+for (var _hf = 0; _hf < array_length(squads); _hf++) {
+    if (squads[_hf].hit_flash > 0) {
+        squads[_hf].hit_flash -= 1;
+    }
+}
+
 // End screen: only the Return button is live.
 if (phase == GRIDPH_END) {
     if (_lc && point_in_rectangle(_mx, _my, 660, 560, 940, 616)) {
@@ -174,6 +190,19 @@ if (_lc) {
             if (selected_form >= 0) {
                 formations[selected_form].order = GRIDORD_HOLD;
                 grid_log(id, $"{formations[selected_form].name}: hold position!", GRIDC_COL_ORDER);
+            }
+        } else if (_bid == "stance") {
+            if (selected_form >= 0) {
+                var _fs = formations[selected_form];
+                _fs.stance = (_fs.stance + 1) mod 3;
+                var _sl = "melee at will";
+                if (_fs.stance == 1) {
+                    _sl = "seek melee";
+                }
+                if (_fs.stance == 2) {
+                    _sl = "avoid melee";
+                }
+                grid_log(id, $"{_fs.name}: {_sl}.", GRIDC_COL_ORDER);
             }
         }
         break;

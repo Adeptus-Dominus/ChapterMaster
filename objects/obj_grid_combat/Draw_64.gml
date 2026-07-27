@@ -189,6 +189,13 @@ for (var _si2 = 0; _si2 < array_length(squads); _si2++) {
         draw_text(_px2 + GRIDC_TILE - 5, _py2 + GRIDC_TILE - 16, string(_s2.men));
         draw_set_halign(fa_left);
     }
+    // red hit flash: immediate feedback on whoever is being struck
+    if (_s2.hit_flash > 0) {
+        draw_set_alpha(0.40 * _s2.hit_flash / GRIDC_FLASH_FRAMES);
+        draw_set_color(c_red);
+        draw_rectangle(_px2 + 2, _py2 + 2, _px2 + GRIDC_TILE - 2, _py2 + GRIDC_TILE - 2, false);
+        draw_set_alpha(1);
+    }
 }
 
 // Formation name tags above the topmost-left member (design point 10 naming)
@@ -226,6 +233,18 @@ for (var _ft3 = 0; _ft3 < array_length(formations); _ft3++) {
     draw_text(_tx3 + 4, _ty3 + 1, _f3.name);
 }
 
+// Floating combat text, Caves of Qud style: rises and fades above the units
+draw_set_font(fnt_small);
+draw_set_halign(fa_center);
+for (var _fd9 = 0; _fd9 < array_length(floaters); _fd9++) {
+    var _fe9 = floaters[_fd9];
+    draw_set_alpha(min(1, _fe9.flife / 30));
+    draw_set_color(_fe9.fcol);
+    draw_text(_fe9.fx, _fe9.fy, _fe9.ftxt);
+}
+draw_set_alpha(1);
+draw_set_halign(fa_left);
+
 // Placement ghost (design point 6): green cells legal, red cells blocked
 if (placing) {
     var _pn4 = array_length(placing_list);
@@ -261,7 +280,13 @@ draw_text(20, 18, "STRIKE FORCE");
 draw_set_font(fnt_small);
 draw_set_color(make_color_rgb(180, 190, 205));
 draw_text(20, 52, $"Points remaining: {points}");
-draw_text(20, 76, (phase == GRIDPH_DEPLOY) ? "Pick a type to form a group." : "Deployment locked.");
+if (phase == GRIDPH_DEPLOY) {
+    draw_text(20, 76, "Pick a type to form a group.");
+} else if (phase == GRIDPH_BATTLE) {
+    draw_text(20, 76, "Reinforcements ready to field.");
+} else {
+    draw_text(20, 76, "Deployment locked.");
+}
 
 // Bottom left: battle log (design point 9)
 draw_set_color(make_color_rgb(18, 21, 28));
@@ -332,6 +357,7 @@ if (selected_form >= 0) {
     draw_text(994, 782, "Click open ground: reposition.");
     draw_text(994, 804, "Right-click a foe: focus fire.");
     draw_text(994, 826, "H hold, A advance, Space pause.");
+    draw_text(994, 848, "Left bar fields reinforcements.");
 }
 
 // Buttons: rendered from the same rect list the Step event hit-tests

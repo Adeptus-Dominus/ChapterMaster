@@ -35,6 +35,7 @@ for (_c = 0; _c < GRIDC_COLS; _c++) {
 }
 
 feed = [];
+floaters = [];
 agg_ekills = 0;
 agg_pkills = 0;
 total_ekills = 0;

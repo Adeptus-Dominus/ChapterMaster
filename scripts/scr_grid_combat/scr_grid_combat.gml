@@ -26,6 +26,11 @@
 #macro GRIDC_WAVE_TICK 45
 #macro GRIDC_WAVES 1
 
+// Floating combat text and hit feedback
+#macro GRIDC_FLOAT_LIFE 80
+#macro GRIDC_FLOAT_RISE 0.4
+#macro GRIDC_FLASH_FRAMES 24
+
 // Phases and orders
 #macro GRIDPH_DEPLOY 0
 #macro GRIDPH_BATTLE 1
@@ -121,6 +126,10 @@ function GridSquad(_side, _type, _name) constructor {
     picked = false;
     zap_cd = 3;
     kills = 0;
+    // per tick damage feedback, flushed into floating text by grid_battle_tick
+    hit_kills = 0;
+    hit_dmg = 0;
+    hit_flash = 0;
 }
 
 /// @function GridFormation
@@ -134,6 +143,8 @@ function GridFormation(_side, _name, _colr) constructor {
     order_target = -1;
     dest_col = -1;
     dest_row = -1;
+    // melee stance: 0 auto (squad preference), 1 seek melee, 2 avoid melee
+    stance = 0;
     alive = true;
 }
 
@@ -168,6 +179,21 @@ function grid_log(ctrl, _txt, _col) {
     array_push(ctrl.feed, { t: _txt, c: _col });
     if (array_length(ctrl.feed) > 60) {
         array_delete(ctrl.feed, 0, 1);
+    }
+}
+
+/// @function grid_floater
+/// @description Floating combat text above a tile, Caves of Qud style.
+function grid_floater(ctrl, _c, _r, _txt, _col) {
+    array_push(ctrl.floaters, {
+        fx: GRIDC_BF_X + _c * GRIDC_TILE + GRIDC_TILE / 2 + irandom_range(-7, 7),
+        fy: GRIDC_BF_Y + _r * GRIDC_TILE - 2,
+        ftxt: _txt,
+        fcol: _col,
+        flife: GRIDC_FLOAT_LIFE,
+    });
+    if (array_length(ctrl.floaters) > 100) {
+        array_delete(ctrl.floaters, 0, 1);
     }
 }
 
@@ -571,6 +597,8 @@ function grid_hq_aura(ctrl, _ai) {
 function grid_apply_damage(ctrl, _di, _dmg, _ai) {
     var _d = ctrl.squads[_di];
     _d.hp_pool = max(0, _d.hp_pool - _dmg);
+    _d.hit_dmg += _dmg;
+    _d.hit_flash = GRIDC_FLASH_FRAMES;
     var _before = _d.men;
     var _after;
     if (_d.is_vehicle) {
@@ -581,6 +609,7 @@ function grid_apply_damage(ctrl, _di, _dmg, _ai) {
     _d.men = _after;
     var _killed = _before - _after;
     if (_killed > 0) {
+        _d.hit_kills += _killed;
         if (_ai >= 0) {
             ctrl.squads[_ai].kills += _killed;
         }
@@ -596,6 +625,7 @@ function grid_apply_damage(ctrl, _di, _dmg, _ai) {
             _d.sgt_hp -= 1;
             if (_d.sgt_hp == 0) {
                 grid_log(ctrl, $"{_d.name}: Sergeant down!", GRIDC_COL_WARN);
+                grid_floater(ctrl, _d.col, _d.row, "Sgt down!", GRIDC_COL_WARN);
             }
         }
     }
@@ -611,9 +641,11 @@ function grid_apply_damage(ctrl, _di, _dmg, _ai) {
         if (_d.side == 1) {
             ctrl.wiped_e += 1;
             grid_log(ctrl, $"{_d.name} destroyed!", GRIDC_COL_FEED);
+            grid_floater(ctrl, _d.col, _d.row, "DESTROYED", c_lime);
         } else {
             ctrl.wiped_p += 1;
             grid_log(ctrl, $"{_d.name} wiped out!", GRIDC_COL_ENEMY);
+            grid_floater(ctrl, _d.col, _d.row, "WIPED", GRIDC_COL_ENEMY);
         }
     }
     return _killed;
@@ -724,13 +756,56 @@ function grid_step_toward(ctrl, _si, _gc, _gr) {
     }
 }
 
+/// @function grid_step_away
+/// @description One tile back-step away from a threat; used by the avoid
+/// melee stance. Returns false when cornered.
+function grid_step_away(ctrl, _si, _fc, _fr) {
+    var _s = ctrl.squads[_si];
+    var _dc = sign(_s.col - _fc);
+    var _dr = sign(_s.row - _fr);
+    if ((_dc == 0) && (_dr == 0)) {
+        _dc = 1;
+    }
+    var _opts = [
+        [_dc, _dr],
+        [_dc, 0],
+        [0, _dr],
+    ];
+    var _cd = grid_dist(_s.col, _s.row, _fc, _fr);
+    for (var _k = 0; _k < array_length(_opts); _k++) {
+        var _nc = _s.col + _opts[_k][0];
+        var _nr = _s.row + _opts[_k][1];
+        if ((_opts[_k][0] == 0) && (_opts[_k][1] == 0)) {
+            continue;
+        }
+        if (!grid_in_bounds(_nc, _nr)) {
+            continue;
+        }
+        if (ctrl.occ[_nc][_nr] != -1) {
+            continue;
+        }
+        if (grid_dist(_nc, _nr, _fc, _fr) <= _cd) {
+            continue;
+        }
+        ctrl.occ[_s.col][_s.row] = -1;
+        _s.col = _nc;
+        _s.row = _nr;
+        ctrl.occ[_nc][_nr] = _si;
+        return true;
+    }
+    return false;
+}
+
 /// @function grid_act_player
 /// @description Default behaviour is advance and attack nearest (design point 6),
-/// overridden by the formation order.
+/// overridden by the formation order and its melee stance. Auto follows the
+/// squad's own preference (Assault types charge), seek closes to melee, avoid
+/// kites away from adjacent foes and fights at range.
 function grid_act_player(ctrl, _si) {
     var _s = ctrl.squads[_si];
     var _f = (_s.formation >= 0) ? ctrl.formations[_s.formation] : undefined;
     var _ord = (_f == undefined) ? GRIDORD_ADVANCE : _f.order;
+    var _stance = (_f == undefined) ? 0 : _f.stance;
 
     if (_ord == GRIDORD_MOVE) {
         grid_step_toward(ctrl, _si, _f.dest_col, _f.dest_row);
@@ -751,9 +826,27 @@ function grid_act_player(ctrl, _si) {
 
     var _t = ctrl.squads[_ti];
     var _dd = grid_dist(_s.col, _s.row, _t.col, _t.row);
+    var _seek = (_stance == 1) || ((_stance == 0) && _s.melee_pref);
+
+    if (_stance == 2) {
+        if (_dd <= 1) {
+            // back away from the blades; a cornered squad fights hand to hand
+            if (!grid_step_away(ctrl, _si, _t.col, _t.row)) {
+                grid_attack(ctrl, _si, _ti, true);
+            }
+            return;
+        }
+        if ((_dd <= _s.rng) && (_s.bal > 0)) {
+            grid_attack(ctrl, _si, _ti, false);
+        } else if ((_ord != GRIDORD_HOLD) && (_dd > _s.rng)) {
+            grid_step_toward(ctrl, _si, _t.col, _t.row);
+        }
+        return;
+    }
+
     if (_dd <= 1) {
         grid_attack(ctrl, _si, _ti, true);
-    } else if ((_dd <= _s.rng) && (_s.bal > 0) && !_s.melee_pref) {
+    } else if ((_dd <= _s.rng) && (_s.bal > 0) && !_seek) {
         grid_attack(ctrl, _si, _ti, false);
     } else if (_ord != GRIDORD_HOLD) {
         grid_step_toward(ctrl, _si, _t.col, _t.row);
@@ -796,6 +889,7 @@ function grid_act_enemy(ctrl, _si) {
                     var _zd = 55 + irandom(25);
                     var _kk = grid_apply_damage(ctrl, _best, _zd, _si);
                     grid_log(ctrl, $"Weirdboy zzap scorches {ctrl.squads[_best].name}: {_kk} down!", GRIDC_COL_ENEMY);
+                    grid_floater(ctrl, ctrl.squads[_best].col, ctrl.squads[_best].row, "ZZAP!", make_color_rgb(208, 110, 230));
                     _s.zap_cd = 6;
                 }
             }
@@ -877,6 +971,24 @@ function grid_battle_tick(ctrl) {
         }
     }
 
+    // flush this tick's accumulated damage into one floating number per squad
+    for (var _fl = 0; _fl < array_length(ctrl.squads); _fl++) {
+        var _fq = ctrl.squads[_fl];
+        if ((_fq.hit_kills <= 0) && (_fq.hit_dmg <= 0)) {
+            continue;
+        }
+        if (grid_in_bounds(_fq.col, _fq.row)) {
+            var _fcol = (_fq.side == 1) ? c_white : GRIDC_COL_ENEMY;
+            if (_fq.is_vehicle) {
+                grid_floater(ctrl, _fq.col, _fq.row, $"-{round(_fq.hit_dmg)}", _fcol);
+            } else if (_fq.hit_kills > 0) {
+                grid_floater(ctrl, _fq.col, _fq.row, $"-{_fq.hit_kills}", _fcol);
+            }
+        }
+        _fq.hit_kills = 0;
+        _fq.hit_dmg = 0;
+    }
+
     if ((ctrl.ticks mod 5) == 0) {
         if ((ctrl.agg_ekills > 0) || (ctrl.agg_pkills > 0)) {
             grid_log(ctrl, $"Exchange: {ctrl.agg_ekills} greenskins down, {ctrl.agg_pkills} of ours lost.", GRIDC_COL_FEED);
@@ -932,23 +1044,35 @@ function grid_buttons(ctrl) {
             bx: 16, by: _y, bw: 248, bh: 40,
             bid: "type:" + _key,
             blabel: $"{_d.disp}  ({_cnt})  {_d.cost}pt",
-            benabled: _deploy && (_cnt > 0),
+            benabled: (_deploy || _battle) && (_cnt > 0),
         });
         _y += 46;
     }
-    array_push(_b, { bx: 16, by: 640, bw: 248, bh: 44, bid: "deployall", blabel: "Deploy All", benabled: _deploy });
+    array_push(_b, { bx: 16, by: 640, bw: 248, bh: 44, bid: "deployall", blabel: "Deploy All", benabled: _deploy || _battle });
     array_push(_b, { bx: 16, by: 696, bw: 248, bh: 56, bid: "start", blabel: "BEGIN BATTLE", benabled: _deploy && grid_any_deployed(ctrl) });
 
     // battle controls
-    var _spd = (ctrl.speed_mult == 0.5) ? "0.5" : string(ctrl.speed_mult);
+    var _spd = "Normal";
+    if (ctrl.speed_mult == 0.5) {
+        _spd = "Slow";
+    }
+    if (ctrl.speed_mult == 2) {
+        _spd = "Fast";
+    }
+    if (ctrl.speed_mult == 4) {
+        _spd = "Very Fast";
+    }
     array_push(_b, { bx: 1344, by: 740, bw: 248, bh: 44, bid: "pause", blabel: ctrl.paused ? "Resume" : "Pause", benabled: _battle });
-    array_push(_b, { bx: 1344, by: 793, bw: 248, bh: 44, bid: "speed", blabel: $"Speed x{_spd}", benabled: _battle });
+    array_push(_b, { bx: 1344, by: 793, bw: 248, bh: 44, bid: "speed", blabel: $"Speed: {_spd}", benabled: _battle });
     array_push(_b, { bx: 1344, by: 846, bw: 248, bh: 44, bid: "exit", blabel: (ctrl.exit_arm > 0) ? "Confirm Exit" : "Exit Battle", benabled: true });
 
     // context order buttons in the free space area (design point 9)
     if (_battle && (ctrl.selected_form >= 0)) {
-        array_push(_b, { bx: 994, by: 850, bw: 128, bh: 32, bid: "ord_adv", blabel: "Advance", benabled: true });
-        array_push(_b, { bx: 1132, by: 850, bw: 128, bh: 32, bid: "ord_hold", blabel: "Hold", benabled: true });
+        var _stn = ctrl.formations[ctrl.selected_form].stance;
+        var _stl = (_stn == 1) ? "Charge" : ((_stn == 2) ? "Avoid" : "Auto");
+        array_push(_b, { bx: 994, by: 850, bw: 106, bh: 32, bid: "ord_adv", blabel: "Advance", benabled: true });
+        array_push(_b, { bx: 1108, by: 850, bw: 106, bh: 32, bid: "ord_hold", blabel: "Hold", benabled: true });
+        array_push(_b, { bx: 1222, by: 850, bw: 106, bh: 32, bid: "stance", blabel: $"Melee: {_stl}", benabled: true });
     }
     return _b;
 }
