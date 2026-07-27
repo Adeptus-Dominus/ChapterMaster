@@ -6,7 +6,14 @@ function fetch_marine_components_to_memory() {
                 if (struct_exists(_element, "overides")) {
                     var _override_areas = struct_get_names(_element.overides);
                     for (var i = 0; i < array_length(_override_areas); i++) {
-                        sprite_prefetch(_element.overides[$ _override_areas[i]]);
+                        var _override_val = _element.overides[$ _override_areas[i]];
+                        if (is_struct(_override_val)) {
+                            if (struct_exists(_override_val, "sprite") && sprite_exists(_override_val.sprite)) {
+                                sprite_prefetch(_override_val.sprite);
+                            }
+                        } else if (sprite_exists(_override_val)) {
+                            sprite_prefetch(_override_val);
+                        }
                     }
                 }
             }
