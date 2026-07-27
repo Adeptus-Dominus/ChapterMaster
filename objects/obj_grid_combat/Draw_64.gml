@@ -215,9 +215,29 @@ if (_tp >= 20) {
 // placement ghost
 if (placing) {
     var _pn = array_length(placing_list);
+    var _dragging = place_drag && (place_c0 >= 0) && (hover_c >= 0)
+        && ((hover_c != place_c0) || (hover_r != place_r0));
+    if (_dragging) {
+        // Live drag: show the exact tiles the block will stand on and the line
+        // the front rank is being drawn along, so the shape is chosen by eye.
+        var _dsl = grid_drag_slots(id, place_c0, place_r0, hover_c, hover_r, _pn);
+        var _dok = grid_slots_valid(id, placing_list, _dsl);
+        for (var _di = 0; _di < array_length(_dsl); _di++) {
+            var _dpx = grid_sx(id, _dsl[_di][0]);
+            var _dpy = grid_sy(id, _dsl[_di][1]);
+            draw_set_alpha(0.25);
+            draw_set_color(_dok ? GRIDC_GREEN : GRIDC_RED);
+            draw_rectangle(_dpx + 2, _dpy + 2, _dpx + _tp - 2, _dpy + _tp - 2, false);
+            draw_set_alpha(1);
+            draw_rectangle(_dpx + 2, _dpy + 2, _dpx + _tp - 2, _dpy + _tp - 2, true);
+        }
+        draw_set_color(_dok ? GRIDC_GREEN : GRIDC_RED);
+        draw_line(grid_sx(id, place_c0) + (_tp / 2), grid_sy(id, place_r0) + (_tp / 2),
+            grid_sx(id, hover_c) + (_tp / 2), grid_sy(id, hover_r) + (_tp / 2));
+    }
     var _fp = grid_footprint(id, _pn);
     var _ok = (hover_c >= 0) && grid_placement_valid(id, placing_list, hover_c, hover_r);
-    if (hover_c >= 0) {
+    if (!_dragging && (hover_c >= 0)) {
         var _kk = 0;
         for (var _gy2 = 0; _gy2 < _fp[1]; _gy2++) {
             for (var _gx2 = 0; _gx2 < _fp[0]; _gx2++) {

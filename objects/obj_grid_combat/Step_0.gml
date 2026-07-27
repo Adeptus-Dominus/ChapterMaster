@@ -27,7 +27,9 @@ if (!boot_done) {
     if (pending_live) {
         grid_log(id, "Live battle: these are your real companies and your losses are permanent.", GRIDC_COL_WARN);
     }
-    grid_log(id, "Left click selects, drag selects, right click orders.", GRIDC_COL_ORDER);
+    grid_log(id, "Left click selects, drag a box to select several, right click orders.", GRIDC_COL_ORDER);
+    grid_log(id, "Deploying: drag out the front rank and the block forms along it.", GRIDC_COL_ORDER);
+    grid_log(id, "Ctrl and a number binds a control group, the number recalls it.", GRIDC_COL_ORDER);
     grid_log(id, "WASD pans the field. Tab toggles the overview.", GRIDC_COL_ORDER);
 }
 
@@ -148,10 +150,35 @@ if (placing) {
         grid_clear_picks(id);
         exit;
     }
+    // Drag out the front rank the way a Total War player would: press where the
+    // line starts, release where it ends, and the block forms along it. A plain
+    // click with no drag still drops the old rectangle, so nothing that worked
+    // before stops working.
     if (_lc && (hover_c >= 0)) {
-        if (!grid_place_formation(id, hover_c, hover_r)) {
+        place_drag = true;
+        place_c0 = hover_c;
+        place_r0 = hover_r;
+    }
+    if (place_drag && _lrel) {
+        place_drag = false;
+        var _put = false;
+        if (place_c0 >= 0) {
+            if ((hover_c >= 0) && ((hover_c != place_c0) || (hover_r != place_r0))) {
+                _put = grid_place_formation_slots(id, grid_drag_slots(id, place_c0, place_r0, hover_c, hover_r, _pln));
+            } else {
+                _put = grid_place_formation(id, place_c0, place_r0);
+            }
+        }
+        if (!_put) {
             grid_log(id, "Cannot deploy there.", GRIDC_COL_WARN);
         }
+        place_c0 = -1;
+        place_r0 = -1;
+    }
+    if (place_drag && !_lheld) {
+        place_drag = false;
+        place_c0 = -1;
+        place_r0 = -1;
     }
     exit;
 }
@@ -247,7 +274,11 @@ if (!_consumed && grid_in_viewport(_mgx, _mgy)) {
             grid_sel_prune(id);
         } else if ((hover_c >= 0) && (array_length(selected) > 0)) {
             grid_order_move(id, hover_c, hover_r);
-            grid_log(id, $"Move to {hover_c}, {hover_r}.", GRIDC_COL_ORDER);
+            if (array_length(selected) > 1) {
+                grid_log(id, $"{array_length(selected)} formations advance on {hover_c}, {hover_r} in formation.", GRIDC_COL_ORDER);
+            } else {
+                grid_log(id, $"Move to {hover_c}, {hover_r}.", GRIDC_COL_ORDER);
+            }
         }
     }
 }
@@ -291,6 +322,23 @@ if (keyboard_check(ord("S")) || keyboard_check(vk_down)) {
     view_y += GRIDC_SCROLL_SPEED;
 }
 grid_clamp_view(id);
+
+// Control groups. Ctrl and a number binds the current selection, the number on
+// its own recalls it, which is what every RTS has trained hands to expect.
+var _ctrl_held = keyboard_check(vk_control);
+for (var _gk = 0; _gk <= 9; _gk++) {
+    if (!keyboard_check_pressed(ord(string(_gk)))) {
+        continue;
+    }
+    if (_ctrl_held) {
+        grid_group_bind(id, _gk);
+    } else {
+        var _gn = grid_group_recall(id, _gk);
+        if (_gn > 0) {
+            grid_log(id, $"Group {_gk} selected: {_gn} formations.", GRIDC_COL_ORDER);
+        }
+    }
+}
 
 if (keyboard_check_pressed(vk_tab)) {
     var _tc = (hover_c >= 0) ? hover_c : floor(cols / 2);

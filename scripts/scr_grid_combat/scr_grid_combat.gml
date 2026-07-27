@@ -489,11 +489,28 @@ function grid_gen_player_pool(ctrl) {
 }
 
 /// @function grid_spawn_enemy_squad
-function grid_spawn_enemy_squad(ctrl, _key, _idx) {
+function grid_spawn_enemy_squad(ctrl, _key, _idx, _pc = -1, _pr = -1) {
     var _d = grid_unit_def(_key);
     var _sq = new GridSquad(1, _key, $"{_d.disp} {_idx}");
     var _placed = false;
-    for (var _try = 0; _try < 200; _try++) {
+    // A shaped force asks for a particular tile. If it is taken the squad falls
+    // in beside it rather than being flung to the far side of the field, so a
+    // crescent stays a crescent even where two slots round onto one tile.
+    if (grid_in_bounds(ctrl, _pc, _pr)) {
+        if (ctrl.occ[_pc][_pr] == -1) {
+            _sq.col = _pc;
+            _sq.row = _pr;
+            _placed = true;
+        } else {
+            var _near = grid_free_tile_near(ctrl, _pc, _pr);
+            if (_near[0] >= 0) {
+                _sq.col = _near[0];
+                _sq.row = _near[1];
+                _placed = true;
+            }
+        }
+    }
+    for (var _try = 0; (_try < 200) && !_placed; _try++) {
         var _c = ctrl.cols - 1 - irandom(GRIDC_ENEMY_COLS - 1);
         var _r = irandom(ctrl.rows - 1);
         if (ctrl.occ[_c][_r] == -1) {
@@ -529,8 +546,9 @@ function grid_spawn_enemy_squad(ctrl, _key, _idx) {
 }
 
 /// @function grid_spawn_enemy_force
-/// @description The horde is sized off combat width too, so both sides scale
-/// together and the front stays the thing that decides the shape of the fight.
+/// @description Rolls the enemy force, then forms it up the way that faction
+/// fights. Composition and shape are separate: the mix below decides what turns
+/// up, grid_enemy_shape and grid_shape_slots decide where it stands.
 function grid_spawn_enemy_force(ctrl) {
     var _w = ctrl.combat_width;
     // Threat is the campaign's own measure of how big this fight is, and it is
@@ -539,42 +557,49 @@ function grid_spawn_enemy_force(ctrl) {
     // same horde on the field and both would be paid out the same.
     var _t = clamp(ctrl.pending_threat, 1, 7);
     var _tm = 0.40 + (_t * 0.23);
-    // The faction hook: one shape of force, filled from that faction's own
-    // profiles. The order is line, close assault, elite, walker, transport,
-    // psyker, and the weights below follow it.
     var _set = grid_enemy_set(ctrl.pending_enemy);
     var _wt = [0.70, 0.55, 0.20, 0.12, 0.08, 0.04];
-    var _mix = [];
+
+    // Flatten the roll into one list, each entry remembering the slot it came
+    // from so the shape can tell a leader from a rifleman.
+    var _units = [];
     for (var _m = 0; _m < array_length(_set); _m++) {
         var _floor = (_m >= 2) ? 1 : (3 - _m);
         var _weight = (_m < array_length(_wt)) ? _wt[_m] : 0.05;
-        array_push(_mix, [_set[_m], max(_floor, round(_w * _weight * _tm))]);
-    }
-    var _n = 1;
-    for (var _i = 0; _i < array_length(_mix); _i++) {
-        // One mob type, one formation: the horde advances in blocks and only
-        // scatters into individual fights once it reaches the line.
-        var _fi = -1;
-        var _slot = 0;
-        for (var _k = 0; _k < _mix[_i][1]; _k++) {
-            var _si = grid_spawn_enemy_squad(ctrl, _mix[_i][0], _n);
-            _n += 1;
-            if (_si < 0) {
-                continue;
-            }
-            var _sq = ctrl.squads[_si];
-            if (_fi < 0) {
-                _fi = grid_new_formation(ctrl, _mix[_i][0], 1);
-                ctrl.formations[_fi].anchor_col = _sq.col;
-                ctrl.formations[_fi].anchor_row = _sq.row;
-            }
-            var _anc = ctrl.formations[_fi];
-            _sq.formation = _fi;
-            _sq.off_c = _sq.col - _anc.anchor_col;
-            _sq.off_r = _sq.row - _anc.anchor_row;
-            array_push(_anc.members, _si);
-            _slot += 1;
+        var _count = max(_floor, round(_w * _weight * _tm));
+        for (var _q = 0; _q < _count; _q++) {
+            array_push(_units, { key: _set[_m], role: _m });
         }
+    }
+
+    var _shape = grid_enemy_shape(ctrl.pending_enemy);
+    var _slots = grid_shape_slots(ctrl, _shape, _units);
+    var _shaped = (array_length(_slots) >= array_length(_units));
+
+    // One formation per unit type, so the horde advances in blocks and only
+    // scatters into individual fights once it reaches the line.
+    var _forms = {};
+    for (var _i = 0; _i < array_length(_units); _i++) {
+        var _key = _units[_i].key;
+        var _pc = _shaped ? _slots[_i][0] : -1;
+        var _pr = _shaped ? _slots[_i][1] : -1;
+        var _si = grid_spawn_enemy_squad(ctrl, _key, _i + 1, _pc, _pr);
+        if (_si < 0) {
+            continue;
+        }
+        var _sq = ctrl.squads[_si];
+        if (!variable_struct_exists(_forms, _key)) {
+            var _nf = grid_new_formation(ctrl, _key, 1);
+            ctrl.formations[_nf].anchor_col = _sq.col;
+            ctrl.formations[_nf].anchor_row = _sq.row;
+            _forms[$ _key] = _nf;
+        }
+        var _fi = _forms[$ _key];
+        var _anc = ctrl.formations[_fi];
+        _sq.formation = _fi;
+        _sq.off_c = _sq.col - _anc.anchor_col;
+        _sq.off_r = _sq.row - _anc.anchor_row;
+        array_push(_anc.members, _si);
     }
 }
 
@@ -795,6 +820,131 @@ function grid_place_formation(ctrl, _ac, _ar) {
         grid_floater(ctrl, _ac, _ar, "TELEPORT", GRIDC_COL_ORDER);
     } else {
         grid_log(ctrl, $"{_f.name} moves up: {_n} squads on the line.", GRIDC_COL_ORDER);
+    }
+    return true;
+}
+
+/// @function grid_drag_slots
+/// @description Total War style placement. The drag is the front rank: its
+/// length sets the frontage and its direction the facing, so a long sideways
+/// drag gives a thin firing line and a short one gives a deep column. Later
+/// ranks stack behind the first, away from the enemy. Returns the tile list in
+/// rank order, first slot first, which is the anchor the block then marches on.
+function grid_drag_slots(ctrl, _c0, _r0, _c1, _r1, _n) {
+    var _dc = _c1 - _c0;
+    var _dr = _r1 - _r0;
+    var _span = max(abs(_dc), abs(_dr));
+    var _front = clamp(_span + 1, 1, max(1, _n));
+    var _sx = (_span <= 0) ? 0 : (_dc / _span);
+    var _sy = (_span <= 0) ? 0 : (_dr / _span);
+    // "Behind" is away from the enemy, who hold the eastern edge. A line drawn
+    // mostly north to south is a normal front, so its ranks stack west. A line
+    // drawn mostly east to west is a column pointed at the flank, so its ranks
+    // stack sideways instead, off the nearer edge of the field.
+    var _bx = -1;
+    var _by = 0;
+    if ((_span > 0) && (abs(_dc) > abs(_dr))) {
+        _bx = 0;
+        _by = (_r0 <= floor(ctrl.rows / 2)) ? -1 : 1;
+    }
+    var _slots = [];
+    var _rank = 0;
+    while ((array_length(_slots) < _n) && (_rank <= (ctrl.cols + ctrl.rows))) {
+        for (var _i = 0; (_i < _front) && (array_length(_slots) < _n); _i++) {
+            array_push(_slots, [
+                round(_c0 + (_sx * _i) + (_bx * _rank)),
+                round(_r0 + (_sy * _i) + (_by * _rank)),
+            ]);
+        }
+        _rank += 1;
+    }
+    return _slots;
+}
+
+/// @function grid_slots_valid
+/// @description The drag equivalent of grid_placement_valid. It also rejects a
+/// shape that folds onto itself, since rounding a shallow diagonal can put two
+/// squads on one tile.
+function grid_slots_valid(ctrl, _list, _slots) {
+    var _n = array_length(_list);
+    if ((_n <= 0) || (array_length(_slots) < _n)) {
+        return false;
+    }
+    var _all_tele = true;
+    for (var _i = 0; _i < _n; _i++) {
+        if (!ctrl.squads[_list[_i]].can_tele) {
+            _all_tele = false;
+            break;
+        }
+    }
+    for (var _k = 0; _k < _n; _k++) {
+        var _c = _slots[_k][0];
+        var _r = _slots[_k][1];
+        if (!grid_in_bounds(ctrl, _c, _r)) {
+            return false;
+        }
+        if (ctrl.occ[_c][_r] != -1) {
+            return false;
+        }
+        if (!_all_tele && !grid_in_deploy_zone(ctrl, _c, _r)) {
+            return false;
+        }
+        if (_all_tele && (_c >= ctrl.cols - 1)) {
+            return false;
+        }
+        for (var _q = 0; _q < _k; _q++) {
+            if ((_slots[_q][0] == _c) && (_slots[_q][1] == _r)) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+/// @function grid_place_formation_slots
+/// @description Places the held block on an explicit tile list, the one the
+/// player just dragged out. Offsets are taken from the first slot rather than
+/// from a rectangle, so the shape drawn at deployment is the shape the block
+/// keeps when it marches.
+function grid_place_formation_slots(ctrl, _slots) {
+    var _list = ctrl.placing_list;
+    var _n = array_length(_list);
+    if (!grid_slots_valid(ctrl, _list, _slots)) {
+        return false;
+    }
+    if (grid_deployed_count(ctrl) + _n > ctrl.combat_width) {
+        var _room = max(0, ctrl.combat_width - grid_deployed_count(ctrl));
+        grid_log(ctrl, $"The front holds {ctrl.combat_width} squads: room for {_room} more.", GRIDC_COL_WARN);
+        return false;
+    }
+    var _fi = grid_new_formation(ctrl, ctrl.squads[_list[0]].type);
+    var _f = ctrl.formations[_fi];
+    _f.anchor_col = _slots[0][0];
+    _f.anchor_row = _slots[0][1];
+    var _tele = false;
+    for (var _k = 0; _k < _n; _k++) {
+        var _si = _list[_k];
+        var _s = ctrl.squads[_si];
+        _s.col = _slots[_k][0];
+        _s.row = _slots[_k][1];
+        _s.deployed = true;
+        _s.picked = false;
+        _s.formation = _fi;
+        _s.off_c = _s.col - _f.anchor_col;
+        _s.off_r = _s.row - _f.anchor_row;
+        ctrl.occ[_s.col][_s.row] = _si;
+        array_push(_f.members, _si);
+        if (_s.can_tele && !grid_in_deploy_zone(ctrl, _s.col, _s.row)) {
+            _tele = true;
+        }
+    }
+    ctrl.placing = false;
+    ctrl.placing_list = [];
+    if (_tele) {
+        grid_log(ctrl, $"{_f.name} teleports onto the field.", GRIDC_COL_ORDER);
+        grid_floater(ctrl, _f.anchor_col, _f.anchor_row, "TELEPORT", GRIDC_COL_ORDER);
+    } else {
+        grid_log(ctrl, $"{_f.name} forms up: {_n} squads on the line.", GRIDC_COL_ORDER);
     }
     return true;
 }
@@ -1265,6 +1415,34 @@ function grid_move_budget(_s) {
     return _steps;
 }
 
+/// @function grid_wants_melee
+/// @description Doctrine read off the profile itself. A squad that hits harder
+/// in close combat than at range closes the distance; one that shoots better
+/// holds off and fires. The explicit melee flag still wins, so a unit built to
+/// charge charges even when it carries a decent gun, and anything with no gun
+/// at all has nothing to wait for.
+function grid_wants_melee(_s) {
+    if (_s.melee_pref) {
+        return true;
+    }
+    if (_s.bal <= 0) {
+        return true;
+    }
+    return (_s.mel > _s.bal);
+}
+
+/// @function grid_should_back_off
+/// @description A shooting squad caught in close combat gives ground instead of
+/// trading blows it will lose. Only against something meaningfully better at it,
+/// though, so a firefight does not turn into the whole line walking backwards,
+/// and never for a vehicle, which has armour for exactly this.
+function grid_should_back_off(_s, _t) {
+    if (grid_wants_melee(_s) || (_s.bal <= 0) || _s.is_vehicle) {
+        return false;
+    }
+    return (_t.mel > (_s.mel * 1.5));
+}
+
 /// @function grid_act_player
 function grid_act_player(ctrl, _si) {
     var _s = ctrl.squads[_si];
@@ -1301,6 +1479,11 @@ function grid_act_player(ctrl, _si) {
             }
             if (!_far) {
                 _f.order = GRIDORD_HOLD;
+                // The block now stands where it was sent, so the anchor moves
+                // with it. Without this the next group order would measure
+                // spacing from where the formation used to be.
+                _f.anchor_col = _f.dest_col;
+                _f.anchor_row = _f.dest_row;
             }
         }
         return;
@@ -1332,7 +1515,7 @@ function grid_act_player(ctrl, _si) {
 
     var _t = ctrl.squads[_ti];
     var _dd = grid_dist(_s.col, _s.row, _t.col, _t.row);
-    var _seek = (_stance == 1) || ((_stance == 0) && _s.melee_pref);
+    var _seek = (_stance == 1) || ((_stance == 0) && grid_wants_melee(_s));
 
     if (_stance == 2) {
         if (_dd <= 1) {
@@ -1354,6 +1537,16 @@ function grid_act_player(ctrl, _si) {
     }
 
     if (_dd <= 1) {
+        // Fighting withdrawal: gunners pull back out of a losing melee and keep
+        // shooting rather than standing there being cut down. Held ground is
+        // held, so an explicit Hold order overrides the instinct.
+        if ((_stance == 0) && (_ord != GRIDORD_HOLD) && grid_should_back_off(_s, _t)
+            && grid_step_away(ctrl, _si, _t.col, _t.row)) {
+            if (grid_dist(_s.col, _s.row, _t.col, _t.row) <= _s.rng) {
+                grid_attack(ctrl, _si, _ti, false);
+            }
+            return;
+        }
         grid_attack(ctrl, _si, _ti, true);
     } else if ((_dd <= _s.rng) && (_s.bal > 0) && !_seek) {
         grid_attack(ctrl, _si, _ti, false);
@@ -1411,8 +1604,14 @@ function grid_act_enemy(ctrl, _si) {
     var _t = ctrl.squads[_ti];
     var _dd = grid_dist(_s.col, _s.row, _t.col, _t.row);
     if (_dd <= 1) {
+        if (grid_should_back_off(_s, _t) && grid_step_away(ctrl, _si, _t.col, _t.row)) {
+            if (grid_dist(_s.col, _s.row, _t.col, _t.row) <= _s.rng) {
+                grid_attack(ctrl, _si, _ti, false);
+            }
+            return;
+        }
         grid_attack(ctrl, _si, _ti, true);
-    } else if ((_dd <= _s.rng) && (_s.bal > 0) && !_s.melee_pref) {
+    } else if ((_dd <= _s.rng) && (_s.bal > 0) && !grid_wants_melee(_s)) {
         grid_attack(ctrl, _si, _ti, false);
     } else {
         for (var _m = 0; _m < _steps; _m++) {
@@ -1593,14 +1792,68 @@ function grid_sel_box(ctrl, _x1, _y1, _x2, _y2) {
 }
 
 /// @function grid_order_move
+/// @description Moves the whole selection as one body. Each formation is sent to
+/// the click plus its own offset from the selection's centre, so several
+/// formations ordered together arrive holding the spacing they set off in
+/// instead of collapsing onto the one tile that was clicked.
 function grid_order_move(ctrl, _c, _r) {
-    for (var _i = 0; _i < array_length(ctrl.selected); _i++) {
-        var _f = ctrl.formations[ctrl.selected[_i]];
+    var _n = array_length(ctrl.selected);
+    if (_n <= 0) {
+        return;
+    }
+    var _cx = 0;
+    var _cy = 0;
+    // A block already marching is measured from where it is headed, not from
+    // the anchor it left behind, so re-ordering a group mid-march does not
+    // squeeze it back together.
+    var _px = [];
+    var _py = [];
+    for (var _i = 0; _i < _n; _i++) {
+        var _f0 = ctrl.formations[ctrl.selected[_i]];
+        var _ax = ((_f0.order == GRIDORD_MOVE) && (_f0.dest_col >= 0)) ? _f0.dest_col : _f0.anchor_col;
+        var _ay = ((_f0.order == GRIDORD_MOVE) && (_f0.dest_row >= 0)) ? _f0.dest_row : _f0.anchor_row;
+        array_push(_px, _ax);
+        array_push(_py, _ay);
+        _cx += _ax;
+        _cy += _ay;
+    }
+    _cx = round(_cx / _n);
+    _cy = round(_cy / _n);
+    for (var _k = 0; _k < _n; _k++) {
+        var _f = ctrl.formations[ctrl.selected[_k]];
         _f.order = GRIDORD_MOVE;
-        _f.dest_col = _c;
-        _f.dest_row = _r;
+        _f.dest_col = clamp(_c + (_px[_k] - _cx), 0, ctrl.cols - 1);
+        _f.dest_row = clamp(_r + (_py[_k] - _cy), 0, ctrl.rows - 1);
         _f.order_target = -1;
     }
+}
+
+/// @function grid_group_bind
+/// @description Control groups, bound from the current selection.
+function grid_group_bind(ctrl, _n) {
+    if ((_n < 0) || (_n > 9)) {
+        return;
+    }
+    var _g = [];
+    for (var _i = 0; _i < array_length(ctrl.selected); _i++) {
+        array_push(_g, ctrl.selected[_i]);
+    }
+    ctrl.groups[_n] = _g;
+    grid_log(ctrl, $"Group {_n} bound: {array_length(_g)} formations.", GRIDC_COL_ORDER);
+}
+
+/// @function grid_group_recall
+function grid_group_recall(ctrl, _n) {
+    if ((_n < 0) || (_n > 9)) {
+        return 0;
+    }
+    var _g = ctrl.groups[_n];
+    grid_sel_clear(ctrl);
+    for (var _i = 0; _i < array_length(_g); _i++) {
+        grid_sel_add(ctrl, _g[_i]);
+    }
+    grid_sel_prune(ctrl);
+    return array_length(ctrl.selected);
 }
 
 /// @function grid_order_attack
@@ -2255,15 +2508,12 @@ function grid_handoff_result(ctrl) {
     return true;
 }
 
-/// @function grid_enemy_set
-/// @description Enemy profiles per faction. Every set keeps the same shape:
-/// a line unit, a close assault unit, an elite, a walker, and a transport, so
-/// force generation is faction agnostic until real enemy rosters are wired in.
-function grid_enemy_set(_faction) {
-    // The launcher hands over the raw eFACTION index as a string, so a plain
-    // name match would never fire and every battle would silently take the
-    // fallback. Numbers resolve as the enum and names as text, so the cheat's
-    // "orks" and the campaign's "7" both land in the same place.
+/// @function grid_faction_index
+/// @description Resolves whatever the caller has into an eFACTION value. The
+/// launcher hands over the raw index as a string, so a plain name match would
+/// never fire; numbers resolve as the enum and names as text, and the cheat's
+/// "orks" and the campaign's "7" both land in the same place.
+function grid_faction_index(_faction) {
     var _f = string_lower(string(_faction));
     var _idx = -1;
     if ((_f != "") && (string_digits(_f) == _f)) {
@@ -2290,11 +2540,138 @@ function grid_enemy_set(_faction) {
     } else if (string_count("guard", _f) > 0) {
         _idx = eFACTION.IMPERIUM;
     }
+    return _idx;
+}
 
+/// @function grid_enemy_shape
+/// @description How a faction forms up. This is what makes a greenskin horde
+/// read differently from an Eldar host at a glance, before a shot is fired.
+function grid_enemy_shape(_faction) {
+    switch (grid_faction_index(_faction)) {
+        case eFACTION.ELDAR:
+            return "crescent";
+        case eFACTION.TAU:
+            return "firing_line";
+        case eFACTION.NECRONS:
+            return "phalanx";
+        case eFACTION.ORK:
+        case eFACTION.TYRANIDS:
+        case eFACTION.GENESTEALER:
+            return "horde";
+    }
+    // Anything human or Astartes fights in ordered squads around its command
+    // and behind its armour.
+    return "retinue";
+}
+
+/// @function grid_shape_slots
+/// @description Builds the tile each unit forms up on, east of the player. The
+/// role is the slot it came from in grid_enemy_set (line, close assault, elite,
+/// walker, transport, special), so a shape can put its guns in front and its
+/// leader in the middle. An empty return means no shape: scatter instead.
+function grid_shape_slots(ctrl, _shape, _units) {
+    var _n = array_length(_units);
+    var _slots = [];
+    var _east = ctrl.cols - 1;
+    var _mid = floor(ctrl.rows / 2);
+    // No shape may reach back past this column. A deep force would otherwise
+    // stack its rear ranks into the player's own deployment zone and start the
+    // battle already behind the line.
+    var _west = min(_east, GRIDC_DEPLOY_COLS + 1);
+    switch (_shape) {
+        case "crescent":
+            // Half moon with the horns forward: the wings reach around the
+            // player's flanks while the centre hangs back. An Eldar host
+            // refuses its middle and envelops rather than meeting a charge.
+            var _arc = clamp(floor(ctrl.cols / 5), 2, 6);
+            for (var _i = 0; _i < _n; _i++) {
+                var _band = _i mod ctrl.rows;
+                var _rank = floor(_i / ctrl.rows);
+                var _t = ((_band / max(1, ctrl.rows - 1)) * pi) - (pi / 2);
+                array_push(_slots, [
+                    clamp(_east - _rank - round(_arc * (1 - cos(_t))), _west, _east),
+                    clamp(_band, 0, ctrl.rows - 1),
+                ]);
+            }
+            break;
+        case "firing_line":
+            // Ranks two tiles apart, guns forward and heavy support behind, so
+            // every squad has a clear lane down the field.
+            for (var _j = 0; _j < _n; _j++) {
+                var _lrank = floor(_j / ctrl.rows);
+                array_push(_slots, [
+                    clamp(_east - 1 - (_lrank * 2), _west, _east),
+                    _j mod ctrl.rows,
+                ]);
+            }
+            break;
+        case "phalanx":
+            // Solid ranks, no gaps, advancing as one slab.
+            var _len = clamp(ceil(_n / 4), 3, ctrl.rows);
+            var _r0 = clamp(_mid - floor(_len / 2), 0, max(0, ctrl.rows - _len));
+            for (var _k = 0; _k < _n; _k++) {
+                array_push(_slots, [
+                    clamp(_east - floor(_k / _len), _west, _east),
+                    clamp(_r0 + (_k mod _len), 0, ctrl.rows - 1),
+                ]);
+            }
+            break;
+        case "retinue":
+            // Tight knots around whatever matters: the leader or elite takes the
+            // middle of his cluster, the rank and file ring him, and anything
+            // with a hull sits in front as the thing they advance behind.
+            var _cl_c = _east - 3;
+            var _cl_r = 2;
+            var _ring = [[1, 0], [0, -1], [0, 1], [1, -1], [1, 1], [2, 0]];
+            var _ri = 0;
+            var _core = false;
+            for (var _m = 0; _m < _n; _m++) {
+                var _role = _units[_m].role;
+                var _c = _cl_c;
+                var _r = _cl_r;
+                if ((_role == 3) || (_role == 4)) {
+                    // Armour leads: it sits in front of the knot it screens, and
+                    // the infantry advance in its shadow.
+                    _c = _cl_c - 2;
+                } else if (!_core) {
+                    // The middle belongs to whoever is worth guarding. If no
+                    // leader reaches this cluster, the last man in takes it
+                    // rather than leaving a hole in the middle of the squad.
+                    _core = ((_role == 5) || (_role == 2) || (_ri >= array_length(_ring)));
+                    if (!_core) {
+                        _c = _cl_c + _ring[_ri][0];
+                        _r = _cl_r + _ring[_ri][1];
+                        _ri += 1;
+                    }
+                } else {
+                    _c = _cl_c + _ring[_ri][0];
+                    _r = _cl_r + _ring[_ri][1];
+                    _ri += 1;
+                }
+                if (_ri >= array_length(_ring)) {
+                    // Knot complete, start the next one further down the line.
+                    _ri = 0;
+                    _core = false;
+                    _cl_r += 4;
+                    if (_cl_r >= (ctrl.rows - 1)) {
+                        _cl_r = 2;
+                        _cl_c = max(_west + 2, _cl_c - 4);
+                    }
+                }
+                array_push(_slots, [clamp(_c, _west, _east), clamp(_r, 0, ctrl.rows - 1)]);
+            }
+            break;
+    }
+    return _slots;
+}
+
+/// @function grid_enemy_set
+/// @description The six profiles a faction fields, in slot order.
+function grid_enemy_set(_faction) {
     // One shape of force per faction, always in the same order, because
     // grid_spawn_enemy_force weights the slots positionally:
     //   line, close assault, elite, walker, transport, special.
-    switch (_idx) {
+    switch (grid_faction_index(_faction)) {
         case eFACTION.PLAYER:
             // A rival Chapter fields the player's own profiles.
             return ["tactical", "assault", "terminator", "dreadnought", "rhino", "hq"];

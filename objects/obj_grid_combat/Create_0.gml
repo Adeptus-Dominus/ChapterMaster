@@ -77,6 +77,16 @@ popup_scroll = 0;
 placing = false;
 placing_list = [];
 placing_w = 1;
+// Drag placement: where the front rank was started, and whether a drag is live.
+place_drag = false;
+place_c0 = -1;
+place_r0 = -1;
+
+// Control groups 0 to 9, each a list of formation indices.
+groups = [];
+for (var _gi = 0; _gi <= 9; _gi++) {
+    groups[_gi] = [];
+}
 
 selected = [];
 losses_written = false;
