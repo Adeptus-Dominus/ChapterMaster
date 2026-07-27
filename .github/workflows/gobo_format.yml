@@ -1,6 +1,8 @@
 name: Gobo Formatter
 
 on:
+  schedule:
+    - cron: "0 3 * * 1"
   workflow_dispatch:
 
 permissions:
