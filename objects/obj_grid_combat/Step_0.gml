@@ -6,9 +6,10 @@
 if (!boot_done) {
     boot_done = true;
     instance_deactivate_all(true);
-    if (instance_exists(obj_cursor)) {
-        instance_activate_object(obj_cursor);
-    }
+    // instance_exists cannot see deactivated instances, so a guard here would
+    // always fail and leave the cursor frozen. Unconditional activation is a
+    // safe no-op if no cursor instance is around.
+    instance_activate_object(obj_cursor);
 }
 
 if (exit_arm > 0) {
@@ -89,6 +90,7 @@ if (popup_open) {
         _ps = grid_picked_stats(id);
         if ((_ps.n > 0) && point_in_rectangle(_mx, _my, _px + _pw - 190, _py + _ph - 58, _px + _pw - 14, _py + _ph - 12)) {
             placing_list = grid_picked_indices(id);
+            placing_w = max(1, ceil(sqrt(array_length(placing_list))));
             popup_open = false;
             placing = true;
         }
@@ -99,6 +101,18 @@ if (popup_open) {
 // Placement ghost (design points 2 and 6): left-click drops the block,
 // right-click or Escape cancels and returns the picks to the pool.
 if (placing) {
+    // Reshape the block before dropping it: wheel widens or narrows the
+    // footprint one column at a time, R rotates it outright.
+    var _pln = array_length(placing_list);
+    if (mouse_wheel_up()) {
+        placing_w = min(max(1, _pln), placing_w + 1);
+    }
+    if (mouse_wheel_down()) {
+        placing_w = max(1, placing_w - 1);
+    }
+    if (keyboard_check_pressed(ord("R"))) {
+        placing_w = clamp(ceil(_pln / max(1, placing_w)), 1, max(1, _pln));
+    }
     if (_rc || keyboard_check_pressed(vk_escape)) {
         grid_clear_picks(id);
         placing = false;
@@ -142,7 +156,7 @@ if (_lc) {
         } else if (_bid == "pause") {
             paused = !paused;
         } else if (_bid == "speed") {
-            speed_mult = (speed_mult == 1) ? 2 : ((speed_mult == 2) ? 4 : 1);
+            speed_mult = (speed_mult == 0.5) ? 1 : ((speed_mult == 1) ? 2 : ((speed_mult == 2) ? 4 : 0.5));
         } else if (_bid == "exit") {
             if (exit_arm > 0) {
                 instance_activate_all();

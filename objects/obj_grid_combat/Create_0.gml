@@ -47,6 +47,7 @@ popup_type = "";
 popup_scroll = 0;
 placing = false;
 placing_list = [];
+placing_w = 1;
 selected_form = -1;
 hover_c = -1;
 hover_r = -1;

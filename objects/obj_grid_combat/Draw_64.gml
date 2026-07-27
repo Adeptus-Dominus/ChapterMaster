@@ -230,7 +230,7 @@ for (var _ft3 = 0; _ft3 < array_length(formations); _ft3++) {
 if (placing) {
     var _pn4 = array_length(placing_list);
     if ((_pn4 > 0) && (hover_c >= 0)) {
-        var _fp4 = grid_footprint(_pn4);
+        var _fp4 = grid_footprint(id, _pn4);
         var _valid4 = grid_placement_valid(id, hover_c, hover_r);
         for (var _k4 = 0; _k4 < _pn4; _k4++) {
             var _c4 = hover_c + (_k4 mod _fp4[0]);
@@ -325,6 +325,7 @@ if (selected_form >= 0) {
     draw_text(994, 782, "Right-click a placed squad: recall it.");
     draw_text(994, 804, "Terminators may deep strike anywhere.");
     draw_text(994, 826, "Begin Battle when ready.");
+    draw_text(994, 848, "Wheel reshapes a block, R rotates it.");
 } else {
     draw_set_color(make_color_rgb(180, 190, 205));
     draw_text(994, 760, "Click a squad to select its group.");
@@ -474,3 +475,9 @@ draw_set_color(c_white);
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 draw_set_font(fnt_small);
+
+// Fallback pointer: obj_cursor normally draws itself on top of this overlay,
+// but if no cursor instance is active the pointer must never vanish.
+if (!instance_exists(obj_cursor)) {
+    draw_sprite(spr_cursor, 0, _mx, _my);
+}

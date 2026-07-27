@@ -403,9 +403,11 @@ function grid_new_formation(ctrl, _letter) {
 }
 
 /// @function grid_footprint
-/// @description Rectangle block shape on placement (design point 6).
-function grid_footprint(_n) {
-    var _fw = max(1, ceil(sqrt(_n)));
+/// @description Rectangle block shape on placement (design point 6). The width
+/// follows ctrl.placing_w, adjusted by the mouse wheel and R while placing;
+/// the popup Deploy button resets it to the near-square default.
+function grid_footprint(ctrl, _n) {
+    var _fw = clamp(ctrl.placing_w, 1, max(1, _n));
     var _fh = max(1, ceil(_n / _fw));
     return [_fw, _fh];
 }
@@ -417,7 +419,7 @@ function grid_placement_valid(ctrl, _ac, _ar) {
     if (_n <= 0) {
         return false;
     }
-    var _fp = grid_footprint(_n);
+    var _fp = grid_footprint(ctrl, _n);
     var _all_tp = true;
     for (var _i = 0; _i < _n; _i++) {
         if (!ctrl.squads[ctrl.placing_list[_i]].teleport) {
@@ -446,7 +448,7 @@ function grid_place_formation(ctrl, _ac, _ar) {
         return false;
     }
     var _n = array_length(ctrl.placing_list);
-    var _fp = grid_footprint(_n);
+    var _fp = grid_footprint(ctrl, _n);
     var _s0 = ctrl.squads[ctrl.placing_list[0]];
     var _fi = grid_new_formation(ctrl, grid_unit_def(_s0.type_key).letter);
     var _cost = 0;
@@ -938,8 +940,9 @@ function grid_buttons(ctrl) {
     array_push(_b, { bx: 16, by: 696, bw: 248, bh: 56, bid: "start", blabel: "BEGIN BATTLE", benabled: _deploy && grid_any_deployed(ctrl) });
 
     // battle controls
+    var _spd = (ctrl.speed_mult == 0.5) ? "0.5" : string(ctrl.speed_mult);
     array_push(_b, { bx: 1344, by: 740, bw: 248, bh: 44, bid: "pause", blabel: ctrl.paused ? "Resume" : "Pause", benabled: _battle });
-    array_push(_b, { bx: 1344, by: 793, bw: 248, bh: 44, bid: "speed", blabel: $"Speed x{ctrl.speed_mult}", benabled: _battle });
+    array_push(_b, { bx: 1344, by: 793, bw: 248, bh: 44, bid: "speed", blabel: $"Speed x{_spd}", benabled: _battle });
     array_push(_b, { bx: 1344, by: 846, bw: 248, bh: 44, bid: "exit", blabel: (ctrl.exit_arm > 0) ? "Confirm Exit" : "Exit Battle", benabled: true });
 
     // context order buttons in the free space area (design point 9)
