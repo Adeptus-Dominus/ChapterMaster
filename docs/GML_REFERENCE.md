@@ -159,21 +159,12 @@ GML has three primary runtime scopes. At runtime, variable names are resolved in
 
 ### Local Scope
 
-- Created by function or event body.
-- Control-flow constructs (`if`, `for`, `switch`, `try`) do **not** create a new local scope.
-
-```gml
-function example() {
-    for (var i = 0; i < 10; i++) {
-        var _inner = i;
-    }
-    // _inner is accessible here! (unlike JS let)
-}
-```
+- Bound to the current function body or event.
+- Control-flow blocks (`if`, `for`, `switch`, `try`) do **not** create a new local scope.
 
 ### Instance Scope
 
-- Created by events and structs.
+- Bound to the executing object instance or struct.
 
 **Context Keywords: `self` and `other`**
 
@@ -196,7 +187,7 @@ Their behavior is context-dependent:
 
 ### Global Scope
 
-- Global functions, `global.` struct, and constants live here.
+- Global functions (scripts), `global.` struct, and `enums` are accessible from anywhere in the code.
 
 ---
 
@@ -207,81 +198,39 @@ While scope defines *where* a variable can be accessed, GML features distinct ca
 ### Local
 
 - Declared with `var`.
-- Scoped to the **function body**, not to individual blocks.
+- Scoped to the **function or event body**, not to individual blocks.
 - Exists only during the current function or event execution.
 
 ### Instance
 
-Declared without a keyword (e.g., `hp = 100;`) or via context (`self.hp = 100;`). Tied to the lifetime of the specific instance or struct executing the code.
+- Declared without a keyword (e.g., `hp = 100;`) or via context (`self.hp = 100;`).
+- Bound to the lifetime of the specific instance or struct.
 
 ### Static
 
-The `static` keyword declares a variable or method that is initialized **only once**, on the very first call to the function, and persists across subsequent calls. Static variables are stored in the function's hidden "static struct" rather than in the local scope.
-
-```gml
-function counter() {
-    static _count = 0; // Evaluated only on the first call
-    _count++;
-    return _count;
-}
-
-counter(); // returns 1
-counter(); // returns 2
-```
-
-**Initialization order & behavior:**
-- Static variable initializers run at the **very top** of the function body, *before* any other code executes. This means they are always evaluated regardless of conditionals, wrapping them in an `if` statement does nothing to prevent their initialization.
-- You can reference a static variable before its declaration line in the same function due to this top-of-function hoisting.
-
-**Accessing static variables from outside:**
-You can read a static variable from outside its function using dot syntax, but **you must call the function at least once first**, otherwise, the static struct does not yet exist:
-
-```gml
-counter();               // Must call it first to create the static struct
-show_debug_message(counter._count); // -> 1 (access via function name)
-```
-
-**Static Variables and Inheritance (Critical):**
-Unlike JS prototypes, static variables are strictly scoped to the constructor they are defined in. Child constructors have their own separate static scopes.
-- **Reading** a static variable from a child instance will traverse the inheritance chain to find the parent's static value if the child doesn't have its own.
-- **Writing** (assigning) to a static variable through a child context **creates or modifies a variable on the child's own static struct**, shadowing the parent and leaving the parent's value completely untouched.
-
-```gml
-function Parent() constructor {
-    static value = 10;
-}
-function Child() : Parent() constructor { }
-
-show_debug_message(Child.value); // -> 10 (reads from Parent)
-Child.value = 20;                // Writes to Child's OWN static struct
-show_debug_message(Parent.value);// -> 10 (Parent unchanged!)
-```
-
-**Static Methods:**
-You can also use `static` to define functions inside constructors. These methods are created only once (rather than re-created for every new instance), which saves memory and improves performance when you have many instances:
-
-```gml
-function Player() constructor {
-    static say_hello = function() {
-        show_debug_message("Hello!");
-    };
-}
-var _p1 = new Player();
-var _p2 = new Player();
-// _p1.say_hello and _p2.say_hello reference the exact same function.
-```
+- **Initialized Once** on the first function (`constructor` functions included) call and stored in the function's static struct.
+- **Persists** across calls without polluting instance memory.
+- **Hoisting:** Initializers run at the top of the function body before any standard code executes.
+- **External Access:** Accessible via `function_name.variable`, but the function **must execute at least once** first to instantiate its static struct.
+- **Inheritance:** Reading traverses child-to-parent static structs. Writing via a child constructor assigns directly to the child static struct without modifying the parent.
 
 ### Global
 
-Declared on the `global` struct (e.g., `global.score = 0;`). Accessible anywhere in the game. The `global` struct acts as a de facto application singleton.
+- Declared on the `global` struct (e.g., `global.score = 0;`).
+- Accessible from anywhere.
+- The `global` struct acts as a de facto application singleton.
+
+### Constant
+
+- **Enums:** Named integer constants.
 
 ### Compile-Time
 
-Not true variables in the runtime memory sense, but named values resolved at compile-time. They are globally available and not tied to any struct:
-- **Macros:** `#macro NAME value` - Compile-time textual replacement. (Do not use for arrays; each reference creates a new array instance).
-- **Enums:** Named integer constants.
+Not true variables in the runtime memory sense, but named values resolved at compile-time. They are globally available and not tied to any struct.
+
+- **Macros:** Compile-time textual replacement. Do not use for arrays; each reference creates a new array instance.
 - **Asset IDs:** References to objects, sprites, sounds, etc. (e.g., `obj_player`).
-- **Built-in function identifiers:** The names of globally hoisted script functions.
+- **Function identifiers:** The names of globally hoisted script functions.
 
 ---
 
@@ -295,7 +244,7 @@ function do_something(_arg1, _arg2) {
     return _arg1 + _arg2;
 }
 
-// Anonymous function
+// Anonymous function (method)
 var _fn = function(_x) { return _x * 2; };
 ```
 
@@ -468,6 +417,7 @@ Values start at 0 and auto-increment.
 
 - Compile-time textual replacement.
 - **Do not** use `#macro` for arrays - each reference creates a new array instance.
+- **Do not** add `=` during assignment, or `;` at the end.
 
 ---
 
