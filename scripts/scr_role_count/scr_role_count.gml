@@ -35,7 +35,7 @@ function scr_role_count(target_role, search_location = "", return_type = "count"
     if (coom >= 0) {
         for (var i = 0; i < array_length(obj_ini.TTRPG[coom]); i++) {
             var unit = obj_ini.TTRPG[coom][i];
-            if (unit.name() == "") {
+            if (!is_struct(unit) || unit.name() == "") {
                 continue;
             }
             if ((unit.role() == target_role) && (obj_ini.god[coom][i] < 10)) {
@@ -52,7 +52,7 @@ function scr_role_count(target_role, search_location = "", return_type = "count"
             for (var i = 0; i < array_length(obj_ini.TTRPG[com]); i++) {
                 var match = false;
                 var unit = fetch_unit([com, i]);
-                if (unit.name() == "") {
+                if (!is_struct(unit) || unit.name() == "") {
                     continue;
                 }
                 if ((unit.role() == target_role) && (search_location == "")) {

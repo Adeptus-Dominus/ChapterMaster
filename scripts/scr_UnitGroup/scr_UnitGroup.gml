@@ -611,6 +611,9 @@ function collect_role_group(group = SPECIALISTS_STANDARD, location = "", opposit
                 break;
             }
             _unit = fetch_unit([com, i]);
+            if (!is_struct(_unit)) {
+                continue;
+            }
 
             if (_conditions.evaluate(_unit)) {
                 array_push(_units, _unit);
@@ -777,9 +780,11 @@ function SearchConditions(data) constructor {
 
     static evaluate = function(unit) {
         self.unit = unit;
-        if (unit.name() == "") {
-            unit.base_group = "none";
-            // LOGGER.error($"Empty name! Unit:\n{unit}");
+        if (!is_struct(unit) || unit.name() == "") {
+            if (is_struct(unit)) {
+                unit.base_group = "none";
+                // LOGGER.error($"Empty name! Unit:\n{unit}");
+            }
             return false;
         }
 

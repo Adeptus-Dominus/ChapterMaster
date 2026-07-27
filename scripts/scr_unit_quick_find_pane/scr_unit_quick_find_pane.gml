@@ -73,7 +73,7 @@ function UnitQuickFindPanel() constructor {
     };
 
     static evaluate_unit_for_garrison_log = function(unit) {
-        if (unit.name() == "" || !unit.controllable()) {
+        if (!is_struct(unit) || unit.name() == "" || !unit.controllable()) {
             return;
         }
         var unit_location = unit.marine_location();
@@ -135,6 +135,10 @@ function UnitQuickFindPanel() constructor {
                 for (var u = 0; u < array_length(obj_ini.TTRPG[co]); u++) {
                     /// @type {Struct.TTRPG_stats}
                     var _unit = fetch_unit([co, u]);
+                    if (!is_struct(_unit)) {
+                        continue;
+                    }
+
                     evaluate_unit_for_garrison_log(_unit);
                 }
                 try {
