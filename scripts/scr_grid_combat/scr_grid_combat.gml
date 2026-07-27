@@ -1877,6 +1877,11 @@ function grid_exit(ctrl) {
     if (ctrl.pending_live && instance_exists(obj_ncombat)) {
         obj_controller.x = obj_ncombat.view_x;
         obj_controller.y = obj_ncombat.view_y;
+        // obj_ncombat Create swapped the map theme for the battle theme, and
+        // its Alarm_7 would normally swap it back. The grid skips that alarm,
+        // so the same two calls happen here.
+        audio_stop_sound(snd_battle);
+        audio_play_sound(snd_royal, 0, true);
         // The vanilla launch spawns its own battlefield units, which sit
         // deactivated while the grid runs and come back to life on reactivation.
         // Their Draw reaches into obj_ncombat, so they have to go before it does.
