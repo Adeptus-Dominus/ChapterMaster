@@ -268,38 +268,10 @@ function reload_items() {
 /// @param {Struct.EquipmentStruct} _armour_data
 /// @param {Struct.EquipmentStruct} _mobility_data
 /// @returns {Struct} { valid: bool, warning: string }
-function check_mobility_armour_compatibility(_armour_data, _mobility_data) {
-    var _result = {
-        valid: true,
-        warning: "",
-    };
-
-    if (is_struct(_armour_data) && is_struct(_mobility_data)) {
-        if (_armour_data.has_tag("terminator") && !_mobility_data.has_tag("terminator") && !_mobility_data.has_tag("terminator_only")) {
-            _result.valid = false;
-            _result.warning = "Cannot use this with Terminator Armour.";
-        } else if (!_armour_data.has_tag("terminator") && _mobility_data.has_tag("terminator_only")) {
-            _result.valid = false;
-            _result.warning = "Cannot use this without Terminator Armour.";
-        } else if (_armour_data.has_tag("dreadnought") && !_mobility_data.has_tag("dreadnought") && !_mobility_data.has_tag("dreadnought_only")) {
-            _result.valid = false;
-            _result.warning = "Cannot use this with Dreadnought Armour.";
-        } else if (!_armour_data.has_tag("dreadnought") && _mobility_data.has_tag("dreadnought_only")) {
-            _result.valid = false;
-            _result.warning = "Cannot use this without Dreadnought Armour.";
-        }
-    } else if (!is_struct(_armour_data) && is_struct(_mobility_data)) {
-        if (_mobility_data.has_tag("terminator") || _mobility_data.has_tag("terminator_only")) {
-            _result.valid = false;
-            _result.warning = "Cannot use this without Terminator Armour.";
-        } else if (_mobility_data.has_tag("dreadnought") || _mobility_data.has_tag("dreadnought_only")) {
-            _result.valid = false;
-            _result.warning = "Cannot use this without Dreadnought Armour.";
-        }
-    }
-
-    return _result;
-}
+// check_mobility_armour_compatibility used to live here. Upstream now defines its
+// own self-reading version in scr_unit_equip_functions and calls it with no
+// arguments, which collided with this two-argument copy. Ours had no callers
+// left, so it is dropped rather than kept as a duplicate name.
 
 /// @self Asset.GMObject.obj_popup
 function draw_popup_equip() {

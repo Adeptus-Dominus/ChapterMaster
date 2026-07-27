@@ -20,11 +20,13 @@ function scr_load(save_part, save_id) {
     if ((save_part == 1) || (save_part == 0)) {
         LOGGER.info("Loading GLOBALS");
         // Globals
-        var globals = obj_saveload.GameSave.Save;
-        scr_load_chapter_icon(globals.icon_name, true);
-        global.chapter_name = globals.chapter_name;
-        global.custom = globals.custom;
-        global.game_seed = globals.game_seed;
+        // Renamed from "globals": upstream added a script asset by that name, so
+        // it is now a reserved identifier and cannot be used as a local.
+        var _globals = obj_saveload.GameSave.Save;
+        scr_load_chapter_icon(_globals.icon_name, true);
+        global.chapter_name = _globals.chapter_name;
+        global.custom = _globals.custom;
+        global.game_seed = _globals.game_seed;
     }
 
     if ((save_part == 2) || (save_part == 0)) {
