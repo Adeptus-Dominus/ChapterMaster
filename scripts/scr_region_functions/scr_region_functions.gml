@@ -5720,24 +5720,28 @@ function region_can_assault_index(_star, _planet, _index) {
     // you would fight a full hostile army in ground the enemy does not hold, and winning
     // would then seize the region from your own allies. Landing to reinforce an ally is a
     // real idea, but it needs its own action, not the assault flow.
-    if ((_index >= 0) && (_index < _n)) {
-        var _owner_here = _regions[_index].owner;
-        if (_owner_here == eFACTION.PLAYER) {
-            return false;
-        }
-        if ((_owner_here == eFACTION.IMPERIUM) && (obj_controller.faction_status[eFACTION.IMPERIUM] != "War")) {
-            return false;
-        }
+    if ((_index >= 0) && (_index < _n) && region_owner_is_friendly(_star, _planet, _index)) {
+        return false;
     }
     if (planet_is_positional_siege(_star, _planet)) {
+        // Staging from allied ground. The forced beach landing assumes a WHOLLY hostile
+        // world: the safe zone is simply the highest-index region, and on a contested
+        // world that zone can already belong to your own side (Sotha I, where the
+        // Imperium held Sundered Coast). The gun rule then demanded a landing on the one
+        // region the allied-ground rule forbids, and nothing on the planet was
+        // attackable. If your side holds any region here you have your beachhead
+        // already: push inland from it.
+        if (planet_friendly_holds_any_region(_star, _planet)) {
+            return region_adjacent_to_friendly_hold(_star, _planet, _index);
+        }
         var _front = region_ground_front(_star, _planet);
         if (_front < 0) {
-            // No landing yet: only the safe landing zone can be assaulted (or bombarded clear).
+            // Wholly hostile world: only the safe landing zone can be assaulted (or bombarded clear).
             return (_index == planet_safe_landing_region(_star, _planet));
         }
         // Landed: graph-based advance. You may assault any region that BORDERS a region you already
         // hold (the adjacency graph replaces the old single-file line, so flanking is possible).
-        return region_adjacent_to_player_hold(_star, _planet, _index);
+        return region_adjacent_to_friendly_hold(_star, _planet, _index);
     }
     // Beachhead rule, every multi-region world: once boots are on the ground the campaign is
     // a front, not a menu of free strikes. A landing force that has not yet cleared its
@@ -5747,10 +5751,65 @@ function region_can_assault_index(_star, _planet, _index) {
     if (_beach >= 0) {
         return (_index == _beach);
     }
-    if (!planet_player_holds_any_region(_star, _planet)) {
-        return true; // no foothold anywhere: the first landing may go where it likes
+    if (!planet_friendly_holds_any_region(_star, _planet)) {
+        return true; // no friendly ground anywhere: the first landing may go where it likes
     }
-    return region_adjacent_to_player_hold(_star, _planet, _index);
+    return region_adjacent_to_friendly_hold(_star, _planet, _index);
+}
+
+/// @function region_owner_is_friendly
+/// @description True when this region is held by the chapter, or by the Imperium while you
+///              are not at war with it. Friendly ground is never a valid assault target and
+///              always counts as a staging base for pushing inland.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _index
+/// @returns {Bool}
+function region_owner_is_friendly(_star, _planet, _index) {
+    var _regions = regions_ensure(_star, _planet);
+    if ((_index < 0) || (_index >= array_length(_regions))) {
+        return false;
+    }
+    var _owner = _regions[_index].owner;
+    if (_owner == eFACTION.PLAYER) {
+        return true;
+    }
+    if ((_owner == eFACTION.IMPERIUM) && (obj_controller.faction_status[eFACTION.IMPERIUM] != "War")) {
+        return true;
+    }
+    return false;
+}
+
+/// @function planet_friendly_holds_any_region
+/// @description True when the chapter or a co-belligerent Imperium holds any region here.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @returns {Bool}
+function planet_friendly_holds_any_region(_star, _planet) {
+    var _regions = regions_ensure(_star, _planet);
+    for (var i = 0, l = array_length(_regions); i < l; i++) {
+        if (region_owner_is_friendly(_star, _planet, i)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/// @function region_adjacent_to_friendly_hold
+/// @description True if region _index borders any region your side holds, so the advance can
+///              stage from Imperial ground as readily as from the chapter's own footholds.
+/// @param {Id.Instance.obj_star} _star
+/// @param {Real} _planet
+/// @param {Real} _index
+/// @returns {Bool}
+function region_adjacent_to_friendly_hold(_star, _planet, _index) {
+    var _nb = region_neighbors(_star, _planet, _index);
+    for (var i = 0; i < array_length(_nb); i++) {
+        if (region_owner_is_friendly(_star, _planet, _nb[i])) {
+            return true;
+        }
+    }
+    return false;
 }
 
 /// @function region_contested_beachhead

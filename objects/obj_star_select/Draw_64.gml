@@ -470,7 +470,7 @@ try {
                     _allow_attack = false;
                     var _og_front = region_ground_front(target, obj_controller.selecting_planet);
                     var _focus_r = region_get(target, obj_controller.selecting_planet, _og_focus);
-                    if (_og_front < 0) {
+                    if ((_og_front < 0) && !planet_friendly_holds_any_region(target, obj_controller.selecting_planet)) {
                         var _safe_r = region_get(target, obj_controller.selecting_planet, planet_safe_landing_region(target, obj_controller.selecting_planet));
                         var _safe_nm = is_struct(_safe_r) ? _safe_r.name : "the outer approaches";
                         scr_popup("Orbital Gun Array", $"The capital's guns command the approaches. You must make planetfall at {_safe_nm} (the farthest zone) before you can push inland. Select that region, or bombard it to clear the way.", "");
