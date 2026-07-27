@@ -612,6 +612,18 @@ function collect_role_group(group = SPECIALISTS_STANDARD, location = "", opposit
             }
             _unit = fetch_unit([com, i]);
 
+            // A slot that does not hold a usable unit is skipped and named in
+            // the log rather than taking the whole Chapter Management screen
+            // down with it. evaluate calls unit.name() on its first line with no
+            // guard, and fetch_unit returns undefined when its lookup throws, so
+            // one bad slot anywhere in a company array crashes the roster walk.
+            // The slot is logged so the real cause can be found rather than
+            // guessed at next time.
+            if (!is_struct(_unit)) {
+                LOGGER.error($"Roster slot [{com}][{i}] holds {typeof(_unit)} instead of a unit. Skipped.");
+                continue;
+            }
+
             if (_conditions.evaluate(_unit)) {
                 array_push(_units, _unit);
             }
@@ -777,7 +789,16 @@ function SearchConditions(data) constructor {
 
     static evaluate = function(unit) {
         self.unit = unit;
-        if (unit.name() == "") {
+        // A struct that is not a built unit has no name method. Reading it here
+        // used to throw straight out of the Draw event; it is now a skip.
+        var _unit_name = "";
+        try {
+            _unit_name = unit.name();
+        } catch (_ex) {
+            LOGGER.error("Roster entry has no name method, skipped.");
+            return false;
+        }
+        if (_unit_name == "") {
             unit.base_group = "none";
             // LOGGER.error($"Empty name! Unit:\n{unit}");
             return false;
