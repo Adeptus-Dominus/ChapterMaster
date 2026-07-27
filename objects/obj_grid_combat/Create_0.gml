@@ -27,6 +27,14 @@ if (!variable_instance_exists(id, "pending_loc")) {
 if (!variable_instance_exists(id, "pending_live")) {
     pending_live = false;
 }
+// Formation editor snapshot: which line each unit type deploys on. Taken here
+// for the sandbox cheat, overwritten by the launcher for a live battle. It has
+// to be captured while obj_controller is active, since the grid deactivates
+// everything the moment it boots.
+if (!variable_instance_exists(id, "pending_columns")) {
+    pending_columns = grid_formation_columns();
+}
+
 // Campaign threat level (1 to 7). It sizes the enemy force, so it has to match
 // the number the after-battle pass spends against the planet.
 if (!variable_instance_exists(id, "pending_threat")) {

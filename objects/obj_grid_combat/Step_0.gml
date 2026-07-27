@@ -23,7 +23,7 @@ if (!boot_done) {
     if (pending_loc != "") {
         grid_log(id, $"Battle for {pending_loc}.", eMSG_COLOR.BRIGHT_BLUE);
     }
-    grid_log(id, $"The ground holds {combat_width} squads on the line. The rest follow as reserves.", eMSG_COLOR.BRIGHT_BLUE);
+    grid_log(id, $"Deployment: up to {GRIDC_PLAYER_DEPLOY_CAP} squads, six lines deep, laid out by your formation settings.", eMSG_COLOR.BRIGHT_BLUE);
     if (pending_live) {
         grid_log(id, "Live battle: these are your real companies and your losses are permanent.", eMSG_COLOR.YELLOW);
     }

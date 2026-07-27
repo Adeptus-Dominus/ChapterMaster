@@ -39,7 +39,13 @@
 #macro GRIDC_TILE_MAX 96
 #macro GRIDC_TICK_FRAMES 18
 #macro GRIDC_SCROLL_SPEED 14
+// Deployment depth. Six, to match the six columns of the formation editor, so a
+// unit's configured column is the line it lands on.
 #macro GRIDC_DEPLOY_COLS 6
+// How many squads the player may put on the line. Deliberately not the front
+// width: the front constrains the enemy horde, not a Chapter, which never has
+// enough bodies to need rationing.
+#macro GRIDC_PLAYER_DEPLOY_CAP 100
 #macro GRIDC_ENEMY_COLS 4
 #macro GRIDC_SGT_HIT_CHANCE 0.12
 #macro GRIDC_COVER_GOOD 0.70
@@ -667,7 +673,9 @@ function grid_gen_cover(ctrl) {
 
 /// @function grid_in_deploy_zone
 function grid_in_deploy_zone(ctrl, _c, _r) {
-    return ((_c >= 0) && (_c < GRIDC_DEPLOY_COLS) && (_r >= ctrl.band_r1) && (_r <= ctrl.band_r2));
+    // Full height, not the front-width band. The player deploys along the whole
+    // western edge; the band only decides where auto deploy starts laying out.
+    return ((_c >= 0) && (_c < GRIDC_DEPLOY_COLS) && (_r >= 0) && (_r < ctrl.rows));
 }
 
 /// @function grid_gen_player_pool
@@ -998,9 +1006,9 @@ function grid_place_formation(ctrl, _ac, _ar) {
     }
     // The ground, not a budget, decides how much can be brought to bear: only
     // combat_width squads fit on the line, and the rest wait in reserve.
-    if (grid_deployed_count(ctrl) + _n > ctrl.combat_width) {
-        var _room = max(0, ctrl.combat_width - grid_deployed_count(ctrl));
-        grid_log(ctrl, $"The front holds {ctrl.combat_width} squads: room for {_room} more.", eMSG_COLOR.YELLOW);
+    if (grid_deployed_count(ctrl) + _n > GRIDC_PLAYER_DEPLOY_CAP) {
+        var _room = max(0, GRIDC_PLAYER_DEPLOY_CAP - grid_deployed_count(ctrl));
+        grid_log(ctrl, $"Deployment limit is {GRIDC_PLAYER_DEPLOY_CAP} squads: room for {_room} more.", eMSG_COLOR.YELLOW);
         return false;
     }
     var _fi = grid_new_formation(ctrl, ctrl.squads[_list[0]].type);
@@ -1131,9 +1139,9 @@ function grid_place_formation_slots(ctrl, _slots) {
     if (!grid_slots_valid(ctrl, _list, _slots)) {
         return false;
     }
-    if (grid_deployed_count(ctrl) + _n > ctrl.combat_width) {
-        var _room = max(0, ctrl.combat_width - grid_deployed_count(ctrl));
-        grid_log(ctrl, $"The front holds {ctrl.combat_width} squads: room for {_room} more.", eMSG_COLOR.YELLOW);
+    if (grid_deployed_count(ctrl) + _n > GRIDC_PLAYER_DEPLOY_CAP) {
+        var _room = max(0, GRIDC_PLAYER_DEPLOY_CAP - grid_deployed_count(ctrl));
+        grid_log(ctrl, $"Deployment limit is {GRIDC_PLAYER_DEPLOY_CAP} squads: room for {_room} more.", eMSG_COLOR.YELLOW);
         return false;
     }
     var _fi = grid_new_formation(ctrl, ctrl.squads[_list[0]].type);
@@ -1193,37 +1201,55 @@ function grid_undeploy_formation(ctrl, _fi) {
 }
 
 /// @function grid_deploy_all
+/// @description Lays the whole force out the way the formation editor says it
+/// should fight. Each type goes to the line its configured column names, 6 at
+/// the front through 1 at the back, and the front line is filled first so the
+/// army builds forward to back rather than piling up at the rear. A type whose
+/// line is full spills to the line behind it rather than being left in reserve.
 function grid_deploy_all(ctrl) {
     var _types = grid_type_list();
-    var _any = false;
+
+    // Front first: sort by configured column, highest down to lowest.
+    var _order = [];
     for (var _i = 0; _i < array_length(_types); _i++) {
-        var _pool = grid_pool_indices(ctrl, _types[_i]);
-        if (array_length(_pool) <= 0) {
-            continue;
+        if (grid_pool_count(ctrl, _types[_i]) > 0) {
+            array_push(_order, _types[_i]);
         }
-        var _room = ctrl.combat_width - grid_deployed_count(ctrl);
-        if (_room <= 0) {
-            break;
-        }
-        var _afford = [];
-        for (var _k = 0; (_k < array_length(_pool)) && (_k < _room); _k++) {
-            array_push(_afford, _pool[_k]);
-        }
-        if (array_length(_afford) <= 0) {
-            continue;
-        }
-        ctrl.placing_list = _afford;
-        ctrl.placing_w = max(1, ceil(sqrt(array_length(_afford))));
-        var _done = false;
-        for (var _c2 = 0; (_c2 < GRIDC_DEPLOY_COLS) && !_done; _c2++) {
-            for (var _r2 = ctrl.band_r1; (_r2 <= ctrl.band_r2) && !_done; _r2++) {
-                if (grid_place_formation(ctrl, _c2, _r2)) {
-                    _done = true;
-                    _any = true;
-                }
+    }
+    for (var _a = 0; _a < array_length(_order); _a++) {
+        var _best = _a;
+        for (var _b = _a + 1; _b < array_length(_order); _b++) {
+            if (grid_type_column(ctrl, _order[_b]) > grid_type_column(ctrl, _order[_best])) {
+                _best = _b;
             }
         }
-        if (!_done) {
+        if (_best != _a) {
+            var _sw = _order[_a];
+            _order[_a] = _order[_best];
+            _order[_best] = _sw;
+        }
+    }
+
+    var _any = false;
+    for (var _t = 0; _t < array_length(_order); _t++) {
+        var _key = _order[_t];
+        var _pool = grid_pool_indices(ctrl, _key);
+        var _room = GRIDC_PLAYER_DEPLOY_CAP - grid_deployed_count(ctrl);
+        if ((array_length(_pool) <= 0) || (_room <= 0)) {
+            continue;
+        }
+        var _take = [];
+        for (var _k = 0; (_k < array_length(_pool)) && (_k < _room); _k++) {
+            array_push(_take, _pool[_k]);
+        }
+        var _slots = grid_column_slots(ctrl, grid_type_column(ctrl, _key), array_length(_take));
+        if (array_length(_slots) < array_length(_take)) {
+            continue;
+        }
+        ctrl.placing_list = _take;
+        if (grid_place_formation_slots(ctrl, _slots)) {
+            _any = true;
+        } else {
             ctrl.placing = false;
             ctrl.placing_list = [];
         }
@@ -1231,6 +1257,34 @@ function grid_deploy_all(ctrl) {
     if (!_any) {
         grid_log(ctrl, "No room left on the line.", eMSG_COLOR.YELLOW);
     }
+}
+
+/// @function grid_column_slots
+/// @description Free tiles down one deployment line, spreading out from the
+/// middle of the field so a formation sits centred rather than crammed against
+/// the top edge. Runs out of room on its own line and it steps back a line,
+/// never forward, so nothing is pushed in front of the troops meant to screen it.
+function grid_column_slots(ctrl, _col, _n) {
+    var _slots = [];
+    var _mid = floor(ctrl.rows / 2);
+    for (var _c = _col; (_c >= 0) && (array_length(_slots) < _n); _c--) {
+        for (var _step = 0; (_step < ctrl.rows) && (array_length(_slots) < _n); _step++) {
+            // 0, -1, +1, -2, +2 ... outward from the centre line.
+            var _off = ((_step + 1) div 2) * (((_step mod 2) == 0) ? 1 : -1);
+            var _r = _mid + _off;
+            if (!grid_in_bounds(ctrl, _c, _r)) {
+                continue;
+            }
+            if (ctrl.occ[_c][_r] != -1) {
+                continue;
+            }
+            if (!grid_in_deploy_zone(ctrl, _c, _r)) {
+                continue;
+            }
+            array_push(_slots, [_c, _r]);
+        }
+    }
+    return _slots;
 }
 
 // ---------------------------------------------------------------------------
@@ -2887,6 +2941,54 @@ function grid_collect_blocks() {
     return _out;
 }
 
+/// @function grid_formation_columns
+/// @description Snapshot of the player's formation editor: the column each unit
+/// type is set to fight in, 1 at the back through 6 at the front. Taken while
+/// obj_controller is still active, because the grid deactivates everything on
+/// boot and cannot read it afterwards. Falls back to the game's own defaults.
+function grid_formation_columns() {
+    var _c = {
+        tactical: 4, assault: 5, devastator: 3, veteran: 3, terminator: 5,
+        assault_term: 5, scout: 3, hq: 2, guardsmen: 3, heavy_weapons: 3,
+        dreadnought: 6, rhino: 6, chimera: 6, predator: 6, land_raider: 6,
+        land_speeder: 5, whirlwind: 1,
+    };
+    if (!instance_exists(obj_controller)) {
+        return _c;
+    }
+    with (obj_controller) {
+        _c.tactical = bat_tactical_column;
+        _c.assault = bat_assault_column;
+        _c.devastator = bat_devastator_column;
+        _c.veteran = bat_veteran_column;
+        _c.terminator = bat_terminator_column;
+        _c.assault_term = bat_terminator_column;
+        _c.scout = bat_scout_column;
+        _c.hq = bat_command_column;
+        _c.guardsmen = bat_hire_column;
+        _c.heavy_weapons = bat_hire_column;
+        _c.dreadnought = bat_dreadnought_column;
+        _c.rhino = bat_rhino_column;
+        _c.chimera = bat_rhino_column;
+        _c.predator = bat_predator_column;
+        _c.land_raider = bat_landraider_column;
+        _c.land_speeder = bat_landspeeder_column;
+        _c.whirlwind = bat_whirlwind_column;
+    }
+    return _c;
+}
+
+/// @function grid_type_column
+/// @description The deploy column index a type belongs on, 0 at the back through
+/// GRIDC_DEPLOY_COLS-1 at the front, from the snapshot taken at launch.
+function grid_type_column(ctrl, _key) {
+    var _col = 3;
+    if (is_struct(ctrl.pending_columns) && variable_struct_exists(ctrl.pending_columns, _key)) {
+        _col = ctrl.pending_columns[$ _key];
+    }
+    return clamp(_col - 1, 0, GRIDC_DEPLOY_COLS - 1);
+}
+
 /// @function grid_take_over
 /// @description Hands a fully built vanilla battle to the grid. obj_ncombat is
 /// silenced and hidden but kept alive, since it is what the resolution pass
@@ -2912,6 +3014,7 @@ function grid_take_over(_nc) {
     _gc.pending_enemy = string(_nc.enemy);
     _gc.pending_threat = _threat;
     _gc.pending_loc = _loc;
+    _gc.pending_columns = grid_formation_columns();
     _gc.pending_live = true;
     return true;
 }
@@ -3454,7 +3557,7 @@ function grid_enemy_set(_faction) {
 /// This is what stops a huge chapter from swamping a narrow front: everyone
 /// still fights, just in sequence rather than all at once.
 function grid_reinforce(ctrl) {
-    var _free = ctrl.combat_width - grid_deployed_count(ctrl);
+    var _free = GRIDC_PLAYER_DEPLOY_CAP - grid_deployed_count(ctrl);
     if (_free <= 0) {
         return 0;
     }
