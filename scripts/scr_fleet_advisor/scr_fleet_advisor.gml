@@ -23,7 +23,9 @@ function scr_fleet_advisor() {
         return;
     }
     var cn = id;
-    
+
+    var _blurp = "";
+
     if (menu_adept == 0) {
         if (struct_exists(ini.custom_advisors, "admiral")) {
             scr_image("advisor/splash", ini.custom_advisors.admiral, xx + 16, yy + 43, 310, 828);
@@ -36,7 +38,7 @@ function scr_fleet_advisor() {
         draw_text_transformed(xx + 352, yy + 66, "Flagship Bridge", 1, 1, 0);
         draw_text_transformed(xx + 352, yy + 100, $"Master of the Fleet {ini.lord_admiral_name}", 0.6, 0.6, 0);
         draw_set_font(fnt_40k_14);
-        blurp = "Greetings, Chapter Master.\n\nYou requested a report?  Our fleet contains ";
+        _blurp = "Greetings, Chapter Master.\n\nYou requested a report?  Our fleet contains ";
     }
     if (menu_adept == 1) {
         scr_image("advisor/splash", 1, xx + 16, yy + 43, 310, 828);
@@ -46,38 +48,38 @@ function scr_fleet_advisor() {
         draw_text_transformed(xx + 352, yy + 40, "Flagship Bridge", 1, 1, 0);
         draw_text_transformed(xx + 352, yy + 100, $"Adept {cn.adept_name}", 0.6, 0.6, 0);
         draw_set_font(fnt_40k_14);
-        blurp = "Your fleet contains ";
+        _blurp = "Your fleet contains ";
     }
 
-    blurp += string(temp[37]) + " Capital Ships, ";
-    blurp += string(temp[38]) + " Frigates, and ";
-    blurp += string(temp[39]) + " Escorts";
+    _blurp += string(temp[37]) + " Capital Ships, ";
+    _blurp += string(temp[38]) + " Frigates, and ";
+    _blurp += string(temp[39]) + " Escorts";
 
-    va = real(temp[41]);
+    var _hull_normalized = real(temp[41]);
 
-    if (va >= 1) {
-        blurp += ", none of which are damaged.";
-    }
-    if (va < 1) {
-        blurp += $".  Our most damaged vessel is the {temp[40]} - it has {min(99, round(va * 100))}% Hull Integrity.";
+    if (_hull_normalized >= 1) {
+        _blurp += ", none of which are damaged.";
+    } else if (_hull_normalized < 1) {
+        _blurp += $".  Our most damaged vessel is the {temp[40]} - it has {min(99, round(_hull_normalized * 100))}% Hull Integrity.";
     }
 
-    va = real(temp[42]);
-    if (va == 2) {
-        blurp += "  Two of our ships are highly damaged.  You may wish to purchase a Repair License from the Sector Governerner.";
+    var _crippled_ships = real(temp[42]);
+
+    if (_crippled_ships == 2) {
+        _blurp += "  Two of our ships are highly damaged.  You may wish to purchase a Repair License from the Sector Governerner.";
+    } else if (_crippled_ships > 2) {
+        _blurp += "  Several of our ships are highly damaged.  It is advisable that you purchase a Repair License from the Sector Governer.";
     }
-    if (va > 2) {
-        blurp += "  Several of our ships are highly damaged.  It is advisable that you purchase a Repair License from the Sector Governer.";
-    }
-    blurp += "\n\nHere are the current positions of our ships and their contents:";
+
+    _blurp += "\n\nHere are the current positions of our ships and their contents:";
 
     if (menu_adept == 1) {
-        blurp = string_replace(blurp, "Our", "Your");
-        blurp = string_replace(blurp, " our", " your");
-        blurp = string_replace(blurp, "We", "You");
+        _blurp = string_replace(_blurp, "Our", "Your");
+        _blurp = string_replace(_blurp, " our", " your");
+        _blurp = string_replace(_blurp, "We", "You");
     }
 
-    draw_text_ext(xx + 352, yy + 130, blurp, -1, 536);
+    draw_text_ext(xx + 352, yy + 130, _blurp, -1, 536);
 
     draw_set_font(fnt_40k_30b);
     draw_set_halign(fa_center);
