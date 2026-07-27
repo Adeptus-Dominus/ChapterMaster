@@ -425,17 +425,29 @@ Values start at 0 and auto-increment.
 
 Primitives have no internal methods; use library functions instead.
 
-**Strings:**
-`string_length`, `string_copy`, `string_pos`, `string_repeat`, `string_upper`, `string_lower`, `string_hash_to_newline`, `string_delete`, `string_insert`, `string_replace`, `string_count`
+### Strings
 
-**Arrays:**
-`array_length`, `array_push`, `array_pop`, `array_sort`, `array_shift`, `array_unshift`, `array_resize`, `array_copy`, `array_create`, `array_equals`, `array_filter`, `array_map`, `array_reduce`, `array_find`
+string_length, string_copy, string_pos, string_repeat, string_upper, string_lower, string_hash_to_newline, string_delete, string_insert, string_replace, string_count, string, string_ext, ansi_char, chr, ord, string_byte_at, string_byte_length, string_set_byte_at, string_char_at, string_ord_at, string_pos_ext, string_last_pos, string_last_pos_ext, string_starts_with, string_ends_with, string_digits, string_format, string_letters, string_lettersdigits, string_replace_all, string_trim, string_trim_start, string_trim_end, string_split, string_split_ext, string_join, string_join_ext, string_concat, string_concat_ext, string_width, string_width_ext, string_height, string_height_ext, string_foreach
 
-**Math:**
-`min`, `max`, `abs`, `round`, `floor`, `ceil`, `clamp`, `lerp`, `sin`, `cos`, `tan`, `darcsin`, `darccos`, `darctan`, `point_distance`, `point_direction`, `random`, `irandom`, `random_range`, `irandom_range`
+### Arrays
 
-**Type checking/conversion:**
-`typeof(x)` (function, not operator), `is_instanceof(x, Constructor)` (checks inheritance chain), `instanceof(x)` (gets the constructor used to create a struct), `bool(x)`, `is_array(x)`, `is_bool(x)`, `is_string(x)`, `is_numeric(x)`, `is_struct(x)`, `is_undefined(x)`, `is_ptr(x)`, `is_int32(x)`, `is_int64(x)`, `is_handle(x)`, `is_method(x)`, `is_callable(x)`
+array_length, array_push, array_pop, array_sort, array_shift, array_resize, array_copy, array_create, array_equals, array_filter, array_map, array_reduce, array_get, array_set, array_insert, array_delete, array_get_index, array_contains, array_contains_ext, array_reverse, array_shuffle, array_first, array_last, array_find_index, array_any, array_all, array_foreach, array_concat, array_union, array_intersection, array_unique, array_copy_while, array_create_ext, array_filter_ext, array_map_ext, array_unique_ext, array_reverse_ext, array_shuffle_ext
+
+### Structs
+
+struct_exists, struct_get, struct_set, struct_remove, struct_get_names, struct_names_count, struct_foreach, struct_get_from_hash, struct_set_from_hash, struct_exists_from_hash, struct_remove_from_hash, variable_get_hash, variable_clone
+
+### Math
+
+min, max, abs, round, floor, ceil, clamp, lerp, sin, cos, tan, darcsin, darccos, darctan, point_distance, point_direction, random, irandom, random_range, irandom_range, choose, randomise, random_set_seed, random_get_seed, frac, sign, mean, median, math_set_epsilon, math_get_epsilon, exp, ln, power, sqr, sqrt, log2, log10, logn
+
+### Variables
+
+variable_instance_exists, variable_instance_get_names, variable_instance_names_count, variable_instance_get, variable_instance_set, variable_global_exists, variable_global_get, variable_global_set
+
+### Type checking/conversion
+
+typeof(x) (function, not operator), is_instanceof(x, Constructor) (checks inheritance chain), instanceof(x) (gets the constructor used to create a struct), bool(x), is_array(x), is_bool(x), is_string(x), is_numeric(x), is_struct(x), is_undefined(x), is_ptr(x), is_int32(x), is_int64(x), is_handle(x), is_method(x), is_callable(x), is_real, is_nan, is_infinity, real, ptr, ref_create, int64, handle_parse
 
 ---
 
