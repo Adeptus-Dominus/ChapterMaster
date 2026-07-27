@@ -1877,6 +1877,15 @@ function grid_exit(ctrl) {
     if (ctrl.pending_live && instance_exists(obj_ncombat)) {
         obj_controller.x = obj_ncombat.view_x;
         obj_controller.y = obj_ncombat.view_y;
+        // The vanilla launch spawns its own battlefield units, which sit
+        // deactivated while the grid runs and come back to life on reactivation.
+        // Their Draw reaches into obj_ncombat, so they have to go before it does.
+        with (obj_pnunit) {
+            instance_destroy();
+        }
+        with (obj_enunit) {
+            instance_destroy();
+        }
         with (obj_ncombat) {
             instance_destroy();
         }
