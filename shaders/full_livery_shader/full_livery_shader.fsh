@@ -36,6 +36,8 @@ varying vec4 v_vColour;
 // === SHADOW AUGMENT: new uniforms ===
 uniform sampler2D shadow_texture;
 uniform int use_shadow;
+uniform int metallic_shine;
+uniform int paint_shine;
 varying vec2 v_vShadowCoord;
 
 // === Utility: RGB <-> HSV ===
@@ -153,6 +155,8 @@ void main() {
     const float _218COL = 218.0 / 255.0;
     const float _230COL = 230.0 / 255.0;
 
+    int use_shine_metallic_mod = 0;
+
     vec4 col_orig = texture2D(gm_BaseTexture, v_vTexcoord);
     if (col_orig.rgba == vec4(0.0, 0.0, 0.0, 0.0)) {
         discard;
@@ -189,16 +193,20 @@ void main() {
     } else if (col.rgb == vec3(_64COL, _128COL, 1.0).rgb) {
         col.rgb = right_muzzle.rgb;
     } else if (col.rgb == vec3(0.0, 1.0, 0.0).rgb) {
+        use_shine_metallic_mod = 1;
         col.rgb = eye_lense.rgb;
     } else if (col.rgb == vec3(1.0, _20COL, _147COL).rgb) {
         col.rgb = right_chest.rgb;
     } else if (col.rgb == vec3(_128COL, 0.0, _128COL).rgb) {
         col.rgb = left_chest.rgb;
     } else if (col.rgb == vec3(0.0, _128COL, _128COL).rgb) {
+        use_shine_metallic_mod = 1;
         col.rgb = right_trim.rgb;
     } else if (col.rgb == vec3(1.0, _128COL, 0.0).rgb) {
+        use_shine_metallic_mod = 1;
         col.rgb = left_trim.rgb;
     } else if (col.rgb == vec3(_135COL, _130COL, _188COL).rgb) {
+        use_shine_metallic_mod = 1;
         col.rgb = metallic_trim.rgb;
     } else if (col.rgb == vec3(1.0, 1.0, 1.0).rgb) {
         col.rgb = right_pauldron.rgb;
@@ -269,8 +277,13 @@ void main() {
         vec4 shadow_col = texture2D(shadow_texture, v_vShadowCoord);
         float intensity = shadow_col.r;
 
-        // Remap: 0 = shadow, 0.5 = neutral, 1 = highlight
-        float shadow_factor = 1.0 + (intensity - 0.5);
+        float shine_scale = 1.0;
+        if (use_shine_metallic_mod == 1){
+            shine_scale = float(metallic_shine) / 3.0;
+        } else if (use_shine_metallic_mod != 1){
+            shine_scale = float(paint_shine) / 3.0;
+        }
+        float shadow_factor = 1.0 + (intensity - 0.5) * shine_scale;
 
         col.rgb = light_or_dark(col.rgb, shadow_factor, 85.0);
     }

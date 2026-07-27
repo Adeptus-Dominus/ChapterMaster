@@ -458,9 +458,7 @@ function scr_creation(slide_num) {
             }
 
             instance_create(0, 0, obj_ini);
-            audio_stop_all();
-            audio_play_sound(snd_royal, 0, true);
-            audio_sound_gain(snd_royal, 1, 5000);
+            global.audio_manager.play_playlist(CONTEXT_SECTOR, 5000);
 
             if (founding == eCHAPTERS.SALAMANDERS || global.chapter_id == eCHAPTERS.SALAMANDERS) {
                 obj_ini.skin_color = 1;

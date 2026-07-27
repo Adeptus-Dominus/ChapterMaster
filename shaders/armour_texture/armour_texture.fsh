@@ -15,6 +15,8 @@ uniform vec3 blend_colour;
 uniform sampler2D shadow_texture;
 uniform int use_shadow;
 varying vec2 v_vShadowCoord;
+uniform int metallic_shine;
+uniform int paint_shine;
 
 // === Utility: RGB <-> HSV ===
 vec3 rgb2hsv(vec3 c) {
@@ -159,8 +161,8 @@ void main() {
             vec4 shadow_col = texture2D(shadow_texture, v_vShadowCoord);
             float intensity = shadow_col.r;
 
-            // Remap: 0 = shadow, 0.5 = neutral, 1 = highlight
-            float shadow_factor = 1.0 + (intensity - 0.5);
+            float shine_scale = float(paint_shine) / 3.0;
+            float shadow_factor = 1.0 + (intensity - 0.5) * shine_scale;
 
             col.rgb = light_or_dark(col.rgb, shadow_factor, 85.0);
         }

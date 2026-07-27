@@ -334,7 +334,7 @@ function setup_chapter_traits() {
 function ChapterGameData(data = {}) constructor {
     chapter_suspicion = 0;
 
-    faction_disp_mods = array_create(14, {"int_mod": 0, "mult": 1});
+    faction_disp_mods = array_create(eFACTION._COUNT, {"int_mod": 0, "mult": 1});
 
     equipment_tag_mods = {};
 

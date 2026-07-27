@@ -515,188 +515,27 @@
 #macro STR_ANY_POWER_ARMOUR "Any Power Armour"
 #macro STR_ANY_TERMINATOR_ARMOUR "Any Terminator Armour"
 
-//slots align with enum eEQUIPMENT_SLOT ordering for cross compatability
-#macro UNIT_EQUIP_SLOTS [ "wep1", "wep2", "armour", "gear", "mobi", "all"]
-
-
-#macro UNIT_EQUIP_SLOTS_DISPLAY [ "First Weapon", "Second Weapon", "Armour", "Gear", "Back/Mobility", "ALL"]
-
-#macro EQUIPMENT_QUALITIES ["shoddy", "standard", "master_crafted", "artifact"]
-
-// Basic, because we don't include Artificer Armour
-global.list_basic_power_armour = ["MK7 Aquila", "MK6 Corvus", "MK5 Heresy", "MK8 Errant", "MK4 Maximus", "MK3 Iron Armour","Power Armour"];
-global.list_terminator_armour = ["Terminator Armour", "Tartaros","Cataphractii"];
-global.faction_names = ["","Your Chapter", "Imperium of Man","Adeptus Mechanicus","Inquisition","Ecclesiarchy","Eldar","Orks", "Tyranid Hive","Tau Empire","Chaos","Heretics","Genestealer Cults", "Necron Dynasties"];
-global.xenos_factions = [6,7,8,9];
-
-global.fleet_move_options = ["move", "crusade1","crusade2","crusade3", "mars_spelunk1"];
-
-global.alliance_grades = ["Hated", "Hostile","Suspicious","Uneasy","Neutral","Allies","Close Allies","Battle Brothers"];
-
 #macro SHIP_WEAPON_SLOTS 8
+#macro STANDARD_EQUIP_SLOT_COUNT 5
 
-enum eFACTION {
-    NONE = 0,
-    PLAYER = 1,
-    IMPERIUM,
-    MECHANICUS,
-    INQUISITION,
-    ECCLESIARCHY,
-    ELDAR,
-    ORK,
-    TAU,
-    TYRANIDS,
-    CHAOS,
-    HERETICS,
-    GENESTEALER,
-    NECRONS = 13,
-    // Sentinel: number of faction slots. Added by upstream (the fleet presence rebuild
-    // iterates 0.._COUNT-1); keep it LAST so every named value above stays unchanged.
-    _COUNT
-}
+#macro PATH_SAVE_FILES "Save Files/save{0}.json"
+#macro PATH_AUTOSAVE_FILE "Save Files/save0.json"
+#macro PATH_CUSTOM_ICONS "Custom Files/Custom Icons/"
+#macro PATH_CHAPTER_ICONS working_directory + "/images/creation/chapters/icons/"
+#macro PATH_INCLUDED_ICONS working_directory + "/images/creation/customicons/"
+#macro PATH_LOG_DIRECTORY "Logs/"
+#macro LAST_MESSAGES_LOG "last_messages.log"
+#macro PATH_LAST_MESSAGES PATH_LOG_DIRECTORY + LAST_MESSAGES_LOG
+#macro PATH_HELP_INI "main/help.ini"
 
-
-enum eGENDER {
-    FEMALE,
-    MALE,
-    NEUTRAL
-}
-
-function set_gender(){
-    return choose(eGENDER.FEMALE, eGENDER.MALE);
-}
-enum eROLE {
-    NONE = 0,
-    CHAPTERMASTER = 1,
-    HONOURGUARD = 2,
-    VETERAN = 3,
-    TERMINATOR = 4,
-    CAPTAIN = 5,
-    DREADNOUGHT = 6,
-    CHAMPION = 7,
-    TACTICAL = 8,
-    DEVASTATOR = 9,
-    ASSAULT = 10,
-    ANCIENT = 11,
-    SCOUT = 12,
-    BIKER = 13,
-    CHAPLAIN = 14,
-    APOTHECARY = 15,
-    TECHMARINE = 16,
-    LIBRARIAN = 17,
-    SERGEANT = 18,
-    VETERANSERGEANT = 19,
-    ATTACK_BIKER = 20,
-    LANDRAIDER = 50,
-    RHINO = 51,
-    PREDATOR = 52,
-    LANDSPEEDER = 53,
-    WHIRLWIND = 54
-}
-enum eMENU {
-    DEFAULT = 0,
-    MANAGE = 1,
-    TURN_END = 2,
-    WELCOME_SCREEN1 = 3,
-    WELCOME_SCREEN2 = 4,
-    WELCOME_SCREEN3 = 5,
-    WELCOME_SCREEN4 = 6,
-    APOTHECARION = 11,
-    RECLUSIAM = 12,
-    LIBRARIUM = 13,
-    ARMAMENTARIUM = 14,
-    RECRUITING = 15,
-    FLEET = 16,
-    EVENT_LOG = 17,
-    FESTIVAL = 18,
-    DIPLOMACY = 20,
-    SETTINGS = 21,
-    COMPANY_SETTINGS = 22,
-    ROLE_SETTINGS = 23,
-    FORMATIONS_SETTINGS = 24,
-    GAME_HELP = 30,
-    CHAPTER_MASTER = 50,
-    SECRET_LAIR = 60
-}
-
-enum eLUCK {
-    BAD = -1,
-    NEUTRAL = 0,
-    GOOD = 1
-}
-
-enum eINQUISITION_MISSION {
-    PURGE,
-    INQUISITOR,
-    SPYRER,
-    ARTIFACT,
-    TOMB_WORLD,
-    TYRANID_ORGANISM,
-    ETHEREAL,
-    DEMON_WORLD,
-    RANDOM = 100,
-}
-
-enum eEVENT {
-    //GOOD
-    SPACE_HULK,
-    PROMOTION,
-    STRANGE_BUILDING,
-    SORORITAS,
-    ROGUE_TRADER,
-    INQUISITION_MISSION,
-    INQUISITION_PLANET,
-    MECHANICUS_MISSION,
-    //NEUTRAL
-    STRANGE_BEHAVIOR,
-    FLEET_DELAY,
-    HARLEQUINS,
-    SUCCESSION_WAR,
-    RANDOM_FUN,
-    //BAD
-    WARP_STORMS,
-    ENEMY_FORCES,
-    CRUSADE,
-    ENEMY,
-    MUTATION,
-    SHIP_LOST,
-    CHAOS_INVASION,
-    NECRON_AWAKEN,
-    FALLEN,
-    //END
-    NONE
-}
-
-enum eIN_GAME_MENU_EFFECT {
-    SAVE = 11,
-    LOAD = 12,
-    OPTIONS = 13,
-    EXIT = 14,
-    RETURN = 15,
-    BACK_FROM_SAVELOAD = 18,
-    BACK_FROM_SETTINGS = 25,
-    CLOSE_SAVELOAD = 30
-}
-
-// Overkill spill from a wiped enemy formation only reaches a formation standing
-// directly behind it (touching columns, 10px apart; 15 tolerates float jitter). An
-// air gap stops the spill: neither hammer blows nor the torrent of fire leap across
-// open ground to a formation two rows back.
+// Fork-only combat macros. The enums that used to sit here moved to
+// scripts\enums upstream, but these never existed there, and scr_shoot plus
+// the three battlefield Draw events read them.
 #macro OVERKILL_SPILL_MAX_GAP 15
-
-// Battle formation box (the green-framed battlefield on the right half of the combat
-// screen) and the vertical center the formation columns build around. The box was a
-// fixed 235..666 (431 tall) while a single column is 400 tall centered on 450 and a
-// STACK of formations in one column sums all its segments, so multi-segment stacks
-// overflowed the frame top and bottom (tester screenshot). Enlarged to use nearly the
-// full 900-tall screen, and columns/stacks now build around BATTLE_FIELD_CY and clamp
-// to BATTLE_FIELD_H (see obj_pnunit / obj_enunit Draw, and the frame in Draw_0).
 #macro BATTLE_FIELD_X1 818
 #macro BATTLE_FIELD_X2 1578
 #macro BATTLE_FIELD_Y1 40
 #macro BATTLE_FIELD_Y2 838
 #macro BATTLE_FIELD_CY 439
 #macro BATTLE_FIELD_H  798
-// Largest a single formation segment draws; a stack taller than the field is scaled to
-// fit so every segment stays visible and clickable instead of spilling past the frame.
 #macro BATTLE_SEG_MAX 400

@@ -1,5 +1,3 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 /// @self Struct.NewPlanetFeature
 function scr_ancient_ruins_setup() {
     var ruin_data = choose(["tiny", 5], ["small", 15], ["medium", 55], ["large", 110], ["sprawling", 0]);
@@ -34,8 +32,6 @@ function scr_ruins_suprise_attack_player() {
 
         obj_ncombat.man_size_limit = man_size_limit;
 
-        //that_one=instance_nearest(0,0,obj_star);
-        // instance_activate_object(obj_star);
         _roster = new Roster();
         with (_roster) {
             roster_location = obj_ground_mission.loc;
@@ -150,8 +146,7 @@ function scr_ruins_recover_from_dead() {
     }
     unrecovered_items = false;
     recoverable_gene_seed = 0;
-    var _recoverables = [];
-    recoverables = _recoverables;
+    recoverables = [];
     planet_display = "Unexplored Ancient Ruins";
 }
 
@@ -254,12 +249,6 @@ function scr_explore_ruins() {
                     choice_func: function() {
                         // Return to ship, exit
                         scr_return_ship(obj_ini.ship[obj_ground_mission.ship_id], obj_ground_mission, obj_ground_mission.num);
-                        var man_size, ship_id, comp, plan, i;
-                        ship_id = 0;
-                        man_size = 0;
-                        comp = 0;
-                        plan = 0;
-                        ship_id = obj_ground_mission.ship_id;
                         obj_controller.menu = 0;
                         obj_controller.managing = 0;
                         obj_controller.cooldown = 10;
@@ -283,14 +272,12 @@ function ruins_exploration_main_sequence() {
     // Begin
     /// @type {Struct.NewPlanetFeature}
     var _ruins = obj_ground_mission.explore_feature;
-    var ruins_battle = 0, ruins_fact = 0, ruins_disp = 0, ruins_reward = 0, dice, battle_threat = 0;
+    var battle_threat = 0;
 
     _ruins.determine_race();
 
-    dice = roll_dice_chapter(1, 100, "high");
-    ruins_battle = dice <= 50;
-
-    // ruins_battle=1;
+    var dice = roll_dice_chapter(1, 100, "high");
+    var ruins_battle = dice <= 50;
 
     if (ruins_battle == 1) {
         dice = roll_dice_chapter(1, 100, "low");
@@ -398,15 +385,12 @@ function scr_check_for_ruins_exploration() {
     }
 }
 
-// show_message("so far so good, defeat:"+string(defeat));
-
 /// @self Struct.NewPlanetFeature
 function scr_ruins_combat_end() {
-    var _star = 0;
     ruins_battle = choose(6, 7, 9, 10, 11, 12);
 
     /// @type {Asset.GMObject.obj_star}
-    _star = find_star_by_name(obj_ground_mission.battle_loc);
+    var _star = find_star_by_name(obj_ground_mission.battle_loc);
     var planet = obj_ground_mission.num;
     var _battle_threat = obj_ground_mission.battle_threat;
     if (obj_ground_mission.defeat == 0) {

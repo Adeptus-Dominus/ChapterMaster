@@ -75,15 +75,10 @@
 var _name_gen = global.name_generator;
 LOGGER.info("Creating Controller");
 scr_colors_initialize();
-is_test_map = false;
 target_navy_number = 5;
-global.sound_playing = undefined;
 global.defeat = 0;
 tutorial = 0;
-sound_in = 0;
-sound_to = "";
 fix_right = 0;
-text_bar = 0;
 bar_fix = false;
 last_attack_form = 1;
 last_raid_form = 3;
@@ -306,9 +301,6 @@ for (var i = 101; i < 103; i++) {
 // ** Sets cheatcode values **
 cheatcode = "";
 cheatyface = 0;
-if (is_test_map) {
-    global.cheat_debug = true;
-}
 
 // ** Sets play variables **
 info_fragments = 0;
@@ -391,7 +383,6 @@ helpful_places = false;
 
 instance_create(x, y, obj_planet_map);
 new_button_highlight = "";
-// new_button_highlighting=0;
 new_buttons_hide = 0;
 new_buttons_frame = 0;
 
@@ -515,9 +506,8 @@ command_set[20] = 1;
 command_set[24] = 1;
 
 // Outlier indices
-modest_livery = 0;
-progenitor_visuals = 0;
 tagged_training = 0;
+default_marine_draw_variables();
 
 // ** Default menu items **
 selecting_planet = 0;
@@ -541,7 +531,7 @@ menu_artifact = 1;
 menu_artifact_type = 0;
 menu_adept = 0;
 artifacts = 0;
-identifiable = 0;
+identifiable = false;
 repair_ships = 0;
 forge_points = 0;
 master_craft_chance = 0;
@@ -684,19 +674,12 @@ recruiting_worlds = "";
 recruit_trial = eTRIALS.BLOODDUEL;
 recruit_last = 0;
 
-recruit_name = [];
-recruit_corruption = [];
-recruit_distance = [];
-recruit_training = [];
-recruit_exp = [];
-recruit_data = [];
-
-recruit_name[0] = "";
-recruit_corruption[0] = 0;
-recruit_distance[0] = 0;
-recruit_training[0] = 0;
-recruit_exp[0] = 0;
-recruit_data[0] = {};
+recruit_name = array_create(2, "");
+recruit_corruption = array_create(2, 0);
+recruit_distance = array_create(2, 0);
+recruit_training = array_create(2, 0);
+recruit_exp = array_create(2, 0);
+recruit_data = array_create(2, undefined);
 
 // ** Sets loyalty variables **
 loyal = array_create(51, "");
@@ -824,9 +807,6 @@ if (instance_exists(obj_ini)) {
         requisition = 2000;
     }
 }
-if (is_test_map == true) {
-    requisition = 50000;
-}
 
 chapter_master = new scr_chapter_master();
 
@@ -851,26 +831,26 @@ recruiting_worlds_bought = 0;
 
 LOGGER.info("Set Battle Formations");
 // ** BATTLE FORMATIONS **
-var _count = 16;
-bat_formation = array_create(_count, "");
-bat_formation_type = array_create(_count, 0);
-bat_deva_for = array_create(_count, 3);
-bat_assa_for = array_create(_count, 5);
-bat_tact_for = array_create(_count, 4);
-bat_vete_for = array_create(_count, 3);
-bat_hire_for = array_create(_count, 3);
-bat_libr_for = array_create(_count, 2);
-bat_comm_for = array_create(_count, 2);
-bat_tech_for = array_create(_count, 2);
-bat_term_for = array_create(_count, 5);
-bat_hono_for = array_create(_count, 2);
-bat_drea_for = array_create(_count, 6);
-bat_rhin_for = array_create(_count, 6);
-bat_pred_for = array_create(_count, 6);
-bat_landraid_for = array_create(_count, 6);
-bat_landspee_for = array_create(_count, 5);
-bat_whirl_for = array_create(_count, 1);
-bat_scou_for = array_create(_count, 3);
+var _formation_amount = 16;
+bat_formation = array_create(_formation_amount, "");
+bat_formation_type = array_create(_formation_amount, 0);
+bat_deva_for = array_create(_formation_amount, 3);
+bat_assa_for = array_create(_formation_amount, 5);
+bat_tact_for = array_create(_formation_amount, 4);
+bat_vete_for = array_create(_formation_amount, 3);
+bat_hire_for = array_create(_formation_amount, 3);
+bat_libr_for = array_create(_formation_amount, 2);
+bat_comm_for = array_create(_formation_amount, 2);
+bat_tech_for = array_create(_formation_amount, 2);
+bat_term_for = array_create(_formation_amount, 5);
+bat_hono_for = array_create(_formation_amount, 2);
+bat_drea_for = array_create(_formation_amount, 6);
+bat_rhin_for = array_create(_formation_amount, 6);
+bat_pred_for = array_create(_formation_amount, 6);
+bat_landraid_for = array_create(_formation_amount, 6);
+bat_landspee_for = array_create(_formation_amount, 5);
+bat_whirl_for = array_create(_formation_amount, 1);
+bat_scou_for = array_create(_formation_amount, 3);
 // ground=1    raid=2
 // 1: Attack        type=1
 // 2: Defend        type=1
@@ -906,8 +886,8 @@ imperial_factions = [
     eFACTION.ECCLESIARCHY,
 ];
 
-faction = array_create(14, "");
-disposition = array_create(14, 0);
+faction = array_create(eFACTION._COUNT, "");
+disposition = array_create(eFACTION._COUNT, 0);
 
 // Faction Names
 faction[eFACTION.PLAYER] = "Player";
@@ -943,7 +923,7 @@ if (instance_exists(obj_ini)) {
 }
 
 // ** Max disposition **
-disposition_max = array_create(14, 0);
+disposition_max = array_create(eFACTION._COUNT, 0);
 disposition_max[2] = 40;
 disposition_max[3] = 40;
 disposition_max[4] = 40;
@@ -967,9 +947,9 @@ if (instance_exists(obj_ini)) {
     }
 }
 // ** Sets up faction leader names as well as player faction stuff **
-faction_leader = array_create(14, "");
-faction_title = array_create(14, "");
-faction_status = array_create(14, "");
+faction_leader = array_create(eFACTION._COUNT, "");
+faction_title = array_create(eFACTION._COUNT, "");
+faction_status = array_create(eFACTION._COUNT, "");
 // Sector Command faction
 faction_leader[eFACTION.IMPERIUM] = _name_gen.GenerateFromSet($"imperial_male");
 faction_title[eFACTION.IMPERIUM] = "Sector Commander";
@@ -1013,7 +993,7 @@ faction_status[eFACTION.HERETICS] = "War";
 faction_status[eFACTION.GENESTEALER] = "War";
 faction_status[eFACTION.NECRONS] = "War";
 // ** Sets faction gender for names **
-faction_gender = array_create(14, 1);
+faction_gender = array_create(eFACTION._COUNT, 1);
 faction_gender[eFACTION.ELDAR] = set_gender();
 faction_gender[eFACTION.TAU] = set_gender();
 
@@ -1034,20 +1014,20 @@ if (faction_leader[eFACTION.CHAOS] == "2") {
     faction_leader[eFACTION.CHAOS] = _name_gen.GenerateFromSet("chaos");
 }
 
-known = array_create(14, 0);
+known = array_create(eFACTION._COUNT, 0);
 known[0] = 2;
 known[eFACTION.PLAYER] = 999;
 known[eFACTION.IMPERIUM] = 1;
 known[eFACTION.MECHANICUS] = 1;
 
 // ** Sets diplomacy annoyed status **
-annoyed = array_create(14, 0);
+annoyed = array_create(eFACTION._COUNT, 0);
 // ** Sets diplomacy ignore status **
-ignore = array_create(14, 0);
+ignore = array_create(eFACTION._COUNT, 0);
 // ** Sets diplomacy turns to be ignored **
-turns_ignored = array_create(14, 0);
+turns_ignored = array_create(eFACTION._COUNT, 0);
 // ** Sets faction defeated **
-faction_defeated = array_create(14, 0);
+faction_defeated = array_create(eFACTION._COUNT, 0);
 
 // **** CHAPTER CREATION VARS ****
 // ** Sets up Chapter configuration variables **
@@ -1343,9 +1323,6 @@ if (instance_exists(obj_ini)) {
 // ** Sets the star for the chapter ? **
 instance_create(irandom_range(400, room_width - 400), irandom_range(400, room_height - 400), obj_star);
 var _number_of_systems = 100;
-if (is_test_map == true) {
-    _number_of_systems = 20;
-}
 mask_index = spr_star;
 while (instance_number(obj_star) < _number_of_systems) {
     var xx = irandom_range(200, room_width - 150); // dictates how far away from the edge stars spawn
@@ -1633,7 +1610,7 @@ for (var i = 0; i < welcome_pages; i++) {
     temp[tman] = string(temp[60]) + string(temp[61]) + string(temp[62]);
 }
 
-var lig = 0, remov = 0, stahp = 0;
+var lig = 0;
 
 if (welcome_pages >= 1) {
     for (var i = 0; i < 4000; i++) {
@@ -1643,7 +1620,7 @@ if (welcome_pages >= 1) {
         }
     }
 }
-remov = string_length(string(temp[65])) + 1;
+var remov = string_length(string(temp[65])) + 1;
 
 if (welcome_pages >= 2) {
     temp[66] = string_delete(temp[66], 1, remov);
@@ -1702,6 +1679,6 @@ alarm_set(0, 2);
 //ensure fleet tab isup to date at gae start
 location_viewer.update_fleet_table();
 
-armamentarium = new Armamentarium(self);
+armamentarium = new Armamentarium(id);
 #endregion
 //**! DO NOT PUT THINGS AT THE BOTTOM OF THIS FILE IF YOU NEED THEM TO WORK AFTER LOADING FROM A SAVE, SEE LINE 1550 -ish   */ 

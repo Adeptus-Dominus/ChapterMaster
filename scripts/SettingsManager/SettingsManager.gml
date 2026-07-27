@@ -58,8 +58,9 @@ function SettingsManager() constructor {
 
     static apply_audio = function() {
         audio_master_gain(master_volume);
-        audio_group_set_gain(audiogroup_music, music_volume);
-        audio_group_set_gain(audiogroup_sfx, sfx_volume);
+
+        global.audio_manager.set_music_volume(music_volume);
+        global.audio_manager.set_sfx_volume(sfx_volume);
     };
 
     static sync_ui = function() {

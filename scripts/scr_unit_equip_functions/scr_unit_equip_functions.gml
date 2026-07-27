@@ -524,6 +524,9 @@ function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, t
 
 /// @self Struct.TTRPG_stats
 function alter_unit_equipment(update_equipment, from_armoury = true, to_armoury = true, quality = "any") {
+    if (is_array(update_equipment)){
+        update_equipment = convert_equipment_array_into_struct(update_equipment);
+    }
     var equip_areas = struct_get_names(update_equipment);
     for (var i = 0; i < array_length(equip_areas); i++) {
         switch (equip_areas[i]) {
@@ -621,16 +624,28 @@ function scr_get_unit_equipment(as_UnitEquipment = true){
         }
 }
 
+function convert_equipment_array_into_struct(array){
+    var _equipment = {};
+    for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++){
+        _equipment[$ global.unit_equip_slots[i]] = array[i];
+    }
+    return _equipment;
+}
 function UnitEquipment(equipment_set, _unit = noone) constructor{
-    self.equipment = equipment_set;
+    if (is_array(equipment_set)){
+        equipment = convert_equipment_array_into_struct(equipment_set)
+    } else {
+        self.equipment = equipment_set;
+    }
     self.equipping_unit = _unit;
-    var _slot_keys = UNIT_EQUIP_SLOTS;
+    var _slot_keys = global.unit_equip_slots;
     var _slot, _item;
-    for (var i = 0; i < 5; i++){
+    for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++){
         _slot = _slot_keys[i];
         _item = equipment[$_slot_keys[i]];
         if (!is_struct(_item)){
-            equipment[$_slot_keys[i]] = new EquipmentStruct(noone,"");
+            var _dp = _item != "" ? {name : _item} : undefined;
+            equipment[$_slot] = new EquipmentStruct(_dp, "");
         }
     }
     
@@ -640,6 +655,9 @@ function UnitEquipment(equipment_set, _unit = noone) constructor{
 
     present_items = [];
 
+    static is_present = function(item_key){
+        return array_contains(present_items, item_key);
+    }
     static slot_map = {
         "wep1" : eEQUIPMENT_SLOT.WEAPON_ONE,
         "wep2" : eEQUIPMENT_SLOT.WEAPON_TWO,
@@ -668,10 +686,10 @@ function UnitEquipment(equipment_set, _unit = noone) constructor{
         }
     }
 
-    for (var i = 0;i<array_length(UNIT_EQUIP_SLOTS)-1;i++){
-        var _item = self.equipment[$UNIT_EQUIP_SLOTS[i]];
+    for (var i = 0;i<STANDARD_EQUIP_SLOT_COUNT;i++){
+        var _item = self.equipment[$global.unit_equip_slots[i]];
         if (_item.name != ""){
-            array_push(present_items, UNIT_EQUIP_SLOTS[i]);
+            array_push(present_items, global.unit_equip_slots[i]);
         }
     }
 
@@ -686,7 +704,7 @@ function UnitEquipment(equipment_set, _unit = noone) constructor{
     static equipment_ReactiveString = function(slot){
         var _enum_slot = return_item_enum(slot);
     
-        var _display = UNIT_EQUIP_SLOTS_DISPLAY[_enum_slot];
+        var _display = global.unit_equip_slots_display[_enum_slot];
         var _item = items[_enum_slot];
         var _desc = _item.item_tooltip_desc_gen();
 
@@ -775,6 +793,158 @@ function UnitEquipment(equipment_set, _unit = noone) constructor{
             }
         }
         return _found;
+    }
+
+    /// @param {Struct.EquipmentStruct} _armour_data
+    /// @param {Struct.EquipmentStruct} _mobility_data
+    /// @returns {Struct} { valid: bool, warning: string }
+    function check_mobility_armour_compatibility() {
+        var _result = {
+            valid: true,
+            warning: "",
+        };
+        var _armour_data = get_item("armour");
+        var _mobility_data = get_item("mobi");
+        if (is_present("armour") && is_present("mobi")) {
+            if (_armour_data.has_tag("terminator") && !_mobility_data.has_tag("terminator") && !_mobility_data.has_tag("terminator_only")) {
+                _result.valid = false;
+                _result.warning = "Cannot use this with Terminator Armour.";
+            } else if (!_armour_data.has_tag("terminator") && _mobility_data.has_tag("terminator_only")) {
+                _result.valid = false;
+                _result.warning = "Cannot use this without Terminator Armour.";
+            } else if (_armour_data.has_tag("dreadnought") && !_mobility_data.has_tag("dreadnought") && !_mobility_data.has_tag("dreadnought_only")) {
+                _result.valid = false;
+                _result.warning = "Cannot use this with Dreadnought Armour.";
+            } else if (!_armour_data.has_tag("dreadnought") && _mobility_data.has_tag("dreadnought_only")) {
+                _result.valid = false;
+                _result.warning = "Cannot use this without Dreadnought Armour.";
+            }
+        } else if (!is_present("armour") && is_present("mobi")) {
+            if (_mobility_data.has_tag("terminator") || _mobility_data.has_tag("terminator_only")) {
+                _result.valid = false;
+                _result.warning = "Cannot use this without Terminator Armour.";
+            } else if (_mobility_data.has_tag("dreadnought") || _mobility_data.has_tag("dreadnought_only")) {
+                _result.valid = false;
+                _result.warning = "Cannot use this without Dreadnought Armour.";
+            }
+        }
+
+        return _result;
+    }
+
+    static check_item_is_equipable = function(slot){
+        var _key = global.unit_equip_slots[slot];
+        if (!is_present(_key)){
+            equipment_found_and_valid[slot] = true;
+            return;
+        }
+        var _item_check_array = [];
+        switch(_key){
+            case "wep1":
+                _item_check_array = obj_controller.ma_wep1;
+                break;
+            case "wep2":
+                _item_check_array = obj_controller.ma_wep2;
+                break;
+            case "mobi":
+                _item_check_array = obj_controller.ma_mobi;
+                break;
+            case "gear":
+                _item_check_array = obj_controller.ma_gear;
+                break;
+            case "armour":
+                _item_check_array = obj_controller.ma_armour;
+                break;                                                                                     
+        }
+        var _found = 0;
+        var _wanted_item = item_names[slot];
+        if (_wanted_item == "Assortment"){
+            equipment_found_and_valid[slot] = true;
+            return;            
+        }
+        var _item = get_item(slot);
+        var _marines_without_exp = 0;
+        equipment_found_and_valid[slot] = true;
+        for (var u = 0; u < array_length(obj_controller.display_unit); u++){
+            if (!obj_controller.man_sel[u]){
+                continue;
+            }
+            if (_item_check_array[u] == _wanted_item) {
+                _found += 1;
+            }
+
+            if (_wanted_item == ITEM_NAME_NONE){
+                _found += 1;
+            }
+
+            if (obj_controller.man[u] != "man"){
+                continue;
+            }
+            var _unit = obj_controller.display_unit[u];
+            if (_item.req_exp > 0){
+                if (_unit.experience < _item.req_exp){
+                    _marines_without_exp++;
+                    
+                }
+            }
+
+            if (slot == eEQUIPMENT_SLOT.ARMOUR && !get_item("armour").has_tag("dreadnought")){
+                var _unit_armour_data = _unit.get_armour_data();
+                if (_unit_armour_data.has_tag("dreadnought")){
+                    equipment_found_and_valid[slot] = false;
+                    warning += "Marines may not exit Dreadnoughts.";
+                }
+            }
+        }
+        _found += scr_item_count(_wanted_item);
+
+        equipment_found_and_valid[slot] = equipment_found_and_valid[slot] && _found >= needed_count;
+
+        if (!equipment_found_and_valid[slot]){
+            warning += $"Not enough {_wanted_item}; {needed_count - _found} more are required.";
+        }
+        if (_marines_without_exp > 0){
+            equipment_found_and_valid[slot] = false;
+            warning += $"{_marines_without_exp} units don't have exp for {_wanted_item}: {_item.req_exp} required.";
+        }
+        
+
+        if (_item.has_tag("terminator_only")){
+            if (!get_item("armour").has_tag("terminator")){
+                equipment_found_and_valid[slot] = false;
+                warning = $"Cannot use {_wanted_item} without Terminator/Dreadnought Armour.";
+            }
+        }
+
+        var _class_locks = ["terminator", "dreadnought"];
+        if (_item.has_tags(_class_locks) && !get_item("armour").has_tags(_class_locks)){
+            var _armour_required = "";
+            for (var r = 0 ; r < array_length(_class_locks); r++){
+                if (_item.has_tag(_class_locks[r])){
+                    _armour_required += " " + _class_locks[r];
+                }
+            }
+            equipment_found_and_valid[slot] = false;
+            warning += $"Cannot use {_wanted_item} without {_armour_required} Armour.";
+        }
+    }
+
+    static check_set_is_equipable = function(needed_count = 1){
+        self.needed_count = needed_count;
+        warning = "";
+        equipment_found_and_valid = array_create(5, true);
+        for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++){
+            check_item_is_equipable(i);
+        }
+
+        var _mobi_check = check_mobility_armour_compatibility();
+        if (!_mobi_check.valid){
+            warning += _mobi_check.warning;
+            equipment_found_and_valid[eEQUIPMENT_SLOT.ARMOUR] = false;
+            equipment_found_and_valid[eEQUIPMENT_SLOT.MOBILITY] = false;
+        }
+
+        return {warning ,equipment_found_and_valid }
     }
 }
 

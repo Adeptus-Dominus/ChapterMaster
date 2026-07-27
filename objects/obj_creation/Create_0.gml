@@ -41,9 +41,7 @@ custom_icon = 0;
 /// Stores the chapter icon in one spot so we dont have to keep checking whether we're using a custom image or not every time we wanna display it somewhere
 global.chapter_id = 0;
 
-audio_stop_all();
-audio_play_sound(snd_diboz, 0, true, 0.1);
-audio_sound_gain(snd_diboz, 1, 5000);
+global.audio_manager.play_playlist(CONTEXT_CREATION, 5000);
 
 global.load = -1;
 planet_types = global.planet_types;
@@ -86,7 +84,7 @@ cooldown = 0;
 name_bad = 0;
 heheh = 0;
 turn_selection_change = false;
-draw_helms = true;
+default_marine_draw_variables();
 
 var _culture_styles_array = [];
 
@@ -354,14 +352,7 @@ secretions = 0;
 occulobe = 0;
 mucranoid = 0;
 
-disposition[0] = 0;
-disposition[1] = 0; // Prog
-disposition[2] = 0; // Imp
-disposition[3] = 0; // Mech
-disposition[4] = 0; // Inq
-disposition[5] = 0; // Ecclesiarchy
-disposition[6] = 0; // Astartes
-disposition[7] = 0; // Reserved
+disposition = array_create(eFACTION._COUNT, 0);
 
 chapter_master_name = global.name_generator.ChapterMemberNameGeneration();
 chapter_master_melee = 1;

@@ -448,7 +448,7 @@ function scr_end_turn() {
                     with (obj_star_event) {
                         instance_destroy();
                     }
-                    audio_play_sound(snd_end_turn, -50, false);
+                    global.audio_manager.play_sfx(SFX_END_TURN);
 
                     turn += 1;
                     eldar_incursion_tick();

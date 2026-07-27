@@ -2,10 +2,6 @@ if (!instance_exists(obj_star)) {
     exit;
 }
 
-if (instance_exists(orbiting) && (obj_controller.is_test_map == true)) {
-    draw_set_color(c_red);
-    draw_line_width(x, y, orbiting.x, orbiting.y, 1);
-}
 var scale = obj_controller.scale_mod;
 
 if ((x < 0) || (x > room_width) || (y < 0) || (y > room_height)) {

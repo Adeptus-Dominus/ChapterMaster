@@ -37,7 +37,7 @@ function PlanetData(_planet, _system) constructor {
         ground_defences = system.p_defenses[planet];
         upgrades = system.p_upgrades[planet];
         // v how much of a problem they are from 1-5
-        planet_forces = array_create(14, 0);
+        planet_forces = array_create(eFACTION._COUNT, 0);
         guardsmen = system.p_guardsmen[planet];
         pdf = system.p_pdf[planet];
 
@@ -583,7 +583,7 @@ function PlanetData(_planet, _system) constructor {
     ground_defences = system.p_defenses[planet];
     upgrades = system.p_upgrades[planet];
     // v how much of a problem they are from 1-5
-    planet_forces = array_create(14, 0);
+    planet_forces = array_create(eFACTION._COUNT, 0);
 
     try {
         planet_forces[eFACTION.PLAYER] = player_forces;
@@ -1594,7 +1594,7 @@ function PlanetData(_planet, _system) constructor {
                     improve_cost = 1100;
                 }
 
-                draw_text_glow(xx + 671, yy + 281, improve_cost, #F89823, 0);
+                draw_text_glow(xx + 671, yy + 281, improve_cost, COL_REQUISITION, 0);
 
                 if (scr_hit(xx + 481, yy + 282, xx + 716, yy + 300)) {
                     draw_set_color(c_black);

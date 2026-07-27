@@ -154,7 +154,7 @@ mouse_release = function() {
         obj_cursor.dragging = 0;
         obj_cursor.image_index = 0;
         if ((global.settings.master_volume > 0) && (global.settings.sfx_volume > 0)) {
-            audio_play_sound(snd_error, -80, false);
+            global.audio_manager.play_sfx(SFX_ERROR);
         }
     }
 

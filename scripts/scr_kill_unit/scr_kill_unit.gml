@@ -1,5 +1,3 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 /// @self Asset.GMObject.obj_controller
 function scr_kill_unit(company, unit_slot) {
     try {
@@ -25,18 +23,18 @@ function scr_kill_unit(company, unit_slot) {
 }
 
 function scr_wipe_unit(company, unit_slot) {
-    obj_ini.spe[company][unit_slot] = "";
-    obj_ini.race[company][unit_slot] = 0;
-    obj_ini.name[company][unit_slot] = "";
-    obj_ini.wep1[company][unit_slot] = "";
-    obj_ini.role[company][unit_slot] = "";
-    obj_ini.wep2[company][unit_slot] = "";
-    obj_ini.armour[company][unit_slot] = "";
-    obj_ini.gear[company][unit_slot] = "";
-    obj_ini.god[company][unit_slot] = 0;
-    obj_ini.age[company][unit_slot] = 0;
-    obj_ini.mobi[company][unit_slot] = "";
-    obj_ini.TTRPG[company][unit_slot].base_group = "none";
+    array_set(obj_ini.spe[company], unit_slot, "");
+    array_set(obj_ini.race[company], unit_slot, 0);
+    array_set(obj_ini.name[company], unit_slot, "");
+    array_set(obj_ini.wep1[company], unit_slot, "");
+    array_set(obj_ini.wep2[company], unit_slot, "");
+    array_set(obj_ini.role[company], unit_slot, "");
+    array_set(obj_ini.armour[company], unit_slot, "");
+    array_set(obj_ini.gear[company], unit_slot, "");
+    array_set(obj_ini.god[company], unit_slot, 0);
+    array_set(obj_ini.age[company], unit_slot, 0);
+    array_set(obj_ini.mobi[company], unit_slot, "");
+    array_set(obj_ini.TTRPG[company], unit_slot, undefined);
 }
 
 function kill_and_recover(company, unit_slot, equipment = true, gene_seed_collect = true) {

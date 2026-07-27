@@ -433,7 +433,7 @@ function SpriteButton(data) constructor {
     alpha_idle = 0.8;
     alpha_disabled = 0.5;
 
-    sound_click = snd_click;
+    sound_click = SFX_CLICK;
     tooltip_text = "";
     tooltip_w = 300;
 
@@ -461,8 +461,8 @@ function SpriteButton(data) constructor {
                 tooltip_draw(tooltip_text, tooltip_w);
             }
 
-            if (is_clicked && sound_click != undefined) {
-                audio_play_sound(sound_click, 10, false);
+            if (is_clicked && sound_click != "") {
+                global.audio_manager.play_sfx(sound_click);
             }
         }
 
@@ -924,7 +924,7 @@ function UIDropdown(_options, _width = 180, _on_change = undefined) constructor 
 
         if (_is_hovering_main && mouse_button_clicked()) {
             is_open = !is_open;
-            audio_play_sound(snd_click, 10, false);
+            global.audio_manager.play_sfx(SFX_CLICK);
         }
 
         if (!is_open) {
@@ -980,7 +980,7 @@ function UIDropdown(_options, _width = 180, _on_change = undefined) constructor 
                     selected_index = i;
                     is_open = false;
                     _selection = options[i].value;
-                    audio_play_sound(snd_click, 10, false);
+                    global.audio_manager.play_sfx(SFX_CLICK);
 
                     if (is_callable(on_change)) {
                         on_change(_selection);
@@ -1003,13 +1003,14 @@ function UIDropdown(_options, _width = 180, _on_change = undefined) constructor 
 /// @category UI
 /// @description Multi-option toggle group allowing multiple selections.
 /// @param {array} options_array Array of option labels.
-/// @param {string} title_param Title string.
+/// @param {string|struct} title_param Either a string (used as ReactiveString text), a struct (passed as the ReactiveString's data packet, with text set from within that struct), or omitted/other (title becomes noone).
 /// @param {struct} data Optional overrides.
 function MultiSelect(options_array, title_param, data = {}) constructor {
-    title = title_param;
     x_gap = 10;
     y_gap = 5;
     standard_loc_data();
+    add_ui_title(title_param);
+
     on_change = undefined;
     active_col = CM_GREEN_COLOR;
     inactive_col = c_gray;
@@ -1039,9 +1040,13 @@ function MultiSelect(options_array, title_param, data = {}) constructor {
         var _has_change_method = is_callable(on_change);
 
         var _start_y = y1;
-        if (title != "") {
-            draw_text(x1, y1, title);
-            _start_y += string_height(title) + 10;
+        if (title != noone) {
+            // keep the title anchored to the MultiSelect's current position
+            title.x1 = x1;
+            title.y1 = y1;
+            title.update();
+            title.draw();
+            _start_y += title.h + 10;
         }
 
         var _count = array_length(toggles);
@@ -1105,7 +1110,7 @@ function MultiSelect(options_array, title_param, data = {}) constructor {
                     if (_cur_opt.x2 > _total_max_main) {
                         _total_max_main = _cur_opt.x2;
                     }
-
+ 
                     _cur_main += _cur_opt.w + x_gap;
                 } else {
                     _cur_opt.x1 = _cur_cross;
@@ -1192,32 +1197,42 @@ function MultiSelect(options_array, title_param, data = {}) constructor {
     };
 }
 
+/// @category UI
+/// @function add_ui_title(title_param)
+/// @description creates a reactive string as a title for ui components such as RadioSet and MultiSelect.
+function add_ui_title(title_param){
+    // title is now either a ReactiveString instance or noone
+    title = noone;
+    if (is_string(title_param) && title_param != "") {
+        title = new ReactiveString(title_param, x1, y1);
+    } else if (is_struct(title_param)) {
+        // entire title_param struct becomes the ReactiveString's data packet;
+        // text_param is left as "" since the struct's own "text" value will set it via update()/move_data_to_current_scope
+        title = new ReactiveString("", x1, y1, title_param);
+    }
+}
+
 /// @function RadioSet(options_array, title_param, data)
 /// @constructor
 /// @category UI
 /// @description Radio button group allowing only one active selection.
 /// @param {array} options_array List of option labels.
-/// @param {string} title_param Title string.
+/// @param {string|struct} title_param Either a string (used as ReactiveString text), a struct (passed as the ReactiveString's data packet, with text set from within that struct), or omitted/other (title becomes noone).
 /// @param {struct} data Optional overrides.
 function RadioSet(options_array, title_param = "", data = {}) constructor {
     toggles = [];
     standard_loc_data();
+    add_ui_title(title_param);
+
     current_selection = 0;
-    title = title_param;
     active_col = CM_GREEN_COLOR;
     inactive_col = c_gray;
     allow_changes = true;
     x_gap = 10;
     y_gap = 5;
-    title_font = fnt_40k_14b;
-    draw_title = true;
-    if (title == "") {
-        draw_title = false;
-    }
     space_evenly = false;
     changed = false;
-    x1 = 0;
-    y1 = 0;
+
     max_width = 0; // container width; if 0, use row's natural width
     max_height = 0;
     center = false; // when true, center each row horizontally in container
@@ -1247,26 +1262,23 @@ function RadioSet(options_array, title_param = "", data = {}) constructor {
 
         draw_set_valign(fa_top);
         draw_set_color(active_col);
-        draw_set_font(title_font);
         draw_set_alpha(1);
 
-        var title_h = 0;
-        if (draw_title) {
-            if (max_width > 0) {
-                draw_set_halign(fa_center);
-                draw_text(x1 + max_width * 0.5, y1, title);
-            } else {
-                draw_set_halign(fa_left);
-                draw_text(x1, y1, title);
-            }
-            title_h = string_height(title) + 10;
+        var _start_y = y1;
+        if (title != noone) {
+            // keep the title anchored to the MultiSelect's current position
+            title.x1 = x1;
+            title.y1 = y1;
+            title.update();
+            title.draw();
+            _start_y += title.h + 10;
         }
 
         changed = false;
         var _start_current_selection = current_selection;
 
         var _prev_x = x1;
-        var _prev_y = y1 + title_h;
+        var _prev_y = _start_y;
 
         var row_items = []; // holds structs: { btn: <ToggleButton>, idx: <int> }
         var row_width = 0;
@@ -1390,7 +1402,7 @@ function ToggleButton(data = {}) constructor {
     static clicked = function() {
         if (hover() && mouse_button_clicked()) {
             active = !active;
-            audio_play_sound(snd_click_small, 10, false);
+            global.audio_manager.play_sfx(SFX_CLICK_SMALL);
             return true;
         } else {
             return false;
@@ -1521,10 +1533,10 @@ function InteractiveButton(data = {}) constructor {
     static clicked = function() {
         if (hover() && mouse_button_clicked()) {
             if (!active) {
-                audio_play_sound(snd_error, 10, false);
+                global.audio_manager.play_sfx(SFX_ERROR);
                 return false;
             } else {
-                audio_play_sound(snd_click_small, 10, false);
+                global.audio_manager.play_sfx(SFX_CLICK_SMALL);
                 return true;
             }
         } else {

@@ -1,5 +1,4 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
+/// @self Struct.TTRPG_stats
 function scr_unit_detail_text() {
     var unit_data_string = "";
     var is_astartes = false;
@@ -46,8 +45,8 @@ function scr_unit_detail_text() {
     // Age and ascension date
     unit_data_string += "\n";
     if (base_group == "astartes") {
-        var ascension_date = marine_ascension;
-        if (ascension_date == 0) {
+        var ascension_date = string(marine_ascension);
+        if (ascension_date == "0") {
             ascension_date = "unknown";
         }
         unit_data_string += $"{round(age())} years old. Ascended to an Astartes in the {ascension_date} year.";
@@ -284,9 +283,6 @@ function scr_unit_detail_text() {
         unit_data_string += "\n\n";
         for (var i = 0; i < array_length(traits); i++) {
             unit_data_string += string(global.trait_list[$ traits[i]].flavour_text + ".\n", unit_name);
-            // if (struct_exists(global.trait_list[$ traits[i]], "effect")){
-            // 	unit_data_string += $" ({global.trait_list[$ traits[i]].effect})";
-            // }
         }
     }
     return unit_data_string;

@@ -17,7 +17,7 @@ if (array_length(audience_stack) > 0) {
     obj_controller.audience_data = current_audience.audience_data;
 
     if ((obj_controller.diplomacy == 10) && (obj_controller.faction_gender[10] == 2)) {
-        scr_music("blood", 60);
+        global.audio_manager.play_playlist(CONTEXT_DIPLOMACY, 60);
     }
 
     if (string_count("intro", current_audience.topic) > 0) {

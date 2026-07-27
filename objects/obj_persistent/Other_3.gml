@@ -1,6 +1,2 @@
-if (variable_global_exists("error_queue") && ds_exists(global.error_queue, ds_type_queue)) {
-    ds_queue_destroy(global.error_queue);
-}
-if (variable_global_exists("active_error_dialogs") && ds_exists(global.active_error_dialogs, ds_type_map)) {
-    ds_map_destroy(global.active_error_dialogs);
-}
+ds_safe_destroy(global, "chapter_icons_map", ds_type_map);
+ds_safe_destroy(global, "star_sprites", ds_type_map);

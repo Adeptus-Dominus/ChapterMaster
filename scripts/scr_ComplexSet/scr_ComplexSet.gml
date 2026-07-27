@@ -30,6 +30,16 @@ function valid_sprite_transform_data(data) {
     return is_array(data) && array_length(data) == 4;
 }
 
+
+/// @desc Variables needed either in obj_creation or obj_controller to draw a marine sprite
+function default_marine_draw_variables(){
+    metallic_shine = 3;
+    paint_shine = 3;
+    modest_livery = false;
+    progenitor_visuals = false;
+    draw_helms = true;
+}
+
 /// @desc Returns a transform array that can be used in a shader to align the UVs of _spr2 with _spr1 (takes cropping into account)
 /// @param {Asset.GMSprite} _spr1 The sprite align the UVs to
 /// @param {Real} _subimg1 The sprite subimage to align the UVs to
@@ -97,7 +107,8 @@ function ComplexSet(_unit) constructor {
     subcomponents = {};
     unit_armour = _unit.armour();
     draw_unit = _unit;
-    draw_helms = instance_exists(obj_creation) ? obj_creation.draw_helms : obj_controller.draw_helms;
+    main_object = instance_exists(obj_creation) ? obj_creation : obj_controller;
+    draw_helms = main_object.draw_helms;
 
     equipment_data = draw_unit.unit_equipment_data();
     current_texture_draws = {};
@@ -205,6 +216,12 @@ function ComplexSet(_unit) constructor {
     texture_shadow_transform_uniform = shader_get_uniform(armour_texture, "In_Shadow_Transform");
     texture_mask_transform = shader_get_uniform(armour_texture, "mask_transform");
 
+    paint_shine_uniform = shader_get_uniform(full_livery_shader, "paint_shine");
+    metallic_shine_uniform = shader_get_uniform(full_livery_shader, "metallic_shine");
+
+    texture_paint_shine_uniform = shader_get_uniform(armour_texture, "paint_shine");
+    texture_metallic_shine_uniform = shader_get_uniform(armour_texture, "metallic_shine");
+
     if (!surface_exists(global.base_component_surface)) {
         global.base_component_surface = surface_create(600, 600);
     }
@@ -216,7 +233,6 @@ function ComplexSet(_unit) constructor {
         mouth_variants: spr_mk7_mouth_variants,
         thorax_variants: spr_mk7_thorax_variants,
         head: spr_mk7_head_variants,
-        right_knee: spr_mk7_complex_knees,
     };
 
     static weapon_preset_data = {
@@ -1122,7 +1138,7 @@ function ComplexSet(_unit) constructor {
                         if (struct_exists(_final_component, "shadows")) {
                             set_draw_shadows(_sprite, _final_index, _final_component.shadows, _final_index);
                         }
-                        shader_set_uniform_i(use_shadow_uniform, shadow_enabled);
+                        set_main_shader_uniforms();
                         if (flip_x) {
                             draw_sprite_flipped(_sprite, _sub_choice_final - _choice_count ?? 0, component_final_draw_x, component_final_draw_y);
                         } else {
@@ -1137,6 +1153,17 @@ function ComplexSet(_unit) constructor {
         }
     };
 
+    static set_main_shader_uniforms = function(){
+        shader_set_uniform_i(use_shadow_uniform, shadow_enabled);
+        shader_set_uniform_i(paint_shine_uniform, main_object.paint_shine);
+        shader_set_uniform_i(metallic_shine_uniform, main_object.metallic_shine);
+    }
+
+    static set_texture_uniforms = function(){
+        shader_set_uniform_i(texture_use_shadow_uniform, shadow_enabled);
+        shader_set_uniform_i(texture_paint_shine_uniform, main_object.paint_shine);
+        shader_set_uniform_i(texture_metallic_shine_uniform, main_object.metallic_shine);
+    }
     /// @param {Asset.GMSprite} resolved_sprite
     /// @param {Real} resolved_choice
     /// @param {String} component_name
@@ -1150,7 +1177,6 @@ function ComplexSet(_unit) constructor {
         draw_clear_alpha(c_black, 0);
 
         shader_set(armour_texture);
-        shader_set_uniform_i(texture_use_shadow_uniform, shadow_enabled);
         set_component_shadow_packs(component_name, resolved_original_choice, resolved_sprite, resolved_choice);
 
         var _tex_names = struct_get_names(current_texture_draws);
@@ -1249,8 +1275,7 @@ function ComplexSet(_unit) constructor {
             check_component_overides(component_name, _choice);
             set_component_shadow_packs(component_name, _choice, _resolved.sprite, _resolved.frame);
 
-            shader_set_uniform_i(use_shadow_uniform, shadow_enabled);
-
+            set_main_shader_uniforms();
             var _flip_x = false;
             var _component_data = self[$ component_name];
             if (is_struct(_component_data) && struct_exists(_component_data, "flip_x") && _component_data.flip_x) {
@@ -1868,7 +1893,7 @@ function ComplexSet(_unit) constructor {
                 armour_type = eARMOUR_TYPE.NORMAL;
                 break;
             case "MK5 Heresy":
-                add_group({armour: spr_mk5_complex, backpack: spr_mk5_complex_backpack, left_trim: spr_mk7_left_trim, right_trim: spr_mk7_right_trim, head: spr_mk5_head_variants, chest_variants: spr_mk5_chest_variants, knees: spr_mk7_complex_knees});
+                add_group({left_trim: spr_mk7_left_trim, right_trim: spr_mk7_right_trim, head: spr_mk5_head_variants, chest_variants: spr_mk5_chest_variants});
                 armour_type = eARMOUR_TYPE.NORMAL;
                 break;
             case "MK4 Maximus":
@@ -2164,7 +2189,7 @@ function ComplexSet(_unit) constructor {
             y_surface_offset = 0;
             set_complex_shader_area(["left_head", "right_head", "left_muzzle", "right_muzzle"], data.helm_primary);
 
-            var _obj = instance_exists(obj_controller) ? obj_controller : obj_creation;
+            var _obj = main_object;
             var _blend = [
                 _obj.col_r[data.helm_secondary] / 255,
                 _obj.col_g[data.helm_secondary] / 255,

@@ -1,58 +1,45 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 // Check for industrial facilities
 // Used to not have Ice either
+/// @self Asset.GMObject.obj_star
 function ork_ship_production(planet) {
     if (array_contains(["dead", "lava", "ice"], p_type[planet])) {
         exit;
     }
     // Have the proppa facilities and size
     if (p_orks[planet] >= 4) {
-        var fleet = 0;
-        contin = 2;
-        if (!instance_exists(obj_en_fleet)) {
-            contin = 3;
-        }
-        if (instance_number(obj_en_fleet) > 0) {
-            contin = 2;
-        }
-
         if (instance_exists(obj_p_fleet)) {
             var nearestPlayerFleet = instance_nearest(x, y, obj_p_fleet);
             if ((point_distance(x, y, nearestPlayerFleet.x, nearestPlayerFleet.y) < 50) && (nearestPlayerFleet.action == "")) {
                 exit;
             }
         }
-        if (contin == 2) {
-            fleet = scr_orbiting_fleet(eFACTION.ORK);
-            if (fleet == noone) {
-                contin = 3;
-            }
-            if ((fleet != noone) && (contin != 3)) {
+        var _fleet = noone;
+        if (instance_exists(obj_en_fleet)) {
+            _fleet = scr_orbiting_fleet(eFACTION.ORK);
+            if ((_fleet != noone)) {
                 rando = choose(1, 1, 1, 1, 1, 2, 2, 2, 2);
                 switch (rando) {
                     case 1:
-                        fleet.capital_number += 1;
+                        _fleet.capital_number += 1;
                         break;
                     case 2:
-                        fleet.escort_number += 1;
+                        _fleet.escort_number += 1;
                         break;
                 }
 
-                if (fleet.image_index >= 5) {
-                    var nearestStar = 0, targetStar = 0;
+                if (_fleet.image_index >= 5) {
                     var locationOk = false;
 
                     with (obj_star) {
                         if ((planets == 1) && (p_type[1] == "Dead")) {
-                            instance_deactivate_object(instance_id_get(0));
+                            instance_deactivate_object(id);
                         }
                     }
-                    nearestStar = instance_nearest(fleet.x, fleet.y, obj_star);
+                    var nearestStar = instance_nearest(_fleet.x, _fleet.y, obj_star);
                     instance_deactivate_object(nearestStar);
                     for (var j = 0; j < 10; j++) {
                         if (!locationOk) {
-                            targetStar = instance_nearest(fleet.x + choose(random(400), random(400) * -1), fleet.y + choose(random(100), random(100) * -1), obj_star);
+                            var targetStar = instance_nearest(_fleet.x + choose(random(400), random(400) * -1), _fleet.y + choose(random(100), random(100) * -1), obj_star);
                             if (targetStar.owner != eFACTION.ORK) {
                                 locationOk = true;
                             }
@@ -77,21 +64,19 @@ function ork_ship_production(planet) {
                             }
                         }
                     }
-                    fleet.action_x = targetStar.x;
-                    fleet.action_y = targetStar.y;
-                    fleet.alarm[4] = 1; // present_fleets-=1;
+                    _fleet.action_x = targetStar.x;
+                    _fleet.action_y = targetStar.y;
+                    _fleet.alarm[4] = 1;
                     instance_activate_object(obj_star);
                 }
             }
         }
-        if (contin == 3 && irandom_range(1, 100) <= 25) {
+        if ((_fleet == noone) && irandom_range(1, 100) <= 25) {
             // Create a fleet
-            // fleet=instance_create
-            fleet = create_enemy_fleet(x, y, eFACTION.ORK);
-            fleet.sprite_index = spr_fleet_ork;
-            fleet.image_index = 1;
-            fleet.capital_number = 2;
-            // present_fleets+=1;
+            _fleet = create_enemy_fleet(x, y, eFACTION.ORK);
+            _fleet.sprite_index = spr_fleet_ork;
+            _fleet.image_index = 1;
+            _fleet.capital_number = 2;
         }
     }
 }
@@ -100,6 +85,4 @@ function ork_ship_production(planet) {
 function kill_warboss() {
     f_type = eP_FEATURES.VICTORY_SHRINE;
     planet_display = $"{obj_controller.faction_leader[eFACTION.ORK]} Death Place";
-    // warboss_status = "dead";
-    // parade = false;
 }

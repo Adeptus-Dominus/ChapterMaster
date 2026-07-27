@@ -9,9 +9,10 @@ LOGGER.info("Ground Combat Started");
 // (tallied in scr_shoot, paid out as GUARD_KILL_XP by the Alarm_7 kill lottery).
 guard_kills = 0;
 
-audio_stop_sound(snd_royal);
-audio_play_sound(snd_battle, 0, true);
-audio_sound_gain(snd_battle, 1, 5000);
+// Music is the AudioManager's job now (upstream). Alarm_7 hands back to
+// CONTEXT_POSTBATTLE, so this side has to move with it or the battle theme
+// never starts and the manager loses track of what is playing.
+global.audio_manager.play_playlist(CONTEXT_BATTLE, 5000);
 
 hue = 0;
 turn_count = 0;
