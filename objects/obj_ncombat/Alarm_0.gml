@@ -3480,6 +3480,10 @@ try {
     // stays inert.
     player_guard = 0;
 
+    // Every faction fill is done: divide the spawned blocks into per-category formation
+    // segments before any block's Alarm_1 builds its weapon stacks and force accounting.
+    enemy_formation_split();
+
     instance_activate_object(obj_enunit);
 } catch (_exception) {
     ERROR_HANDLER.handle_exception(_exception);

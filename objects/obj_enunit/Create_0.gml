@@ -12,6 +12,16 @@ neww = 0;
 
 column_size = 0;
 
+// Formation split (mirror of the player's per-type blocks). The spawn creates one mixed
+// block per column; enemy_formation_split then divides each into per-category segments
+// sharing that column, so an enemy line reads by role and each segment is separately
+// hoverable and targetable. Empty means unsplit, which the splitter treats as "not yet
+// processed" and the draw treats as the old single-segment column.
+formation_type = "";
+// Doctrine state, the enemy's equivalent of the player's orders: set once per battle by
+// move_enemy_block rather than by an order UI.
+assault_jumped = false;
+
 unit_count = 0;
 unit_count_old = 0;
 composition_string = "";

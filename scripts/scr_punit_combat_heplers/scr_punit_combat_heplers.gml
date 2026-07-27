@@ -248,8 +248,42 @@ function formation_block(_ftype, _col) {
 /// instead, falling back to the last line that exists. Melee always swings at the
 /// nearest enemy regardless (a focused far line would fail the melee distance gate).
 /// @self Asset.GMObject.obj_pnunit
+/// @desc Among the enemy formation segments stacked in one column, the one facing this
+/// block: the segment whose drawn span sits nearest this block's own drawn centre. Since
+/// the formation split, several enemy segments share a column and therefore share the
+/// same instance x and y, so instance_nearest could no longer tell them apart and every
+/// shot into that column resolved to the same instance: one segment would absorb a whole
+/// line's output while the segments above and below it stood untouched. Falls back to
+/// instance_nearest before the first draw, when no segment has a drawn span yet.
+/// @param {Real} _col_x
+/// @param {Real} _my_cy
+/// @returns {Id.Instance}
+function enemy_segment_facing(_col_x, _my_cy) {
+    var _best = noone;
+    var _best_d = 1000000;
+    with (obj_enunit) {
+        if (x != _col_x) {
+            continue;
+        }
+        var _d = abs(((y1 + y2) / 2) - _my_cy);
+        if (_d < _best_d) {
+            _best_d = _d;
+            _best = id;
+        }
+    }
+    if (_best == noone) {
+        _best = instance_nearest(_col_x, 240, obj_enunit);
+    }
+    return _best;
+}
+
 function block_fire_target() {
+    var _my_cy = (y1 + y2) / 2;
     var _nearest = instance_nearest(0, y, obj_enunit);
+    if (instance_exists(_nearest)) {
+        // Frontmost enemy COLUMN, then the segment of it facing this block.
+        _nearest = enemy_segment_facing(_nearest.x, _my_cy);
+    }
     if (fire_target_line <= 0) {
         return _nearest;
     }
@@ -271,7 +305,7 @@ function block_fire_target() {
     }
     array_sort(_cols, true);
     var _idx = min(fire_target_line, array_length(_cols)) - 1;
-    return instance_nearest(_cols[_idx], y, obj_enunit);
+    return enemy_segment_facing(_cols[_idx], _my_cy);
 }
 
 /// @param {bool} allow_collision Are unit blocks allowed to passthrough other unit blocks
@@ -319,11 +353,248 @@ function move_unit_block(direction, blocks = 1, allow_collision = false, leapfro
     }
 }
 
+/// @desc True when any of the keywords appears in the unit name.
+/// @param {String} _name
+/// @param {Array<String>} _keys
+/// @returns {Bool}
+function enemy_name_has(_name, _keys) {
+    for (var i = 0; i < array_length(_keys); i++) {
+        if (string_pos(_keys[i], _name) > 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/// @desc The formation category an enemy unit type belongs to, mirroring the player's
+/// per-type formations onto the enemy roster. Enemy blocks are spawned as a mixed bag of
+/// unit types per column (Boyz + Nobz + a Deff Dread in one blob), which made an enemy
+/// line unreadable and impossible to target by role. Classifying by name keyword keeps
+/// this race-neutral and additive: an unrecognised unit falls through to "line", so a new
+/// unit type never breaks, it just starts in the infantry segment until a keyword is
+/// added here. Order matters, most specific first ("Wraithlord" before "Wraith",
+/// "Meganob" before "Nob", "World Eater Terminator" before "World Eater").
+/// @param {String} _name
+/// @returns {String}
+function enemy_formation_type(_name) {
+    if (_name == "") {
+        return "line";
+    }
+    // Tanks, transports and flyers.
+    if (enemy_name_has(_name, ["Battlewagon", "Trukk", "Chimera", "Leman Russ", "Basilisk", "Predator",
+        "Rhino", "Land Raider", "Vindicator", "Immolator", "Exorcist", "Devilfish", "Hammerhead",
+        "Falcon", "Fire Prism", "Night Spinner", "Wave Serpent", "Monolith", "Doomsday Arc", "Vyper",
+        "Goliath", "Ridgerunner", "Technical", "Vendetta", "Heldrake", "Grav Platform"])) {
+        return "vehicle";
+    }
+    // Walkers and monstrous creatures: they never take cover and anchor a line.
+    if (enemy_name_has(_name, ["Wraithlord", "Deff Dread", "Killa Kan", "Carnifex", "Helbrute", "Defiler",
+        "Maulerfiend", "Soul Grinder", "Penitent Engine", "Dreadnought", "Tomb Stalker", "Canoptek Spyder",
+        "Greater Daemon", "Avatar", "Phantom Titan", "Toxicrene", "Trygon"])) {
+        return "walker";
+    }
+    // Super heavy infantry: the terminator tier and its xenos equivalents.
+    if (enemy_name_has(_name, ["Terminator", "Obliterator", "Meganob"])) {
+        return "terminator";
+    }
+    // Warlords and characters: the assassination targets an Assault leap goes after.
+    if (enemy_name_has(_name, ["Warboss", "Chaos Lord", "Sorcerer", "Farseer", "Autarch", "Warlock",
+        "Hive Tyrant", "Overlord", "Commander", "Arch Heretic", "Magus", "Primus", "Palatine", "Canoness",
+        "Ethereal", "Leader", "Mistress"])) {
+        return "warlord";
+    }
+    // Fire support: the gunline that holds and shoots.
+    if (enemy_name_has(_name, ["Havoc", "Dark Reaper", "Broadside", "Heavy Weapons", "Long Fang",
+        "Loota", "Flash Git", "Tank Busta", "Devastator", "Retributor", "Zoanthrope", "Fire Dragon",
+        "Destroyer"])) {
+        return "heavy";
+    }
+    // Fast attack and dedicated close combat: these leap the line.
+    if (enemy_name_has(_name, ["Raptor", "Stormboy", "Warp Spider", "Swooping Hawk", "Shining Spear",
+        "Howling Banshee", "Striking Scorpian", "Striking Scorpion", "Genestealer", "Hormagaunt",
+        "Berzerker", "Seraphim", "Repentia", "Arco-Flagellent", "Jackal", "Vespid", "Necron Wraith",
+        "Spyrer", "Possessed"])) {
+        return "assault";
+    }
+    // Skirmishers, infiltrators and light screens.
+    if (enemy_name_has(_name, ["Gretchin", "Kommando", "Ranger", "Pathfinder", "Stealthsuit", "XV25",
+        "Lictor", "Kroot", "Drone", "Scout"])) {
+        return "scout";
+    }
+    // Veterans and heavy infantry.
+    if (enemy_name_has(_name, ["Nob", "Ard Boy", "Chosen", "Veteran", "Aberrant", "Tyrant Guard",
+        "Tyranid Warrior", "Lychguard", "Immortal", "Wraithguard", "Celestian", "Dominion", "Exarch",
+        "Ogryn", "Cultist Elite", "Fallen", "Daemonhost", "Praetorian", "Thallax", "Ogre", "Mek",
+        "Priest", "XV8"])) {
+        return "elite";
+    }
+    return "line";
+}
+
+/// @desc Human-readable name for an enemy formation category, for the block tooltip and
+/// combat-log order lines. Deliberately race-neutral: one label reads correctly whether
+/// the segment is Ork Stormboyz or Chaos Raptors.
+/// @param {String} _ftype
+/// @returns {String}
+function enemy_formation_display_name(_ftype) {
+    switch (_ftype) {
+        case "warlord": return "Warlords";
+        case "terminator": return "Elite Heavy Infantry";
+        case "elite": return "Elites";
+        case "heavy": return "Fire Support";
+        case "assault": return "Assault Troops";
+        case "scout": return "Skirmishers";
+        case "walker": return "Walkers";
+        case "vehicle": return "Vehicles";
+        case "line": return "Line Infantry";
+    }
+    return "Enemy formation";
+}
+
+/// @desc Split every spawned enemy block into per-category formation segments, the mirror
+/// of the player's formation_block routing. Each of the spawn's blocks keeps its COLUMN
+/// (the enemy line's width, and what the player's fire-target lines count), but its mixed
+/// contents divide into separate blocks in that same column, drawn as stacked segments
+/// and individually hoverable and targetable. The largest category keeps the original
+/// instance so the line's shape and any spawn-set flags survive; the rest split off.
+/// Runs once at the end of the spawn, before any block's Alarm_1: only dudes, dudes_num
+/// and dudes_special are set at that point, and each block derives its own weapons,
+/// armour, size and force accounting from the entries it ends up holding. Vacated source
+/// entries are zeroed and Alarm_1's existing compaction pass closes the gaps; a segment
+/// that somehow ends up empty destroys itself there too.
+/// @returns {Undefined}
+function enemy_formation_split() {
+    if (!instance_exists(obj_enunit)) {
+        return;
+    }
+    var _origins = [];
+    with (obj_enunit) {
+        array_push(_origins, id);
+    }
+    var _segments = 0;
+    for (var _b = 0; _b < array_length(_origins); _b++) {
+        var _src = _origins[_b];
+        if (!instance_exists(_src)) {
+            continue;
+        }
+        if (_src.formation_type != "") {
+            continue; // already split (defensive: the spawn may run more than once)
+        }
+        // Which categories this block holds, and how many bodies in each.
+        var _cats = [];
+        var _weights = [];
+        with (_src) {
+            for (var _j = 1; _j <= 700; _j++) {
+                if ((dudes[_j] == "") || (dudes_num[_j] <= 0)) {
+                    continue;
+                }
+                var _cat = enemy_formation_type(dudes[_j]);
+                var _at = -1;
+                for (var _k = 0; _k < array_length(_cats); _k++) {
+                    if (_cats[_k] == _cat) {
+                        _at = _k;
+                        break;
+                    }
+                }
+                if (_at < 0) {
+                    array_push(_cats, _cat);
+                    array_push(_weights, dudes_num[_j]);
+                } else {
+                    _weights[_at] += dudes_num[_j];
+                }
+            }
+        }
+        if (array_length(_cats) == 0) {
+            continue;
+        }
+        var _keep = 0;
+        for (var _k = 1; _k < array_length(_cats); _k++) {
+            if (_weights[_k] > _weights[_keep]) {
+                _keep = _k;
+            }
+        }
+        _src.formation_type = _cats[_keep];
+        for (var _k = 0; _k < array_length(_cats); _k++) {
+            if (_k == _keep) {
+                continue;
+            }
+            var _new = instance_create(_src.x, _src.y, obj_enunit);
+            _new.formation_type = _cats[_k];
+            _new.owner = _src.owner;
+            _new.flank = _src.flank;
+            _new.flyer = _src.flyer;
+            _new.pos = _src.pos;
+            _new.neww = _src.neww;
+            if (variable_instance_exists(_src, "column")) {
+                _new.column = _src.column;
+            }
+            var _slot = 1;
+            with (_src) {
+                for (var _j = 1; _j <= 700; _j++) {
+                    if ((dudes[_j] == "") || (dudes_num[_j] <= 0)) {
+                        continue;
+                    }
+                    if (enemy_formation_type(dudes[_j]) != _new.formation_type) {
+                        continue;
+                    }
+                    _new.dudes[_slot] = dudes[_j];
+                    _new.dudes_num[_slot] = dudes_num[_j];
+                    _new.dudes_special[_slot] = dudes_special[_j];
+                    _slot += 1;
+                    dudes[_j] = "";
+                    dudes_special[_j] = "";
+                    dudes_num[_j] = 0;
+                }
+            }
+            _segments += 1;
+        }
+    }
+    LOGGER.info($"ENEMY FORMATIONS: {array_length(_origins)} spawned block(s) split into {array_length(_origins) + _segments} formation segment(s)");
+}
+
+/// @desc Melee-doctrine races never form a gunline: an Ork or Tyranid horde brings its
+/// heavy weapons forward with everything else. Every other race's fire support holds
+/// position and shoots, which is what makes their line worth flanking.
+/// @returns {Bool}
+function enemy_race_always_charges() {
+    if (!instance_exists(obj_ncombat)) {
+        return true;
+    }
+    var _e = obj_ncombat.enemy;
+    return (_e == eFACTION.ORK) || (_e == eFACTION.TYRANIDS) || (_e == eFACTION.GENESTEALER);
+}
+
 /// @description Attempts to move an enemy unit block, choosing direction based on whenever they are flanking or not, only if `obj_nfort` doesn't exists.
 /// @self Asset.GMObject.obj_enunit
 function move_enemy_block() {
     if (instance_exists(obj_nfort)) {
         exit;
+    }
+
+    // Enemy formation doctrine, the mirror of the player's orders without an order UI:
+    // each segment behaves the way its type should, decided per turn rather than driven
+    // by an AI planner.
+    // Fire support holds the gunline and shoots (melee-doctrine races excepted).
+    if ((formation_type == "heavy") && !enemy_race_always_charges() && instance_exists(obj_pnunit)) {
+        exit;
+    }
+    // Assault troops leap the last stretch into the player's front line, once per battle,
+    // mirroring the player's Assault jump. Flanking blocks approach from the far side and
+    // are left to their existing behaviour.
+    if ((formation_type == "assault") && !assault_jumped && !flank && instance_exists(obj_pnunit)) {
+        var _front_x = -100000;
+        with (obj_pnunit) {
+            if ((x > _front_x) && visible) {
+                _front_x = x;
+            }
+        }
+        var _gap = x - _front_x;
+        if ((_gap > 10) && (_gap <= ASSAULT_JUMP_RANGE)) {
+            x = _front_x + 10;
+            assault_jumped = true;
+            obj_ncombat.combat_log.push($"The enemy {enemy_formation_display_name(formation_type)} hurl themselves at your line!", eMSG_COLOR.BRIGHT_RED);
+            exit;
+        }
     }
 
     var _direction = flank ? "east" : "west";
@@ -614,5 +885,10 @@ function resolve_block_label(_inst) {
     }
 
     var _desc = arrays_to_string_with_counts(_inst.dudes, _inst.dudes_num, true, false);
+    // Name the enemy segment in debug lines so a tester log reads by formation instead of
+    // by roster string alone (several segments now share one column).
+    if ((_object_index == obj_enunit) && (_inst.formation_type != "")) {
+        return $"[{enemy_formation_display_name(_inst.formation_type)}] <{_desc}>";
+    }
     return $"<{_desc}>";
 };
