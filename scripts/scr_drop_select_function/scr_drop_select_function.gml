@@ -677,6 +677,7 @@ function drop_select_unit_selection() {
                 _gc.pending_width = clamp(round(_gfront / 200), 8, 32);
                 _gc.pending_force = grid_collect_force(roster);
                 _gc.pending_enemy = string(attacking);
+                _gc.pending_threat = obj_ncombat.threat;
                 _gc.pending_loc = p_target.name;
                 _gc.pending_live = true;
             }

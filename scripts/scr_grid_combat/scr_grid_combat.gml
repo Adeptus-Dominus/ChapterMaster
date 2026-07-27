@@ -56,6 +56,14 @@
 #macro GRIDC_FLASH_FRAMES 24
 #macro GRIDC_DRAG_MIN 8
 
+// Health a man is left on when the grid kills him. It has to be negative so the
+// vanilla checks read him as down, but well above the -3000 "incapacitated"
+// threshold in after_battle_part1, which un-kills anyone below it. Alarm_5's
+// apothecary pass uses hp as the constitution penalty, so this is also what
+// decides how hard he is to save. -50 matches the value vanilla writes itself
+// when a battle is lost.
+#macro GRIDC_DEATH_HP -50
+
 #macro GRIDPH_DEPLOY 0
 #macro GRIDPH_BATTLE 1
 #macro GRIDPH_END 2
@@ -451,14 +459,23 @@ function grid_spawn_enemy_squad(ctrl, _key, _idx) {
 /// together and the front stays the thing that decides the shape of the fight.
 function grid_spawn_enemy_force(ctrl) {
     var _w = ctrl.combat_width;
-    var _mix = [
-        ["ork_shoota", max(3, round(_w * 0.7))],
-        ["ork_slugga", max(2, round(_w * 0.55))],
-        ["ork_nob", max(1, round(_w * 0.2))],
-        ["ork_dread", max(1, round(_w * 0.12))],
-        ["ork_wagon", max(1, round(_w * 0.08))],
-        ["ork_weirdboy", 1],
-    ];
+    // Threat is the campaign's own measure of how big this fight is, and it is
+    // what the after-battle pass spends to reduce the enemy on the planet. If
+    // the grid ignored it, a border skirmish and a full Waaagh would put the
+    // same horde on the field and both would be paid out the same.
+    var _t = clamp(ctrl.pending_threat, 1, 7);
+    var _tm = 0.40 + (_t * 0.23);
+    // The faction hook: one shape of force, filled from that faction's own
+    // profiles. The order is line, close assault, elite, walker, transport,
+    // psyker, and the weights below follow it.
+    var _set = grid_enemy_set(ctrl.pending_enemy);
+    var _wt = [0.70, 0.55, 0.20, 0.12, 0.08, 0.04];
+    var _mix = [];
+    for (var _m = 0; _m < array_length(_set); _m++) {
+        var _floor = (_m >= 2) ? 1 : (3 - _m);
+        var _weight = (_m < array_length(_wt)) ? _wt[_m] : 0.05;
+        array_push(_mix, [_set[_m], max(_floor, round(_w * _weight * _tm))]);
+    }
     var _n = 1;
     for (var _i = 0; _i < array_length(_mix); _i++) {
         // One mob type, one formation: the horde advances in blocks and only
@@ -1384,7 +1401,7 @@ function grid_battle_tick(ctrl) {
     }
 
     if ((ctrl.ticks mod 5) == 0) {
-        grid_log(ctrl, $"Exchange: {ctrl.agg_ekills} greenskins slain, {ctrl.agg_pkills} of ours lost.", GRIDC_COL_FEED);
+        grid_log(ctrl, $"Exchange: {ctrl.agg_ekills} of the enemy slain, {ctrl.agg_pkills} of ours lost.", GRIDC_COL_FEED);
     }
 
     // Feed the line before checking for a wipe, so a chapter with reserves left
@@ -1692,7 +1709,13 @@ function grid_buttons(ctrl) {
     if (_deploy) {
         array_push(_b, { bx: 1336, by: 726, bw: 248, bh: 40, bid: "start", blabel: "Begin Battle", benabled: grid_any_deployed(ctrl) });
     }
-    array_push(_b, { bx: 1336, by: 772, bw: 248, bh: 36, bid: "exit", blabel: (ctrl.exit_arm > 0) ? "Confirm Exit" : "Exit Battle", benabled: true });
+    // In a live battle leaving early is a withdrawal, and a withdrawal is a
+    // defeat, so the button says so rather than reading like a way out.
+    var _exit_label = (ctrl.exit_arm > 0) ? "Confirm Exit" : "Exit Battle";
+    if (ctrl.pending_live) {
+        _exit_label = (ctrl.exit_arm > 0) ? "Confirm Withdrawal" : "Withdraw";
+    }
+    array_push(_b, { bx: 1336, by: 772, bw: 248, bh: 36, bid: "exit", blabel: _exit_label, benabled: true });
     return _b;
 }
 
@@ -1883,11 +1906,156 @@ function grid_import_force(ctrl, _force) {
     }
 }
 
+/// @function grid_block_slot_for_uid
+/// @description Finds the battlefield slot a campaign unit is standing in.
+/// Returns [block instance, index], or [noone, -1] if he is not on the field.
+/// Matched by uid rather than by position: a block's arrays are index parallel
+/// and the roster order is not the block order, so an index taken from one and
+/// used on the other would hit the wrong man.
+function grid_block_slot_for_uid(_uid) {
+    var _hit_blk = noone;
+    var _hit_idx = -1;
+    if (_uid == "") {
+        return [noone, -1];
+    }
+    with (obj_pnunit) {
+        if (_hit_idx >= 0) {
+            continue;
+        }
+        for (var _i = 0; _i < array_length(unit_struct); _i++) {
+            var _u = unit_struct[_i];
+            if (!is_struct(_u)) {
+                continue;
+            }
+            if (!variable_struct_exists(_u, "uid")) {
+                continue;
+            }
+            if (_u.uid != _uid) {
+                continue;
+            }
+            _hit_blk = id;
+            _hit_idx = _i;
+            break;
+        }
+    }
+    return [_hit_blk, _hit_idx];
+}
+
+/// @function grid_block_slot_for_vehicle
+/// @description The same lookup for a vehicle, keyed on the company and vehicle
+/// id pair the roster hands over, since vehicles carry no uid.
+function grid_block_slot_for_vehicle(_co, _vid) {
+    var _hit_blk = noone;
+    var _hit_idx = -1;
+    with (obj_pnunit) {
+        if (_hit_idx >= 0) {
+            continue;
+        }
+        for (var _i = 0; _i < array_length(veh_type); _i++) {
+            if (veh_type[_i] == "") {
+                continue;
+            }
+            if (veh_ally[_i]) {
+                continue;
+            }
+            if ((veh_co[_i] == _co) && (veh_id[_i] == _vid)) {
+                _hit_blk = id;
+                _hit_idx = _i;
+                break;
+            }
+        }
+    }
+    return [_hit_blk, _hit_idx];
+}
+
+/// @function grid_kill_block_man
+/// @description Marks one man down in his battlefield block exactly the way the
+/// vanilla damage path does (check_dead_marines in scr_clean): health driven
+/// under zero, marine_dead raised, and the loss added to the block's own tally.
+/// It deliberately does not remove him from the chapter. obj_pnunit Alarm_6 is
+/// what does that, and it runs only after the Apothecaries have had their pass
+/// in Alarm_5, so a man written off here can still be carried home alive.
+function grid_kill_block_man(_blk, _idx) {
+    if (!instance_exists(_blk) || (_idx < 0)) {
+        return false;
+    }
+    if (_idx >= array_length(_blk.marine_dead)) {
+        return false;
+    }
+    if (_blk.marine_dead[_idx] >= 1) {
+        return false;
+    }
+    var _u = _blk.unit_struct[_idx];
+    if (is_struct(_u) && (_u.hp() > GRIDC_DEATH_HP)) {
+        _u.update_health(GRIDC_DEATH_HP);
+    }
+    _blk.marine_dead[_idx] = 1;
+    if (_idx < array_length(_blk.marine_hp)) {
+        _blk.marine_hp[_idx] = GRIDC_DEATH_HP;
+    }
+    var _type = (_idx < array_length(_blk.marine_type)) ? _blk.marine_type[_idx] : "";
+    var _lost_types = _blk.lost;
+    var _lost_nums = _blk.lost_num;
+    var _li = array_get_index(_lost_types, _type);
+    if (_li != -1) {
+        _lost_nums[_li] += 1;
+    } else {
+        array_push(_lost_types, _type);
+        array_push(_lost_nums, 1);
+    }
+    if (instance_exists(obj_ncombat)) {
+        obj_ncombat.player_forces = max(0, obj_ncombat.player_forces - 1);
+    }
+    return true;
+}
+
+/// @function grid_wreck_block_vehicle
+/// @description Marks a vehicle knocked out, on the same terms the vanilla path
+/// uses (hull at zero, veh_dead raised). Whether the wreck is recovered is then
+/// the Techmarines' business in Alarm_5, and striking it from the motor pool is
+/// Alarm_6's, through destroy_vehicle. Nothing here touches obj_ini.
+function grid_wreck_block_vehicle(_blk, _idx) {
+    if (!instance_exists(_blk) || (_idx < 0)) {
+        return false;
+    }
+    if (_idx >= array_length(_blk.veh_dead)) {
+        return false;
+    }
+    if (_blk.veh_dead[_idx] != 0) {
+        return false;
+    }
+    _blk.veh_hp[_idx] = 0;
+    _blk.veh_dead[_idx] = 1;
+    return true;
+}
+
+/// @function grid_damage_block_vehicle
+/// @description Scales a surviving vehicle's hull down by the fraction it has
+/// left on the grid, so a tank that limps off the field goes home damaged.
+/// Alarm_6 divides this by veh_hp_multiplier on the way back to obj_ini, so the
+/// value has to stay in the block's own scale: it is scaled, never replaced.
+function grid_damage_block_vehicle(_blk, _idx, _frac) {
+    if (!instance_exists(_blk) || (_idx < 0)) {
+        return false;
+    }
+    if (_idx >= array_length(_blk.veh_hp)) {
+        return false;
+    }
+    if (_blk.veh_dead[_idx] != 0) {
+        return false;
+    }
+    _blk.veh_hp[_idx] = max(1, floor(_blk.veh_hp[_idx] * clamp(_frac, 0.05, 1)));
+    return true;
+}
+
 /// @function grid_commit_losses
-/// @description Writes the battle back into the campaign. Each squad knows the
-/// real units standing in it, so the men it lost are the men who die, resolved
-/// by uid at the moment of death because killing a unit reshuffles the slots
-/// behind it. Runs once, guarded by ctrl.losses_written.
+/// @description Writes the battle into the live battlefield blocks, and stops
+/// there. Each squad knows the real units standing in it, so the men it lost are
+/// the men marked down, found by uid because a block index and a roster index
+/// are different things. Everything past this point (Apothecary recovery,
+/// gene-seed, equipment, promotions, rewards, the planet) is the vanilla
+/// after-battle chain's job and is left alone. Runs once, guarded by
+/// ctrl.losses_written.
 function grid_commit_losses(ctrl) {
     if (ctrl.losses_written || !ctrl.pending_live) {
         return 0;
@@ -1895,6 +2063,8 @@ function grid_commit_losses(ctrl) {
     ctrl.losses_written = true;
     var _dead = 0;
     var _veh_dead = 0;
+    var _veh_hurt = 0;
+    var _missing = 0;
     for (var _i = 0; _i < array_length(ctrl.squads); _i++) {
         var _s = ctrl.squads[_i];
         if ((_s.side != 0) || (array_length(_s.roster_refs) <= 0)) {
@@ -1904,40 +2074,111 @@ function grid_commit_losses(ctrl) {
         if (!_s.alive && !_s.is_vehicle) {
             _lost = array_length(_s.roster_refs);
         }
+        // Casualties come off the back of the squad. The roster lists a company
+        // in slot order, which puts sergeants and specialists near the front, so
+        // taking them from the front would kill the leadership first every time.
         for (var _k = 0; (_k < _lost) && (_k < array_length(_s.roster_refs)); _k++) {
-            var _ref = _s.roster_refs[_k];
+            var _ref = _s.roster_refs[array_length(_s.roster_refs) - 1 - _k];
             if (_ref.veh) {
-                // Vehicle wrecks are counted but not yet removed: the vehicle
-                // arrays have their own hardcoded whitelists and want a pass of
-                // their own rather than a guess here.
-                _veh_dead += 1;
-                continue;
-            }
-            var _co = _ref.co;
-            var _slot = _ref.slot;
-            if (_ref.uid != "") {
-                var _live = fetch_unit_uid(_ref.uid);
-                if (is_struct(_live)) {
-                    _co = _live.company;
-                    _slot = _live.marine_number;
-                } else {
+                var _vslot = grid_block_slot_for_vehicle(_ref.co, _ref.slot);
+                if (_vslot[1] < 0) {
+                    _missing += 1;
                     continue;
                 }
-            }
-            if ((_co < 0) || (_slot < 0)) {
+                if (grid_wreck_block_vehicle(_vslot[0], _vslot[1])) {
+                    _veh_dead += 1;
+                }
                 continue;
             }
-            with (obj_controller) {
-                scr_kill_unit(_co, _slot);
+            var _slot = grid_block_slot_for_uid(_ref.uid);
+            if (_slot[1] < 0) {
+                _missing += 1;
+                continue;
             }
-            _dead += 1;
+            if (grid_kill_block_man(_slot[0], _slot[1])) {
+                _dead += 1;
+            }
+        }
+        // A tank that came through battered takes its damage home with it,
+        // rather than parking at full health because it happened to survive.
+        if (_s.is_vehicle && _s.alive && (_s.hp_max > 0) && (_s.hp_pool < _s.hp_max)) {
+            var _dref = _s.roster_refs[0];
+            if (_dref.veh) {
+                var _dslot = grid_block_slot_for_vehicle(_dref.co, _dref.slot);
+                if (_dslot[1] >= 0) {
+                    if (grid_damage_block_vehicle(_dslot[0], _dslot[1], _s.hp_pool / _s.hp_max)) {
+                        _veh_hurt += 1;
+                    }
+                }
+            }
         }
     }
-    grid_log(ctrl, $"Casualties recorded: {_dead} battle brothers lost.", GRIDC_COL_ENEMY);
-    if (_veh_dead > 0) {
-        grid_log(ctrl, $"{_veh_dead} vehicles wrecked (not yet struck from the motor pool).", GRIDC_COL_WARN);
+    var _summary = $"Casualties recorded: {_dead} lost, {_veh_dead} vehicles knocked out.";
+    grid_log(ctrl, _summary, GRIDC_COL_ENEMY);
+    if (instance_exists(obj_ncombat)) {
+        obj_ncombat.combat_log.push(_summary, eMSG_COLOR.YELLOW);
+        if (_veh_hurt > 0) {
+            obj_ncombat.combat_log.push($"{_veh_hurt} vehicles come off the field damaged.", eMSG_COLOR.DEFAULT);
+        }
+    }
+    if (_missing > 0) {
+        // Not fatal, and worth seeing rather than silently swallowing: it means
+        // a squad held a unit the battlefield blocks no longer had a slot for.
+        grid_log(ctrl, $"{_missing} casualties had no battlefield slot and were skipped.", GRIDC_COL_WARN);
     }
     return _dead;
+}
+
+/// @function grid_handoff_result
+/// @description Hands the fight back to obj_ncombat so the vanilla end of battle
+/// chain runs unchanged: Alarm_5 for Apothecary and Techmarine recovery,
+/// gene-seed, equipment, the summary screen and the enemy power reduction, then
+/// the player's Enter for Alarm_6 (the roster and motor pool writeback) and
+/// Alarm_7 (experience, promotions, requisition, the planet, the event log, and
+/// the camera and music restore). The grid duplicates none of it; all it
+/// supplies is the outcome the vanilla tactical clock would have reached, and
+/// the casualties already written into the blocks.
+function grid_handoff_result(ctrl) {
+    if (!instance_exists(obj_ncombat)) {
+        return false;
+    }
+    // Anything short of a clear win is a withdrawal, which is the same defeat
+    // vanilla records when the last block walks off the field. Leaving it at 0
+    // would read as a victory and quietly pay out the enemy power reduction.
+    var _lost_field = (ctrl.result <= 0);
+    var _ticks = ctrl.ticks;
+    with (obj_ncombat) {
+        defeat = _lost_field ? 1 : 0;
+        turn_count = max(turn_count, _ticks);
+        // The tactical stages never ran, so they are parked at their finished
+        // values and the "Chapter Defeated" / "Enemy Forces Defeated" poll in
+        // Step_0 is switched off: the grid has already said which it was.
+        defeat_message = 1;
+        timer_stage = 5;
+        timer_speed = 0;
+        timer_maxspeed = 0;
+        four_show = 1;
+        done = 1;
+        // started 3 is the state KeyPress_13 leaves behind once the summary has
+        // been asked for, so the player's next Enter runs its Alarm_6 + Alarm_7
+        // branch and the battle closes down exactly as a vanilla one does.
+        started = 3;
+        fack = 1;
+        enter_pressed = 0;
+        click_stall_timer = 15;
+        total_battle_exp_gain = 10 * sqr(threat);
+        visible = true;
+        // Nothing may restart the vanilla turn driver underneath the summary.
+        for (var _ga = 0; _ga < 12; _ga++) {
+            alarm[_ga] = -1;
+        }
+        instance_activate_object(obj_pnunit);
+        instance_activate_object(obj_enunit);
+        instance_activate_object(obj_star);
+        instance_activate_object(obj_event_log);
+        alarm[5] = 6;
+    }
+    return true;
 }
 
 /// @function grid_enemy_set
@@ -1945,14 +2186,23 @@ function grid_commit_losses(ctrl) {
 /// a line unit, a close assault unit, an elite, a walker, and a transport, so
 /// force generation is faction agnostic until real enemy rosters are wired in.
 function grid_enemy_set(_faction) {
-    // eFACTION values are not assumed here; the caller passes a lowered name.
+    // The launcher hands over the raw eFACTION index as a string, so a plain
+    // name match would never fire and every battle would silently take the
+    // fallback. Numbers are resolved as the enum, names as text, so the cheat's
+    // "orks" and the campaign's "7" both land in the same place.
+    var _greenskin = ["ork_shoota", "ork_slugga", "ork_nob", "ork_dread", "ork_wagon", "ork_weirdboy"];
     var _f = string_lower(string(_faction));
-    if (string_count("ork", _f) > 0) {
-        return ["ork_shoota", "ork_slugga", "ork_nob", "ork_dread", "ork_wagon", "ork_weirdboy"];
+    var _idx = -1;
+    if ((_f != "") && (string_digits(_f) == _f)) {
+        _idx = real(_f);
     }
-    // Fallback profile: the Ork stat shapes stand in for other factions until
-    // their own rosters exist, rather than leaving the battle empty.
-    return ["ork_shoota", "ork_slugga", "ork_nob", "ork_dread", "ork_wagon", "ork_weirdboy"];
+    if ((_idx == eFACTION.ORK) || (string_count("ork", _f) > 0)) {
+        return _greenskin;
+    }
+    // Every other faction still borrows the greenskin stat shapes. This is the
+    // one place to add real rosters: keep the order (line, close assault, elite,
+    // walker, transport, psyker) and grid_spawn_enemy_force needs no changes.
+    return _greenskin;
 }
 
 /// @function grid_reinforce
@@ -2015,31 +2265,21 @@ function grid_reinforce(ctrl) {
 /// handed back before the object is released.
 function grid_exit(ctrl) {
     // Order matters: the campaign objects are deactivated while the grid runs,
-    // and scr_kill_unit and fetch_unit_uid both reach into obj_ini and
-    // obj_controller. Reactivate first, write the losses second.
+    // and every writeback reaches into the battlefield blocks and obj_ncombat.
+    // Reactivate first, resolve second.
     instance_activate_all();
-    grid_commit_losses(ctrl);
     if (ctrl.pending_live && instance_exists(obj_ncombat)) {
-        obj_controller.x = obj_ncombat.view_x;
-        obj_controller.y = obj_ncombat.view_y;
-        // obj_ncombat Create swapped the map theme for the battle theme, and
-        // its Alarm_7 would normally swap it back. The grid skips that alarm,
-        // so the same two calls happen here.
-        audio_stop_sound(snd_battle);
-        audio_play_sound(snd_royal, 0, true);
-        // The vanilla launch spawns its own battlefield units, which sit
-        // deactivated while the grid runs and come back to life on reactivation.
-        // Their Draw reaches into obj_ncombat, so they have to go before it does.
-        with (obj_pnunit) {
+        // Live battle: the casualties go into the blocks and obj_ncombat takes
+        // the field back. It owns the summary screen, the camera, the music and
+        // the teardown from here on, so none of that happens here any more.
+        grid_commit_losses(ctrl);
+        grid_handoff_result(ctrl);
+        with (ctrl) {
             instance_destroy();
         }
-        with (obj_enunit) {
-            instance_destroy();
-        }
-        with (obj_ncombat) {
-            instance_destroy();
-        }
+        return;
     }
+    // Sandbox mode (the gridbattle cheat): there is no battle to hand back to.
     with (ctrl) {
         instance_destroy();
     }

@@ -474,14 +474,14 @@ if (phase == GRIDPH_END) {
     draw_text(800, 330, (result > 0) ? "VICTORY" : "DEFEAT");
     draw_set_font(fnt_40k_12);
     draw_set_color(GRIDC_GREEN);
-    draw_text(800, 400, $"Greenskins slain: {total_ekills}");
+    draw_text(800, 400, $"Enemy slain: {total_ekills}");
     draw_text(800, 424, $"Battle brothers lost: {total_pkills}");
     draw_text(800, 448, $"Mobs wiped out: {wiped_e}");
     draw_text(800, 472, $"Squads lost: {wiped_p}");
     draw_text(800, 496, $"Duration: {ticks} ticks");
     draw_rectangle(660, 560, 940, 616, true);
     draw_set_valign(fa_middle);
-    draw_text(800, 588, "Return to Map");
+    draw_text(800, 588, pending_live ? "After Action Report" : "Return to Map");
     draw_set_valign(fa_top);
     draw_set_halign(fa_left);
 }

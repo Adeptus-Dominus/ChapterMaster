@@ -27,6 +27,11 @@ if (!variable_instance_exists(id, "pending_loc")) {
 if (!variable_instance_exists(id, "pending_live")) {
     pending_live = false;
 }
+// Campaign threat level (1 to 7). It sizes the enemy force, so it has to match
+// the number the after-battle pass spends against the planet.
+if (!variable_instance_exists(id, "pending_threat")) {
+    pending_threat = 3;
+}
 
 phase = GRIDPH_DEPLOY;
 result = 0;

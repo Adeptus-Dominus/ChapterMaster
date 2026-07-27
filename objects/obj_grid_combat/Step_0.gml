@@ -10,6 +10,9 @@ if (!boot_done) {
 
     grid_setup_field(id, pending_width);
     grid_gen_cover(id);
+    // A bigger fight keeps coming for longer, so the wave count follows threat
+    // rather than sitting at the prototype's flat one.
+    waves_left = clamp(round(clamp(pending_threat, 1, 7) / 2), 1, 4);
     if (array_length(pending_force) > 0) {
         grid_import_force(id, pending_force);
     } else {
@@ -22,7 +25,7 @@ if (!boot_done) {
     }
     grid_log(id, $"The ground holds {combat_width} squads on the line. The rest follow as reserves.", GRIDC_COL_FEED);
     if (pending_live) {
-        grid_log(id, "Tactical layer only: losses are not yet written back.", GRIDC_COL_WARN);
+        grid_log(id, "Live battle: these are your real companies and your losses are permanent.", GRIDC_COL_WARN);
     }
     grid_log(id, "Left click selects, drag selects, right click orders.", GRIDC_COL_ORDER);
     grid_log(id, "WASD pans the field. Tab toggles the overview.", GRIDC_COL_ORDER);
@@ -215,7 +218,11 @@ if (_lc) {
                 exit;
             }
             exit_arm = 90;
-            grid_log(id, "Click Exit again to leave the prototype.", GRIDC_COL_WARN);
+            if (pending_live) {
+                grid_log(id, "Withdrawing hands the field to the enemy and is recorded as a defeat. Click again to confirm.", GRIDC_COL_WARN);
+            } else {
+                grid_log(id, "Click Exit again to leave the prototype.", GRIDC_COL_WARN);
+            }
         }
         break;
     }
