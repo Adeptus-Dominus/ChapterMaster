@@ -934,37 +934,62 @@ function draw_regions_panel(_star, _planet, _px, _py) {
 
         // Tug-of-war bar: your total foothold vs the enemy garrison on this world, so the player can
         // see at a glance who is winning the ground fight. Arrows push toward the middle from each side.
+        // Three-way bar: the chapter's foothold (aqua), its Imperial allies still holding
+        // ground (grey), and the hostile garrison (red). It used to be two-way, chapter
+        // versus everyone else, so a world the player had not yet intervened on painted
+        // the ENTIRE bar red even while the Imperium held the capital and was winning:
+        // an ally's garrison was scored as enemy territory and the planet read as already
+        // lost. Landing now visibly converts grey into aqua rather than conjuring a bar
+        // out of nothing.
         var _mine = regions_player_force_total(_star, _planet);
+        var _allied = 0;
         var _theirs = 0;
         for (var _ei = 0; _ei < _n; _ei++) {
-            if (_regions[_ei].owner != eFACTION.PLAYER) {
+            var _ow = _regions[_ei].owner;
+            if (_ow == eFACTION.PLAYER) {
+                continue; // already counted in the chapter foothold total
+            }
+            if (br_faction_is_imperial(_ow)) {
+                _allied += region_imperial_garrison_share(_star, _planet, _ei);
+            } else {
                 _theirs += region_enemy_force(_star, _planet, _ei);
             }
         }
-        var _tot = max(1, _mine + _theirs);
+        var _tot = max(1, _mine + _allied + _theirs);
         var _bx1 = _px + 10;
         var _bx2 = _px + _w - 10;
         var _by = _py + 26;
         var _bh = 8;
-        var _split = _bx1 + round((_bx2 - _bx1) * (_mine / _tot));
-        // Your share (aqua) from the left, enemy share (red) from the right.
+        var _bw = _bx2 - _bx1;
+        var _split_mine = _bx1 + round(_bw * (_mine / _tot));
+        var _split_allied = _split_mine + round(_bw * (_allied / _tot));
         draw_set_alpha(0.9);
-        draw_set_color(c_aqua);
-        draw_rectangle(_bx1, _by, _split, _by + _bh, false);
+        if (_split_mine > _bx1) {
+            draw_set_color(c_aqua);
+            draw_rectangle(_bx1, _by, _split_mine, _by + _bh, false);
+        }
+        if (_split_allied > _split_mine) {
+            draw_set_color(c_ltgray);
+            draw_rectangle(_split_mine, _by, _split_allied, _by + _bh, false);
+        }
         draw_set_color(c_red);
-        draw_rectangle(_split, _by, _bx2, _by + _bh, false);
+        draw_rectangle(_split_allied, _by, _bx2, _by + _bh, false);
         draw_set_alpha(1);
         draw_set_color(c_white);
         draw_rectangle(_bx1, _by, _bx2, _by + _bh, true);
-        // Pushing arrows at the boundary.
-        draw_set_color(c_aqua);
-        draw_text(_split - 12, _by - 4, ">");
+        // Pushing arrows meet where the loyalist side (chapter + allies) ends.
+        draw_set_color((_mine > 0) ? c_aqua : c_ltgray);
+        draw_text(_split_allied - 12, _by - 4, ">");
         draw_set_color(c_red);
-        draw_text(_split + 4, _by - 4, "<");
+        draw_text(_split_allied + 4, _by - 4, "<");
         draw_set_color(c_white);
-        // Explain the contested fight on hover.
+        // Explain the contested fight on hover, phrased for whether the chapter is in it yet.
         if (scr_hit(_bx1, _by - 4, _bx2, _by + _bh + 4)) {
-            tooltip_draw("This world is CONTESTED: you and the enemy both hold ground here. The bar shows the balance - your force (aqua) versus the enemy garrison (red). Each turn a battle is fought in every region you contest until one side clears it. Take every region to conquer the world; lose your last foothold and you are thrown back to orbit.", 300);
+            if (_mine > 0) {
+                tooltip_draw("This world is CONTESTED: you and the enemy both hold ground here. The bar shows the balance - your foothold (aqua), Imperial forces still holding out (grey), and the enemy garrison (red). Each turn a battle is fought in every region you contest until one side clears it. Take every region to conquer the world; lose your last foothold and you are thrown back to orbit.", 300);
+            } else {
+                tooltip_draw("This world is CONTESTED, but the Chapter has not landed. The bar shows Imperial forces still holding out (grey) against the enemy garrison (red). Land with Hold Ground to open a foothold of your own and the grey becomes aqua as you take ground.", 300);
+            }
         }
     }
     draw_set_color(c_dkgray);
