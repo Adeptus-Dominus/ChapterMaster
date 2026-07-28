@@ -6,7 +6,8 @@ function scr_event_gossip(argument0) {
     that = 0;
     that_type = "";
     words = "";
-    var _unit = fetch_unit([attend_co[argument0], attend_id[argument0]]); him_chaos = is_struct(_unit) ? _unit.corruption : 0;
+    var _unit = fetch_unit([attend_co[argument0], attend_id[argument0]]);
+    him_chaos = is_struct(_unit) ? _unit.corruption : 0;
 
     p = -1;
     repeat (101) {

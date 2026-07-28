@@ -292,7 +292,9 @@ try {
         for (var e = 0; e < array_length(obj_ini.god[c]); e++) {
             if (obj_ini.god[c][e] == 10) {
                 var unit = fetch_unit([c, e]);
-                if (!is_struct(unit)) { continue; }
+                if (!is_struct(unit)) {
+                    continue;
+                }
                 p += 1;
                 penit_co[p] = c;
                 penit_id[p] = e;

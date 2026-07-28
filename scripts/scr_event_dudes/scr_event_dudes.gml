@@ -53,7 +53,10 @@ function scr_event_dudes(do_action, is_planet, system_name, location_id) {
             if (obj_ini.name[coh][ide] == "") {
                 continue;
             }
-            unit = fetch_unit([coh, ide]); if (!is_struct(unit)) { continue; }
+            unit = fetch_unit([coh, ide]);
+            if (!is_struct(unit)) {
+                continue;
+            }
 
             if ((is_planet == 0) && (unit.ship_location == location_id)) {
                 if ((obj_ini.race[coh][ide] == 1) || (obj_ini.race[coh][ide] == 5)) {

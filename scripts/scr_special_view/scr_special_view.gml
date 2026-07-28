@@ -80,7 +80,9 @@ function scr_special_view(command_group) {
                 continue;
             }
             var _unit = fetch_unit([0, v]);
-            if (!is_struct(_unit)) { continue; }
+            if (!is_struct(_unit)) {
+                continue;
+            }
             if (_unit.ship_location > -1) {
                 var ham = _unit.ship_location;
                 if (obj_ini.ship_location[ham] == "Lost") {

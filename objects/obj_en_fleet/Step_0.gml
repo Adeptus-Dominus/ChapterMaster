@@ -24,7 +24,7 @@ if ((owner == eFACTION.TAU) && ((x < 0) || (y < 0))) {
     instance_destroy();
 }
 
-// Garbage-collect stationary fleets leaked off-map (e.g. an exception between a coordinate displacement and its restore). 
+// Garbage-collect stationary fleets leaked off-map (e.g. an exception between a coordinate displacement and its restore).
 // Fleets in transit may legitimately be off-map.
 if ((action == "") && !in_room()) {
     LOGGER.error($"Destroying stranded off-map fleet: owner {owner} at ({x}, {y})");

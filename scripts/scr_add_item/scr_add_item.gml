@@ -161,7 +161,6 @@ function EquipmentTracker() constructor {
     item_types = {};
 }
 
-
 /// @param {String} quality_a
 /// @param {String} quality_b
 /// @param {String} command
@@ -169,20 +168,20 @@ function EquipmentTracker() constructor {
 function compare_qualities(quality_a, quality_b, command) {
     var _index_a = array_get_index(global.equipment_qualities, quality_a);
     var _index_b = array_get_index(global.equipment_qualities, quality_b);
-    if (_index_a == -1 || _index_b == -1){
+    if (_index_a == -1 || _index_b == -1) {
         return false;
     }
     switch (command) {
         case "inmore":
         case "more":
-            return (_index_a >= _index_b);
+            return _index_a >= _index_b;
         case "exmore":
-            return (_index_a > _index_b);
+            return _index_a > _index_b;
         case "inless":
         case "less":
-            return (_index_a <= _index_b);
+            return _index_a <= _index_b;
         case "exless":
-            return (_index_a < _index_b);
+            return _index_a < _index_b;
     }
 
     return false;

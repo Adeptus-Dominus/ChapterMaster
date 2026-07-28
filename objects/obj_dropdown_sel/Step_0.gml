@@ -126,7 +126,9 @@ if ((target == "event_loc") && (determined_planets == 0)) {
     for (var coo = 0; coo <= 10; coo++) {
         for (var ide = 1; ide <= 300; ide++) {
             var _unit = fetch_unit([coo, ide]);
-            if (!is_struct(_unit)) { continue; }
+            if (!is_struct(_unit)) {
+                continue;
+            }
             if ((_unit.role() != obj_ini.role[100][6]) && (_unit.role() != "Venerable " + string(obj_ini.role[100][6])) && (_unit.planet_location > 0)) {
                 var stahp = 0;
                 var first_open = 0;

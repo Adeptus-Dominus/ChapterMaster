@@ -98,7 +98,7 @@ function EquipmentStruct(item_data = undefined, core_type = "", quality_request 
         var stat_order;
         var item_type = type;
         if (type == "") {
-            if (name == ""){
+            if (name == "") {
                 return "";
             }
             if (struct_exists(global.gear[$ "armour"], name)) {
@@ -402,19 +402,19 @@ function EquipmentStruct(item_data = undefined, core_type = "", quality_request 
         }
     };
 
-    static evaluate = function(evaluation_data){
+    static evaluate = function(evaluation_data) {
         var _valid = true;
         var _eval_count = array_length(struct_get_names(evaluation_data));
-        if (struct_exists(evaluation_data, "name")){
+        if (struct_exists(evaluation_data, "name")) {
             _eval_count--;
             var _name_check = evaluation_data.name;
             _valid = name == _name_check;
         }
 
-        if (_eval_count == 0){
-            return _valid
+        if (_eval_count == 0) {
+            return _valid;
         }
-    }
+    };
 }
 
 /// @param {string} search_area possible values: "any", "weapon", "gear", "armour", "mobility"
@@ -519,4 +519,3 @@ function quality_color(_item_quality) {
             return #40bfbf;
     }
 }
-

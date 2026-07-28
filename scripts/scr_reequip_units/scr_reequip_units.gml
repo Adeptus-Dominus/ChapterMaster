@@ -1,5 +1,3 @@
-
-
 enum eEQUIP_TARGET_TYPE {
     NONE = 0,
     MARINE = 1,
@@ -11,11 +9,9 @@ enum eEQUIP_TARGET_TYPE {
     WHIRLWIND = 54,
 }
 
-
 /// @self Asset.GMObject.obj_controller
 function set_up_equip_popup() {
-
-    static setup_UI_elements = function(){
+    static setup_UI_elements = function() {
         equipment_area = -1;
         cancel_button = new UnitButtonObject({
             x1: 1061,
@@ -109,8 +105,15 @@ function set_up_equip_popup() {
             label: "",
             font: fnt_40k_12,
         });
-        selectors = [weapon1_select , weapon2_select, armour_select, gear_select, mobility_select];
-    }
+        selectors = [
+            weapon1_select,
+            weapon2_select,
+            armour_select,
+            gear_select,
+            mobility_select,
+        ];
+    };
+
     if (instance_exists(obj_popup)) {
         return;
     }
@@ -121,7 +124,13 @@ function set_up_equip_popup() {
     var prev_role;
     var allow = true;
 
-    var _current_equipment = ["","","","",""];
+    var _current_equipment = [
+        "",
+        "",
+        "",
+        "",
+        "",
+    ];
 
     var _unchangeable_armour = false;
     // Need to make sure that group selected is all the same type
@@ -182,39 +191,33 @@ function set_up_equip_popup() {
 
         if (equip_target_type > 0) {
             _units_selected_for_change += 1;
-            var _unit_equipment = new UnitEquipment([
-                obj_controller.ma_wep1[f], 
-                obj_controller.ma_wep2[f],
-                obj_controller.ma_armour[f],
-                obj_controller.ma_gear[f] ,
-                obj_controller.ma_mobi[f]
-            ]);
+            var _unit_equipment = new UnitEquipment([obj_controller.ma_wep1[f], obj_controller.ma_wep2[f], obj_controller.ma_armour[f], obj_controller.ma_gear[f], obj_controller.ma_mobi[f]]);
 
-            for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++){
+            for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
                 var _item_name = _unit_equipment.item_names[i];
 
                 var _no_item = _item_name == "";
 
-                if (_no_item && _current_equipment[i] == "" ){
+                if (_no_item && _current_equipment[i] == "") {
                     continue;
                 }
 
                 var _is_assortment = _current_equipment[i] == "Assortment";
 
-                if (_is_assortment){
+                if (_is_assortment) {
                     continue;
                 }
 
-                if (_current_equipment[i] == ""){
+                if (_current_equipment[i] == "") {
                     _current_equipment[i] = _item_name;
-                } else if (_current_equipment[i] != _item_name){
-                    _current_equipment[i] = "Assortment"
+                } else if (_current_equipment[i] != _item_name) {
+                    _current_equipment[i] = "Assortment";
                 }
             }
         }
     }
-    for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++){
-        if (_current_equipment[i] == "" || _current_equipment[i] == 0){
+    for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
+        if (_current_equipment[i] == "" || _current_equipment[i] == 0) {
             _current_equipment[i] = ITEM_NAME_NONE;
         }
     }
@@ -224,7 +227,7 @@ function set_up_equip_popup() {
         pip.type = ePOPUP_TYPE.EQUIP;
         pip.current_equipment = _current_equipment;
         pip.needed_equipment = _current_equipment;
-        pip.equipment_found_and_valid = array_create(5,true);
+        pip.equipment_found_and_valid = array_create(5, true);
         pip.company = managing;
         pip.unit_count = _units_selected_for_change;
         pip.unchangeable_armour = _unchangeable_armour;
@@ -270,7 +273,7 @@ function draw_popup_equip() {
     var _descriptor = "Marines";
     if (equipment_recipient_type == eEQUIP_TARGET_TYPE.DREADNOUGHT) {
         var _descriptor = "Dreadnoughts";
-    } else if (equipment_recipient_type > eEQUIP_TARGET_TYPE.DREADNOUGHT){
+    } else if (equipment_recipient_type > eEQUIP_TARGET_TYPE.DREADNOUGHT) {
         var _descriptor = "Vehicles";
     }
     draw_text(1292, 175, $"{comp} Company, {unit_count} {_descriptor}");
@@ -283,28 +286,28 @@ function draw_popup_equip() {
 
     draw_text_outline(1020, 195, "Before");
 
-    for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++){
-        var _current = current_equipment[i]
+    for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
+        var _current = current_equipment[i];
         if (_current == "") {
-            _current = ITEM_NAME_NONE;    
+            _current = ITEM_NAME_NONE;
         }
         draw_text(1024, 215 + (i * 20), _current);
     }
 
     draw_text_outline(1296, 195, "After");
 
-    for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++){
+    for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
         var _selector = selectors[i];
         var _needed = needed_equipment[i];
         _needed = _needed != "" ? _needed : ITEM_NAME_NONE;
-        var _colour = equipment_found_and_valid[i] ?  CM_GREEN_COLOR : CM_RED_COLOR;
+        var _colour = equipment_found_and_valid[i] ? CM_GREEN_COLOR : CM_RED_COLOR;
         _selector.update({label: _needed, color: _colour});
     }
 
     draw_set_color(CM_GREEN_COLOR);
 
     var _area_change = false;
-    for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++){
+    for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
         var _button = selectors[i];
         if (_button.draw(equipment_area != i)) {
             equipment_area = i;
@@ -355,7 +358,7 @@ function draw_popup_equip() {
 
         if (top != -1) {
             warning = "";
-            needed_equipment[equipment_area] = item_name[top]
+            needed_equipment[equipment_area] = item_name[top];
         }
 
         var _equip_data = new UnitEquipment(needed_equipment);
@@ -363,7 +366,6 @@ function draw_popup_equip() {
 
         equipment_found_and_valid = _results.equipment_found_and_valid;
         warning = _results.warning;
-
     }
 
     //draw_set_halign(fa_center);
@@ -388,12 +390,12 @@ function draw_popup_equip() {
     }
 
     var _valid = true;
-        for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++){
-            if (!equipment_found_and_valid[i]){
-                _valid = false;
-                break;
-            }
+    for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
+        if (!equipment_found_and_valid[i]) {
+            _valid = false;
+            break;
         }
+    }
 
     if (equip_button.draw(_valid)) {
         reequip_selection();
@@ -402,36 +404,47 @@ function draw_popup_equip() {
 
 /// @self Asset.GMObject.obj_popup
 function reequip_selection() {
-    for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++){
-        if (needed_equipment[i] == ITEM_NAME_NONE){
+    for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
+        if (needed_equipment[i] == ITEM_NAME_NONE) {
             needed_equipment[i] = "";
         }
     }
 
     for (var i = 0; i < array_length(obj_controller.display_unit); i++) {
-        if (obj_controller.man[i] == "" || !obj_controller.man_sel[i]){
+        if (obj_controller.man[i] == "" || !obj_controller.man_sel[i]) {
             continue;
         }
         var _unit = obj_controller.display_unit[i];
         var standard = master_crafted == 1 ? "master_crafted" : "any";
         if (is_struct(_unit)) {
-            _unit.alter_equipment(needed_equipment ,true, true, standard);
+            _unit.alter_equipment(needed_equipment, true, true, standard);
             update_man_manage_array(i);
             continue;
         } else if (is_array(_unit) && (equipment_recipient_type > eEQUIP_TARGET_TYPE.DREADNOUGHT)) {
-
-            var _veh_temp_arrays = [obj_controller.ma_wep1, obj_controller.ma_wep2,obj_controller.ma_armour, obj_controller.ma_gear ,obj_controller.ma_mobi];
+            var _veh_temp_arrays = [
+                obj_controller.ma_wep1,
+                obj_controller.ma_wep2,
+                obj_controller.ma_armour,
+                obj_controller.ma_gear,
+                obj_controller.ma_mobi,
+            ];
 
             var _company = _unit[0];
             var _slot = _unit[1];
-            
-            var _veh_equip_arrays = [obj_ini.veh_wep1[_company],obj_ini.veh_wep2[_company], obj_ini.veh_wep3[_company], obj_ini.veh_upgrade[_company], obj_ini.veh_acc[_company]];
 
-            for (var s = 0; s < STANDARD_EQUIP_SLOT_COUNT; s++){
+            var _veh_equip_arrays = [
+                obj_ini.veh_wep1[_company],
+                obj_ini.veh_wep2[_company],
+                obj_ini.veh_wep3[_company],
+                obj_ini.veh_upgrade[_company],
+                obj_ini.veh_acc[_company],
+            ];
+
+            for (var s = 0; s < STANDARD_EQUIP_SLOT_COUNT; s++) {
                 var _temp_array = _veh_temp_arrays[s];
                 var _equipment = needed_equipment[s];
                 var _current_item = _temp_array[i];
-                if (_equipment == "Assortment" || _equipment == _current_item){
+                if (_equipment == "Assortment" || _equipment == _current_item) {
                     continue;
                 }
 

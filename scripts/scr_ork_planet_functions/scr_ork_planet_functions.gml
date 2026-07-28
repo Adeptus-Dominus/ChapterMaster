@@ -16,7 +16,7 @@ function ork_ship_production(planet) {
         var _fleet = noone;
         if (instance_exists(obj_en_fleet)) {
             _fleet = scr_orbiting_fleet(eFACTION.ORK);
-            if ((_fleet != noone)) {
+            if (_fleet != noone) {
                 rando = choose(1, 1, 1, 1, 1, 2, 2, 2, 2);
                 switch (rando) {
                     case 1:

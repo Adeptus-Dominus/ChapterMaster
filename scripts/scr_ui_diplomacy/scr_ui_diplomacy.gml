@@ -57,7 +57,7 @@ function exit_diplomacy_dialogue() {
     }
 
     var _close_diplomacy = true;
-    if ((complex_event) && instance_exists(obj_temp_meeting)) {
+    if (complex_event && instance_exists(obj_temp_meeting)) {
         complex_event = false;
         with (obj_temp_meeting) {
             instance_destroy();

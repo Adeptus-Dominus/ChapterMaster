@@ -184,7 +184,8 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                 }
             }
 
-            var _ms = fetch_unit([0, 3]); if (is_struct(_ms) && _ms.corruption >= 50 && born) {
+            var _ms = fetch_unit([0, 3]);
+            if (is_struct(_ms) && _ms.corruption >= 50 && born) {
                 add_diplomacy_option({option_text: "Right now I need my Master of Sanctity at my side, trusting that his Chapter Master is doing what is best, what is necessary for the Chapter, during this dangerous moment. All will be made clear in time, I promise you brother. This is the right path.", goto: "cs_meeting_m3"});
             }
         }
@@ -346,7 +347,10 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             var born = false;
             for (var ii = 1; ii < 200; ii++) {
                 if (obj_ini.role[0][ii] == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
-                    var _unit = fetch_unit([0, ii]); if (is_struct(_unit)) { _unit.corruption += floor(random_range(30, 50)); }
+                    var _unit = fetch_unit([0, ii]);
+                    if (is_struct(_unit)) {
+                        _unit.corruption += floor(random_range(30, 50));
+                    }
                 }
             }
             obj_controller.chaos_rating += 1;
@@ -383,7 +387,9 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             }
             if (!_found) {
                 var _master = fetch_unit([0, 0]);
-                if (!is_struct(_master)) { exit; }
+                if (!is_struct(_master)) {
+                    exit;
+                }
                 if (_master.planet_location > 0) {
                     var _master_star = find_star_by_name(_master.location_string);
                     if (_master_star != noone) {

@@ -109,7 +109,10 @@ function scr_ui_advisors() {
                 draw_set_halign(fa_left);
 
                 for (var qp = 1; qp <= min(36, penitorium); qp++) {
-                    var unit = fetch_unit([penit_co[qp], penit_id[qp]]); if (!is_struct(unit)) { continue; }
+                    var unit = fetch_unit([penit_co[qp], penit_id[qp]]);
+                    if (!is_struct(unit)) {
+                        continue;
+                    }
                     var r_eta = "";
                     if (unit.corruption > 0) {
                         r_eta = string(round((unit.corruption * unit.corruption) / 50));

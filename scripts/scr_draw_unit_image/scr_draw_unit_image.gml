@@ -550,7 +550,7 @@ function scr_draw_unit_image(_background = false) {
         "draw_unit",
         "_texture_draws",
         "texture_draws",
-        "equipment_data"
+        "equipment_data",
     ];
 
     for (var i = 0; i < array_length(_keep_alive); i++) {

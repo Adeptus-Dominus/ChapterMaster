@@ -82,9 +82,9 @@ ship_front_armour = [];
 ship_other_armour = [];
 ship_weapons = [];
 
-ship_wep = array_create_2d(6, 6, "")
-ship_wep_facing = array_create_2d(6, 6, "")
-ship_wep_condition = array_create_2d(6, 6, "")
+ship_wep = array_create_2d(6, 6, "");
+ship_wep_facing = array_create_2d(6, 6, "");
+ship_wep_condition = array_create_2d(6, 6, "");
 
 ship_capacity = [];
 ship_carrying = [];

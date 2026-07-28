@@ -134,7 +134,7 @@ function AudioManager() constructor {
     static __scan_audio_dir = function(_dir, _map) {
         var _count = 0;
         try {
-            var _file = file_find_first(_dir + "*" + FILE_EXT, fa_none);    
+            var _file = file_find_first(_dir + "*" + FILE_EXT, fa_none);
             while (_file != "") {
                 var _name = filename_name(_file);
                 _name = string_replace(_name, FILE_EXT, "");

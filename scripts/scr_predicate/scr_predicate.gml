@@ -13,11 +13,7 @@
 /// @returns {Function}
 function predicate0(arg, func) {
     var _self = self;
-    return method({
-        vals: 0,
-        arg: arg,
-        func: is_undefined(method_get_self(func)) ? method(_self, func) : func,
-    }, function() {
+    return method({vals: 0, arg: arg, func: is_undefined(method_get_self(func)) ? method(_self, func) : func}, function() {
         return func(arg);
     });
 }
@@ -28,11 +24,7 @@ function predicate0(arg, func) {
 /// @returns {function}
 function predicate1(arg, func) {
     var _self = self;
-    return method({
-        vals: 1,
-        arg: arg,
-        func: is_undefined(method_get_self(func)) ? method(_self, func) : func,
-    }, function(v) {
+    return method({vals: 1, arg: arg, func: is_undefined(method_get_self(func)) ? method(_self, func) : func}, function(v) {
         return func(v, arg);
     });
 }

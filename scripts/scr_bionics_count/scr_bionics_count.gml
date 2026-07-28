@@ -15,7 +15,9 @@ function scr_bionics_count(argument0, argument1, argument2, argument3) {
         repeat (300) {
             i += 1;
             var _unit = fetch_unit([com, i]);
-            if (!is_struct(_unit)) { continue; }
+            if (!is_struct(_unit)) {
+                continue;
+            }
             if (argument0 == "star") {
                 if ((obj_ini.race[com][i] == 1) && (_unit.location_string == argument1) && (_unit.planet_location == argument2)) {
                     if (argument3 == "total") {

@@ -4,7 +4,9 @@ for (o = 0; o < array_length(origin.board_co); o++) {
     co = origin.board_co[o];
     i = origin.board_id[o];
     unit = fetch_unit([co, i]);
-    if (!is_struct(unit)) { continue; }
+    if (!is_struct(unit)) {
+        continue;
+    }
     if ((unit.hp() <= -15) && (obj_ini.race[co][i] == 1) && (unit.name() != "")) {
         var seed_lost = 0;
         if (apothecary <= 0) {

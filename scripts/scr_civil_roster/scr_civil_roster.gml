@@ -105,7 +105,10 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
                         va = obj_temp_meeting.ide[v];
                     }
                 }
-                unit = fetch_unit([cooh, va]); if (!is_struct(unit)) { continue; }
+                unit = fetch_unit([cooh, va]);
+                if (!is_struct(unit)) {
+                    continue;
+                }
 
                 // Chaos corruption check here
                 if (new_combat.battle_special == "cs_meeting_battle1") {

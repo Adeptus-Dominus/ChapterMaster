@@ -227,7 +227,9 @@ function problem_end_turn_checks() {
                     for (me = 0; me < array_length(obj_ini.role[co]); me++) {
                         if ((obj_ini.race[co][me] == 1) && (obj_ini.role[co][me] != "")) {
                             _unit = fetch_unit([co, me]);
-                            if (!is_struct(_unit)) { continue; }
+                            if (!is_struct(_unit)) {
+                                continue;
+                            }
                             _unit.edit_corruption(irandom_range(3, 6));
                             _unit.alter_loyalty(-10);
                         }
@@ -329,7 +331,9 @@ function init_marine_acting_strange() {
     }
 
     var unit = fetch_unit(marine_and_company);
-    if (!is_struct(unit)) { exit; }
+    if (!is_struct(unit)) {
+        exit;
+    }
     var role = unit.role();
     var text = unit.name_role();
     var company_text = scr_convert_company_to_string(unit.company);
@@ -399,7 +403,9 @@ function init_protect_raider_mission(squad) {
     }
 
     var _leader = fetch_unit(squad.determine_leader());
-    if (!is_struct(_leader)) { return; }
+    if (!is_struct(_leader)) {
+        return;
+    }
     var _wis_test = _tester.standard_test(_leader, "wisdom", _mod, ["ambush"]);
 
     if (!_wis_test[0]) {

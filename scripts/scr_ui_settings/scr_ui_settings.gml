@@ -161,7 +161,6 @@ function setup_ui_chapter_settings() {
 
     var _sets = settings_buttons_ui_components;
 
-
     _sets.progenitor_livery = new ToggleButton({
         x1: 50,
         y1: 140,
@@ -232,13 +231,10 @@ function setup_ui_chapter_settings() {
         array_push(_tog_buttons, {str1: _role_name, font: fnt_40k_14, tooltip: $"activate to make {_role_name}s a default member of your company command."});
     }
 
-    var _command_mult = new MultiSelect(
-        _tog_buttons, 
-        {
-            text : "Company Command\nStructure",
-            max_width : 100
-        },
-		{
+    var _command_mult = new MultiSelect(_tog_buttons, {
+        text: "Company Command\nStructure",
+        max_width: 100,
+    }, {
         is_horizontal: false,
         x1: 75,
         y1: 300,
@@ -252,31 +248,40 @@ function setup_ui_chapter_settings() {
     _sets.comany_command_structure = _command_mult;
 
     var _5_opt_radio = [
-        { str1: "1", font: fnt_40k_14 },
-        { str1: "2", font: fnt_40k_14 },
-        { str1: "3", font: fnt_40k_14 },
-        { str1: "4", font: fnt_40k_14 },
-        { str1: "5", font: fnt_40k_14 }
-    ]
-    _sets.paint_shine_radio = new RadioSet(
-        _5_opt_radio, 
         {
-            text : "Paint Shine",
-            tooltip : "How shiny the majority of marine paint and components will be drawn"
-        }
-        );
-
-    _sets.paint_shine_radio.current_selection = obj_controller.paint_shine -1;
-
-    _sets.metallic_shine_radio = new RadioSet(
-        _5_opt_radio, 
-        {
-            text : "Metallic Shine",
-            tooltip : "How shiny the trim and metallic components of marines will be drawn"
+            str1: "1",
+            font: fnt_40k_14,
         },
-    );
+        {
+            str1: "2",
+            font: fnt_40k_14,
+        },
+        {
+            str1: "3",
+            font: fnt_40k_14,
+        },
+        {
+            str1: "4",
+            font: fnt_40k_14,
+        },
+        {
+            str1: "5",
+            font: fnt_40k_14,
+        },
+    ];
+    _sets.paint_shine_radio = new RadioSet(_5_opt_radio, {
+        text: "Paint Shine",
+        tooltip: "How shiny the majority of marine paint and components will be drawn",
+    });
 
-    _sets.metallic_shine_radio.current_selection = obj_controller.metallic_shine -1;
+    _sets.paint_shine_radio.current_selection = obj_controller.paint_shine - 1;
+
+    _sets.metallic_shine_radio = new RadioSet(_5_opt_radio, {
+        text: "Metallic Shine",
+        tooltip: "How shiny the trim and metallic components of marines will be drawn",
+    });
+
+    _sets.metallic_shine_radio.current_selection = obj_controller.metallic_shine - 1;
 
     var _post_boarding = new RadioSet([
         {
@@ -380,16 +385,12 @@ function scr_ui_settings() {
         _ui_feats.tagged_training.draw();
         tagged_training = _ui_feats.tagged_training.active;
 
-
         var _com_multi = _ui_feats.comany_command_structure;
 
         _com_multi.draw();
 
         var _paint_shine = _ui_feats.paint_shine_radio;
-        _paint_shine.update({
-            x1: _com_multi.x2 + 40,
-            y1: _com_multi.y1,
-        })
+        _paint_shine.update({x1: _com_multi.x2 + 40, y1: _com_multi.y1});
         _paint_shine.draw();
         for (var i = 0; i < array_length(_paint_shine.toggles); i++) {
             if (_paint_shine.toggles[i].active) {
@@ -398,10 +399,7 @@ function scr_ui_settings() {
         }
 
         var _metallic_shine = _ui_feats.metallic_shine_radio;
-        _metallic_shine.update({
-            x1: _paint_shine.x2 + 40,
-            y1: _paint_shine.y1,
-        })
+        _metallic_shine.update({x1: _paint_shine.x2 + 40, y1: _paint_shine.y1});
         _metallic_shine.draw();
         for (var i = 0; i < array_length(_metallic_shine.toggles); i++) {
             if (_metallic_shine.toggles[i].active) {

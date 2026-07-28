@@ -6,7 +6,9 @@ function scr_kill_ship(index) {
             for (var co = 0; co <= companies; co++) {
                 for (var i = 0; i < array_length(name[co]); i++) {
                     _unit = fetch_unit([co, i]);
-                    if (!is_struct(_unit)) { continue; }
+                    if (!is_struct(_unit)) {
+                        continue;
+                    }
                     if (_unit.ship_location > -1) {
                         if (_unit.ship_location == index) {
                             if (!(irandom(_unit.luck) - 3)) {

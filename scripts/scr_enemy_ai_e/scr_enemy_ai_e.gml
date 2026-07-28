@@ -745,7 +745,9 @@ function scr_enemy_ai_e() {
         for (var co = 0; co <= 10; co++) {
             for (var i = 1; i <= 200; i++) {
                 var _unit = fetch_unit([co, i]);
-                if (!is_struct(_unit)) { continue; }
+                if (!is_struct(_unit)) {
+                    continue;
+                }
                 var _is_unit_real_and_here = _unit.role() != "" && _unit.location_string == name;
                 var _is_this_a_chaos_meeting = _unit.planet_location == floor(chaos_meeting);
                 var _unit_does_not_have_dreadnought_role = _unit.role() != obj_ini.role[100][6];

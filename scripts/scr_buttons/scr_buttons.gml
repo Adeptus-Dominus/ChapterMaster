@@ -1110,7 +1110,7 @@ function MultiSelect(options_array, title_param, data = {}) constructor {
                     if (_cur_opt.x2 > _total_max_main) {
                         _total_max_main = _cur_opt.x2;
                     }
- 
+
                     _cur_main += _cur_opt.w + x_gap;
                 } else {
                     _cur_opt.x1 = _cur_cross;
@@ -1200,7 +1200,7 @@ function MultiSelect(options_array, title_param, data = {}) constructor {
 /// @category UI
 /// @function add_ui_title(title_param)
 /// @description creates a reactive string as a title for ui components such as RadioSet and MultiSelect.
-function add_ui_title(title_param){
+function add_ui_title(title_param) {
     // title is now either a ReactiveString instance or noone
     title = noone;
     if (is_string(title_param) && title_param != "") {

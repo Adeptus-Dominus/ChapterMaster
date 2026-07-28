@@ -402,7 +402,6 @@ function reset_manage_unit_constants(unit) {
             delete unit_manage_image;
         }
 
-
         unit_manage_image = unit.draw_unit_image();
 
         temp[122] = unit.handle_stat_growth();

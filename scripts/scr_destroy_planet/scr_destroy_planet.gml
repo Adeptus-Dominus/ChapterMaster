@@ -43,7 +43,9 @@ function scr_destroy_planet(destruction_method) {
     for (var cah = 0; cah <= obj_ini.companies; cah++) {
         for (var ed = 0; ed < array_length(obj_ini.role[cah]); ed++) {
             var unit = fetch_unit([cah, ed]);
-            if (!is_struct(unit)) { continue; }
+            if (!is_struct(unit)) {
+                continue;
+            }
             if ((unit.location_string == you.name) && (unit.planet_location == baid)) {
                 if (unit.role() == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
                     obj_controller.alarm[7] = 15;

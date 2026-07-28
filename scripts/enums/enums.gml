@@ -13,13 +13,13 @@ enum eFACTION {
     HERETICS = 11,
     GENESTEALER = 12,
     NECRONS = 13,
-    _COUNT
+    _COUNT,
 }
 
 enum eGENDER {
     FEMALE,
     MALE,
-    NEUTRAL
+    NEUTRAL,
 }
 
 enum eROLE {
@@ -46,7 +46,7 @@ enum eROLE {
     RHINO = 51,
     PREDATOR = 52,
     LANDSPEEDER = 53,
-    WHIRLWIND = 54
+    WHIRLWIND = 54,
 }
 enum eMENU {
     DEFAULT = 0,
@@ -71,13 +71,13 @@ enum eMENU {
     FORMATIONS_SETTINGS = 24,
     GAME_HELP = 30,
     CHAPTER_MASTER = 50,
-    SECRET_LAIR = 60
+    SECRET_LAIR = 60,
 }
 
 enum eLUCK {
     BAD = -1,
     NEUTRAL = 0,
-    GOOD = 1
+    GOOD = 1,
 }
 
 enum eINQUISITION_MISSION {
@@ -89,7 +89,7 @@ enum eINQUISITION_MISSION {
     TYRANID_ORGANISM,
     ETHEREAL,
     DEMON_WORLD,
-    RANDOM = 100
+    RANDOM = 100,
 }
 
 enum eEVENT {
@@ -119,7 +119,7 @@ enum eEVENT {
     NECRON_AWAKEN,
     FALLEN,
     //END
-    NONE
+    NONE,
 }
 
 enum eIN_GAME_MENU_EFFECT {
@@ -130,5 +130,5 @@ enum eIN_GAME_MENU_EFFECT {
     RETURN = 15,
     BACK_FROM_SAVELOAD = 18,
     BACK_FROM_SETTINGS = 25,
-    CLOSE_SAVELOAD = 30
+    CLOSE_SAVELOAD = 30,
 }

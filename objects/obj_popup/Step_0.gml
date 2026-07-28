@@ -156,10 +156,16 @@ try {
                         ide += 1;
                         if ((attend_corrupted[ide] == 0) && (attend_id[ide] > 0)) {
                             if (string_count("chaos", obj_ini.artifact_tags[obj_controller.fest_display]) > 0) {
-                                var _unit = fetch_unit([attend_co[ide], attend_id[ide]]); if (is_struct(_unit)) { _unit.corruption += choose(1, 2, 3, 4); }
+                                var _unit = fetch_unit([attend_co[ide], attend_id[ide]]);
+                                if (is_struct(_unit)) {
+                                    _unit.corruption += choose(1, 2, 3, 4);
+                                }
                             }
                             if (string_count("daemonic", obj_ini.artifact_tags[obj_controller.fest_display]) > 0) {
-                                var _unit = fetch_unit([attend_co[ide], attend_id[ide]]); if (is_struct(_unit)) { _unit.corruption += choose(6, 7, 8, 9); }
+                                var _unit = fetch_unit([attend_co[ide], attend_id[ide]]);
+                                if (is_struct(_unit)) {
+                                    _unit.corruption += choose(6, 7, 8, 9);
+                                }
                             }
                             attend_corrupted[ide] = 1;
                         }

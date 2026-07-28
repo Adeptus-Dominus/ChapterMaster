@@ -71,7 +71,9 @@ function scr_crusade() {
                 continue;
             }
             unit = fetch_unit([co, i]);
-            if (!is_struct(unit)) { continue; }
+            if (!is_struct(unit)) {
+                continue;
+            }
             if (unit.ship_location == -1) {
                 continue;
             }

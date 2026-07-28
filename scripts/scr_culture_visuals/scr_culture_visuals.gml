@@ -227,8 +227,8 @@ function set_up_visual_overides() {
                             }
                         }
                     }
-                    if (!_found_sprite){
-                        if (struct_exists(global.reuseable_drawing_items , _overide)){
+                    if (!_found_sprite) {
+                        if (struct_exists(global.reuseable_drawing_items, _overide)) {
                             _item.overides[$ _overide_areas[o]] = global.reuseable_drawing_items[$ _overide];
                             _found_sprite = true;
                         }
@@ -250,7 +250,7 @@ function set_up_visual_overides() {
                     var _found_sprite = false;
                     var _subimg = _sub_group[g];
                     if (!is_string(_subimg)) {
-                        if (!is_struct(_subimg)){
+                        if (!is_struct(_subimg)) {
                             if (!sprite_exists(_subimg)) {
                                 array_delete(_sub_group, g, 1);
                             }
@@ -271,8 +271,8 @@ function set_up_visual_overides() {
                                 }
                             }
                         }
-                        if (!_found_sprite){
-                            if (struct_exists(global.reuseable_drawing_items , _subimg)){
+                        if (!_found_sprite) {
+                            if (struct_exists(global.reuseable_drawing_items, _subimg)) {
                                 _item.subcomponents[s][g] = global.reuseable_drawing_items[$ _subimg];
                                 _found_sprite = true;
                             }
@@ -293,34 +293,33 @@ function set_up_visual_overides() {
                     array_push(global.culture_styles, _culture);
                 }
             }
-        } 
-    var _weapon_double_strings = [
-        "min_quality",
-        "max_quality",
-        "equipment_has_tag",
-        "equipped",
-    ];
+        }
+        var _weapon_double_strings = [
+            "min_quality",
+            "max_quality",
+            "equipment_has_tag",
+            "equipped",
+        ];
 
-    for (var w = 0; w < array_length(_weapon_double_strings); w++) {
-        var _wds_key = _weapon_double_strings[w];
-        if (struct_exists(_item, _wds_key)) {
-            var _wds_struct = _item[$ _wds_key];
-            if (!is_struct(_wds_struct)){
-                continue;
-            }
-            var _wds_areas = struct_get_names(_wds_struct);
-            for (var a = 0; a < array_length(_wds_areas); a++) {
-                var _wds_area = _wds_areas[a];
-                if (_wds_area == "weapon") {
-                    var _weapon_value = _wds_struct[$ "weapon"];
-                    _wds_struct[$ "wep1"] = _weapon_value;
-                    _wds_struct[$ "wep2"] = _weapon_value;
-                    struct_remove(_wds_struct, "weapon");
+        for (var w = 0; w < array_length(_weapon_double_strings); w++) {
+            var _wds_key = _weapon_double_strings[w];
+            if (struct_exists(_item, _wds_key)) {
+                var _wds_struct = _item[$ _wds_key];
+                if (!is_struct(_wds_struct)) {
+                    continue;
+                }
+                var _wds_areas = struct_get_names(_wds_struct);
+                for (var a = 0; a < array_length(_wds_areas); a++) {
+                    var _wds_area = _wds_areas[a];
+                    if (_wds_area == "weapon") {
+                        var _weapon_value = _wds_struct[$ "weapon"];
+                        _wds_struct[$ "wep1"] = _weapon_value;
+                        _wds_struct[$ "wep2"] = _weapon_value;
+                        struct_remove(_wds_struct, "weapon");
+                    }
                 }
             }
         }
-    }
-        
     }
 
     var _new_mods = [];
@@ -409,58 +408,61 @@ function set_up_visual_overides() {
 }
 
 global.reuseable_drawing_items = {
-    "roman_crest" : {
+    "roman_crest": {
         sprite: spr_roman_centurian_crest,
-        shadows: spr_roman_centurian_crest_shadows        
+        shadows: spr_roman_centurian_crest_shadows,
     },
-    "default_backpack_fastening" :{
-        sprite : spr_backpack_fastening,
-        armours_exclude : [
+    "default_backpack_fastening": {
+        sprite: spr_backpack_fastening,
+        armours_exclude: [
             "MK4 Maximus",
-			"MK5 Heresy",
+            "MK5 Heresy",
             "MK6 Corvus",
-        ]
-    }
-}
+        ],
+    },
+};
 global.modular_drawing_items = [
-	// MK7 Aquila Sprites (used across decent amount of other armors as baselines)
-	{
+    // MK7 Aquila Sprites (used across decent amount of other armors as baselines)
+    {
         position: "chest_variants",
-        armours: ["MK7 Aquila",
-				  "MK8 Errant",
-				  "Artificer Armour"
-		],
+        armours: [
+            "MK7 Aquila",
+            "MK8 Errant",
+            "Artificer Armour",
+        ],
         body_types: [0],
         sprite: spr_mk7_chest_variants,
         shadows: spr_mk7_chest_variants_shadow,
-        subcomponents: [[]]
+        subcomponents: [[]],
     },
-	{
+    {
         position: "right_knee",
-        armours: ["MK5 Heresy",
-				  "MK7 Aquila",
-				  "MK8 Errant",
-				  "Artificer Armour"
-		],
+        armours: [
+            "MK5 Heresy",
+            "MK7 Aquila",
+            "MK8 Errant",
+            "Artificer Armour",
+        ],
         body_types: [0],
         sprite: spr_mk7_complex_right_knee,
         shadows: spr_mk7_complex_right_knee_shadow,
-        flip: true
+        flip: true,
     },
     {
         position: "armour",
-        armours: ["MK5 Heresy",
-                  "MK6 Corvus",
-                  "MK7 Aquila",
-                  "MK8 Errant",
-                  "Artificer Armour"
+        armours: [
+            "MK5 Heresy",
+            "MK6 Corvus",
+            "MK7 Aquila",
+            "MK8 Errant",
+            "Artificer Armour",
         ],
         traits: ["tinkerer"],
         body_types: [0],
         sprite: spr_techmarine_complex,
-        role_type: [SPECIALISTS_TECHS]
+        role_type: [SPECIALISTS_TECHS],
     },
-	// Other Stuff
+    // Other Stuff
     {
         sprite: spr_purity_seal,
         body_types: [
@@ -1060,14 +1062,9 @@ global.modular_drawing_items = [
         sprite: spr_victrix_mouth,
         cultures: ["Ultra"],
         body_types: [0],
-        roles: [
-            eROLE.HONOURGUARD,
-        ],
+        roles: [eROLE.HONOURGUARD],
         position: "mouth_variants",
-        armours: [
-
-            "Artificer Armour",
-        ],
+        armours: ["Artificer Armour"],
     },
     {
         cultures: [
@@ -1240,19 +1237,19 @@ global.modular_drawing_items = [
             "mobi": "Heavy Weapons Pack",
         },
         overides: {
-            "chest_fastening": "default_backpack_fastening"
+            "chest_fastening": "default_backpack_fastening",
         },
     },
     {
         sprite: spr_jump_pack_complex,
-		shadows: spr_jump_pack_complex_shadow,
+        shadows: spr_jump_pack_complex_shadow,
         body_types: [0],
         position: "backpack_augment",
         equipped: {
             "mobi": "Jump Pack",
         },
         overides: {
-            "chest_fastening" : "default_backpack_fastening"
+            "chest_fastening": "default_backpack_fastening",
         },
     },
     {
@@ -1265,14 +1262,14 @@ global.modular_drawing_items = [
     },
     {
         sprite: spr_jump_pack_serpha_complex,
-		shadows: spr_jump_pack_serpha_complex_shadow,
+        shadows: spr_jump_pack_serpha_complex_shadow,
         body_types: [0],
         position: "backpack_augment",
         equipped: {
             "mobi": "Serpha Jump Pack",
         },
         overides: {
-            "chest_fastening" : "default_backpack_fastening"
+            "chest_fastening": "default_backpack_fastening",
         },
     },
     {
@@ -1912,7 +1909,7 @@ global.modular_drawing_items = [
         sprite: spr_indomitus_leg_variants,
         shadows: spr_indomitus_leg_variants_shadows,
         body_types: [2],
-        flip: true
+        flip: true,
     },
     {
         position: "right_shin",
@@ -1947,10 +1944,10 @@ global.modular_drawing_items = [
     },
     {
         position: "right_trim",
-		armours: ["MK3 Iron Armour"],
+        armours: ["MK3 Iron Armour"],
         sprite: spr_mk4_right_trim,
         shadows: spr_mk4_right_trim_shadow,
-		flip: true,
+        flip: true,
         body_types: [0],
     },
     {
@@ -2045,16 +2042,16 @@ global.modular_drawing_items = [
         sprite: spr_mk4_complex_backpack,
         shadows: spr_mk4_complex_backpack_shadow,
     },
-	{
+    {
         position: "right_trim",
         armours: ["MK4 Maximus"],
         body_types: [0],
         sprite: spr_mk4_right_trim,
         shadows: spr_mk4_right_trim_shadow,
-		flip: true,
+        flip: true,
     },
-	//MK5 Heresy Sprites
-	{
+    //MK5 Heresy Sprites
+    {
         position: "armour",
         armours: ["MK5 Heresy"],
         body_types: [0],
@@ -2085,19 +2082,19 @@ global.modular_drawing_items = [
         sprite: spr_artificer_thorax,
         shadows: spr_artificer_thorax_shadow,
     },
-	//Techmarine Sprites
-	{
+    //Techmarine Sprites
+    {
         sprite: spr_techmarine_right_trim,
-	//	shadows: spr_techmarine_right_trim_shadow, // doesn't do anything while prevent_others is true, existing two sprites are hard-colored but this is here just to be filled ou
+        //	shadows: spr_techmarine_right_trim_shadow, // doesn't do anything while prevent_others is true, existing two sprites are hard-colored but this is here just to be filled ou
         body_types: [0],
         position: "right_trim",
         prevent_others: true,
-		ban: ["right_pauldron_embeleshments"],
+        ban: ["right_pauldron_embeleshments"],
         role_type: [SPECIALISTS_TECHS],
     },
-	{
+    {
         sprite: spr_techmarine_left_trim,
-		shadows: spr_techmarine_left_trim_shadow,
+        shadows: spr_techmarine_left_trim_shadow,
         body_types: [0],
         position: "left_trim",
         role_type: [SPECIALISTS_TECHS],
@@ -2281,7 +2278,7 @@ function DummyMarine() constructor {
         return is_specialist(role(), search_type, include_trainee, include_heads);
     };
 
-    static has_trait = function (_wanted_trait, _any = true) {
+    static has_trait = function(_wanted_trait, _any = true) {
         if (is_array(_wanted_trait)) {
             var _len = array_length(_wanted_trait);
 
@@ -2293,12 +2290,12 @@ function DummyMarine() constructor {
                     return false;
                 }
             }
-            
+
             return _any ? false : true;
         }
 
         return array_contains(traits, _wanted_trait);
-    }
+    };
 
     static is_dreadnought = function() {
         var _arm_data = gear_weapon_data("armour", last_armour);

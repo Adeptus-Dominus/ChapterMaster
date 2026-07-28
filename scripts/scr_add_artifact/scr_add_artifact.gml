@@ -280,7 +280,6 @@ function ArtifactStruct(Index) constructor {
     custom_description = "";
     bearer = false;
 
-
     static type = function() {
         return obj_ini.artifact[index];
     };
@@ -305,7 +304,7 @@ function ArtifactStruct(Index) constructor {
             "Casket",
             "Chalice",
             "Robot",
-            "Tome"
+            "Tome",
         ];
         if (array_contains(none_equips, type())) {
             _can_equip = false;
@@ -522,10 +521,10 @@ function ArtifactStruct(Index) constructor {
             bearer = false;
             return;
         }
-    
+
         try {
             var _type = determine_base_type();
-    
+
             if (is_array(bearer)) {
                 var _unit = fetch_unit(bearer);
                 if (is_struct(_unit)) {
@@ -537,11 +536,11 @@ function ArtifactStruct(Index) constructor {
         } catch (_exception) {
             ERROR_HANDLER.handle_exception(_exception);
         }
-    
+
         bearer = false;
         obj_ini.artifact_equipped[index] = false;
     };
-    
+
     /// @desc Unequip from a single unit. Returns true if something was unequipped.
     /// @param {Struct.TTRPG_stats} _unit
     /// @param {String} _type
@@ -556,14 +555,14 @@ function ArtifactStruct(Index) constructor {
                     _unit.update_weapon_two("", false, true);
                     return true;
                 }
-    
+
                 return false;
                 break;
             case "gear":
                 if (_check_equipped && _unit.gear() != type()) {
                     return false;
                 }
-    
+
                 _unit.update_gear("", false, true);
                 return true;
                 break;
@@ -571,7 +570,7 @@ function ArtifactStruct(Index) constructor {
                 if (_check_equipped && _unit.armour() != type()) {
                     return false;
                 }
-    
+
                 _unit.update_armour("", false, true);
                 return true;
                 break;
@@ -579,15 +578,15 @@ function ArtifactStruct(Index) constructor {
                 if (_check_equipped && _unit.mobility_item() != type()) {
                     return false;
                 }
-    
+
                 _unit.update_mobility_item("", false, true);
                 return true;
                 break;
         }
-    
+
         return false;
     };
-    
+
     /// @desc Search all units across companies and unequip the first match
     /// @param {String} _type
     /// @return {Bool} Returns true if something was unequipped.
@@ -598,13 +597,13 @@ function ArtifactStruct(Index) constructor {
                 if (!is_struct(_unit)) {
                     continue;
                 }
-    
+
                 if (unequip_from_single_unit(_unit, _type)) {
                     return true;
                 }
             }
         }
-    
+
         return false;
     };
 

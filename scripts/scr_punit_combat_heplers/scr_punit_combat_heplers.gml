@@ -357,4 +357,4 @@ function resolve_block_label(_inst) {
 
     var _desc = arrays_to_string_with_counts(_inst.dudes, _inst.dudes_num, true, false);
     return $"<{_desc}>";
-};
+}

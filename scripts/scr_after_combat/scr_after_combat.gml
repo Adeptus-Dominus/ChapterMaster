@@ -360,7 +360,7 @@ function after_combat_dead_marine_equipment_recovered(unit) {
     for (var i = 0; i < array_length(_equip_slots); i++) {
         var _recover = true;
         var _slot = _equip_slots[i];
-        var _item = _equipment.get_item(_slot)
+        var _item = _equipment.get_item(_slot);
 
         var _specific_item_chance = roll_dice_chapter(1, 100, "low");
 

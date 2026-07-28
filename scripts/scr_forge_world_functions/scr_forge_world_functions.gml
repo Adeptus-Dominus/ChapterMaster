@@ -1,4 +1,3 @@
-
 function imperial_navy_fleet_construction() {
     // ** Check number of navy fleets **
 
@@ -74,7 +73,7 @@ function get_imperium_forge_systems() {
                     function(prev, curr) {
                         return prev + instance_nearest(x, y, obj_star).present_fleet[curr];
                     },
-                    0
+                    0,
                 );
 
                 good = enemy_fleet_count <= 0;

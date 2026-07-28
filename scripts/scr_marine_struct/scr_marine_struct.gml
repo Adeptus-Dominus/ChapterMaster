@@ -687,7 +687,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return _return_string;
     };
 
-    static has_trait = function (_wanted_trait, _any = true) {
+    static has_trait = function(_wanted_trait, _any = true) {
         if (is_array(_wanted_trait)) {
             var _len = array_length(_wanted_trait);
 
@@ -1255,8 +1255,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static hands_carrying = function(is_melee = false) {
         var _data_key = is_melee ? "melee_hands" : "ranged_hands";
         var _carrying = 0;
-        var _tooltip = new TooltipBuilder()
-            .set_header("- Carrying -");
+        var _tooltip = new TooltipBuilder().set_header("- Carrying -");
 
         var _weapons = [
             {
@@ -1296,9 +1295,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         };
         var _limit = _group_limits[$ base_group] ?? 2;
 
-        var _tooltip = new TooltipBuilder()
-            .set_header("- Maximum -")
-            .add_entry("base", "Base", _limit);
+        var _tooltip = new TooltipBuilder().set_header("- Maximum -").add_entry("base", "Base", _limit);
 
         // Strength Check
         if (strength >= 50) {
@@ -1442,13 +1439,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
         var _tooltip = new TooltipBuilder();
 
-        _tooltip.add_section("primary_weapon", "- Primary Weapon -")
-            .add_section("primary_mods", "- Primary Modifiers -")
-            .add_section("primary_bonuses", "- Primary Bonuses -")
-            .add_section("secondary_weapon", "- Secondary Weapon -")
-            .add_section("secondary_mult", "- Secondary Multiplier -")
-            .add_section("flat_bonuses", "- Bonuses -")
-            .add_section("final_mult", "- Multipliers -");
+        _tooltip.add_section("primary_weapon", "- Primary Weapon -").add_section("primary_mods", "- Primary Modifiers -").add_section("primary_bonuses", "- Primary Bonuses -").add_section("secondary_weapon", "- Secondary Weapon -").add_section("secondary_mult", "- Secondary Multiplier -").add_section("flat_bonuses", "- Bonuses -").add_section("final_mult", "- Multipliers -");
 
         // Base Stat Multiplier
 
@@ -2375,7 +2366,9 @@ function fetch_unit_uid(uuid) {
         var _comp_length = array_length(obj_ini.TTRPG[i]);
         for (var s = 0; s < _comp_length; s++) {
             var _unit = fetch_unit([i, s]);
-            if (!is_struct(_unit)) { continue; }
+            if (!is_struct(_unit)) {
+                continue;
+            }
             if (_unit.uid == uuid) {
                 return _unit;
             }

@@ -451,10 +451,7 @@ function ChapterGameData(data = {}) constructor {
 
                 if (struct_exists(_c, "mult")) {
                     _final_result.mult += _c.mult - 1;
-                    array_push(_final_result.effects, {
-                        name: _c.name,
-                        mult: _c.mult,
-                    });
+                    array_push(_final_result.effects, {name: _c.name, mult: _c.mult});
                 }
             }
         }

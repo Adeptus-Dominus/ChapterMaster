@@ -313,7 +313,9 @@ function strange_build_event() {
         var marine = marine_and_company[1];
         var text = "";
         var _unit = fetch_unit(marine_and_company);
-        if (!is_struct(_unit)) { exit; }
+        if (!is_struct(_unit)) {
+            exit;
+        }
         var role = _unit.role();
         text = _unit.name_role();
         text += " is taken by a strange mood and starts building!";

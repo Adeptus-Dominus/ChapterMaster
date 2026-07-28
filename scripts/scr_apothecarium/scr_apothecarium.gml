@@ -76,8 +76,7 @@ function scr_apothecarium() {
         draw_text_transformed(xx + 352, yy + 66, "Apothecarium", 1, 1, 0);
         draw_text_transformed(xx + 352, yy + 100, "Master of the Apothecarion " + string(obj_ini.name[0][3]), 0.6, 0.6, 0);
         draw_set_font(fnt_40k_14);
-    } else
-if (obj_controller.menu_adept == 1) {
+    } else if (obj_controller.menu_adept == 1) {
         scr_image("advisor/splash", 1, xx + 16, yy + 43, 310, 828);
         draw_set_halign(fa_left);
         draw_set_color(c_gray);

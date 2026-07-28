@@ -166,7 +166,9 @@ try {
                             }
                             if ((ca >= 0) && (ca < 11)) {
                                 _unit = fetch_unit([ca, ia]);
-                                if (!is_struct(_unit)) { continue; }
+                                if (!is_struct(_unit)) {
+                                    continue;
+                                }
                                 if ((_unit.location_string == cur_star.name) && (_unit.planet_location > 0)) {
                                     if ((_unit.role() == "Ork Sniper") && (obj_ini.race[ca][ia] != 1)) {
                                         tem1_base = 3;

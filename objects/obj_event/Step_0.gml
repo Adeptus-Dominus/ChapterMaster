@@ -27,7 +27,7 @@ if ((closing == true) && (fading == -1) && (fade_alpha <= 0)) {
 
     for (var ide = 1; ide <= 700; ide++) {
         var unit = fetch_unit([attend_co[ide], attend_id[ide]]);
-    
+
         if (!is_struct(unit) || attend_corrupted[ide] != 0 || attend_id[ide] <= 0) {
             continue;
         }
@@ -39,7 +39,7 @@ if ((closing == true) && (fading == -1) && (fade_alpha <= 0)) {
         if (array_contains(obj_ini.artifact_tags[obj_controller.fest_display], "daemonic")) {
             unit.corruption += choose(6, 7, 8, 9);
         }
-    
+
         attend_corrupted[ide] = 1;
     }
 
@@ -115,7 +115,11 @@ if (ticked == 1) {
     }
 
     var ide = floor(random(attendants)) + 1;
-    var unit = fetch_unit([attend_co[ide], attend_id[ide]]); if (!is_struct(unit)) { ticked = 0; exit; }
+    var unit = fetch_unit([attend_co[ide], attend_id[ide]]);
+    if (!is_struct(unit)) {
+        ticked = 0;
+        exit;
+    }
     var textt = "";
     var doso = false;
     var activity = "";

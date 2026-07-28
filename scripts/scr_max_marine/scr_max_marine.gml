@@ -19,7 +19,10 @@ function scr_max_marine(max_type) {
             i += 1; // man_c[i]=0;man_i[i]=0;
 
             if (obj_ini.name[c][i] != "") {
-                unit = fetch_unit([c, i]); if (!is_struct(unit)) { continue; }
+                unit = fetch_unit([c, i]);
+                if (!is_struct(unit)) {
+                    continue;
+                }
                 if (max_type == "chaos") {
                     if (unit.corruption > value) {
                         value = unit.corruption;

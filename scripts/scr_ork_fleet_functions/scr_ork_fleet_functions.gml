@@ -242,7 +242,7 @@ function init_ork_waagh(override = false) {
 function out_of_system_warboss(overide = false) {
     with (obj_controller) {
         // More Testing
-        if ((faction_defeated[7] == 1 || known[eFACTION.ORK] == 0 || overide)) {
+        if (faction_defeated[7] == 1 || known[eFACTION.ORK] == 0 || overide) {
             known[eFACTION.ORK] = 0;
             var _warboss = new NewPlanetFeature(eP_FEATURES.ORKWARBOSS);
             if (faction_defeated[7] == 1) {

@@ -36,7 +36,7 @@ function scr_librarium_gui() {
         if ((cur_arti.identified() > 0) && (!identifiable)) {
             draw_set_color(#5F730D);
             artif_descr += $"#To be identified it must be brought to a fleet with a Battle Barge or your Homeworld.";
-        } else if ((cur_arti.identified() > 0) && (identifiable)) {
+        } else if ((cur_arti.identified() > 0) && identifiable) {
             draw_set_color(#5F730D);
             artif_descr += $"##It will be identified in {cur_arti.identified()} turns. #You may spend 150 Requisition to identify it immediately.";
 

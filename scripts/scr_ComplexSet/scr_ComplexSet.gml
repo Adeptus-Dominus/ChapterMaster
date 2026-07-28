@@ -30,9 +30,8 @@ function valid_sprite_transform_data(data) {
     return is_array(data) && array_length(data) == 4;
 }
 
-
 /// @desc Variables needed either in obj_creation or obj_controller to draw a marine sprite
-function default_marine_draw_variables(){
+function default_marine_draw_variables() {
     metallic_shine = 3;
     paint_shine = 3;
     modest_livery = false;
@@ -346,11 +345,10 @@ function ComplexSet(_unit) constructor {
         }
     };
 
-    static modular_mandatory_checks = function(mod_item){
+    static modular_mandatory_checks = function(mod_item) {
         // ---------------- MANDATORY CHECKS (always run, never gated) ----------------
 
         var _mod = mod_item;
-
 
         if (struct_exists(_mod, "position")) {
             if (array_contains(blocked, _mod.position)) {
@@ -390,42 +388,46 @@ function ComplexSet(_unit) constructor {
             if (_x != 0 || _y != 0) {
                 if (_overides == "none") {
                     _overides = {
-                        offsets: [_x, _y],
+                        offsets: [
+                            _x,
+                            _y,
+                        ],
                     };
                 } else {
-                    _overides.offsets = [_x, _y];
+                    _overides.offsets = [
+                        _x,
+                        _y,
+                    ];
                 }
             }
         }
 
         if (struct_exists(_mod, "ban")) {
-
             _banned = _mod.ban;
-            if (array_length(_banned)){
-                if (_overides == "none"){
+            if (array_length(_banned)) {
+                if (_overides == "none") {
                     _overides = {
-                        bans : _banned
-                    }
+                        bans: _banned,
+                    };
                 } else {
                     _overides.bans = _banned;
                 }
             }
-
         }
 
         return true;
-    }
+    };
 
-    static optional_modulars_checks = function(mod_item){
+    static optional_modulars_checks = function(mod_item) {
         var _mod = mod_item;
-    // Keys that are mandatory / pass-through data, not optional pass-fail checks.
+        // Keys that are mandatory / pass-through data, not optional pass-fail checks.
         var _max_sat = 100;
         var _control_max_sat = false;
         if (struct_exists(_mod, "max_saturation")) {
             remaining_component_checks--;
             _control_max_sat = true;
             _max_sat = _mod.max_saturation;
-            if (remaining_component_checks <= 0){
+            if (remaining_component_checks <= 0) {
                 return true;
             }
         }
@@ -486,7 +488,7 @@ function ComplexSet(_unit) constructor {
                     return false;
                 }
             }
-            if (remaining_component_checks <= 0){
+            if (remaining_component_checks <= 0) {
                 return true;
             }
         }
@@ -507,7 +509,7 @@ function ComplexSet(_unit) constructor {
                     return false;
                 }
             }
-            if (remaining_component_checks <= 0){
+            if (remaining_component_checks <= 0) {
                 return true;
             }
         }
@@ -517,7 +519,7 @@ function ComplexSet(_unit) constructor {
             if (!check_exception("body_types")) {
                 return false;
             }
-            if (remaining_component_checks <= 0){
+            if (remaining_component_checks <= 0) {
                 return true;
             }
         }
@@ -549,7 +551,9 @@ function ComplexSet(_unit) constructor {
                     _max_sat = clamp(_increment * 5, 0, _mod.max_saturation);
                 }
             }
-            if (remaining_component_checks <= 0 && !_control_max_sat) return true;
+            if (remaining_component_checks <= 0 && !_control_max_sat) {
+                return true;
+            }
         }
 
         if (_control_max_sat) {
@@ -560,7 +564,7 @@ function ComplexSet(_unit) constructor {
                     }
                 }
             }
-            if (remaining_component_checks <= 0){
+            if (remaining_component_checks <= 0) {
                 return true;
             }
         }
@@ -580,7 +584,7 @@ function ComplexSet(_unit) constructor {
                     return false;
                 }
             }
-            if (remaining_component_checks <= 0){
+            if (remaining_component_checks <= 0) {
                 return true;
             }
         }
@@ -591,7 +595,7 @@ function ComplexSet(_unit) constructor {
                     return false;
                 }
             }
-            if (remaining_component_checks <= 0){
+            if (remaining_component_checks <= 0) {
                 return true;
             }
         }
@@ -602,7 +606,7 @@ function ComplexSet(_unit) constructor {
                     return false;
                 }
             }
-            if (remaining_component_checks <= 0){
+            if (remaining_component_checks <= 0) {
                 return true;
             }
         }
@@ -613,7 +617,7 @@ function ComplexSet(_unit) constructor {
                     return false;
                 }
             }
-            if (remaining_component_checks <= 0){
+            if (remaining_component_checks <= 0) {
                 return true;
             }
         }
@@ -625,7 +629,7 @@ function ComplexSet(_unit) constructor {
                     return false;
                 }
             }
-            if (remaining_component_checks <= 0){
+            if (remaining_component_checks <= 0) {
                 return true;
             }
         }
@@ -636,7 +640,7 @@ function ComplexSet(_unit) constructor {
                     return false;
                 }
             }
-            if (remaining_component_checks <= 0){
+            if (remaining_component_checks <= 0) {
                 return true;
             }
         }
@@ -655,7 +659,7 @@ function ComplexSet(_unit) constructor {
                     return false;
                 }
             }
-            if (remaining_component_checks <= 0){
+            if (remaining_component_checks <= 0) {
                 return true;
             }
         }
@@ -674,7 +678,7 @@ function ComplexSet(_unit) constructor {
                     return false;
                 }
             }
-            if (remaining_component_checks <= 0){
+            if (remaining_component_checks <= 0) {
                 return true;
             }
         }
@@ -685,7 +689,7 @@ function ComplexSet(_unit) constructor {
                     return false;
                 }
             }
-            if (remaining_component_checks <= 0){
+            if (remaining_component_checks <= 0) {
                 return true;
             }
         }
@@ -696,7 +700,7 @@ function ComplexSet(_unit) constructor {
                     return false;
                 }
             }
-            if (remaining_component_checks <= 0){
+            if (remaining_component_checks <= 0) {
                 return true;
             }
         }
@@ -716,11 +720,10 @@ function ComplexSet(_unit) constructor {
                     return false;
                 }
             }
-            if (remaining_component_checks <= 0){
+            if (remaining_component_checks <= 0) {
                 return true;
             }
         }
-
 
         if (struct_exists(_mod, "equipment_has_tag")) {
             remaining_component_checks--;
@@ -747,7 +750,7 @@ function ComplexSet(_unit) constructor {
                     return false;
                 }
             }
-            if (remaining_component_checks <= 0){
+            if (remaining_component_checks <= 0) {
                 return true;
             }
         }
@@ -774,7 +777,7 @@ function ComplexSet(_unit) constructor {
                     return false;
                 }
             }
-            if (remaining_component_checks <= 0){
+            if (remaining_component_checks <= 0) {
                 return true;
             }
         }
@@ -800,7 +803,7 @@ function ComplexSet(_unit) constructor {
                     return false;
                 }
             }
-            if (remaining_component_checks <= 0){
+            if (remaining_component_checks <= 0) {
                 return true;
             }
         }
@@ -813,19 +816,25 @@ function ComplexSet(_unit) constructor {
                     return false;
                 }
             }
-            if (remaining_component_checks <= 0){
+            if (remaining_component_checks <= 0) {
                 return true;
             }
         }
 
         return true;
-    }
-
+    };
 
     static mandatory_check_keys = [
-            "position", "shadows", "overides", "subcomponents",
-            "offsets" , "prevent_others" ,"sprite","allow_either",
-            "always_spawn", "ban"
+        "position",
+        "shadows",
+        "overides",
+        "subcomponents",
+        "offsets",
+        "prevent_others",
+        "sprite",
+        "allow_either",
+        "always_spawn",
+        "ban",
     ];
 
     /// @param {Struct} mod_item
@@ -843,7 +852,11 @@ function ComplexSet(_unit) constructor {
         }
 
         if (!struct_exists(_mod, "body_types")) {
-            _mod.body_types = [0, 1, 2];
+            _mod.body_types = [
+                0,
+                1,
+                2,
+            ];
         }
 
         // Nothing optional left to check - short circuit immediately.
@@ -858,22 +871,22 @@ function ComplexSet(_unit) constructor {
         }
 
         var _optionals = optional_modulars_checks(mod_item);
-        if (!_optionals){
+        if (!_optionals) {
             return false;
         } else {
             return modular_mandatory_checks(mod_item);
         }
-        
+
         return true;
     };
 
-    static validate_modular_item = function(_mod, position){
+    static validate_modular_item = function(_mod, position) {
         _sub_comps = "none";
         _shadows = "none";
         if (position != "") {
             _mod.position = position;
         }
-        if (array_contains(restricted, _mod.position)){
+        if (array_contains(restricted, _mod.position)) {
             return false;
         }
 
@@ -903,7 +916,7 @@ function ComplexSet(_unit) constructor {
             };
 
             if (_weapon_one.name == _weapon_map && _quality_ok(_weapon_one, _mod)) {
-                if (_prevent_others){
+                if (_prevent_others) {
                     right_arm_data = [_mod.weapon_data];
                 } else {
                     array_push(right_arm_data, _mod.weapon_data);
@@ -911,24 +924,24 @@ function ComplexSet(_unit) constructor {
             }
 
             if (_weapon_two.name == _weapon_map && _quality_ok(_weapon_two, _mod)) {
-                if (_prevent_others){
+                if (_prevent_others) {
                     left_arm_data = [_mod.weapon_data];
                 } else {
                     array_push(left_arm_data, _mod.weapon_data);
                 }
             }
         } else {
-
-            if (replace_by_default || _prevent_others){
+            if (replace_by_default || _prevent_others) {
                 replace_area(_mod.position, _mod.sprite, _overides, _sub_comps, _shadows);
             } else {
                 add_to_area(_mod.position, _mod.sprite, _overides, _sub_comps, _shadows);
             }
-            if (_prevent_others){
+            if (_prevent_others) {
                 array_push(restricted, _mod.position);
             }
         }
-    }
+    };
+
     /// @param {Array<Struct>} modulars
     /// @param {String} position
     static assign_modulars = function(modulars = global.modular_drawing_items, position = "", replace_by_default = false) {
@@ -937,7 +950,7 @@ function ComplexSet(_unit) constructor {
         try {
             for (var i = 0; i < array_length(modulars); i++) {
                 var _mod = modulars[i];
-                validate_modular_item(_mod, position)
+                validate_modular_item(_mod, position);
             }
         } catch (_exception) {
             ERROR_HANDLER.handle_exception(_exception);
@@ -960,9 +973,9 @@ function ComplexSet(_unit) constructor {
                     _override_areas = struct_get_names(_override_data.overides);
                     var _overs = _override_data.overides;
                     for (var j = 0; j < array_length(_override_areas); j++) {
-                        var _area = _override_areas[j]
+                        var _area = _override_areas[j];
                         var _override_packet = _overs[$ _area];
-                        _override_packet = is_struct(_override_packet) ? _override_packet : {sprite : _override_packet};
+                        _override_packet = is_struct(_override_packet) ? _override_packet : {sprite: _override_packet};
                         assign_modulars([_override_packet], _area, true);
                     }
                 }
@@ -971,15 +984,14 @@ function ComplexSet(_unit) constructor {
                     component_final_draw_x += _offsets[0];
                     component_final_draw_y += _offsets[1];
                 }
-                if (struct_exists(_override_data, "bans")){
-                    for (var i = 0; i < array_length(_override_data.bans); i++){
+                if (struct_exists(_override_data, "bans")) {
+                    for (var i = 0; i < array_length(_override_data.bans); i++) {
                         array_push(banned, _override_data.bans[i]);
                     }
                 }
                 break;
             }
         }
-  
     };
 
     /// @desc Resolves a global frame choice for an area into (source_sprite, local_frame)
@@ -1052,13 +1064,13 @@ function ComplexSet(_unit) constructor {
                     var _shadow_item = _spec_shadow[2];
                     var _final_shadow_index = choice - _spec_shadow[0];
                     set_draw_shadows(resolved_sprite, resolved_frame, _shadow_item, _final_shadow_index);
-					break;
+                    break;
                 }
             }
         }
     };
 
-    static set_draw_shadows = function(sprite, resolved_frame, _shadow_item, _final_shadow_index){
+    static set_draw_shadows = function(sprite, resolved_frame, _shadow_item, _final_shadow_index) {
         // Compute UV transform for this shadow texture
         if (!sprite_exists(sprite) || !sprite_exists(_shadow_item)) {
             exit;
@@ -1080,10 +1092,10 @@ function ComplexSet(_unit) constructor {
         // Trigger the draw to apply shadow (shader mixes it)
         //draw_sprite(_sprite, _choice ?? 0, component_final_draw_x, component_final_draw_y);
 
-        shadow_enabled = true;        
-    }
+        shadow_enabled = true;
+    };
 
-/// @param {String} component_name
+    /// @param {String} component_name
     /// @param {Real} choice
     static handle_component_subcomponents = function(component_name, choice, flip_x = false, component_map_choice = 3) {
         if (struct_exists(subcomponents, component_name)) {
@@ -1142,17 +1154,18 @@ function ComplexSet(_unit) constructor {
         }
     };
 
-    static set_main_shader_uniforms = function(){
+    static set_main_shader_uniforms = function() {
         shader_set_uniform_i(use_shadow_uniform, shadow_enabled);
         shader_set_uniform_i(paint_shine_uniform, main_object.paint_shine);
         shader_set_uniform_i(metallic_shine_uniform, main_object.metallic_shine);
-    }
+    };
 
-    static set_texture_uniforms = function(){
+    static set_texture_uniforms = function() {
         shader_set_uniform_i(texture_use_shadow_uniform, shadow_enabled);
         shader_set_uniform_i(texture_paint_shine_uniform, main_object.paint_shine);
         shader_set_uniform_i(texture_metallic_shine_uniform, main_object.metallic_shine);
-    }
+    };
+
     /// @param {Asset.GMSprite} resolved_sprite
     /// @param {Real} resolved_choice
     /// @param {String} component_name
@@ -2083,14 +2096,14 @@ function ComplexSet(_unit) constructor {
                         array_push(_sub_items, _subby);
                     }
                 } else {
-                    array_push(_sub_items, {sprite:_subby});
-                } 
+                    array_push(_sub_items, {sprite: _subby});
+                }
             }
             if (array_length(_sub_items)) {
                 array_push(_accepted_subs, _sub_items);
             }
         }
-        if (array_length(_accepted_subs)){
+        if (array_length(_accepted_subs)) {
             array_push(subcomponents[$ area], [_overide_start, _overide_start + sprite_length, _accepted_subs]);
         }
     };

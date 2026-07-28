@@ -63,10 +63,14 @@ function transfer_marines() {
                         for (var mem = 0; mem < array_length(move_members); mem++) {
                             obj_controller.man_sel[w + mem] = 0;
                             var member_unit = fetch_unit(move_members[mem]);
-                            if (!is_struct(member_unit)) { continue; }
+                            if (!is_struct(member_unit)) {
+                                continue;
+                            }
                             scr_move_unit_info(member_unit.company, target_comp, member_unit.marine_number, mahreens, false);
                             var _unit = fetch_unit([target_comp, mahreens]);
-                            if (!is_struct(_unit)) { continue; }
+                            if (!is_struct(_unit)) {
+                                continue;
+                            }
                             _unit.squad = move_squad;
                             squad.members[mem][0] = target_comp;
                             squad.members[mem][1] = mahreens;
