@@ -24,7 +24,6 @@
       "permission": {
         "doom_loop": "deny",
         "external_directory": "deny",
-        "edit": "deny",
         "lsp": "deny",
         "question": "deny"
       }
