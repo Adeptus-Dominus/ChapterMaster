@@ -14,31 +14,30 @@ closing = false;
 
 attendants = 0;
 avatars = 0;
-for (var i = 0; i <= 2500; i++) {
-    attend_co[i] = 0;
-    attend_id[i] = 0;
-    attend_mood[i] = "";
-    attend_corrupted[i] = 0;
-    attend_feasted[i] = 0;
-    attend_drunk[i] = 0;
-    attend_high[i] = 0;
-    attend_confused[i] = 0;
-    attend_actioned[i] = 0;
-    attend_corruption[i] = 0;
-    attend_race[i] = 0;
-    attend_displayed[i] = 0; // Set to 1
 
-    if (i <= 10) {
-        avatar_name[i] = "";
-        avatar_rank[i] = "";
-        avatar_image[i] = 0;
-        avatar_co[i] = 0;
-        avatar_id[i] = 0;
-    }
-    if (i <= 20) {
-        line[i] = "";
-    }
-}
+var _array_size = 2501;
+
+attend_co = array_create(_array_size, 0);
+attend_id = array_create(_array_size, 0);
+attend_mood = array_create(_array_size, "");
+attend_corrupted = array_create(_array_size, 0);
+attend_feasted = array_create(_array_size, 0);
+attend_drunk = array_create(_array_size, 0);
+attend_high = array_create(_array_size, 0);
+attend_confused = array_create(_array_size, 0);
+attend_actioned = array_create(_array_size, 0);
+attend_corruption = array_create(_array_size, 0);
+attend_race = array_create(_array_size, 0);
+attend_displayed = array_create(_array_size, 0);
+
+avatar_name = array_create(_array_size, "");
+avatar_rank = array_create(_array_size, "");
+avatar_image = array_create(_array_size, 0);
+avatar_co = array_create(_array_size, 0);
+avatar_id = array_create(_array_size, 0);
+
+line = array_create(_array_size, "");
+
 lines = 0;
 
 main_color = obj_ini.main_color;
