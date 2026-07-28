@@ -3,7 +3,6 @@
   "agent": {
     "pr_review": {
       "mode": "primary",
-      "model": "opencode/deepseek-v4-flash-free",
       "permission": {
         "doom_loop": "deny",
         "external_directory": "deny",
@@ -11,7 +10,25 @@
         "lsp": "deny",
         "question": "deny"
       }
-    }
+    },
+    "explore": {
+      "permission": {
+        "doom_loop": "deny",
+        "external_directory": "deny",
+        "edit": "deny",
+        "lsp": "deny",
+        "question": "deny"
+      }
+    },
+    "general": {
+      "permission": {
+        "doom_loop": "deny",
+        "external_directory": "deny",
+        "edit": "deny",
+        "lsp": "deny",
+        "question": "deny"
+      }
+    },
   },
   "compaction": {
     "auto": true,
@@ -21,8 +38,8 @@
   "formatter": false,
   "instructions": [
     "docs/GML_REFERENCE.md",
-    "docs/CODE_STYLE.md",
-    "docs/AGENTS.md"
+    "docs/CODE_STYLE.md"
   ],
-  "snapshot": false
+  "snapshot": false,
+  "model": "opencode/deepseek-v4-flash-free"
 }
