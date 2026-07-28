@@ -202,7 +202,6 @@ function draw_character_diplomacy() {
     _cm_slate.YY = 520;
     _cm_slate.inside_method = function() {
         var _master = fetch_unit([0, 0]);
-
         if (!variable_instance_exists(obj_controller, "master_image")) {
             obj_controller.master_image = _master.draw_unit_image();
         }
@@ -266,14 +265,13 @@ function scr_emmisary_diplomacy_routes() {
     } else if (diplomacy_pathway == "Khorne_path") {
         scr_diplomacy_hit(0,, function() {
             //TODO central get cm choice_func
-            var chapter_master = obj_ini.TTRPG[0][0];
             cooldown = 8000;
             diplomacy_pathway = "sacrifice_lib";
             //grab a random librarian
             var lib = scr_random_marine(SPECIALISTS_LIBRARIANS, 0);
             if (lib != "none") {
-                chapter_master = obj_ini.TTRPG[0][1];
-                var dead_lib = obj_ini.TTRPG[lib[0]][lib[1]];
+                var chapter_master = fetch_unit([0, 1]);
+                var dead_lib = fetch_unit([lib[0], lib[1]]);
                 pop_up = instance_create(0, 0, obj_popup);
                 pop_up.title = "Skull for the Skull Throne";
                 pop_up.text = $"You summon {dead_lib.name_role()} to your personal chambers. Darting from the shadows you deftly strike his head from his shoulders. With the flesh removed from his skull you place the skull upon a hastily erected shrine.";
@@ -293,10 +291,10 @@ function scr_emmisary_diplomacy_routes() {
             diplomacy_pathway = "sacrifice_champ";
             var champ = scr_random_marine(obj_ini.role[100][7], 0);
             if (champ != "none") {
-                var chapter_master = obj_ini.TTRPG[0][1];
+                var chapter_master = fetch_unit([0, 1]);
                 chapter_master.add_trait("blood_for_blood");
                 chapter_master.edit_corruption(20);
-                var dead_champ = obj_ini.TTRPG[champ[0]][champ[1]];
+                var dead_champ = fetch_unit([champ[0], champ[1]]);
                 //TODO make this into a real dual with consequences
                 pop_up = instance_create(0, 0, obj_popup);
                 pop_up.title = "Skull for the Skull Throne";

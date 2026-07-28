@@ -145,6 +145,7 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
         for (var _squad = 0; _squad < array_length(garrison_squads); _squad++) {
             var _leader = garrison_squads[_squad].determine_leader();
             _unit = fetch_unit(_leader);
+            if (!is_struct(_unit)) { continue; }
             if (garrison_leader == false) {
                 garrison_leader = _unit;
                 for (var r = 0; r < array_length(hierarchy); r++) {
@@ -291,6 +292,7 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
                         //loop squads in the garrison
                         _squad = garrison_squads[s];
                         _leader = fetch_unit(_squad.squad_leader);
+                        if (!is_struct(_leader)) { continue; }
                         /*here we decide if a _squad had favourable positioning for the coming battle
 						   take a random of their wisdom plus their luck minus how bad the combat loss was
 						*/

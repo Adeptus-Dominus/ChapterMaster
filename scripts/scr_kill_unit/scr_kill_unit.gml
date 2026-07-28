@@ -10,11 +10,16 @@ function scr_kill_unit(company, unit_slot) {
             alarm[7] = 5;
             global.defeat = 1;
         }
+
         var _unit = fetch_unit([company, unit_slot]);
-        if (_unit.weapon_one() == "Company Standard" || _unit.weapon_two() == "Company Standard") {
-            scr_loyalty("Lost Standard", "+");
+
+        if (is_struct(_unit)) {
+            if (_unit.weapon_one() == "Company Standard" || _unit.weapon_two() == "Company Standard") {
+                scr_loyalty("Lost Standard", "+");
+            }
+            _unit.remove_from_squad();
         }
-        _unit.remove_from_squad();
+
         scr_wipe_unit(company, unit_slot);
     } catch (ex) {
         LOGGER.error($"company: {company}, unit_slot: {unit_slot}");

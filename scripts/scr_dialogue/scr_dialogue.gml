@@ -184,7 +184,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                 }
             }
 
-            if ((obj_ini.TTRPG[0][3].corruption >= 50) && (born == true)) {
+            var _ms = fetch_unit([0, 3]); if (is_struct(_ms) && _ms.corruption >= 50 && born) {
                 add_diplomacy_option({option_text: "Right now I need my Master of Sanctity at my side, trusting that his Chapter Master is doing what is best, what is necessary for the Chapter, during this dangerous moment. All will be made clear in time, I promise you brother. This is the right path.", goto: "cs_meeting_m3"});
             }
         }
@@ -216,12 +216,16 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
 
             diplo_text = $"[[{obj_controller.faction_leader[eFACTION.CHAOS]} turns to you, his voice even and calm]]\n\nHere is the first step you must take, to prove you’ve truly left the Imperium behind. Kill him. Kill your loyal brothers.\n[[His Chaos Terminators raise their weapons as one and point them at you. Somewhere behind them a daemon cackles.]]\nChoose now or be obliterated.";
 
+            var _name = "";
             var _master_of_sanct = fetch_unit([0, 3]);
+            if (is_struct(_master_of_sanct)) {
+                _name = _master_of_sanct.name();
+            }
 
-            var _string = $"Stand with me my brothers! Fight for the future of your Chapter, and slay {_master_of_sanct.name()}!  [Battle loyalist  {global.chapter_name}";
+            var _string = $"Stand with me my brothers! Fight for the future of your Chapter, and slay {_name}!  [Battle loyalist  {global.chapter_name}";
             add_diplomacy_option({option_text: _string, goto: "cs_meeting_battle1", goto: "cs_meeting_battle1"});
 
-            _string = $"{global.chapter_name}, I order you to hold your fire! {_master_of_sanct.name()}, if you doubt my leadership then let it be decided by single combat! [Duel your Master of Sanctity]";
+            _string = $"{global.chapter_name}, I order you to hold your fire! {_name}, if you doubt my leadership then let it be decided by single combat! [Duel your Master of Sanctity]";
             add_diplomacy_option({option_text: _string, goto: "cs_meeting_battle2"});
 
             _string = $"I deny you {obj_controller.faction_leader[eFACTION.CHAOS]}.  And now I shall destroy you.  For the Emperor! [Attack Chaos forces]";
@@ -342,7 +346,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             var born = false;
             for (var ii = 1; ii < 200; ii++) {
                 if (obj_ini.role[0][ii] == obj_ini.role[100][eROLE.CHAPTERMASTER]) {
-                    fetch_unit([0, ii]).corruption += floor(random_range(30, 50));
+                    var _unit = fetch_unit([0, ii]); if (is_struct(_unit)) { _unit.corruption += floor(random_range(30, 50)); }
                 }
             }
             obj_controller.chaos_rating += 1;
@@ -379,6 +383,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             }
             if (!_found) {
                 var _master = fetch_unit([0, 0]);
+                if (!is_struct(_master)) { exit; }
                 if (_master.planet_location > 0) {
                     var _master_star = find_star_by_name(_master.location_string);
                     if (_master_star != noone) {

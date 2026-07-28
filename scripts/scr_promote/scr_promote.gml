@@ -88,12 +88,13 @@ function setup_promotion_popup() {
                                 var mem;
                                 for (mem = 0; mem < array_length(move_members); mem++) {
                                     var mem_unit = fetch_unit(move_members[mem]);
+                                    if (!is_struct(mem_unit)) { continue; }
                                     if (mem_unit.company != target_comp) {
                                         scr_move_unit_info(mem_unit.company, target_comp, mem_unit.marine_number, mahreens, false);
                                         squad.members[mem][0] = target_comp;
                                         squad.members[mem][1] = mahreens;
                                     }
-                                    mem_unit = obj_ini.TTRPG[target_comp][mahreens];
+                                    mem_unit = fetch_unit([target_comp, mahreens]); if (!is_struct(mem_unit)) { continue; }
                                     mem_unit.squad = move_squad;
                                     if (!mem_unit.IsSpecialist(SPECIALISTS_SQUAD_LEADERS)) {
                                         mem_unit.update_role(role_name[target_role]);
@@ -116,7 +117,7 @@ function setup_promotion_popup() {
                         if (!moveable) {
                             if (unit.company != target_comp) {
                                 scr_move_unit_info(unit.company, target_comp, unit.marine_number, mahreens);
-                                unit = obj_ini.TTRPG[target_comp][mahreens];
+                                unit = fetch_unit([target_comp, mahreens]); if (!is_struct(unit)) { continue; }
                             }
                             unit.update_role(role_name[target_role]);
                             unit.alter_equipment({"wep1": req_wep1, "wep2": req_wep2, "mobi": req_mobi, "armour": req_armour, "gear": req_gear});

@@ -2375,6 +2375,7 @@ function fetch_unit_uid(uuid) {
         var _comp_length = array_length(obj_ini.TTRPG[i]);
         for (var s = 0; s < _comp_length; s++) {
             var _unit = fetch_unit([i, s]);
+            if (!is_struct(_unit)) { continue; }
             if (_unit.uid == uuid) {
                 return _unit;
             }

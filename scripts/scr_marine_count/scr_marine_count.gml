@@ -20,7 +20,11 @@ function scr_marine_count(argument0, argument1, argument2) {
                 if (obj_ini.name[com][ide] == "") {
                     continue;
                 }
-                unit = obj_ini.TTRPG[com][ide];
+                unit = fetch_unit([com, ide]);
+                if (!is_struct(unit)) {
+                    ide += 1;
+                    continue;
+                }
                 if (check < sca) {
                     ide += 1;
                     if ((unit.role() != "") && (obj_ini.race[com][ide] <= 5) && (unit.location_string == argument0.name) && (unit.planet_location == argument1)) {

@@ -276,7 +276,7 @@ function Roster() constructor {
             for (var i = 0; i < array_length(obj_ini.role[co]); i++) {
                 var _allow = false;
                 var _unit = fetch_unit([co, i]);
-                if (_unit.name() == "" || _unit.role() == "") {
+                if (!is_struct(_unit) || _unit.name() == "" || _unit.role() == "") {
                     continue;
                 }
                 if (_unit.hp() <= 0 || _unit.in_jail()) {

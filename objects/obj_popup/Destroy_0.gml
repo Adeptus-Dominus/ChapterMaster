@@ -59,7 +59,7 @@ if (instance_exists(obj_controller)) {
             with (obj_star) {
                 if (string_count(name, scr_master_loc()) > 0) {
                     meeting_star = self.id;
-                    meeting_planet = obj_ini.TTRPG[0][1].planet_location;
+                    var _fetched = fetch_unit([0, 1]); meeting_planet = is_struct(_fetched) ? _fetched.planet_location : 0;
                 }
             }
         }

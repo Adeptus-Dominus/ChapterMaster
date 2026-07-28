@@ -120,6 +120,7 @@ if ((boarding == true) && (board_cooldown >= 0) && instance_exists(target) && in
             ac = 0;
             dr = 1;
             unit = fetch_unit([co, i]);
+            if (!is_struct(unit)) { continue; }
             gear_bonus = 0;
             marine_bonus = 0;
             boarding_odds = 50;
@@ -571,7 +572,7 @@ if ((boarding == true) && (board_cooldown >= 0) && instance_exists(target) && in
             for (var o = 0; o < array_length(origin.board_co); o++) {
                 co = origin.board_co[o];
                 i = origin.board_id[o];
-                unit = obj_ini.TTRPG[co][i];
+                unit = fetch_unit([co, i]); if (!is_struct(unit)) { continue; }
                 unit_exp = unit.experience;
                 exp_roll = irandom(150 + unit_exp) + 1;
                 if (exp_roll >= unit_exp) {

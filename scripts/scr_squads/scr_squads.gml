@@ -300,7 +300,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         var _struct_array = [];
         for (var i = array_length(members) - 1; i >= 0; i--) {
             _unit = fetch_unit(members[i]);
-            if (_unit.name() == "") {
+            if (!is_struct(_unit) || _unit.name() == "") {
                 array_delete(members, i, 1);
                 continue;
             } else {
@@ -318,7 +318,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         var member_length = array_length(members);
         for (var i = 0; i < member_length; i++) {
             _unit = fetch_unit(members[i]);
-            if (_unit.name() == "") {
+            if (!is_struct(_unit) || _unit.name() == "") {
                 array_delete(members, i, 1);
                 member_length--;
                 i--;
@@ -516,7 +516,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         var exact_loc = false;
         for (var i = 0; i < member_length; i++) {
             _unit = fetch_unit(members[i]);
-            if (_unit.name() == "") {
+            if (!is_struct(_unit) || _unit.name() == "") {
                 array_delete(members, i, 1);
                 member_length--;
                 i--;
@@ -591,7 +591,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         var highest_exp = 0;
         for (var i = 0; i < member_length; i++) {
             var _unit = fetch_unit(members[i]);
-            if (_unit.name() == "") {
+            if (!is_struct(_unit) || _unit.name() == "") {
                 array_delete(members, i, 1);
                 member_length--;
                 i--;
@@ -610,7 +610,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
                     }
                 } else if (leader_hier_pos < array_length(hierarchy) && hierarchy[leader_hier_pos] == _unit.role()) {
                     var _leader = fetch_unit(leader);
-                    if (_leader.experience < _unit.experience) {
+                    if (is_struct(_leader) && _leader.experience < _unit.experience) {
                         leader = [
                             _unit.company,
                             _unit.marine_number,
@@ -639,13 +639,15 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         var remove_sgt;
         if (sgt != "none") {
             remove_sgt = fetch_unit(sgt);
-            if (remove_sgt.IsSpecialist(SPECIALISTS_SQUAD_LEADERS)) {
-                var replace_role = remove_sgt.role();
-                remove_sgt.update_role(new_sgt.role());
-                //TODO centralise loyalty changes for role changes in the update_role method
-                remove_sgt.alter_loyalty(-10);
-                new_sgt.update_role(replace_role);
-                new_sgt.alter_loyalty(10);
+            if (is_struct(remove_sgt)) {
+                if (remove_sgt.IsSpecialist(SPECIALISTS_SQUAD_LEADERS)) {
+                    var replace_role = remove_sgt.role();
+                    remove_sgt.update_role(new_sgt.role());
+                    //TODO centralise loyalty changes for role changes in the update_role method
+                    remove_sgt.alter_loyalty(-10);
+                    new_sgt.update_role(replace_role);
+                    new_sgt.alter_loyalty(10);
+                }
             }
         }
     };
@@ -670,7 +672,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         member_length = array_length(members);
         for (var i = 0; i < member_length; i++) {
             var _unit = fetch_unit(members[i]);
-            if (_unit.name() == "") {
+            if (!is_struct(_unit) || _unit.name() == "") {
                 array_delete(members, i, 1);
                 member_length--;
                 i--;

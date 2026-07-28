@@ -30,7 +30,7 @@ function scr_ship_battle(target_ship_id, cooridor_width) {
                 if (obj_ini.name[co][v] == "") {
                     continue;
                 }
-                unit = obj_ini.TTRPG[co][v];
+                unit = fetch_unit([co, v]); if (!is_struct(unit)) { continue; }
                 if ((unit.ship_location == target_ship_id) && unit.hp()) {
                     okay = 1;
                 }

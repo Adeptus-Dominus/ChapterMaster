@@ -6,7 +6,7 @@ function scr_event_gossip(argument0) {
     that = 0;
     that_type = "";
     words = "";
-    him_chaos = obj_ini.TTRPG[attend_co[argument0]][attend_id[argument0]].corruption;
+    var _unit = fetch_unit([attend_co[argument0], attend_id[argument0]]); him_chaos = is_struct(_unit) ? _unit.corruption : 0;
 
     p = -1;
     repeat (101) {

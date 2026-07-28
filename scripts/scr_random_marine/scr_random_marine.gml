@@ -41,7 +41,12 @@ function scr_random_marine(role, exp_req, search_params = {}) {
                 var list_place = irandom(comp_size - 1);
                 var _dude_index = marine_list[list_place];
                 var match = true;
-                var unit = obj_ini.TTRPG[company][_dude_index];
+                var unit = fetch_unit([company, _dude_index]);
+                if (!is_struct(unit)) {
+                    array_delete(marine_list, list_place, 1);
+                    comp_size--;
+                    continue;
+                }
 
                 //exit if not real name
                 if ((unit.name() == "") || (unit.name() == 0)) {

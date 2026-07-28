@@ -96,7 +96,7 @@ function scr_start_load(fleet, load_from_star, load_options) {
         for (var _unit = 0; _unit < (array_length(obj_ini.role[_comp]) - 1); _unit++) {
             var _marine = fetch_unit([_comp, _unit]);
             // check if marine exists
-            if (_marine.name() != "") {
+            if (is_struct(_marine) && _marine.name() != "") {
                 //calculate marine space
                 var marine_size = _marine.get_unit_size();
                 _company_size += marine_size;
@@ -112,6 +112,7 @@ function scr_start_load(fleet, load_from_star, load_options) {
                 for (var squad_member = 0; squad_member < array_length(_members); squad_member++) {
                     squaddy = _members[squad_member];
                     var _marine = fetch_unit(squaddy);
+                    if (!is_struct(_marine)) { continue; }
                     var marine_size = _marine.get_unit_size();
                     _company_size += marine_size;
                     array_push(company_loader, _marine);

@@ -134,9 +134,13 @@ function apothecary_training() {
             if (recruit_count > 0) {
                 var random_marine = scr_random_marine(novice_type, 0);
                 if (random_marine != "none") {
-                    apothecary_recruit_points -= 48;
                     /// @type {Struct.TTRPG_stats}
                     var unit = fetch_unit(random_marine);
+                    if (!is_struct(unit) || unit.name() == "") {
+                        return;
+                    }
+
+                    apothecary_recruit_points -= 48;
                     scr_alert("green", "recruitment", unit.name_role() + " has finished training.", 0, 0);
                     unit.update_role(obj_ini.role[100][15]);
                     unit.role_tag = [
@@ -180,6 +184,7 @@ function apothecary_training() {
                 if (open_slot != -1) {
                     scr_move_unit_info(marine_company, 0, marine_position, open_slot);
                     var unit = fetch_unit([0, open_slot]);
+                    if (!is_struct(unit) || unit.name() == "") { return; }
                     unit.update_role(novice_type);
                     unit.update_gear("");
                     unit.update_mobility_item("");
@@ -214,6 +219,7 @@ function chaplain_training() {
                     var random_marine = scr_random_marine(novice_type, 0);
                     if (random_marine != "none") {
                         var unit = fetch_unit(random_marine);
+                        if (!is_struct(unit) || unit.name() == "") { return; }
                         scr_alert("green", "recruitment", unit.name_role() + " has finished training.", 0, 0);
                         chaplain_points -= 48;
                         unit.update_role(obj_ini.role[100][14]);
@@ -254,9 +260,12 @@ function chaplain_training() {
                     var marine_company = random_marine[0];
                     var open_slot = find_company_open_slot(0);
                     if (open_slot != -1) {
-                        chaplain_aspirant = 1;
                         scr_move_unit_info(marine_company, 0, marine_position, open_slot);
                         var unit = fetch_unit([0, open_slot]);
+                        if (!is_struct(unit) || unit.name() == "") {
+                            return;
+                        }
+                        chaplain_aspirant = 1;
                         unit.update_role(novice_type);
                         unit.update_gear("");
                         unit.update_mobility_item("");
@@ -292,6 +301,7 @@ function librarian_training() {
                 var random_marine = scr_random_marine(novice_type, 0, {"stat": [["psionic", 2, "more"]]});
                 if (random_marine != "none") {
                     var unit = fetch_unit(random_marine);
+                    if (!is_struct(unit) || unit.name() == "") { return; }
                     psyker_points -= goal;
                     psyker_aspirant = 0;
 
@@ -323,6 +333,7 @@ function librarian_training() {
                 if (open_slot != -1) {
                     scr_move_unit_info(marine_company, 0, marine_position, open_slot);
                     var unit = fetch_unit([0, open_slot]);
+                    if (!is_struct(unit) || unit.name() == "") { return; }
                     unit.update_role(novice_type);
                     unit.update_powers();
                     psyker_aspirant = 1;
@@ -368,6 +379,7 @@ function techmarine_training() {
                 var random_marine = scr_random_marine(novice_type, 0);
                 if (random_marine != "none") {
                     var unit = fetch_unit(random_marine);
+                    if (!is_struct(unit) || unit.name() == "") { return; }
                     tech_points -= _threshold;
 
                     unit.update_role(obj_ini.role[100][16]);
@@ -437,6 +449,7 @@ function techmarine_training() {
                 if (open_slot != -1) {
                     scr_move_unit_info(marine_company, 0, marine_position, open_slot);
                     var unit = fetch_unit([0, open_slot]);
+                    if (!is_struct(unit) || unit.name() == "") { return; }
                     unit.update_role(novice_type);
 
                     // Remove from ship

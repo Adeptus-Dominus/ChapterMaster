@@ -27,6 +27,7 @@ function scr_add_corruption(is_fleet, modifier_type) {
                     continue;
                 }
                 var unit = fetch_unit([co, i]);
+                if (!is_struct(unit)) { continue; }
                 if (array_contains(ships, unit.ship_location)) {
                     if (modifier_type == "1d3") {
                         unit.edit_corruption(choose(1, 2, 3));

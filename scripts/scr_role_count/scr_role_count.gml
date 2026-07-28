@@ -34,14 +34,14 @@ function scr_role_count(target_role, search_location = "", return_type = "count"
 
     if (coom >= 0) {
         for (var i = 0; i < array_length(obj_ini.TTRPG[coom]); i++) {
-            var unit = obj_ini.TTRPG[coom][i];
+            var unit = fetch_unit([coom, i]);
             if (!is_struct(unit) || unit.name() == "") {
                 continue;
             }
             if ((unit.role() == target_role) && (obj_ini.god[coom][i] < 10)) {
                 count += 1;
                 if (return_type == "units") {
-                    array_push(units, obj_ini.TTRPG[coom][i]);
+                    var _u = fetch_unit([coom, i]); if (is_struct(_u)) { array_push(units, _u); }
                 }
             }
         }

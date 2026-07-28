@@ -26,7 +26,7 @@ if ((closing == true) && (fading == -1) && (fade_alpha <= 0)) {
     }
 
     for (var ide = 1; ide <= 700; ide++) {
-        var unit = obj_ini.TTRPG[attend_co[ide]][attend_id[ide]];
+        var unit = fetch_unit([attend_co[ide], attend_id[ide]]); if (!is_struct(unit)) { continue; }
         if ((attend_corrupted[ide] == 0) && (attend_id[ide] > 0)) {
             if (array_contains(obj_ini.artifact_tags[obj_controller.fest_display], "chaos")) {
                 unit.corruption += choose(1, 2, 3, 4);
@@ -110,7 +110,7 @@ if (ticked == 1) {
     }
 
     var ide = floor(random(attendants)) + 1;
-    var unit = obj_ini.TTRPG[attend_co[ide]][attend_id[ide]];
+    var unit = fetch_unit([attend_co[ide], attend_id[ide]]); if (!is_struct(unit)) { ticked = 0; exit; }
     var textt = "";
     var doso = false;
     var activity = "";

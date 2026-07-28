@@ -272,7 +272,11 @@ function scr_random_event(execute_now) {
         }
         var marine = marine_and_company[1];
         var company = marine_and_company[0];
-        var _unit = obj_ini.TTRPG[company][marine];
+        var _unit = fetch_unit([company, marine]);
+        if (!is_struct(_unit)) {
+            LOGGER.error("RE: Promotion, couldn't pick a space marine");
+            exit;
+        }
         var role = _unit.role();
         var text = _unit.name_role();
         var company_text = scr_convert_company_to_string(company);

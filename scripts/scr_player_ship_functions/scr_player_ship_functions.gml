@@ -214,6 +214,7 @@ function loose_ship_to_warp_event() {
                 continue;
             }
             unit = fetch_unit([company, marine]);
+            if (!is_struct(unit)) { continue; }
             if (unit.ship_location == _ship_index) {
                 unit.location_string = "Lost";
             }

@@ -190,6 +190,7 @@ for (var co = 0; co <= obj_ini.companies; co++) {
             continue;
         }
         var unit = fetch_unit([co, i]);
+        if (!is_struct(unit)) { continue; }
         if (unit.ship_location == ship_id) {
             if (unit.is_boarder && unit.hp() > (unit.max_health() / 10)) {
                 array_push(board_co, co);

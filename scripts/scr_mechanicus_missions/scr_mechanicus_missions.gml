@@ -380,7 +380,7 @@ function mechanicus_mars_mission_target_time_elapsed(planet) {
     for (com = 0; com <= 10; com++) {
         for (ide = 0; ide < array_length(obj_ini.TTRPG[com]); ide++) {
             _unit = fetch_unit([com, ide]);
-            if (_unit.name() == "") {
+            if (!is_struct(_unit) || _unit.name() == "") {
                 continue;
             }
             if (_unit.role() == obj_ini.role[100][eROLE.TECHMARINE]) {

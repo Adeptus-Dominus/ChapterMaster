@@ -16,6 +16,7 @@ function scr_check_equip(search_item, system, planet_or_ship_id, remove_item) {
             marine_present = false;
             if (!instance_exists(obj_ncombat)) {
                 unit = fetch_unit([c, i]);
+                if (!is_struct(unit)) { continue; }
                 if ((system != "") && (planet_or_ship_id > 0)) {
                     if (unit.is_at_location(system, planet_or_ship_id, -1)) {
                         marine_present = true;

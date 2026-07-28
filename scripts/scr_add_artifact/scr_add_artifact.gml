@@ -516,6 +516,7 @@ function ArtifactStruct(Index) constructor {
             if (equipped() && is_array(bearer)) {
                 var _b_type = determine_base_type();
                 var unit = fetch_unit(bearer);
+                if (!is_struct(unit)) { return; }
                 if (_b_type == "weapon") {
                     if (unit.weapon_one(true) == index) {
                         unit.update_weapon_one("", false, true);
@@ -539,6 +540,7 @@ function ArtifactStruct(Index) constructor {
                     for (var co = 0; co < obj_ini.companies; co++) {
                         for (var i = 0; i < array_length(obj_ini.role[co]); i++) {
                             var _unit = fetch_unit([co, i]);
+                            if (!is_struct(_unit)) { continue; }
                             if (_unit.weapon_one(true) == index) {
                                 _unit.update_weapon_one("", false, true);
                                 _bearer_found = true;
@@ -571,6 +573,7 @@ function ArtifactStruct(Index) constructor {
                         for (var co = 0; co < obj_ini.companies; co++) {
                             for (var i = 0; i < array_length(obj_ini.role[co]); i++) {
                                 var _unit = fetch_unit([co, i]);
+                                if (!is_struct(_unit)) { continue; }
                                 if (_unit[$ _find_function](true) == index) {
                                     _unit[$ _update_function]("", false, true);
                                     _bearer_found = true;

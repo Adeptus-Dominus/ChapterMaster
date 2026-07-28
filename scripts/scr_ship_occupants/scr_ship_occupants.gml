@@ -20,6 +20,7 @@ function scr_ship_occupants(target_ship_id) {
             i += 1;
             if (obj_ini.role[co][i] != "") {
                 unit = fetch_unit([co, i]);
+                if (!is_struct(unit)) { continue; }
                 if (unit.ship_location != target_ship_id) {
                     good = 0;
                 }

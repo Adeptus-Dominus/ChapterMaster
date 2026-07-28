@@ -4,7 +4,8 @@ function scr_count_marines_on_ship(ship_number) {
         var _company_size = array_length(obj_ini.TTRPG[company]);
         for (var marine = 1; marine < _company_size; marine++) {
             if (obj_ini.name[company][marine] != "") {
-                if (obj_ini.TTRPG[company][marine].ship_location == ship_number) {
+                var _unit = fetch_unit([company, marine]);
+                if (is_struct(_unit) && _unit.ship_location == ship_number) {
                     count++;
                 }
             }

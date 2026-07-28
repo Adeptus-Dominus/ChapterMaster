@@ -55,13 +55,18 @@ try {
                 var master_present = 0;
 
                 var master_index = array_get_index(obj_ini.role[0], obj_ini.role[100][eROLE.CHAPTERMASTER]);
-                var chaos_meeting = fetch_unit([0, master_index]).planet_location;
+                var _fetched_chaos = fetch_unit([0, master_index]);
+                if (!is_struct(_fetched_chaos)) {
+                    LOGGER.error($"fetch_unit guardrail triggered for chapter master [0, {master_index}] in cs_meeting post-battle");
+                    exit;
+                }
+                var chaos_meeting = _fetched_chaos.planet_location;
 
                 for (var co = 0; co <= 10; co++) {
                     for (var i = 0; i < array_length(obj_ini.TTRPG[co]); i++) {
                         var good = 0;
-                        _unit = fetch_unit([co, i]);
-                        if (_unit.role() == "" || _unit.location_string != name) {
+                        var _unit = fetch_unit([co, i]);
+                        if (!is_struct(_unit) || _unit.role() == "" || _unit.location_string != name) {
                             continue;
                         }
                         if (_unit.planet_location == floor(chaos_meeting)) {

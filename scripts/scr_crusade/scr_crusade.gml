@@ -71,11 +71,11 @@ function scr_crusade() {
                 continue;
             }
             unit = fetch_unit([co, i]);
+            if (!is_struct(unit)) { continue; }
             if (unit.ship_location == -1) {
                 continue;
             }
             if (array_contains(total_ship_id, unit.ship_location)) {
-                unit = obj_ini.TTRPG[co][i];
                 death_determination = floor(random(100)) + 1;
                 //specialist trait greatly reduces death risk
                 //TODO figure out how to quantify and present these risks so the player knows to protect dudes with trait

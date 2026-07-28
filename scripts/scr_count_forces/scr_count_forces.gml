@@ -9,7 +9,7 @@ function scr_count_forces(_unit_location, _target_location, _is_planet, instance
             //For each unit in that company, while unit exists
             //Marines and vehicles get checked AT THE SAME TIME
             //This is possible since array for saving vehicles and marines are separated
-            while ((_unit.name() != "" || i < array_length(obj_ini.veh_race[company])) && i < 500) {
+            while ((is_struct(_unit) && _unit.name() != "" || i < array_length(obj_ini.veh_race[company])) && i < 500) {
                 if ((_unit.race() == 1) && (_unit.location_string == _unit_location) && (_unit.planet_location == _target_location)) {
                     info_mahreens++;
                 }
