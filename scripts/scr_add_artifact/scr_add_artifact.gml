@@ -275,6 +275,11 @@ function artifact_has_tag(index, wanted_tag) {
 //TODO make a proper artifact struct
 function ArtifactStruct(Index) constructor {
     index = Index;
+    custom_data = {};
+    name = "";
+    custom_description = "";
+    bearer = false;
+
 
     static type = function() {
         return obj_ini.artifact[index];
@@ -294,12 +299,13 @@ function ArtifactStruct(Index) constructor {
     };
 
     static can_equip = function() {
-        _can_equip = true;
+        var _can_equip = true;
         var none_equips = [
             "Statue",
             "Casket",
             "Chalice",
             "Robot",
+            "Tome"
         ];
         if (array_contains(none_equips, type())) {
             _can_equip = false;
@@ -512,88 +518,94 @@ function ArtifactStruct(Index) constructor {
     };
 
     static unequip_from_unit = function() {
+        if (!equipped()) {
+            bearer = false;
+            return;
+        }
+    
         try {
-            if (equipped() && is_array(bearer)) {
-                var _b_type = determine_base_type();
-                var unit = fetch_unit(bearer);
-                if (!is_struct(unit)) { return; }
-                if (_b_type == "weapon") {
-                    if (unit.weapon_one(true) == index) {
-                        unit.update_weapon_one("", false, true);
-                    } else if (unit.weapon_two(true) == index) {
-                        unit.update_weapon_two("", false, true);
-                    }
-                } else if (_b_type == "gear") {
-                    unit.update_gear("", false, true);
-                } else if (_b_type == "armour") {
-                    unit.update_armour("", false, true);
-                } else if (_b_type == "mobility") {
-                    unit.update_mobility_item("", false, true);
+            var _type = determine_base_type();
+    
+            if (is_array(bearer)) {
+                var _unit = fetch_unit(bearer);
+                if (is_struct(_unit)) {
+                    unequip_from_single_unit(_unit, _type);
                 }
-                bearer = false;
-                obj_ini.artifact_equipped[index] = false;
-            } else if (equipped()) {
-                var _b_type = determine_base_type();
-                var _bearer = false;
-                var _bearer_found = false;
-                if (_b_type == "weapon") {
-                    for (var co = 0; co < obj_ini.companies; co++) {
-                        for (var i = 0; i < array_length(obj_ini.role[co]); i++) {
-                            var _unit = fetch_unit([co, i]);
-                            if (!is_struct(_unit)) { continue; }
-                            if (_unit.weapon_one(true) == index) {
-                                _unit.update_weapon_one("", false, true);
-                                _bearer_found = true;
-                            } else if (_unit.weapon_two(true) == index) {
-                                _unit.update_weapon_two("", false, true);
-                                _bearer_found = true;
-                            }
-                            if (_bearer_found) {
-                                break;
-                            }
-                        }
-                        if (_bearer_found) {
-                            break;
-                        }
-                    }
-                } else {
-                    var _find_function = "";
-                    var _update_function = "";
-                    if (_b_type == "gear") {
-                        _update_function = "update_gear";
-                        _find_function = "gear";
-                    } else if (_b_type == "armour") {
-                        _update_function = "update_armour";
-                        _find_function = "armour";
-                    } else if (_b_type == "mobility") {
-                        _update_function = "update_mobility_item";
-                        _find_function = "mobility_item";
-                    }
-                    if (_find_function != "") {
-                        for (var co = 0; co < obj_ini.companies; co++) {
-                            for (var i = 0; i < array_length(obj_ini.role[co]); i++) {
-                                var _unit = fetch_unit([co, i]);
-                                if (!is_struct(_unit)) { continue; }
-                                if (_unit[$ _find_function](true) == index) {
-                                    _unit[$ _update_function]("", false, true);
-                                    _bearer_found = true;
-                                }
-                                if (_bearer_found) {
-                                    break;
-                                }
-                            }
-                            if (_bearer_found) {
-                                break;
-                            }
-                        }
-                    }
-                }
+            } else {
+                search_and_unequip_from_all_units(_type);
             }
         } catch (_exception) {
             ERROR_HANDLER.handle_exception(_exception);
         }
+    
         bearer = false;
         obj_ini.artifact_equipped[index] = false;
+    };
+    
+    /// @desc Unequip from a single unit. Returns true if something was unequipped.
+    /// @param {Struct.TTRPG_stats} _unit
+    /// @param {String} _type
+    /// @return {Bool} Returns true if something was unequipped.
+    static unequip_from_single_unit = function(_unit, _type, _check_equipped = true) {
+        switch (_type) {
+            case "weapon":
+                if (_unit.weapon_one() == type()) {
+                    _unit.update_weapon_one("", false, true);
+                    return true;
+                } else if (_unit.weapon_two() == type()) {
+                    _unit.update_weapon_two("", false, true);
+                    return true;
+                }
+    
+                return false;
+                break;
+            case "gear":
+                if (_check_equipped && _unit.gear() != type()) {
+                    return false;
+                }
+    
+                _unit.update_gear("", false, true);
+                return true;
+                break;
+            case "armour":
+                if (_check_equipped && _unit.armour() != type()) {
+                    return false;
+                }
+    
+                _unit.update_armour("", false, true);
+                return true;
+                break;
+            case "mobility":
+                if (_check_equipped && _unit.mobility_item() != type()) {
+                    return false;
+                }
+    
+                _unit.update_mobility_item("", false, true);
+                return true;
+                break;
+        }
+    
+        return false;
+    };
+    
+    /// @desc Search all units across companies and unequip the first match
+    /// @param {String} _type
+    /// @return {Bool} Returns true if something was unequipped.
+    static search_and_unequip_from_all_units = function(_type) {
+        for (var co = 0; co < obj_ini.companies; co++) {
+            for (var i = 0; i < array_length(obj_ini.role[co]); i++) {
+                var _unit = fetch_unit([co, i]);
+                if (!is_struct(_unit)) {
+                    continue;
+                }
+    
+                if (unequip_from_single_unit(_unit, _type)) {
+                    return true;
+                }
+            }
+        }
+    
+        return false;
     };
 
     static equip_on_unit = function(unit, slot = -1) {
@@ -628,11 +640,6 @@ function ArtifactStruct(Index) constructor {
             obj_controller.cooldown = 8;
         }
     };
-
-    custom_data = {};
-    name = "";
-    custom_description = "";
-    bearer = false;
 
     static assign_text_from_tag_match = function(text_set) {
         var _return_text = "";
