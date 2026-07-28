@@ -26,16 +26,21 @@ if ((closing == true) && (fading == -1) && (fade_alpha <= 0)) {
     }
 
     for (var ide = 1; ide <= 700; ide++) {
-        var unit = fetch_unit([attend_co[ide], attend_id[ide]]); if (!is_struct(unit)) { continue; }
-        if ((attend_corrupted[ide] == 0) && (attend_id[ide] > 0)) {
-            if (array_contains(obj_ini.artifact_tags[obj_controller.fest_display], "chaos")) {
-                unit.corruption += choose(1, 2, 3, 4);
-            }
-            if (array_contains(obj_ini.artifact_tags[obj_controller.fest_display], "daemonic")) {
-                unit.corruption += choose(6, 7, 8, 9);
-            }
-            attend_corrupted[ide] = 1;
+        var unit = fetch_unit([attend_co[ide], attend_id[ide]]);
+    
+        if (!is_struct(unit) || attend_corrupted[ide] != 0 || attend_id[ide] <= 0) {
+            continue;
         }
+
+        if (array_contains(obj_ini.artifact_tags[obj_controller.fest_display], "chaos")) {
+            unit.corruption += choose(1, 2, 3, 4);
+        }
+
+        if (array_contains(obj_ini.artifact_tags[obj_controller.fest_display], "daemonic")) {
+            unit.corruption += choose(6, 7, 8, 9);
+        }
+    
+        attend_corrupted[ide] = 1;
     }
 
     obj_controller.fest_repeats -= 1;
