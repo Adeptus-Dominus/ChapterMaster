@@ -680,9 +680,6 @@ function scr_ui_advisors() {
                 if (fest_repeats == 0) {
                     fest_repeats = 1;
                 }
-                if (fest_display > 0) {
-                    fest_display_tags = obj_ini.artifact_tags[fest_display];
-                }
             }
         }
 
@@ -709,7 +706,7 @@ function scr_ui_advisors() {
                 fest_feature2 = 0;
                 fest_attend = "";
                 fest_feature3 = 0;
-                fest_display = 0;
+                fest_display = -1;
                 fest_repeats = 0;
                 fest_warp = 0;
                 menu = eMENU.RECLUSIAM;

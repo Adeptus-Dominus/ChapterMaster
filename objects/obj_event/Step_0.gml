@@ -12,6 +12,11 @@ if ((exit_fade >= 0) && (exit_fade < 30)) {
     exit_fade += 1;
 }
 
+var _fest_arti = undefined;
+if (obj_controller.fest_display > -1) {
+    _fest_arti = fetch_artifact(obj_controller.fest_display);
+}
+
 if ((closing == true) && (fading == -1) && (fade_alpha <= 0)) {
     if (obj_controller.fest_type == "Great Feast") {
         if (obj_controller.fest_feature1 == 1) {
@@ -32,11 +37,11 @@ if ((closing == true) && (fading == -1) && (fade_alpha <= 0)) {
             continue;
         }
 
-        if (array_contains(obj_ini.artifact_tags[obj_controller.fest_display], "chaos")) {
+        if (is_struct(_fest_arti) && _fest_arti.has_tag("chaos")) {
             unit.corruption += choose(1, 2, 3, 4);
         }
 
-        if (array_contains(obj_ini.artifact_tags[obj_controller.fest_display], "daemonic")) {
+        if (is_struct(_fest_arti) && _fest_arti.has_tag("daemonic")) {
             unit.corruption += choose(6, 7, 8, 9);
         }
 
@@ -219,7 +224,7 @@ if (ticked == 1) {
                 activity = "talk";
             }
 
-            if ((obj_controller.fest_display > 0) && (dice4 <= 15)) {
+            if (is_struct(_fest_arti) && (dice4 <= 15)) {
                 activity = "artifact";
             }
         }
@@ -384,9 +389,9 @@ if (ticked == 1) {
         textt = scr_event_gossip(ide);
     }
 
-    if (activity == "artifact") {
+    if (activity == "artifact" && is_struct(_fest_arti)) {
         var spesh = "";
-        var woa = string(obj_ini.artifact[obj_controller.fest_display]);
+        var woa = string(_fest_arti.get_type_name());
         var nerves_spesh = [
             "GOAT",
             "CHE",
@@ -396,17 +401,17 @@ if (ticked == 1) {
             "PRE",
         ];
         for (var sp = 0; sp < array_length(nerves_spesh); sp++) {
-            if (array_contains(obj_ini.artifact_tags[obj_controller.fest_display], nerves_spesh[sp])) {
+            if (_fest_arti.has_tag(nerves_spesh[sp])) {
                 spesh = "nerves";
                 break;
             }
         }
 
-        if (array_contains(obj_ini.artifact_tags[obj_controller.fest_display], "DYI")) {
+        if (_fest_arti.has_tag("DYI")) {
             spesh = "offend";
         }
 
-        if (array_contains(obj_ini.artifact_tags[obj_controller.fest_display], "MNR")) {
+        if (_fest_arti.has_tag("MNR")) {
             spesh = "minor";
         }
         textt = unit.name_role();
@@ -455,10 +460,10 @@ if (ticked == 1) {
         }
 
         if (attend_corrupted[ide] == 0) {
-            if (array_contains(obj_ini.artifact_tags[obj_controller.fest_display], "chaos")) {
+            if (_fest_arti.has_tag("chaos")) {
                 unit.corruption += choose(1, 2, 3, 4);
             }
-            if (array_contains(obj_ini.artifact_tags[obj_controller.fest_display], "daemonic")) {
+            if (_fest_arti.has_tag("daemonic")) {
                 unit.corruption += choose(6, 7, 8, 9);
             }
             attend_corrupted[ide] = 1;

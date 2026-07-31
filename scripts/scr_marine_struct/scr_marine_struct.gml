@@ -407,7 +407,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         if (is_string(wep) || raw) {
             return wep;
         }
-        return obj_ini.artifact[wep];
+        var arti = fetch_artifact(wep);
+        return arti.get_type_name();
     };
 
     static role = function() {
@@ -519,7 +520,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         if (is_string(wep) || raw) {
             return wep;
         }
-        return obj_ini.artifact[wep];
+        var arti = fetch_artifact(wep);
+        return arti.get_type_name();
     };
 
     static hp = function() {
@@ -948,7 +950,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         if (is_string(wep) || raw) {
             return wep;
         }
-        return obj_ini.artifact[wep];
+        var arti = fetch_artifact(wep);
+        return arti.get_type_name();
     };
 
     static weapon_one = function(raw = false) {
@@ -956,7 +959,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         if (is_string(wep) || raw) {
             return wep;
         }
-        return obj_ini.artifact[wep];
+        var arti = fetch_artifact(wep);
+        return arti.get_type_name();
     };
 
     static equipments_qual_string = function(slot, art_only = false) {
@@ -989,11 +993,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         if (!is_artifact && art_only == false) {
             return $"{item}";
         } else if (is_artifact) {
-            if (obj_ini.artifact_struct[item].name == "") {
-                return $"{obj_ini.artifact[item]}";
-            } else {
-                return obj_ini.artifact_struct[item].name;
-            }
+            var arti = fetch_artifact(item);
+            return arti.get_display_name();
         } else {
             return $"{item}";
         }
@@ -1037,7 +1038,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         if (is_string(wep) || raw) {
             return wep;
         }
-        return obj_ini.artifact[wep];
+        var arti = fetch_artifact(wep);
+        return arti.get_type_name();
     };
 
     specials = "";
@@ -2046,7 +2048,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static equipped_artifacts = function() {
-        artis = [
+        var artis = [
             weapon_one(true),
             weapon_two(true),
             gear(true),
@@ -2069,7 +2071,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         var arti;
         var has_tag = false;
         for (var i = 0; i < array_length(cur_artis); i++) {
-            arti = obj_ini.artifact_struct[cur_artis[i]];
+            arti = fetch_artifact(cur_artis[i]);
             has_tag = arti.has_tag(tag);
             if (has_tag) {
                 break;
@@ -2228,11 +2230,11 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
         var artifact_list = equipped_artifacts();
         for (var i = 0; i < array_length(artifact_list); i++) {
-            var arti = obj_ini.artifact_struct[artifact_list[i]];
-            arti.bearer = [
+            var arti = fetch_artifact(artifact_list[i]);
+            arti.set_bearer([
                 end_company,
                 end_slot,
-            ];
+            ]);
         }
     };
 

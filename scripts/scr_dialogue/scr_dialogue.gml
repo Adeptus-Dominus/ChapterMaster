@@ -358,10 +358,10 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
 
             // Casket, Chalice, Tome
             if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
-                scr_add_artifact("chaos_gift", "", 0, obj_ini.home_name, 2);
+                scr_add_artifact("chaos_gift", "", 0, obj_ini.home_name, -1);
             }
             if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
-                scr_add_artifact("chaos_gift", "", 0, obj_ini.ship[0], 501);
+                scr_add_artifact("chaos_gift", "", 0, obj_ini.ship[0], 0);
             }
         }
         if (string_count("cs_meeting_battle", diplo_keyphrase) > 0) {

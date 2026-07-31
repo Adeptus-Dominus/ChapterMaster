@@ -187,7 +187,7 @@ function event_end_turn_action() {
                     scr_event_log("", string(obj_ini.role[100][16]) + " " + string(marine_name) + " constructs an Artifact.");
                     var _last_artifact = scr_add_artifact("random_nodemon", "", 0);
 
-                    tixt += $"some form of divine inspiration has seemed to have taken hold of him.  An artifact {obj_ini.artifact[_last_artifact]} has been crafted.";
+                    tixt += $"some form of divine inspiration has seemed to have taken hold of him.  An artifact {fetch_artifact(_last_artifact).get_type_name()} has been crafted.";
                 }
                 if (item == "baby") {
                     _unit.edit_corruption(choose(8, 12, 16, 20));

@@ -47,20 +47,20 @@ function scr_quest(quest_satus, quest_name, quest_fac, quest_end) {
             } else if ((quest_name == "artifact_loan") && (quest_satus == 1)) {
                 // Inq want the artifact back
                 var wanted_arti = -1;
-                for (var i = 0; i < array_length(obj_ini.artifact); i++) {
-                    if (obj_ini.artifact[i] != "") {
-                        if (obj_ini.artifact_struct[i].has_tag("inq")) {
-                            wanted_arti = i;
-                            break;
-                        }
+                var _art_keys = struct_get_names(obj_ini.artifact_map);
+                for (var _i = 0; _i < array_length(_art_keys); _i++) {
+                    var arti = obj_ini.artifact_map[$ _art_keys[_i]];
+                    if (arti.get_type_name() != "" && arti.has_tag("inq")) {
+                        wanted_arti = arti.artifact_id;
+                        break;
                     }
                 }
                 var failed = false;
                 if (wanted_arti < 0) {
                     failed = true;
                 } else {
-                    var arti = obj_ini.artifact_struct[wanted_arti];
-                    if (arti.equipped() && is_array(arti.bearer)) {
+                    var arti = fetch_artifact(wanted_arti);
+                    if (arti.is_equipped()) {
                         failed = true;
                     }
                 }

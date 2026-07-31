@@ -10,7 +10,12 @@ function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = tr
 
     if (is_artifact) {
         artifact_id = new_armour;
-        new_armour = obj_ini.artifact[artifact_id];
+        var _arti = fetch_artifact(artifact_id);
+        new_armour = _arti.get_type_name();
+    }
+
+    if (is_artifact && armour(true) == artifact_id) {
+        return "no change";
     }
 
     if (new_armour == STR_ANY_POWER_ARMOUR) {
@@ -54,7 +59,7 @@ function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = tr
         }
     }
 
-    if (_old_armour == new_armour && same_quality) {
+    if ((_old_armour == new_armour) && same_quality && !is_artifact && is_string(armour(true))) {
         return "no change";
     }
 
@@ -83,28 +88,24 @@ function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = tr
     }
 
     if (_old_armour != "") {
-        if (to_armoury) {
-            if (!is_string(armour(true))) {
-                obj_ini.artifact_equipped[armour(true)] = false;
-            } else {
-                scr_add_item(_old_armour, 1, armour_quality);
-            }
-        } else if (!is_string(armour(true))) {
-            delete_artifact(armour(true)); // may trigger feedback loop if not handled with care
+        if (!is_string(armour(true))) {
+            var _old_arti = fetch_artifact(armour(true));
+            _old_arti.clear_bearer();
+        } else if (to_armoury) {
+            scr_add_item(_old_armour, 1, armour_quality);
         }
     }
 
     var portion = hp_portion();
-    obj_ini.armour[company][marine_number] = new_armour;
+    obj_ini.armour[company][marine_number] = is_artifact ? artifact_id : new_armour;
 
     if (is_artifact) {
-        obj_ini.artifact_equipped[artifact_id] = true;
-        var arti_struct = obj_ini.artifact_struct[artifact_id];
-        arti_struct.bearer = [
+        var arti_struct = fetch_artifact(artifact_id);
+        arti_struct.set_bearer([
             company,
             marine_number,
-        ];
-        armour_quality = obj_ini.artifact_quality[artifact_id];
+        ]);
+        armour_quality = "artifact";
     } else {
         armour_quality = quality;
     }
@@ -143,7 +144,12 @@ function scr_update_unit_weapon_one(new_weapon, from_armoury = true, to_armoury 
 
     if (is_artifact) {
         artifact_id = new_weapon;
-        new_weapon = obj_ini.artifact[artifact_id];
+        var _arti = fetch_artifact(artifact_id);
+        new_weapon = _arti.get_type_name();
+    }
+
+    if (is_artifact && weapon_one(true) == artifact_id) {
+        return "no change";
     }
 
     if (new_weapon == "Heavy Ranged") {
@@ -156,7 +162,7 @@ function scr_update_unit_weapon_one(new_weapon, from_armoury = true, to_armoury 
         if (array_contains(weapon_list, change_wep) && same_quality) {
             return "no change";
         }
-    } else if (change_wep == new_weapon && same_quality) {
+    } else if ((change_wep == new_weapon) && same_quality && !is_artifact && is_string(weapon_one(true))) {
         return "no change";
     }
 
@@ -190,27 +196,23 @@ function scr_update_unit_weapon_one(new_weapon, from_armoury = true, to_armoury 
     }
 
     if (change_wep != "") {
-        if (to_armoury) {
-            if (!is_string(weapon_one(true))) {
-                obj_ini.artifact_equipped[weapon_one(true)] = false;
-            } else {
-                scr_add_item(change_wep, 1, weapon_one_quality);
-            }
-        } else if (!is_string(weapon_one(true))) {
-            delete_artifact(weapon_one(true));
+        if (!is_string(weapon_one(true))) {
+            var _old_arti = fetch_artifact(weapon_one(true));
+            _old_arti.clear_bearer();
+        } else if (to_armoury) {
+            scr_add_item(change_wep, 1, weapon_one_quality);
         }
     }
 
-    obj_ini.wep1[company][marine_number] = new_weapon;
+    obj_ini.wep1[company][marine_number] = is_artifact ? artifact_id : new_weapon;
 
     if (is_artifact) {
-        obj_ini.artifact_equipped[artifact_id] = true;
-        var arti_struct = obj_ini.artifact_struct[artifact_id];
-        arti_struct.bearer = [
+        var arti_struct = fetch_artifact(artifact_id);
+        arti_struct.set_bearer([
             company,
             marine_number,
-        ];
-        weapon_one_quality = obj_ini.artifact_quality[artifact_id];
+        ]);
+        weapon_one_quality = "artifact";
     } else {
         weapon_one_quality = quality;
     }
@@ -227,11 +229,16 @@ function scr_update_unit_weapon_two(new_weapon, from_armoury = true, to_armoury 
 
     if (is_artifact) {
         artifact_id = new_weapon;
-        new_weapon = obj_ini.artifact[artifact_id];
+        var _arti = fetch_artifact(artifact_id);
+        new_weapon = _arti.get_type_name();
+    }
+
+    if (is_artifact && weapon_two(true) == artifact_id) {
+        return "no change";
     }
 
     var same_quality = quality == "any" || quality == weapon_two_quality;
-    if (change_wep == new_weapon && same_quality) {
+    if ((change_wep == new_weapon) && same_quality && !is_artifact && is_string(weapon_two(true))) {
         return "no change";
     }
 
@@ -247,27 +254,23 @@ function scr_update_unit_weapon_two(new_weapon, from_armoury = true, to_armoury 
     }
 
     if (change_wep != "") {
-        if (to_armoury) {
-            if (!is_string(weapon_two(true))) {
-                obj_ini.artifact_equipped[weapon_two(true)] = false;
-            } else {
-                scr_add_item(change_wep, 1, weapon_two_quality);
-            }
-        } else if (!is_string(weapon_two(true))) {
-            delete_artifact(weapon_two(true));
+        if (!is_string(weapon_two(true))) {
+            var _old_arti = fetch_artifact(weapon_two(true));
+            _old_arti.clear_bearer();
+        } else if (to_armoury) {
+            scr_add_item(change_wep, 1, weapon_two_quality);
         }
     }
 
-    obj_ini.wep2[company][marine_number] = new_weapon;
+    obj_ini.wep2[company][marine_number] = is_artifact ? artifact_id : new_weapon;
 
     if (is_artifact) {
-        obj_ini.artifact_equipped[artifact_id] = true;
-        weapon_two_quality = obj_ini.artifact_quality[artifact_id];
-        var arti_struct = obj_ini.artifact_struct[artifact_id];
-        arti_struct.bearer = [
+        var arti_struct = fetch_artifact(artifact_id);
+        arti_struct.set_bearer([
             company,
             marine_number,
-        ];
+        ]);
+        weapon_two_quality = "artifact";
     } else {
         weapon_two_quality = quality;
     }
@@ -284,11 +287,16 @@ function scr_update_unit_gear(new_gear, from_armoury = true, to_armoury = true, 
     var artifact_id;
     if (is_artifact) {
         artifact_id = new_gear;
-        new_gear = obj_ini.artifact[artifact_id];
+        var _arti = fetch_artifact(artifact_id);
+        new_gear = _arti.get_type_name();
+    }
+
+    if (is_artifact && gear(true) == artifact_id) {
+        return "no change";
     }
 
     var same_quality = quality == "any" || quality == gear_quality;
-    if (change_gear == new_gear && same_quality) {
+    if ((change_gear == new_gear) && same_quality && !is_artifact && is_string(gear(true))) {
         return "no change";
     }
 
@@ -311,28 +319,24 @@ function scr_update_unit_gear(new_gear, from_armoury = true, to_armoury = true, 
     }
 
     if (change_gear != "") {
-        if (to_armoury) {
-            if (!is_string(gear(true))) {
-                obj_ini.artifact_equipped[gear(true)] = false;
-            } else {
-                scr_add_item(change_gear, 1, gear_quality);
-            }
-        } else if (!is_string(gear(true))) {
-            delete_artifact(gear(true));
+        if (!is_string(gear(true))) {
+            var _old_arti = fetch_artifact(gear(true));
+            _old_arti.clear_bearer();
+        } else if (to_armoury) {
+            scr_add_item(change_gear, 1, gear_quality);
         }
     }
 
     var portion = hp_portion();
-    obj_ini.gear[company][marine_number] = new_gear;
+    obj_ini.gear[company][marine_number] = is_artifact ? artifact_id : new_gear;
 
     if (is_artifact) {
-        obj_ini.artifact_equipped[artifact_id] = true;
-        gear_quality = obj_ini.artifact_quality[artifact_id];
-        var arti_struct = obj_ini.artifact_struct[artifact_id];
-        arti_struct.bearer = [
+        var arti_struct = fetch_artifact(artifact_id);
+        arti_struct.set_bearer([
             company,
             marine_number,
-        ];
+        ]);
+        gear_quality = "artifact";
     } else {
         gear_quality = quality;
     }
@@ -351,47 +355,52 @@ function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, t
     var artifact_id;
     if (is_artifact) {
         artifact_id = new_mobility_item;
-        new_mobility_item = obj_ini.artifact[artifact_id];
+        var _arti = fetch_artifact(artifact_id);
+        new_mobility_item = _arti.get_type_name();
+    }
+
+    if (is_artifact && mobility_item(true) == artifact_id) {
+        return "no change";
     }
 
     if (!unequipping) {
         var _mobility_data = gear_weapon_data("mobility", new_mobility_item);
         if (!is_struct(_mobility_data)) {
             LOGGER.error($"Failed to equip {new_mobility_item} for {name()} - can't find the item in the item database!");
-            return false;
+            return "no change";
         }
 
         var exp_require = _mobility_data.req_exp;
         if (exp_require > experience) {
             LOGGER.error($"Failed to equip {new_mobility_item} for {name()} - not enough EXP! ({experience}<{exp_require})");
-            return false;
+            return "no change";
         }
 
         var _armour_data = get_armour_data();
         if (is_struct(_armour_data)) {
             if (_armour_data.has_tag("terminator") && !_mobility_data.has_tag("terminator") && !_mobility_data.has_tag("terminator_only")) {
                 LOGGER.error($"Failed to equip {new_mobility_item} for {name()} - can't use with terminator armour! (Current: {armour()})");
-                return false;
+                return "no change";
             } else if (!_armour_data.has_tag("terminator") && _mobility_data.has_tag("terminator_only")) {
                 LOGGER.error($"Failed to equip {new_mobility_item} for {name()} - requires terminator armour! (Current: {armour()})");
-                return false;
+                return "no change";
             }
 
             if (_mobility_data.has_tag("power_only") && !_armour_data.has_tag("power_armour")) {
                 LOGGER.error($"Failed to equip {new_mobility_item} for {name()} - requires power armour! (Current: {armour()})");
-                return false;
+                return "no change";
             }
         } else {
             if (_mobility_data.has_tag("terminator") || _mobility_data.has_tag("terminator_only")) {
                 LOGGER.error($"Failed to equip {new_mobility_item} for {name()} - requires terminator armour!");
-                return false;
+                return "no change";
             }
         }
     }
 
     var same_quality = quality == "any" || quality == mobility_item_quality;
-    if (_old_mobility_item == new_mobility_item && same_quality) {
-        return true;
+    if ((_old_mobility_item == new_mobility_item) && same_quality && !is_artifact && is_string(mobility_item(true))) {
+        return "no change";
     }
 
     // Have enough items check;
@@ -401,7 +410,7 @@ function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, t
             quality = quality != undefined ? quality : "standard";
         } else {
             LOGGER.error($"Failed to equip {new_mobility_item} for {name()} - not enough items of {quality} quality!");
-            return false;
+            return "no_items";
         }
     } else {
         quality = quality == "any" ? "standard" : quality;
@@ -409,28 +418,24 @@ function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, t
 
     // Return old items to stockpile;
     if (_old_mobility_item != "") {
-        if (to_armoury) {
-            if (!is_string(mobility_item(true))) {
-                obj_ini.artifact_equipped[mobility_item(true)] = false;
-            } else {
-                scr_add_item(_old_mobility_item, 1, mobility_item_quality);
-            }
-        } else if (!is_string(mobility_item(true))) {
-            delete_artifact(mobility_item(true));
+        if (!is_string(mobility_item(true))) {
+            var _old_arti = fetch_artifact(mobility_item(true));
+            _old_arti.clear_bearer();
+        } else if (to_armoury) {
+            scr_add_item(_old_mobility_item, 1, mobility_item_quality);
         }
     }
 
     var portion = hp_portion();
-    obj_ini.mobi[company][marine_number] = new_mobility_item;
+    obj_ini.mobi[company][marine_number] = is_artifact ? artifact_id : new_mobility_item;
 
     if (is_artifact) {
-        obj_ini.artifact_equipped[artifact_id] = true;
-        mobility_item_quality = obj_ini.artifact_quality[artifact_id];
-        var arti_struct = obj_ini.artifact_struct[artifact_id];
-        arti_struct.bearer = [
+        var arti_struct = fetch_artifact(artifact_id);
+        arti_struct.set_bearer([
             company,
             marine_number,
-        ];
+        ]);
+        mobility_item_quality = "artifact";
     } else {
         mobility_item_quality = quality;
     }
@@ -438,7 +443,7 @@ function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, t
     update_health(portion * max_health());
     get_unit_size();
 
-    return true;
+    return "complete";
 }
 
 /// @self Struct.TTRPG_stats

@@ -18,6 +18,15 @@ function scr_kill_unit(company, unit_slot) {
                 scr_loyalty("Lost Standard", "+");
             }
             _unit.remove_from_squad();
+
+            // Drop equipped artifacts at the unit's location before the slots are wiped.
+            var _equipped = _unit.equipped_artifacts();
+            for (var _e = 0; _e < array_length(_equipped); _e++) {
+                var _art = fetch_artifact(_equipped[_e]);
+                if (is_struct(_art)) {
+                    _art.clear_bearer();
+                }
+            }
         }
 
         scr_wipe_unit(company, unit_slot);

@@ -59,14 +59,8 @@ total_displayed = 0;
 scr_colors_initialize();
 scr_shader_initialize();
 
-if (obj_controller.fest_display > 0) {
-    if (obj_ini.artifact_tags[obj_controller.fest_display] != obj_controller.fest_display_tags) {
-        obj_controller.fest_display = 0;
-        for (var q = 1; q <= 20; q++) {
-            if (obj_ini.artifact_tags[q] == obj_controller.fest_display_tags) {
-                obj_controller.fest_display = q;
-                break;
-            }
-        }
+if (obj_controller.fest_display > -1) {
+    if (!is_struct(fetch_artifact(obj_controller.fest_display))) {
+        obj_controller.fest_display = -1;
     }
 }

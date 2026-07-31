@@ -76,6 +76,29 @@ function scr_kill_ship(index) {
                     }
                 }
             }
+
+            // Artifacts store ship indices (__sid) that shift when a ship is removed.
+            // get_ship_id() resolves through the bearer while equipped, and the unit loop
+            // above already shifted the bearer's ship_location, so the shift must use
+            // the raw stored index (get_stored_ship_id()) instead of the resolved one.
+            // Relocate artifacts whose ship is lost; shift the rest down.
+            var _art_keys = struct_get_names(artifact_map);
+            for (var _i = 0; _i < array_length(_art_keys); _i++) {
+                var _arti = artifact_map[$ _art_keys[_i]];
+                var _sid = _arti.get_ship_id();
+                var _stored_sid = _arti.get_stored_ship_id();
+                if ((_sid == index) || (_stored_sid == index)) {
+                    _arti.set_sid(-1);
+                    if (_nearest_star != noone) {
+                        _arti.set_location_name(_nearest_star.name);
+                    } else {
+                        _arti.set_location_name("");
+                    }
+                } else if (_stored_sid > index) {
+                    _arti.set_sid(_stored_sid - 1);
+                }
+            }
+
             array_delete(ship, index, 1);
             array_delete(ship_uid, index, 1);
             array_delete(ship_owner, index, 1);
@@ -115,7 +138,17 @@ function scr_kill_ship(index) {
                 }
             }
             for (var i = 0; i < array_length(_units_on_ship); i++) {
-                scr_kill_unit(_units_on_ship[i].company, _units_on_ship[i].marine_number);
+                _unit = _units_on_ship[i];
+                // The ship arrays already shrank: invalidate the unit's location so
+                // clear_bearer() drops its artifacts at the destroyed ship's location
+                // instead of the ship that now occupies the stale index.
+                _unit.ship_location = -1;
+                if (_nearest_star != noone) {
+                    _unit.location_string = _nearest_star.name;
+                } else {
+                    _unit.location_string = "";
+                }
+                scr_kill_unit(_unit.company, _unit.marine_number);
             }
         }
     } catch (_exception) {

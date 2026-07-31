@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_add_artifact",
+  "%Name":"artifact_functions",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_add_artifact",
+  "name":"artifact_functions",
   "parent":{
     "name":"Scripts",
     "path":"folders/Scripts.yy",

@@ -57,6 +57,7 @@ function task_selector_man_manage() {
         if (ma_name[i] == "") {
             continue;
         }
+        /// @type {Struct.TTRPG_stats}
         var _unit = display_unit[i];
         if (man_sel[i]) {
             switch (selection_data.purpose_code) {

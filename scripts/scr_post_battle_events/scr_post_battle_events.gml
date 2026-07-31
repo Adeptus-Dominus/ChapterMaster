@@ -122,13 +122,13 @@ function space_hulk_explore_battle_aftermath() {
         } else if (hulk_treasure == 2) {
             // Artifact
             //TODO this will eeroniously put artifacts in the wrong place but will resolve crashes
-            var last_artifact = scr_add_artifact("random", "random", 4, loc, shi + 500);
+            var last_artifact = scr_add_artifact("random", "random", 4, loc, shi);
             var i = 0;
 
             var pop = instance_create(0, 0, obj_popup);
             pop.image = "space_hulk_done";
             pop.title = "Space Hulk: Artifact";
-            pop.text = $"An Artifact has been retrieved from the Space Hulk and stowed upon {loc}.  It appears to be a {obj_ini.artifact[last_artifact]} but should be brought home and identified posthaste.";
+            pop.text = $"An Artifact has been retrieved from the Space Hulk and stowed upon {loc}.  It appears to be a {fetch_artifact(last_artifact).get_type_name()} but should be brought home and identified posthaste.";
             scr_event_log("", "Artifact recovered from the Space Hulk.");
         } else if (hulk_treasure == 3) {
             // STC

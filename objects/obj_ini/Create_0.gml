@@ -44,19 +44,8 @@ home_planet = 2;
 // Equipment- maybe the bikes should go here or something?          yes they should
 equipment = {};
 
-var _artifact_array_size = 200;
-artifact = array_create(_artifact_array_size, "");
-artifact_equipped = array_create(_artifact_array_size, false);
-artifact_tags = array_create_advanced(_artifact_array_size, []);
-artifact_identified = array_create(_artifact_array_size, 0);
-artifact_condition = array_create(_artifact_array_size, 100);
-artifact_quality = array_create(_artifact_array_size, "artifact");
-artifact_loc = array_create(_artifact_array_size, "");
-artifact_sid = array_create(_artifact_array_size, 0);
-artifact_struct = array_create(_artifact_array_size);
-for (var i = 0; i < _artifact_array_size; i++) {
-    artifact_struct[i] = new ArtifactStruct(i);
-}
+/// @type {Struct<Struct.ArtifactStruct>} 
+artifact_map = {};
 
 squads = {};
 
@@ -185,12 +174,14 @@ serialize = function() {
         }
     }
 
-    var _artifact_struct_trimmed = [];
-    var _artifact_count = array_length(artifact_struct);
-    for (var i = 0; i < _artifact_count; i++) {
-        if (artifact_struct[i].name != "") {
-            array_push(_artifact_struct_trimmed, artifact_struct[i]);
-        }
+    var _artifact_list = [];
+    var _artifact_names = struct_get_names(artifact_map);
+    var _artifact_len = array_length(_artifact_names);
+    for (var k = 0; k < _artifact_len; k++){
+        var _artifact_name = _artifact_names[k];
+        var _artifact = artifact_map[$ _artifact_name];
+        array_push(_artifact_list, _artifact.to_json());
+    
     }
 
     var save_data = {
@@ -202,7 +193,7 @@ serialize = function() {
         company_liveries: company_liveries,
         complex_livery_data: complex_livery_data,
         squad_types: squad_types,
-        artifact_struct: _artifact_struct_trimmed,
+        artifact_list: _artifact_list,
         marine_structs: _marines,
         squad_structs: squads,
         equipment: equipment,
@@ -229,6 +220,7 @@ serialize = function() {
         "last_ship",
         "chapter_data",
         "chapter_squad_arrangement",
+        "artifact_map",
     ];
 
     copy_serializable_fields(id, save_data, excluded_from_save);
@@ -245,6 +237,16 @@ deserialize = function(save_data) {
         "marine_structs",
         "squad_structs",
         "chapter_data",
+        "artifact", // old format arrays - skip auto-set
+        "artifact_tags",
+        "artifact_identified",
+        "artifact_condition",
+        "artifact_quality",
+        "artifact_loc",
+        "artifact_sid",
+        "artifact_equipped",
+        "artifact_struct",
+        "artifact_list",
     ]; // skip automatic setting of certain vars, handle explicitly later
 
     // Automatic var setting
@@ -332,24 +334,12 @@ deserialize = function(save_data) {
         }
     }
 
-    var _artifact_struct = save_data[$ "artifact_struct"];
-    if (is_array(_artifact_struct)) {
-        artifact_struct = [];
-        var _len = array_length(_artifact_struct);
-        for (var i = 0; i < 200; i++) {
-            // 200 is the max number of artifacts
-            var arti_struct = new ArtifactStruct(i);
-            if (i < _len) {
-                // still within the save_data array
-                var arti = _artifact_struct[i];
-                if (arti != -1) {
-                    // in the serializer we trim out empty slots so there will be nothing to load
-                    arti_struct.load_json_data(arti);
-                }
-                array_push(artifact_struct, arti_struct);
-            } else {
-                array_push(artifact_struct, arti_struct); //load empty ones into the rest of the slots
-            }
+    artifact_map = {};
+    if (struct_exists(save_data, "artifact_list")) {
+        try {
+            load_artifact_list(save_data.artifact_list);
+        } catch (e) {
+            LOGGER.exception("Failed to load artifact list", e);
         }
     }
 

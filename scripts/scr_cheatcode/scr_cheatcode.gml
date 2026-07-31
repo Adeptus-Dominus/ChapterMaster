@@ -66,10 +66,10 @@ function scr_cheatcode(argument0) {
                     break;
                 case "artifact":
                     if (cheat_arguments[0] == "1") {
-                        scr_add_artifact("random", "", 6, obj_ini.ship[0], 501);
+                        scr_add_artifact("random", "", 6, obj_ini.ship[0], 0);
                     } else {
                         repeat (real(cheat_arguments[1])) {
-                            scr_add_artifact(cheat_arguments[0], "", 6, obj_ini.ship[0], 501);
+                            scr_add_artifact(cheat_arguments[0], "", 6, obj_ini.ship[0], 0);
                         }
                     }
                     break;
@@ -117,7 +117,7 @@ function scr_cheatcode(argument0) {
                     break;
                 case "inquisarti":
                     scr_quest(0, "artifact_loan", 4, 10);
-                    var last_artifact = scr_add_artifact("good", "inquisition", 0, obj_ini.ship[0], 501);
+                    var last_artifact = scr_add_artifact("good", "inquisition", 0, obj_ini.ship[0], 0);
                     break;
                 case "govmission":
                     var problem = "";

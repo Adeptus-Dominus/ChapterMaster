@@ -382,14 +382,6 @@ new_button_highlight = "";
 new_buttons_hide = 0;
 new_buttons_frame = 0;
 
-// ** Sets tooltips **
-tooltip = "";
-tooltip_stat1 = 0;
-tooltip_stat2 = 0;
-tooltip_stat3 = 0;
-tooltip_stat4 = 0;
-tooltip_other = "";
-
 // ** For weapon display in management **
 unit_profile = false;
 unit_bio = false;
@@ -470,8 +462,7 @@ fest_locals = 0;
 fest_feature1 = 0;
 fest_feature2 = 0;
 fest_feature3 = 0;
-fest_display = 0;
-fest_display_tags = "";
+fest_display = -1;
 fest_repeats = 0;
 fest_honor_co = 0;
 fest_honor_id = 0;
@@ -518,11 +509,10 @@ text_bar = 0;
 text_selected = "";
 return_object = 0;
 return_size = 0;
-menu_artifact = 1;
-menu_artifact_type = 0;
+menu_artifact = -1;
+sorted_artifact_ids = undefined;
 menu_adept = 0;
-artifacts = 0;
-identifiable = false;
+unused_artifacts = 0;
 repair_ships = 0;
 forge_points = 0;
 master_craft_chance = 0;
@@ -1088,7 +1078,7 @@ if (instance_exists(obj_ini)) {
         }
         if (global.chapter_name == "Blood Ravens") {
             for (var i = 0; i < 3; i++) {
-                scr_add_artifact("random_nodemon", "", 0, obj_ini.ship[0], 501);
+                scr_add_artifact("random_nodemon", "", 0, obj_ini.ship[0], 0);
             }
         }
         // TODO should add special bonus to different chapters based on lore

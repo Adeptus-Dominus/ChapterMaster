@@ -30,7 +30,12 @@ if ((scr_hit(x, y, x + width, y + height) == true) && (obj_controller.dropdown_o
             tooltip = option[option_selected];
             if ((target == "event_display") && (option[option_selected] != "None")) {
                 tooltip = option[option_selected];
-                tooltip2 = fetch_artifact(option_id[option_selected]).description();
+                var _arti = fetch_artifact(option_id[option_selected]);
+                tooltip2 = _arti.get_description();
+                var _bearer_text = _arti.get_bearer_text();
+                if (_bearer_text != "") {
+                    tooltip2 += $"  {_bearer_text}";
+                }
             }
             if ((target == "event_display") && (option[option_selected] == "None")) {
                 tooltip = "Display";
@@ -67,7 +72,12 @@ if (opened == 1) {
                 tooltip = option[i];
                 if ((target == "event_display") && (option[i] != "None")) {
                     tooltip = option[i];
-                    tooltip2 = fetch_artifact(option_id[i]).description();
+                    var _arti = fetch_artifact(option_id[i]);
+                    tooltip2 = _arti.get_description();
+                    var _bearer_text = _arti.get_bearer_text();
+                    if (_bearer_text != "") {
+                        tooltip2 += $"  {_bearer_text}";
+                    }
                 }
                 if ((target == "event_display") && (option[i] == "None")) {
                     tooltip = "Display";
@@ -126,7 +136,7 @@ if (opened == 1) {
                             fest_feature1 = 1;
                             fest_feature2 = 0;
                             fest_feature3 = 0;
-                            fest_display = 0;
+                            fest_display = -1;
                             fest_repeats = 1;
                         }
                     }

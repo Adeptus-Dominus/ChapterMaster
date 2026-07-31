@@ -35,7 +35,7 @@ try {
         fest_feature1 = 0;
         fest_feature2 = 0;
         fest_feature3 = 0;
-        fest_display = 0;
+        fest_display = -1;
         fest_repeats = 0;
         fest_honor_co = 0;
         fest_honor_id = 0;

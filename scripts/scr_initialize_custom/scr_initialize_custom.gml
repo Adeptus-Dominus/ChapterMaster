@@ -3181,51 +3181,54 @@ function load_chapter_master_equipment() {
     chapter_master_equip.mobi = "";
     chapter_master_equip.bionics = 0;
 
-    last_artifact = find_open_artifact_slot();
+    static_get(ArtifactStruct).__next_id = 0;
+
     var arti;
 
     // From json
     if (variable_instance_exists(obj_creation, "artifact")) {
         if (is_struct(obj_creation.artifact) && struct_exists(obj_creation.artifact, "name")) {
-            arti = obj_ini.artifact_struct[last_artifact];
-            arti.name = obj_creation.artifact.name;
-            arti.custom_description = obj_creation.artifact.description;
-            obj_ini.artifact[last_artifact] = obj_creation.artifact.base_weapon_type;
-            arti.bearer = [
+            arti = new ArtifactStruct(obj_creation.artifact.base_weapon_type, [], 0, "", -1);
+            arti.set_custom_name(obj_creation.artifact.name);
+            arti.set_custom_description(obj_creation.artifact.description);
+            arti.set_bearer([
                 0,
                 1,
-            ];
-            obj_ini.artifact_identified[last_artifact] = 0;
-            chapter_master_equip.wep1 = last_artifact;
+            ]);
+            arti.set_identification_timer(0);
+            obj_ini.artifact_map[$ string(arti.artifact_id)] = arti;
+            chapter_master_equip.wep1 = arti.artifact_id;
         } else if (is_array(obj_creation.artifact) && array_length(obj_creation.artifact) > 0) {
             for (var a = 0; a < array_length(obj_creation.artifact); a++) {
-                arti = obj_ini.artifact_struct[last_artifact];
-                arti.name = obj_creation.artifact[a].name;
-                arti.custom_description = obj_creation.artifact[a].description;
-                obj_ini.artifact[last_artifact] = obj_creation.artifact[a].base_weapon_type;
-                arti.bearer = [
+                arti = new ArtifactStruct(obj_creation.artifact[a].base_weapon_type, [], 0, "", -1);
+                arti.set_custom_name(obj_creation.artifact[a].name);
+                arti.set_custom_description(obj_creation.artifact[a].description);
+                arti.set_bearer([
                     0,
                     1,
-                ];
-                obj_ini.artifact_identified[last_artifact] = 0;
+                ]);
+                arti.set_identification_timer(0);
+                obj_ini.artifact_map[$ string(arti.artifact_id)] = arti;
                 switch (obj_creation.artifact[a].slot) {
                     case "wep1":
-                        chapter_master_equip.wep1 = last_artifact;
+                        chapter_master_equip.wep1 = arti.artifact_id;
                         break;
                     case "wep2":
-                        chapter_master_equip.wep2 = last_artifact;
+                        chapter_master_equip.wep2 = arti.artifact_id;
                         break;
                     case "armour":
-                        chapter_master_equip.armour = last_artifact;
+                        chapter_master_equip.armour = arti.artifact_id;
                         break;
                     case "gear":
-                        chapter_master_equip.gear = last_artifact;
+                        chapter_master_equip.gear = arti.artifact_id;
                         break;
                     case "mobi":
-                        chapter_master_equip.mobi = last_artifact;
+                        chapter_master_equip.mobi = arti.artifact_id;
+                        break;
+                    default:
+                        arti.clear_bearer();
                         break;
                 }
-                last_artifact++;
             }
         }
     }

@@ -133,15 +133,10 @@ function inquisitor_inspection_structure() constructor {
                 if (artifact_index == undefined) {
                     continue;
                 }
-                if (artifact_index < 0 || artifact_index >= array_length(obj_ini.artifact_struct)) {
-                    continue;
-                }
-                var artifact = obj_ini.artifact_struct[artifact_index];
-                if (artifact != undefined) {
-                    if (artifact.inquisition_disaprove()) {
-                        finds.heresy += 8;
-                        finds.daemonic += 1;
-                    }
+                var artifact = fetch_artifact(artifact_index);
+                if (artifact.is_heretical()) {
+                    finds.heresy += 8;
+                    finds.daemonic += 1;
                 }
             }
         }
@@ -149,35 +144,35 @@ function inquisitor_inspection_structure() constructor {
 
     static inquisitor_inspect_artifacts = function() {
         // Inspect all player artifacts and count those that match the inspection scope
-        for (var g = 0; g < array_length(obj_ini.artifact_struct); g++) {
-            var _arti = obj_ini.artifact_struct[g];
-            if (_arti == undefined) {
-                continue;
-            }
-            if (_arti.type() == "") {
+        var _art_keys = struct_get_names(obj_ini.artifact_map);
+        for (var _i = 0; _i < array_length(_art_keys); _i++) {
+            var _arti = obj_ini.artifact_map[$ _art_keys[_i]];
+
+            // Equipped artifacts are already counted via unit inspection (equipped_artifacts on scoped units).
+            if (_arti.is_equipped()) {
                 continue;
             }
 
             // Ship-scoped: if ships is an array or single id, only include those ships
-            if (_arti.ship_id() > -1) {
+            if (_arti.get_ship_id() > -1) {
                 if (is_array(ships)) {
-                    if (!array_contains(ships, _arti.ship_id())) {
+                    if (!array_contains(ships, _arti.get_ship_id())) {
                         continue;
                     }
                 } else {
-                    if (_arti.ship_id() != ships) {
+                    if (_arti.get_ship_id() != ships) {
                         continue;
                     }
                 }
             }
 
             // Location / star-scoped: if artifact location doesn't match star name, skip
-            if (obj_ini.artifact_loc[g] != "" && obj_ini.artifact_loc[g] != star.name) {
+            if (_arti.get_location_name() != "" && _arti.get_location_name() != star.name) {
                 // if the artifact isn't on this star, skip
                 continue;
             }
 
-            if (_arti.inquisition_disaprove() && !obj_controller.und_armouries) {
+            if (_arti.is_heretical() && !obj_controller.und_armouries) {
                 finds.heresy += 8;
                 finds.daemonic += 1;
             }
@@ -285,15 +280,17 @@ function inquisitor_inspection_structure() constructor {
                 var cha_local = 0;
                 var dem_local = 0;
 
-                for (var e = 0; e < array_length(obj_ini.artifact_tags); e++) {
-                    if (obj_ini.artifact[e] != "" && obj_ini.artifact_loc[e] == star.name && obj_controller.und_armouries <= 1) {
-                        if (array_contains(obj_ini.artifact_tags[e], "chaos")) {
+                var _art_keys = struct_get_names(obj_ini.artifact_map);
+                for (var _i = 0; _i < array_length(_art_keys); _i++) {
+                    var _a = obj_ini.artifact_map[$ _art_keys[_i]];
+                    if (_a.get_location_name() == star.name && obj_controller.und_armouries <= 1) {
+                        if (_a.has_tag("chaos")) {
                             cha_local += 1;
                         }
-                        if (array_contains(obj_ini.artifact_tags[e], "chaos_gift")) {
+                        if (_a.has_tag("chaos_gift")) {
                             cha_local += 1;
                         }
-                        if (array_contains(obj_ini.artifact_tags[e], "daemonic")) {
+                        if (_a.has_tag("daemonic")) {
                             dem_local += 1;
                         }
                     }
@@ -449,12 +446,11 @@ function inquisitor_inspection_structure() constructor {
                     str1: "Hand over all Chaos and Daemonic Artifacts",
                     choice_func: function() {
                         var contraband = [];
-                        for (var i = 0; i < array_length(obj_ini.artifact_struct); i++) {
-                            if (obj_ini.artifact[i] != "") {
-                                var arti = fetch_artifact(i);
-                                if (arti.inquisition_disaprove()) {
-                                    array_push(contraband, i);
-                                }
+                        var _art_keys = struct_get_names(obj_ini.artifact_map);
+                        for (var _i = 0; _i < array_length(_art_keys); _i++) {
+                            var arti = obj_ini.artifact_map[$ _art_keys[_i]];
+                            if (arti.get_type_name() != "" && arti.is_heretical()) {
+                                array_push(contraband, arti.artifact_id);
                             }
                         }
                         for (var j = 0; j < array_length(contraband); j++) {

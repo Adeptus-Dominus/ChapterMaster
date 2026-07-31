@@ -6,7 +6,8 @@ function draw_gift_items_popup() {
 
     var inq_hide = 0;
     if (subtype == 0) {
-        if (array_contains(obj_ini.artifact_tags[obj_controller.menu_artifact], "inq")) {
+        var _gift_draw_arti = fetch_artifact(obj_controller.menu_artifact);
+        if (_gift_draw_arti.has_tag("inq")) {
             if (array_contains(obj_controller.quest, "artifact_loan")) {
                 inq_hide = 1;
             }
@@ -44,22 +45,14 @@ function draw_gift_items_popup() {
 }
 
 function gift_artifact(give_to, known = true) {
-    if (known) {
-        var arti_index = obj_controller.menu_artifact;
-    } else {
+    if (!known) {
         obj_controller.menu_artifact = scr_add_artifact("random", "minor");
     }
 
     var arti_index = obj_controller.menu_artifact;
-
-    var artifact_struct = obj_ini.artifact_struct[arti_index];
-    var cur_tags = obj_ini.artifact_tags[arti_index];
+    var artifact_struct = fetch_artifact(arti_index);
 
     obj_controller.cooldown = 10;
-    if (obj_controller.menu_artifact > obj_controller.artifacts) {
-        obj_controller.menu_artifact = obj_controller.artifacts;
-    }
-
     scr_toggle_diplomacy();
     obj_controller.diplomacy = give_to;
     obj_controller.force_goodbye = -1;
@@ -71,7 +64,7 @@ function gift_artifact(give_to, known = true) {
 
     var inq_hide = 0;
 
-    if (array_contains(obj_ini.artifact_tags[obj_controller.menu_artifact], "inq")) {
+    if (artifact_struct.has_tag("inq")) {
         if (array_contains(obj_controller.quest, "artifact_loan")) {
             inq_hide = 1;
         }
@@ -171,7 +164,7 @@ function gift_artifact(give_to, known = true) {
         }
 
         daemon_arts(give_to, is_chaos, is_daemon);
-        var tagmod = artifact_struct.artifact_faction_value(give_to);
+        var tagmod = artifact_struct.get_faction_value(give_to);
 
         alter_disposition(give_to, 2 + specialmod + tagmod);
     }

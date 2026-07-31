@@ -254,31 +254,15 @@ if (option[1] == "") {
         options = 1;
         option_selected = 1;
 
-        for (var i = 1; i <= obj_controller.artifacts; i++) {
-            thatone = false;
-
-            if (obj_ini.artifact[i] == "Casket") {
-                thatone = true;
-            }
-            if (obj_ini.artifact[i] == "Chalice") {
-                thatone = true;
-            }
-            if (obj_ini.artifact[i] == "Statue") {
-                thatone = true;
-            }
-            if (obj_ini.artifact[i] == "Tome") {
-                thatone = true;
-            }
-            if (obj_ini.artifact[i] == "Robot") {
-                thatone = true;
-            }
-
-            if (thatone == true) {
+        var displayable_types = static_get(ArtifactStruct).NOT_EQUIPPABLE;
+        var _art_keys = struct_get_names(obj_ini.artifact_map);
+        for (var _i = 0; _i < array_length(_art_keys); _i++) {
+            var arti = obj_ini.artifact_map[$ _art_keys[_i]];
+            if (array_contains(displayable_types, arti.get_type_name())) {
                 arti_work += 1;
-                option[arti_work] = obj_ini.artifact[i];
-                option_id[arti_work] = i;
+                option[arti_work] = arti.get_type_name();
+                option_id[arti_work] = arti.artifact_id;
                 options += 1;
-                thatone = false;
             }
         }
 

@@ -212,11 +212,12 @@ try {
                 }
 
                 if (obj_ini.role[co][i] == obj_ini.role[100][role]) {
-                    _total_role_gear.add(obj_ini.wep1[co][i]);
-                    _total_role_gear.add(obj_ini.wep2[co][i]);
-                    _total_role_gear.add(obj_ini.armour[co][i]);
-                    _total_role_gear.add(obj_ini.gear[co][i]);
-                    _total_role_gear.add(obj_ini.mobi[co][i]);
+                    var _slots = [obj_ini.wep1[co][i], obj_ini.wep2[co][i], obj_ini.armour[co][i], obj_ini.gear[co][i], obj_ini.mobi[co][i]];
+                    for (var s = 0; s < array_length(_slots); s++) {
+                        if (!is_real(_slots[s])) {
+                            _total_role_gear.add(_slots[s]);
+                        }
+                    }
                 }
             }
         }

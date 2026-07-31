@@ -619,7 +619,7 @@ function ground_forces_collect_artifact() {
 
         var ship_id = get_valid_player_ship("", loc);
 
-        var last_artifact = scr_add_artifact("random", "random", 4, loc, ship_id + 500);
+        var last_artifact = scr_add_artifact("random", "random", 4, loc, ship_id);
 
         var mission = "bad";
         var mission_roll = irandom(100) + 1;
@@ -639,7 +639,7 @@ function ground_forces_collect_artifact() {
 
         if (mission == "good") {
             pop.text = $"Your marines quickly converge upon the Artifact and remove it, before local forces have any idea of what is happening.##";
-            pop.text += $"It has been stowed away upon {loc}.  It appears to be a {obj_ini.artifact[last_artifact]} but should be brought home and identified posthaste.";
+            pop.text += $"It has been stowed away upon {loc}.  It appears to be a {fetch_artifact(last_artifact).get_type_name()} but should be brought home and identified posthaste.";
             scr_event_log("", "Artifact has been forcibly recovered.");
 
             if (pdata.planet_type != "Dead") {
@@ -662,7 +662,7 @@ function ground_forces_collect_artifact() {
         }
         if (mission == "bad") {
             pop.text = "Your marines converge upon the Artifact; resistance is light and easily dealt with.  After a brief firefight the Artifact is retrieved.##";
-            pop.text += $"It has been stowed away upon {loc}.  It appears to be a " + string(obj_ini.artifact[last_artifact]) + " but should be brought home and identified posthaste.";
+            pop.text += $"It has been stowed away upon {loc}.  It appears to be a " + string(fetch_artifact(last_artifact).get_type_name()) + " but should be brought home and identified posthaste.";
             scr_event_log("red", "Artifact forcibly recovered.  Collateral damage is caused.");
 
             if (pdata.current_owner == 2) {
@@ -770,11 +770,11 @@ function governor_negotiate_artifact() {
 
             i = 0;
             plan = instance_nearest(x, y, obj_star);
-            var last_artifact = scr_add_artifact("random", "random", 4, pdata.system.name, ship_id + 500);
+            var last_artifact = scr_add_artifact("random", "random", 4, pdata.system.name, ship_id);
 
             obj_popup.image = "artifact_recovered";
             obj_popup.title = "Artifact Recovered!";
-            obj_popup.text = $"The Planetary Governor hands over the Artifact without asking for compensation.##It has been safely stowed away upon {loc}.  It appears to be a {obj_ini.artifact[last_artifact]} but should be brought home and identified posthaste.";
+            obj_popup.text = $"The Planetary Governor hands over the Artifact without asking for compensation.##It has been safely stowed away upon {loc}.  It appears to be a {fetch_artifact(last_artifact).get_type_name()} but should be brought home and identified posthaste.";
             with (obj_star_select) {
                 instance_destroy();
             }
@@ -940,12 +940,12 @@ function receive_artifact_in_discussion() {
 
     var ship_id = get_valid_player_ship("", loc);
     var plan = instance_nearest(x, y, obj_star);
-    var last_artifact = scr_add_artifact("random", "random", 4, loc, ship_id + 500);
+    var last_artifact = scr_add_artifact("random", "random", 4, loc, ship_id);
 
     var pop = instance_create(0, 0, obj_popup);
     pop.image = "artifact_recovered";
     pop.title = "Artifact Recovered!";
-    pop.text = $"The Artifact has been safely stowed away upon {loc}.  It appears to be a {obj_ini.artifact[last_artifact]} but should be brought home and identified posthaste.";
+    pop.text = $"The Artifact has been safely stowed away upon {loc}.  It appears to be a {fetch_artifact(last_artifact).get_type_name()} but should be brought home and identified posthaste.";
     with (obj_star_select) {
         instance_destroy();
     }

@@ -122,9 +122,9 @@ function scr_ruins_reward(_star_system, _pid_idx, _ruins) {
         }
 
         if (_chosen_ship > -1) {
-            var _art_idx = scr_add_artifact("random", "random", 4, _pidx, _chosen_ship + 500);
+            var _art_idx = scr_add_artifact("random", "random", 4, _pidx, _chosen_ship);
             _popup.title = "Ancient Ruins: Artifact";
-            _popup.text = $"An Artifact has been found within the ancient ruins. It appears to be a {obj_ini.artifact[_art_idx]} but should be brought to the Lexicanum and identified posthaste.";
+            _popup.text = $"An Artifact has been found within the ancient ruins. It appears to be a {fetch_artifact(_art_idx).get_type_name()} but should be brought to the Lexicanum and identified posthaste.";
             scr_event_log("", "Artifact recovered from Ancient Ruins.");
         } else {
             _popup.title = "Ancient Ruins: Artifact Lost";

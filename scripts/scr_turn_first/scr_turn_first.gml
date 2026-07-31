@@ -2,38 +2,37 @@ function scr_turn_first() {
     try {
         // I believe this is ran at the start of the end of the turn.  That would make sense, right?
 
-        var _unload_i = 0;
-        for (var i = 0, l = array_length(obj_ini.artifact); i < l; i++) {
-            _unload_i = i;
-            if (obj_ini.artifact[_unload_i] == "") {
-                continue;
-            }
-            var _cur_arti = obj_ini.artifact_struct[_unload_i];
-            if (_cur_arti.loc() == "") {
+        var _artifact_ids = struct_get_names(obj_ini.artifact_map);
+        for (var i = 0; i < array_length(_artifact_ids); i++) {
+            /// @type {Struct.ArtifactStruct}
+            var _cur_arti = obj_ini.artifact_map[$ _artifact_ids[i]];
+            if (_cur_arti.get_location_name() == "") {
                 var _valid_ship_i = get_valid_player_ship();
                 if (_valid_ship_i > -1) {
-                    obj_ini.artifact_loc[_unload_i] = obj_ini.ship[_valid_ship_i];
-                    obj_ini.artifact_sid[_unload_i] = 500 + _valid_ship_i;
+                    _cur_arti.set_location_name(obj_ini.ship[_valid_ship_i]);
+                    _cur_arti.set_sid(_valid_ship_i);
                 }
             }
-            if (_cur_arti.identified() > 0) {
+
+            if (_cur_arti.get_identification_timer() > 0) {
                 var _identifiable = _cur_arti.is_identifiable();
 
                 if (instance_exists(obj_p_fleet) && (!_identifiable)) {
-                    var _arti_fleet = find_ships_fleet(_cur_arti.ship_id());
+                    var _arti_fleet = find_ships_fleet(_cur_arti.get_ship_id());
                     if (_arti_fleet != noone) {
                         if (array_length(_arti_fleet.capital_num)) {
                             _identifiable = true;
-                            _cur_arti.set_ship_id(_arti_fleet.capital_num[0]);
+                            _cur_arti.set_location_name(_arti_fleet.capital[0]);
+                            _cur_arti.set_sid(_arti_fleet.capital_num[0]);
                         }
                     }
                 }
 
                 if (_identifiable) {
-                    obj_ini.artifact_identified[_unload_i] -= 1;
+                    _cur_arti.tick_identification();
                 }
-                if (obj_ini.artifact_identified[_unload_i] == 0) {
-                    scr_alert("green", "artifact", "Artifact (" + string(obj_ini.artifact[_unload_i]) + ") has been identified.", 0, 0);
+                if (_cur_arti.get_identification_timer() == 0) {
+                    scr_alert("green", "artifact", "Artifact (" + string(_cur_arti.get_type_name()) + ") has been identified.", 0, 0);
                 }
             }
         }

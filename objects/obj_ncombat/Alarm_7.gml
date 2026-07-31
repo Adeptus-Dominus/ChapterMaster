@@ -19,8 +19,9 @@ try {
                     var nco = dude_co[q];
                     var nid = dude_id[q];
                     cleann[nco] = true;
+                    var _unit = obj_ini.TTRPG[nco][nid];
 
-                    commandy = is_specialist(obj_ini.role[nco][nid]);
+                    commandy = _unit.IsSpecialist();
                     if (commandy == true) {
                         obj_controller.command -= 1;
                     }
@@ -28,7 +29,7 @@ try {
                         obj_controller.marines -= 1;
                     }
 
-                    obj_ncombat.world_size += scr_unit_size(obj_ini.armour[nco][nid], obj_ini.role[nco][nid], true, obj_ini.mobi[nco][nid]);
+                    obj_ncombat.world_size += scr_unit_size(_unit.armour(), _unit.role(), true, _unit.mobility_item());
 
                     var recover = !obj_ncombat.defeat;
                     kill_and_recover(nco, nid, recover, recover);
@@ -75,7 +76,7 @@ try {
                         if ((obj_ini.role[co][i] != obj_ini.role[100][6]) && (obj_ini.role[co][i] != "Venerable " + string(obj_ini.role[100][6]))) {
                             good += 1;
                         }
-                        if ((string_count("Dread", obj_ini.armour[co][i]) == 0) || (obj_ini.role[co][i] == obj_ini.role[100][eROLE.CHAPTERMASTER])) {
+                        if ((string_count("Dread", _unit.armour()) == 0) || (obj_ini.role[co][i] == obj_ini.role[100][eROLE.CHAPTERMASTER])) {
                             good += 1;
                         }
 

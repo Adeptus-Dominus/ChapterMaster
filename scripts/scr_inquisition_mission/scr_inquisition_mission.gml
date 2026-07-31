@@ -417,7 +417,7 @@ function mission_hunt_inquisitor_take_artifact_bribe() {
 
     title = "Inquisition Mission Completed";
     text = "Your ship sends over a boarding party, who retrieve the offered artifact- ";
-    text += $" some form of {obj_ini.artifact[last_artifact]}.  As promised {global.chapter_name} allow the Inquisitor to leave, hoping for the best.  What's the worst that could happen?";
+    text += $" some form of {fetch_artifact(last_artifact).get_type_name()}.  As promised {global.chapter_name} allow the Inquisitor to leave, hoping for the best.  What's the worst that could happen?";
     image = "artifact_recovered";
     scr_event_log("", "Artifact Recovered from radical Inquisitor.");
     scr_event_log("", "Inquisition Mission Completed: The radical Inquisitor has been purged.");
@@ -436,7 +436,7 @@ function mission_hunt_inquisitor_take_artifact_double_cross() {
 
     title = "Inquisition Mission Completed";
     text = "Your ship sends over a boarding party, who retrieve the offered artifact- ";
-    text += $" some form of {obj_ini.artifact[last_artifact]}.  Once it is safely stowed away your ship is then ordered to fire.  The Inquisitor's own seems to hesitate an instant before banking away, but is quickly destroyed.";
+    text += $" some form of {fetch_artifact(last_artifact).get_type_name()}.  Once it is safely stowed away your ship is then ordered to fire.  The Inquisitor's own seems to hesitate an instant before banking away, but is quickly destroyed.";
     image = "exploding_ship";
     scr_event_log("", "Artifact recovered from radical Inquisitor.");
     scr_event_log("", "Inquisition Mission Completed: The radical Inquisitor has been purged.");
