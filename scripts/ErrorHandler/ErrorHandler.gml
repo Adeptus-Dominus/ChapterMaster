@@ -4,7 +4,7 @@
 #macro STR_ERROR_MESSAGE_PS $"P.S. You can ALT-TAB and try to continue playing, though it's recommended to wait for a response in the bug-report forum."
 
 function GameError(_header, _message, _stacktrace = "", _critical = false, _report_title = "") constructor {
-    var _context = ERROR_HANDLER._get_context();
+    var _context = ERROR_HANDLER.get_context();
 
     header = _header;
     message = _message;
@@ -74,7 +74,7 @@ function GameError(_header, _message, _stacktrace = "", _critical = false, _repo
     /// @description Builds player-facing error message
     static build_player_message = function() {
         var _path_hint = (os_type == os_windows) ? string_replace_all(game_save_id, "/", "\\") : game_save_id;
-        var _msg = $"{header}\n\n{message}\n\n";
+        var _msg = $"{header}\n\n{message}\n\n{stacktrace}\n\n";
 
         _msg += (os_type == os_windows) ? $"The error log was saved at:\n{_path_hint}Logs\\\n\n" : $"The error log was saved at:\n{_path_hint}Logs/\n\n";
 
@@ -104,70 +104,6 @@ function ErrorHandler() constructor {
     /// @type {Struct.GameError}
     pending_error = undefined;
 
-    /// @desc Provides game-specific state data to the error handler.
-    /// @returns {Struct}
-    static _get_context = function() {
-        var _context = {
-            chapter: global.chapter_name ?? "???",
-            seed: global.game_seed ?? "???",
-            turn: "???",
-        };
-
-        if (instance_exists(obj_controller)) {
-            _context.turn = obj_controller.turn;
-        }
-
-        return _context;
-    };
-
-    /// @desc Writes error log file and copies last messages.
-    /// @param {string} _file_text The full error text to write.
-    static _write_error_log = function(_file_text) {
-        if (string_length(_file_text) == 0) {
-            return;
-        }
-
-        file_ensure_directory(PATH_LOG_DIRECTORY);
-
-        var _log_file = file_text_open_write($"{PATH_LOG_DIRECTORY}{DATE_TIME_1}_error.log");
-        file_text_write_string(_log_file, _file_text);
-        file_text_close(_log_file);
-
-        if (file_exists(PATH_LAST_MESSAGES)) {
-            file_ensure_directory(PATH_LOG_DIRECTORY);
-            file_copy(PATH_LAST_MESSAGES, $"{PATH_LOG_DIRECTORY}{DATE_TIME_1}_messages.log");
-        }
-    };
-
-    /// @desc Shows the dialog for one error.
-    /// @param {Struct.GameError} _error
-    static _show_dialog = function(_error) {
-        var _msg_id = show_message_async(_error.player_message);
-        _active_dialogs[$ _msg_id] = _error;
-    };
-
-    /// @desc Pops the next queued error, if any.
-    static _process_next = function() {
-        var _len = array_length(_error_queue);
-        if (_len > 0) {
-            var _next = array_shift(_error_queue);
-            _show_dialog(_next);
-        }
-    };
-
-    /// @desc Singleton entry point. Shows or queues an error dialog.
-    /// @param {Struct.GameError} _error
-    static show = function(_error) {
-        var _keys = variable_struct_get_names(_active_dialogs);
-        var _count = array_length(_keys);
-
-        if (_count == 0) {
-            _show_dialog(_error);
-        } else {
-            array_push(_error_queue, _error);
-        }
-    };
-
     /// @desc Dispatches async results to the right handler inside the singleton.
     /// @returns {bool} True if this was a bug-reporter related event, false otherwise.
     static handle_async = function() {
@@ -182,34 +118,162 @@ function ErrorHandler() constructor {
 
             if (is_instanceof(_error, GameError)) {
                 ERROR_HANDLER.pending_error = _error;
-                ERROR_HANDLER.start();
+                
+                if (UPDATE_CHECKER.compiled) {
+                    __process_next();
+                } else {
+                    ERROR_HANDLER.__start();
+                }
             }
             return true;
         }
 
         if (_id == _pending_async_id) {
-            if (_status && _result != "") {
-                ERROR_HANDLER.send(_result);
+            if (!UPDATE_CHECKER.compiled && _status && _result != "") {
+                ERROR_HANDLER.__send(_result);
                 show_message_async("Report sent to the Administratum.");
             }
             _pending_async_id = -1;
 
-            _process_next();
+            __process_next();
             return true;
         }
 
         return false;
     };
 
+    /// @description Handles an exception object from GameMaker's exception system.
+    /// @param {exception} _exception
+    /// @param {bool} critical
+    static handle_exception = function(_exception, critical = false) {
+        var _header = critical ? STR_ERROR_MESSAGE_HEAD2 : STR_ERROR_MESSAGE_HEAD;
+        var _message = _exception.message;
+        var _stacktrace = _exception.stacktrace;
+
+        clean_stacktrace(_stacktrace);
+
+        // GameMaker omits the code snippet from stacktrace[0].
+        if (array_length(_stacktrace) > 0) {
+            var _snippet_pos = string_pos(") - ", _exception.longMessage);
+            if (_snippet_pos > 0) {
+                var _snippet = string_trim(string_delete(_exception.longMessage, 1, _snippet_pos + 3));
+                _stacktrace[@ 0] = $"{_stacktrace[0]} >> {_snippet}";
+            }
+        }
+
+        __handle(_header, _message, _stacktrace, critical);
+    };
+
+    /// @description Shows a popup for errors triggered by unexpected conditions.
+    /// @param {string} _message
+    /// @param {string} _header
+    static assert_popup = function(_message = "", _header = "Your game just encountered an error!") {
+        var _stacktrace = debug_get_callstack();
+
+        array_shift(_stacktrace); // throw away the first line, it's this function
+        array_pop(_stacktrace); // and the last line, it's the `0` debug_get_callstack returns for the top of the stack
+
+        clean_stacktrace(_stacktrace);
+
+        __handle(_header, _message, _stacktrace);
+    };
+
+    /// @desc Provides game-specific state data to the error handler.
+    /// @returns {Struct}
+    static get_context = function() {
+        var _context = {
+            chapter: global.chapter_name ?? "???",
+            seed: global.game_seed ?? "???",
+            turn: "???",
+        };
+
+        if (instance_exists(obj_controller)) {
+            _context.turn = obj_controller.turn;
+        }
+
+        return _context;
+    };
+
+    /// @description Entry point for error handling. Creates GameError, logs it, routes to dialog queue or sends directly.
+    /// @param {string} _header
+    /// @param {string} _message
+    /// @param {string} _stacktrace
+    /// @param {bool} _critical
+    static __handle = function(_header, _message, _stacktrace = "", _critical = false) {
+        _stacktrace = array_to_string_list(_stacktrace);
+
+        var _critical_prefix = _critical ? "CRASH! " : "";
+        var _build_date = global.build_date == "unknown build" ? "" : $"/{global.build_date}";
+        var _problem_line = (array_length(_stacktrace) > 0) ? _stacktrace[0] : "unknown";
+        var _report_title = $"{_critical_prefix}[{global.game_version}{_build_date}] {_problem_line}";
+
+        var _error = new GameError(_header, _message, _stacktrace, _critical, _report_title);
+
+        __write_error_log(_error.error_file_text);
+
+        show_debug_message(LB_92);
+        show_debug_message(_message);
+        show_debug_message(_stacktrace);
+        show_debug_message(LB_92);
+
+        // Outdated version. Intercept, offer update link, skip report
+        if (UPDATE_CHECKER.update_available) {
+            var _open_update = show_question(_error.player_message);
+            if (_open_update && UPDATE_CHECKER.latest_release_url != "") {
+                url_open(UPDATE_CHECKER.latest_release_url);
+            }
+            return;
+        }
+
+        // If compiled (debug build), just show the popup and stop
+        if (UPDATE_CHECKER.compiled) {
+            if (_critical) {
+                show_message(_error.player_message);
+            } else {
+                __show(_error);
+            }
+
+            return;
+        }
+
+        if (_critical) {
+            var _send_report = show_question(_error.player_message);
+
+            if (!_send_report) {
+                return;
+            }
+
+            ERROR_HANDLER.pending_error = _error;
+            ERROR_HANDLER.__send();
+
+            return;
+        }
+
+        __show(_error);
+    };
+
+    /// @desc Singleton entry point. Shows or queues an error dialog.
+    /// @param {Struct.GameError} _error
+    static __show = function(_error) {
+        var _keys = variable_struct_get_names(_active_dialogs);
+        var _count = array_length(_keys);
+
+        if (_count == 0) {
+            __show_dialog(_error);
+        } else {
+            array_push(_error_queue, _error);
+        }
+    };
+
     /// @desc Opens the dialog for the user
-    static start = function() {
+    static __start = function() {
         async_id = get_string_async("Describe your actions before the error:", "");
         _pending_async_id = async_id;
     };
 
     /// @desc Sends the report to Discord with optional user notes.
     /// @param {string} _user_text Optional user description text.
-    static send = function(_user_text = "") {
+    static __send = function(_user_text = "") {
         var _url = "__DISCORD_WEBHOOK_URL__";
 
         if (_url == "" || string_pos("__", _url) == 1) {
@@ -258,83 +322,41 @@ function ErrorHandler() constructor {
             LOGGER.debug("Payload dispatched to Discord.");
         } catch (_ex) {
             LOGGER.error("Failed to package report: " + _ex.message);
-        } finally {}
+        }
     };
 
-    /// @description Entry point for error handling. Creates GameError, logs it, routes to dialog queue or sends directly.
-    /// @param {string} _header
-    /// @param {string} _message
-    /// @param {string} _stacktrace
-    /// @param {bool} _critical
-    /// @param {string} _report_title
-    static handle = function(_header, _message, _stacktrace = "", _critical = false, _report_title = "") {
-        var _error = new GameError(_header, _message, _stacktrace, _critical, _report_title);
-
-        _write_error_log(_error.error_file_text);
-
-        show_debug_message(LB_92);
-        show_debug_message(_message);
-        show_debug_message(_stacktrace);
-        show_debug_message(LB_92);
-
-        // Outdated version. Intercept, offer update link, skip report
-        if (UPDATE_CHECKER.update_available) {
-            var _open_update = show_question(_error.player_message);
-            if (_open_update && UPDATE_CHECKER.latest_release_url != "") {
-                url_open(UPDATE_CHECKER.latest_release_url);
-            }
+    /// @desc Writes error log file and copies last messages.
+    /// @param {string} _file_text The full error text to write.
+    static __write_error_log = function(_file_text) {
+        if (string_length(_file_text) == 0) {
             return;
         }
 
-        if (_critical) {
-            var _send_report = show_question(_error.player_message);
+        file_ensure_directory(PATH_LOG_DIRECTORY);
 
-            if (!_send_report) {
-                return;
-            }
+        var _log_file = file_text_open_write($"{PATH_LOG_DIRECTORY}{DATE_TIME_1}_error.log");
+        file_text_write_string(_log_file, _file_text);
+        file_text_close(_log_file);
 
-            ERROR_HANDLER.pending_error = _error;
-            ERROR_HANDLER.send();
-
-            return;
+        if (file_exists(PATH_LAST_MESSAGES)) {
+            file_ensure_directory(PATH_LOG_DIRECTORY);
+            file_copy(PATH_LAST_MESSAGES, $"{PATH_LOG_DIRECTORY}{DATE_TIME_1}_messages.log");
         }
-
-        show(_error);
     };
 
-    /// @description Handles an exception object from GameMaker's exception system.
-    /// @param {exception} _exception
-    /// @param {string} custom_title
-    /// @param {bool} critical
-    /// @param {string} error_marker
-    static handle_exception = function(_exception, custom_title = STR_ERROR_MESSAGE_HEAD, critical = false, error_marker = "") {
-        var _header = critical ? STR_ERROR_MESSAGE_HEAD2 : custom_title;
-        var _message = _exception.longMessage;
-        var _stacktrace = _exception.stacktrace;
-        clean_stacktrace(_stacktrace);
-
-        var _critical = critical ? "CRASH! " : "";
-        var _build_date = global.build_date == "unknown build" ? "" : $"/{global.build_date}";
-        var _problem_line = (array_length(_stacktrace) > 0) ? _stacktrace[0] : "unknown";
-        var _report_title = $"{_critical}[{global.game_version}{_build_date}] {_problem_line}";
-
-        _stacktrace = array_to_string_list(_stacktrace);
-
-        handle(_header, _message, _stacktrace, critical, _report_title);
+    /// @desc Shows the dialog for one error.
+    /// @param {Struct.GameError} _error
+    static __show_dialog = function(_error) {
+        var _msg_id = show_message_async(_error.player_message);
+        _active_dialogs[$ _msg_id] = _error;
     };
 
-    /// @description Shows a popup for errors triggered by unexpected conditions.
-    /// @param {string} _message
-    /// @param {string} _header
-    static assert_popup = function(_message, _header = "Your game just encountered an error!") {
-        var _stacktrace_array = debug_get_callstack();
-
-        array_shift(_stacktrace_array); // throw away the first line, it's this function
-        array_pop(_stacktrace_array); // and the last line, it's the `0` debug_get_callstack returns for the top of the stack
-        clean_stacktrace(_stacktrace_array);
-
-        var _stacktrace = array_to_string_list(_stacktrace_array);
-
-        handle(_header, _message, _stacktrace);
+    /// @desc Pops the next queued error, if any.
+    static __process_next = function() {
+        var _len = array_length(_error_queue);
+        if (_len > 0) {
+            var _next = array_shift(_error_queue);
+            __show_dialog(_next);
+        }
     };
 }

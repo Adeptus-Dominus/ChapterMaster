@@ -1,5 +1,5 @@
 exception_unhandled_handler(function(_exception) {
-    ERROR_HANDLER.handle_exception(_exception,, true);
+    ERROR_HANDLER.handle_exception(_exception, true);
     return 0;
 });
 

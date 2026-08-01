@@ -120,7 +120,9 @@ function scr_enemy_ai_a() {
                     pdf_score = determine_pdf_defence(_planet_data.pdf,, _planet_data.fortification_level)[0];
                 }
             } catch (_exception) {
-                ERROR_HANDLER.handle_exception(_exception, "Pdf defence error",, $"{_run}");
+                LOGGER.error($"_planet_data = {_planet_data}");
+                LOGGER.error($"_run = {_run}");
+                ERROR_HANDLER.handle_exception(_exception);
             }
             pdf_attack = _planet_data.pdf_attack_matrix();
         }
