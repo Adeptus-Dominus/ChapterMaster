@@ -33,11 +33,11 @@ jobs:
           persist-credentials: false
 
       - name: Run OpenCode
-        uses: anomalyco/opencode/github@v1.18.7
+        uses: anomalyco/opencode/github@v1.18.9
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         with:
-          model: opencode/deepseek-v4-flash-free
-          variant: max
+          model: opencode/muse-spark-1.2-contributor-free
+          variant: xhigh
           share: false
           prompt: ${{ inputs.prompt || '' }}

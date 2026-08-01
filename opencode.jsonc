@@ -3,31 +3,8 @@
   "agent": {
     "pr_review": {
       "mode": "primary",
-      "permission": {
-        "doom_loop": "deny",
-        "external_directory": "deny",
-        "edit": "deny",
-        "lsp": "deny",
-        "question": "deny"
-      }
-    },
-    "explore": {
-      "permission": {
-        "doom_loop": "deny",
-        "external_directory": "deny",
-        "edit": "deny",
-        "lsp": "deny",
-        "question": "deny"
-      }
-    },
-    "general": {
-      "permission": {
-        "doom_loop": "deny",
-        "external_directory": "deny",
-        "lsp": "deny",
-        "question": "deny"
-      }
-    },
+      "hidden": true
+    }
   },
   "compaction": {
     "auto": true,
@@ -40,5 +17,5 @@
     "docs/CODE_STYLE.md"
   ],
   "snapshot": false,
-  "model": "opencode/deepseek-v4-flash-free"
+  "model": "opencode/muse-spark-1.2-contributor-free"
 }
