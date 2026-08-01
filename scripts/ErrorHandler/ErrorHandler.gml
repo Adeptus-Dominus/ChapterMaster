@@ -200,12 +200,12 @@ function ErrorHandler() constructor {
     /// @param {string} _stacktrace
     /// @param {bool} _critical
     static __handle = function(_header, _message, _stacktrace = "", _critical = false) {
-        _stacktrace = array_to_string_list(_stacktrace);
-
         var _critical_prefix = _critical ? "CRASH! " : "";
         var _build_date = global.build_date == "unknown build" ? "" : $"/{global.build_date}";
         var _problem_line = (array_length(_stacktrace) > 0) ? _stacktrace[0] : "unknown";
         var _report_title = $"{_critical_prefix}[{global.game_version}{_build_date}] {_problem_line}";
+
+        _stacktrace = array_to_string_list(_stacktrace);
 
         var _error = new GameError(_header, _message, _stacktrace, _critical, _report_title);
 
