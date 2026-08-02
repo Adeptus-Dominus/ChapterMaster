@@ -859,9 +859,9 @@ function ComplexSet(_unit) constructor {
             ];
         }
 
-        // Nothing optional left to check - short circuit immediately.
+        // Nothing optional left to check, but the mandatory pass still has to apply the item's draw data.
         if (remaining_component_checks <= 0) {
-            return true;
+            return modular_mandatory_checks(mod_item);
         }
 
         // ---------------- OPTIONAL CHECKS (gated, self-terminating) ----------------
@@ -883,6 +883,7 @@ function ComplexSet(_unit) constructor {
     static validate_modular_item = function(_mod, position) {
         _sub_comps = "none";
         _shadows = "none";
+        _overides = "none";
         if (position != "") {
             _mod.position = position;
         }
