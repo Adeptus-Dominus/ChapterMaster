@@ -3,10 +3,11 @@ draw_set_halign(fa_left);
 draw_set_color(CM_GREEN_COLOR);
 
 if ((alerts > 0) && (popups_end == 1)) {
-    for (var i = 1; i <= alerts; i++) {
-        set_alert_draw_colour(alert_color[i]);
-        draw_set_alpha(min(1, alert_alpha[i]));
-        draw_text(32, 46 + (i * 20), string_hash_to_newline(string(alert_txt[i])));
+    for (var i = 0; i < alerts; i++) {
+        var _alert = alerts_list[i];
+        set_alert_draw_colour(_alert.colour);
+        draw_set_alpha(min(1, _alert.alpha));
+        draw_text(32, 46 + ((i + 1) * 20), string_hash_to_newline(string(_alert.txt)));
     }
 }
 

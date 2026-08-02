@@ -39,7 +39,7 @@ if (array_length(audience_stack) > 0) {
 
 current_popup += 1;
 
-if (popup[current_popup] != 0) {
+if (current_popup <= popups) {
     var pip = instance_create(0, 0, obj_popup);
     pip.title = popup_type[current_popup];
     pip.text = popup_text[current_popup];
@@ -84,7 +84,7 @@ if (popup[current_popup] != 0) {
     }
     pip.number = 1;
 }
-if ((current_popup > popups) || (popup[1] == 0)) {
+if ((current_popup > popups) || (popups == 0)) {
     if (popups_end == 0) {
         popups_end = 1;
     }

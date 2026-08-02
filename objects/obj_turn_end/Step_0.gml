@@ -3,21 +3,22 @@ if (cooldown >= 0) {
 }
 
 if ((alerts > 0) && (popups_end == 1) && (fadeout == 0)) {
-    for (var i = 1; i <= alerts; i++) {
-        if ((fast >= i) && (string_length(alert_txt[i]) < string_length(alert_text[i]))) {
-            alert_char[i] += 1;
-            alert_txt[i] = string_copy(alert_text[i], 0, alert_char[i]);
+    for (var i = 0; i < alerts; i++) {
+        var _alert = alerts_list[i];
+        if ((fast >= (i + 1)) && (string_length(_alert.txt) < string_length(_alert.text))) {
+            _alert.char += 1;
+            _alert.txt = string_copy(_alert.text, 0, _alert.char);
         }
-        if ((fast >= i) && (alert_alpha[i] < 1)) {
-            alert_alpha[i] += 0.03;
+        if ((fast >= (i + 1)) && (_alert.alpha < 1)) {
+            _alert.alpha += 0.03;
         }
     }
 }
 
 if (fadeout == 1) {
-    for (var i = 1; i <= alerts; i++) {
-        alert_alpha[i] -= 0.05;
-        if ((i == 1) && (alert_alpha[1] <= 0)) {
+    for (var i = 0; i < alerts; i++) {
+        alerts_list[i].alpha -= 0.05;
+        if ((i == 0) && (alerts_list[0].alpha <= 0)) {
             instance_destroy();
         }
     }

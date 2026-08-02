@@ -35,20 +35,15 @@ afri = array_create(_fleet_size, 0);
 aesc = array_create(_fleet_size, 0);
 
 var _popup_size = 91;
-popup = array_create(_popup_size, 0);
-popup_type = array_create(_popup_size, "");
-popup_text = array_create(_popup_size, "");
-popup_image = array_create(_popup_size, "");
-popup_special = array_create(_popup_size, "");
+// 1-indexed queue: index 0 is a dead slot; arrays grow as popups are added by scr_popup
+popup = [0];
+popup_type = [""];
+popup_text = [""];
+popup_image = [""];
+popup_special = [""];
 
-alert = array_create(_popup_size, 0);
-alert_type = array_create(_popup_size, "");
-alert_text = array_create(_popup_size, "");
-
-alert_char = array_create(_popup_size, 0);
-alert_alpha = array_create(_popup_size, 0);
-alert_txt = array_create(_popup_size, "");
-alert_color = array_create(_popup_size, "");
+/// @type {Array<Struct.NotificationAlert>}
+alerts_list = [];
 
 battle = array_create(_popup_size, 0);
 battle_location = array_create(_popup_size, "");
@@ -68,11 +63,8 @@ audiences = 0;
 audience = 0;
 audience_stack = [];
 
-alert_alpha[1] = 0.2;
-alert_char[1] = 1;
-
 handle_discovered_governor_assasinations();
 
 alerts = 0;
-fast = 0; // This is increased, once the alert[i]=1 and >=fast then it begins to fade in and get letters
+fast = 0; // Playback cursor: alerts unlock (fade in + typewriter) once fast >= their position
 show = 0;
