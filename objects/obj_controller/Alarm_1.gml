@@ -272,8 +272,8 @@ if (_total_weight > 0) {
 
 // Another mechanicus
 repeat (choose(3, 4, 5)) {
-    xx = floor(random(1152 + 640)) + 64;
-    yy = floor(random(748 + 480)) + 64;
+    xx = floor(random(room_width - 128)) + 64;
+    yy = floor(random(room_height - 128)) + 64;
     _current_system = instance_nearest(xx, yy, obj_star);
     if ((_current_system.planets > 0) && (_current_system.owner == eFACTION.IMPERIUM)) {
         var forge_planet = irandom(_current_system.planets - 1) + 1;
@@ -296,8 +296,8 @@ with (obj_star) {
 craftworld = 1;
 
 repeat (100) {
-    xx = floor(random(1152 + 600)) + 104;
-    yy = floor(random(748 + 440)) + 104;
+    xx = floor(random(room_width - 208)) + 104;
+    yy = floor(random(room_height - 208)) + 104;
     if (point_distance(room_width / 2, room_height / 2, xx, yy) >= 50) {
         var me = instance_nearest(xx, yy, obj_star);
         if ((point_distance(me.x, me.y, xx, yy) >= 150) && (xx < 1690 && yy > 780)) {
