@@ -118,7 +118,7 @@ function ErrorHandler() constructor {
 
             if (is_instanceof(_error, GameError)) {
                 ERROR_HANDLER.pending_error = _error;
-                
+
                 if (UPDATE_CHECKER.compiled) {
                     __process_next();
                 } else {
