@@ -880,6 +880,10 @@ function ComplexSet(_unit) constructor {
         return true;
     };
 
+    /// @desc Runs the checks for one modular item and applies it to its draw area if they pass.
+    /// @param {Struct} _mod
+    /// @param {String} position Overrides the item's own position when not blank
+    /// @returns {Bool|Undefined} False when the item is rejected, undefined otherwise
     static validate_modular_item = function(_mod, position) {
         _sub_comps = "none";
         _shadows = "none";
