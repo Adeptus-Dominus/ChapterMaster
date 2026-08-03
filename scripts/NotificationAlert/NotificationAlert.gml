@@ -10,7 +10,11 @@ function NotificationAlert(_colour, _type, _text) constructor {
 
     text = "-" + string(_text);
 
-    // Runtime playback state, owned by obj_turn_end:
+    /// Number of merged duplicates; displayed as a " xN" suffix
+    count = 1;
+
+    // Runtime playback state, owned by obj_turn_end
+
     alpha = 0;
     char = 0;
     txt = "";

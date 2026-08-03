@@ -30,9 +30,13 @@ function scr_alert(colour, alert_type, alert_text, xx = 0, yy = 0) {
     // if (obj_turn_end.alerts>0){
     if (instance_exists(obj_turn_end)) {
         var _last = obj_turn_end.alerts;
-        if (((_last == 0) || (obj_turn_end.alerts_list[_last - 1].text != "-" + string(alert_text))) && (alert_type != "blank") && (colour != "blank")) {
-            obj_turn_end.alerts += 1;
-            obj_turn_end.alerts_list[obj_turn_end.alerts - 1] = new NotificationAlert(colour, alert_type, alert_text); // colour takes green, yellow, red, purple, default GM colorcodes(with c_ prefix), decimal, hexadecimal(with $ prefix, 6 or 8 digits) and CSS(with # prefix)
+        if ((alert_type != "blank") && (colour != "blank")) {
+            if ((_last > 0) && (obj_turn_end.alerts_list[_last - 1].text == "-" + string(alert_text))) {
+                obj_turn_end.alerts_list[_last - 1].count += 1; // collapse duplicate into the last alert
+            } else {
+                obj_turn_end.alerts += 1;
+                obj_turn_end.alerts_list[obj_turn_end.alerts - 1] = new NotificationAlert(colour, alert_type, alert_text);
+            }
         }
     }
 
