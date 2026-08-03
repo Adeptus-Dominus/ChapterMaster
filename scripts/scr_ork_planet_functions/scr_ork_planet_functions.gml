@@ -37,9 +37,10 @@ function ork_ship_production(planet) {
                     }
                     var nearestStar = instance_nearest(_fleet.x, _fleet.y, obj_star);
                     instance_deactivate_object(nearestStar);
+                    var targetStar = noone;
                     for (var j = 0; j < 10; j++) {
                         if (!locationOk) {
-                            var targetStar = instance_nearest(_fleet.x + choose(random(400), random(400) * -1), _fleet.y + choose(random(100), random(100) * -1), obj_star);
+                            targetStar = instance_nearest(_fleet.x + choose(random(400), random(400) * -1), _fleet.y + choose(random(100), random(100) * -1), obj_star);
                             if (targetStar.owner != eFACTION.ORK) {
                                 locationOk = true;
                             }
