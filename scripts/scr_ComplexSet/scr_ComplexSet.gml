@@ -876,8 +876,6 @@ function ComplexSet(_unit) constructor {
         } else {
             return modular_mandatory_checks(mod_item);
         }
-
-        return true;
     };
 
     /// @desc Runs the checks for one modular item and applies it to its draw area if they pass.
