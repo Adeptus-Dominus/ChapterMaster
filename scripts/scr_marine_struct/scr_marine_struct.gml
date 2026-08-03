@@ -457,9 +457,10 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 }
             }
         }
+        var _old_role = role();
         obj_ini.role[company][marine_number] = new_role;
         if (instance_exists(obj_controller)) {
-            array_push(role_history, [role(), obj_controller.turn]);
+            array_push(role_history, [_old_role, obj_controller.turn]);
         }
         if (new_role == obj_ini.role[100][5]) {
             if (company == 2) {
