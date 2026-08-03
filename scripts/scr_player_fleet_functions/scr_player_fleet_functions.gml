@@ -199,7 +199,7 @@ function move_ship_between_player_fleets(out_fleet, in_fleet, class, index) {
         array_insert(in_fleet.escort, 0, out_fleet.escort[index]);
         array_insert(in_fleet.escort_num, 0, out_fleet.escort_num[index]);
         array_insert(in_fleet.escort_uid, 0, out_fleet.escort_uid[index]);
-        array_insert(in_fleet.escort_sel, 0, out_fleet.escort_uid[index]);
+        array_insert(in_fleet.escort_sel, 0, out_fleet.escort_sel[index]);
         in_fleet.escort_number++;
         array_delete(out_fleet.escort, index, 1);
         array_delete(out_fleet.escort_num, index, 1);
