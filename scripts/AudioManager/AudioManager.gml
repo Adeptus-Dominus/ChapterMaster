@@ -142,14 +142,12 @@ function AudioManager() constructor {
                 _count++;
                 _file = file_find_next();
             }
-
-            return _count;
         } catch (_ex) {
             ERROR_HANDLER.handle_exception(_ex);
-            return _count;
         } finally {
             file_find_close();
         }
+        return _count;
     };
 
     /// @desc Attempts to load and cache a streamed sound from two candidate paths.
