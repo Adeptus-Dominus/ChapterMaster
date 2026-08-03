@@ -988,8 +988,8 @@ function ComplexSet(_unit) constructor {
                     component_final_draw_y += _offsets[1];
                 }
                 if (struct_exists(_override_data, "bans")) {
-                    for (var i = 0; i < array_length(_override_data.bans); i++) {
-                        array_push(banned, _override_data.bans[i]);
+                    for (var j = 0; j < array_length(_override_data.bans); j++) {
+                        array_push(banned, _override_data.bans[j]);
                     }
                 }
                 break;

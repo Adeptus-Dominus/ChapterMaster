@@ -257,7 +257,7 @@ if (_total_weight > 0) {
 
         for (var j = 0; j < _allocated_systems && array_length(_imperial_systems) > 0; j++) {
             var s = array_random_index(_imperial_systems);
-            var _current_system = _imperial_systems[s];
+            _current_system = _imperial_systems[s];
 
             _current_system.owner = _faction.faction_id;
             for (var p = 1; p <= _current_system.planets; p++) {

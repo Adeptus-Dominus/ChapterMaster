@@ -1418,8 +1418,6 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
         var _wep1 = __get_weapon_struct(1);
         var _wep2 = __get_weapon_struct(2);
-        var _primary_weapon = _wep1;
-        var _secondary_weapon = _wep2;
 
         var _carrying_data = hands_carrying(!_is_ranged);
         var _carrying_value = _carrying_data[0];

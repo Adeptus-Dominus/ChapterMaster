@@ -272,9 +272,9 @@ function draw_popup_equip() {
     //TODO calc once and store in reactive string
     var _descriptor = "Marines";
     if (equipment_recipient_type == eEQUIP_TARGET_TYPE.DREADNOUGHT) {
-        var _descriptor = "Dreadnoughts";
+        _descriptor = "Dreadnoughts";
     } else if (equipment_recipient_type > eEQUIP_TARGET_TYPE.DREADNOUGHT) {
-        var _descriptor = "Vehicles";
+        _descriptor = "Vehicles";
     }
     draw_text(1292, 175, $"{comp} Company, {unit_count} {_descriptor}");
 

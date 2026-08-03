@@ -564,10 +564,9 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
     }
     self.equipping_unit = _unit;
     var _slot_keys = global.unit_equip_slots;
-    var _slot, _item;
     for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
-        _slot = _slot_keys[i];
-        _item = equipment[$ _slot_keys[i]];
+        var _slot = _slot_keys[i];
+        var _item = equipment[$ _slot_keys[i]];
         if (!is_struct(_item)) {
             var _dp = _item != "" ? {name: _item} : undefined;
             equipment[$ _slot] = new EquipmentStruct(_dp, "");

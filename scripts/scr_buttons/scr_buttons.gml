@@ -1418,7 +1418,6 @@ function ToggleButton(data = {}) constructor {
         var str1_h = string_height(str1);
         var _text_padding = w * 0.03;
         var text_x = x1 + _text_padding;
-        var text_y = y1 + _text_padding;
         var total_alpha;
 
         if (text_halign == fa_center) {
