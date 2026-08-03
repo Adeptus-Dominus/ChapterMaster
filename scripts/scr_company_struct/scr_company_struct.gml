@@ -345,6 +345,7 @@ function CompanyStruct(comp) constructor {
                         operation = cancel_system.p_operatives[planet][i];
                         if (operation.type == "squad" && operation.reference == _cur_squad.uid) {
                             array_delete(cancel_system.p_operatives[planet], i, 1);
+                            break;
                         }
                     }
                 }
