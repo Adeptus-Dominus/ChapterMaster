@@ -1,8 +1,9 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "agent": {
-    "pr_review": {
+    "read_only": {
       "mode": "primary",
+      "hidden": true,
       "permission": {
         "doom_loop": "deny",
         "external_directory": "deny",

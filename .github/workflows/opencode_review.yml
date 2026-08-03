@@ -27,7 +27,7 @@ jobs:
         with:
           model: opencode/deepseek-v4-flash-free
           variant: max
-          agent: pr_review
+          agent: read_only
           share: false
           prompt: |
             Review this pull request:
