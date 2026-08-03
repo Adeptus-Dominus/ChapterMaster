@@ -35,7 +35,7 @@ Download the [latest release](https://github.com/Adeptus-Dominus/ChapterMaster/r
 
 ## Compiling from source
 
-1. Install the **GameMaker** IDE matching your system (available on the [GameMaker website](https://releases.gamemaker.io/release-notes/2026/0) or [Steam](https://store.steampowered.com/app/1670460/GameMaker/)).
+1. Install the **GameMaker** IDE matching your system and project's version (see `IDEVersion` in [ChapterMaster.yyp](https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/ChapterMaster.yyp)) (available on the [GameMaker website](https://releases.gamemaker.io/) or [Steam](https://store.steampowered.com/app/1670460/GameMaker/)). 
 2. Clone or download the repository (find the green **<>Code** button and select **Download ZIP**).
 3. Find **ChapterMaster.yyp** in the downloaded folder and open it with **GameMaker**.
 4. Select the target platform in the IDE: **Windows, macOS, Ubuntu**.
