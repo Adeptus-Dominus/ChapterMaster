@@ -146,7 +146,7 @@ tick_psychic_buffs = function() {
             for (var b = 0; b < array_length(_buffs); b++) {
                 var _name = _buffs[b];
                 if (self[$ _name][i] > 0) {
-                    self[$ _name][i] -= 1;
+                    self[$ _name][i]--;
                 }
             }
         }
