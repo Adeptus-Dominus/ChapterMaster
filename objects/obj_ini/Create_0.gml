@@ -319,6 +319,48 @@ deserialize = function(save_data) {
         }
     }
 
+    /// @desc Restores marine `specials` from obj_ini.spe, the parallel array it used to live in.
+    ///    Saves predating that move carry no `specials` key at all, as it was a method and jsonify_marine_struct() skips methods.
+    ///    `powers_known` was already a plain field and did round-trip, so without this those psykers load knowing powers with no discipline behind them.
+    /// @param {Array<Array<String>>} _legacy_specials The saved spe array, indexed [company][marine]
+    /// @returns {undefined}
+    function migrate_legacy_marine_specials(_legacy_specials) {
+        if (!is_array(_legacy_specials)) {
+            return;
+        }
+        var _migrated = 0;
+        var _company_count = min(array_length(_legacy_specials), array_length(TTRPG));
+        for (var _coy = 0; _coy < _company_count; _coy++) {
+            var _company_row = _legacy_specials[_coy];
+            if (!is_array(_company_row)) {
+                continue; // the legacy array is ragged; stray non-array rows carry nothing
+            }
+            var _row_length = array_length(_company_row);
+            for (var _mar = 0; _mar < _row_length; _mar++) {
+                var _legacy_string = _company_row[_mar];
+                if (!is_string(_legacy_string) || _legacy_string == "") {
+                    continue;
+                }
+                var _unit = fetch_unit([_coy, _mar]);
+                if (!is_struct(_unit)) {
+                    continue;
+                }
+                if (is_string(_unit.specials) && _unit.specials != "") {
+                    continue;
+                }
+                _unit.specials = _legacy_string;
+                _migrated++;
+            }
+        }
+        if (_migrated > 0) {
+            LOGGER.info($"Migrated specials for {_migrated} marines from the legacy obj_ini.spe array");
+        }
+    }
+
+    if (struct_exists(save_data, "spe")) {
+        migrate_legacy_marine_specials(save_data[$ "spe"]);
+    }
+
     var _squad_structs = save_data[$ "squad_structs"];
     if (is_struct(_squad_structs)) {
         squads = {};
