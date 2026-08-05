@@ -377,7 +377,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         for (var i = member_length - 1; i >= 0; i--) {
             //checks squad member is still valid
             _unit = fetch_member(i);
-            if (_unit.name() == "") {
+            if (!is_struct(_unit)) {
                 array_delete(members, i, 1);
                 continue;
             }
