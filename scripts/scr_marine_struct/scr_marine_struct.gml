@@ -1090,8 +1090,19 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return _specials_array;
     };
 
+    /// @desc The discipline this unit's powers belong to, read from the prefix of its first entry
+    ///    in `specials`.
+    /// @returns {string} The discipline name, or "" when the unit has no discipline recorded
     static psy_discipline = function() {
         var _specials_array = specials_array();
+        // Only psykers should reach here, but arriving without an entry is harmless in itself as there is simply no discipline to report.
+        if (array_length(_specials_array) == 0) {
+            // Powers with no specials behind them cannot legitimately occur.
+            if (array_length(powers_known) > 0) {
+                LOGGER.error($"{name()} ({company}:{marine_number}) knows powers but has no specials entry");
+            }
+            return "";
+        }
         var _first_power_prefix = string_letters(_specials_array[0]);
         var _discipline = match_power_prefix(_first_power_prefix);
 
