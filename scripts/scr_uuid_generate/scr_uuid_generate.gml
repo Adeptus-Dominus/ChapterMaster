@@ -1,16 +1,21 @@
-function uuid_array_implode() {
-    var _string = "", i = 0, _uuid_array = argument0, sep = "-";
+/// @desc Joins 32 hexadecimal digits into the canonical 8-4-4-4-12 UUID layout.
+/// @param {Array<String>} _uuid_array Exactly 32 single-character hexadecimal digits.
+/// @returns {String}
+function uuid_array_implode(_uuid_array) {
+    var _string = "";
+    var _separator = "-";
+    var i = 0;
 
     repeat (8) {
         _string += _uuid_array[i++];
     }
-    _string += sep;
+    _string += _separator;
 
     repeat (3) {
         repeat (4) {
             _string += _uuid_array[i++];
         }
-        _string += sep;
+        _string += _separator;
     }
 
     repeat (12) {
@@ -20,72 +25,52 @@ function uuid_array_implode() {
     return _string;
 }
 
-//  Returns a string of hexadecimal digits (4 bits each)
-//  representing the given decimal integer. Hexadecimal
-//  strings are padded to byte-sized pairs of digits.
-//
-//      dec         non-negative integer, real
-function dec_to_hex() {
-    var iff = function() {
-        if (argument0) {
-            return argument1;
-        } else {
-            return argument2;
-        }
-    };
+/// @desc Returns the hexadecimal-digit string for the given decimal integer. One digit per nibble, with the high nibble of each byte omitted when it is zero.
+/// @param {Real} _dec Non-negative integer.
+/// @returns {String}
+function dec_to_hex(_dec) {
+    var _hex = _dec ? "" : "0";
+    var _selection = "0123456789ABCDEF";
 
-    var dec, hex, _characters, _selection, byte, hi, lo;
-    dec = argument0;
-    if (dec) {
-        hex = "";
-    } else {
-        hex = "0";
+    while (_dec) {
+        var _byte = _dec & 255;
+        var _hi = string_char_at(_selection, (_byte div 16) + 1);
+        var _lo = string_char_at(_selection, (_byte % 16) + 1);
+        _hex = (_hi != "0" ? _hi : "") + _lo + _hex;
+        _dec = _dec >> 8;
     }
-    _characters = {
-        numbers: "0123456789",
-        uppercase: "ABCDEF", //        lowercase : "abcdef"
-    };
-    _selection = $"{_characters.numbers}{_characters.uppercase}";
-    while (dec) {
-        byte = dec & 255;
-        hi = string_char_at(_selection, byte / 16 + 1);
-        lo = string_char_at(_selection, byte % 16 + 1);
-        hex = iff(hi != "0", hi, "") + lo + hex;
-        dec = dec >> 8;
-    }
-    return hex;
+
+    return _hex;
 }
 
-// Generate V4(almost all bits random) UUID
-// - Must have the 13th hex digit set to "4" (version)
-// - Must have the 17th hex digit's high bits set to binary 10 or 110 (variant)
-// - Must utilize random or pseudo-random values for all other bits
+/// @desc Generates a V4 UUID string: all bits random except the version digit (13th hex digit is "4") and the variant digit (17th hex digit's high bits are binary 10).
+/// @returns {String}
 function scr_uuid_generate() {
-    var unix_epoch = function() {
-        return round(date_second_span(date_create_datetime(1970, 1, 1, 15, 0, 0), date_current_datetime()));
-    };
-
     // seed randomness with time and since game start, in microseconds
-    var _date = get_timer() + (unix_epoch() * 1000000), uuid = array_create(32), _random;
+    var _timer = get_timer();
+    var _epoch_seconds = round(date_second_span(date_create_datetime(1970, 1, 1, 15, 0, 0), date_current_datetime()));
+    var _date = _timer + (_epoch_seconds * 1000000);
+    var _uuid = array_create(32);
+    var _random = 0;
 
-    for (var i = 0; i < array_length(uuid); i++) {
+    for (var i = 0, l = array_length(_uuid); i < l; i++) {
         _random = floor((_date + random(1) * 16)) % 16;
 
         switch (i) {
             // Version bit
             case 12:
-                uuid[i] = "4";
+                _uuid[i] = "4";
                 break;
             // Variant bit (RFC 4122 variant 1)
             case 16:
-                uuid[i] = dec_to_hex(_random & $3 | $8);
+                _uuid[i] = dec_to_hex(_random & $3 | $8);
                 break;
             // Standard random bits
             default:
-                uuid[i] = dec_to_hex(_random);
+                _uuid[i] = dec_to_hex(_random);
                 break;
         }
     }
 
-    return uuid_array_implode(uuid);
+    return uuid_array_implode(_uuid);
 }
