@@ -15,7 +15,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
     if (man[selected] == "man" && is_struct(display_unit[selected])) {
         is_man = true;
         _unit = display_unit[selected];
-        if ( _unit.base_group == "none") {
+        if (_unit.base_group == "none") {
             return "continue";
         }
         var _active_tags = array_length(manage_tags);

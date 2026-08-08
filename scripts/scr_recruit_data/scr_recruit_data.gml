@@ -369,7 +369,7 @@ function planet_training_sequence(local_apothecary_points) {
 }
 
 function scr_trial_data(wanted = -1) {
-    var role_data = active_roles()
+    var role_data = active_roles();
     var data = [
         {
             name: "Blood Duel",

@@ -192,7 +192,7 @@ for (var co = 0; co <= obj_ini.companies; co++) {
         }
         if (unit.ship_location == ship_id) {
             if (unit.is_boarder && unit.hp() > (unit.max_health() / 10)) {
-                array_push(board_marine,unit);
+                array_push(board_marine, unit);
                 boarders += 1;
             }
             // Loc 0: on origin ship

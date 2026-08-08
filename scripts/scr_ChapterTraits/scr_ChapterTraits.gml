@@ -7,47 +7,47 @@ enum eCHAPTER_DEPARTMENTS {
     HQ = 0,
     FORGE = 1,
     CHAP = 2,
-    APOTH = 3, 
-    LIB = 4
+    APOTH = 3,
+    LIB = 4,
 }
 
-function get_department_head(head_type = eCHAPTER_DEPARTMENTS.HQ){
-	 var _unit = undefined;
-    if (head_type < array_length(obj_ini.TTRPG[0])){
+function get_department_head(head_type = eCHAPTER_DEPARTMENTS.HQ) {
+    var _unit = undefined;
+    if (head_type < array_length(obj_ini.TTRPG[0])) {
         _unit = fetch_unit([0, head_type]);
     } else {
         return undefined;
     }
 
-    switch(head_type){
-        case eCHAPTER_DEPARTMENTS.HQ: 
-            if (!role_compare(_unit, eROLE.CHAPTERMASTER)){
+    switch (head_type) {
+        case eCHAPTER_DEPARTMENTS.HQ:
+            if (!role_compare(_unit, eROLE.CHAPTERMASTER)) {
                 return undefined;
             }
             break;
         case eCHAPTER_DEPARTMENTS.FORGE:
-            if (_unit.role() != "Forge Master"){
+            if (_unit.role() != "Forge Master") {
                 return undefined;
             }
             break;
         case eCHAPTER_DEPARTMENTS.CHAP:
-            if (_unit.role() != "Master of Sanctity"){
+            if (_unit.role() != "Master of Sanctity") {
                 return undefined;
             }
             break;
         case eCHAPTER_DEPARTMENTS.APOTH:
-            if (_unit.role() != "Master of the Apothecarion"){
+            if (_unit.role() != "Master of the Apothecarion") {
                 return undefined;
             }
             break;
         case eCHAPTER_DEPARTMENTS.LIB:
-            if (_unit.role() != $"Chief {obj_ini.player_role_data[eROLE.LIBRARIAN].role}"){
+            if (_unit.role() != $"Chief {obj_ini.player_role_data[eROLE.LIBRARIAN].role}") {
                 return undefined;
             }
             break;
     }
 
-    return _unit
+    return _unit;
 }
 
 function selected_chapter_trait(trait) {

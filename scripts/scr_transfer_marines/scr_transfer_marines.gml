@@ -40,7 +40,7 @@ function transfer_marines() {
             continue;
         }
         var _unit = obj_controller.display_unit[w];
-        
+
         if (obj_controller.man[w] == "man" && is_struct(_unit)) {
             units_to_move.push(_unit);
         } else if (obj_controller.man[w] == "vehicle" && is_array(_unit)) {
@@ -86,7 +86,7 @@ function transfer_marines() {
             scr_management(1);
         }
     }
-    
+
     with (obj_controller) {
         // man_current=0;
         var i = -1;

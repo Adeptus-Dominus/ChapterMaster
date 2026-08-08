@@ -138,8 +138,8 @@ global.role_data_keys = [
     "gear",
     "mobi",
     "role",
-    "available_to_player"
-]
+    "available_to_player",
+];
 
 // Human-readable labels for equipment slots.
 global.unit_equip_slots_display = [

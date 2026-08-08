@@ -46,7 +46,7 @@ home_planet = 2;
 // Equipment- maybe the bikes should go here or something?          yes they should
 equipment = {};
 
-/// @type {Struct<Struct.ArtifactStruct>} 
+/// @type {Struct<Struct.ArtifactStruct>}
 artifact_map = {};
 
 squads = {};
@@ -109,13 +109,12 @@ veh_acc = array_create_2d(_max_companies, _max_vehicles, "");
 /// @type {Array<Array<Struct.TTRPG_stats>>}
 TTRPG = array_create(11, []);
 
-
 company_spawn_buffs = [];
 role_spawn_buffs = {};
 previous_forge_masters = [];
 recruit_trial = 0;
 recruiting_type = "Death";
-sector_handler = new SectorHandler(); 
+sector_handler = new SectorHandler();
 
 gene_slaves = [];
 
@@ -147,22 +146,20 @@ serialize = function() {
     var _artifact_list = [];
     var _artifact_names = struct_get_names(artifact_map);
     var _artifact_len = array_length(_artifact_names);
-    for (var k = 0; k < _artifact_len; k++){
+    for (var k = 0; k < _artifact_len; k++) {
         var _artifact_name = _artifact_names[k];
         var _artifact = artifact_map[$ _artifact_name];
         array_push(_artifact_list, _artifact.to_json());
-    
     }
 
     var _squad_copies = variable_clone(squads);
 
     var _squad_keys = struct_get_names(_squad_copies);
-    for (var i = 0; i < array_length(_squad_keys); i++)
-    {
+    for (var i = 0; i < array_length(_squad_keys); i++) {
         var _squad = _squad_copies[$ _squad_keys[i]];
 
-        for (var s = 0; s < array_length(_squad.members); s++){
-            if (is_struct(_squad.members[s])){
+        for (var s = 0; s < array_length(_squad.members); s++) {
+            if (is_struct(_squad.members[s])) {
                 _squad.members[i] = _squad.members[s].uid;
             }
         }
@@ -211,7 +208,7 @@ serialize = function() {
 
     save_data.company_lengths = [];
     for (var _coy = 0; _coy <= companies; _coy++) {
-        array_push(save_data.company_lengths, company_length(_coy))
+        array_push(save_data.company_lengths, company_length(_coy));
     }
 
     return save_data;
@@ -237,7 +234,7 @@ deserialize = function(save_data) {
         "artifact_struct",
         "artifact_list",
         "sector_handler",
-        "company_lengths"
+        "company_lengths",
     ]; // skip automatic setting of certain vars, handle explicitly later
 
     // Automatic var setting
@@ -320,12 +317,12 @@ deserialize = function(save_data) {
             var _squad = new UnitSquad();
             _squad.load_json_data(_squad_structs[$ _squad_uid]);
             squads[$ _squad_uid] = _squad;
-            for (var s = 0; s < array_length(_squad.members); s++){
+            for (var s = 0; s < array_length(_squad.members); s++) {
                 _squad.members[s] = fetch_unit_uid(_squad.members[s]);
             }
 
-            for (var s = array_length(_squad.members) -  1; s >= 0; s--){
-                if (!is_struct(_squad.members[s])){
+            for (var s = array_length(_squad.members) - 1; s >= 0; s--) {
+                if (!is_struct(_squad.members[s])) {
                     array_delete(_squad.members, s, 1);
                 }
             }
@@ -349,8 +346,8 @@ deserialize = function(save_data) {
         chapter_data = new ChapterGameData(save_data.chapter_data);
     }
 
-    if (struct_exists(save_data, "sector_handler")){
-        with (obj_ini.sector_handler){
+    if (struct_exists(save_data, "sector_handler")) {
+        with (obj_ini.sector_handler) {
             move_data_to_current_scope(save_data.sector_handler);
         }
     }

@@ -101,7 +101,7 @@ function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = tr
 
     if (is_artifact) {
         var arti_struct = fetch_artifact(artifact_id);
-        arti_struct.set_bearer(self)
+        arti_struct.set_bearer(self);
         armour_quality = "artifact";
     } else {
         armour_quality = quality;
@@ -205,7 +205,7 @@ function scr_update_unit_weapon_one(new_weapon, from_armoury = true, to_armoury 
 
     if (is_artifact) {
         var arti_struct = fetch_artifact(artifact_id);
-        arti_struct.set_bearer(self)
+        arti_struct.set_bearer(self);
         weapon_one_quality = "artifact";
     } else {
         weapon_one_quality = quality;
@@ -260,7 +260,7 @@ function scr_update_unit_weapon_two(new_weapon, from_armoury = true, to_armoury 
 
     if (is_artifact) {
         var arti_struct = fetch_artifact(artifact_id);
-        arti_struct.set_bearer(self)
+        arti_struct.set_bearer(self);
         weapon_two_quality = "artifact";
     } else {
         weapon_two_quality = quality;
@@ -323,7 +323,7 @@ function scr_update_unit_gear(new_gear, from_armoury = true, to_armoury = true, 
 
     if (is_artifact) {
         var arti_struct = fetch_artifact(artifact_id);
-        arti_struct.set_bearer(self)
+        arti_struct.set_bearer(self);
         gear_quality = "artifact";
     } else {
         gear_quality = quality;
@@ -419,7 +419,7 @@ function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, t
 
     if (is_artifact) {
         var arti_struct = fetch_artifact(artifact_id);
-        arti_struct.set_bearer(self)
+        arti_struct.set_bearer(self);
         mobility_item_quality = "artifact";
     } else {
         mobility_item_quality = quality;
@@ -443,7 +443,7 @@ function alter_unit_equipment(update_equipment, from_armoury = true, to_armoury 
     var equip_areas = struct_get_names(update_equipment);
     for (var i = 0; i < array_length(equip_areas); i++) {
         var _item = update_equipment[$ equip_areas[i]];
-		var _outcome = "";
+        var _outcome = "";
         switch (equip_areas[i]) {
             case "wep1":
                 _outcome = update_weapon_one(_item, from_armoury, to_armoury, quality);
@@ -461,19 +461,21 @@ function alter_unit_equipment(update_equipment, from_armoury = true, to_armoury 
                 _outcome = update_gear(_item, from_armoury, to_armoury, quality);
                 break;
         }
-        if (_outcome == "no_items"){
-            _missing_items +=  $"{_missing_items == "" ? "" : ","} {_item}";
+        if (_outcome == "no_items") {
+            _missing_items += $"{_missing_items == "" ? "" : ","} {_item}";
             _success = false;
         }
     }
 
-    if (_missing_items != ""){
+    if (_missing_items != "") {
         _outcome_desc += no_equip + _missing_items;
     }
-    var _final_outcome = {success : _success,description :_outcome_desc};
+    var _final_outcome = {
+        success: _success,
+        description: _outcome_desc,
+    };
 
     return _final_outcome;
-
 }
 
 /// @self Struct.TTRPG_stats
@@ -576,7 +578,7 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
         }
     }
 
-    static update_arrays = function(){
+    static update_arrays = function() {
         items = [
             equipment.wep1,
             equipment.wep2,
@@ -591,8 +593,8 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
             equipment.armour.name,
             equipment.gear.name,
             equipment.mobi.name,
-        ];        
-    }
+        ];
+    };
 
     update_arrays();
 
@@ -610,15 +612,15 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
         "gear": eEQUIPMENT_SLOT.GEAR,
     };
 
-    static basic_map = function(){
+    static basic_map = function() {
         return {
             "wep1": item_names[eEQUIPMENT_SLOT.WEAPON_ONE],
-            "wep2":item_names[eEQUIPMENT_SLOT.WEAPON_TWO],
+            "wep2": item_names[eEQUIPMENT_SLOT.WEAPON_TWO],
             "armour": item_names[eEQUIPMENT_SLOT.ARMOUR],
             "mobi": item_names[eEQUIPMENT_SLOT.MOBILITY],
-            "gear": item_names[eEQUIPMENT_SLOT.GEAR],            
-        }
-    }
+            "gear": item_names[eEQUIPMENT_SLOT.GEAR],
+        };
+    };
 
     static map_string_to_enum = function(slot) {
         slot = slot_map[$ slot];
@@ -905,7 +907,7 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
         };
     };
 
-    static start_allowable_weapons = function(slot){
+    static start_allowable_weapons = function(slot) {
         var _allow = true;
         var _item = equipment[$ slot].name;
         var _normal_equipment = [
@@ -931,13 +933,13 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
             _allow = array_contains(_special_equipment, _item);
         }
 
-        if (!_allow){
-            final_gear[$ slot] = default_options[$slot];
+        if (!_allow) {
+            final_gear[$ slot] = default_options[$ slot];
         }
-        final_gear[$ slot] = _allow ? _item : default_options[$slot];
-    }
+        final_gear[$ slot] = _allow ? _item : default_options[$ slot];
+    };
 
-    static start_allowable_mobi = function(){
+    static start_allowable_mobi = function() {
         var _allow = false;
         var _item = equipment.mobi.name;
         if (_item == "Jump Pack" && (veteran_level > 0 || role_id == eROLE.ASSAULT)) {
@@ -952,10 +954,10 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
             _allow = true;
         }
 
-        final_gear.mobi = _allow ? _item : default_options.mobi; 
-    }
+        final_gear.mobi = _allow ? _item : default_options.mobi;
+    };
 
-    static start_allowable_gear = function(){
+    static start_allowable_gear = function() {
         var _allow = false;
         var _item = equipment.gear.name;
         if (veteran_level == 5) {
@@ -972,10 +974,10 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
             }
         }
 
-        final_gear.gear = _allow ? _item : default_options.gear;  
-    }
+        final_gear.gear = _allow ? _item : default_options.gear;
+    };
 
-    static start_allowance = function(role_id){
+    static start_allowance = function(role_id) {
         final_gear = {};
         veteran_level = 0;
         default_options = setup_default_gears()[role_id];
@@ -997,5 +999,5 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
         start_allowable_gear();
 
         return final_gear;
-    }
+    };
 }

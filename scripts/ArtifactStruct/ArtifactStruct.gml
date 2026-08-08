@@ -186,7 +186,7 @@ function ArtifactStruct(_type_name = "", _tags = [], _identification_timer = 0, 
         __identification_timer = data.identification_timer ?? 0;
         __location_name = data.location_name ?? "";
         __ship_id = data.ship_id ?? -1;
-        __bearer = data.bearer ==  "" ? undefined : fetch_unit_uid(data.bearer) ;
+        __bearer = data.bearer == "" ? undefined : fetch_unit_uid(data.bearer);
         __custom_name = data.custom_name ?? "";
         __custom_description = data.custom_description ?? "";
 
@@ -264,7 +264,6 @@ function ArtifactStruct(_type_name = "", _tags = [], _identification_timer = 0, 
 
                 break;
         }
-
     };
 
     /// @desc Equips this artifact on a unit; daemonic/chaos artifacts also apply corruption.
@@ -294,7 +293,7 @@ function ArtifactStruct(_type_name = "", _tags = [], _identification_timer = 0, 
 
         if (has_tag("daemonic") || has_tag("chaos")) {
             unit.corruption += irandom(DAEMON_CORRUPTION_MAX);
-            if (role_compare(unit, eROLE.CHAPTERMASTER) ){
+            if (role_compare(unit, eROLE.CHAPTERMASTER)) {
                 /// @type {Asset.GMObject.obj_popup}
                 var pip = instance_create(0, 0, obj_popup);
                 pip.title = "Daemon Artifacts";

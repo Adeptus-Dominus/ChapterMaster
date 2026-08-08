@@ -65,14 +65,13 @@ function scr_ui_advisors() {
             draw_set_font(fnt_40k_30b);
             draw_text_transformed(xx + 336 + 16, yy + 66, "Reclusium", 1, 1, 0);
             draw_text_transformed(xx + 336 + 16, yy + 100, _head.name_role(), 0.6, 0.6, 0);
-        }
-        else {
+        } else {
             scr_image("advisor/splash", 1, xx + 16, yy + 43, 310, 828);
             draw_set_halign(fa_left);
             draw_set_color(c_gray);
             draw_set_font(fnt_40k_30b);
             draw_text_transformed(xx + 336 + 16, yy + 66, "Reclusium", 1, 1, 0);
-            draw_text_transformed(xx + 336 + 16, yy + 100, $"Adept {obj_controller.adept_name}" , 0.6, 0.6, 0);
+            draw_text_transformed(xx + 336 + 16, yy + 100, $"Adept {obj_controller.adept_name}", 0.6, 0.6, 0);
         }
 
         draw_set_font(fnt_40k_14);
@@ -206,7 +205,7 @@ function scr_ui_advisors() {
                 }
                 if (fest_honoring == 3) {
                     blurp2 += " in honor of ";
-                    var _unit = fetch_unit([fest_honor_co, fest_honor_id])
+                    var _unit = fetch_unit([fest_honor_co, fest_honor_id]);
                     blurp2 += $"{_unit.role()} ";
                     blurp2 += $"{_unit.name()} {romanNumerals[fest_honor_co]} Company).  ";
                 }

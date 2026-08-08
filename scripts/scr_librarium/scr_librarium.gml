@@ -37,7 +37,7 @@ function scr_librarium_gui() {
             artif_descr += $"#To be identified it must be brought to a fleet with a Battle Barge or your Homeworld.";
         } else {
             artif_descr += $"##It will be identified in {artif_timer} turns. #You may spend 150 Requisition to identify it immediately.";
-    
+
             //TODO solidify following button into a proper styled struct button
             var ident_button = draw_unit_buttons([532, 765], "IDENTIFY NOW", [1, 1], c_black,, fnt_40k_14b,, 1, c_gray);
             if (point_and_click(ident_button)) {
@@ -173,8 +173,7 @@ function scr_librarium() {
     if (_head_found) {
         var _cm = cm_obj().get_struct();
         draw_text_ext(xx + 352, yy + 130, string_hash_to_newline($"{_cm.name_role()}, greetings.#I assume you've come for the report?  The Chapter currently possesses {temp[36]} Epistolaries, {temp[37]} Codiceries, and {temp[38]} Lexicanum.  We are working to identify additional warp-sensitive brothers before they cause harm, and the training is {blurp}.##We could likely speed up the identification and application of appropriate training, but we would need more resources...I don't suppose we can spare some?##Our Chapter has {artif}"), -1, 536);
-    }
-    else {
+    } else {
         draw_text_ext(xx + 352, yy + 130, string_hash_to_newline($"Your Chapter contains {temp[36]} {obj_ini.player_role_data[eROLE.LIBRARIAN].role}s, {temp[37]} Codiceries, and {temp[38]} Lexicanum.##Training of more {obj_ini.player_role_data[eROLE.LIBRARIAN].role}s is {blurp}.##Your chapter has {artif}"), -1, 536);
     }
 

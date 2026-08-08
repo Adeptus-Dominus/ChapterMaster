@@ -396,16 +396,16 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
                         var really;
                         really = false;
 
-                        really = _unit.is_dreadnought()
+                        really = _unit.is_dreadnought();
                         col = min(22 - obj_controller.bat_assault_column, 22 - obj_controller.bat_command_column, 22 - obj_controller.bat_honor_column, 22 - obj_controller.bat_dreadnought_column, 22 - obj_controller.bat_veteran_column);
                     }
 
                     // todo find out what more targ.dudes does, relevant to targ.men?
                     var _armour_data = _unit.get_armour_data();
-                    if (is_struct(_armour_data)){
+                    if (is_struct(_armour_data)) {
                         targ.dudes_ac += _armour_data.armour_value;
-                        arg.dudes_ranged += _armour_data.ranged_mod/100;
-                        arg.dudes_attack += _armour_data.melee_mod/100;
+                        arg.dudes_ranged += _armour_data.ranged_mod / 100;
+                        arg.dudes_attack += _armour_data.melee_mod / 100;
                     }
 
                     if (_unit.weapon_one() == "Boarding Shield") {

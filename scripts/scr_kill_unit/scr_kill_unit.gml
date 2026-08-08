@@ -11,7 +11,6 @@ function scr_kill_unit() {
             global.defeat = 1;
         }
 
-
         if (weapon_one() == "Company Standard" || weapon_two() == "Company Standard") {
             scr_loyalty("Lost Standard", "+");
         }
@@ -27,7 +26,7 @@ function scr_kill_unit() {
         }
         array_delete(obj_ini.TTRPG[company], marine_number, 1);
         var _len = company_length(company);
-        for (var i = marine_number; i < _len; i++){
+        for (var i = marine_number; i < _len; i++) {
             obj_ini.TTRPG[company][i].marine_number = i;
         }
         var _is_astartes = base_group == "astartes";
@@ -62,7 +61,6 @@ function kill_and_recover(recover_equipment = true, gene_seed_collect = true) {
 
     var _is_astartes = base_group == "astartes";
     if (gene_seed_collect && _is_astartes) {
-
         obj_controller.gene_seed += recoverable_geneseed();
     }
     scr_kill_unit();

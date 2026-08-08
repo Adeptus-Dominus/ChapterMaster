@@ -276,7 +276,7 @@ function Roster() constructor {
             for (var i = 0; i < array_length(obj_ini.TTRPG[co]); i++) {
                 var _allow = false;
                 var _unit = fetch_unit([co, i]);
-                if (!is_struct(_unit) ) {
+                if (!is_struct(_unit)) {
                     continue;
                 }
                 if (_unit.hp() <= 0 || _unit.in_jail()) {

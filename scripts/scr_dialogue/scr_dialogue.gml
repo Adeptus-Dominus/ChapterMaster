@@ -169,7 +169,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
         if (diplo_keyphrase == "cs_meeting_m1") {
             diplomacy = -5.2;
             var _head = get_department_head(eCHAPTER_DEPARTMENTS.CHAP);
-            var _who = is_struct(_head) ? $"{_head.name_role()} hisses your name" : "Your name is hissed"
+            var _who = is_struct(_head) ? $"{_head.name_role()} hisses your name" : "Your name is hissed";
             diplo_text = $"[[{_who} over a private vox channel.]]\n";
             diplo_text += "My lord!  What are we doing here, treating with this monster of the Traitor Legions? The very existence of the Archenemy is a threat to everything the Chapter stands for, and we endanger our immortal souls just being here. You know this! I demand to know your intentions! And I warn you, I will not hesitate to do what I must, for the good of the Chapter and the Imperium.";
 
@@ -351,7 +351,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
 
             var born = false;
             for (var ii = 0; ii < array_length(obj_ini.TTRPG[0]); ii++) {
-                var _unit = fetch_unit([0,ii]);
+                var _unit = fetch_unit([0, ii]);
                 if (_unit.role() == obj_ini.player_role_data[eROLE.CHAPTERMASTER].role) {
                     _unit.corruption += floor(random_range(30, 50));
                 }
@@ -2928,8 +2928,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
 
                     if (_unit.company == 0) {
                         diplo_text = "I have looked into the strands of fate, with your chapter, and found that the future is not suspect for any of your men.  None of them have their minds poisoned by the taint of chaos.";
-                    }
-                    else if (_unit.company > 0) {
+                    } else if (_unit.company > 0) {
                         diplo_text = $"I have looked into the strands of fate, with your chapter.  Your 'battle brother' {_unit.name_role()} has a clouded, dark future- it is advised you watch him carefully.";
                     }
                 }

@@ -705,7 +705,7 @@ function scr_random_event(execute_now) {
         add_event({e_id: "chaos_invasion", duration: 1});
 
         var psyker_intolerant = scr_has_disadv("Psyker Intolerant");
-        var _head = get_department_head(eCHAPTER_DEPARTMENTS.LIB); 
+        var _head = get_department_head(eCHAPTER_DEPARTMENTS.LIB);
         var _has_chief_psyker = is_struct(_head);
 
         var _cm = cm_obj().get_struct();

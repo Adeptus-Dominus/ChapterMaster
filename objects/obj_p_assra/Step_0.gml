@@ -206,7 +206,7 @@ if ((boarding == true) && (board_cooldown >= 0) && instance_exists(target) && in
                         } else if (to_bomb) {
                             target.hp -= 200;
                             damaged_ship = 2;
-                            unit.update_gear("",false,false);
+                            unit.update_gear("", false, false);
                         }
                     }
 

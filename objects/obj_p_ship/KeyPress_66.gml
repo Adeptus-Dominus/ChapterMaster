@@ -21,4 +21,3 @@ if ((selected == 1) && (boarders > 0) && (board_cooldown <= 0) && (point_distanc
     }
     create_boarding_craft(tar_final);
 }
-

@@ -10,7 +10,6 @@ function scr_check_equip(search_item, system, planet_or_ship_id, remove_item) {
 
     for (var c = 0; c <= obj_ini.companies; c++) {
         for (var i = 0; i < array_length(obj_ini.TTRPG[c]); i++) {
-
             marine_present = false;
             if (!instance_exists(obj_ncombat)) {
                 unit = fetch_unit([c, i]);

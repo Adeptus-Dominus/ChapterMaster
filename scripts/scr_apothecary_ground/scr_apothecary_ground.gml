@@ -31,7 +31,6 @@ function calculate_full_chapter_spread() {
         for (var v = 0; v < _company_length; v++) {
             key_val = "";
             if (v < _marine_len) {
-
                 _unit = fetch_unit([company, v]);
                 _mar_loc = _unit.marine_location();
                 if (_unit.base_group == "astartes") {
@@ -100,7 +99,6 @@ function calculate_full_chapter_spread() {
                         array_push(_apoth_spread[$ key_val][array_slot], _unit);
                     }
                 }
-
             }
 
             key_val = "";

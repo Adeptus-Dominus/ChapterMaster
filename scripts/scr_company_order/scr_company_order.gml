@@ -16,20 +16,20 @@ function sort_all_companies_to_map(map) {
     }
 }
 
-function company_length(company){
+function company_length(company) {
     return array_length(obj_ini.TTRPG[company]);
 }
 
-function tally_marines(){
+function tally_marines() {
     obj_controller.command = 0;
     obj_controller.marines = 0;
     for (var co = 0; co <= obj_ini.companies; co++) {
         for (var i = 0; i < company_length(co); i++) {
-            var _unit = fetch_unit([co,i]);
-            if (_unit.base_group != "astartes"){
+            var _unit = fetch_unit([co, i]);
+            if (_unit.base_group != "astartes") {
                 continue;
             }
-            if (!_unit.IsSpecialist()){
+            if (!_unit.IsSpecialist()) {
                 obj_controller.marines++;
             } else {
                 obj_controller.command++;

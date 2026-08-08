@@ -91,7 +91,6 @@ try {
                     // ** End role check **
                 }
                 // ** End this marine **
-
             }
             // ** End repeat **
         }
@@ -140,34 +139,32 @@ try {
 
         for (var co = 0; co < 11; co++) {
             for (var i = 0; i < array_length(obj_ini.TTRPG[co]); i++) {
-                var _unit = fetch_unit([co,i]);
+                var _unit = fetch_unit([co, i]);
                 if (_unit.role() != _cur_role.role) {
                     continue;
                 }
                 role_number[co]++;
 
-
                 var _wep_one_found = false;
                 // Weapon1
                 var _wep1 = _unit.weapon_one(true);
-                if (is_struct(_wep1) || _wep1 == req_wep1){
+                if (is_struct(_wep1) || _wep1 == req_wep1) {
                     have_wep1_num++;
                     _wep_one_found = true;
                 }
 
                 var _wep2 = _unit.weapon_two(true);
-                if (is_struct(_wep2) || _wep2 == req_wep1 && !_wep_one_found){
+                if (is_struct(_wep2) || _wep2 == req_wep1 && !_wep_one_found) {
                     have_wep1_num++;
                 }
 
                 var _wep_two_found = false;
-                if (is_struct(_wep1) || _wep1 == req_wep1){
+                if (is_struct(_wep1) || _wep1 == req_wep1) {
                     have_wep2_num++;
                     _wep_two_found = true;
                 }
 
-
-                if (is_struct(_wep2) || _wep2 == req_wep1 && !_wep_two_found){
+                if (is_struct(_wep2) || _wep2 == req_wep1 && !_wep_two_found) {
                     have_wep2_num++;
                 }
 
@@ -214,8 +211,13 @@ try {
                     }
                 }
 
-
-                var _slots = [_unit.weapon_one(), _unit.weapon_two(), _unit.armour(), _unit.gear(), _unit.mobility_item()];
+                var _slots = [
+                    _unit.weapon_one(),
+                    _unit.weapon_two(),
+                    _unit.armour(),
+                    _unit.gear(),
+                    _unit.mobility_item(),
+                ];
                 for (var s = 0; s < array_length(_slots); s++) {
                     if (!is_real(_slots[s])) {
                         _total_role_gear.add(_slots[s]);

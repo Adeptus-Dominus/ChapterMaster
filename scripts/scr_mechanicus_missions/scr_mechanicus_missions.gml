@@ -1,5 +1,4 @@
 function mechanicus_missions_end_turn(planet) {
-
     var _pdata = get_planet_data(planet);
     var raider_planet_slot = has_problem_planet_with_time(planet, "mech_raider");
     if (raider_planet_slot > -1) {

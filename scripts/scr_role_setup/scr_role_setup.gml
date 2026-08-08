@@ -1,29 +1,27 @@
-
-
-function role_data_set(){
+function role_data_set() {
     return {
-        role : "",
-        wep1 : "",
-        wep2 : "",
-        armour : "",
-        mobi : "",
-        gear : "",
-        available_to_player : false
-    }
+        role: "",
+        wep1: "",
+        wep2: "",
+        armour: "",
+        mobi: "",
+        gear: "",
+        available_to_player: false,
+    };
 }
 
-function setup_default_gears (){
+function setup_default_gears() {
     default_role_data = [];
     load_default_gear = function(_role_id, _role_name, _wep1, _wep2, _armour, _mobi, _gear) {
         default_role_data[_role_id] = {
-            role : _role_name,
-            wep1 : _wep1,
-            wep2 : _wep2,
-            armour : _armour,
-            mobi : _mobi,
-            gear : _gear,
-            available_to_player : true
-        }
+            role: _role_name,
+            wep1: _wep1,
+            wep2: _wep2,
+            armour: _armour,
+            mobi: _mobi,
+            gear: _gear,
+            available_to_player: true,
+        };
     };
 
     load_default_gear(eROLE.CHAPTERMASTER, "Chapter Master", "Power Sword", "Bolter", "Artificer Armour", "", "");
@@ -46,7 +44,7 @@ function setup_default_gears (){
     load_default_gear(eROLE.VETERANSERGEANT, "Veteran Sergeant", "Chainsword", "Plasma Pistol", STR_ANY_POWER_ARMOUR, "", "");
 
     for (var i = 0; i < array_length(default_role_data); i++) {
-        if (default_role_data[i] == 0){
+        if (default_role_data[i] == 0) {
             default_role_data[i] = role_data_set();
         }
     }
@@ -54,23 +52,23 @@ function setup_default_gears (){
     return default_role_data;
 }
 
-function update_role_data_wth_defaults(){
+function update_role_data_wth_defaults() {
     for (var i = 0; i < array_length(player_role_data); i++) {
         var _role_data = player_role_data[i];
         var _default_data = default_role_data[i];
         var _keys = global.role_data_keys;
-        for (var k=0;k<array_length(_keys);k++){
+        for (var k = 0; k < array_length(_keys); k++) {
             var _key = _keys[k];
             var _set_with_default = false;
-            if (!struct_exists(_role_data, _key)){
+            if (!struct_exists(_role_data, _key)) {
                 _set_with_default = true;
             } else {
                 var _val = _role_data[$ _key];
-                if (_val == "" || _val == "default"){
+                if (_val == "" || _val == "default") {
                     _set_with_default = true;
                 }
             }
-            if (_set_with_default == true){
+            if (_set_with_default == true) {
                 _role_data[$ _key] = variable_clone(_default_data[$ _key]);
             }
         }
@@ -214,7 +212,6 @@ function scr_role_setup() {
         var _chaps_allowed = player_role_data[eROLE.CHAPLAIN].available_to_player;
         var _libs_allowed = player_role_data[eROLE.LIBRARIAN].available_to_player;
         var _techs_allowed = player_role_data[eROLE.TECHMARINE].available_to_player;
-
 
         if (_apoths_allowed) {
             draw_text(594, 575, "Chief Apothecary: ");

@@ -235,9 +235,19 @@ buttons = {
         y1: 215,
         label: "Simple Livery",
     }),
-    millenium_shifter : new ValueShifter("Millenium", {max_clamp : 41, min_clamp : 31,shift_value:1}),
-    year_shifter : new ValueShifter("Year",{max_clamp : 900, min_clamp : 0,shift_value:100}),
-    game_date : new ReactiveString("Game Date",0,0,{tooltip : "edit the date your playthrough takes place in"})
+    millenium_shifter: new ValueShifter("Millenium", {
+        max_clamp: 41,
+        min_clamp: 31,
+        shift_value: 1,
+    }),
+    year_shifter: new ValueShifter("Year", {
+        max_clamp: 900,
+        min_clamp: 0,
+        shift_value: 100,
+    }),
+    game_date: new ReactiveString("Game Date", 0, 0, {
+        tooltip: "edit the date your playthrough takes place in",
+    }),
 };
 
 with (buttons) {
@@ -544,7 +554,7 @@ setup_chapter_traits();
 
 player_role_data = [];
 setup_default_gears();
-player_role_data = variable_clone(default_role_data)
+player_role_data = variable_clone(default_role_data);
 
 /// @description
 /// @param {Real} _role_id
@@ -554,7 +564,6 @@ player_role_data = variable_clone(default_role_data)
 /// @param {String} _armour
 /// @param {String} _mobi
 /// @param {String} _gear
-
 
 col = [];
 col_r = [];

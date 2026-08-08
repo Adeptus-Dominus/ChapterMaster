@@ -1379,7 +1379,7 @@ var _parts = [];
 for (var i = 0, l = array_length(_command_staff); i < l; i++) {
     var _officer = _command_staff[i];
     var _unit = get_department_head(_officer.name_slot);
-    if (!is_undefined(_unit)){
+    if (!is_undefined(_unit)) {
         if (_hq_index.has_role(_officer.role)) {
             array_push(_parts, $"{_officer.prefix}{_unit.name_role()}");
         }

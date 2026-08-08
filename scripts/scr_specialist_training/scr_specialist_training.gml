@@ -161,8 +161,6 @@ function apothecary_training() {
                 if (!_outcome.success) {
                     scr_alert("red", "recruitment", $"{_outcome.description}!", 0, 0);
                 }
-
-
             } else {
                 apothecary_recruit_points = 0;
             }
@@ -179,7 +177,6 @@ function apothecary_training() {
             _unit.update_gear("");
             _unit.update_mobility_item("");
             scr_alert("green", "recruitment", _unit.name_role() + " begins training.", 0, 0);
-
         } else {
             training_apothecary = 0;
             scr_alert("red", "recruitment", $"No marines available for {obj_ini.player_role_data[eROLE.APOTHECARY].role} training", 0, 0);
@@ -225,7 +222,6 @@ function chaplain_training() {
                     if (!_outcome.success) {
                         scr_alert("red", "recruitment", $"{_outcome.description}!", 0, 0);
                     }
-
                 } else {
                     chaplain_points = 0;
                 }
@@ -233,7 +229,7 @@ function chaplain_training() {
                 var random_marine = spec_data_set(eROLE_TAG.Chaplain);
                 if (random_marine != "none") {
                     var _unit = fetch_unit(random_marine);
-                    if (!is_struct(_unit)){
+                    if (!is_struct(_unit)) {
                         return;
                     }
 
@@ -248,7 +244,6 @@ function chaplain_training() {
                         scr_company_order(marine_company);
                         scr_company_order(0);
                     }
-
                 } else {
                     training_chaplain = 0;
                     scr_alert("red", "recruitment", $"No remaining {obj_ini.player_role_data[eROLE.CHAPLAIN].role} applicant marines for training", 0, 0);
@@ -273,7 +268,7 @@ function librarian_training() {
         if (psyker_points >= goal) {
             if (recruit_count > 0) {
                 var random_marine = scr_random_marine(novice_type, 0, {"stat": [["psionic", 2, "more"]]});
-                if (random_marine == "none") { 
+                if (random_marine == "none") {
                     return;
                 }
                 var _unit = fetch_unit(random_marine);
@@ -289,7 +284,6 @@ function librarian_training() {
                     0,
                     0,
                 ];
-
             } else {
                 psyker_points = 0;
             }
@@ -307,10 +301,7 @@ function librarian_training() {
                 _unit.update_powers();
                 psyker_aspirant = 1;
 
-                _unit.alter_equipment({
-                    gear : "",
-                    mobi : ""
-                })
+                _unit.alter_equipment({gear: "", mobi: ""});
                 _unit.update_mobility_item("");
                 scr_alert("green", "recruitment", _unit.name_role() + " begins training.", 0, 0);
             }
@@ -348,7 +339,7 @@ function techmarine_training() {
             if (recruit_count > 0) {
                 var random_marine = scr_random_marine(novice_type, 0);
                 if (random_marine == "none") {
-                        return;
+                    return;
                 }
                 var _unit = fetch_unit(random_marine);
                 if (!is_struct(_unit)) {
@@ -404,9 +395,8 @@ function techmarine_training() {
         } else if ((tech_points >= 4) && (recruit_count == 0)) {
             var random_marine = spec_data_set(eROLE_TAG.Techmarine);
             if (random_marine != "none") {
-
                 var _unit = fetch_unit(random_marine);
-                if (!is_struct(_unit)){
+                if (!is_struct(_unit)) {
                     return;
                 }
                 _unit.move_to_company(0);
@@ -422,13 +412,7 @@ function techmarine_training() {
                     _unit.planet_location = 4;
                     _unit.ship_location = -1;
                 }
-                _unit.alter_equipment({
-                    wep1 : "",
-                    wep2 : "",
-                    armour : "",
-                    gear : "",
-                    mobi : ""
-                });
+                _unit.alter_equipment({wep1: "", wep2: "", armour: "", gear: "", mobi: ""});
 
                 if (obj_controller.faction_status[eFACTION.MECHANICUS] != "War") {
                     scr_alert("green", "recruitment", $"{_unit.name_role()} journeys to Mars.", 0, 0);

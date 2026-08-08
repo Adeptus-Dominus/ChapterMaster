@@ -38,7 +38,7 @@ function scr_event_gossip(argument0) {
         p += 1;
         gossip[p] = "artifact_wep";
     }
-    if (is_struct(_unit.weapon_two(true))){
+    if (is_struct(_unit.weapon_two(true))) {
         p += 1;
         gossip[p] = "artifact_wep";
     }
@@ -176,7 +176,7 @@ function scr_event_gossip(argument0) {
     that_type = string(gossip[that]);
 
     var na, ra;
-    var _unit = fetch_unit([attend_co[argument0], attend_id[argument0]])
+    var _unit = fetch_unit([attend_co[argument0], attend_id[argument0]]);
     na = _unit.name();
     ra = _unit.role();
 

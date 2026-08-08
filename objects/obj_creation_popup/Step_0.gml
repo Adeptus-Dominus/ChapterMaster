@@ -55,7 +55,7 @@ if (!is_string(type)) {
 
         var _r_name = obj_creation.player_role_data[z].role;
         if (_r_name != "") {
-            badname = (string_count(_r_name, role_names_all) > 1);
+            badname = string_count(_r_name, role_names_all) > 1;
         }
     }
 }

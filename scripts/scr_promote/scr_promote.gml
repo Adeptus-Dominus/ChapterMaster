@@ -32,7 +32,6 @@ function setup_promotion_popup() {
                 label: "Promote",
             });
             promote_button.bind_method = function() {
-                
                 units_to_move = new UnitGroup([]);
                 // Gets the number of marines in the target company
                 var role_squad_equivilances = {}; //this is the only way to set variables as keys in gml
@@ -43,25 +42,24 @@ function setup_promotion_popup() {
                 variable_struct_set(role_squad_equivilances, obj_ini.player_role_data[eROLE.VETERAN].role, "veteran_squad");
                 variable_struct_set(role_squad_equivilances, obj_ini.player_role_data[eROLE.TERMINATOR].role, "terminator_squad");
 
-
                 for (var i = 0; i < array_length(obj_controller.display_unit); i++) {
                     if ((obj_controller.man[i] == "man") && (obj_controller.man_sel[i] == 1) && (obj_controller.ma_exp[i] >= min_exp)) {
                         var _unit = obj_controller.display_unit[i];
                         units_to_move.push(_unit);
-                    } 
-                } 
+                    }
+                }
 
                 units_to_move.move_to_company(target_comp);
 
-                var _target_role = role_name[target_role]
+                var _target_role = role_name[target_role];
 
                 var _squads = units_to_move.count_squads("all", true);
-                for (var i = 0; i < units_to_move.number(); i++){
+                for (var i = 0; i < units_to_move.number(); i++) {
                     var _unit = units_to_move.units[i];
-                        _unit.update_role(_target_role);
-                        _unit.alter_equipment({"wep1": req_wep1, "wep2": req_wep2, "mobi": req_mobi, "armour": req_armour, "gear": req_gear});
-                   }       
-                            
+                    _unit.update_role(_target_role);
+                    _unit.alter_equipment({"wep1": req_wep1, "wep2": req_wep2, "mobi": req_mobi, "armour": req_armour, "gear": req_gear});
+                }
+
                 with (obj_controller) {
                     scr_management(1);
                 }

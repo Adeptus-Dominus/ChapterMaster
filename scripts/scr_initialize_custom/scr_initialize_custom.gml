@@ -1899,7 +1899,7 @@ function scr_initialize_custom() {
         }
         var _data = new UnitEquipment(variable_clone(player_role_data[i]));
         var _allowed_equip = _data.start_allowance(i);
-        with (player_role_data[i]){
+        with (player_role_data[i]) {
             move_data_to_current_scope(_allowed_equip);
         }
         // check for allowable starting equipment here
@@ -1983,7 +1983,7 @@ function scr_initialize_custom() {
         var _hchap = add_unit_to_company("marine", _company_i, "Master of Sanctity", eROLE.CHAPLAIN, "default", "Plasma Pistol", "default", "default", _hq_armour);
         _hchap.set_name(high_chaplain_name);
         _hchap.edit_corruption(-100);
-        _hchap.piety = max(_hchap.piety , 45);
+        _hchap.piety = max(_hchap.piety, 45);
         _hchap.add_trait("zealous_faith");
     }
 
@@ -2636,11 +2636,11 @@ function scr_initialize_custom() {
                         _vehicle_i++;
                     }
                 } else {
-                    var _unit = add_unit_to_company(_unit_type, _coy.coy , _rolename, _erole, _wep1, _wep2, _gear, _mobi, _armour);
+                    var _unit = add_unit_to_company(_unit_type, _coy.coy, _rolename, _erole, _wep1, _wep2, _gear, _mobi, _armour);
                 }
             }
-            if (!_is_vehicle && _role == "captains"){
-                var _cap_gen_name = global.name_generator.ChapterMemberNameGeneration()
+            if (!_is_vehicle && _role == "captains") {
+                var _cap_gen_name = global.name_generator.ChapterMemberNameGeneration();
                 switch (_coy.coy) {
                     case 1:
                         var _new_name = honor_captain_name != "" ? honor_captain_name : _cap_gen_name;
@@ -2675,7 +2675,6 @@ function scr_initialize_custom() {
                 }
                 _unit.set_name(_new_name);
             }
-
         }
     }
 
@@ -2846,18 +2845,18 @@ function add_veh_to_company(name, company, slot, wep1, wep2, wep3, upgrade, acce
 /// each item slot can be "" or "default" or a named item. "" will assign items from the available item pool.
 /// Use "" if you want to set weapons and gear via squad layouts.
 /// "default" will set it to the value in the default slot for the given role, see `load_default_gear`
-function add_unit_to_company(ttrpg_name, company , role_name, role_id, wep1 = "default", wep2 = "default", gear = "default", mobi = "default", armour = "default") {
-    var _slot = find_company_open_slot(company)
+function add_unit_to_company(ttrpg_name, company, role_name, role_id, wep1 = "default", wep2 = "default", gear = "default", mobi = "default", armour = "default") {
+    var _slot = find_company_open_slot(company);
     var spawn_unit = new TTRPG_stats("chapter", company, _slot, ttrpg_name);
     obj_ini.TTRPG[company][_slot] = spawn_unit;
-    spawn_unit.update_role(role_name)
+    spawn_unit.update_role(role_name);
     spawn_unit.unit_race = 1;
     spawn_unit.location_string = obj_ini.home_name;
     if (spawn_unit.name() == "") {
-        spawn_unit.set_name(global.name_generator.ChapterMemberNameGeneration())
+        spawn_unit.set_name(global.name_generator.ChapterMemberNameGeneration());
     }
 
-    spawn_unit.set_default_equipment(false,false);
+    spawn_unit.set_default_equipment(false, false);
 
     update_role_data_wth_defaults();
 

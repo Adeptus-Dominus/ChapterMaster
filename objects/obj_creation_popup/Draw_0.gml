@@ -230,8 +230,7 @@ try {
                     var buh = item_name[h] == ITEM_NAME_NONE ? "" : item_name[h];
                     var _player_data = obj_creation.player_role_data[ide];
 
-                    _player_data[$ global.unit_equip_slots[target_gear]] = buh
-
+                    _player_data[$ global.unit_equip_slots[target_gear]] = buh;
                 }
             }
         }
@@ -260,7 +259,7 @@ try {
                 if (point_and_click(_button)) {
                     var buh = item_name[h] == ITEM_NAME_NONE ? "" : item_name[h];
                     var _player_data = obj_creation.player_role_data[ide];
-                    _player_data[$ global.unit_equip_slots[target_gear]] = buh
+                    _player_data[$ global.unit_equip_slots[target_gear]] = buh;
                 }
             }
             tab = 1;

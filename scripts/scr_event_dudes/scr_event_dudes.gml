@@ -27,7 +27,7 @@ function scr_event_dudes(do_action, is_planet, system_name, location_id) {
         }
     }
 
-    var  ty, g, good, blur;
+    var ty, g, good, blur;
     ide = 0;
     ty = 0;
     g = 0;
@@ -37,18 +37,16 @@ function scr_event_dudes(do_action, is_planet, system_name, location_id) {
     var oc = array_create(200, "");
     var ocn = array_create(200, 0);
 
-
     for (var coh = 0; coh <= obj_ini.companies; coh++) {
         for (var ide = 0; ide < array_length(obj_ini.TTRPG[coh]); ide++) {
             var adding;
             adding = false;
             var _unit = fetch_unit([coh, ide]);
-            
 
             if ((is_planet == 0) && (_unit.ship_location == location_id)) {
-                    adding = true;
+                adding = true;
             } else if ((is_planet == 1) && (_unit.location_string == system_name) && (_unit.planet_location == location_id)) {
-                    adding = true;
+                adding = true;
             }
 
             if (_unit.is_dreadnought()) {

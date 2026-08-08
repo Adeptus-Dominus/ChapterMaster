@@ -224,11 +224,10 @@ function problem_end_turn_checks() {
                     for (var me = 0; me < company_length(co); me++) {
                         var _unit = fetch_unit([co, me]);
                         if (_unit.base_group != "astartes") {
-                            continue
+                            continue;
                         }
                         _unit.edit_corruption(irandom_range(3, 6));
                         _unit.alter_loyalty(-10);
-
                     }
                 }
             }

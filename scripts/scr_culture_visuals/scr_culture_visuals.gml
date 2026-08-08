@@ -2206,18 +2206,16 @@ function DummyMarine() constructor {
         return "jeff";
     };
 
-    static role_index = function(){
+    static role_index = function() {
         return obj_creation.livery_picker.role_set > 0 ? obj_creation.livery_picker.role_set : eROLE.TACTICAL;
-    }
+    };
 
     static role = function() {
-
         if (obj_creation.livery_selection_options.current_selection == 2) {
             return obj_creation.player_role_data[role_index()].role;
         } else {
             return obj_creation.player_role_data[eROLE.TACTICAL].role;
         }
-
     };
 
     static weapon_one = function() {
@@ -2239,7 +2237,7 @@ function DummyMarine() constructor {
         var _last_armour = last_armour;
         var _armour = "";
         var _picker = obj_creation.livery_picker;
-        var _roles = obj_creation.player_role_data
+        var _roles = obj_creation.player_role_data;
         if (!_picker.freeze_armour) {
             _armour = _roles[role_index()].armour;
             if (array_contains(armours, _armour) || _armour == STR_ANY_POWER_ARMOUR) {

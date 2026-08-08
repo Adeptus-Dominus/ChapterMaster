@@ -103,10 +103,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     manage_tags = [];
     spawn_data = other_spawn_data;
 
-    
-    if (instance_exists(obj_controller)){
+    if (instance_exists(obj_controller)) {
         born = obj_ini.sector_handler.game_year();
-    } else { 
+    } else {
         born = 4000;
     }
 
@@ -205,7 +204,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
     //takes dict and plumbs dict values into unit struct
     if (array_contains(variable_struct_get_names(global.base_stats), class)) {
-        move_data_to_current_scope(global.base_stats[$ class] , true);
+        move_data_to_current_scope(global.base_stats[$ class], true);
     }
 
     var stats = [
@@ -418,18 +417,21 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
     static handle_stat_growth = unit_stat_growth;
 
-    static move_to_company = function(new_company, keep_squad = true){
+    static move_to_company = function(new_company, keep_squad = true) {
         var _slot = find_company_open_slot(new_company);
-        var _old_loc = [company, marine_number];
+        var _old_loc = [
+            company,
+            marine_number,
+        ];
         obj_ini.TTRPG[new_company][_slot] = self;
         company = new_company;
         marine_number = _slot;
-        if (!keep_squad){
+        if (!keep_squad) {
             remove_from_squad();
         }
         var _old_company_length = array_length(obj_ini.TTRPG[_old_loc[0]]);
-        array_delete(obj_ini.TTRPG[_old_loc[0]] , _old_loc[1] , 1);
-    }
+        array_delete(obj_ini.TTRPG[_old_loc[0]], _old_loc[1], 1);
+    };
 
     static armour = function(raw = false) {
         var _wep = armour1;
@@ -956,18 +958,18 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         return true;
     };
 
-    static age = function(){
+    static age = function() {
         return obj_ini.sector_handler.get_time_from_current_year(born);
     };
 
-    static recoverable_geneseed = function(){
+    static recoverable_geneseed = function() {
         if (obj_ini.doomed == 1) {
             return 0;
         }
         var _time_as_marine = obj_ini.sector_handler.get_time_from_current_year(marine_ascension);
 
-        return  min(floor(_time_as_marine / 5), gene_seed_mutations.zygote == 0 ? 2 : 1);
-    }
+        return min(floor(_time_as_marine / 5), gene_seed_mutations.zygote == 0 ? 2 : 1);
+    };
 
     //TODO build epithets in to marine profile
     static add_epithet = function(epithet) {
@@ -979,13 +981,14 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         }
         array_push(epithets, epithet);
     };
+
     static name = function() {
         return unit_name;
     }; // get marine name
 
-    static set_name = function(val){
+    static set_name = function(val) {
         unit_name = val;
-    }
+    };
 
     static gear = function(raw = false) {
         var _wep = gear1;
@@ -995,6 +998,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         var arti = fetch_artifact(_wep);
         return arti.get_type_name();
     };
+
     static weapon_one = function(raw = false) {
         var _wep = wep1;
         if (is_string(_wep) || raw) {
@@ -2074,24 +2078,24 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         }
     };
 
-    static get_role_data = function(){
+    static get_role_data = function() {
         for (var i = 0; i < array_length(obj_ini.player_role_data); i++) {
             var _role_data = obj_ini.player_role_data[i];
             if (_role_data.role == role()) {
                 return _role_data;
             }
         }
-        return undefined;        
-    }
+        return undefined;
+    };
 
     static set_default_equipment = function(from_armoury = true, to_armoury = true, quality = "any") {
         var role_match = -1;
-        var _data = get_role_data()
-        if (is_undefined(_data)){
+        var _data = get_role_data();
+        if (is_undefined(_data)) {
             return "no_role_found";
         }
- 
-         alter_equipment(_data, from_armoury, to_armoury, quality);
+
+        alter_equipment(_data, from_armoury, to_armoury, quality);
     };
 
     static equipped_artifacts = function() {
@@ -2369,9 +2373,7 @@ function fetch_unit(unit) {
 
 /// @param {Array<Real>} unit where unit[0] is company and unit[1] is the position returns undefined if member is out of array_bounds
 /// @returns {Struct.TTRPG_stats} unit
-function fetch_unit_careful(){
-
-}
+function fetch_unit_careful() {}
 
 function fetch_unit_uid(uuid) {
     for (var i = 0; i <= obj_ini.companies; i++) {

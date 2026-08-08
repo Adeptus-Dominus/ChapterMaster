@@ -574,11 +574,11 @@ try {
         // draw_text_transformed(444,505,"Select Speciality",0.6,0.6,0);
         draw_set_halign(fa_center);
 
-        if (scr_has_disadv("Psyker Intolerant")){
+        if (scr_has_disadv("Psyker Intolerant")) {
             player_role_data[eROLE.LIBRARIAN].available_to_player = false;
         }
         var _lib_role = player_role_data[eROLE.LIBRARIAN];
-        if ((chapter_master_specialty == 3) && !_lib_role.available_to_player ) {
+        if ((chapter_master_specialty == 3) && !_lib_role.available_to_player) {
             chapter_master_speciality = choose(1, 2);
         }
         x6 = 474;
@@ -603,7 +603,7 @@ try {
                 "The impossible is nothing to you; despite being a Psyker you have slowly risen to lead a Chapter.  Chapter Master gains every Power within the chosen Discipline.",
             ],
         ];
-        for (var h=1;h<=3;h++) {
+        for (var h = 1; h <= 3; h++) {
             var cur_leader_type = leader_types[h];
             draw_set_alpha(1);
             var nope = (h == 3) && !player_role_data[eROLE.LIBRARIAN].available_to_player;

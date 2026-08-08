@@ -15,7 +15,7 @@ function UnitGroup(units = []) constructor {
     };
 
     static push = function(unit) {
-        array_push(units, unit)
+        array_push(units, unit);
     };
 
     static has_role = function(role) {
@@ -46,13 +46,13 @@ function UnitGroup(units = []) constructor {
         return false;
     };
 
-    static tally_attr = function(attrib){
+    static tally_attr = function(attrib) {
         var _tally = 0;
         for (var i = 0; i < array_length(units); i++) {
             _tally += units[i][$ attrib];
         }
-        return _tally
-    }
+        return _tally;
+    };
 
     static get_from = function(search_conditions = {}, as_UnitGroup = true, remove_from = false) {
         var _wanted = [];
@@ -82,33 +82,32 @@ function UnitGroup(units = []) constructor {
         }
     };
 
-    static duplicate = function(){
+    static duplicate = function() {
         var _new_array = [];
         for (var i = 0; i < number(); i++) {
             array_push(_new_array, units[i]);
         }
         return new UnitGroup(_new_array);
-    }
+    };
 
-    static move_to_company = function(company, keep_squads_if_possible = true,original_loop = true){
-        if (!keep_squads_if_possible){
+    static move_to_company = function(company, keep_squads_if_possible = true, original_loop = true) {
+        if (!keep_squads_if_possible) {
             for (var i = 0; i < number(); i++) {
-                units[i].move_to_company(company,false);
+                units[i].move_to_company(company, false);
             }
         } else {
-
             var _replica = duplicate();
 
-            var _squadless = _replica.get_from({squadless : true}, true, true);
+            var _squadless = _replica.get_from({squadless: true}, true, true);
             _squadless.move_to_company(company, false, false);
 
             var _squads = count_squads("all", true);
 
-            for (var s = 0;s<array_length(_squads);s++){
+            for (var s = 0; s < array_length(_squads); s++) {
                 var _squad = fetch_squad(_squads[s]);
-                var _squad_units = _replica.get_from({squad : _squads[s]}, true, true);
+                var _squad_units = _replica.get_from({squad: _squads[s]}, true, true);
 
-                if (_squad_units.number() < array_length(_squad.members)){
+                if (_squad_units.number() < array_length(_squad.members)) {
                     _squad_units.move_to_company(company, false, false);
                     continue;
                 }
@@ -119,7 +118,7 @@ function UnitGroup(units = []) constructor {
                 _squad.base_company = company;
             }
         }
-    }
+    };
 
     static add_units = function(group_two, conditions = {}, remove_from = false, join_index = -1) {
         var _new_adds = group_two.get_from(conditions, false, remove_from);
@@ -167,12 +166,12 @@ function UnitGroup(units = []) constructor {
         return _exp_unit;
     };
 
-    static kill_unit = function(index, equipment = true, gene_seed_collect = true){
+    static kill_unit = function(index, equipment = true, gene_seed_collect = true) {
         var _unit = units[index];
         _unit.kill(equipment, gene_seed_collect);
         array_push(killed, _unit);
-        array_delete(units, index ,1);
-    }
+        array_delete(units, index, 1);
+    };
 
     static kill_percent = function(kill_percent, equipment = true, gene_seed_collect = true) {
         var _kill_numb = floor((kill_percent / 100) * number());
@@ -184,7 +183,7 @@ function UnitGroup(units = []) constructor {
                 i++;
                 continue;
             }
-            kill_unit(i, equipment, gene_seed_collect)
+            kill_unit(i, equipment, gene_seed_collect);
             _killed++;
             i--;
         }

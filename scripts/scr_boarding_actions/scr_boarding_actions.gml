@@ -1,12 +1,10 @@
 function create_boarding_craft(target_ship) {
-
     board_cooldown = 45;
 
     var _boarding_craft = instance_create(x, y, obj_p_assra);
     _boarding_craft.apothecary = 0;
 
     for (var o = 0; o < array_length(board_marine); o++) {
-
         boarders--;
         _boarding_craft.boarders++;
         var unit = board_marine[o];
@@ -24,7 +22,7 @@ function create_boarding_craft(target_ship) {
         }
     }
 
-    array_delete(board_marine,0,  _boarding_craft.boarders);
+    array_delete(board_marine, 0, _boarding_craft.boarders);
     _boarding_craft.apothecary_had = _boarding_craft.apothecary;
 
     _boarding_craft.target = target_ship;
@@ -37,7 +35,7 @@ function create_boarding_craft(target_ship) {
     }
 }
 
-function destroy_boarding_craft(){
+function destroy_boarding_craft() {
     for (var o = 0; o < array_length(occupants); o++) {
         var _unit = occupants[o];
         if (!is_struct(_unit)) {
@@ -51,6 +49,6 @@ function destroy_boarding_craft(){
             } else {
                 _unit.kill(false, _recover_gene);
             }
-		}
+        }
     }
 }

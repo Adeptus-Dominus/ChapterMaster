@@ -1028,13 +1028,12 @@ function MultiSelect(options_array, title_param, data = {}) constructor {
         array_push(toggles, _next_tog);
     }
 
-
     static update = function(data = {}) {
         move_data_to_current_scope(data);
     };
 
     update(data);
-	
+
     static draw = function(allow_changes_param = true) {
         changed = false;
         allow_changes = allow_changes_param;

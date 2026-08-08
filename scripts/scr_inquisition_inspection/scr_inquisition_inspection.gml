@@ -114,7 +114,7 @@ function inquisitor_inspection_structure() constructor {
             // Xenos merc checks: ork base_group or Rangers of non-Imperial race
             if (_unit.base_group == "ork" || _unit.base_group == "eldar") {
                 add_xenos_mercs(_unit.role());
-            } 
+            }
             // Check equipped artifacts
             var artis = _unit.equipped_artifacts();
             for (var art = 0; art < array_length(artis); art++) {

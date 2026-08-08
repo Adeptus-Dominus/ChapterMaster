@@ -85,16 +85,15 @@ function player_recruit_planet_selection() {
     pop_draw_return_values();
 }
 
-function scr_creation_game_play_date(){
-
-    buttons.game_date.update({x1:1377, y1:440});
+function scr_creation_game_play_date() {
+    buttons.game_date.update({x1: 1377, y1: 440});
     buttons.game_date.draw();
 
     buttons.millenium_shifter.current_value = sector_handler.millenium;
     buttons.year_shifter.current_value = sector_handler.year;
 
-    buttons.millenium_shifter.update({x1:1377, y1:buttons.game_date.y2+10});
-    buttons.year_shifter.update({x1:1377, y1:buttons.game_date.y2+50});
+    buttons.millenium_shifter.update({x1: 1377, y1: buttons.game_date.y2 + 10});
+    buttons.year_shifter.update({x1: 1377, y1: buttons.game_date.y2 + 50});
 
     buttons.millenium_shifter.draw();
     buttons.year_shifter.draw();

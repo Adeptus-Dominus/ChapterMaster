@@ -38,7 +38,7 @@ function scr_ship_battle(target_ship_id, cooridor_width) {
                     okay = 1;
                 }
 
-                if ((string_count("spyrer", obj_ncombat.battle_special) > 0) && (_unit.is_dreadnought())) {
+                if ((string_count("spyrer", obj_ncombat.battle_special) > 0) && _unit.is_dreadnought()) {
                     okay = 0;
                 }
                 if (string_count("spyrer", obj_ncombat.battle_special) > 0) {

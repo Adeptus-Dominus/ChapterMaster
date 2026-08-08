@@ -19,7 +19,7 @@ try {
                     var nco = dude_co[q];
                     var nid = dude_id[q];
                     cleann[nco] = true;
-                    var _unit = fetch_unit([nco,nid]);
+                    var _unit = fetch_unit([nco, nid]);
 
                     commandy = _unit.IsSpecialist();
                     if (commandy == true) {
@@ -71,8 +71,8 @@ try {
                             continue;
                         }
 
-                        if (_unit.is_dreadnought() && !(role_compare(_unit, eROLE.CHAPTERMASTER))){
-                            continue
+                        if (_unit.is_dreadnought() && !role_compare(_unit, eROLE.CHAPTERMASTER)) {
+                            continue;
                         }
 
                         obj_temp_meeting.dudes += 1;
@@ -80,7 +80,7 @@ try {
                         obj_temp_meeting.present[otm] = 1;
                         obj_temp_meeting.co[otm] = co;
                         obj_temp_meeting.ide[otm] = i;
-                        master_present = role_compare(_unit, eROLE.CHAPTERMASTER)
+                        master_present = role_compare(_unit, eROLE.CHAPTERMASTER);
                     }
                 }
             }

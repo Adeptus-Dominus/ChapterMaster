@@ -82,7 +82,7 @@ try {
         if (recruit_name[i] == "") {
             continue;
         }
-        var _recruit_role = obj_ini.player_role_data[eROLE.SCOUT]
+        var _recruit_role = obj_ini.player_role_data[eROLE.SCOUT];
         if (recruit_distance[i] <= 0) {
             recruit_training[i] -= 1;
         }
@@ -291,7 +291,7 @@ try {
     var p = 0;
     for (var c = 0; c < 11; c++) {
         for (var e = 0; e < array_length(obj_ini.TTRPG[c]); e++) {
-            var _unit = fetch_unit([c,e]);
+            var _unit = fetch_unit([c, e]);
             if (!is_struct(_unit)) {
                 continue;
             }

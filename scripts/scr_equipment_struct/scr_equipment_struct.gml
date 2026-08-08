@@ -332,7 +332,7 @@ function EquipmentStruct(item_data = undefined, core_type = "", quality_request 
         }
         return 0;
     };
-	
+
     static has_tag = function(tag) {
         return array_contains(tags, tag);
     };

@@ -91,7 +91,6 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
             break;
     }
 
-
     if (!array_contains(non_marine_roles, man_role)) {
         if (man_role == obj_ini.player_role_data[eROLE.SCOUT].role) {
             _gear = obj_ini.player_role_data[eROLE.SCOUT];
@@ -104,7 +103,7 @@ function scr_add_man(man_role, target_company, spawn_exp, spawn_name, corruption
         marines += 1;
     }
     obj_ini.TTRPG[target_company][_company_slot] = _unit;
-    _unit.set_name(_name)
+    _unit.set_name(_name);
     _unit.add_exp(spawn_exp);
     _unit.allocate_unit_to_fresh_spawn(home_spot);
     _unit.update_role(man_role);

@@ -951,7 +951,7 @@ function Armamentarium(_controller) constructor {
         draw_text(352, 66, is_in_forge ? "Forge" : "Armamentarium");
 
         draw_set_font(fnt_aldrich_12);
-        var _sub = _is_adept ? $"Adept {controller.adept_name}" : $"Forge Master {fetch_unit([0,1]).name()}";
+        var _sub = _is_adept ? $"Adept {controller.adept_name}" : $"Forge Master {fetch_unit([0, 1]).name()}";
         draw_text(352, 100, _sub);
     };
 
