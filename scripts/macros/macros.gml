@@ -11,6 +11,9 @@
 #macro COL_REQUISITION #2398F8
 #macro COL_FORGE_POINTS #af5a00
 
+// First candidate TTF used when a language needs CJK glyphs that the latin fonts lack.
+#macro STR_CJK_FALLBACK_FONT "fonts/simhei.ttf"
+
 #macro MANAGE_MAN_SEE 34
 #macro MANAGE_MAN_MAX array_length(obj_controller.display_unit) + 7
 #macro LARGE_PLANET_MOD 1000000000 // Population threshold for large planet classification

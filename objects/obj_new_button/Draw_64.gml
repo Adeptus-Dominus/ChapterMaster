@@ -18,14 +18,14 @@ if (highlight > 0 && sprite_exists(_hover_index)) {
 }
 
 draw_set_color(c_white);
-draw_set_font(fnt_cul_14);
+draw_set_font(global.localization_manager.get_font(12, fnt_cul_14));
 draw_set_halign(fa_center);
 draw_set_valign(fa_middle);
 
 var _tx = x + (_base_w * scaling * 0.5);
 var _ty = y + (_base_h * scaling * 0.4);
 
-draw_text_transformed(_tx, _ty, string(button_text), scaling, scaling, 0);
+draw_text_transformed(_tx, _ty, localize(button_text), scaling, scaling, 0);
 
 if (line > 0) {
     draw_set_alpha(0.15);

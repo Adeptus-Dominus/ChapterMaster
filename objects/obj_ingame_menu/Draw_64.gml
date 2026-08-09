@@ -10,16 +10,16 @@ if (settings == 1) {
 
     draw_set_color(c_gray);
     draw_set_halign(fa_center);
-    draw_set_font(fnt_cul_14);
-    draw_text_transformed(763, 149, "Settings", 1.5, 1.5, 0);
+    draw_set_font(global.localization_manager.get_font(12, fnt_cul_14));
+    draw_text_transformed(763, 149, localize("Settings"), 1.5, 1.5, 0);
 
     draw_set_halign(fa_left);
-    draw_set_font(fnt_cul_18);
-    draw_text(493, 224, "Master Volume");
-    draw_text(493, 281, "Effects Volume");
-    draw_text(493, 339, "Music Volume");
-    draw_text(493, 423, "Full Screen?:");
-    draw_text(493, 483, "Enable Autosaves?:");
+    draw_set_font(global.localization_manager.get_font(16, fnt_cul_18));
+    draw_text(493, 224, localize("Master Volume"));
+    draw_text(493, 281, localize("Effects Volume"));
+    draw_text(493, 339, localize("Music Volume"));
+    draw_text(493, 423, localize("Full Screen?:"));
+    draw_text(493, 483, localize("Enable Autosaves?:"));
 
     var _vols = [
         global.settings.master_volume,
@@ -55,12 +55,23 @@ if (settings == 1) {
     // Checkboxes
     draw_sprite(spr_creation_check, global.settings.fullscreen, 626, 426);
     draw_sprite(spr_creation_check, global.settings.autosave, 680, 485);
+
+    // Language selector
+    draw_set_halign(fa_left);
+    draw_set_font(global.localization_manager.get_font(16, fnt_cul_18));
+    draw_text(493, 543, localize("Language"));
+
+    draw_set_halign(fa_center);
+    draw_text(842, 543, global.language_display_names[$ global.settings.language]);
+
+    draw_sprite_stretched(spr_creation_arrow, 0, 671, 542, 32, 32);
+    draw_sprite_stretched(spr_creation_arrow, 1, 981, 542, 32, 32);
 } else if (!instance_exists(obj_saveload)) {
     scr_image("menu", 0, 476, 114, 562, 631);
     draw_set_color(c_gray);
     draw_set_halign(fa_center);
-    draw_set_font(fnt_cul_14);
-    draw_text_transformed(929, 149, "Menu", 1.5, 1.5, 0);
+    draw_set_font(global.localization_manager.get_font(12, fnt_cul_14));
+    draw_text_transformed(929, 149, localize("Menu"), 1.5, 1.5, 0);
 }
 
 pop_draw_return_values();

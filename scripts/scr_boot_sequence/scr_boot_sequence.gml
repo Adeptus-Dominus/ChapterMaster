@@ -147,6 +147,8 @@ function boot_sequence() {
     /// @type {Struct.SettingsManager} No idea why, but without this it doesn't hook
     global.settings = new SettingsManager();
     global.settings.load();
+    global.localization_manager = new LocalizationManager();
+    global.settings.apply_language();
     global.settings.apply_video();
     global.settings.apply_audio();
 

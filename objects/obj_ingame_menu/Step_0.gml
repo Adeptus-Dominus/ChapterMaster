@@ -145,6 +145,15 @@ if (settings == 1 && mouse_button_clicked(mb_left, 0, true)) {
         _changed = true;
     }
 
+    if (scr_hit(671, 542, 703, 574, true) || scr_hit(981, 542, 1013, 574, true)) {
+        var _languages = global.available_languages;
+        var _index = array_get_index(_languages, global.settings.language);
+        var _dir = scr_hit(671, 542, 703, 574, true) ? -1 : 1;
+        global.settings.language = _languages[(_index + _dir + array_length(_languages)) mod array_length(_languages)];
+        global.settings.apply_language();
+        _changed = true;
+    }
+
     if (_changed) {
         global.settings.save();
     }

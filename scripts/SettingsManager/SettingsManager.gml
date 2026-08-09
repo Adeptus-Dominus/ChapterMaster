@@ -11,6 +11,7 @@ function SettingsManager() constructor {
     };
     autosave = true;
     username = "";
+    language = "en";
 
     static load = function() {
         ini_open("saves.ini");
@@ -20,6 +21,7 @@ function SettingsManager() constructor {
         fullscreen = ini_read_real("Settings", "fullscreen", 1);
         autosave = ini_read_real("Settings", "autosave", true);
         username = ini_read_string("Settings", "username", "");
+        language = ini_read_string("Settings", "language", "en");
 
         var rect_str = ini_read_string("Settings", "window_data", "0|0|1600|900|");
         var parts = string_split(rect_str, "|");
@@ -40,6 +42,7 @@ function SettingsManager() constructor {
         ini_write_real("Settings", "fullscreen", fullscreen);
         ini_write_real("Settings", "autosave", autosave);
         ini_write_string("Settings", "username", username);
+        ini_write_string("Settings", "language", language);
         var _window_data = $"{window_rect.x}|{window_rect.y}|{window_rect.w}|{window_rect.h}|";
         ini_write_string("Settings", "window_data", _window_data);
         ini_close();
@@ -61,6 +64,11 @@ function SettingsManager() constructor {
 
         global.audio_manager.set_music_volume(music_volume);
         global.audio_manager.set_sfx_volume(sfx_volume);
+    };
+
+    static apply_language = function() {
+        global.language = language;
+        global.localization_manager.load_language(language);
     };
 
     static sync_ui = function() {

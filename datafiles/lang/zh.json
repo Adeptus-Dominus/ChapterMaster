@@ -1,0 +1,19 @@
+{
+  "Settings": "设置",
+  "Menu": "菜单",
+  "Language": "语言",
+  "Master Volume": "主音量",
+  "Effects Volume": "特效音量",
+  "Music Volume": "音乐音量",
+  "Full Screen?:": "全屏？",
+  "Enable Autosaves?:": "开启自动保存？",
+  "Build: {0}": "构建版本：{0}",
+  "Version: {0}": "游戏版本：{0}",
+  "Update: {0}\nClick to open download page": "有更新：{0}\n点击打开下载页面",
+  "Save": "保存",
+  "Load": "读取",
+  "Options": "选项",
+  "Exit": "退出",
+  "Return": "返回",
+  "Back": "返回"
+}

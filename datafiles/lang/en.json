@@ -1,0 +1,19 @@
+{
+  "Settings": "Settings",
+  "Menu": "Menu",
+  "Language": "Language",
+  "Master Volume": "Master Volume",
+  "Effects Volume": "Effects Volume",
+  "Music Volume": "Music Volume",
+  "Full Screen?:": "Full Screen?:",
+  "Enable Autosaves?:": "Enable Autosaves?:",
+  "Build: {0}": "Build: {0}",
+  "Version: {0}": "Version: {0}",
+  "Update: {0}\nClick to open download page": "Update: {0}\nClick to open download page",
+  "Save": "Save",
+  "Load": "Load",
+  "Options": "Options",
+  "Exit": "Exit",
+  "Return": "Return",
+  "Back": "Back"
+}

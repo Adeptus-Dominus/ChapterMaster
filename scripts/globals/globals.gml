@@ -72,6 +72,13 @@ global.cheat_disp = false;
 global.cheat_debug = false;
 global.language = "en";
 
+// Locale codes of shipped languages, and their display names in their own language.
+global.available_languages = ["en", "zh"];
+global.language_display_names = {
+    en: "English",
+    zh: "中文",
+};
+
 global.culture_styles = [
     "Greek",
     "Roman",

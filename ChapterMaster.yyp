@@ -129,6 +129,7 @@
     {"$GMIncludedFile":"","%Name":"vehicle_gear.json","CopyToMask":-1,"filePath":"datafiles/data","name":"vehicle_gear.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"vehicles.json","CopyToMask":-1,"filePath":"datafiles/data","name":"vehicles.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"weapons.json","CopyToMask":-1,"filePath":"datafiles/data","name":"weapons.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"simhei.ttf","CopyToMask":-1,"filePath":"datafiles/fonts","name":"simhei.ttf","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"1.png","CopyToMask":-1,"filePath":"datafiles/images/advisor/splash","name":"1.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"11.png","CopyToMask":-1,"filePath":"datafiles/images/advisor/splash","name":"11.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"12.png","CopyToMask":-1,"filePath":"datafiles/images/advisor/splash","name":"12.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
@@ -513,6 +514,8 @@
     {"$GMIncludedFile":"","%Name":"purge8.png","CopyToMask":-1,"filePath":"datafiles/images/ui","name":"purge8.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"raid1.png","CopyToMask":-1,"filePath":"datafiles/images/ui","name":"raid1.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"resources.png","CopyToMask":-1,"filePath":"datafiles/images/ui","name":"resources.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"en.json","CopyToMask":-1,"filePath":"datafiles/lang","name":"en.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"zh.json","CopyToMask":-1,"filePath":"datafiles/lang","name":"zh.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"chapter_advantages.json","CopyToMask":-1,"filePath":"datafiles/main","name":"chapter_advantages.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"chapter_disadvantages.json","CopyToMask":-1,"filePath":"datafiles/main","name":"chapter_disadvantages.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"pauldron.png","CopyToMask":-1,"filePath":"datafiles/main/chapter_symbols/darkangels","name":"pauldron.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
@@ -595,7 +598,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2026.100.0.1083",
+    "IDEVersion":"2024.14.4.222",
   },
   "name":"ChapterMaster",
   "resources":[
@@ -732,6 +735,7 @@
     {"id":{"name":"instance_create","path":"scripts/instance_create/instance_create.yy",},},
     {"id":{"name":"is_specialist","path":"scripts/is_specialist/is_specialist.yy",},},
     {"id":{"name":"JsonFileListLoader","path":"scripts/JsonFileListLoader/JsonFileListLoader.yy",},},
+    {"id":{"name":"LocalizationManager","path":"scripts/LocalizationManager/LocalizationManager.yy",},},
     {"id":{"name":"Logger","path":"scripts/Logger/Logger.yy",},},
     {"id":{"name":"macros","path":"scripts/macros/macros.yy",},},
     {"id":{"name":"NameGenerator","path":"scripts/NameGenerator/NameGenerator.yy",},},
