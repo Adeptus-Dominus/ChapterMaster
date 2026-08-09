@@ -178,6 +178,13 @@ global.language_display_names = {};
 global.language_display_names[$ LANG_EN] = "English";
 global.language_display_names[$ LANG_ZH] = "中文";
 
+// Locale codes of shipped languages, and their display names in their own language.
+global.available_languages = ["en", "zh"];
+global.language_display_names = {
+    en: "English",
+    zh: "中文",
+};
+
 global.culture_styles = [
     "Greek",
     "Roman",
