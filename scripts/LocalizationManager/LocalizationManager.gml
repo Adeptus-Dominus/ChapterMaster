@@ -45,7 +45,7 @@ function LocalizationManager() constructor {
     ///       warns about keys that are missing, so edits to English UI text do not
     ///       silently sever translations across languages.
     static _warn_missing_translations = function() {
-        if (self.language == LANG_EN || struct_count(self.translations) == 0) {
+        if (self.language == LANG_EN || struct_names_count(self.translations) == 0) {
             return;
         }
 
