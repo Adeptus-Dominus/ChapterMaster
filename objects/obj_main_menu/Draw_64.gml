@@ -4,7 +4,7 @@ draw_set_alpha(title_alpha);
 scr_image("title_splash", 0, 0, 0, room_width, room_height);
 
 draw_set_alpha(0.6);
-draw_set_font(fnt_cul_14);
+draw_set_font(cjk_font(fnt_cul_14));
 draw_set_color(c_gray);
 draw_set_halign(fa_right);
 

@@ -18,7 +18,7 @@ if (highlight > 0 && sprite_exists(_hover_index)) {
 }
 
 draw_set_color(c_white);
-draw_set_font(global.localization_manager.get_font(12, fnt_cul_14));
+draw_set_font(cjk_font(fnt_cul_14));
 draw_set_halign(fa_center);
 draw_set_valign(fa_middle);
 
