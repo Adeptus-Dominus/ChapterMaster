@@ -70,8 +70,8 @@ try {
         obj_cursor.image_index = 0;
         if (scr_hit(436, 74, 436 + 128, 74 + 128) && (popup == "")) {
             obj_cursor.image_index = 1;
-            tooltip = "Chapter Icon";
-            tooltip2 = "Your Chapter's icon.  Click to edit.";
+            tooltip = localize("Chapter Icon");
+            tooltip2 = localize("Your Chapter's icon.  Click to edit.");
         }
 
         if (slide == eCREATION_SLIDES.CHAPTERTRAITS) {
@@ -88,10 +88,10 @@ try {
             draw_sprite_stretched(_chapter_icon, 0, 1164 - 128, 74, 128, 128);
             draw_set_alpha(1);
 
-            draw_set_font(fnt_40k_30b);
+            draw_set_font(cjk_font(fnt_40k_30b));
             if (scr_hit(1164 - 128, 74, 1164, 74 + 128)) {
-                tooltip = "Founding Chapter";
-                tooltip2 = "The parent Chapter whose gene-seed your own originates from.";
+                tooltip = localize("Founding Chapter");
+                tooltip2 = localize("The parent Chapter whose gene-seed your own originates from.");
             }
 
             if (custom == eCHAPTER_TYPE.CUSTOM) {
@@ -134,7 +134,7 @@ try {
     } else if (slide == eCREATION_SLIDES.CHAPTERGENE) {
         /* Gene Seed Mutations, Disposition */
         draw_set_color(CM_GREEN_COLOR);
-        draw_set_font(fnt_40k_30b);
+        draw_set_font(cjk_font(fnt_40k_30b));
         draw_set_halign(fa_center);
         draw_set_alpha(1);
 
@@ -146,21 +146,21 @@ try {
 
         draw_set_color(CM_GREEN_COLOR);
         draw_set_halign(fa_left);
-        draw_text_transformed(580, 118, string_hash_to_newline("Successor Chapters: " + string(successors)), 0.6, 0.6, 0);
-        draw_set_font(fnt_40k_14b);
+        draw_text_transformed(580, 118, string_hash_to_newline(localize("Successor Chapters: {0}", [string(successors)])), 0.6, 0.6, 0);
+        draw_set_font(cjk_font(fnt_40k_14b));
 
         draw_rectangle(445, 200, 1125, 202, true);
 
         draw_set_halign(fa_center);
-        draw_set_font(fnt_40k_30b);
-        draw_text_transformed(800, 210, string_hash_to_newline("Gene-Seed Mutations"), 0.6, 0.6, 0);
+        draw_set_font(cjk_font(fnt_40k_30b));
+        draw_text_transformed(800, 210, string_hash_to_newline(localize("Gene-Seed Mutations")), 0.6, 0.6, 0);
         if (purity == 10) {
-            draw_text_transformed(800, 230, $"The gene-seed is perfectly pure", 0.5, 0.5, 0);
+            draw_text_transformed(800, 230, localize("The gene-seed is perfectly pure"), 0.5, 0.5, 0);
         } else {
             if (mutations > mutations_selected) {
-                draw_text_transformed(800, 230, $"Select {mutations - mutations_selected} more, according to your purity score", 0.5, 0.5, 0);
+                draw_text_transformed(800, 230, localize("Select {0} more, according to your purity score", [string(mutations - mutations_selected)]), 0.5, 0.5, 0);
             } else {
-                draw_text_transformed(800, 230, $"The gene-seed is mutated enough", 0.5, 0.5, 0);
+                draw_text_transformed(800, 230, localize("The gene-seed is mutated enough"), 0.5, 0.5, 0);
                 draw_set_alpha(0.5);
             }
         }
@@ -173,15 +173,15 @@ try {
         }
         var mutations_defects = [
             {
-                t_tip: "Anemic Preomnor",
-                t_tip2: "Your Astartes lack the detoxifying gland called the Preomnor.  They are more susceptible to poisons and toxins.",
+                t_tip: localize("Anemic Preomnor"),
+                t_tip2: localize("Your Astartes lack the detoxifying gland called the Preomnor.  They are more susceptible to poisons and toxins."),
                 data: preomnor,
                 mutation_points: 1,
                 disposition: [],
             },
             {
-                t_tip: "Disturbing Voice",
-                t_tip2: "Your Astartes have a voice like a creaking door or a rumble.  Decreases Imperium disposition.",
+                t_tip: localize("Disturbing Voice"),
+                t_tip2: localize("Your Astartes have a voice like a creaking door or a rumble.  Decreases Imperium disposition."),
                 data: voice,
                 mutation_points: 1,
                 disposition: [
@@ -192,8 +192,8 @@ try {
                 ],
             },
             {
-                t_tip: "Doomed",
-                t_tip2: "Your Chapter cannot make more Astartes until enough research is generated.  Counts as four mutations and decreases Imperium disposition while increasing that of other Astartes.",
+                t_tip: localize("Doomed"),
+                t_tip2: localize("Your Chapter cannot make more Astartes until enough research is generated.  Counts as four mutations and decreases Imperium disposition while increasing that of other Astartes."),
                 data: doomed,
                 mutation_points: 4,
                 disposition: [
@@ -208,57 +208,57 @@ try {
                 ],
             },
             {
-                t_tip: "Faulty Lyman's Ear",
-                t_tip2: "Lacking a working Lyman's ear, all deep-striked Astartes receive moderate penalties to both attack and defense.",
+                t_tip: localize("Faulty Lyman's Ear"),
+                t_tip2: localize("Lacking a working Lyman's ear, all deep-striked Astartes receive moderate penalties to both attack and defense."),
                 data: lyman,
                 mutation_points: 1,
                 disposition: [],
             },
             {
-                t_tip: "Hyper-Stimulated Omophagea",
-                t_tip2: "After every battle the Astartes have a chance to feast upon their fallen enemies, or seldom, their allies.",
+                t_tip: localize("Hyper-Stimulated Omophagea"),
+                t_tip2: localize("After every battle the Astartes have a chance to feast upon their fallen enemies, or seldom, their allies."),
                 data: omophagea,
                 mutation_points: 1,
                 disposition: [],
             },
             {
-                t_tip: "Hyperactive Ossmodula",
-                t_tip2: "Instead of wound tissue bone is generated; Apothecaries must spend twice the normal time healing your Astartes.",
+                t_tip: localize("Hyperactive Ossmodula"),
+                t_tip2: localize("Instead of wound tissue bone is generated; Apothecaries must spend twice the normal time healing your Astartes."),
                 data: ossmodula,
                 mutation_points: 1,
                 disposition: [],
             },
             {
-                t_tip: "Lost Zygote",
-                t_tip2: "One of the Zygotes is faulty or missing.  Your Astartes only have one each, generating half the normal gene-seed.  Counts as two mutations.",
+                t_tip: localize("Lost Zygote"),
+                t_tip2: localize("One of the Zygotes is faulty or missing.  Your Astartes only have one each, generating half the normal gene-seed.  Counts as two mutations."),
                 data: zygote,
                 mutation_points: 2,
                 disposition: [],
             },
             {
-                t_tip: "Inactive Sus-an Membrane",
-                t_tip2: "Your Astartes do not have a Sus-an Membrane; they cannot enter suspended animation and receive more casualties.",
+                t_tip: localize("Inactive Sus-an Membrane"),
+                t_tip2: localize("Your Astartes do not have a Sus-an Membrane; they cannot enter suspended animation and receive more casualties."),
                 data: membrane,
                 mutation_points: 1,
                 disposition: [],
             },
             {
-                t_tip: "Missing Betchers Gland",
-                t_tip2: "Your Astartes cannot spit acid, and as a result, have slightly less attack in melee combat.",
+                t_tip: localize("Missing Betchers Gland"),
+                t_tip2: localize("Your Astartes cannot spit acid, and as a result, have slightly less attack in melee combat."),
                 data: betchers,
                 mutation_points: 1,
                 disposition: [],
             },
             {
-                t_tip: "Mutated Catalepsean Node",
-                t_tip2: "Your Astartes have reduced awareness when tired.  Slightly less attack in ranged and melee combat.",
+                t_tip: localize("Mutated Catalepsean Node"),
+                t_tip2: localize("Your Astartes have reduced awareness when tired.  Slightly less attack in ranged and melee combat."),
                 data: catalepsean,
                 mutation_points: 1,
                 disposition: [],
             },
             {
-                t_tip: "Oolitic Secretions",
-                t_tip2: "Either by secretions or radiation, your Astartes have an unusual or strange skin color.  Decreases Imperium disposition.",
+                t_tip: localize("Oolitic Secretions"),
+                t_tip2: localize("Either by secretions or radiation, your Astartes have an unusual or strange skin color.  Decreases Imperium disposition."),
                 data: secretions,
                 mutation_points: 1,
                 disposition: [
@@ -269,8 +269,8 @@ try {
                 ],
             },
             {
-                t_tip: "Oversensitive Occulobe",
-                t_tip2: "Your Astartes are no longer immune to stun grenades or bright lights, and have a massive penalty during morning battles.",
+                t_tip: localize("Oversensitive Occulobe"),
+                t_tip2: localize("Your Astartes are no longer immune to stun grenades or bright lights, and have a massive penalty during morning battles."),
                 data: occulobe,
                 mutation_points: 1,
                 disposition: [
@@ -281,8 +281,8 @@ try {
                 ],
             },
             {
-                t_tip: "Rampant Mucranoid",
-                t_tip2: "Your Astartes' Mucranoid cannot be turned off; the slime lowers most dispositions and occasionally damages their armour.",
+                t_tip: localize("Rampant Mucranoid"),
+                t_tip2: localize("Your Astartes' Mucranoid cannot be turned off; the slime lowers most dispositions and occasionally damages their armour."),
                 data: mucranoid,
                 mutation_points: 1,
                 disposition: [
@@ -369,21 +369,21 @@ try {
         draw_line(445, 506, 1125, 505);
         draw_line(445, 507, 1125, 507);
 
-        draw_set_font(fnt_40k_30b);
+        draw_set_font(cjk_font(fnt_40k_30b));
         draw_set_halign(fa_center);
-        draw_text_transformed(800, 515, string_hash_to_newline("Starting Disposition"), 0.6, 0.6, 0);
+        draw_text_transformed(800, 515, string_hash_to_newline(localize("Starting Disposition")), 0.6, 0.6, 0);
 
-        draw_set_font(fnt_40k_14b);
+        draw_set_font(cjk_font(fnt_40k_14b));
         draw_set_halign(fa_right);
 
-        draw_text(650, 550, string_hash_to_newline("Imperium (" + string(disposition[2]) + ")"));
-        draw_text(650, 575, string_hash_to_newline("Adeptus Mechanicus (" + string(disposition[3]) + ")"));
-        draw_text(650, 600, string_hash_to_newline("Ecclesiarchy (" + string(disposition[5]) + ")"));
-        draw_text(650, 625, string_hash_to_newline("Inquisition (" + string(disposition[4]) + ")"));
+        draw_text(650, 550, string_hash_to_newline(localize("Imperium ({0})", [string(disposition[2])])));
+        draw_text(650, 575, string_hash_to_newline(localize("Adeptus Mechanicus ({0})", [string(disposition[3])])));
+        draw_text(650, 600, string_hash_to_newline(localize("Ecclesiarchy ({0})", [string(disposition[5])])));
+        draw_text(650, 625, string_hash_to_newline(localize("Inquisition ({0})", [string(disposition[4])])));
         if (founding != ePROGENITOR.NONE) {
-            draw_text(650, 650, string_hash_to_newline("Progenitor (" + string(disposition[1]) + ")"));
+            draw_text(650, 650, string_hash_to_newline(localize("Progenitor ({0})", [string(disposition[1])])));
         }
-        draw_text(650, 675, "Adeptus Astartes (" + string(disposition[6]) + ")");
+        draw_text(650, 675, localize("Adeptus Astartes ({0})", [string(disposition[6])]));
 
         draw_rectangle(655, 552, 1150, 567, 1);
         draw_rectangle(655, 552 + 25, 1150, 567 + 25, 1);
@@ -416,7 +416,7 @@ try {
     /* Chapter Master */
     if (slide == eCREATION_SLIDES.CHAPTERMASTER) {
         draw_set_color(CM_GREEN_COLOR);
-        draw_set_font(fnt_40k_30b);
+        draw_set_font(cjk_font(fnt_40k_30b));
         draw_set_halign(fa_center);
         draw_set_alpha(1);
 
@@ -426,8 +426,8 @@ try {
 
         draw_set_color(CM_GREEN_COLOR);
         draw_set_halign(fa_left);
-        draw_text_transformed(580, 100, string_hash_to_newline("Chapter Master Name: "), 0.9, 0.9, 0);
-        draw_set_font(fnt_40k_14b);
+        draw_text_transformed(580, 100, string_hash_to_newline(localize("Chapter Master Name: ")), 0.9, 0.9, 0);
+        draw_set_font(cjk_font(fnt_40k_14b));
 
         if ((text_selected != "cm") || (custom == eCHAPTER_TYPE.PREMADE)) {
             draw_text_ext(580, 144, string_hash_to_newline(string(chapter_master_name)), -1, 580);
@@ -472,10 +472,10 @@ try {
         draw_line(445, 201, 1125, 201);
         draw_line(445, 202, 1125, 202);
 
-        draw_set_font(fnt_40k_30b);
-        draw_text_transformed(444, 215, string_hash_to_newline("Select Two Weapons"), 0.6, 0.6, 0);
-        draw_text_transformed(444, 240, string_hash_to_newline("Melee"), 0.6, 0.6, 0);
-        draw_text_transformed(800, 240, string_hash_to_newline("Ranged"), 0.6, 0.6, 0);
+        draw_set_font(cjk_font(fnt_40k_30b));
+        draw_text_transformed(444, 215, string_hash_to_newline(localize("Select Two Weapons")), 0.6, 0.6, 0);
+        draw_text_transformed(444, 240, string_hash_to_newline(localize("Melee")), 0.6, 0.6, 0);
+        draw_text_transformed(800, 240, string_hash_to_newline(localize("Ranged")), 0.6, 0.6, 0);
 
         var x6, y6, spac;
         var melee_choice_order = 0;
@@ -526,7 +526,7 @@ try {
                     onceh = 1;
                 }
             }
-            draw_text_transformed(x6 + 30, y6 + 4, string_hash_to_newline(melee_choice_weapon), 0.4, 0.4, 0);
+            draw_text_transformed(x6 + 30, y6 + 4, string_hash_to_newline(localize(melee_choice_weapon)), 0.4, 0.4, 0);
             y6 += spac;
         }
 
@@ -560,7 +560,7 @@ try {
                     chapter_master_ranged = ranged_choice_order;
                 }
             }
-            draw_text_transformed(x6 + 30, y6 + 4, ranged_options[ranged_choice_order], 0.4, 0.4, 0);
+            draw_text_transformed(x6 + 30, y6 + 4, localize(ranged_options[ranged_choice_order]), 0.4, 0.4, 0);
             y6 += spac;
         }
 
@@ -570,7 +570,7 @@ try {
         draw_line(445, 491, 1125, 491);
         draw_line(445, 492, 1125, 492);
 
-        draw_set_font(fnt_40k_30b);
+        draw_set_font(cjk_font(fnt_40k_30b));
         // draw_text_transformed(444,505,"Select Speciality",0.6,0.6,0);
         draw_set_halign(fa_center);
 
@@ -591,16 +591,16 @@ try {
                 "",
             ],
             [
-                "Born Leader",
-                "You always know the right words to inspire your men or strike doubt in the hearts of the enemy.  Increases Disposition and Grants a +10% Requisition Income Bonus.",
+                localize("Born Leader"),
+                localize("You always know the right words to inspire your men or strike doubt in the hearts of the enemy.  Increases Disposition and Grants a +10% Requisition Income Bonus."),
             ],
             [
-                "Paragon",
-                "Even before your rise to Chapter Master you were a renowned warrior, nearly without compare.  Increases Chapter Master Experience and all stats.",
+                localize("Paragon"),
+                localize("Even before your rise to Chapter Master you were a renowned warrior, nearly without compare.  Increases Chapter Master Experience and all stats."),
             ],
             [
-                "Psyker",
-                "The impossible is nothing to you; despite being a Psyker you have slowly risen to lead a Chapter.  Chapter Master gains every Power within the chosen Discipline.",
+                localize("Psyker"),
+                localize("The impossible is nothing to you; despite being a Psyker you have slowly risen to lead a Chapter.  Chapter Master gains every Power within the chosen Discipline."),
             ],
         ];
         for (var h = 1; h <= 3; h++) {
@@ -650,18 +650,18 @@ try {
             _sc_box.y2 = _sc_box.y1 + _sc_box.h;
             _sc_box.x2 = _sc_box.x1 + _sc_box.w;
 
-            draw_set_font(fnt_40k_30b);
+            draw_set_font(cjk_font(fnt_40k_30b));
             draw_rectangle(_sc_box.x1, _sc_box.y1, _sc_box.x2, _sc_box.y2, true);
-            draw_text_transformed(_sc_box.x1 + 90, _sc_box.y1 + 5, string("Save Chapter"), 0.6, 0.6, 0);
-            draw_set_font(fnt_40k_14b);
+            draw_text_transformed(_sc_box.x1 + 90, _sc_box.y1 + 5, string(localize("Save Chapter")), 0.6, 0.6, 0);
+            draw_set_font(cjk_font(fnt_40k_14b));
             if (scr_hit(_sc_box.x1, _sc_box.y1, _sc_box.x2, _sc_box.y2)) {
-                tooltip = "Do you want to save your Chapter?";
-                tooltip2 = "Click to save your Chapter.";
+                tooltip = localize("Do you want to save your Chapter?");
+                tooltip2 = localize("Click to save your Chapter.");
                 if (mouse_button_clicked()) {
                     scr_save_chapter(global.chapter_id);
 
-                    tooltip = "Do you want to save your Chapter?";
-                    tooltip2 = "Chapter Saved!";
+                    tooltip = localize("Do you want to save your Chapter?");
+                    tooltip2 = localize("Chapter Saved!");
                 }
             }
         }
@@ -803,7 +803,7 @@ try {
             var _lock = false;
             if (scr_hit([925, 756, 997, 824])) {
                 if (slide == eCREATION_SLIDES.CHAPTERTRAITS && points > maxpoints) {
-                    tooltip_draw("Points Too High!!");
+                    tooltip_draw(localize("Points Too High!!"));
                     _lock = true;
                 }
             }
@@ -832,18 +832,18 @@ try {
         draw_set_alpha(1);
         draw_set_color(c_black);
         draw_set_halign(fa_left);
-        draw_set_font(fnt_40k_14b);
+        draw_set_font(cjk_font(fnt_40k_14b));
         var _width1 = string_width_ext(string_hash_to_newline(tooltip), -1, 500);
-        draw_set_font(fnt_40k_14);
+        draw_set_font(cjk_font(fnt_40k_14));
         var _width2 = string_width_ext(string_hash_to_newline(tooltip2), -1, 500);
         var _height = string_height_ext(string_hash_to_newline(tooltip2), -1, 500);
 
         draw_rectangle(mouse_x + 18, mouse_y + 20, mouse_x + max(_width1, _width2) + 24, mouse_y + 44 + _height, 0);
         draw_set_color(CM_GREEN_COLOR);
         draw_rectangle(mouse_x + 18, mouse_y + 20, mouse_x + max(_width1, _width2) + 24, mouse_y + 44 + _height, 1);
-        draw_set_font(fnt_40k_14b);
+        draw_set_font(cjk_font(fnt_40k_14b));
         draw_text(mouse_x + 22, mouse_y + 22, string_hash_to_newline(string(tooltip)));
-        draw_set_font(fnt_40k_14);
+        draw_set_font(cjk_font(fnt_40k_14));
         draw_text_ext(mouse_x + 22, mouse_y + 42, string_hash_to_newline(string(tooltip2)), -1, 500);
     }
 } catch (_exception) {

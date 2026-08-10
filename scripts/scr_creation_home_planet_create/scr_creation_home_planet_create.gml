@@ -3,7 +3,7 @@ function player_recruit_planet_selection() {
     add_draw_return_values();
     with (obj_creation) {
         draw_set_color(CM_GREEN_COLOR);
-        draw_set_font(fnt_40k_30b);
+        draw_set_font(cjk_font(fnt_40k_30b));
         draw_set_halign(fa_center);
         if ((fleet_type != 1) || (custom != eCHAPTER_TYPE.CUSTOM)) {
             draw_set_alpha(0.5);
@@ -29,7 +29,7 @@ function player_recruit_planet_selection() {
 
         scr_image("ui/planet", _cur_planet_index2, 1313, 244, 128, 128);
 
-        draw_text_transformed(1377, 378, recruiting, 0.5, 0.5, 0);
+        draw_text_transformed(1377, 378, localize(recruiting), 0.5, 0.5, 0);
 
         if (_recruit_world_type < 2) {
             recruiting_name = homeworld_name;
@@ -104,7 +104,7 @@ function scr_creation_game_play_date() {
 
 function scr_creation_home_planet_create() {
     add_draw_return_values();
-    var fleet_type_text = fleet_type == ePLAYER_BASE.HOME_WORLD ? "Homeworld" : "Flagship";
+    var fleet_type_text = fleet_type == ePLAYER_BASE.HOME_WORLD ? localize("Homeworld") : localize("Flagship");
     draw_text_transformed(644, 218, fleet_type_text, 0.6, 0.6, 0);
 
     var _cur_planet_index = scr_planet_image_numbers(homeworld);
@@ -115,7 +115,7 @@ function scr_creation_home_planet_create() {
     if (fleet_type == ePLAYER_BASE.HOME_WORLD) {
         scr_image("ui/planet", _cur_planet_index, 580, 244, 128, 128);
 
-        draw_text_transformed(644, 378, homeworld, 0.5, 0.5, 0);
+        draw_text_transformed(644, 378, localize(homeworld), 0.5, 0.5, 0);
         if ((text_selected != "home_name") || (custom != eCHAPTER_TYPE.CUSTOM)) {
             draw_text_transformed(644, 398, homeworld_name, 0.5, 0.5, 0);
         }
@@ -160,12 +160,12 @@ function scr_creation_home_planet_create() {
         _system_complex.update();
         _system_complex.draw();
         _system_complex.clicked();
-        draw_set_font(fnt_40k_30b);
+        draw_set_font(cjk_font(fnt_40k_30b));
     }
     if (fleet_type != ePLAYER_BASE.HOME_WORLD) {
         scr_image("ui/planet", _cur_planet_index, 580, 244, 128, 128);
 
-        draw_text_transformed(644, 378, "Battle Barge", 0.5, 0.5, 0);
+        draw_text_transformed(644, 378, localize("Battle Barge"), 0.5, 0.5, 0);
         if ((text_selected != "flagship_name") || (custom == eCHAPTER_TYPE.PREMADE)) {
             draw_text_transformed(644, 398, flagship_name, 0.5, 0.5, 0);
         }
@@ -218,23 +218,23 @@ function scr_creation_home_planet_create() {
         scr_image("ui/planet", _cur_planet_index, 913, 244, 128, 128);
 
         draw_set_alpha(0.5);
-        draw_text_transformed(977, 378, homeworld, 0.5, 0.5, 0);
+        draw_text_transformed(977, 378, localize(homeworld), 0.5, 0.5, 0);
         draw_text_transformed(977, 398, homeworld_name, 0.5, 0.5, 0);
         draw_set_alpha(1);
     }
 
     if (scr_hit(575, 216, 710, 242)) {
         if (fleet_type != ePLAYER_BASE.HOME_WORLD) {
-            tooltip = "Battle Barge";
-            tooltip2 = "The name of your Flagship Battle Barge.";
+            tooltip = localize("Battle Barge");
+            tooltip2 = localize("The name of your Flagship Battle Barge.");
         } else if (fleet_type == ePLAYER_BASE.HOME_WORLD) {
-            tooltip = "Homeworld";
-            tooltip2 = "The world that your Chapter's Fortress Monastery is located upon.  More civilized worlds are more easily defensible but the citizens may pose a risk or be a nuisance.";
+            tooltip = localize("Homeworld");
+            tooltip2 = localize("The world that your Chapter's Fortress Monastery is located upon.  More civilized worlds are more easily defensible but the citizens may pose a risk or be a nuisance.");
         }
     }
     if (scr_hit(895, 216, 1075, 242)) {
-        tooltip = "Recruiting World";
-        tooltip2 = "The world that your Chapter selects recruits from.  More harsh worlds provide recruits with more grit and warrior mentality.  If you are a homeworld-based Chapter, you may uncheck 'Recruiting World' to recruit from your homeworld instead.";
+        tooltip = localize("Recruiting World");
+        tooltip2 = localize("The world that your Chapter selects recruits from.  More harsh worlds provide recruits with more grit and warrior mentality.  If you are a homeworld-based Chapter, you may uncheck 'Recruiting World' to recruit from your homeworld instead.");
     }
 
     draw_line(445, 455, 1125, 455);
@@ -250,22 +250,22 @@ function scr_creation_home_planet_create() {
         }
         var _homeworld_types = [
             {
-                name: "Planetary Governer",
-                tooltip: "Planetary Governer",
-                tooltip2: "Your Chapter's homeworld is ruled by a single Planetary Governer, who does with the planet mostly as they see fit.  While heavily influenced by your Astartes the planet is sovereign.",
+                name: localize("Planetary Governer"),
+                tooltip: localize("Planetary Governer"),
+                tooltip2: localize("Your Chapter's homeworld is ruled by a single Planetary Governer, who does with the planet mostly as they see fit.  While heavily influenced by your Astartes the planet is sovereign."),
             },
             {
-                name: "Passive Supervision",
-                tooltip: "Passive Supervision",
-                tooltip2: "Instead of a Planetary Governer the planet is broken up into many countries or clans.  The people are less united but happier, and see your illusive Astartes as semi-divine beings.",
+                name: localize("Passive Supervision"),
+                tooltip: localize("Passive Supervision"),
+                tooltip2: localize("Instead of a Planetary Governer the planet is broken up into many countries or clans.  The people are less united but happier, and see your illusive Astartes as semi-divine beings."),
             },
             {
-                name: "Personal Rule",
-                tooltip: "Personal Rule",
-                tooltip2: "You personally take the rule of the Planetary Governer, ruling over your homeworld with an iron fist.  Your every word and directive, be they good or bad, are absolute law.",
+                name: localize("Personal Rule"),
+                tooltip: localize("Personal Rule"),
+                tooltip2: localize("You personally take the rule of the Planetary Governer, ruling over your homeworld with an iron fist.  Your every word and directive, be they good or bad, are absolute law."),
             },
         ];
-        draw_text_transformed(445, 480, "Homeworld Rule", 0.6, 0.6, 0);
+        draw_text_transformed(445, 480, localize("Homeworld Rule"), 0.6, 0.6, 0);
 
         var _coords = [
             445,

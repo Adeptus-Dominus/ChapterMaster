@@ -66,7 +66,7 @@ function draw_unit_buttons(position, text, size_mod = [1.5, 1.5], colour = c_gra
     // TODO: fix halign usage
     add_draw_return_values();
 
-    draw_set_font(font);
+    draw_set_font(cjk_font(font));
     draw_set_halign(_halign);
     draw_set_valign(fa_middle);
 
@@ -202,7 +202,7 @@ function ReactiveString(text_param, x1_param = 0, y1_param = 0, data = {}) const
     text = text_param;
     font = fnt_40k_14;
     add_draw_return_values();
-    draw_set_font(font);
+    draw_set_font(cjk_font(font));
     w = string_width(text);
     h = string_height(text);
     pop_draw_return_values();
@@ -221,7 +221,7 @@ function ReactiveString(text_param, x1_param = 0, y1_param = 0, data = {}) const
     static update = function(data = {}) {
         move_data_to_current_scope(data);
         var temp_font = draw_get_font();
-        draw_set_font(font);
+        draw_set_font(cjk_font(font));
         if (max_width > -1) {
             if (!scale_text) {
                 w = string_width_ext(text, -1, max_width);
@@ -254,7 +254,7 @@ function ReactiveString(text_param, x1_param = 0, y1_param = 0, data = {}) const
 
     static draw = function() {
         add_draw_return_values();
-        draw_set_font(font);
+        draw_set_font(cjk_font(font));
         draw_set_halign(halign);
         draw_set_valign(valign);
         draw_set_color(colour);
@@ -291,7 +291,7 @@ function ValueShifter(value_text, data = {}) constructor {
     current_value = 0;
     shift_value = 1;
 
-    draw_set_font(fnt_40k_14b);
+    draw_set_font(cjk_font(fnt_40k_14b));
     var _but_width = string_height("-") + 8;
 
     decrease_button = new UnitButtonObject({
@@ -363,7 +363,7 @@ function LabeledIcon(icon_param, text_param, x1_param = 0, y1_param = 0, data = 
     x2 = x1 + w;
     y2 = y1 + icon_height;
     temp_font = draw_get_font();
-    draw_set_font(font);
+    draw_set_font(cjk_font(font));
     text_width = string_width(text) + 2;
     draw_set_font(temp_font);
 
@@ -390,7 +390,7 @@ function LabeledIcon(icon_param, text_param, x1_param = 0, y1_param = 0, data = 
 
     static draw = function() {
         add_draw_return_values();
-        draw_set_font(font);
+        draw_set_font(cjk_font(font));
         draw_set_halign(fa_left);
         draw_set_valign(fa_top);
         draw_set_color(colour);
@@ -504,7 +504,7 @@ function UnitButtonObject(data = {}) constructor {
     static update_loc = function() {
         if (label != "") {
             var temp_font = draw_get_font();
-            draw_set_font(font);
+            draw_set_font(cjk_font(font));
             if (!set_width) {
                 w = string_width(label) + 10;
                 h = string_height(label) + 4;
@@ -588,7 +588,7 @@ function UnitButtonObject(data = {}) constructor {
             draw_sprite_ext(spr_pixel_button_right, allow_click, x1 + _widths[0] + _widths[1], y1, height_scale, height_scale, 0, c_white, 1);
             var _text_position_x = x1 + _widths[0] + 2;
             _text_position_x += _widths[1] / 2;
-            draw_set_font(font);
+            draw_set_font(cjk_font(font));
             draw_set_halign(fa_center);
             draw_set_valign(fa_middle);
             draw_set_color(color);
@@ -762,7 +762,7 @@ function TextBarArea(_x, _y, _max_width = 400, _requires_input = false) construc
         draw_set_valign(fa_middle);
         draw_set_halign(fa_center);
         draw_set_alpha(1);
-        draw_set_font(fnt_fancy);
+        draw_set_font(cjk_font(fnt_fancy));
 
         var _display_string = $"{current_text}";
         var _text_w = string_width(_display_string);
@@ -789,7 +789,7 @@ function TextBarArea(_x, _y, _max_width = 400, _requires_input = false) construc
     static draw = function(_string_area) {
         add_draw_return_values();
 
-        draw_set_font(fnt_fancy);
+        draw_set_font(cjk_font(fnt_fancy));
 
         current_text = _string_area;
 
@@ -914,7 +914,7 @@ function UIDropdown(_options, _width = 180, _on_change = undefined) constructor 
         draw_rectangle_array(_main_rect, true);
 
         // Draw Current Selection
-        draw_set_font(fnt_40k_14b);
+        draw_set_font(cjk_font(fnt_40k_14b));
         draw_set_halign(fa_left);
         draw_text(_x + 8, _y + 6, options[selected_index].label);
 
@@ -989,7 +989,7 @@ function UIDropdown(_options, _width = 180, _on_change = undefined) constructor 
             }
 
             draw_set_color(_is_hovering ? c_white : c_gray);
-            draw_set_font(fnt_40k_12);
+            draw_set_font(cjk_font(fnt_40k_12));
             draw_text(_x + 10, _oy + 4, options[i].label);
         }
 
@@ -1373,7 +1373,7 @@ function ToggleButton(data = {}) constructor {
     static update = function(data = {}) {
         move_data_to_current_scope(data);
         var temp_font = draw_get_font();
-        draw_set_font(font);
+        draw_set_font(cjk_font(font));
         if (style == "default") {
             if (w == 0) {
                 w = string_width(str1);
@@ -1414,7 +1414,7 @@ function ToggleButton(data = {}) constructor {
             self.active = is_active;
         }
         add_draw_return_values();
-        draw_set_font(font);
+        draw_set_font(cjk_font(font));
         var str1_h = string_height(str1);
         var _text_padding = w * 0.03;
         var text_x = x1 + _text_padding;
@@ -1668,7 +1668,7 @@ function MainMenuButton(_sprite = spr_ui_but_1, _sprite_hover = spr_ui_hov_1, _x
         draw_set_color(c_white);
         draw_set_halign(fa_center);
         draw_set_valign(fa_top);
-        draw_set_font(fnt_cul_14);
+        draw_set_font(cjk_font(fnt_cul_14));
 
         var _text_x = _x + (_final_w / 2);
         var _text_y = _y + (4 * _y_scale);

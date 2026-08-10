@@ -1,7 +1,7 @@
 /// @self Asset.GMObject.obj_creation
 function scr_livery_setup() {
     add_draw_return_values();
-    draw_set_font(fnt_40k_30b);
+    draw_set_font(cjk_font(fnt_40k_30b));
     draw_set_halign(fa_center);
     draw_set_alpha(1);
     draw_set_color(CM_GREEN_COLOR);
@@ -28,12 +28,12 @@ function scr_livery_setup() {
 
     draw_set_halign(fa_left);
     draw_text_transformed(580, 118, "Battle Cry:", 0.6, 0.6, 0);
-    draw_set_font(fnt_40k_14b);
+    draw_set_font(cjk_font(fnt_40k_14b));
     battle_cry = text_bars.battle_cry.draw(battle_cry);
 
     draw_rectangle(445, 200, 1125, 202, 0);
 
-    draw_set_font(fnt_40k_30b);
+    draw_set_font(cjk_font(fnt_40k_30b));
 
     //Dont ask why the pauldron colours are switched i guess duke got confused between left and right at some point
     //TODO extract this function somewhere
@@ -104,7 +104,7 @@ function scr_livery_setup() {
     }
 
     draw_rectangle(844, 204, 846, 740, 0);
-    draw_set_font(fnt_40k_14b);
+    draw_set_font(cjk_font(fnt_40k_14b));
     draw_set_halign(fa_left);
     var spacing = 30;
     var xxx = 862;
@@ -148,7 +148,7 @@ function scr_livery_setup() {
         }
     }
 
-    draw_set_font(fnt_40k_30b);
+    draw_set_font(cjk_font(fnt_40k_30b));
     draw_set_halign(fa_center);
     if (_livery_type != 2) {
         var liv_string = $"Full Livery \n{livery_picker.role_set == 0 ? "default" : role[100][livery_picker.role_set]}";
@@ -157,7 +157,7 @@ function scr_livery_setup() {
         draw_text(160, 100, "Company Livery");
     }
 
-    draw_set_font(fnt_40k_14b);
+    draw_set_font(cjk_font(fnt_40k_14b));
     draw_set_halign(fa_left);
     right_data_slate.inside_method = function() {
         var _cultures = buttons.culture_styles;

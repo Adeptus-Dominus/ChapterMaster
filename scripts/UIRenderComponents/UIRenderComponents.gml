@@ -79,8 +79,9 @@ function UITextRendererComponent(owner, name) : UIRenderComponent(owner, name) c
             return;
         }
         callback(self);
-        if (draw_get_font() != font) {
-            draw_set_font(font);
+        var _effective_font = cjk_font(font);
+        if (draw_get_font() != _effective_font) {
+            draw_set_font(_effective_font);
         }
         var orig_valign = draw_get_valign();
         var orig_halign = draw_get_halign();

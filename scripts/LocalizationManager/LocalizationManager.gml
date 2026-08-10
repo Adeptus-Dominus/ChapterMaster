@@ -25,7 +25,7 @@ function LocalizationManager() constructor {
     /// @returns {string}
     static translate = function(_key, _args = undefined) {
         var _value = self.translations[$ _key];
-        if (is_undefined(_value) || !is_string(_value)) {
+        if (is_undefined(_value) || !is_string(_value) || _value == "") {
             _value = _key;
         }
 
@@ -71,4 +71,40 @@ function localize(_key, _args = undefined) {
         return global.localization_manager.translate(_key, _args);
     }
     return _key;
+}
+
+/// @desc Returns a CJK-capable runtime font for the given base font when the active
+///       language needs it, so localized text (e.g. Chinese) has glyphs. When the
+///       language does not need CJK, the base font is returned unchanged.
+/// @param {Asset.GMFont} _base_font The font asset intended for this text.
+/// @returns {Asset.GMFont}
+function cjk_font(_base_font) {
+    if (!variable_global_exists("localization_manager")) {
+        return _base_font;
+    }
+    var _manager = global.localization_manager;
+    if (!_manager.needs_cjk) {
+        return _base_font;
+    }
+    switch (_base_font) {
+        case fnt_40k_10: return _manager.get_font(10, _base_font);
+        case fnt_40k_12: return _manager.get_font(13, _base_font);
+        case fnt_40k_12i: return _manager.get_font(13, _base_font);
+        case fnt_40k_14: return _manager.get_font(14, _base_font);
+        case fnt_40k_14b: return _manager.get_font(14, _base_font);
+        case fnt_40k_14i: return _manager.get_font(14, _base_font);
+        case fnt_40k_30b: return _manager.get_font(30, _base_font);
+        case fnt_cul_14: return _manager.get_font(12, _base_font);
+        case fnt_cul_18: return _manager.get_font(16, _base_font);
+        case fnt_menu: return _manager.get_font(12, _base_font);
+        case fnt_fancy: return _manager.get_font(18, _base_font);
+        case fnt_large: return _manager.get_font(24, _base_font);
+        case fnt_small: return _manager.get_font(9, _base_font);
+        case fnt_tiny: return _manager.get_font(8, _base_font);
+        case fnt_info: return _manager.get_font(11, _base_font);
+        case fnt_legal: return _manager.get_font(6, _base_font);
+        case fnt_aldrich_12: return _manager.get_font(12, _base_font);
+        case fnt_Embossed_metal: return _manager.get_font(12, _base_font);
+    }
+    return _base_font;
 }

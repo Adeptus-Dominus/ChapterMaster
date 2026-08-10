@@ -224,9 +224,9 @@ function scr_chapter_new(chapter_identifier) {
         var chapter_obj = new ChapterData();
         var successfully_loaded = chapter_obj.load_from_json(chapter_id);
         if (!successfully_loaded) {
-            var issue = $"No json file exists for chapter id {chapter_id} and name {chapter_identifier}";
+            var issue = localize("No json file exists for chapter id {0} and name {1}", [string(chapter_id), chapter_identifier]);
             // LOGGER.error(issue);
-            scr_popup("Error Loading Chapter", issue, "debug");
+            scr_popup(localize("Error Loading Chapter"), issue, "debug");
             return false;
         }
 
@@ -241,9 +241,9 @@ function scr_chapter_new(chapter_identifier) {
         var chapter_obj = new ChapterData();
         var successfully_loaded = chapter_obj.load_from_json(chapter_identifier, true);
         if (!successfully_loaded) {
-            var issue = $"No json file exists for chapter id {chapter_identifier} and name {chapter_identifier}";
+            var issue = localize("No json file exists for chapter id {0} and name {1}", [string(chapter_identifier), chapter_identifier]);
             LOGGER.error(issue);
-            scr_popup("Error Loading Chapter", issue, "debug");
+            scr_popup(localize("Error Loading Chapter"), issue, "debug");
             return false;
         }
         global.chapter_creation_object = chapter_obj;

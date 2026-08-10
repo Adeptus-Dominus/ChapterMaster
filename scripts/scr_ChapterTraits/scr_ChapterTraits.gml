@@ -138,25 +138,25 @@ function ChapterTrait(trait) constructor {
                 var _line = "";
 
                 if (struct_exists(_mod, "int_mod") && _mod.int_mod != 0) {
-                    _line += $"  Disposition Gains : {string_plus_minus(_mod.int_mod)}{_mod.int_mod}\n";
+                    _line += localize("  Disposition Gains : {0}\n", [string_plus_minus(_mod.int_mod) + string(_mod.int_mod)]);
                 }
 
                 if (struct_exists(_mod, "mult") && _mod.mult != 1) {
                     if (_line != "") {
                         _line += " ";
                     }
-                    _line += $"  Disposition Multiplyers x{_mod.mult}\n";
+                    _line += localize("  Disposition Multiplyers x{0}\n", [string(_mod.mult)]);
                 }
 
                 if (struct_exists(_mod, "start_disp") && _mod.start_disp != 0) {
                     if (_line != "") {
                         _line += " ";
                     }
-                    _line += $"  Disposition Start {string_plus_minus(_mod.start_disp)}{_mod.start_disp}\n";
+                    _line += localize("  Disposition Start {0}\n", [string_plus_minus(_mod.start_disp) + string(_mod.start_disp)]);
                 }
 
                 if (_line != "") {
-                    _str += $"Faction {_fac_names[_mod.faction]}:\n{_line}\n";
+                    _str += localize("Faction {0}:\n{1}\n", [localize(_fac_names[_mod.faction]), _line]);
                 }
             }
         }
@@ -200,25 +200,25 @@ function ChapterTrait(trait) constructor {
         }
 
         if (suspicion != 0) {
-            _str += $"Suspicion: {string_plus_minus(suspicion)}{suspicion}\n";
+            _str += localize("Suspicion: {0}\n", [string_plus_minus(suspicion) + string(suspicion)]);
         }
 
         if (array_length(character_spawn_increase)) {
-            _str += $"Increases Character trait spawns : {character_spawn_increase}\n";
+            _str += localize("Increases Character trait spawns : {0}\n", [character_spawn_increase]);
         }
 
         if (array_length(character_spawn_decrease)) {
-            _str += $"Decrease Character trait spawns : {character_spawn_decrease}\n";
+            _str += localize("Decrease Character trait spawns : {0}\n", [character_spawn_decrease]);
         }
         return _str;
     };
 
     static main_tool_tip = function() {
-        return $"{name} ({points})";
+        return localize("{0} ({1})", [localize(name), string(points)]);
     };
 
     static data_tool_tip = function() {
-        return $"{description} \nCategories: {print_meta()}\n\nEffects:\n{effects_string()}";
+        return localize("{0} \nCategories: {1}\n\nEffects:\n{2}", [localize(description), print_meta(), effects_string()]);
     };
 
     static alter_starting_dispositions = function() {
@@ -251,9 +251,13 @@ function ChapterTrait(trait) constructor {
 
     static print_meta = function() {
         if (array_length(meta) == 0) {
-            return "None";
+            return localize("None");
         } else {
-            return string_join_ext(", ", meta);
+            var _localized = [];
+            for (var i = 0; i < array_length(meta); i++) {
+                array_push(_localized, localize(string(meta[i])));
+            }
+            return string_join_ext(", ", _localized);
         }
     };
 }
@@ -517,12 +521,12 @@ function draw_chapter_trait_list(type) {
         _list = obj_creation.all_disadvantages;
     }
 
-    var _title = type ? "Advantages" : "Disadvantage";
+    var _title = type ? localize("Advantages") : localize("Disadvantage");
 
-    draw_set_font(fnt_40k_30b);
+    draw_set_font(cjk_font(fnt_40k_30b));
     draw_set_halign(fa_center);
-    draw_text_transformed(800, 211, $"Select a {_title}", 0.6, 0.6, 0);
-    draw_set_font(fnt_40k_14b);
+    draw_text_transformed(800, 211, localize("Select a {0}", [_title]), 0.6, 0.6, 0);
+    draw_set_font(cjk_font(fnt_40k_14b));
     draw_set_halign(fa_left);
     for (var slot = 0; slot < array_length(_list); slot++) {
         var _trait = _list[slot];
@@ -539,6 +543,7 @@ function draw_chapter_trait_list(type) {
             continue;
         }
         var _trait_name = _trait.name;
+        var _trait_display_name = localize(_trait_name);
         //columns of 14, shift the left boarder across and leave a gap at the top on cols 2 & 3
         if (slot >= 15 && slot < 29) {
             column.x1 = 670;
@@ -560,9 +565,9 @@ function draw_chapter_trait_list(type) {
 
         var gap = ((slot - 1) % 14) * column.h;
 
-        draw_text(column.x1, column.y1 + gap, _trait_name);
+        draw_text(column.x1, column.y1 + gap, _trait_display_name);
 
-        var dis_width = string_width(_trait_name);
+        var dis_width = string_width(_trait_display_name);
 
         var coords = [
             column.x1,
@@ -577,7 +582,7 @@ function draw_chapter_trait_list(type) {
             tooltip2 = _trait.data_tool_tip();
             draw_set_color(c_white);
             draw_set_alpha(0.2);
-            draw_text(column.x1, column.y1 + gap, _trait_name);
+            draw_text(column.x1, column.y1 + gap, _trait_display_name);
 
             //Click on disadvantage
             if (!disable && mouse_button_clicked()) {
@@ -591,7 +596,7 @@ function draw_chapter_trait_list(type) {
 
 function draw_selected_chapter_traits(type) {
     //advatages positive disssadvatages negative type
-    var _title = type ? "Advantages" : "Disadvantages";
+    var _title = type ? localize("Advantages") : localize("Disadvantages");
 
     add_draw_return_values();
 
@@ -614,9 +619,9 @@ function draw_selected_chapter_traits(type) {
 
     var _advantage_click_allow = custom == eCHAPTER_TYPE.CUSTOM;
     draw_set_halign(fa_left);
-    draw_set_font(fnt_40k_30b);
-    draw_text_transformed(_title_x, 564, $"Chapter {_title}", 0.5, 0.5, 0);
-    draw_set_font(fnt_40k_14);
+    draw_set_font(cjk_font(fnt_40k_30b));
+    draw_text_transformed(_title_x, 564, localize("Chapter {0}", [_title]), 0.5, 0.5, 0);
+    draw_set_font(cjk_font(fnt_40k_14));
 
     _adv_txt.x2 = _adv_txt.x1 + _adv_txt.w;
     _adv_txt.y2 = _adv_txt.y1 + _adv_txt.h;
@@ -627,7 +632,7 @@ function draw_selected_chapter_traits(type) {
         var _array = [];
         if (_adv.activated) {
             if (_advantages < _max_advantage_count) {
-                _array = draw_unit_buttons([_adv_txt.x1, _adv_txt.y1 + (_advantages * _adv_txt.h)], $"[-] {_adv.name}", [0.75, 0.75], CM_GREEN_COLOR);
+                _array = draw_unit_buttons([_adv_txt.x1, _adv_txt.y1 + (_advantages * _adv_txt.h)], localize("[-] {0}", [localize(_adv.name)]), [0.75, 0.75], CM_GREEN_COLOR);
                 _advantages++;
             } else {
                 _adv.remove();
@@ -640,8 +645,8 @@ function draw_selected_chapter_traits(type) {
             continue;
         }
 
-        tooltip = $"{_adv.name} ({_adv.points} Points)";
-        tooltip2 = _adv.description;
+        tooltip = _adv.main_tool_tip();
+        tooltip2 = localize(_adv.description);
 
         if (!_advantage_click_allow || popup != "") {
             continue;
@@ -659,8 +664,8 @@ function draw_selected_chapter_traits(type) {
         }
         if (scr_hit(_array)) {
             if (bool(type) && points >= maxpoints) {
-                tooltip = "Insufficient Points";
-                tooltip2 = "Add disadvantages or decrease Chapter Stats";
+                tooltip = localize("Insufficient Points");
+                tooltip2 = localize("Add disadvantages or decrease Chapter Stats");
             }
         } else {
             continue;
