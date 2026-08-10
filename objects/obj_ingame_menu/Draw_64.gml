@@ -10,11 +10,11 @@ if (settings == 1) {
 
     draw_set_color(c_gray);
     draw_set_halign(fa_center);
-    draw_set_font(global.localization_manager.get_font(12, fnt_cul_14));
+    draw_set_font(cjk_font(fnt_cul_14));
     draw_text_transformed(763, 149, localize("Settings"), 1.5, 1.5, 0);
 
     draw_set_halign(fa_left);
-    draw_set_font(global.localization_manager.get_font(16, fnt_cul_18));
+    draw_set_font(cjk_font(fnt_cul_18));
     draw_text(493, 224, localize("Master Volume"));
     draw_text(493, 281, localize("Effects Volume"));
     draw_text(493, 339, localize("Music Volume"));
@@ -58,7 +58,7 @@ if (settings == 1) {
 
     // Language selector
     draw_set_halign(fa_left);
-    draw_set_font(global.localization_manager.get_font(16, fnt_cul_18));
+    draw_set_font(cjk_font(fnt_cul_18));
     draw_text(493, 543, localize("Language"));
 
     draw_set_halign(fa_center);
@@ -70,7 +70,7 @@ if (settings == 1) {
     scr_image("menu", 0, 476, 114, 562, 631);
     draw_set_color(c_gray);
     draw_set_halign(fa_center);
-    draw_set_font(global.localization_manager.get_font(12, fnt_cul_14));
+    draw_set_font(cjk_font(fnt_cul_14));
     draw_text_transformed(929, 149, localize("Menu"), 1.5, 1.5, 0);
 }
 

@@ -11,7 +11,7 @@ function SettingsManager() constructor {
     };
     autosave = true;
     username = "";
-    language = "en";
+    language = LANG_EN;
 
     static load = function() {
         ini_open("saves.ini");
@@ -21,7 +21,13 @@ function SettingsManager() constructor {
         fullscreen = ini_read_real("Settings", "fullscreen", 1);
         autosave = ini_read_real("Settings", "autosave", true);
         username = ini_read_string("Settings", "username", "");
-        language = ini_read_string("Settings", "language", "en");
+        language = ini_read_string("Settings", "language", LANG_EN);
+
+        // Guard against a stale/invalid language saved in saves.ini that is no
+        // longer shipped, so the language selector always starts from a valid index.
+        if (array_get_index(global.available_languages, language) == -1) {
+            language = LANG_EN;
+        }
 
         var rect_str = ini_read_string("Settings", "window_data", "0|0|1600|900|");
         var parts = string_split(rect_str, "|");

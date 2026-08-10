@@ -14,6 +14,10 @@
 // First candidate TTF used when a language needs CJK glyphs that the latin fonts lack.
 #macro STR_CJK_FALLBACK_FONT "fonts/simhei.ttf"
 
+// Locale codes of shipped languages.
+#macro LANG_EN "en"
+#macro LANG_ZH "zh"
+
 #macro MANAGE_MAN_SEE 34
 #macro MANAGE_MAN_MAX array_length(obj_controller.display_unit) + 7
 #macro LARGE_PLANET_MOD 1000000000 // Population threshold for large planet classification
