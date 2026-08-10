@@ -18,6 +18,10 @@
 #macro LANG_EN "en"
 #macro LANG_ZH "zh"
 
+// Language JSON file layout under datafiles/. Path is: working_directory + LANG_FILE_DIR + <code> + LANG_FILE_EXT
+#macro LANG_FILE_DIR "/lang/"
+#macro LANG_FILE_EXT ".json"
+
 #macro MANAGE_MAN_SEE 34
 #macro MANAGE_MAN_MAX array_length(obj_controller.display_unit) + 7
 #macro LARGE_PLANET_MOD 1000000000 // Population threshold for large planet classification

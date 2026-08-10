@@ -10,42 +10,46 @@ function LocalizationManager() constructor {
     static load_language = function(_language) {
         self.language = _language;
         self.needs_cjk = _language != LANG_EN && string_count(LANG_ZH, _language) > 0;
+        self.translations = self._load_lang_file(_language);
+        self._warn_missing_translations();
+    };
 
-        var _path = working_directory + "/lang/" + _language + ".json";
-        if (file_exists(_path)) {
-            var _parsed = json_to_gamemaker(_path, json_parse);
-            if (is_struct(_parsed)) {
-                self.translations = _parsed;
-            } else {
-                LOGGER.warning($"Language file parsed to a non-struct: {_path}");
-                self.translations = {};
-            }
-        } else {
+    /// @desc Builds the path to a language's JSON file under datafiles/lang/.
+    /// @param {string} _language Language code: LANG_EN, LANG_ZH, etc.
+    /// @returns {string}
+    static _lang_file_path = function(_language) {
+        return working_directory + LANG_FILE_DIR + _language + LANG_FILE_EXT;
+    };
+
+    /// @desc Loads a language file and returns its translations as a struct, or an
+    ///       empty struct (with a warning) when the file is missing or malformed.
+    /// @param {string} _language Language code: LANG_EN, LANG_ZH, etc.
+    /// @returns {Struct}
+    static _load_lang_file = function(_language) {
+        var _path = self._lang_file_path(_language);
+        if (!file_exists(_path)) {
             LOGGER.warning($"Language file not found: {_path}");
-            self.translations = {};
+            return {};
         }
 
-        self._warn_missing_translations();
+        var _parsed = json_to_gamemaker(_path, json_parse);
+        if (!is_struct(_parsed)) {
+            LOGGER.warning($"Language file parsed to a non-struct: {_path}");
+            return {};
+        }
+
+        return _parsed;
     };
 
     /// @desc Compares the loaded translations against the English source keys and
     ///       warns about keys that are missing, so edits to English UI text do not
     ///       silently sever translations across languages.
     static _warn_missing_translations = function() {
-        if (self.language == LANG_EN || !is_struct(self.translations)) {
+        if (self.language == LANG_EN || struct_count(self.translations) == 0) {
             return;
         }
 
-        var _en_path = working_directory + "/lang/" + LANG_EN + ".json";
-        if (!file_exists(_en_path)) {
-            return;
-        }
-
-        var _en_translations = json_to_gamemaker(_en_path, json_parse);
-        if (!is_struct(_en_translations)) {
-            return;
-        }
-
+        var _en_translations = self._load_lang_file(LANG_EN);
         var _en_keys = struct_get_names(_en_translations);
         var _missing_keys = [];
         for (var i = 0; i < array_length(_en_keys); i++) {
@@ -55,7 +59,7 @@ function LocalizationManager() constructor {
         }
 
         if (array_length(_missing_keys) > 0) {
-            LOGGER.warning($"Language '{self.language}' is missing {array_length(_missing_keys)} translations from '{LANG_EN}': {string_join(_missing_keys, ", ")}");
+            LOGGER.warning($"Language '{self.language}' is missing {array_length(_missing_keys)} translations from '{LANG_EN}': {string_join_ext(", ", _missing_keys)}");
         }
     };
 
