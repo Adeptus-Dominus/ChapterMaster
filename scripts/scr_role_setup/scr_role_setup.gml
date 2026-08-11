@@ -103,7 +103,7 @@ function role_setup_objects() {
             str1: localize("On Planet"),
             font: fnt_40k_12,
             style: "box",
-            tooltip: localize("On Planet/nCheck to have your Astartes Start on your home planet."),
+            tooltip: localize("On Planet\nCheck to have your Astartes Start on your home planet."),
         },
         {
             str1: localize("Load to Ships"),

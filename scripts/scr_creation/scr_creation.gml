@@ -291,7 +291,7 @@ function scr_creation(slide_num) {
 
             set_complex_livery_buttons();
 
-draw_set_font(cjk_font(fnt_40k_14b));
+            draw_set_font(cjk_font(fnt_40k_14b));
             bulk_selection_buttons_setup();
             livery_selection_options = new RadioSet(
                 [

@@ -77,8 +77,15 @@ function LocalizationManager() constructor {
         }
 
         if (_args != undefined) {
-            for (var i = 0; i < array_length(_args); i++) {
-                _value = string_replace_all(_value, "{" + string(i) + "}", string(_args[i]));
+            var _count = array_length(_args);
+            var _tokens = [];
+            for (var i = 0; i < _count; i++) {
+                var _token = chr(2) + "LOC_ARG_" + string(i) + chr(2);
+                array_push(_tokens, _token);
+                _value = string_replace_all(_value, "{" + string(i) + "}", _token);
+            }
+            for (var i = 0; i < _count; i++) {
+                _value = string_replace_all(_value, _tokens[i], string(_args[i]));
             }
         }
 

@@ -33,18 +33,18 @@ for (var i = 0; i < array_length(tooltip_data); i++) {
     var _rect_h = 0;
 
     // Measurements
-    draw_set_font(_font);
+    draw_set_font(cjk_font(_font));
     var _text_w = _force_width ? _width : min(string_width(_tooltip), _width);
     var _text_h = string_height_ext(_tooltip, DEFAULT_LINE_GAP, _text_w);
 
     if (_header != "") {
-        draw_set_font(_header_font);
+        draw_set_font(cjk_font(_header_font));
         _header_w = _force_width ? _width : max(string_width(_header), _width);
         _header_h = string_height_ext(_header, DEFAULT_LINE_GAP, _header_w);
     }
 
     if (_footer != "") {
-        draw_set_font(_footer_font);
+        draw_set_font(cjk_font(_footer_font));
         _footer_w = _force_width ? _width : max(string_width(_footer), _width);
         _footer_h = string_height_ext(_footer, DEFAULT_LINE_GAP, _footer_w);
     }
@@ -99,15 +99,15 @@ for (var i = 0; i < array_length(tooltip_data); i++) {
     draw_rectangle_color_simple(_rect_x + 2, _rect_y + 2, _rect_w + _rect_x - 2, _rect_h + _rect_y - 2, 1, c_gray);
 
     if (_header != "") {
-        draw_set_font(_header_font);
+        draw_set_font(cjk_font(_header_font));
         draw_text_ext_transformed_colour(_content_x, _header_y, _header, DEFAULT_LINE_GAP, _header_w, 1, 1, 0, _text_color, _text_color, _text_color, _text_color, 1);
     }
 
-    draw_set_font(_font);
+    draw_set_font(cjk_font(_font));
     draw_text_ext_transformed_colour(_content_x, _text_y, _tooltip, DEFAULT_LINE_GAP, _text_w, 1, 1, 0, _text_color, _text_color, _text_color, _text_color, 1);
 
     if (_footer != "") {
-        draw_set_font(_footer_font);
+        draw_set_font(cjk_font(_footer_font));
         draw_text_ext_transformed_colour(_content_x, _footer_y, _footer, DEFAULT_LINE_GAP, _footer_w, 1, 1, 0, _text_color, _text_color, _text_color, _text_color, 1);
         if (_cost != 0) {
             var _cost_color = (obj_controller.requisition < _cost) ? c_red : COL_REQUISITION;

@@ -720,19 +720,24 @@ function draw_chapter_homeworld_select() {
     left_data_slate.inside_method = function() {
         if (!buttons.complex_homeworld.active) {
             var trial_data = scr_trial_data();
-            draw_text_transformed(160, 90, localize("Aspirant Trial"), 0.6, 0.6, 0);
+            var _trial_label = localize("Aspirant Trial");
+            draw_text_transformed(160, 90, _trial_label, 0.6, 0.6, 0);
 
             if (custom == eCHAPTER_TYPE.CUSTOM) {
-                draw_sprite_stretched(spr_creation_arrow, 0, 40, 90, 32, 32);
-                if (point_and_click([40, 90, 40 + 32, 90 + 32])) {
+                var _trial_label_w = string_width(_trial_label) * 0.6;
+                var _arrow_size = 32;
+                var _side_gap = 10;
+                var _left_x = 160 - (_trial_label_w / 2) - _side_gap - _arrow_size;
+                var _right_x = 160 + (_trial_label_w / 2) + _side_gap;
+                draw_sprite_stretched(spr_creation_arrow, 0, _left_x, 90, _arrow_size, _arrow_size);
+                if (point_and_click([_left_x, 90, _left_x + _arrow_size, 90 + _arrow_size])) {
                     aspirant_trial++;
                     if (aspirant_trial >= array_length(trial_data)) {
                         aspirant_trial = 0;
                     }
                 }
-                var _right_x = 72 + string_length(localize("Aspirant Trial")) + 10;
-                draw_sprite_stretched(spr_creation_arrow, 1, _right_x, 90, 32, 32);
-                if (point_and_click([_right_x, 90, _right_x + 32, 90 + 32])) {
+                draw_sprite_stretched(spr_creation_arrow, 1, _right_x, 90, _arrow_size, _arrow_size);
+                if (point_and_click([_right_x, 90, _right_x + _arrow_size, 90 + _arrow_size])) {
                     aspirant_trial--;
                     if (aspirant_trial < 0) {
                         aspirant_trial = array_length(trial_data) - 1;

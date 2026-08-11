@@ -458,7 +458,7 @@ function ShutterButton() constructor {
         draw_set_alpha(1);
         scale = _scale;
         text = _text;
-        draw_set_font(fnt_40k_12);
+        draw_set_font(cjk_font(fnt_40k_12));
         draw_set_halign(fa_left);
         draw_set_color(c_gray);
         width = Width * scale;
@@ -498,7 +498,7 @@ function ShutterButton() constructor {
             draw_sprite_ext(spr_shutter_button, main_sprite, xx, yy, scale, scale, 0, c_white, 1);
             if (cover_text != "") {
                 draw_set_valign(fa_top);
-                draw_set_font(fnt_Embossed_metal);
+                draw_set_font(cjk_font(fnt_Embossed_metal));
                 var _cover_scale = 3 * scale;
                 while (string_width(cover_text) * _cover_scale > width - (5 * scale)) {
                     _cover_scale -= 0.1;
