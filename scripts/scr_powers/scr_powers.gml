@@ -441,10 +441,10 @@ function get_flavour_text(_flavour_text_data) {
             var _conditions_satisfied = power_conditions_check(_text_option[$ "conditions"]);
 
             if (_conditions_satisfied) {
-                _flavour_text = array_concat(_flavour_text, _text_option[$ "text"]);
+                _flavour_text = array_concat(_flavour_text, _text_option[$ LANG_ENTRY_TEXT]);
             }
         } else {
-            _flavour_text = array_concat(_flavour_text, _text_option[$ "text"]);
+            _flavour_text = array_concat(_flavour_text, _text_option[$ LANG_ENTRY_TEXT]);
         }
     }
 

@@ -39,6 +39,53 @@ global.faction_names_en = [
 
 global.faction_names = global.faction_names_en;
 
+// Chapter-stat rating labels shown on the creation screen, indexed 0..10 by stat value.
+// Same pristine-English-source / live-localized-array pattern as faction_names so the draw
+// path never allocates or translates per frame; refresh via LocalizationManager.refresh_locale_globals().
+global.chapter_strength_ratings_en = [
+    "",
+    "Decimated",
+    "Reduced",
+    "Reduced",
+    "Reduced",
+    "Average",
+    "Above Average",
+    "Above Average",
+    "Considerable",
+    "Considerable",
+    "Overwhelming",
+];
+global.chapter_cooperation_ratings_en = [
+    "",
+    "Antagonistic",
+    "Uncooperative",
+    "Uncooperative",
+    "Uncooperative",
+    "Neutral",
+    "Trusted",
+    "Trusted",
+    "Trusted",
+    "Trusted",
+    "Exemplary",
+];
+global.chapter_geneseed_ratings_en = [
+    "",
+    "Abnormal",
+    "Horrible",
+    "Horrible",
+    "Bad",
+    "Bad",
+    "Mediocre",
+    "Mediocre",
+    "Good",
+    "Good",
+    "Perfect",
+];
+
+global.chapter_strength_ratings = global.chapter_strength_ratings_en;
+global.chapter_cooperation_ratings = global.chapter_cooperation_ratings_en;
+global.chapter_geneseed_ratings = global.chapter_geneseed_ratings_en;
+
 global.xenos_factions = [
     eFACTION.ELDAR,
     eFACTION.ORK,

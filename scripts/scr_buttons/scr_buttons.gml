@@ -60,8 +60,8 @@ function standard_loc_data() {
 /// @returns {string}
 function localize_button_text(_value) {
     if (is_struct(_value)) {
-        var _variables = struct_exists(_value, "variables") ? _value[$ "variables"] : undefined;
-        return localize(_value[$ "text"], _variables);
+        var _variables = struct_exists(_value, LANG_ENTRY_VARIABLES) ? _value[$ LANG_ENTRY_VARIABLES] : undefined;
+        return localize(_value[$ LANG_ENTRY_TEXT], _variables);
     }
     return localize(_value);
 }
@@ -393,6 +393,10 @@ function LabeledIcon(icon_param, text_param, x1_param = 0, y1_param = 0, data = 
         tooltip = localize_button_text(tooltip);
         font_cjk = cjk_font(font);
         if (text_position == "right") {
+            var temp_font = draw_get_font();
+            draw_set_font(font_cjk);
+            text_width = string_width(text) + 2;
+            draw_set_font(temp_font);
             w = icon_width + text_width;
             h = icon_height;
             x2 = x1 + w;
@@ -1422,8 +1426,9 @@ function ToggleButton(data = {}) constructor {
         move_data_to_current_scope(data);
         str1 = localize_button_text(str1);
         tooltip = localize_button_text(tooltip);
+        font_cjk = cjk_font(font);
         var temp_font = draw_get_font();
-        draw_set_font(cjk_font(font));
+        draw_set_font(font_cjk);
         if (style == "default") {
             if (w == 0) {
                 w = string_width(str1);

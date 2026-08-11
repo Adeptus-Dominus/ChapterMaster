@@ -6,12 +6,16 @@ function LocalizationManager() constructor {
     translations = {};
     cjk_fonts = {};
     font_styles = {};
+    // Keys already warned about as missing this language load, so draw-time arrays do not
+    // flood LOGGER.error every frame for the same gap. Reset on each language load.
+    reported_missing = {};
 
     /// @param {string} _language Language code: LANG_EN, LANG_ZH, etc.
     static load_language = function(_language) {
         self.language = _language;
         self.needs_cjk = _language != LANG_EN && string_count(LANG_ZH, _language) > 0;
         self.translations = self._load_lang_file(_language);
+        self.reported_missing = {};
         self._warn_missing_translations();
     };
 
@@ -109,17 +113,30 @@ function LocalizationManager() constructor {
         return _result;
     };
 
+    /// @desc Reports a missing translation key once per language load. Calling this from
+    ///       _localize_item (which may run every draw frame for draw-time arrays) with an
+    ///       un-deduplicated LOGGER.error would flood the log, so each key fires at most once
+    ///       until the next load_language resets reported_missing.
+    /// @param {string} _key The untranslated English key.
+    static _report_missing = function(_key) {
+        if (struct_exists(self.reported_missing, _key)) {
+            return;
+        }
+        self.reported_missing[$ _key] = true;
+        LOGGER.error($"No translation for '{_key}' in language '{self.language}'.");
+    };
+
     /// @desc Localizes a single array entry: an English key, or a { text, variables } struct.
     ///       Empty values pass through untouched; missing keys fall back to English with a
-    ///       LOGGER.error warning.
+    ///       once-per-language-load LOGGER.error warning.
     /// @param {string|Struct} _item English translation key or struct with placeholder data.
     /// @returns {string}
     static _localize_item = function(_item) {
         if (is_struct(_item)) {
-            var _text = _item[$ "text"];
-            var _variables = struct_exists(_item, "variables") ? _item[$ "variables"] : undefined;
+            var _text = _item[$ LANG_ENTRY_TEXT];
+            var _variables = struct_exists(_item, LANG_ENTRY_VARIABLES) ? _item[$ LANG_ENTRY_VARIABLES] : undefined;
             if (_text != "" && !struct_exists(self.translations, _text)) {
-                LOGGER.error($"No translation for '{_text}' in language '{self.language}'.");
+                self._report_missing(_text);
             }
             return self.translate(_text, _variables);
         }
@@ -127,7 +144,7 @@ function LocalizationManager() constructor {
             return _item;
         }
         if (!struct_exists(self.translations, _item)) {
-            LOGGER.error($"No translation for '{_item}' in language '{self.language}'.");
+            self._report_missing(_item);
         }
         return self.translate(_item);
     };
@@ -141,6 +158,20 @@ function LocalizationManager() constructor {
     static refresh_locale_globals = function() {
         for (var i = 0; i < array_length(global.faction_names_en); i++) {
             global.faction_names[i] = self.translate(global.faction_names_en[i]);
+        }
+
+        // Rebuild each live rating array from its pristine English source, exactly like
+        // faction_names above. Writes go directly through each global accessor so the live
+        // array CoW-copies away from the shared _en source; translating from English each time
+        // keeps the call idempotent and round-trip safe.
+        for (var i = 0; i < array_length(global.chapter_strength_ratings_en); i++) {
+            global.chapter_strength_ratings[i] = self.translate(global.chapter_strength_ratings_en[i]);
+        }
+        for (var i = 0; i < array_length(global.chapter_cooperation_ratings_en); i++) {
+            global.chapter_cooperation_ratings[i] = self.translate(global.chapter_cooperation_ratings_en[i]);
+        }
+        for (var i = 0; i < array_length(global.chapter_geneseed_ratings_en); i++) {
+            global.chapter_geneseed_ratings[i] = self.translate(global.chapter_geneseed_ratings_en[i]);
         }
     };
 

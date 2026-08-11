@@ -22,6 +22,12 @@
 #macro LANG_FILE_DIR "/lang/"
 #macro LANG_FILE_EXT ".json"
 
+// Field keys of the { text, variables } struct used for keys with {0}, {1} placeholders in
+// localize_array()/localize_button_text()/power flavour text. Centralized so the array-entry
+// contract stays explicit across LocalizationManager, scr_buttons and scr_powers.
+#macro LANG_ENTRY_TEXT "text"
+#macro LANG_ENTRY_VARIABLES "variables"
+
 #macro MANAGE_MAN_SEE 34
 #macro MANAGE_MAN_MAX array_length(obj_controller.display_unit) + 7
 #macro LARGE_PLANET_MOD 1000000000 // Population threshold for large planet classification

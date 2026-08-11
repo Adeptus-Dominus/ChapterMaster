@@ -470,48 +470,9 @@ function draw_chapter_trait_select() {
         draw_text_transformed(800, 301, localize("Chapter Stats"), 0.6, 0.6, 0);
         draw_set_halign(fa_left);
 
-        var _strength_ratings = localize_array([
-            "",
-            "Decimated",
-            "Reduced",
-            "Reduced",
-            "Reduced",
-            "Average",
-            "Above Average",
-            "Above Average",
-            "Considerable",
-            "Considerable",
-            "Overwhelming",
-        ]);
-        var _cooperation_ratings = localize_array([
-            "",
-            "Antagonistic",
-            "Uncooperative",
-            "Uncooperative",
-            "Uncooperative",
-            "Neutral",
-            "Trusted",
-            "Trusted",
-            "Trusted",
-            "Trusted",
-            "Exemplary",
-        ]);
-        var _geneseed_ratings = localize_array([
-            "",
-            "Abnormal",
-            "Horrible",
-            "Horrible",
-            "Bad",
-            "Bad",
-            "Mediocre",
-            "Mediocre",
-            "Good",
-            "Good",
-            "Perfect",
-        ]);
-        draw_text_transformed(505, 332, localize("Strength: {0} ({1})", [_strength_ratings[strength], string(strength)]), 0.5, 0.5, 0);
-        draw_text_transformed(505, 387, localize("Cooperation: {0}  ({1})", [_cooperation_ratings[cooperation], string(cooperation)]), 0.5, 0.5, 0);
-        draw_text_transformed(505, 442, localize("Gene-Seed Purity: {0} ({1})", [_geneseed_ratings[purity], string(purity)]), 0.5, 0.5, 0);
+        draw_text_transformed(505, 332, localize("Strength: {0} ({1})", [global.chapter_strength_ratings[strength], string(strength)]), 0.5, 0.5, 0);
+        draw_text_transformed(505, 387, localize("Cooperation: {0}  ({1})", [global.chapter_cooperation_ratings[cooperation], string(cooperation)]), 0.5, 0.5, 0);
+        draw_text_transformed(505, 442, localize("Gene-Seed Purity: {0} ({1})", [global.chapter_geneseed_ratings[purity], string(purity)]), 0.5, 0.5, 0);
         draw_text_transformed(505, 497, localize("Gene-Seed Stability: ({0}%)", [string(stability)]), 0.5, 0.5, 0);
 
         var arrow_buttons_controls = [
