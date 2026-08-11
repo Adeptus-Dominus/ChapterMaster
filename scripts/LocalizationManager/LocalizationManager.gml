@@ -5,6 +5,7 @@ function LocalizationManager() constructor {
     needs_cjk = false;
     translations = {};
     cjk_fonts = {};
+    font_styles = {};
 
     /// @param {string} _language Language code: LANG_EN, LANG_ZH, etc.
     static load_language = function(_language) {
@@ -100,7 +101,7 @@ function LocalizationManager() constructor {
             return _base_font;
         }
 
-        var _style = self._font_style(_base_font);
+        var _style = self._get_font_style(_base_font);
         var _key = string(_size) + ":" + string(_style.bold) + ":" + string(_style.italic);
         if (struct_exists(self.cjk_fonts, _key)) {
             return self.cjk_fonts[$ _key];
@@ -117,14 +118,35 @@ function LocalizationManager() constructor {
         return _fallback_font;
     };
 
-    /// @desc Derives bold/italic style from the base font asset name so that same-size fonts with
-    ///       different styles (e.g. fnt_40k_14, fnt_40k_14b, fnt_40k_14i) get distinct CJK fallbacks
-    ///       instead of silently sharing one glyph set.
+    /// @desc Returns a font's bold/italic style, cached per font asset so detection (and any
+    ///       warnings) run once per session rather than on every draw call.
+    /// @param {real} _base_font The font asset intended for this text.
+    /// @returns {Struct}
+    static _get_font_style = function(_base_font) {
+        var _font_id = string(_base_font);
+        if (struct_exists(self.font_styles, _font_id)) {
+            return self.font_styles[$ _font_id];
+        }
+
+        var _style = self._font_style(_base_font);
+        self.font_styles[$ _font_id] = _style;
+        return _style;
+    };
+
+    /// @desc Resolves a font's bold/italic style. Styled fonts are declared explicitly in
+    ///       font_style_overrides(); the name-suffix heuristic below is only a safety net and logs
+    ///       a warning when it detects a styled font that is not declared, so adding or renaming a
+    ///       font surfaces loudly instead of silently losing or gaining weight.
     /// @param {real} _base_font The font asset intended for this text.
     /// @returns {Struct}
     static _font_style = function(_base_font) {
-        var _style = { bold: false, italic: false };
         var _name = font_get_name(_base_font);
+        var _overrides = font_style_overrides();
+        if (struct_exists(_overrides, _name)) {
+            return _overrides[$ _name];
+        }
+
+        var _style = { bold: false, italic: false };
         var _len = string_length(_name);
         if (_len == 0) {
             return _style;
@@ -157,6 +179,10 @@ function LocalizationManager() constructor {
                 _style.italic = true;
             }
         }
+
+        if (_style.bold || _style.italic) {
+            LOGGER.warning($"Font '{_name}' suggests bold/italic via its name suffix but is not declared in font_style_overrides(); add it there so the CJK fallback weight is explicit.");
+        }
         return _style;
     };
 }
@@ -182,4 +208,19 @@ function cjk_font(_base_font) {
         return global.localization_manager.get_font(_size, _base_font);
     }
     return _base_font;
+}
+
+/// @desc Explicit registry of styled font assets used by the CJK fallback. The CJK runtime font
+///       cannot preserve bold/italic, so styled fonts must be declared here; the name-suffix
+///       heuristic in LocalizationManager._font_style() is only a safety net and warns loudly if a
+///       styled-looking font is missing from this list. Add any future styled font here.
+/// @returns {Struct}
+function font_style_overrides() {
+    static _overrides = {
+        fnt_40k_14b: { bold: true, italic: false },
+        fnt_40k_30b: { bold: true, italic: false },
+        fnt_40k_12i: { bold: false, italic: true },
+        fnt_40k_14i: { bold: false, italic: true },
+    };
+    return _overrides;
 }
