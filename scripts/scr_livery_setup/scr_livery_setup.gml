@@ -35,21 +35,6 @@ function scr_livery_setup() {
 
     draw_set_font(cjk_font(fnt_40k_30b));
 
-    //Dont ask why the pauldron colours are switched i guess duke got confused between left and right at some point
-    //TODO extract this function somewhere
-    /*function draw_checkbox (cords, text, main_alpha, checked){
-            draw_set_alpha(main_alpha);
-            yar = col_special==(i+1) ?1:0;
-            if (custom!=eCHAPTER_TYPE.CUSTOM) then draw_set_alpha(0.5);
-            draw_sprite(spr_creation_check,yar,cur_button.cords[0],cur_button.cords[1]);
-             if (scr_hit(cur_button.cords[0],cur_button.cords[1],cur_button.cords[0]+32,cur_button.cords[1]+32) and allow_colour_click){
-                    
-                    var onceh=0;
-                    if (col_special=i+1) and (onceh=0){col_special=0;onceh=1;}
-                    if (col_special!=i+1) and (onceh=0){col_special=i+1;onceh=1;}
-             }
-             draw_text_transformed(cur_button.cords[0]+30,cur_button.cords[1]+4,cur_button.text,0.4,0.4,0);
-    }*/
     if (colour_selection_options.current_selection == 0) {
         var _col_areas = livery_picker.colours_radio;
         _col_areas.current_selection = -1;
@@ -80,9 +65,13 @@ function scr_livery_setup() {
         for (var i = 0; i < array_length(bulk_buttons); i++) {
             if (bulk_buttons[i].draw(custom == eCHAPTER_TYPE.CUSTOM)) {
                 instance_destroy(obj_creation_popup);
-                var pp = instance_create(0, 0, obj_creation_popup);
-                pp.type = i + 1;
-                pp.picker.title = bulk_buttons[i].label;
+                var _data = {
+                    target_role : i + 1,
+                    type : ePOPUP_TYPE.LIVERYPICK,
+                    colour_area : "",
+                    title : bulk_buttons[i].label
+                }
+                instance_create_depth(0, 0, -55, obj_creation_popup, _data);
             }
         }
 
@@ -94,9 +83,12 @@ function scr_livery_setup() {
 
             if (_button.draw()) {
                 instance_destroy(obj_creation_popup);
-                var pp = instance_create(0, 0, obj_creation_popup);
-                pp.type = _button.area;
-                pp.role = _button.role_id;
+                var _data = {
+                    target_role : _button.role_id,
+                    type : ePOPUP_TYPE.LIVERYPICK,
+                    colour_area : _button.area,
+                }
+                instance_create_depth(0, 0, -55,obj_creation_popup, _data);
             }
         }
         advanced_helmet_livery.draw();
@@ -129,9 +121,9 @@ function scr_livery_setup() {
 
     if (colour_selection_options.current_selection != 2 && !_update_sprite) {
         if (_livery_type == 1) {
-            roles_radio.update({x1: 882, y1: livery_selection_options.y2 + 20});
+            roles_radio.update({x1: 882, y1: livery_selection_options.y2 + 20,allow_changes:custom == eCHAPTER_TYPE.CUSTOM});
             roles_radio.draw();
-            if (roles_radio.changed && custom == eCHAPTER_TYPE.CUSTOM) {
+            if (roles_radio.changed) {
                 livery_picker.swap_role_set(1, 1);
             }
         } else if (_livery_type == 2) {
@@ -151,7 +143,7 @@ function scr_livery_setup() {
     draw_set_font(cjk_font(fnt_40k_30b));
     draw_set_halign(fa_center);
     if (_livery_type != 2) {
-        var liv_string = $"Full Livery \n{livery_picker.role_set == 0 ? "default" : role[100][livery_picker.role_set]}";
+        var liv_string = $"Full Livery \n{livery_picker.role_set == 0 ? "default" : player_role_data[livery_picker.role_set].role}";
         draw_text(160, 100, liv_string);
     } else {
         draw_text(160, 100, "Company Livery");
@@ -170,3 +162,4 @@ function scr_livery_setup() {
     right_data_slate.draw(1210, 5, 0.45, 1);
     pop_draw_return_values();
 }
+

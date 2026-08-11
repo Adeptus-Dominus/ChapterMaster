@@ -76,15 +76,6 @@ global.arr_negative_psy_levels = [
     "Omega",
 ];
 
-enum eEQUIPMENT_SLOT {
-    WEAPON_ONE,
-    WEAPON_TWO,
-    ARMOUR,
-    GEAR,
-    MOBILITY,
-    ALL,
-}
-
 enum eROLE_TAG {
     Techmarine = 0,
     Librarian = 1,
@@ -2094,6 +2085,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         if (is_undefined(_data)) {
             return "no_role_found";
         }
+
+        var _data = variable_clone(_data);
 
         alter_equipment(_data, from_armoury, to_armoury, quality);
     };

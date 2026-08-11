@@ -9,111 +9,112 @@ enum eEQUIP_TARGET_TYPE {
     WHIRLWIND = 54,
 }
 
+
+/// @self Asset.GMObject.obj_popup Asset.GMObject.obj_creation_popup
+function setup_UI_elements_equipment_selector(_x1, _y1) {
+    equipment_area = -1;
+
+    cancel_button = new UnitButtonObject({
+        x1: _x1 + 55,
+        y1: _y1 + 448,
+        style: "pixel",
+        label: "Cancel",
+    });
+    equip_button = new UnitButtonObject({
+        x1: _x1 + 444,
+        y1: _y1 + 448,
+        style: "pixel",
+        label: "Equip",
+    });
+    main_slate = new DataSlate({
+        style: "decorated",
+        XX: _x1,
+        YY: _y1,
+        set_width: true,
+        width: 571,
+        height: 450,
+    });
+    var _quality_options = [
+        {
+            str1: "Standard",
+            font: fnt_40k_14b,
+            val: 0,
+        },
+        {
+            str1: "Master Crafted",
+            font: fnt_40k_14b,
+            val: 1,
+        },
+    ];
+    quality_radio = new RadioSet(_quality_options, "", {
+        max_width: 500,
+        x1: _x1 + 34,
+        y1: _y1 + 175,
+    });
+    range_melee_radio = new RadioSet([
+        {
+            str1: "Ranged",
+            font: fnt_40k_14b,
+            val: eENGAGEMENT.RANGED,
+        },
+        {
+            str1: "Melee",
+            font: fnt_40k_14b,
+            val: eENGAGEMENT.MELEE,
+        },
+    ], "", {
+        max_width: 500,
+        x1: _x1 + 34,
+        y1: _y1 + 200,
+    });
+    weapon1_select = new UnitButtonObject({
+        x1: _x1 + 294,
+        y1: _y1 + 72,
+        label: "",
+        font: fnt_40k_12,
+    });
+    weapon2_select = new UnitButtonObject({
+        x1: _x1 + 294,
+        y1: _y1 + 92,
+        label: "",
+        font: fnt_40k_12,
+    });
+    armour_select = new UnitButtonObject({
+        x1: _x1 + 294,
+        y1: _y1 + 112,
+        label: "",
+        font: fnt_40k_12,
+    });
+    if (unchangeable_armour) {
+        armour_select.inactive_col = CM_RED_COLOR;
+        armour_select.tooltip = "One or more Marine has Dreadnought armour and cannot be changed";
+        armour_select.active = false;
+    }
+    gear_select = new UnitButtonObject({
+        x1: _x1 + 294,
+        y1: _y1 + 132,
+        label: "",
+        font: fnt_40k_12,
+    });
+    mobility_select = new UnitButtonObject({
+        x1: _x1 + 294,
+        y1: _y1 + 152,
+        label: "",
+        font: fnt_40k_12,
+    });
+    selectors = [
+        weapon1_select,
+        weapon2_select,
+        armour_select,
+        gear_select,
+        mobility_select,
+    ];
+    equip_button.bind_method = reequip_selection;
+    equip_button.bind_scope = self;
+};
+
 /// @self Asset.GMObject.obj_controller
 function set_up_equip_popup() {
-    static setup_UI_elements = function() {
-        equipment_area = -1;
-        cancel_button = new UnitButtonObject({
-            x1: 1061,
-            y1: 591,
-            style: "pixel",
-            label: "Cancel",
-        });
-        equip_button = new UnitButtonObject({
-            x1: 1450,
-            y1: 591,
-            style: "pixel",
-            label: "Equip",
-        });
-
-        main_slate = new DataSlate({
-            style: "decorated",
-            XX: 1006,
-            YY: 143,
-            set_width: true,
-            width: 571,
-            height: 450,
-        });
-
-        var _quality_options = [
-            {
-                str1: "Standard",
-                font: fnt_40k_14b,
-                val: 0,
-            },
-            {
-                str1: "Master Crafted",
-                font: fnt_40k_14b,
-                val: 1,
-            },
-        ];
-        quality_radio = new RadioSet(_quality_options, "", {
-            max_width: 500,
-            x1: 1040,
-            y1: 318,
-        });
-
-        range_melee_radio = new RadioSet([
-            {
-                str1: "Ranged",
-                font: fnt_40k_14b,
-                val: eENGAGEMENT.RANGED,
-            },
-            {
-                str1: "Melee",
-                font: fnt_40k_14b,
-                val: eENGAGEMENT.MELEE,
-            },
-        ], "", {
-            max_width: 500,
-            x1: 1040,
-            y1: 343,
-        });
-
-        weapon1_select = new UnitButtonObject({
-            x1: 1300,
-            y1: 215,
-            label: "",
-            font: fnt_40k_12,
-        });
-        weapon2_select = new UnitButtonObject({
-            x1: 1300,
-            y1: 235,
-            label: "",
-            font: fnt_40k_12,
-        });
-        armour_select = new UnitButtonObject({
-            x1: 1300,
-            y1: 255,
-            label: "",
-            font: fnt_40k_12,
-        });
-        if (unchangeable_armour) {
-            armour_select.inactive_col = CM_RED_COLOR;
-            armour_select.tooltip = "One or more Marine has Dreadnought armour and cannot be changed";
-            armour_select.active = false;
-        }
-        gear_select = new UnitButtonObject({
-            x1: 1300,
-            y1: 275,
-            label: "",
-            font: fnt_40k_12,
-        });
-        mobility_select = new UnitButtonObject({
-            x1: 1300,
-            y1: 295,
-            label: "",
-            font: fnt_40k_12,
-        });
-        selectors = [
-            weapon1_select,
-            weapon2_select,
-            armour_select,
-            gear_select,
-            mobility_select,
-        ];
-    };
-
     if (instance_exists(obj_popup)) {
         return;
     }
@@ -232,16 +233,18 @@ function set_up_equip_popup() {
         pip.unit_count = _units_selected_for_change;
         pip.unchangeable_armour = _unchangeable_armour;
         pip.sprite_index = noone;
+        pip.allow_quality_change = true;
+        pip.from_inventory = true;
 
         //Forwards equip_target_type selection to the equipment_recipient_type variable used in mouse_50 obj_popup and weapons_equip script
         pip.equipment_recipient_type = equip_target_type;
         with (pip) {
-            setup_UI_elements();
+            setup_UI_elements_equipment_selector(1000, 143);
         }
     }
 }
 
-/// @self Asset.GMObject.obj_popup
+/// @self Asset.GMObject.obj_popup Asset.GMObject.obj_creation_popup
 function reload_items() {
     item_name = [];
     scr_get_item_names(
@@ -250,16 +253,22 @@ function reload_items() {
         equipment_area, // slot
         range_melee_radio.selection_val("val"),
         false, // include company standard
-        true, // limit to available equipment
+        from_inventory, // limit to available equipment
         quality_radio.selection_val("val"),
     );
 }
 
-/// @self Asset.GMObject.obj_popup
-function draw_popup_equip() {
+/// @self Asset.GMObject.obj_popup Asset.GMObject.obj_creation_popup
+function draw_popup_equip(before_after_styling = true) {
     main_slate.draw_with_dimensions();
+    add_draw_return_values();
+    var _x1 = main_slate.XX;
+    var _y1 = main_slate.YY;
+    draw_set_valign(fa_top);
+    draw_set_font(fnt_40k_14);
     draw_set_color(CM_GREEN_COLOR);
-    draw_text(1302, 150, "Change Equipment");
+    draw_set_halign(fa_center);
+    draw_text(_x1 + main_slate.width /2, _y1 + 7, $"{before_after_styling ? "Change" : "Set"} Equipment");
 
     draw_set_font(fnt_40k_12);
     var comp = "";
@@ -276,7 +285,9 @@ function draw_popup_equip() {
     } else if (equipment_recipient_type > eEQUIP_TARGET_TYPE.DREADNOUGHT) {
         _descriptor = "Vehicles";
     }
-    draw_text(1292, 175, $"{comp} Company, {unit_count} {_descriptor}");
+    if (company != -1){
+        draw_text(_x1 + 286, _y1 + 32, $"{comp} Company, {unit_count} {_descriptor}");
+    }
 
     draw_set_halign(fa_left);
     draw_set_color(CM_GREEN_COLOR);
@@ -284,17 +295,24 @@ function draw_popup_equip() {
     var show_name = "";
     // Need to not show the artifact tags here somehow
 
-    draw_text_outline(1020, 195, "Before");
+    if (before_after_styling){
+        draw_text_outline(_x1 + 14, _y1 + 52, "Before");
 
-    for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
-        var _current = current_equipment[i];
-        if (_current == "") {
-            _current = ITEM_NAME_NONE;
+        for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
+            var _current = current_equipment[i];
+            if (_current == "") {
+                _current = ITEM_NAME_NONE;
+            }
+            draw_text(_x1 + 18, _y1 + 72 + (i * 20), _current);
         }
-        draw_text(1024, 215 + (i * 20), _current);
-    }
 
-    draw_text_outline(1296, 195, "After");
+        draw_text_outline(_x1 + 290, _y1 + 52, "After");
+    } else {
+        for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
+            var _title = $"{get_slot_name(target_role , i)}: ";
+            draw_text(_x1 + 18, _y1 + 72 + (i * 20), _title);
+        }
+    }
 
     for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
         var _selector = selectors[i];
@@ -314,7 +332,7 @@ function draw_popup_equip() {
             _area_change = true;
         }
         if (equipment_area == i) {
-            draw_text(1292, 195 + (20 * (i + 1)), "->");
+            draw_text(_x1 + 286, _y1 + 52 + (20 * (i + 1)), "->");
         }
     }
 
@@ -332,8 +350,8 @@ function draw_popup_equip() {
         var top = -1;
 
         for (var o = 0; o < array_length(item_name); o++) {
-            box_x = 1016 + (row * 154);
-            box_y = 380 + (column * 20);
+            box_x = _x1 + 10 + (row * 154);
+            box_y = _y1 + 237 + (column * 20);
             box = [
                 box_x,
                 box_y,
@@ -373,8 +391,10 @@ function draw_popup_equip() {
         range_melee_radio.draw();
     }
 
-    if (equipment_area != -1) {
-        quality_radio.draw();
+    if (allow_quality_change){
+        if (equipment_area != -1) {
+            quality_radio.draw();
+        }
     }
 
     if (quality_radio.changed || range_melee_radio.changed || _area_change) {
@@ -383,7 +403,7 @@ function draw_popup_equip() {
 
     draw_set_color(255);
     draw_set_halign(fa_center);
-    draw_text(1292, 570, warning);
+    draw_text(_x1 + 286, _y1 + 427, warning);
 
     if (cancel_button.draw()) {
         instance_destroy();
@@ -396,10 +416,8 @@ function draw_popup_equip() {
             break;
         }
     }
-
-    if (equip_button.draw(_valid)) {
-        reequip_selection();
-    }
+    equip_button.draw(_valid);
+    pop_draw_return_values();
 }
 
 /// @self Asset.GMObject.obj_popup

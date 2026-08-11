@@ -132,3 +132,15 @@ enum eIN_GAME_MENU_EFFECT {
     BACK_FROM_SETTINGS = 25,
     CLOSE_SAVELOAD = 30,
 }
+
+
+enum eEQUIPMENT_SLOT {
+    WEAPON_ONE,
+    WEAPON_TWO,
+    ARMOUR,
+    GEAR,
+    MOBILITY,
+    ALL,
+}
+
+

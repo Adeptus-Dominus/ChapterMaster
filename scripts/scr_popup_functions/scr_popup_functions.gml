@@ -2,6 +2,7 @@
 /// @description Resets all popup option variables to empty strings
 
 enum ePOPUP_TYPE {
+    LIVERYPICK = 4,
     PROMOTION = 5,
     EQUIP = 6,
     ARTIFACT_EQUIP = 8,

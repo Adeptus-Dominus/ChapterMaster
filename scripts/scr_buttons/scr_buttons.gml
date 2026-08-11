@@ -743,11 +743,15 @@ function SliderBar(_x, _y, _w = 100, _h = 16, _limits = [0, 100], _inc = 1) cons
 /// @param {real} _y Y position.
 /// @param {real} _max_width Max width of text bar.
 /// @param {bool} _requires_input If true, input is required.
-function TextBarArea(_x, _y, _max_width = 400, _requires_input = false) constructor {
+function TextBarArea(_x, _y, _max_width = 400, _requires_input = false, data = {}) constructor {
     xx = _x;
     yy = _y;
     max_width = _max_width;
     requires_input = _requires_input;
+    tooltip = "";
+    blocked_values = [];
+    block_checks_case_insensitive = true;
+    value_allowed = true;
 
     allow_input = false;
     cooloff = 0;
@@ -755,6 +759,8 @@ function TextBarArea(_x, _y, _max_width = 400, _requires_input = false) construc
 
     background = new DataSlate();
     background.draw_top_piece = false;
+
+    move_data_to_current_scope(data)
 
     static render_logic = function() {
         add_draw_return_values();
@@ -788,10 +794,12 @@ function TextBarArea(_x, _y, _max_width = 400, _requires_input = false) construc
 
     static draw = function(_string_area) {
         add_draw_return_values();
+        if (value_allowed || !allow_input) {
+            current_text = _string_area;
+        }
+        value_allowed = true;
 
         draw_set_font(cjk_font(fnt_fancy));
-
-        current_text = _string_area;
 
         if (cooloff > 0) {
             cooloff--;
@@ -810,6 +818,14 @@ function TextBarArea(_x, _y, _max_width = 400, _requires_input = false) construc
             draw_set_color(c_gray);
         } else {
             draw_set_color(requires_input ? CM_RED_COLOR : CM_GREEN_COLOR);
+            value_allowed = requires_input ? false : true;
+        }
+
+        if (array_length(blocked_values)){
+            if (array_contains(blocked_values, block_checks_case_insensitive ? string_lower(current_text) : current_text)){
+                draw_set_color(CM_RED_COLOR);
+                value_allowed = false;
+            }
         }
 
         var _x1 = xx - (_bar_wid / 2);
@@ -838,6 +854,10 @@ function TextBarArea(_x, _y, _max_width = 400, _requires_input = false) construc
             obj_cursor.image_index = 2;
         } else {
             obj_cursor.image_index = 0;
+        }
+
+        if (_mouse_hover && tooltip != ""){
+            tooltip_draw(tooltip);
         }
 
         background.XX = _x1;
