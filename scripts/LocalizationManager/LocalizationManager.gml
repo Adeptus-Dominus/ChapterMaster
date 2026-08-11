@@ -93,13 +93,54 @@ function LocalizationManager() constructor {
         return _value;
     };
 
-    /// @desc Localizes the language-dependent global faction_names array in place, translating once
-    ///       per language change instead of on every draw frame. The English values are the
-    ///       localization keys; re-runnning is idempotent because translate() falls back to the
-    ///       input when it is not a key. Call from SettingsManager.apply_language().
+    /// @desc Localizes every entry of an array in one call, returning a new array. Each element
+    ///       is treated as an English translation key (or a { text, variables } struct for
+    ///       keys with {0}, {1} placeholders). Missing keys fall back to the English value and
+    ///       are reported with LOGGER.error so translation gaps surface loudly instead of
+    ///       silently showing the wrong language.
+    /// @param {Array} _keys Array of English keys and/or { text, variables } structs.
+    /// @returns {Array}
+    static localize_array = function(_keys) {
+        var _result = array_create(array_length(_keys), "");
+        for (var i = 0; i < array_length(_keys); i++) {
+            var _item = _keys[i];
+            _result[i] = self._localize_item(_item);
+        }
+        return _result;
+    };
+
+    /// @desc Localizes a single array entry: an English key, or a { text, variables } struct.
+    ///       Empty values pass through untouched; missing keys fall back to English with a
+    ///       LOGGER.error warning.
+    /// @param {string|Struct} _item English translation key or struct with placeholder data.
+    /// @returns {string}
+    static _localize_item = function(_item) {
+        if (is_struct(_item)) {
+            var _text = _item[$ "text"];
+            var _variables = struct_exists(_item, "variables") ? _item[$ "variables"] : undefined;
+            if (_text != "" && !struct_exists(self.translations, _text)) {
+                LOGGER.error($"No translation for '{_text}' in language '{self.language}'.");
+            }
+            return self.translate(_text, _variables);
+        }
+        if (!is_string(_item) || _item == "") {
+            return _item;
+        }
+        if (!struct_exists(self.translations, _item)) {
+            LOGGER.error($"No translation for '{_item}' in language '{self.language}'.");
+        }
+        return self.translate(_item);
+    };
+
+    /// @desc Rebuilds the localized global faction_names display array from the pristine English
+    ///       source (global.faction_names_en), translating once per language change instead of on
+    ///       every draw frame. Translating from the constant English source each time makes the
+    ///       call fully idempotent and round-trip safe: switching to another language and back to
+    ///       English always restores the original English names. Call from
+    ///       SettingsManager.apply_language().
     static refresh_locale_globals = function() {
-        for (var i = 0; i < array_length(global.faction_names); i++) {
-            global.faction_names[i] = self.translate(global.faction_names[i]);
+        for (var i = 0; i < array_length(global.faction_names_en); i++) {
+            global.faction_names[i] = self.translate(global.faction_names_en[i]);
         }
     };
 
@@ -203,6 +244,18 @@ function localize(_key, _args = undefined) {
         return global.localization_manager.translate(_key, _args);
     }
     return _key;
+}
+
+/// @desc Global shorthand for localizing every entry of an array in one call, mapping each
+///       English element to the current language. Missing keys fall back to English and are
+///       flagged with LOGGER.error.
+/// @param {Array} _keys Array of English keys and/or { text, variables } structs.
+/// @returns {Array}
+function localize_array(_keys) {
+    if (variable_global_exists("localization_manager")) {
+        return global.localization_manager.localize_array(_keys);
+    }
+    return _keys;
 }
 
 /// @desc Global shorthand for a font suitable for the current language, deriving

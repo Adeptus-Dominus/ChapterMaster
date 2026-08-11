@@ -437,7 +437,7 @@ function draw_chapter_trait_select() {
     }
 
     draw_set_color(CM_GREEN_COLOR);
-    draw_text_transformed(800, 120, string_hash_to_newline(localize("Points: {0}/{1}", [string(points), string(maxpoints)])), 0.6, 0.6, 0);
+    draw_text_transformed(800, 120, string_hash_to_newline(localize("Points: {0}/{1}", [points, maxpoints])), 0.6, 0.6, 0);
 
     obj_cursor.image_index = 0;
     if ((custom != eCHAPTER_TYPE.PREMADE) && (restarted == 0)) {
@@ -470,45 +470,45 @@ function draw_chapter_trait_select() {
         draw_text_transformed(800, 301, localize("Chapter Stats"), 0.6, 0.6, 0);
         draw_set_halign(fa_left);
 
-        var _strength_ratings = [
+        var _strength_ratings = localize_array([
             "",
-            localize("Decimated"),
-            localize("Reduced"),
-            localize("Reduced"),
-            localize("Reduced"),
-            localize("Average"),
-            localize("Above Average"),
-            localize("Above Average"),
-            localize("Considerable"),
-            localize("Considerable"),
-            localize("Overwhelming"),
-        ];
-        var _cooperation_ratings = [
+            "Decimated",
+            "Reduced",
+            "Reduced",
+            "Reduced",
+            "Average",
+            "Above Average",
+            "Above Average",
+            "Considerable",
+            "Considerable",
+            "Overwhelming",
+        ]);
+        var _cooperation_ratings = localize_array([
             "",
-            localize("Antagonistic"),
-            localize("Uncooperative"),
-            localize("Uncooperative"),
-            localize("Uncooperative"),
-            localize("Neutral"),
-            localize("Trusted"),
-            localize("Trusted"),
-            localize("Trusted"),
-            localize("Trusted"),
-            localize("Exemplary"),
-        ];
-        var _geneseed_ratings = [
+            "Antagonistic",
+            "Uncooperative",
+            "Uncooperative",
+            "Uncooperative",
+            "Neutral",
+            "Trusted",
+            "Trusted",
+            "Trusted",
+            "Trusted",
+            "Exemplary",
+        ]);
+        var _geneseed_ratings = localize_array([
             "",
-            localize("Abnormal"),
-            localize("Horrible"),
-            localize("Horrible"),
-            localize("Bad"),
-            localize("Bad"),
-            localize("Mediocre"),
-            localize("Mediocre"),
-            localize("Good"),
-            localize("Good"),
-            localize("Perfect"),
-        ];
+            "Abnormal",
+            "Horrible",
+            "Horrible",
+            "Bad",
+            "Bad",
+            "Mediocre",
+            "Mediocre",
+            "Good",
+            "Good",
+            "Perfect",
+        ]);
         draw_text_transformed(505, 332, localize("Strength: {0} ({1})", [_strength_ratings[strength], string(strength)]), 0.5, 0.5, 0);
         draw_text_transformed(505, 387, localize("Cooperation: {0}  ({1})", [_cooperation_ratings[cooperation], string(cooperation)]), 0.5, 0.5, 0);
         draw_text_transformed(505, 442, localize("Gene-Seed Purity: {0} ({1})", [_geneseed_ratings[purity], string(purity)]), 0.5, 0.5, 0);

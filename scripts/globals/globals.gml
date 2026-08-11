@@ -15,11 +15,12 @@ global.list_terminator_armour = [
 ];
 
 // Faction display names, indexed by eFACTION. The English values double as the localization
-// keys; refresh_locale_globals() localizes the array in place on every language change, so a
-// read like global.faction_names[eFACTION.X] picks up the current language without a
-// localize() call during draw. Re-localizing already-localized values is idempotent because
-// translate() falls back to the input when it is not a key.
-global.faction_names = [
+// keys. faction_names_en is the pristine English source and is NEVER mutated; faction_names is
+// the live display array rebuilt from it on each language change, so switching back to English
+// restores the original English names (an in-place mutation would lose them). Reads like
+// global.faction_names[eFACTION.X] pick up the current language without a localize() call
+// during draw.
+global.faction_names_en = [
     "",
     "Your Chapter",
     "Imperium of Man",
@@ -35,6 +36,8 @@ global.faction_names = [
     "Genestealer Cults",
     "Necron Dynasties",
 ];
+
+global.faction_names = global.faction_names_en;
 
 global.xenos_factions = [
     eFACTION.ELDAR,

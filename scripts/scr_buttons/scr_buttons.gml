@@ -49,6 +49,23 @@ function standard_loc_data() {
     self.h = 0;
 }
 
+/// @function localize_button_text(_value)
+/// @category Localization
+/// @description Shared localization helper for button display text. Accepts either a plain
+///       English key or a { text, variables } struct for placeholder-bearing strings. Call it
+///       from every button constructor's update() so direct str1/label assignments and future
+///       button types cannot silently skip translation. Idempotent: already-localized values
+///       (and non-keys) pass through unchanged because translate() falls back to its input.
+/// @param {string|Struct} _value Either "English text" or { text: "...", variables: [...] }.
+/// @returns {string}
+function localize_button_text(_value) {
+    if (is_struct(_value)) {
+        var _variables = struct_exists(_value, "variables") ? _value[$ "variables"] : undefined;
+        return localize(_value[$ "text"], _variables);
+    }
+    return localize(_value);
+}
+
 /// @function draw_unit_buttons(position, text, size_mod, colour, halign, font, alpha_mult, bg, bg_color)
 /// @category Draw Helpers
 /// @description Draws a styled button with text, optional background and hover effects.
@@ -201,8 +218,9 @@ function ReactiveString(text_param, x1_param = 0, y1_param = 0, data = {}) const
     y1 = y1_param;
     text = text_param;
     font = fnt_40k_14;
+    font_cjk = cjk_font(font);
     add_draw_return_values();
-    draw_set_font(cjk_font(font));
+    draw_set_font(font_cjk);
     w = string_width(text);
     h = string_height(text);
     pop_draw_return_values();
@@ -220,8 +238,9 @@ function ReactiveString(text_param, x1_param = 0, y1_param = 0, data = {}) const
 
     static update = function(data = {}) {
         move_data_to_current_scope(data);
+        font_cjk = cjk_font(font);
         var temp_font = draw_get_font();
-        draw_set_font(cjk_font(font));
+        draw_set_font(font_cjk);
         if (max_width > -1) {
             if (!scale_text) {
                 w = string_width_ext(text, -1, max_width);
@@ -254,7 +273,7 @@ function ReactiveString(text_param, x1_param = 0, y1_param = 0, data = {}) const
 
     static draw = function() {
         add_draw_return_values();
-        draw_set_font(cjk_font(font));
+        draw_set_font(font_cjk);
         draw_set_halign(halign);
         draw_set_valign(valign);
         draw_set_color(colour);
@@ -358,17 +377,21 @@ function LabeledIcon(icon_param, text_param, x1_param = 0, y1_param = 0, data = 
     icon = sprite_exists(icon_param) ? icon_param : spr_none;
     icon_width = sprite_get_width(icon);
     icon_height = sprite_get_height(icon);
+    font_cjk = cjk_font(font);
     w = icon_width;
     h = icon_height;
     x2 = x1 + w;
     y2 = y1 + icon_height;
     temp_font = draw_get_font();
-    draw_set_font(cjk_font(font));
+    draw_set_font(font_cjk);
     text_width = string_width(text) + 2;
     draw_set_font(temp_font);
 
     static update = function(data = {}) {
         move_data_to_current_scope(data);
+        text = localize_button_text(text);
+        tooltip = localize_button_text(tooltip);
+        font_cjk = cjk_font(font);
         if (text_position == "right") {
             w = icon_width + text_width;
             h = icon_height;
@@ -390,7 +413,7 @@ function LabeledIcon(icon_param, text_param, x1_param = 0, y1_param = 0, data = 
 
     static draw = function() {
         add_draw_return_values();
-        draw_set_font(cjk_font(font));
+        draw_set_font(font_cjk);
         draw_set_halign(fa_left);
         draw_set_valign(fa_top);
         draw_set_color(colour);
@@ -500,11 +523,13 @@ function UnitButtonObject(data = {}) constructor {
     style = "standard";
     font = fnt_40k_14b;
     set_height_width = false;
+    font_cjk = cjk_font(font);
 
     static update_loc = function() {
         if (label != "") {
+            font_cjk = cjk_font(font);
             var temp_font = draw_get_font();
-            draw_set_font(cjk_font(font));
+            draw_set_font(font_cjk);
             if (!set_width) {
                 w = string_width(label) + 10;
                 h = string_height(label) + 4;
@@ -526,6 +551,8 @@ function UnitButtonObject(data = {}) constructor {
 
     static update = function(data = {}) {
         move_data_to_current_scope(data);
+        label = localize_button_text(label);
+        tooltip = localize_button_text(tooltip);
         if (struct_exists(data, "label") && !struct_exists(data, "set_width")) {
             set_width = false;
             w = 0;
@@ -588,7 +615,7 @@ function UnitButtonObject(data = {}) constructor {
             draw_sprite_ext(spr_pixel_button_right, allow_click, x1 + _widths[0] + _widths[1], y1, height_scale, height_scale, 0, c_white, 1);
             var _text_position_x = x1 + _widths[0] + 2;
             _text_position_x += _widths[1] / 2;
-            draw_set_font(cjk_font(font));
+            draw_set_font(font_cjk);
             draw_set_halign(fa_center);
             draw_set_valign(fa_middle);
             draw_set_color(color);
@@ -1373,7 +1400,6 @@ function RadioSet(options_array, title_param = "", data = {}) constructor {
 function ToggleButton(data = {}) constructor {
     standard_loc_data();
     tooltip = "";
-    tooltip_args = undefined;
     str1 = "";
     w = 0;
     h = 0;
@@ -1385,6 +1411,7 @@ function ToggleButton(data = {}) constructor {
     text_color = c_gray;
     button_color = c_gray;
     font = fnt_40k_12;
+    font_cjk = cjk_font(font);
     style = "default";
     hover_func = undefined;
 
@@ -1393,12 +1420,8 @@ function ToggleButton(data = {}) constructor {
 
     static update = function(data = {}) {
         move_data_to_current_scope(data);
-        if (struct_exists(data, "str1")) {
-            str1 = localize(str1);
-        }
-        if (struct_exists(data, "tooltip")) {
-            tooltip = localize(tooltip, tooltip_args);
-        }
+        str1 = localize_button_text(str1);
+        tooltip = localize_button_text(tooltip);
         var temp_font = draw_get_font();
         draw_set_font(cjk_font(font));
         if (style == "default") {
@@ -1441,7 +1464,7 @@ function ToggleButton(data = {}) constructor {
             self.active = is_active;
         }
         add_draw_return_values();
-        draw_set_font(cjk_font(font));
+        draw_set_font(font_cjk);
         var str1_h = string_height(str1);
         var _text_padding = w * 0.03;
         var text_x = x1 + _text_padding;
@@ -1537,6 +1560,9 @@ function InteractiveButton(data = {}) constructor {
 
     static update = function(data = {}) {
         move_data_to_current_scope(data);
+        str1 = localize_button_text(str1);
+        tooltip = localize_button_text(tooltip);
+        inactive_tooltip = localize_button_text(inactive_tooltip);
         if (struct_exists(data, "str1") && !struct_exists(data, "width")) {
             width = 0;
         }
