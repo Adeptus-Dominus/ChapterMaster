@@ -149,12 +149,9 @@ function role_setup_objects() {
 
 /// @self Asset.GMObject.obj_creation
 function scr_distribution_and_advisor_setup() {
-    specialist_distribution_box.update( 
-        {x1: 475,
-        y1: 230}
-    );
+    specialist_distribution_box.update({x1: 475, y1: 230});
     specialist_distribution_box.draw(squad_distribution == 1 || squad_distribution == 3);
-    scout_distribution_box.update({y1:specialist_distribution_box.y1, x1 :specialist_distribution_box.x1 + 210});
+    scout_distribution_box.update({y1: specialist_distribution_box.y1, x1: specialist_distribution_box.x1 + 210});
     scout_distribution_box.draw(squad_distribution == 2 || squad_distribution == 3);
     squad_distribution = (specialist_distribution_box.active ? 1 : 0) + (scout_distribution_box.active ? 2 : 0);
 
@@ -486,11 +483,11 @@ function scr_role_setup() {
         if (roles_radio.changed) {
             instance_destroy(obj_creation_popup);
             var _data = {
-                target_role : roles_radio.selection_val("role_id"),
-                type : ePOPUP_TYPE.EQUIP
-            }
-            instance_create_depth(0, 0,-55, obj_creation_popup, _data);
-            LOGGER.info($"{obj_creation_popup.target_role}")
+                target_role: roles_radio.selection_val("role_id"),
+                type: ePOPUP_TYPE.EQUIP,
+            };
+            instance_create_depth(0, 0, -55, obj_creation_popup, _data);
+            LOGGER.info($"{obj_creation_popup.target_role}");
         }
     }
     draw_set_color(CM_GREEN_COLOR);

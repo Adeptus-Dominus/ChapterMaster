@@ -4,7 +4,6 @@ try {
 
     if (type == ePOPUP_TYPE.LIVERYPICK && target_role > 0) {
         assign_picked_liveries();
-
     } else if (type == ePOPUP_TYPE.EQUIP) {
         draw_popup_equip(before_after_styling);
         draw_set_font(fnt_40k_30b);
@@ -14,7 +13,7 @@ try {
 
         role_name_input.tooltip = $"Astartes Role Name/nThe name of this Astartes Role.  The plural form will be ''{_role_name}s''.";
         role_name_input.draw(_role_name);
-        if (role_name_input.value_allowed){
+        if (role_name_input.value_allowed) {
             _role_data.role = role_name_input.draw(_role_name);
         }
     }

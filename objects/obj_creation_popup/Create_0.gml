@@ -114,9 +114,8 @@ possible_custom_roles = [
     ],
 ];
 
-
-if (type == ePOPUP_TYPE.LIVERYPICK){
-    assign_picked_liveries = function(){
+if (type == ePOPUP_TYPE.LIVERYPICK) {
+    assign_picked_liveries = function() {
         var _colour_area_chosen = colour_area != "";
         draw_set_font(fnt_40k_30b);
         var _type_key = string(target_role);
@@ -166,8 +165,7 @@ if (type == ePOPUP_TYPE.LIVERYPICK){
                 }
             }
         }
-
-    }
+    };
 } else if (type == ePOPUP_TYPE.EQUIP) {
     role_name_input = new TextBarArea(800, 170, 380, true);
 
@@ -180,35 +178,35 @@ if (type == ePOPUP_TYPE.LIVERYPICK){
 
     editing_role_data = obj_creation.player_role_data[target_role];
 
-    for (var i = 0; i < array_length(obj_creation.player_role_data); i++){
-        if (i == target_role){
+    for (var i = 0; i < array_length(obj_creation.player_role_data); i++) {
+        if (i == target_role) {
             continue;
         }
         var _role_name = obj_creation.player_role_data[i].role;
-        if (_role_name != ""){
+        if (_role_name != "") {
             array_push(_blocked_names, string_lower(_role_name));
         }
     }
 
     var _dread_role = target_role == eROLE.DREADNOUGHT;
 
-    set_new_role_data = function(){
+    set_new_role_data = function() {
         for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
             if (needed_equipment[i] == ITEM_NAME_NONE) {
                 needed_equipment[i] = "";
             }
         }
         var _new_data = convert_equipment_array_into_struct(needed_equipment);
-        with (editing_role_data){
+        with (editing_role_data) {
             move_data_to_current_scope(_new_data);
         }
         instance_destroy();
-    }
+    };
     role_name_input.blocked_values = _blocked_names;
     unchangeable_armour = _dread_role;
     setup_UI_elements_equipment_selector(500, 200);
     unit_count = 0;
-    company =  -1;
+    company = -1;
     equipment_found_and_valid = array_create(5, true);
     current_equipment = variable_clone(convert_equipment_struct_into_array(editing_role_data));
     needed_equipment = variable_clone(convert_equipment_struct_into_array(editing_role_data));
@@ -220,4 +218,3 @@ if (type == ePOPUP_TYPE.LIVERYPICK){
     from_inventory = false;
     before_after_styling = false;
 }
-

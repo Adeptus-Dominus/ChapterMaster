@@ -564,11 +564,11 @@ function convert_equipment_array_into_struct(array) {
     return _equipment;
 }
 
-function convert_equipment_struct_into_array(struct){
+function convert_equipment_struct_into_array(struct) {
     var _equipment = array_create(STANDARD_EQUIP_SLOT_COUNT, "");
-    for (var i = 0; i  < STANDARD_EQUIP_SLOT_COUNT; i++){
+    for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
         var _slot = global.unit_equip_slots[i];
-        if (struct_exists(struct, _slot)){
+        if (struct_exists(struct, _slot)) {
             _equipment[i] = struct[$ _slot];
         }
     }
@@ -821,7 +821,7 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
         var _item = get_item(slot);
         var _marines_without_exp = 0;
         equipment_found_and_valid[slot] = true;
-        if (needed_count > 0){
+        if (needed_count > 0) {
             switch (_key) {
                 case "wep1":
                     _item_check_array = obj_controller.ma_wep1;
@@ -846,11 +846,11 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
                 if (_item_check_array[u] == _wanted_item) {
                     _found += 1;
                 }
-    
+
                 if (_wanted_item == ITEM_NAME_NONE) {
                     _found += 1;
                 }
-    
+
                 if (obj_controller.man[u] != "man") {
                     continue;
                 }
@@ -866,7 +866,6 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
                         warning += "Marines may not exit Dreadnoughts.";
                     }
                 }
-            
             }
             _found += scr_item_count(_wanted_item);
         }

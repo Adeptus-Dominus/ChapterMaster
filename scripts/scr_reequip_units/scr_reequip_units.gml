@@ -9,7 +9,6 @@ enum eEQUIP_TARGET_TYPE {
     WHIRLWIND = 54,
 }
 
-
 /// @self Asset.GMObject.obj_popup Asset.GMObject.obj_creation_popup
 function setup_UI_elements_equipment_selector(_x1, _y1) {
     equipment_area = -1;
@@ -111,7 +110,7 @@ function setup_UI_elements_equipment_selector(_x1, _y1) {
     ];
     equip_button.bind_method = reequip_selection;
     equip_button.bind_scope = self;
-};
+}
 
 /// @self Asset.GMObject.obj_controller
 function set_up_equip_popup() {
@@ -268,7 +267,7 @@ function draw_popup_equip(before_after_styling = true) {
     draw_set_font(fnt_40k_14);
     draw_set_color(CM_GREEN_COLOR);
     draw_set_halign(fa_center);
-    draw_text(_x1 + main_slate.width /2, _y1 + 7, $"{before_after_styling ? "Change" : "Set"} Equipment");
+    draw_text(_x1 + main_slate.width / 2, _y1 + 7, $"{before_after_styling ? "Change" : "Set"} Equipment");
 
     draw_set_font(fnt_40k_12);
     var comp = "";
@@ -285,7 +284,7 @@ function draw_popup_equip(before_after_styling = true) {
     } else if (equipment_recipient_type > eEQUIP_TARGET_TYPE.DREADNOUGHT) {
         _descriptor = "Vehicles";
     }
-    if (company != -1){
+    if (company != -1) {
         draw_text(_x1 + 286, _y1 + 32, $"{comp} Company, {unit_count} {_descriptor}");
     }
 
@@ -295,7 +294,7 @@ function draw_popup_equip(before_after_styling = true) {
     var show_name = "";
     // Need to not show the artifact tags here somehow
 
-    if (before_after_styling){
+    if (before_after_styling) {
         draw_text_outline(_x1 + 14, _y1 + 52, "Before");
 
         for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
@@ -309,7 +308,7 @@ function draw_popup_equip(before_after_styling = true) {
         draw_text_outline(_x1 + 290, _y1 + 52, "After");
     } else {
         for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
-            var _title = $"{get_slot_name(target_role , i)}: ";
+            var _title = $"{get_slot_name(target_role, i)}: ";
             draw_text(_x1 + 18, _y1 + 72 + (i * 20), _title);
         }
     }
@@ -391,7 +390,7 @@ function draw_popup_equip(before_after_styling = true) {
         range_melee_radio.draw();
     }
 
-    if (allow_quality_change){
+    if (allow_quality_change) {
         if (equipment_area != -1) {
             quality_radio.draw();
         }
