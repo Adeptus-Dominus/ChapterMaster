@@ -160,13 +160,14 @@ function LocalizationManager() constructor {
         if (_is_digit(_last)) {
             return _style;
         }
-        if (_last == "b") {
-            _style.bold = true;
-        } else if (_last == "i") {
-            _style.italic = true;
-        } else {
+        if (_last != "b" && _last != "i") {
             return _style;
         }
+
+        LOGGER.warning($"Font '{_name}' suggests bold/italic via its name suffix but is not declared in font_style_overrides(); add it there so the CJK fallback weight is explicit.");
+
+        _style.bold = _last == "b";
+        _style.italic = _last == "i";
 
         if (_len > 1) {
             var _prev = string_char_at(_name, _len - 1);
@@ -178,10 +179,6 @@ function LocalizationManager() constructor {
             } else if (_last == "b" && _prev == "i") {
                 _style.italic = true;
             }
-        }
-
-        if (_style.bold || _style.italic) {
-            LOGGER.warning($"Font '{_name}' suggests bold/italic via its name suffix but is not declared in font_style_overrides(); add it there so the CJK fallback weight is explicit.");
         }
         return _style;
     };
