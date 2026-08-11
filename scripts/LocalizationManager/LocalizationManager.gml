@@ -100,12 +100,13 @@ function LocalizationManager() constructor {
             return _base_font;
         }
 
-        var _key = string(_size);
+        var _style = self._font_style(_base_font);
+        var _key = string(_size) + ":" + string(_style.bold) + ":" + string(_style.italic);
         if (struct_exists(self.cjk_fonts, _key)) {
             return self.cjk_fonts[$ _key];
         }
 
-        var _fallback_font = font_add(STR_CJK_FALLBACK_FONT, _size, false, false, 32, 65535);
+        var _fallback_font = font_add(STR_CJK_FALLBACK_FONT, _size, _style.bold, _style.italic, 32, 65535);
         if (!font_exists(_fallback_font)) {
             LOGGER.error($"Failed to load CJK fallback font '{STR_CJK_FALLBACK_FONT}' at size {_size}. Chinese glyphs may render as blank boxes.");
             self.cjk_fonts[$ _key] = _base_font;
@@ -114,6 +115,49 @@ function LocalizationManager() constructor {
 
         self.cjk_fonts[$ _key] = _fallback_font;
         return _fallback_font;
+    };
+
+    /// @desc Derives bold/italic style from the base font asset name so that same-size fonts with
+    ///       different styles (e.g. fnt_40k_14, fnt_40k_14b, fnt_40k_14i) get distinct CJK fallbacks
+    ///       instead of silently sharing one glyph set.
+    /// @param {real} _base_font The font asset intended for this text.
+    /// @returns {Struct}
+    static _font_style = function(_base_font) {
+        var _style = { bold: false, italic: false };
+        var _name = font_get_name(_base_font);
+        var _len = string_length(_name);
+        if (_len == 0) {
+            return _style;
+        }
+
+        var _is_digit = function(_char) {
+            return string_digits(_char) == _char;
+        };
+
+        var _last = string_char_at(_name, _len);
+        if (_is_digit(_last)) {
+            return _style;
+        }
+        if (_last == "b") {
+            _style.bold = true;
+        } else if (_last == "i") {
+            _style.italic = true;
+        } else {
+            return _style;
+        }
+
+        if (_len > 1) {
+            var _prev = string_char_at(_name, _len - 1);
+            if (_is_digit(_prev)) {
+                return _style;
+            }
+            if (_last == "i" && _prev == "b") {
+                _style.bold = true;
+            } else if (_last == "b" && _prev == "i") {
+                _style.italic = true;
+            }
+        }
+        return _style;
     };
 }
 
