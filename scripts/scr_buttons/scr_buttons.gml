@@ -1373,6 +1373,7 @@ function RadioSet(options_array, title_param = "", data = {}) constructor {
 function ToggleButton(data = {}) constructor {
     standard_loc_data();
     tooltip = "";
+    tooltip_args = undefined;
     str1 = "";
     w = 0;
     h = 0;
@@ -1392,6 +1393,12 @@ function ToggleButton(data = {}) constructor {
 
     static update = function(data = {}) {
         move_data_to_current_scope(data);
+        if (struct_exists(data, "str1")) {
+            str1 = localize(str1);
+        }
+        if (struct_exists(data, "tooltip")) {
+            tooltip = localize(tooltip, tooltip_args);
+        }
         var temp_font = draw_get_font();
         draw_set_font(cjk_font(font));
         if (style == "default") {

@@ -75,6 +75,7 @@ function SettingsManager() constructor {
     static apply_language = function() {
         global.language = language;
         global.localization_manager.load_language(language);
+        global.localization_manager.refresh_locale_globals();
     };
 
     static sync_ui = function() {

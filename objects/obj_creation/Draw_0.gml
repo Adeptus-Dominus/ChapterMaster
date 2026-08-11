@@ -376,10 +376,10 @@ try {
         draw_set_font(cjk_font(fnt_40k_14b));
         draw_set_halign(fa_right);
 
-        draw_text(650, 550, string_hash_to_newline(localize("Imperium ({0})", [string(disposition[2])])));
-        draw_text(650, 575, string_hash_to_newline(localize("Adeptus Mechanicus ({0})", [string(disposition[3])])));
-        draw_text(650, 600, string_hash_to_newline(localize("Ecclesiarchy ({0})", [string(disposition[5])])));
-        draw_text(650, 625, string_hash_to_newline(localize("Inquisition ({0})", [string(disposition[4])])));
+        draw_text(650, 550, string_hash_to_newline(global.faction_names[eFACTION.IMPERIUM] + " (" + string(disposition[eFACTION.IMPERIUM]) + ")"));
+        draw_text(650, 575, string_hash_to_newline(global.faction_names[eFACTION.MECHANICUS] + " (" + string(disposition[eFACTION.MECHANICUS]) + ")"));
+        draw_text(650, 600, string_hash_to_newline(global.faction_names[eFACTION.ECCLESIARCHY] + " (" + string(disposition[eFACTION.ECCLESIARCHY]) + ")"));
+        draw_text(650, 625, string_hash_to_newline(global.faction_names[eFACTION.INQUISITION] + " (" + string(disposition[eFACTION.INQUISITION]) + ")"));
         if (founding != ePROGENITOR.NONE) {
             draw_text(650, 650, string_hash_to_newline(localize("Progenitor ({0})", [string(disposition[1])])));
         }

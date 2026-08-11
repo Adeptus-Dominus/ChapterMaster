@@ -14,6 +14,11 @@ global.list_terminator_armour = [
     "Cataphractii",
 ];
 
+// Faction display names, indexed by eFACTION. The English values double as the localization
+// keys; refresh_locale_globals() localizes the array in place on every language change, so a
+// read like global.faction_names[eFACTION.X] picks up the current language without a
+// localize() call during draw. Re-localizing already-localized values is idempotent because
+// translate() falls back to the input when it is not a key.
 global.faction_names = [
     "",
     "Your Chapter",

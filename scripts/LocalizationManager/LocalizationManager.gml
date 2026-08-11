@@ -93,6 +93,16 @@ function LocalizationManager() constructor {
         return _value;
     };
 
+    /// @desc Localizes the language-dependent global faction_names array in place, translating once
+    ///       per language change instead of on every draw frame. The English values are the
+    ///       localization keys; re-runnning is idempotent because translate() falls back to the
+    ///       input when it is not a key. Call from SettingsManager.apply_language().
+    static refresh_locale_globals = function() {
+        for (var i = 0; i < array_length(global.faction_names); i++) {
+            global.faction_names[i] = self.translate(global.faction_names[i]);
+        }
+    };
+
     /// @param {real} _size Point size used for the runtime fallback font.
     /// @param {real} _base_font The font asset intended for this text.
     /// @returns {real}

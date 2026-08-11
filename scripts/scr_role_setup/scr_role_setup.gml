@@ -78,44 +78,45 @@ function update_role_data_wth_defaults() {
 /// @self Asset.GMObject.obj_creation
 function role_setup_objects() {
     specialist_distribution_box = new ToggleButton({
-        str1: localize("Equal Specialist Distribution"),
+        str1: "Equal Specialist Distribution",
         font: fnt_40k_12,
         style: "box",
         x1: 500,
         y1: 250,
-        tooltip: localize("Specialist Distribution\nCheck if you wish for your Companies to be uniform and each contain {0}s and {1}s.", [localize(player_role_data[eROLE.ASSAULT].role), localize(player_role_data[eROLE.DEVASTATOR].role)]),
+        tooltip: "Specialist Distribution\nCheck if you wish for your Companies to be uniform and each contain {0}s and {1}s.",
+        tooltip_args: [localize(player_role_data[eROLE.ASSAULT].role), localize(player_role_data[eROLE.DEVASTATOR].role)],
         active: (squad_distribution == 1 || squad_distribution == 3),
         clicked_check_default: true,
     });
     scout_distribution_box = new ToggleButton({
-        str1: localize("Equal Scout Distribution"),
+        str1: "Equal Scout Distribution",
         font: fnt_40k_12,
         style: "box",
         x1: 710,
         y1: 250,
-        tooltip: localize("Scout Distribution\nCheck if you wish for Scouts to be distributed equally across your Battle Companies rather than concentrated in the 10th."),
+        tooltip: "Scout Distribution\nCheck if you wish for Scouts to be distributed equally across your Battle Companies rather than concentrated in the 10th.",
         active: (squad_distribution == 2 || squad_distribution == 3),
         clicked_check_default: true,
     });
 
     load_to_ship_radio = new RadioSet([
         {
-            str1: localize("On Planet"),
+            str1: "On Planet",
             font: fnt_40k_12,
             style: "box",
-            tooltip: localize("On Planet\nCheck to have your Astartes Start on your home planet."),
+            tooltip: "On Planet\nCheck to have your Astartes Start on your home planet.",
         },
         {
-            str1: localize("Load to Ships"),
+            str1: "Load to Ships",
             font: fnt_40k_12,
             style: "box",
-            tooltip: localize("Load to Ships\nCheck to have your Astartes automatically loaded into ships when the game starts."),
+            tooltip: "Load to Ships\nCheck to have your Astartes automatically loaded into ships when the game starts.",
         },
         {
-            str1: localize("Load (Sans Escorts)"),
+            str1: "Load (Sans Escorts)",
             font: fnt_40k_12,
             style: "box",
-            tooltip: localize("Load (Sans Escorts)\nCheck to have your Astartes automatically loaded into ships, except for Escorts, when the game starts."),
+            tooltip: "Load (Sans Escorts)\nCheck to have your Astartes automatically loaded into ships, except for Escorts, when the game starts.",
         },
     ], "", {
         x1: 445,
@@ -126,22 +127,22 @@ function role_setup_objects() {
     });
     load_to_ship_radio.current_selection = load_to_ships[0];
     distribute_scouts_box = new ToggleButton({
-        str1: localize("Distribute Scouts"),
+        str1: "Distribute Scouts",
         font: fnt_40k_12,
         style: "box",
         x1: 540,
         y1: 370,
-        tooltip: localize("Distribute Scouts\nCheck to have your Scouts split across ships in the fleet."),
+        tooltip: "Distribute Scouts\nCheck to have your Scouts split across ships in the fleet.",
         active: load_to_ships[1],
         clicked_check_default: true,
     });
     distribute_vets_box = new ToggleButton({
-        str1: localize("Distribute Veterans"),
+        str1: "Distribute Veterans",
         font: fnt_40k_12,
         style: "box",
         x1: 690,
         y1: 370,
-        tooltip: localize("Distribute Veterans\nCheck to have your Veterans split across the fleet."),
+        tooltip: "Distribute Veterans\nCheck to have your Veterans split across the fleet.",
         active: load_to_ships[2],
         clicked_check_default: true,
     });
