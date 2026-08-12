@@ -138,21 +138,23 @@ function ChapterTrait(trait) constructor {
                 var _line = "";
 
                 if (struct_exists(_mod, "int_mod") && _mod.int_mod != 0) {
-                    _line += localize("  Disposition Gains : {0}\n", [string_plus_minus(_mod.int_mod) + string(_mod.int_mod)]);
+                    var _int_mod_str = $"{string_plus_minus(_mod.int_mod)}{_mod.int_mod}";
+                    _line += localize("  Disposition Gains : {0}\n", [_int_mod_str]);
                 }
 
                 if (struct_exists(_mod, "mult") && _mod.mult != 1) {
                     if (_line != "") {
                         _line += " ";
                     }
-                    _line += localize("  Disposition Multiplyers x{0}\n", [string(_mod.mult)]);
+                    _line += localize("  Disposition Multiplyers x{0}\n", [_mod.mult]);
                 }
 
                 if (struct_exists(_mod, "start_disp") && _mod.start_disp != 0) {
                     if (_line != "") {
                         _line += " ";
                     }
-                    _line += localize("  Disposition Start {0}\n", [string_plus_minus(_mod.start_disp) + string(_mod.start_disp)]);
+                    var _start_disp_str = $"{string_plus_minus(_mod.start_disp)}{_mod.start_disp}";
+                    _line += localize("  Disposition Start {0}\n", [_start_disp_str]);
                 }
 
                 if (_line != "") {

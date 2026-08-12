@@ -378,24 +378,11 @@ function LabeledIcon(icon_param, text_param, x1_param = 0, y1_param = 0, data = 
     icon_width = sprite_get_width(icon);
     icon_height = sprite_get_height(icon);
     font_cjk = cjk_font(font);
+    text_width = 0;
     w = icon_width;
     h = icon_height;
     x2 = x1 + w;
     y2 = y1 + icon_height;
-
-    /// @desc Measures the localized text's display width (plus padding) using the active CJK
-    ///       font and stores it in text_width. Shared by the constructor and update() so the
-    ///       font-swap measurement boilerplate lives in one place. text_ must be localized and
-    ///       font_cjk current before calling.
-    /// @returns {undefined}
-    static measure_text_width = function() {
-        var _prev_font = draw_get_font();
-        draw_set_font(font_cjk);
-        text_width = string_width(text) + 2;
-        draw_set_font(_prev_font);
-    };
-
-    measure_text_width();
 
     static update = function(data = {}) {
         move_data_to_current_scope(data);
@@ -403,7 +390,10 @@ function LabeledIcon(icon_param, text_param, x1_param = 0, y1_param = 0, data = 
         tooltip = localize_button_text(tooltip);
         font_cjk = cjk_font(font);
         if (text_position == "right") {
-            measure_text_width();
+            var _prev_font = draw_get_font();
+            draw_set_font(font_cjk);
+            text_width = string_width(text) + 2;
+            draw_set_font(_prev_font);
             w = icon_width + text_width;
             h = icon_height;
             x2 = x1 + w;
