@@ -49,6 +49,21 @@ function standard_loc_data() {
     self.h = 0;
 }
 
+/// @function measure_with_font(_font, _measure_func)
+/// @category Draw Helpers
+/// @description Runs _measure_func() while _font is the active draw font, then restores the
+///       previously active font. Centralises the save/set/measure/restore boilerplate shared by
+///       UI constructors that measure text dimensions under a font-swap.
+/// @param {real} _font The font to measure under.
+/// @param {Function} _measure_func The measurement logic to run while _font is active.
+/// @returns {undefined}
+function measure_with_font(_font, _measure_func) {
+    var _prev_font = draw_get_font();
+    draw_set_font(_font);
+    _measure_func();
+    draw_set_font(_prev_font);
+}
+
 /// @function localize_button_text(_value)
 /// @category Localization
 /// @description Shared localization helper for button display text. Accepts either a plain
@@ -239,30 +254,29 @@ function ReactiveString(text_param, x1_param = 0, y1_param = 0, data = {}) const
     static update = function(data = {}) {
         move_data_to_current_scope(data);
         font_cjk = cjk_font(font);
-        var temp_font = draw_get_font();
-        draw_set_font(font_cjk);
-        if (max_width > -1) {
-            if (!scale_text) {
-                w = string_width_ext(text, -1, max_width);
-                h = string_height_ext(text, -1, max_width);
-                x2 = x1 + w;
-                y2 = y1 + h;
+        measure_with_font(font_cjk, function() {
+            if (max_width > -1) {
+                if (!scale_text) {
+                    w = string_width_ext(text, -1, max_width);
+                    h = string_height_ext(text, -1, max_width);
+                    x2 = x1 + w;
+                    y2 = y1 + h;
+                } else {
+                    w = max_width;
+                    var _scale_edits = calc_text_scale_confines(text, max_width, 0, allow_line_breaks);
+                    scale = _scale_edits.scale;
+                    text = _scale_edits.text;
+                    h = string_height(text) * scale;
+                    x2 = x1 + w;
+                    y2 = y1 + h;
+                }
             } else {
-                w = max_width;
-                var _scale_edits = calc_text_scale_confines(text, max_width, 0, allow_line_breaks);
-                scale = _scale_edits.scale;
-                text = _scale_edits.text;
-                h = string_height(text) * scale;
+                w = string_width(text);
+                h = string_height(text);
                 x2 = x1 + w;
                 y2 = y1 + h;
             }
-        } else {
-            w = string_width(text);
-            h = string_height(text);
-            x2 = x1 + w;
-            y2 = y1 + h;
-        }
-        draw_set_font(temp_font);
+        });
     };
 
     update(data);
@@ -390,10 +404,9 @@ function LabeledIcon(icon_param, text_param, x1_param = 0, y1_param = 0, data = 
         tooltip = localize_button_text(tooltip);
         font_cjk = cjk_font(font);
         if (text_position == "right") {
-            var _prev_font = draw_get_font();
-            draw_set_font(font_cjk);
-            text_width = string_width(text) + 2;
-            draw_set_font(_prev_font);
+            measure_with_font(font_cjk, function() {
+                text_width = string_width(text) + 2;
+            });
             w = icon_width + text_width;
             h = icon_height;
             x2 = x1 + w;
@@ -529,20 +542,19 @@ function UnitButtonObject(data = {}) constructor {
     static update_loc = function() {
         if (label != "") {
             font_cjk = cjk_font(font);
-            var temp_font = draw_get_font();
-            draw_set_font(font_cjk);
-            if (!set_width) {
-                w = string_width(label) + 10;
+            measure_with_font(font_cjk, function() {
+                if (!set_width) {
+                    w = string_width(label) + 10;
+                    h = string_height(label) + 4;
+                } else {
+                    var _text_scale = calc_text_scale_confines(label, w, 10);
+
+                    text_scale = _text_scale.scale;
+
+                    label = _text_scale.text;
+                }
                 h = string_height(label) + 4;
-            } else {
-                var _text_scale = calc_text_scale_confines(label, w, 10);
-
-                text_scale = _text_scale.scale;
-
-                label = _text_scale.text;
-            }
-            h = string_height(label) + 4;
-            draw_set_font(temp_font);
+            });
         }
         x2 = x1 + w;
         y2 = y1 + h;
@@ -1424,25 +1436,24 @@ function ToggleButton(data = {}) constructor {
         str1 = localize_button_text(str1);
         tooltip = localize_button_text(tooltip);
         font_cjk = cjk_font(font);
-        var temp_font = draw_get_font();
-        draw_set_font(font_cjk);
-        if (style == "default") {
-            if (w == 0) {
-                w = string_width(str1);
-                w *= 1 + (text_padding * 2);
+        measure_with_font(font_cjk, function() {
+            if (style == "default") {
+                if (w == 0) {
+                    w = string_width(str1);
+                    w *= 1 + (text_padding * 2);
+                }
+                if (h == 0) {
+                    h = string_height(str1);
+                    h *= 1 + (text_padding * 2);
+                }
+            } else if (style == "box") {
+                var _text_w = string_width(str1) * (1 + (text_padding * 2));
+                w = max(32, _text_w) + 12;
+                h = 32 + 4 + (string_height(str1) * (1 + (text_padding * 2)));
             }
-            if (h == 0) {
-                h = string_height(str1);
-                h *= 1 + (text_padding * 2);
-            }
-        } else if (style == "box") {
-            var _text_w = string_width(str1) * (1 + (text_padding * 2));
-            w = max(32, _text_w) + 12;
-            h = 32 + 4 + (string_height(str1) * (1 + (text_padding * 2)));
-        }
+        });
         x2 = x1 + w;
         y2 = y1 + h;
-        draw_set_font(temp_font);
     };
 
     update(data);
