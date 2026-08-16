@@ -1,7 +1,7 @@
 enum eEQUIP_TARGET_TYPE {
     NONE = 0,
     MARINE = 1,
-    DREADNOUGHT,
+    DREADNOUGHT = eROLE.DREADNOUGHT,
     LAND_RAIDER = 50,
     RHINO = 51,
     PREDATOR = 52,
@@ -235,7 +235,7 @@ function set_up_equip_popup() {
         pip.allow_quality_change = true;
         pip.from_inventory = true;
 
-        //Forwards equip_target_type selection to the equipment_recipient_type variable used in mouse_50 obj_popup and weapons_equip script
+        // Forward the role-compatible target type used by scr_get_item_names().
         pip.equipment_recipient_type = equip_target_type;
         with (pip) {
             setup_UI_elements_equipment_selector(1000, 143);
@@ -248,7 +248,7 @@ function reload_items() {
     item_name = [];
     scr_get_item_names(
         item_name,
-        equipment_recipient_type, // eROLE
+        equipment_recipient_type, // eROLE-compatible target type
         equipment_area, // slot
         range_melee_radio.selection_val("val"),
         false, // include company standard
