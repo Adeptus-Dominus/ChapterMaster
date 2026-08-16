@@ -2384,3 +2384,15 @@ function fetch_unit_uid(uuid) {
 
     return undefined;
 }
+
+/// @desc Localizes a unit's role and appends its name and first epithet, mirroring
+///       name_role()'s display order while keeping the role translatable.
+/// @param {Struct} _unit A marine unit struct.
+/// @returns {string}
+function localized_name_role(_unit) {
+    var _display = $"{localize(_unit.squad_role())} {_unit.name()}";
+    if (array_length(_unit.epithets) > 0) {
+        _display += $" {_unit.epithets[0].title}";
+    }
+    return _display;
+}

@@ -890,6 +890,7 @@ function HelpfulPlaces() constructor {
         headings: ["Location", "Remaining\nGuard"],
         row_data: _navy_fleets,
         localize_values: true,
+        localize_headings: true,
     });
 
     var _forges = [];
@@ -932,6 +933,7 @@ function HelpfulPlaces() constructor {
         row_data: _forges,
         set_column_widths: _columns,
         localize_values: true,
+        localize_headings: true,
     });
 
     places_radio = new RadioSet(

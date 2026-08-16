@@ -119,7 +119,7 @@ global.presence_blurbs_en = [
 global.planet_size_en = [
     "",
     "Small",
-    "",
+    "Medium",
     "Large",
 ];
 

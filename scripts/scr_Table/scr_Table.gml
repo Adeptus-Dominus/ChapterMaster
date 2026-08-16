@@ -34,7 +34,7 @@ function Table(data) constructor {
         for (var i = 0; i < array_length(headings); i++) {
             var _col_width = 0;
             var _heading = headings[i];
-            var _localize_heading = localize_headings || localize_values;
+            var _localize_heading = localize_headings;
             if (is_string(_heading)) {
                 var _heading_key = _heading;
                 headings[i] = new ReactiveString(_localize_heading ? localize(_heading_key) : _heading_key, 0, 0, {

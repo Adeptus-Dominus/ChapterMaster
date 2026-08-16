@@ -153,38 +153,29 @@ function LocalizationManager() constructor {
     ///       source (global.faction_names_en), translating once per language change instead of on
     ///       every draw frame. Translating from the constant English source each time makes the
     ///       call fully idempotent and round-trip safe: switching to another language and back to
+    /// @desc Translates each element of an English source array into the current language,
+    ///       returning a fresh array so the pristine _en source is never mutated.
+    /// @param {Array} _en Array of English keys.
+    /// @returns {Array}
+    static translate_array = function(_en) {
+        var _out = array_clone(_en);
+        for (var i = 0; i < array_length(_en); i++) {
+            _out[i] = self.translate(_en[i]);
+        }
+        return _out;
+    };
+
     ///       English always restores the original English names. Call from
     ///       SettingsManager.apply_language().
     static refresh_locale_globals = function() {
-        for (var i = 0; i < array_length(global.faction_names_en); i++) {
-            global.faction_names[i] = self.translate(global.faction_names_en[i]);
-        }
-
-        // Rebuild each live rating array from its pristine English source, exactly like
-        // faction_names above. Writes go directly through each global accessor so the live
-        // array CoW-copies away from the shared _en source; translating from English each time
-        // keeps the call idempotent and round-trip safe.
-        for (var i = 0; i < array_length(global.chapter_strength_ratings_en); i++) {
-            global.chapter_strength_ratings[i] = self.translate(global.chapter_strength_ratings_en[i]);
-        }
-        for (var i = 0; i < array_length(global.chapter_cooperation_ratings_en); i++) {
-            global.chapter_cooperation_ratings[i] = self.translate(global.chapter_cooperation_ratings_en[i]);
-        }
-        for (var i = 0; i < array_length(global.chapter_geneseed_ratings_en); i++) {
-            global.chapter_geneseed_ratings[i] = self.translate(global.chapter_geneseed_ratings_en[i]);
-        }
-        for (var i = 0; i < array_length(global.planet_forti_en); i++) {
-            global.planet_forti[i] = self.translate(global.planet_forti_en[i]);
-        }
-        for (var i = 0; i < array_length(global.presence_factions_en); i++) {
-            global.presence_factions[i] = self.translate(global.presence_factions_en[i]);
-        }
-        for (var i = 0; i < array_length(global.presence_blurbs_en); i++) {
-            global.presence_blurbs[i] = self.translate(global.presence_blurbs_en[i]);
-        }
-        for (var i = 0; i < array_length(global.planet_size_en); i++) {
-            global.planet_size[i] = self.translate(global.planet_size_en[i]);
-        }
+        global.faction_names = self.translate_array(global.faction_names_en);
+        global.chapter_strength_ratings = self.translate_array(global.chapter_strength_ratings_en);
+        global.chapter_cooperation_ratings = self.translate_array(global.chapter_cooperation_ratings_en);
+        global.chapter_geneseed_ratings = self.translate_array(global.chapter_geneseed_ratings_en);
+        global.planet_forti = self.translate_array(global.planet_forti_en);
+        global.presence_factions = self.translate_array(global.presence_factions_en);
+        global.presence_blurbs = self.translate_array(global.presence_blurbs_en);
+        global.planet_size = self.translate_array(global.planet_size_en);
     };
 
     /// @param {real} _size Point size used for the runtime fallback font.

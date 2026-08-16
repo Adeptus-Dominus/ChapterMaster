@@ -399,6 +399,9 @@ function ShutterButton() constructor {
     cover_text = "";
     tooltip = "";
     text_color = c_red;
+    loc_lang = "";
+    loc_key = "";
+    loc_cover_text = "";
 
     right_rack = new RackAndPinion();
     left_rack = new RackAndPinion("backward");
@@ -497,9 +500,14 @@ function ShutterButton() constructor {
         if (time_open < 2) {
             draw_sprite_ext(spr_shutter_button, main_sprite, xx, yy, scale, scale, 0, c_white, 1);
             if (cover_text != "") {
+                if (loc_lang != global.localization_manager.language || loc_key != cover_text) {
+                    loc_lang = global.localization_manager.language;
+                    loc_key = cover_text;
+                    loc_cover_text = localize(cover_text);
+                }
                 draw_set_valign(fa_top);
                 draw_set_font(cjk_font(fnt_Embossed_metal));
-                var _cover_text = localize(cover_text);
+                var _cover_text = loc_cover_text;
                 var _cover_scale = 3 * scale;
                 while (string_width(_cover_text) * _cover_scale > width - (5 * scale)) {
                     _cover_scale -= 0.1;

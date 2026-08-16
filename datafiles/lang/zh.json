@@ -1229,5 +1229,6 @@
     "aboard {0}": "在{0}上",
     "various ships orbiting {0}": "环绕{0}的多艘舰船",
     "various planets in {0}": "{0}的多个行星",
-    "system {0}": "星区 {0}"
+    "system {0}": "星系 {0}",
+    "Medium": "中型"
 }
