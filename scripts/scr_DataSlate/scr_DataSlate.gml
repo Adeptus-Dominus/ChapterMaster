@@ -500,8 +500,9 @@ function ShutterButton() constructor {
         if (time_open < 2) {
             draw_sprite_ext(spr_shutter_button, main_sprite, xx, yy, scale, scale, 0, c_white, 1);
             if (cover_text != "") {
-                if (loc_lang != global.localization_manager.language || loc_key != cover_text) {
-                    loc_lang = global.localization_manager.language;
+                var _loc_lang = variable_global_exists("localization_manager") ? global.localization_manager.language : "";
+                if (_loc_lang != loc_lang || loc_key != cover_text) {
+                    loc_lang = _loc_lang;
                     loc_key = cover_text;
                     loc_cover_text = localize(cover_text);
                 }

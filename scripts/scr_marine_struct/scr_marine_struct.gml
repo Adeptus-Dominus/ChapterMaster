@@ -1854,12 +1854,15 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     //quick way of getting name and role combined in string
-    static name_role = function(include_epithet = true, include_role = true) {
+    static name_role = function(include_epithet = true, include_role = true, localize_role = false) {
         var _name = name();
         var _epithet = "";
 
         if (include_role) {
             var _temp_role = squad_role();
+            if (localize_role) {
+                _temp_role = localize(_temp_role);
+            }
             _name = string("{0} {1}", _temp_role, _name);
         }
 
@@ -2390,9 +2393,5 @@ function fetch_unit_uid(uuid) {
 /// @param {Struct} _unit A marine unit struct.
 /// @returns {string}
 function localized_name_role(_unit) {
-    var _display = $"{localize(_unit.squad_role())} {_unit.name()}";
-    if (array_length(_unit.epithets) > 0) {
-        _display += $" {_unit.epithets[0].title}";
-    }
-    return _display;
+    return _unit.name_role(true, true, true);
 }

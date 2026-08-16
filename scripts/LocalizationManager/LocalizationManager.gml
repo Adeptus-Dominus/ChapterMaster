@@ -1,20 +1,29 @@
 /// @desc Loads and queries localized strings stored in datafiles/lang/<language_code>.json.
 ///       English text is used as the translation key, so missing translations neatly fall back to it.
+/// @returns {Struct.LocalizationManager}
 function LocalizationManager() constructor {
+    CJK_FONT_LOAD_FAILED = -1;
     language = LANG_EN;
     needs_cjk = false;
     translations = {};
     cjk_fonts = {};
+    resolved_fonts = {};
     font_styles = {};
     // Keys already warned about as missing this language load, so draw-time arrays do not
     // flood LOGGER.error every frame for the same gap. Reset on each language load.
     reported_missing = {};
 
-    /// @param {string} _language Language code: LANG_EN, LANG_ZH, etc.
+    /// @desc Loads translations and font-resolution state for a language.
+    /// @param {String} _language Language code: LANG_EN, LANG_ZH, etc.
+    /// @returns {Undefined}
     static load_language = function(_language) {
+        var _language_changed = self.language != _language;
         self.language = _language;
         self.needs_cjk = _language != LANG_EN && string_count(LANG_ZH, _language) > 0;
         self.translations = self._load_lang_file(_language);
+        if (_language_changed) {
+            self.resolved_fonts = {};
+        }
         self.reported_missing = {};
         self._warn_missing_translations();
     };
@@ -153,55 +162,49 @@ function LocalizationManager() constructor {
     ///       source (global.faction_names_en), translating once per language change instead of on
     ///       every draw frame. Translating from the constant English source each time makes the
     ///       call fully idempotent and round-trip safe: switching to another language and back to
-    /// @desc Translates each element of an English source array into the current language,
-    ///       returning a fresh array so the pristine _en source is never mutated.
-    /// @param {Array} _en Array of English keys.
-    /// @returns {Array}
-    static translate_array = function(_en) {
-        var _out = array_create(array_length(_en));
-        array_copy(_out, 0, _en, 0, array_length(_en));
-        for (var i = 0; i < array_length(_en); i++) {
-            _out[i] = self.translate(_en[i]);
-        }
-        return _out;
-    };
-
     ///       English always restores the original English names. Call from
     ///       SettingsManager.apply_language().
     static refresh_locale_globals = function() {
-        global.faction_names = self.translate_array(global.faction_names_en);
-        global.chapter_strength_ratings = self.translate_array(global.chapter_strength_ratings_en);
-        global.chapter_cooperation_ratings = self.translate_array(global.chapter_cooperation_ratings_en);
-        global.chapter_geneseed_ratings = self.translate_array(global.chapter_geneseed_ratings_en);
-        global.planet_forti = self.translate_array(global.planet_forti_en);
-        global.presence_factions = self.translate_array(global.presence_factions_en);
-        global.presence_blurbs = self.translate_array(global.presence_blurbs_en);
-        global.planet_size = self.translate_array(global.planet_size_en);
+        global.faction_names = self.localize_array(global.faction_names_en);
+        global.chapter_strength_ratings = self.localize_array(global.chapter_strength_ratings_en);
+        global.chapter_cooperation_ratings = self.localize_array(global.chapter_cooperation_ratings_en);
+        global.chapter_geneseed_ratings = self.localize_array(global.chapter_geneseed_ratings_en);
+        global.planet_forti = self.localize_array(global.planet_forti_en);
+        global.presence_factions = self.localize_array(global.presence_factions_en);
+        global.presence_blurbs = self.localize_array(global.presence_blurbs_en);
+        global.planet_size = self.localize_array(global.planet_size_en);
     };
 
-    /// @param {real} _size Point size used for the runtime fallback font.
-    /// @param {real} _base_font The font asset intended for this text.
-    /// @returns {real}
-    static get_font = function(_size, _base_font) {
+    /// @param {Real} _base_font The font asset intended for this text.
+    /// @returns {Real}
+    static get_font = function(_base_font) {
         if (!self.needs_cjk) {
             return _base_font;
         }
 
+        var _font_id = string(_base_font);
+        if (struct_exists(self.resolved_fonts, _font_id)) {
+            return self.resolved_fonts[$ _font_id];
+        }
+
+        var _size = font_get_size(_base_font);
         var _style = self._get_font_style(_base_font);
         var _key = string(_size) + ":" + string(_style.bold) + ":" + string(_style.italic);
+        var _fallback_font = self.CJK_FONT_LOAD_FAILED;
         if (struct_exists(self.cjk_fonts, _key)) {
-            return self.cjk_fonts[$ _key];
+            _fallback_font = self.cjk_fonts[$ _key];
+        } else {
+            _fallback_font = font_add(STR_CJK_FALLBACK_FONT, _size, _style.bold, _style.italic, 32, 65535);
+            if (!font_exists(_fallback_font)) {
+                LOGGER.error($"Failed to load CJK fallback font '{STR_CJK_FALLBACK_FONT}' at size {_size}. Chinese glyphs may render as blank boxes.");
+                _fallback_font = self.CJK_FONT_LOAD_FAILED;
+            }
+            self.cjk_fonts[$ _key] = _fallback_font;
         }
 
-        var _fallback_font = font_add(STR_CJK_FALLBACK_FONT, _size, _style.bold, _style.italic, 32, 65535);
-        if (!font_exists(_fallback_font)) {
-            LOGGER.error($"Failed to load CJK fallback font '{STR_CJK_FALLBACK_FONT}' at size {_size}. Chinese glyphs may render as blank boxes.");
-            self.cjk_fonts[$ _key] = _base_font;
-            return _base_font;
-        }
-
-        self.cjk_fonts[$ _key] = _fallback_font;
-        return _fallback_font;
+        var _effective_font = _fallback_font == self.CJK_FONT_LOAD_FAILED ? _base_font : _fallback_font;
+        self.resolved_fonts[$ _font_id] = _effective_font;
+        return _effective_font;
     };
 
     /// @desc Returns a font's bold/italic style, cached per font asset so detection (and any
@@ -232,7 +235,10 @@ function LocalizationManager() constructor {
             return _overrides[$ _name];
         }
 
-        var _style = { bold: false, italic: false };
+        var _style = {
+            bold: false,
+            italic: false,
+        };
         var _len = string_length(_name);
         if (_len == 0) {
             return _style;
@@ -295,14 +301,14 @@ function localize_array(_keys) {
 
 /// @desc Global shorthand for a font suitable for the current language, deriving
 ///       the point size from the base font asset so callers never hardcode sizes.
-/// @param {real} _base_font The font asset intended for this text.
-/// @returns {real}
+/// @param {Real} _base_font The font asset intended for this text.
+/// @returns {Real}
 function cjk_font(_base_font) {
-    var _size = font_get_size(_base_font);
-    if (variable_global_exists("localization_manager")) {
-        return global.localization_manager.get_font(_size, _base_font);
+    if (!variable_global_exists("localization_manager") || !global.localization_manager.needs_cjk) {
+        return _base_font;
     }
-    return _base_font;
+
+    return global.localization_manager.get_font(_base_font);
 }
 
 /// @desc Explicit registry of styled font assets used by the CJK fallback. The CJK runtime font
@@ -312,10 +318,22 @@ function cjk_font(_base_font) {
 /// @returns {Struct}
 function font_style_overrides() {
     static _overrides = {
-        fnt_40k_14b: { bold: true, italic: false },
-        fnt_40k_30b: { bold: true, italic: false },
-        fnt_40k_12i: { bold: false, italic: true },
-        fnt_40k_14i: { bold: false, italic: true },
+        fnt_40k_14b: {
+            bold: true,
+            italic: false,
+        },
+        fnt_40k_30b: {
+            bold: true,
+            italic: false,
+        },
+        fnt_40k_12i: {
+            bold: false,
+            italic: true,
+        },
+        fnt_40k_14i: {
+            bold: false,
+            italic: true,
+        },
     };
     return _overrides;
 }
