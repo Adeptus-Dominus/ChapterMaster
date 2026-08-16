@@ -83,19 +83,19 @@ if (!zoomed && !zui) {
     draw_set_color(c_white);
 
     if (!instance_exists(obj_popup)) {
-        menu_buttons.chapter_manage.draw(34, 838 + y_slide, "Chapter Management", 1, 1, 145);
-        menu_buttons.chapter_settings.draw(179, 838 + y_slide, "Chapter Settings", 1, 1, 145);
-        menu_buttons.apoth.draw(357, 838 + y_slide, "Apothecarium");
-        menu_buttons.reclu.draw(473, 838 + y_slide, "Reclusium");
-        menu_buttons.lib.draw(590, 838 + y_slide, "Librarium");
-        menu_buttons.arm.draw(706, 838 + y_slide, "Armamentarium");
-        menu_buttons.recruit.draw(822, 838 + y_slide, "Recruitment");
-        menu_buttons.fleet.draw(938, 838 + y_slide, "Fleet");
-        menu_buttons.diplo.draw(1130, 838 + y_slide, "Diplomacy", 1, 1, 145);
-        menu_buttons.event.draw(1275, 838 + y_slide, "Event Log", 1, 1, 145);
-        menu_buttons.end_turn.draw(1420, 838 + y_slide, "End Turn", 1, 1, 145);
-        menu_buttons.help.draw(1374, 8 + y_slide, "Help");
-        menu_buttons.menu.draw(1484, 8 + y_slide, "Menu");
+        menu_buttons.chapter_manage.draw(34, 838 + y_slide, localize("Chapter Management"), 1, 1, 145);
+        menu_buttons.chapter_settings.draw(179, 838 + y_slide, localize("Chapter Settings"), 1, 1, 145);
+        menu_buttons.apoth.draw(357, 838 + y_slide, localize("Apothecarium"));
+        menu_buttons.reclu.draw(473, 838 + y_slide, localize("Reclusium"));
+        menu_buttons.lib.draw(590, 838 + y_slide, localize("Librarium"));
+        menu_buttons.arm.draw(706, 838 + y_slide, localize("Armamentarium"));
+        menu_buttons.recruit.draw(822, 838 + y_slide, localize("Recruitment"));
+        menu_buttons.fleet.draw(938, 838 + y_slide, localize("Fleet"));
+        menu_buttons.diplo.draw(1130, 838 + y_slide, localize("Diplomacy"), 1, 1, 145);
+        menu_buttons.event.draw(1275, 838 + y_slide, localize("Event Log"), 1, 1, 145);
+        menu_buttons.end_turn.draw(1420, 838 + y_slide, localize("End Turn"), 1, 1, 145);
+        menu_buttons.help.draw(1374, 8 + y_slide, localize("Help"));
+        menu_buttons.menu.draw(1484, 8 + y_slide, localize("Menu"));
     }
 
     if (y_slide > 0) {
@@ -113,19 +113,19 @@ if (!zoomed && !zui) {
     }
 
     draw_set_color(CM_GREEN_COLOR);
-    draw_set_font(fnt_menu);
+    draw_set_font(cjk_font(fnt_menu));
     draw_set_halign(fa_center);
     draw_set_valign(fa_top);
     // Draws the sector name
-    var _sector_string = $"Sector {obj_ini.sector_name ?? "Terra Nova"}";
+    var _sector_string = localize("Sector {0}", [obj_ini.sector_name ?? "Terra Nova"]);
     draw_text(775, 17, _sector_string);
     draw_text(775.5, 17.5, _sector_string);
 
     // Checks if you are penitent
     if (faction_status[eFACTION.IMPERIUM] != "War") {
         if (penitent_max == 0) {
-            draw_text(998, 17, "Loyal");
-            draw_text(998, 17.5, "Loyal");
+            draw_text(998, 17, localize("Loyal"));
+            draw_text(998, 17.5, localize("Loyal"));
         }
         if (penitent_max > 0) {
             var endb2 = "";
@@ -134,8 +134,8 @@ if (!zoomed && !zui) {
                 endb2 = " " + string(endb);
             }
             draw_set_color(c_red);
-            draw_text(998, 17, string(min(100, floor((penitent_current / penitent_max) * 100))) + "% Penitent");
-            draw_text(998, 17.5, string(min(100, floor((penitent_current / penitent_max) * 100))) + "% Penitent");
+            draw_text(998, 17, localize("{0}% Penitent", [string(min(100, floor((penitent_current / penitent_max) * 100)))]));
+            draw_text(998, 17.5, localize("{0}% Penitent", [string(min(100, floor((penitent_current / penitent_max) * 100)))]));
             draw_set_color(CM_GREEN_COLOR);
             // TODO Need a tooltip for here to display the actual amounts
         }
@@ -143,17 +143,17 @@ if (!zoomed && !zui) {
     // Sets you to renegade
     if (faction_status[eFACTION.IMPERIUM] == "War") {
         draw_set_color(255);
-        draw_text(998, 17, "Renegade");
-        draw_text(998, 17.5, "Renegade");
+        draw_text(998, 17, localize("Renegade"));
+        draw_text(998, 17.5, localize("Renegade"));
         draw_set_color(CM_GREEN_COLOR);
     }
     if (menu == eMENU.DEFAULT || menu == eMENU.TURN_END) {
         if (imp_ships == 0 && turn < 2) {
             sector_imperial_fleet_strength();
         }
-        draw_text(850, 60, $"Sector Fleet Strength {imp_ships}/{max_fleet_strength}");
+        draw_text(850, 60, localize("Sector Fleet Strength {0}/{1}", [imp_ships, max_fleet_strength]));
         if (scr_hit([700, 60, 1000, 80])) {
-            tooltip_draw("The relative strength of the imperial navy and defence fleet forces and their max supported strength. Increase The number of imperial aligned planets and active forge worlds to increase the limit");
+            tooltip_draw(localize("The relative strength of the imperial navy and defence fleet forces and their max supported strength. Increase The number of imperial aligned planets and active forge worlds to increase the limit"));
         }
     } // Checks if the chapter name is less than 140 chars, adjusts chapter_master_name_width accordingly
     var chapter_master_name_width = 1;
@@ -208,13 +208,13 @@ if (!zoomed && !zui) {
     draw_text(485.5, 16.5, string(marines) + "/" + string(command));
     pop_draw_return_values();
 }
-draw_set_font(fnt_40k_14b);
+draw_set_font(cjk_font(fnt_40k_14b));
 draw_set_color(c_red);
 draw_set_halign(fa_left);
 draw_set_alpha(1);
 // Sets up debut mode
 if (global.cheat_debug) {
-    draw_text(1124, 7, "DEBUG MODE");
+    draw_text(1124, 7, localize("DEBUG MODE"));
 }
 
 function draw_line(x1, y1, y_slide, variable) {

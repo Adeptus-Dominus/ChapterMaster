@@ -34,44 +34,44 @@ function scr_fleet_advisor() {
         }
         draw_set_halign(fa_left);
         draw_set_color(c_gray);
-        draw_set_font(fnt_40k_30b);
-        draw_text_transformed(xx + 352, yy + 66, "Flagship Bridge", 1, 1, 0);
-        draw_text_transformed(xx + 352, yy + 100, $"Master of the Fleet {ini.lord_admiral_name}", 0.6, 0.6, 0);
-        draw_set_font(fnt_40k_14);
-        _blurp = "Greetings, Chapter Master.\n\nYou requested a report?  Our fleet contains ";
+        draw_set_font(cjk_font(fnt_40k_30b));
+        draw_text_transformed(xx + 352, yy + 66, localize("Flagship Bridge"), 1, 1, 0);
+        draw_text_transformed(xx + 352, yy + 100, localize("Master of the Fleet {0}", [ini.lord_admiral_name]), 0.6, 0.6, 0);
+        draw_set_font(cjk_font(fnt_40k_14));
+        _blurp = localize("Greetings, Chapter Master.\n\nYou requested a report?  Our fleet contains ");
     }
     if (menu_adept == 1) {
         scr_image("advisor/splash", 1, xx + 16, yy + 43, 310, 828);
         draw_set_halign(fa_left);
         draw_set_color(c_gray);
-        draw_set_font(fnt_40k_30b);
-        draw_text_transformed(xx + 352, yy + 40, "Flagship Bridge", 1, 1, 0);
-        draw_text_transformed(xx + 352, yy + 100, $"Adept {cn.adept_name}", 0.6, 0.6, 0);
-        draw_set_font(fnt_40k_14);
-        _blurp = "Your fleet contains ";
+        draw_set_font(cjk_font(fnt_40k_30b));
+        draw_text_transformed(xx + 352, yy + 40, localize("Flagship Bridge"), 1, 1, 0);
+        draw_text_transformed(xx + 352, yy + 100, localize("Adept {0}", [cn.adept_name]), 0.6, 0.6, 0);
+        draw_set_font(cjk_font(fnt_40k_14));
+        _blurp = localize("Your fleet contains ");
     }
 
-    _blurp += string(temp[37]) + " Capital Ships, ";
-    _blurp += string(temp[38]) + " Frigates, and ";
-    _blurp += string(temp[39]) + " Escorts";
+    _blurp += localize("{0} Capital Ships, ", [string(temp[37])]);
+    _blurp += localize("{0} Frigates, and ", [string(temp[38])]);
+    _blurp += localize("{0} Escorts", [string(temp[39])]);
 
     var _hull_normalized = real(temp[41]);
 
     if (_hull_normalized >= 1) {
-        _blurp += ", none of which are damaged.";
+        _blurp += localize(", none of which are damaged.");
     } else if (_hull_normalized < 1) {
-        _blurp += $".  Our most damaged vessel is the {temp[40]} - it has {min(99, round(_hull_normalized * 100))}% Hull Integrity.";
+        _blurp += localize(".  Our most damaged vessel is the {0} - it has {1}% Hull Integrity.", [temp[40], string(min(99, round(_hull_normalized * 100)))]);
     }
 
     var _crippled_ships = real(temp[42]);
 
     if (_crippled_ships == 2) {
-        _blurp += "  Two of our ships are highly damaged.  You may wish to purchase a Repair License from the Sector Governerner.";
+        _blurp += localize("  Two of our ships are highly damaged.  You may wish to purchase a Repair License from the Sector Governerner.");
     } else if (_crippled_ships > 2) {
-        _blurp += "  Several of our ships are highly damaged.  It is advisable that you purchase a Repair License from the Sector Governer.";
+        _blurp += localize("  Several of our ships are highly damaged.  It is advisable that you purchase a Repair License from the Sector Governer.");
     }
 
-    _blurp += "\n\nHere are the current positions of our ships and their contents:";
+    _blurp += localize("\n\nHere are the current positions of our ships and their contents:");
 
     if (menu_adept == 1) {
         _blurp = string_replace(_blurp, "Our", "Your");
@@ -81,11 +81,11 @@ function scr_fleet_advisor() {
 
     draw_text_ext(xx + 352, yy + 130, _blurp, -1, 536);
 
-    draw_set_font(fnt_40k_30b);
+    draw_set_font(cjk_font(fnt_40k_30b));
     draw_set_halign(fa_center);
-    draw_text_transformed(xx + 1262, yy + 40, "Fleet", 0.6, 0.6, 0);
+    draw_text_transformed(xx + 1262, yy + 40, localize("Fleet"), 0.6, 0.6, 0);
 
-    draw_set_font(fnt_40k_14);
+    draw_set_font(cjk_font(fnt_40k_14));
     draw_set_halign(fa_left);
 
     // TODO: Probably a good idea to turn this whole interactive list/sheet generating logic into a constructor, that can be reused on many screens.
@@ -94,27 +94,27 @@ function scr_fleet_advisor() {
         var _columns = {
             name: {
                 w: 176,
-                text: "Name",
+                text: localize("Name"),
                 h_align: fa_left,
             },
             class: {
                 w: 154,
-                text: "Class",
+                text: localize("Class"),
                 h_align: fa_left,
             },
             location: {
                 w: 130,
-                text: "Location",
+                text: localize("Location"),
                 h_align: fa_left,
             },
             hp: {
                 w: 44,
-                text: "HP",
+                text: localize("HP"),
                 h_align: fa_right,
             },
             carrying: {
                 w: 84,
-                text: "Carrying",
+                text: localize("Carrying"),
                 h_align: fa_right,
             },
         };
@@ -182,7 +182,7 @@ function scr_fleet_advisor() {
 
                 with (_columns) {
                     name.contents = string_truncate(ini.ship[i], _columns.name.w - 6);
-                    class.contents = ini.ship_class[i];
+                    class.contents = localize(ini.ship_class[i]);
                     location.contents = ini.ship_location[i];
                     hp.contents = $"{round(ini.ship_hp[i] / ini.ship_maxhp[i] * 100)}%";
                     carrying.contents = $"{ini.ship_carrying[i]}/{ini.ship_capacity[i]}";
@@ -237,7 +237,7 @@ function scr_fleet_advisor() {
                             cn.temp[119] = scr_ship_occupants(i);
                         }
                     }
-                    tooltip_draw($"Carrying ({cn.temp[118]}): {cn.temp[119]}");
+                    tooltip_draw(localize("Carrying ({0}): {1}", [cn.temp[118], cn.temp[119]]));
                     if (_goto_button.click()) {
                         with (obj_p_fleet) {
                             var _fleet_ships = fleet_full_ship_array();
@@ -257,10 +257,10 @@ function scr_fleet_advisor() {
         }
 
         if (cn.temp[101] != "") {
-            draw_set_font(fnt_40k_30b);
+            draw_set_font(cjk_font(fnt_40k_30b));
             draw_set_halign(fa_center);
             draw_text_transformed(xx + 622, yy + 434, cn.temp[101], 0.75, 0.75, 0);
-            draw_text_transformed(xx + 622, yy + 464, cn.temp[102], 0.5, 0.5, 0);
+            draw_text_transformed(xx + 622, yy + 464, localize(cn.temp[102]), 0.5, 0.5, 0);
 
             draw_set_color(c_gray);
             draw_rectangle(xx + 488, yy + 492, xx + 756, yy + 634, 1);
@@ -281,31 +281,31 @@ function scr_fleet_advisor() {
             draw_sprite(spr_ship_back_white, ship_im, xx + 488, yy + 492);
 
             draw_set_color(c_gray);
-            draw_set_font(fnt_40k_14);
+            draw_set_font(cjk_font(fnt_40k_14));
             draw_set_halign(fa_left);
 
-            draw_text(xx + 383, yy + 655, $"Health: {cn.temp[103]}/{cn.temp[104]}");
-            draw_text(xx + 588, yy + 655, $"Shields: {cn.temp[105]}");
-            draw_text(xx + 768, yy + 655, $"Armour: {cn.temp[107]},{cn.temp[108]}");
+            draw_text(xx + 383, yy + 655, localize("Health: {0}/{1}", [cn.temp[103], cn.temp[104]]));
+            draw_text(xx + 588, yy + 655, localize("Shields: {0}", [cn.temp[105]]));
+            draw_text(xx + 768, yy + 655, localize("Armour: {0},{1}", [cn.temp[107], cn.temp[108]]));
 
-            draw_text(xx + 495, yy + 675, $"Speed: {cn.temp[106]}");
-            draw_text(xx + 680, yy + 675, $"Turrets: {cn.temp[109]}");
+            draw_text(xx + 495, yy + 675, localize("Speed: {0}", [cn.temp[106]]));
+            draw_text(xx + 680, yy + 675, localize("Turrets: {0}", [cn.temp[109]]));
 
             if (cn.temp[110] != "") {
-                draw_text(xx + 383, yy + 705, $"-{cn.temp[110]} ({cn.temp[111]})");
+                draw_text(xx + 383, yy + 705, localize("-{0} ({1})", [localize(cn.temp[110]), cn.temp[111]]));
             }
             if (cn.temp[112] != "") {
-                draw_text(xx + 383, yy + 725, $"-{cn.temp[112]} ({cn.temp[113]})");
+                draw_text(xx + 383, yy + 725, localize("-{0} ({1})", [localize(cn.temp[112]), cn.temp[113]]));
             }
             if (cn.temp[114] != "") {
-                draw_text(xx + 383, yy + 745, $"-{cn.temp[114]} ({cn.temp[115]})");
+                draw_text(xx + 383, yy + 745, localize("-{0} ({1})", [localize(cn.temp[114]), cn.temp[115]]));
             }
             if (cn.temp[116] != "") {
-                draw_text(xx + 383, yy + 765, $"-{cn.temp[116]} ({cn.temp[117]})");
+                draw_text(xx + 383, yy + 765, localize("-{0} ({1})", [localize(cn.temp[116]), cn.temp[117]]));
             }
 
-            draw_set_font(fnt_40k_12);
-            draw_set_font(fnt_40k_14);
+            draw_set_font(cjk_font(fnt_40k_12));
+            draw_set_font(cjk_font(fnt_40k_14));
         }
     }
     // 31 wide
