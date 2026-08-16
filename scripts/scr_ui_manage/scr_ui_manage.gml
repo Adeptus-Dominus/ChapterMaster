@@ -1268,6 +1268,57 @@ function scr_ui_manage() {
 }
 
 /// @self Asset.GMObject.obj_controller
+/// @desc Draws a wrapping selection-filter group and updates sel_all on click.
+/// @param {Struct.UnitButtonObject} _button The shared button used to draw each entry
+/// @param {String} _all_label Label for the leading button
+/// @param {String} _all_value Value sel_all takes when the leading button is pressed
+/// @param {Array<String>} _entries Filter names indexed 1..8; blank entries are skipped
+/// @param {Real} _left Left edge of the group
+/// @param {Real} _top Top edge of the group
+/// @param {Real} _right Right edge the rows must stay inside
+/// @returns {Real} The Y of the first free row beneath the group
+function draw_selection_filter_group(_button, _all_label, _all_value, _entries, _left, _top, _right) {
+    draw_set_font(_button.font);
+    _button.label = _all_label;
+    _button.alpha = 1;
+    _button.tooltip = "";
+    _button.x1 = _left;
+    _button.y1 = _top;
+    if (_button.draw()) {
+        sel_all = _all_value;
+    }
+
+    var _row_x = _button.x2 + _button.v_gap;
+    var _row_y = _top;
+
+    for (var i = 1; i <= 8; i++) {
+        if (_entries[i] == "") {
+            continue;
+        }
+
+        _button.label = string_truncate(_entries[i], 126);
+        _button.alpha = 1;
+        _button.x1 = _row_x;
+        _button.y1 = _row_y;
+        _button.update_loc(); // Measure before testing for row wrap.
+
+        if (_button.x2 > _right) {
+            _row_x = _left;
+            _row_y += _button.h + _button.v_gap;
+            _button.x1 = _row_x;
+            _button.y1 = _row_y;
+        }
+
+        if (_button.draw()) {
+            sel_all = _entries[i];
+        }
+        _row_x = _button.x2 + _button.v_gap;
+    }
+
+    return _row_y + _button.h + _button.v_gap;
+}
+
+/// @self Asset.GMObject.obj_controller
 /// @desc Draws and handles the Manage-screen selection controls.
 /// @returns {Undefined}
 function draw_manage_selection_buttons() {
@@ -1445,7 +1496,6 @@ function draw_manage_selection_buttons() {
             instance_destroy(obj_popup);
         }
     }
-    //new fixes for the load shit
     button.h = _load_button_h;
     button.x1 = right_ui_block.x1 + 26;
     button.y1 = action_button_bottom_y + 30 + _load_button_h_gap;
@@ -1494,22 +1544,14 @@ function draw_manage_selection_buttons() {
     var top_x = actions_block.x1 + 26;
     var top_y = actions_block.y1 + 70;
 
-    var inf_type_x = top_x;
-    var inf_type_y = top_y;
+    var _filter_right = actions_block.x2 - 26;
+    var _filter_next_y = top_y;
 
     if (sel_uni[1] != "") {
-        // How much space the selected unit takes
         draw_set_font(fnt_40k_30b);
         draw_text_transformed(actions_block.x1 + 26, actions_block.y1 + 6, $"Selection: {man_size} space", 0.5, 0.5, 0);
-        // List of selected units
         draw_set_font(fnt_40k_14);
         draw_text_ext(actions_block.x1 + 26, actions_block.y1 + 30, selecting_dudes, -1, 550);
-        // Options for the selected unit
-        // draw_set_font(fnt_40k_30b);
-        // draw_text_transformed(actions_block.x1 + 4, actions_block.x1 + 64,"Options:",0.5,0.5,0);
-
-        // Select all units button
-        // button reset code
 
         button.set_width = false;
         button.w = 0;
@@ -1536,73 +1578,12 @@ function draw_manage_selection_buttons() {
             filter_mode = !filter_mode;
         }
 
-        button.x1 = top_x;
-        button.update_loc();
-        button.y1 = top_y + button.h + button.v_gap + 4;
-        // Select all infantry button
         button.font = fnt_40k_12;
-        draw_set_font(fnt_40k_12);
-        button.label = "All Infantry";
-        button.alpha = 1;
-        if (button.draw()) {
-            sel_all = "man";
-        }
-
-        inf_type_x = button.x1 + button.w + button.v_gap;
-        inf_type_y = button.y1;
-
-        // Select infantry type buttons
-        for (var i = 1; i <= 8; i++) {
-            if (sel_uni[i] != "") {
-                if (i == 1) {
-                    button.x1 = inf_type_x;
-                    button.y1 = inf_type_y;
-                } else if (i == 5) {
-                    button.x1 = inf_type_x;
-                    button.y1 = inf_type_y + button.h + button.v_gap;
-                } else {
-                    button.x1 += button.w + button.v_gap;
-                }
-                button.label = string_truncate(sel_uni[i], 126);
-                button.alpha = 1;
-                if (button.draw()) {
-                    sel_all = sel_uni[i];
-                }
-            }
-        }
+        _filter_next_y = draw_selection_filter_group(button, "All Infantry", "man", sel_uni, top_x, top_y + button.h + button.v_gap + 4, _filter_right);
     }
 
-    // Select all vehicles button
     if (sel_veh[1] != "") {
-        button.x1 = top_x;
-        button.y1 = inf_type_y + (button.h + button.v_gap) * 2 + 4;
-        button.label = "All Vehicles";
-        button.alpha = 1;
-        if (button.draw()) {
-            sel_all = "vehicle";
-        }
-
-        var veh_type_x = button.x1 + button.w + button.v_gap;
-        var veh_type_y = button.y1;
-
-        // Select vehicle type buttons
-        for (var i = 1; i <= 8; i++) {
-            if (sel_veh[i] != "") {
-                if (i == 1) {
-                    button.x1 = veh_type_x;
-                    button.y1 = veh_type_y;
-                } else if (i == 5) {
-                    button.x1 = veh_type_x;
-                    button.y1 = veh_type_y + button.h + button.v_gap;
-                } else {
-                    button.x1 += button.w + button.v_gap;
-                }
-                button.label = string_truncate(sel_veh[i], 126);
-                button.alpha = 1;
-                if (button.draw()) {
-                    sel_all = sel_veh[i];
-                }
-            }
-        }
+        button.font = fnt_40k_12;
+        draw_selection_filter_group(button, "All Vehicles", "vehicle", sel_veh, top_x, _filter_next_y + 4, _filter_right);
     }
 }
