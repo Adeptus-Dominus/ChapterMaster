@@ -10,6 +10,8 @@ function Table(data) constructor {
 
     row_key_draw = [];
 
+    localize_values = false;
+
     halign = fa_center;
 
     colour = CM_GREEN_COLOR;
@@ -93,7 +95,7 @@ function Table(data) constructor {
         draw_set_halign(halign);
         draw_set_valign(fa_top);
         draw_set_color(colour);
-        draw_set_font(font);
+        draw_set_font(cjk_font(font));
 
         row_h = max(row_h, string_height("a") + 1);
 
@@ -123,7 +125,11 @@ function Table(data) constructor {
             } else if (is_struct(_row)) {
                 for (var d = 0; d < array_length(row_key_draw) && d < _cols; d++) {
                     var _key = row_key_draw[d];
-                    var _scale_edits = calc_text_scale_confines(_row[$ _key], column_widths[d], 0);
+                    var _value = _row[$ _key];
+                    if (localize_values) {
+                        _value = localize(_value);
+                    }
+                    var _scale_edits = calc_text_scale_confines(_value, column_widths[d], 0);
                     var _scale = min(1, _scale_edits.scale);
                     var _text = _scale_edits.text;
                     draw_text_transformed(_col_draw_x + (column_widths[d] / 2), _row_level, _text, _scale, _scale, 0);

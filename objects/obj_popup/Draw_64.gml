@@ -25,10 +25,10 @@ try {
         }
 
         if (type == ePOPUP_TYPE.FLEET_MOVE) {
-            draw_set_font(fnt_large);
+            draw_set_font(cjk_font(fnt_large));
             draw_set_halign(fa_center);
             draw_set_color(CM_GREEN_COLOR);
-            draw_text_transformed(320, 60, "SELECT DESTINATION", 0.5, 0.5, 0);
+            draw_text_transformed(320, 60, localize("SELECT DESTINATION"), 0.5, 0.5, 0);
             draw_set_halign(fa_left);
         } else if (type == 10) {
             target_comp += 1;
@@ -52,12 +52,12 @@ try {
             x1 = (1600 - sprite_width) / 2;
             y1 = (900 - sprite_height * y_scale_mod) / 2;
 
-            draw_set_font(fnt_40k_14b);
+            draw_set_font(cjk_font(fnt_40k_14b));
             draw_set_halign(fa_center);
             draw_set_color(CM_GREEN_COLOR);
 
             if (fancy_title == 1) {
-                draw_set_font(fnt_fancy);
+                draw_set_font(cjk_font(fnt_fancy));
                 if (type == 1) {
                     draw_set_color(255);
                 }
@@ -65,7 +65,7 @@ try {
             draw_text_transformed(x1 + (sprite_width / 2), y1 + (sprite_height * 0.07), string_hash_to_newline(string(title)), 1.1, 1.1, 0);
             // draw_text(xx+320.5,yy+123.5,string(title));
 
-            draw_set_font(fnt_40k_14);
+            draw_set_font(cjk_font(fnt_40k_14));
             draw_set_halign(fa_left);
             draw_set_color(CM_GREEN_COLOR);
 

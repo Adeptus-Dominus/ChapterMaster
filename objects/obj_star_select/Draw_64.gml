@@ -13,7 +13,7 @@ if (obj_controller.menu == 60) {
 }
 
 add_draw_return_values();
-draw_set_font(fnt_40k_14b);
+draw_set_font(cjk_font(fnt_40k_14b));
 draw_set_halign(fa_center);
 draw_set_valign(fa_top);
 draw_set_color(0);
@@ -95,7 +95,7 @@ try {
     draw_sprite_ext(spr_servo_right_arm, 0, 27, 165 + _screen_height / 3, 2, 2, 0, c_white, 1);
     draw_sprite_ext(spr_servo_skull_head, 0, 27 + _screen_width / 2, 165, 2, 2, 0, c_white, 1);
 
-    var system_string = $"{target.name} System";
+    var system_string = target.name + " " + localize("System");
 
     draw_set_color(target.owner == eFACTION.PLAYER ? c_blue : 0);
 
@@ -116,7 +116,7 @@ try {
             var _unit_dispersement = _viewer.garrison_log;
             var _sys_name = target.name;
             if (struct_exists(_unit_dispersement, target.name)) {
-                group_selection(_unit_dispersement[$ _sys_name].units, {purpose: $"{target.name} Management", purpose_code: "manage", number: 0, system: target.id, feature: "none", planet: 0, selections: []});
+                group_selection(_unit_dispersement[$ _sys_name].units, {purpose: localize("{0} Management", [target.name]), purpose_code: "manage", number: 0, system: target.id, feature: "none", planet: 0, selections: []});
                 instance_destroy();
                 pop_draw_return_values();
                 exit;
@@ -125,9 +125,9 @@ try {
     }
 
     if (loading != 0) {
-        draw_set_font(fnt_40k_14);
+        draw_set_font(cjk_font(fnt_40k_14));
         draw_set_color(CM_GREEN_COLOR);
-        draw_text(184, 202, "Select Destination");
+        draw_text(184, 202, localize("Select Destination"));
     }
 
     //the draw and click on planets logic
@@ -135,7 +135,7 @@ try {
         planet_selection_action();
     }
 
-    draw_set_font(fnt_40k_14b);
+    draw_set_font(cjk_font(fnt_40k_14b));
 
     var _planet = obj_controller.selecting_planet;
     if (_planet != 0) {
@@ -236,13 +236,13 @@ try {
             }
         } else if (garrison != "" && !population && garrison.planet == obj_controller.selecting_planet) {
             if (garrison.garrison_force) {
-                draw_set_font(fnt_40k_14);
+                draw_set_font(cjk_font(fnt_40k_14));
 
-                garrison_data_slate.sub_title = $"Garrison Leader {garrison.garrison_leader.name_role()}";
+                garrison_data_slate.sub_title = localize("Garrison Leader {0}", [garrison.garrison_leader.name_role()]);
                 garrison_data_slate.body_text = garrison.garrison_report();
 
                 garrison_data_slate.inside_method = function() {
-                    garrison_data_slate.title = "Garrison Report";
+                    garrison_data_slate.title = localize("Garrison Report");
                     draw_set_color(c_gray);
                     var xx = garrison_data_slate.XX;
                     var yy = garrison_data_slate.YY;
@@ -251,7 +251,7 @@ try {
                     draw_set_halign(fa_left);
                     draw_line(xx + 10, half_way, garrison_data_slate.width - 10, half_way);
                     var defence_data = determine_pdf_defence(target.p_pdf[cur_planet], garrison, target.p_fortified[cur_planet]);
-                    var defence_string = $"Planetary Defence : {defence_data[0]}";
+                    var defence_string = localize("Planetary Defence : {0}", [defence_data[0]]);
                     draw_text(xx + 20, half_way, defence_string);
                     if (scr_hit(xx + 20, half_way + 10, xx + 20 + string_width(defence_string), half_way + 10 + 20)) {
                         tooltip_draw(defence_data[1], 400);
@@ -259,17 +259,17 @@ try {
 
                     var _dispo_change = garrison.dispo_change;
                     if (_dispo_change > 55) {
-                        draw_text(xx + 20, half_way + 30, $"Garrison Disposition Effect : Positive");
+                        draw_text(xx + 20, half_way + 30, localize("Garrison Disposition Effect : Positive"));
                     } else if (_dispo_change > 44 || _dispo_change == 0) {
-                        draw_text(xx + 20, half_way + 30, $"Garrison Disposition Effect : Neutral");
+                        draw_text(xx + 20, half_way + 30, localize("Garrison Disposition Effect : Neutral"));
                     } else {
-                        draw_text(xx + 20, half_way + 30, $"Garrison Disposition Effect : Negative");
+                        draw_text(xx + 20, half_way + 30, localize("Garrison Disposition Effect : Negative"));
                     }
                 };
                 garrison_data_slate.draw(340 + main_data_slate.width, 160, 0.6, 0.6);
             }
         } else if (population) {
-            garrison_data_slate.title = "Population Report";
+            garrison_data_slate.title = localize("Population Report");
             garrison_data_slate.inside_method = function() {
                 p_data.draw_planet_population_controls();
             };
@@ -283,7 +283,7 @@ try {
         var shutter_y = 296 + 165;
         if (!debug) {
             for (var i = 0; i < array_length(buttons); i++) {
-                if (shutters[i].draw_shutter(shutter_x, shutter_y + (47 * i), buttons[i], 0.5, true)) {
+                if (shutters[i].draw_shutter(shutter_x, shutter_y + (47 * i), localize(buttons[i]), 0.5, true)) {
                     current_button = buttons[i];
                 }
             }
@@ -382,12 +382,12 @@ try {
             draw_set_halign(fa_left);
 
             draw_set_color(0);
-            draw_set_font(fnt_40k_14b);
-            draw_text(37, 413, "Select Fleet Combat");
+            draw_set_font(cjk_font(fnt_40k_14b));
+            draw_text(37, 413, localize("Select Fleet Combat"));
 
             draw_set_color(CM_GREEN_COLOR);
-            draw_set_font(fnt_40k_14b);
-            draw_text(37.5, 413.5, "Select Fleet Combat");
+            draw_set_font(cjk_font(fnt_40k_14b));
+            draw_text(37.5, 413.5, localize("Select Fleet Combat"));
 
             var x3 = 49, y3 = 441;
 

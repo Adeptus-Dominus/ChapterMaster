@@ -2,29 +2,29 @@ function disposition_description_chart(dispo) {
     if (global.cheat_debug) {
         return $"{dispo}";
     } else if (dispo < -4000) {
-        return "Ruled";
+        return localize("Ruled");
     } else if (dispo < -100) {
-        return "DEBUG: Numbers lower than -100 detected, this shouldn't happen!";
+        return localize("DEBUG: Numbers lower than -100 detected, this shouldn't happen!");
     } else if (dispo <= 0) {
-        return "Extremely Hostile";
+        return localize("Extremely Hostile");
     } else if (dispo < 10) {
-        return "Very Hostile";
+        return localize("Very Hostile");
     } else if (dispo < 30) {
-        return "Hostile";
+        return localize("Hostile");
     } else if (dispo < 50) {
-        return "Uneasy";
+        return localize("Uneasy");
     } else if (dispo < 60) {
-        return "Neutral";
+        return localize("Neutral");
     } else if (dispo < 70) {
-        return "Friendly";
+        return localize("Friendly");
     } else if (dispo < 80) {
-        return "Very Friendly";
+        return localize("Very Friendly");
     } else if (dispo < 90) {
-        return "Excellent";
+        return localize("Excellent");
     } else if (dispo <= 100) {
-        return "Unquestionable";
+        return localize("Unquestionable");
     } else {
-        return "DEBUG: Numbers higher than 100, this shouldn't happen!";
+        return localize("DEBUG: Numbers higher than 100, this shouldn't happen!");
     }
 }
 
@@ -181,26 +181,26 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
     static garrison_report = function() {
         var system = obj_star_select.target;
         var planet = obj_controller.selecting_planet;
-        var report_string = "Hail My lord.##";
-        report_string += $"Report for garrison on {system.name} {scr_roman_numerals()[planet - 1]} is as follows#";
+        var report_string = localize("Hail My lord.##");
+        report_string += localize("Report for garrison on {0} {1} is as follows#", [system.name, scr_roman_numerals()[planet - 1]]);
         if (array_length(garrison_squads) > 1) {
-            report_string += $"The garrison is comprised of {array_length(garrison_squads)} squads,";
+            report_string += localize("The garrison is comprised of {0} squads,", [string(array_length(garrison_squads))]);
         } else {
-            report_string += "The garrison is comprised of a single squad,";
+            report_string += localize("The garrison is comprised of a single squad,");
         }
 
-        report_string += $" with a total man count of {total_garrison}.#";
+        report_string += localize(" with a total man count of {0}.#", [string(total_garrison)]);
         if (system.p_owner[planet] != eFACTION.PLAYER && system.dispo[planet] >= -100) {
             var disposition = disposition_description_chart(system.dispo[planet]);
-            report_string += $"Our Relationship with the Rulers of the planet is {disposition}#";
+            report_string += localize("Our Relationship with the Rulers of the planet is {0}#", [disposition]);
         } else if (system.dispo[planet] < -1000) {
             if (system.p_owner[planet] == eFACTION.PLAYER) {
-                report_string += $"Rule of the planet is going well";
+                report_string += localize("Rule of the planet is going well");
             } else {
-                report_string += $"Your rule of the the planet is being undermined by hostile forces";
+                report_string += localize("Your rule of the the planet is being undermined by hostile forces");
             }
         } else {
-            report_string += $"DEBUG: planet owner check failed";
+            report_string += localize("DEBUG: planet owner check failed");
             //report_string+=$"There is no clear chain of command on the planet we suspect the existence of Xenos or Heretic Forces"; // TODO LOW GARRISON_XENO // Readd when this actually gets implented
         }
 
@@ -318,10 +318,10 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
                                                     //equally a feat does not be stored anywhere you can just makeem up on the fly where as a trait has to be stored in teh global trait list
                                                     //this may all be subject to change but in my head it's coming together
                                                     case "hold_breach":
-                                                        _unit.add_feat({ident: "hold_breach", title: "Held breach", planet: planet, grade: 5, location: "location", text: $"Single Handedly held a breach in the {alligience} during the {effort} {attack_defend} of {location} {scr_roman_numeral[planet - 1]} from the Orks"});
+                                                        _unit.add_feat({ident: "hold_breach", title: localize("Held breach"), planet: planet, grade: 5, location: "location", text: localize("Single Handedly held a breach in the {0} during the {1} {2} of {3} {4} from the Orks", [alligience, effort, attack_defend, location, scr_roman_numeral[planet - 1]])});
                                                         break;
                                                     case "still_standing":
-                                                        _unit.add_feat({ident: "still_standing", planet: planet, location: "location", text: $"Was pullled from beneath the carcesses of his slain {alligience} during the {effort} {attack_defend} of {location} {scr_roman_numeral[planet - 1]} from the Orks"});
+                                                        _unit.add_feat({ident: "still_standing", planet: planet, location: "location", text: localize("Was pullled from beneath the carcesses of his slain {0} during the {1} {2} of {3} {4} from the Orks", [alligience, effort, attack_defend, location, scr_roman_numeral[planet - 1]])});
                                                 }
                                             }
                                         } else {
@@ -336,7 +336,7 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
                             }
                         }
                     }
-                    scr_popup("Garrison Report", "Garrison forces on......", "imperial", "");
+                    scr_popup(localize("Garrison Report"), localize("Garrison forces on......"), "imperial", "");
                     break;
             }
         }
@@ -347,7 +347,7 @@ function determine_pdf_defence(pdf, garrison = noone, planet_forti = 0, enemy = 
     var explanations = "";
     var defence_mult = planet_forti * 0.1;
     var pdf_score = 0;
-    explanations += $"Planet Defences:X{defence_mult + 1}#";
+    explanations += localize("Planet Defences:X{0}#", [string(defence_mult + 1)]);
     if (garrison != noone) {
         //if player supports give garrison bonus
         var garrison_mult = garrison.viable_garrison * (0.008 + (0.001 * planet_forti));
@@ -355,9 +355,9 @@ function determine_pdf_defence(pdf, garrison = noone, planet_forti = 0, enemy = 
         if (siege_masters) {
             garrison_mult *= 2;
         }
-        explanations += $"Garrison Bonus:X{garrison_mult + 1}#";
+        explanations += localize("Garrison Bonus:X{0}#", [string(garrison_mult + 1)]);
         if (siege_masters) {
-            explanations += $"     Siege Masters:X2#";
+            explanations += localize("     Siege Masters:X2#");
         }
         if (!garrison.garrison_leader) {
             garrison.find_leader();
@@ -365,7 +365,7 @@ function determine_pdf_defence(pdf, garrison = noone, planet_forti = 0, enemy = 
         defence_mult += garrison_mult;
         var leader_bonus = garrison.garrison_leader.wisdom / 30;
         defence_mult *= leader_bonus; //modified by how good a commander the garrison _leader is
-        explanations += $"     Garrison Leader Bonus:X{leader_bonus}(WIS/30)#";
+        explanations += localize("     Garrison Leader Bonus:X{0}(WIS/30)#", [string(leader_bonus)]);
         //makes pdf more effective if planet has defences or marines present
     }
 
@@ -386,7 +386,7 @@ function determine_pdf_defence(pdf, garrison = noone, planet_forti = 0, enemy = 
     } else if (pdf <= 500) {
         pdf_score = 0.1;
     }
-    explanations += $"PDF Defence: {pdf_score}#";
+    explanations += localize("PDF Defence: {0}#", [string(pdf_score)]);
     pdf_score *= 1 + defence_mult;
     return [
         pdf_score,

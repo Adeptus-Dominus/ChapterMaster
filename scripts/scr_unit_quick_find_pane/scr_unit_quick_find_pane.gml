@@ -35,7 +35,7 @@ function UnitQuickFindPanel() constructor {
         y1: yy + 50,
         x2: xx + main_panel.width,
         y2: yy + main_panel.height,
-        headings: ["Capitals", "Frigates", "Escorts", "Location"],
+        headings: [localize("Capitals"), localize("Frigates"), localize("Escorts"), localize("Location")],
         row_key_draw: ["capitals", "frigates", "escorts", "location"],
         set_column_widths: [70, 70, 70, 100],
         row_h: 20,
@@ -170,13 +170,13 @@ function UnitQuickFindPanel() constructor {
             var _point_data = _cur_fleet.point_breakdown;
 
             if (_cur_fleet.action == "Lost") {
-                _loc = "Lost";
+                _loc = localize("Lost");
                 _zoomable = false;
             } else if (string_count("crusade", _cur_fleet.action)) {
-                _loc = "Crusading";
+                _loc = localize("Crusading");
                 _zoomable = false;
             } else if (_cur_fleet.action == "move") {
-                _loc = "Warp Travel";
+                _loc = localize("Warp Travel");
             } else {
                 var _near_star = instance_nearest(_cur_fleet.x, _cur_fleet.y, obj_star);
                 _loc = _near_star.name;
@@ -199,7 +199,7 @@ function UnitQuickFindPanel() constructor {
 
             _row.hover = method(_row, function() {
                 obj_controller.location_viewer.hovered_fleet_data = point_data;
-                tooltip_draw("left click to view");
+                tooltip_draw(localize("left click to view"));
             });
 
             // Click to pan camera — only when location is meaningful
@@ -234,15 +234,15 @@ function UnitQuickFindPanel() constructor {
             var _sy = yy + 108;
             detail_slate.draw(_sx, _sy, 1.5, 1.5);
 
-            draw_set_font(fnt_40k_12i);
+            draw_set_font(cjk_font(fnt_40k_12i));
             draw_set_halign(fa_center);
 
             // Headers
-            draw_text(_sx + 160, _sy + 10, "forge point\ntotal");
-            draw_text(_sx + 240, _sy + 10, "forge point\nuse");
-            draw_text(_sx + 320, _sy + 10, "apothecary\npoint total");
-            draw_text(_sx + 400, _sy + 10, "apothecary\npoint use");
-            draw_text(_sx + 60, _sy + 50, "Orbiting");
+            draw_text(_sx + 160, _sy + 10, localize("forge point\ntotal"));
+            draw_text(_sx + 240, _sy + 10, localize("forge point\nuse"));
+            draw_text(_sx + 320, _sy + 10, localize("apothecary\npoint total"));
+            draw_text(_sx + 400, _sy + 10, localize("apothecary\npoint use"));
+            draw_text(_sx + 60, _sy + 50, localize("Orbiting"));
 
             // Values
             var _vy = _sy + 50;
@@ -295,7 +295,7 @@ function UnitQuickFindPanel() constructor {
                         switch (_event.turn_end) {
                             //this is being pre seeded for a later coming feature set
                             case "deliver_trophy_end_turn_check":
-                                var _mission = $"Deliver Trophy Guard";
+                                var _mission = localize("Deliver Trophy Guard");
                                 var _sys = fleets_next_location();
                                 var _mission_data = {
                                     mission: _mission,
@@ -314,7 +314,7 @@ function UnitQuickFindPanel() constructor {
                                 });
 
                                 _mission_data.hover = method(_mission_data, function() {
-                                    tooltip_draw($"You are to have {person_name} deliver trophy hunted on {start_system} to the {start_system} regiments\n\nLeft click to see target fleet intercept system right click to view the trophy bearing marine {person_name}");
+                                    tooltip_draw(localize("You are to have {0} deliver trophy hunted on {1} to the {1} regiments\n\nLeft click to see target fleet intercept system right click to view the trophy bearing marine {0}", [person_name, start_system]));
                                 });
 
                                 _mission_data.click_right = method(_mission_data, function() {
@@ -344,9 +344,9 @@ function UnitQuickFindPanel() constructor {
                 150,
             ],
             headings: [
-                "Location",
-                "Mission",
-                "Time\nRemaining",
+                localize("Location"),
+                localize("Mission"),
+                localize("Time\nRemaining"),
             ],
             row_data: mission_log,
             row_key_draw: [
@@ -369,10 +369,10 @@ function UnitQuickFindPanel() constructor {
             var system_data;
             draw_set_color(c_white);
             draw_set_halign(fa_center);
-            draw_text(xx + 80, yy + 50, "System");
-            draw_text(xx + 160, yy + 50, "Troops");
-            draw_text(xx + 240, yy + 50, "Healers");
-            draw_text(xx + 310, yy + 50, "Techies");
+            draw_text(xx + 80, yy + 50, localize("System"));
+            draw_text(xx + 160, yy + 50, localize("Troops"));
+            draw_text(xx + 240, yy + 50, localize("Healers"));
+            draw_text(xx + 310, yy + 50, localize("Techies"));
             var i = start_system;
             var registered_hover = false;
             var system_names = struct_get_names(garrison_log);
@@ -410,12 +410,12 @@ function UnitQuickFindPanel() constructor {
                         var _system_point_data = _special_points[$ _sys_name];
                         var _xx = xx + main_panel.width - 10;
                         var _yy = _sys_item_y - 20;
-                        draw_set_font(fnt_40k_12i);
-                        draw_text(_xx + 160, _yy + 10, "forge point\ntotal");
-                        draw_text(_xx + 240, _yy + 10, "forge point\nuse");
-                        draw_text(_xx + 320, _yy + 10, "apothecary\npoint total");
-                        draw_text(_xx + 400, _yy + 10, "apothecary\npoint use");
-                        draw_text(_xx + 60, _yy + 50, "Orbiting");
+                        draw_set_font(cjk_font(fnt_40k_12i));
+                        draw_text(_xx + 160, _yy + 10, localize("forge point\ntotal"));
+                        draw_text(_xx + 240, _yy + 10, localize("forge point\nuse"));
+                        draw_text(_xx + 320, _yy + 10, localize("apothecary\npoint total"));
+                        draw_text(_xx + 400, _yy + 10, localize("apothecary\npoint use"));
+                        draw_text(_xx + 60, _yy + 50, localize("Orbiting"));
                         for (var s = 1; s <= 4; s++) {
                             draw_text(_xx + 60, _yy + 50 + (50 * s), scr_roman(s));
                         }
@@ -468,8 +468,8 @@ function UnitQuickFindPanel() constructor {
                 hover_count = 0;
                 hover_item = noone;
             } else if (hover_item != noone) {
-                if (point_and_click(hover_item.draw(xx + 10, yy + 90 + (20 * hover_item.root_item), "Manage"))) {
-                    group_selection(garrison_log[$ system_names[hover_item.root_item]].units, {purpose: $"{system_names[hover_item.root_item]} Management", purpose_code: "manage", number: 0, system: find_star_by_name(system_names[hover_item.root_item]).id, feature: "none", planet: 0, selections: []});
+                if (point_and_click(hover_item.draw(xx + 10, yy + 90 + (20 * hover_item.root_item), localize("Manage")))) {
+                    group_selection(garrison_log[$ system_names[hover_item.root_item]].units, {purpose: localize("{0} Management", [system_names[hover_item.root_item]]), purpose_code: "manage", number: 0, system: find_star_by_name(system_names[hover_item.root_item]).id, feature: "none", planet: 0, selections: []});
                 }
             }
         } else if (view_area == "missions") {
@@ -498,27 +498,27 @@ function UnitQuickFindPanel() constructor {
                     }
                     if (hide_sequence > 15 || hide_sequence < 15) {
                         main_panel.draw(x_draw, 110, 0.46, 0.75);
-                        if (tab_buttons.fleets.draw(x_draw, 79, "Fleets")) {
+                        if (tab_buttons.fleets.draw(x_draw, 79, localize("Fleets"))) {
                             view_area = "fleets";
                             update_fleet_table();
                         }
-                        if (tab_buttons.garrisons.draw(115 + x_draw, 79, "System Troops")) {
+                        if (tab_buttons.garrisons.draw(115 + x_draw, 79, localize("System Troops"))) {
                             view_area = "garrisons";
                             update_garrison_log();
                         }
-                        if (tab_buttons.missions.draw(230 + x_draw, 79, "Missions")) {
+                        if (tab_buttons.missions.draw(230 + x_draw, 79, localize("Missions"))) {
                             view_area = "missions";
                             update_mission_log();
                         }
                         if (x_draw < 0) {
-                            tab_buttons.hider.draw(0, lower_draw, "Show");
+                            tab_buttons.hider.draw(0, lower_draw, localize("Show"));
                         } else {
-                            if (tab_buttons.hider.draw(x_draw + 280, lower_draw, "Hide")) {
+                            if (tab_buttons.hider.draw(x_draw + 280, lower_draw, localize("Hide"))) {
                                 hide_sequence++;
                             }
                         }
                     } else if (hide_sequence == 15) {
-                        if (tab_buttons.hider.draw(0, lower_draw, "Show")) {
+                        if (tab_buttons.hider.draw(0, lower_draw, localize("Show"))) {
                             hide_sequence++;
                         }
                     }
@@ -826,7 +826,7 @@ function HelpfulPlaces() constructor {
         _data.help_requests = _helps;
 
         _data.hover = method(_data, function() {
-            tooltip_draw($"View {name}");
+            tooltip_draw(localize("View {0}", [name]));
         });
 
         _data.click_left = method(_data, function() {
@@ -847,7 +847,7 @@ function HelpfulPlaces() constructor {
 
     help_table = new Table({
         row_key_draw: ["name", "system_count", "help_requests"],
-        headings: ["System", "Planets", "Planets\nRequesting Help"],
+        headings: [localize("System"), localize("Planets"), localize("Planets\nRequesting Help")],
         row_data: _help_requests,
     });
 
@@ -871,9 +871,9 @@ function HelpfulPlaces() constructor {
 
         _data.hover = method(_data, function() {
             if (location != "Warp") {
-                tooltip_draw($"View fleet at {location}");
+                tooltip_draw(localize("View fleet at {0}", [location]));
             } else {
-                tooltip_draw($"View fleet");
+                tooltip_draw(localize("View fleet"));
             }
         });
 
@@ -886,8 +886,9 @@ function HelpfulPlaces() constructor {
 
     navy_table = new Table({
         row_key_draw: ["location", "remaining_guard"],
-        headings: ["Location", "Remaining\nGuard"],
+        headings: [localize("Location"), localize("Remaining\nGuard")],
         row_data: _navy_fleets,
+        localize_values: true,
     });
 
     var _forges = [];
@@ -911,7 +912,7 @@ function HelpfulPlaces() constructor {
             });
 
             _data.hover = method(_data, function() {
-                tooltip_draw($"click to view {system.name} system");
+                tooltip_draw(localize("click to view {0} system", [system.name]));
             });
 
             var _name_length = string_width(_data.name);
@@ -926,9 +927,10 @@ function HelpfulPlaces() constructor {
 
     forges_table = new Table({
         row_key_draw: ["name", "owner_name", "owner_status"],
-        headings: ["Name", "   Owner   ", "  Owner\nStatus  "],
+        headings: [localize("Name"), localize("   Owner   "), localize("  Owner\nStatus  ")],
         row_data: _forges,
         set_column_widths: _columns,
+        localize_values: true,
     });
 
     places_radio = new RadioSet(
