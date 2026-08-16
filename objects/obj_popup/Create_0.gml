@@ -1,15 +1,8 @@
 type = 0;
 size = 2;
 y_scale = 1;
-if (size == 1) {
-    sprite_index = spr_popup_small;
-}
-if (size == 2) {
-    sprite_index = spr_popup_medium;
-}
-if (size == 3) {
-    sprite_index = spr_popup_large;
-}
+sprite_index = spr_popup_medium;
+
 // Popup windows draw in Draw GUI; hide the automatic instance sprite.
 image_alpha = 0;
 image_speed = 0;
@@ -24,9 +17,6 @@ if (instance_exists(obj_controller)) {
         master_crafted = obj_controller.popup_master_crafted;
     }
 }
-type = 0;
-size = 2;
-image = "";
 title = "";
 fancy_title = 0;
 text_center = 0;
