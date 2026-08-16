@@ -258,6 +258,9 @@ function reload_items() {
 }
 
 /// @self Asset.GMObject.obj_popup Asset.GMObject.obj_creation_popup
+/// @desc Draws and handles the equipment popup.
+/// @param {Bool} [before_after_styling] ... Defaults to true.
+/// @returns {Undefined}
 function draw_popup_equip(before_after_styling = true) {
     main_slate.draw_with_dimensions();
     add_draw_return_values();
@@ -385,7 +388,6 @@ function draw_popup_equip(before_after_styling = true) {
         warning = _results.warning;
     }
 
-    //draw_set_halign(fa_center);
     if ((equipment_area == eEQUIPMENT_SLOT.WEAPON_ONE) || (equipment_area == eEQUIPMENT_SLOT.WEAPON_TWO)) {
         range_melee_radio.draw();
     }
@@ -400,9 +402,18 @@ function draw_popup_equip(before_after_styling = true) {
         reload_items();
     }
 
-    draw_set_color(255);
-    draw_set_halign(fa_center);
-    draw_text(_x1 + 286, _y1 + 427, warning);
+    if (warning != "") {
+        add_draw_return_values();
+        draw_set_color(255);
+        draw_set_halign(fa_center);
+        draw_set_valign(fa_top);
+        draw_set_font(fnt_40k_12);
+        var _warning_width = main_slate.width - 40;
+        var _warning_height = string_height_ext(warning, -1, _warning_width);
+        var _warning_bottom_y = _y1 + 443; // 5px above the Cancel/Equip buttons at _y1 + 448
+        draw_text_ext(_x1 + main_slate.width / 2, _warning_bottom_y - _warning_height, warning, -1, _warning_width);
+        pop_draw_return_values();
+    }
 
     if (cancel_button.draw()) {
         instance_destroy();
