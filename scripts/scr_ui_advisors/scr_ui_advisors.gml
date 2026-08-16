@@ -62,19 +62,19 @@ function scr_ui_advisors() {
             }
             draw_set_halign(fa_left);
             draw_set_color(c_gray);
-            draw_set_font(fnt_40k_30b);
+            draw_set_font(cjk_font(fnt_40k_30b));
             draw_text_transformed(xx + 336 + 16, yy + 66, localize("Reclusium"), 1, 1, 0);
             draw_text_transformed(xx + 336 + 16, yy + 100, localize(_head.name_role()), 0.6, 0.6, 0);
         } else {
             scr_image("advisor/splash", 1, xx + 16, yy + 43, 310, 828);
             draw_set_halign(fa_left);
             draw_set_color(c_gray);
-            draw_set_font(fnt_40k_30b);
+            draw_set_font(cjk_font(fnt_40k_30b));
             draw_text_transformed(xx + 336 + 16, yy + 66, localize("Reclusium"), 1, 1, 0);
             draw_text_transformed(xx + 336 + 16, yy + 100, localize("Adept {0}", [obj_controller.adept_name]), 0.6, 0.6, 0);
         }
 
-        draw_set_font(fnt_40k_14);
+        draw_set_font(cjk_font(fnt_40k_14));
         draw_set_alpha(1);
         draw_set_color(c_gray);
         var _active_roles = active_roles();
@@ -104,12 +104,12 @@ function scr_ui_advisors() {
                 blurp += localize("##Our men have been behaving as they should.  Not a single one is scheduled for corrective action of any type.");
             }
 
-            draw_set_font(fnt_40k_30b);
+            draw_set_font(cjk_font(fnt_40k_30b));
             draw_set_halign(fa_center);
             draw_text_transformed(xx + 1262, yy + 70, localize("Penitorium"), 0.6, 0.6, 0);
 
             if (penitorium > 0) {
-                draw_set_font(fnt_40k_14);
+                draw_set_font(cjk_font(fnt_40k_14));
                 draw_set_halign(fa_left);
 
                 for (var qp = 1; qp <= min(36, penitorium); qp++) {
@@ -132,10 +132,10 @@ function scr_ui_advisors() {
                     draw_text(xx + 1432, yy + 100 + ((qp - 1) * 20), string_hash_to_newline(localize("[Execute]  [Release]")));
                 }
             }
-            draw_set_font(fnt_40k_14);
+            draw_set_font(cjk_font(fnt_40k_14));
         }
 
-        draw_set_font(fnt_40k_14);
+        draw_set_font(cjk_font(fnt_40k_14));
         draw_set_alpha(1);
         draw_set_color(c_gray);
 
@@ -158,11 +158,11 @@ function scr_ui_advisors() {
 
         draw_set_halign(fa_center);
         draw_set_color(c_gray);
-        draw_set_font(fnt_40k_30b);
+        draw_set_font(cjk_font(fnt_40k_30b));
         draw_text_transformed(xx + 622, yy + 440, string_hash_to_newline(localize("Chapter Revelry")), 0.6, 0.6, 0);
         draw_set_halign(fa_left);
         draw_set_color(c_gray);
-        draw_set_font(fnt_40k_14);
+        draw_set_font(cjk_font(fnt_40k_14));
 
         var blurp2 = "";
         // TODO rename fest_type and fest_scheduled into feast_type and feast_schedule and refactor scripts
@@ -337,13 +337,13 @@ function scr_ui_advisors() {
         draw_text_ext(xx + 336 + 16, yy + 477, string_hash_to_newline(string(blurp2)), -1, 536);
 
         draw_set_alpha(1);
-        draw_set_font(fnt_40k_14);
+        draw_set_font(cjk_font(fnt_40k_14));
     }
 
     // ** Festivals **
     if (menu == eMENU.FESTIVAL) {
         var _checkbox_sprite_index = 0;
-        draw_set_font(fnt_40k_14b);
+        draw_set_font(cjk_font(fnt_40k_14b));
         draw_set_color(c_gray);
         draw_text_transformed(xx + 1262, yy + 70, localize("Scheduling Event"), 0.6, 0.6, 0);
         draw_text_transformed(xx + 962, yy + 126, string_hash_to_newline(localize("Event Type: ")), 1, 1, 0);
@@ -358,7 +358,7 @@ function scr_ui_advisors() {
         draw_text_transformed(xx + 962, yy + 527, string_hash_to_newline(localize("Attendees: ")), 1, 1, 0);
         draw_text_transformed(xx + 1246, yy + 527, string_hash_to_newline(localize("Public: ")), 1, 1, 0);
 
-        draw_set_font(fnt_40k_14);
+        draw_set_font(cjk_font(fnt_40k_14));
 
         // Attendees
         if (fest_attend != "") {
@@ -639,7 +639,7 @@ function scr_ui_advisors() {
             // determine attendants
         }
 
-        draw_set_font(fnt_40k_14);
+        draw_set_font(cjk_font(fnt_40k_14));
 
         var doable = true;
         if (requisition < fest_cost) {
@@ -747,12 +747,12 @@ function scr_ui_advisors() {
         draw_rectangle(xx + 217, yy + 199, xx + 617, yy + 367, 1);
         draw_rectangle(xx + 217, yy + 380, xx + 617, yy + 411, 1);
 
-        draw_set_font(fnt_large);
+        draw_set_font(cjk_font(fnt_large));
         draw_text_transformed(xx + 410, yy + 29, localize(obj_ini.player_role_data[eROLE.CHAPTERMASTER].role), 0.5, 0.5, 0);
 
-        draw_set_font(fnt_fancy);
+        draw_set_font(cjk_font(fnt_fancy));
         draw_text_transformed(xx + 410, yy + 40, string_hash_to_newline(string(obj_ini.master_name)), 1.5, 1.5, 0);
-        draw_set_font(fnt_small);
+        draw_set_font(cjk_font(fnt_small));
         draw_set_halign(fa_left);
 
         var eqp = "", tempe = "";
@@ -760,10 +760,10 @@ function scr_ui_advisors() {
         draw_text(xx + 222, yy + 83, localize("Equipment:"));
         draw_text(xx + 222.5, yy + 83.5, localize("Equipment:"));
 
-        draw_set_font(fnt_tiny);
+        draw_set_font(cjk_font(fnt_tiny));
         draw_text_ext(xx + 222, yy + 99, string_hash_to_newline(string(eqp)), -1, 396);
 
-        draw_set_font(fnt_small);
+        draw_set_font(cjk_font(fnt_small));
         draw_text(xx + 222, yy + 200, localize("Kills:"));
         draw_text(xx + 222.5, yy + 200.5, localize("Kills:"));
 
@@ -788,7 +788,7 @@ function scr_ui_advisors() {
         scr_image("advisor/splash", 1, xx + 16, yy + 16, 310, 828);
         draw_set_halign(fa_left);
         draw_set_color(0);
-        draw_set_font(fnt_40k_14);
+        draw_set_font(cjk_font(fnt_40k_14));
 
         if (menu == eMENU.WELCOME_SCREEN1) {
             draw_text_ext(xx + 370, yy + 72, string_hash_to_newline(string(temp[65])), -1, 660);
@@ -811,7 +811,7 @@ function scr_ui_advisors() {
     if ((menu == eMENU.MANAGE) && (managing == 0)) {
         draw_set_alpha(1);
         draw_sprite(spr_rock_bg, 0, xx, yy);
-        draw_set_font(fnt_40k_30b);
+        draw_set_font(cjk_font(fnt_40k_30b));
         draw_set_halign(fa_center);
         draw_set_color(c_gray);
         draw_text(xx + 800, yy + 74, localize("{0} Chapter Organization", [global.chapter_name]));

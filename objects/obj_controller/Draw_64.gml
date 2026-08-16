@@ -175,7 +175,7 @@ if (!zoomed && !zui) {
     if (income_last < 0) {
         inc = string(round(income_last));
     }
-    draw_set_font(fnt_40k_14);
+    draw_set_font(cjk_font(fnt_40k_14));
     draw_set_halign(fa_left);
     // Draws the requisition amount
     draw_sprite(spr_new_resource, 0, 14, 16);

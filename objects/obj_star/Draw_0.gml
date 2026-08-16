@@ -33,7 +33,7 @@ if (storm > 0) {
 //ad hoc way of determining whether stuff is in view or not...needs work
 
 draw_set_halign(fa_center);
-draw_set_font(fnt_cul_14);
+draw_set_font(cjk_font(fnt_cul_14));
 draw_set_alpha(1);
 
 if (global.load == -1 && (obj_controller.zoomed || in_camera_view(star_box_shape()))) {

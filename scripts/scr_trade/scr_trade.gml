@@ -486,7 +486,7 @@ function TradeAttempt(diplomacy) constructor {
         draw_rectangle(342, 326, 486, 371, 1); // Left Title Panel
         draw_rectangle(759, 326, 903, 371, 1); // Right Title Panel
 
-        draw_set_font(fnt_40k_14b);
+        draw_set_font(cjk_font(fnt_40k_14b));
         draw_set_halign(fa_center);
         draw_text(411, 330, localize("{0}\nItems", [localize(obj_controller.faction[diplomacy_faction])]));
         draw_text(829, 330, localize("{0}\nItems", [global.chapter_name]));
@@ -500,7 +500,7 @@ function TradeAttempt(diplomacy) constructor {
         exit_button.draw();
 
         draw_set_halign(fa_left);
-        draw_set_font(fnt_40k_14);
+        draw_set_font(cjk_font(fnt_40k_14));
         draw_set_color(CM_GREEN_COLOR);
         var _requested_count = 0;
         for (var i = 0; i < array_length(demand_options); i++) {

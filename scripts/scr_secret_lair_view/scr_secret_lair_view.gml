@@ -8,7 +8,7 @@ function scr_secret_lair_view() {
     add_draw_return_values();
     draw_sprite(spr_popup_large, 1, xx, yy);
     draw_set_color(c_gray);
-    draw_set_font(fnt_40k_30b);
+    draw_set_font(cjk_font(fnt_40k_30b));
     draw_set_halign(fa_center);
 
     var planet_upgrades = obj_temp_build.target.p_upgrades[obj_controller.selecting_planet];
@@ -38,7 +38,7 @@ function scr_secret_lair_view() {
         title = localize("Secret Lair ({0} {1})", [obj_temp_build.target.name, scr_roman(obj_temp_build.planet)]);
         draw_text_transformed(xx + 312, yy + 10, title, 0.7, 0.7, 0);
 
-        draw_set_font(fnt_40k_14b);
+        draw_set_font(cjk_font(fnt_40k_14b));
         draw_text(xx + 312, yy + 45, localize("Select a Secret Lair style."));
         draw_set_halign(fa_left);
 
@@ -72,9 +72,9 @@ function scr_secret_lair_view() {
             }
 
             draw_set_color(c_black);
-            draw_set_font(fnt_40k_14b);
+            draw_set_font(cjk_font(fnt_40k_14b));
             draw_text_transformed(text_x1, base_y1 + 2 + y_offset, localize(style.name), 1, 0.8, 0);
-            draw_set_font(fnt_40k_14);
+            draw_set_font(cjk_font(fnt_40k_14));
             draw_text_transformed(text_x2, base_y1 + 2 + y_offset, localize(style.description), 1, 0.8, 0);
         }
     }
@@ -101,7 +101,7 @@ function scr_secret_lair_view() {
         if (array_length(search_list) > 0) {
             lair_struct = planet_upgrades[search_list[0]];
             if (lair_struct.built > obj_controller.turn) {
-                draw_set_font(fnt_40k_14b);
+                draw_set_font(cjk_font(fnt_40k_14b));
                 draw_text(xx + 21, yy + 65, localize("This feature will be constructed in {0} months.", [lair_struct.built - obj_controller.turn]));
             } else if (lair_struct.built <= obj_controller.turn) {
                 var button_label = "";
@@ -229,7 +229,7 @@ function scr_secret_lair_view() {
                     button_y1 = yy + 12 + ((r - 1) * 22);
                     button_y2 = yy + 32 + ((r - 1) * 22);
 
-                    draw_set_font(fnt_40k_14);
+                    draw_set_font(cjk_font(fnt_40k_14));
                     draw_set_alpha(button_alpha);
                     draw_set_color(c_gray);
                     draw_rectangle(button_x1, button_y1, button_x2, button_y2, 0);
@@ -473,7 +473,7 @@ function scr_secret_lair_view() {
                 button_y1 = yy + 45;
 
                 draw_set_color(c_gray);
-                draw_set_font(fnt_40k_14);
+                draw_set_font(cjk_font(fnt_40k_14));
                 draw_set_halign(fa_left);
                 draw_rectangle(button_x1, yy + 45, xx + 486, yy + 378, 1);
 
@@ -602,7 +602,7 @@ function scr_secret_lair_view() {
         }
     }
 
-    draw_set_font(fnt_40k_14b);
+    draw_set_font(cjk_font(fnt_40k_14b));
     lair_window_description_text = "";
     if (planet_feature_bool(planet_upgrades, eP_FEATURES.ARSENAL) == 1) {
         lair_struct = planet_upgrades[search_planet_features(planet_upgrades, eP_FEATURES.ARSENAL)[0]];
@@ -627,7 +627,7 @@ function scr_secret_lair_view() {
     }
 
     if (!lair_exists && !obj_temp_build.isnew) {
-        draw_set_font(fnt_40k_14b);
+        draw_set_font(cjk_font(fnt_40k_14b));
         if (!secret_base) {
             draw_text(xx + 21, yy + 45, localize("Lair"));
         }
@@ -640,7 +640,7 @@ function scr_secret_lair_view() {
             draw_text(xx + 21, yy + 175, localize("Gene-Vault"));
         }
 
-        draw_set_font(fnt_40k_14);
+        draw_set_font(cjk_font(fnt_40k_14));
 
         draw_sprite(spr_requisition, 0, xx + 160, yy + 47);
         if (obj_controller.requisition < 1000) {
@@ -727,7 +727,7 @@ function scr_secret_lair_view() {
         draw_set_halign(fa_left);
     }
 
-    draw_set_font(fnt_40k_30b);
+    draw_set_font(cjk_font(fnt_40k_30b));
     draw_set_color(c_gray);
     draw_rectangle(xx + 252, yy + 388, xx + 372, yy + 420, 0);
     draw_set_halign(fa_center);

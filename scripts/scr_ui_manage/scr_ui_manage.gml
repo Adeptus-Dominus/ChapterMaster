@@ -466,7 +466,7 @@ function reset_manage_unit_constants(unit) {
 /// @self Asset.GMObject.obj_controller
 function company_specific_management() {
     add_draw_return_values();
-    draw_set_font(fnt_40k_30b);
+    draw_set_font(cjk_font(fnt_40k_30b));
     draw_set_halign(fa_center);
     draw_set_color(c_gray); // CM_GREEN_COLOR
     var _allow_shorts = false;
@@ -610,7 +610,7 @@ function alternative_manage_views(x1, y1) {
 
 /// @self Asset.GMObject.obj_controller
 function draw_sprite_and_unit_equip_data() {
-    draw_set_font(fnt_40k_14);
+    draw_set_font(cjk_font(fnt_40k_14));
     draw_set_halign(fa_left);
     // Swap between squad view and normal view
     company_data.unit_ui_panel.inside_method = function() {
@@ -619,7 +619,7 @@ function draw_sprite_and_unit_equip_data() {
         var xx = company_data.unit_ui_panel.XX;
         var yy = company_data.unit_ui_panel.YY;
         // draw_line(xx+1005,yy+519,xx+1576,yy+519);
-        draw_set_font(fnt_40k_14b);
+        draw_set_font(cjk_font(fnt_40k_14b));
         if (is_struct(obj_controller.unit_focus)) {
             var selected_unit = obj_controller.unit_focus; //unit struct
             if (selected_unit.uid != unit_manage_constants.current_data) {
@@ -697,7 +697,7 @@ function draw_sprite_and_unit_equip_data() {
             unit_manage_constants.company_string.draw();
 
             // Draw unit info
-            draw_set_font(fnt_40k_14);
+            draw_set_font(cjk_font(fnt_40k_14));
             // Left side of the screen
             draw_set_halign(fa_left);
             var x_left = xx + 22;
@@ -833,7 +833,7 @@ function scr_ui_manage() {
         // Draw BG
         draw_set_alpha(1);
         draw_sprite(spr_rock_bg, 0, xx, yy);
-        draw_set_font(fnt_40k_30b);
+        draw_set_font(cjk_font(fnt_40k_30b));
         draw_set_halign(fa_center);
         draw_set_color(c_gray); // CM_GREEN_COLOR
 
@@ -852,7 +852,7 @@ function scr_ui_manage() {
             }
         }
 
-        draw_set_font(fnt_40k_14);
+        draw_set_font(cjk_font(fnt_40k_14));
 
         if (managing >= 0) {
             // Draw arrows
@@ -1026,7 +1026,7 @@ function scr_ui_manage() {
             man_count = 0;
 
             var _command_slots_data = get_command_slots_data();
-            draw_set_font(fnt_40k_14);
+            draw_set_font(cjk_font(fnt_40k_14));
             if (managing > 0 && managing <= 10) {
                 for (var r = 0; r < array_length(_command_slots_data); r++) {
                     var role = _command_slots_data[r];
@@ -1046,7 +1046,7 @@ function scr_ui_manage() {
 
             var _only_display_selected = instance_exists(obj_popup) && (obj_popup.type == 5 || obj_popup.type == 5.1 || obj_popup.type == 6);
             for (var i = 0; i < max(0, repetitions); i++) {
-                draw_set_font(fnt_40k_14);
+                draw_set_font(cjk_font(fnt_40k_14));
                 if (sel >= array_length(display_unit)) {
                     break;
                 }
@@ -1157,7 +1157,7 @@ function scr_ui_manage() {
         // BG
         draw_set_alpha(1);
         draw_sprite(spr_rock_bg, 0, xx, yy);
-        draw_set_font(fnt_40k_30b);
+        draw_set_font(cjk_font(fnt_40k_30b));
         draw_set_halign(fa_center);
         draw_set_color(c_gray); // CM_GREEN_COLOR
 
@@ -1203,7 +1203,7 @@ function scr_ui_manage() {
 
         if (managing >= 0 && managing <= 10) {
             if (obj_ini.company_title[managing] != "") {
-                draw_set_font(fnt_fancy);
+                draw_set_font(cjk_font(fnt_fancy));
                 draw_text(xx + 800, yy + 110, localize("''{0}''", [obj_ini.company_title[managing]]));
             }
         }
@@ -1220,7 +1220,7 @@ function scr_ui_manage() {
         var top, temp1 = "", temp2 = "", temp3 = "", temp4 = "", temp5 = "";
         top = ship_current;
 
-        draw_set_font(fnt_40k_14);
+        draw_set_font(cjk_font(fnt_40k_14));
         draw_set_halign(fa_left);
         yy += 77;
         var main_rect;
@@ -1257,7 +1257,7 @@ function scr_ui_manage() {
         }
 
         // Load to selected
-        draw_set_font(fnt_40k_14b);
+        draw_set_font(cjk_font(fnt_40k_14b));
         draw_text_transformed(xx + 320, yy + 402, localize("Click a Ship to Load Selection (Req. {0} Space)", [man_size]), 1, 1, 0);
 
         xx = camera_get_view_x(view_camera[0]);
@@ -1288,7 +1288,7 @@ function draw_manage_selection_buttons(xx, yy) {
 
     // Draw interaction and selection buttons
     yy -= 8;
-    draw_set_font(fnt_40k_14b);
+    draw_set_font(cjk_font(fnt_40k_14b));
     draw_set_color(#50a076);
     var button = new UnitButtonObject();
     //new load/unload having its own row now, calculated from Y first
@@ -1499,13 +1499,13 @@ function draw_manage_selection_buttons(xx, yy) {
 
     if (sel_uni[1] != "") {
         // How much space the selected unit takes
-        draw_set_font(fnt_40k_30b);
+        draw_set_font(cjk_font(fnt_40k_30b));
         draw_text_transformed(actions_block.x1 + 26, actions_block.y1 + 6, localize("Selection: {0} space", [man_size]), 0.5, 0.5, 0);
         // List of selected units
-        draw_set_font(fnt_40k_14);
+        draw_set_font(cjk_font(fnt_40k_14));
         draw_text_ext(actions_block.x1 + 26, actions_block.y1 + 30, selecting_dudes, -1, 550);
         // Options for the selected unit
-        // draw_set_font(fnt_40k_30b);
+        // draw_set_font(cjk_font(fnt_40k_30b));
         // draw_text_transformed(actions_block.x1 + 4, actions_block.x1 + 64,"Options:",0.5,0.5,0);
 
         // Select all units button
@@ -1541,7 +1541,7 @@ function draw_manage_selection_buttons(xx, yy) {
         button.y1 = top_y + button.h + button.v_gap + 4;
         // Select all infantry button
         button.font = fnt_40k_12;
-        draw_set_font(fnt_40k_12);
+        draw_set_font(cjk_font(fnt_40k_12));
         button.label = localize("All Infantry");
         button.alpha = 1;
         if (button.draw()) {

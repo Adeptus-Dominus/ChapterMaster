@@ -133,7 +133,7 @@ function exit_diplomacy_dialogue() {
 
 /// @self Asset.GMObject.obj_controller
 function draw_diplomacy_diplo_text() {
-    draw_set_font(fnt_40k_14);
+    draw_set_font(cjk_font(fnt_40k_14));
     draw_set_alpha(1);
     draw_set_color(CM_GREEN_COLOR);
     draw_set_halign(fa_left);
@@ -389,11 +389,11 @@ function set_up_diplomacy_persons() {
             inside_method = function() {
                 var yy = YY;
                 var xx = XX;
-                draw_set_font(fnt_40k_14b);
+                draw_set_font(cjk_font(fnt_40k_14b));
                 draw_set_halign(fa_left);
                 draw_text(xx + 169, yy + 35, localize(obj_controller.faction[_faction_enum]));
                 management_buttons.screen_slate.draw_with_dimensions(xx + 5, yy + 5);
-                draw_set_font(fnt_40k_14);
+                draw_set_font(cjk_font(fnt_40k_14));
                 draw_set_halign(fa_right);
                 draw_text_transformed(xx + 420, yy + 20, localize(obj_controller.faction_status[_faction_enum]), 0.7, 0.7, 0);
                 draw_set_halign(fa_left);
@@ -461,7 +461,7 @@ function scr_ui_diplomacy() {
         // Main diplomacy screen
 
         draw_set_color(CM_GREEN_COLOR);
-        draw_set_font(fnt_40k_30b);
+        draw_set_font(cjk_font(fnt_40k_30b));
         draw_set_halign(fa_center);
         draw_text(xx + 800, yy + 74, string_hash_to_newline(localize("Diplomacy")));
 
@@ -489,7 +489,7 @@ function scr_ui_diplomacy() {
         scr_image("symbol", 2, xx + 1147, yy + 174, 217, 107);
 
         //draw the meet chaos button
-        draw_set_font(fnt_40k_14b);
+        draw_set_font(cjk_font(fnt_40k_14b));
         draw_set_halign(fa_left);
         draw_set_color(CM_GREEN_COLOR);
         draw_rectangle(xx + 688, yy + 240, xx + 1028, yy + 281, 0);
@@ -549,7 +549,7 @@ function scr_ui_diplomacy() {
 
         draw_set_halign(fa_center);
         draw_set_color(CM_GREEN_COLOR);
-        draw_set_font(fnt_40k_30b);
+        draw_set_font(cjk_font(fnt_40k_30b));
 
         var _diplomacy_faction_name = "";
         var _diplomacy_faction_alligience = " (Imperium)";
@@ -570,7 +570,7 @@ function scr_ui_diplomacy() {
             draw_text_transformed(xx + 622, yy + 104, localize("{0} {1} {2}", [localize(faction_title[diplomacy]), faction_leader[diplomacy], localize(_diplomacy_faction_alligience)]), 0.6, 0.6, 0);
         }
 
-        draw_set_font(fnt_40k_14);
+        draw_set_font(cjk_font(fnt_40k_14));
         if (!daemon) {
             _disposition_rating = localize("Disposition: {0} ({1})", [localize(faction_disposition_rating_string(diplomacy)), disposition[diplomacy]]);
             draw_text(xx + 622, yy + 144, _disposition_rating);
