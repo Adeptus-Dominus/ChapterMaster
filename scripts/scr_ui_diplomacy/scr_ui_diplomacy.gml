@@ -254,7 +254,7 @@ function set_up_diplomacy_buttons() {
     _war.label = localize("DECLARE WAR");
     _war.tooltip = localize("Unfinished");
     _war.color = CM_RED_COLOR;
-    _war.cover_text = "Declare War";
+    _war.cover_text = localize("Declare War");
     _war.bind_scope = id;
 
     diplo_buttons.main_slate = new DataSlate();
@@ -385,7 +385,7 @@ function set_up_diplomacy_persons() {
             _screen_slate.inside_method = function() {
                 scr_image("diplomacy/icons", image, XX + 10, YY + 10, 153, 135);
             };
-            cover_text = obj_controller.faction[_faction_enum];
+            cover_text = localize(obj_controller.faction[_faction_enum]);
             inside_method = function() {
                 var yy = YY;
                 var xx = XX;
