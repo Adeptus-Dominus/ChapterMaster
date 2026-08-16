@@ -158,7 +158,8 @@ function LocalizationManager() constructor {
     /// @param {Array} _en Array of English keys.
     /// @returns {Array}
     static translate_array = function(_en) {
-        var _out = array_clone(_en);
+        var _out = array_create(array_length(_en));
+        array_copy(_out, 0, _en, 0, array_length(_en));
         for (var i = 0; i < array_length(_en); i++) {
             _out[i] = self.translate(_en[i]);
         }
