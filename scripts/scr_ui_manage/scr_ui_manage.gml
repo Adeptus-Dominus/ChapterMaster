@@ -1288,7 +1288,7 @@ function draw_selection_filter_group(_button, _all_label, _all_value, _entries, 
         sel_all = _all_value;
     }
 
-    var _row_x = _button.x2 + _button.v_gap;
+    var _row_x = _button.x2 + _button.h_gap;
     var _row_y = _top;
 
     for (var i = 1; i <= 8; i++) {
@@ -1312,7 +1312,7 @@ function draw_selection_filter_group(_button, _all_label, _all_value, _entries, 
         if (_button.draw()) {
             sel_all = _entries[i];
         }
-        _row_x = _button.x2 + _button.v_gap;
+        _row_x = _button.x2 + _button.h_gap;
     }
 
     return _row_y + _button.h + _button.v_gap;
@@ -1365,7 +1365,7 @@ function draw_manage_selection_buttons() {
     if (button.draw() && equip_possible) {
         set_up_equip_popup();
     }
-    action_button_x += button.w + button.v_gap;
+    action_button_x += button.w + button.h_gap;
 
     // // Promote button
     button.x1 = action_button_x;
@@ -1379,7 +1379,7 @@ function draw_manage_selection_buttons() {
             setup_promotion_popup();
         }
     }
-    action_button_x += button.w + button.v_gap;
+    action_button_x += button.w + button.h_gap;
 
     // // Put in jail button
     button.x1 = action_button_x;
@@ -1393,7 +1393,7 @@ function draw_manage_selection_buttons() {
             jail_selection();
         }
     }
-    action_button_x += button.w + button.v_gap;
+    action_button_x += button.w + button.h_gap;
 
     // // Add bionics button
     button.x1 = action_button_x;
@@ -1411,7 +1411,7 @@ function draw_manage_selection_buttons() {
         }
     }
 
-    var action_button_top_y = action_button_bottom_y - (button.h + button.h_gap);
+    var action_button_top_y = action_button_bottom_y - (button.h + button.v_gap);
     action_button_x = right_ui_block.x1 + 26;
     button.y1 = action_button_top_y;
 
@@ -1427,7 +1427,7 @@ function draw_manage_selection_buttons() {
             toggle_selection_borders();
         }
     }
-    action_button_x += button.w + button.v_gap;
+    action_button_x += button.w + button.h_gap;
 
     // // Reset changes button
     button.x1 = action_button_x;
@@ -1447,7 +1447,7 @@ function draw_manage_selection_buttons() {
         button.alpha = 0.5;
         button.draw(false);
     }
-    action_button_x += button.w + button.v_gap;
+    action_button_x += button.w + button.h_gap;
 
     // // Transfer to another company button
     button.x1 = action_button_x;
@@ -1464,7 +1464,7 @@ function draw_manage_selection_buttons() {
         button.alpha = 0.5;
         button.draw(false);
     }
-    action_button_x += button.w + button.v_gap;
+    action_button_x += button.w + button.h_gap;
 
     // // Move Ship button
     button.x1 = action_button_x;
@@ -1481,7 +1481,7 @@ function draw_manage_selection_buttons() {
         button.alpha = 0.5;
         button.draw(false);
     }
-    action_button_x += button.w + button.v_gap;
+    action_button_x += button.w + button.h_gap;
 
     // // Manage Tags button
     button.x1 = action_button_x;
@@ -1570,7 +1570,7 @@ function draw_manage_selection_buttons() {
             sel_all = "all";
         }
 
-        button.x1 = top_x + button.w + button.v_gap;
+        button.x1 = top_x + button.w + button.h_gap;
         button.update_loc();
         button.label = "Filter Mode";
         button.alpha = filter_mode ? 1 : 0.5;
