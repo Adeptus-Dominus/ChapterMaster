@@ -35,11 +35,11 @@ function scr_secret_lair_view() {
     var lair_exists = gene_vault || arsenal || secret_base;
 
     if (obj_temp_build.isnew) {
-        title = "Secret Lair (" + string(obj_temp_build.target.name) + " " + scr_roman(obj_temp_build.planet) + ")";
+        title = localize("Secret Lair ({0} {1})", [obj_temp_build.target.name, scr_roman(obj_temp_build.planet)]);
         draw_text_transformed(xx + 312, yy + 10, title, 0.7, 0.7, 0);
 
         draw_set_font(fnt_40k_14b);
-        draw_text(xx + 312, yy + 45, "Select a Secret Lair style.");
+        draw_text(xx + 312, yy + 45, localize("Select a Secret Lair style."));
         draw_set_halign(fa_left);
 
         var base_x1 = xx + 21;
@@ -73,22 +73,22 @@ function scr_secret_lair_view() {
 
             draw_set_color(c_black);
             draw_set_font(fnt_40k_14b);
-            draw_text_transformed(text_x1, base_y1 + 2 + y_offset, style.name, 1, 0.8, 0);
+            draw_text_transformed(text_x1, base_y1 + 2 + y_offset, localize(style.name), 1, 0.8, 0);
             draw_set_font(fnt_40k_14);
-            draw_text_transformed(text_x2, base_y1 + 2 + y_offset, style.description, 1, 0.8, 0);
+            draw_text_transformed(text_x2, base_y1 + 2 + y_offset, localize(style.description), 1, 0.8, 0);
         }
     }
 
     //TODO add a PlanetData object to obj_temp_build so that planet nae can be generated with PlanetData.name()
     if (!lair_exists) {
-        title = "Build (" + string(obj_temp_build.target.name) + " " + scr_roman(obj_temp_build.planet) + ")";
+        title = localize("Build ({0} {1})", [obj_temp_build.target.name, scr_roman(obj_temp_build.planet)]);
     } else {
         if (secret_base) {
-            title = "Secret Lair (" + string(obj_temp_build.target.name) + " " + scr_roman(obj_temp_build.planet) + ")";
+            title = localize("Secret Lair ({0} {1})", [obj_temp_build.target.name, scr_roman(obj_temp_build.planet)]);
         } else if (arsenal) {
-            title = "Secret Arsenal (" + string(obj_temp_build.target.name) + " " + scr_roman(obj_temp_build.planet) + ")";
+            title = localize("Secret Arsenal ({0} {1})", [obj_temp_build.target.name, scr_roman(obj_temp_build.planet)]);
         } else if (gene_vault) {
-            title = "Secret Gene-Vault (" + string(obj_temp_build.target.name) + " " + scr_roman(obj_temp_build.planet) + ")";
+            title = localize("Secret Gene-Vault ({0} {1})", [obj_temp_build.target.name, scr_roman(obj_temp_build.planet)]);
         }
     }
 
@@ -102,7 +102,7 @@ function scr_secret_lair_view() {
             lair_struct = planet_upgrades[search_list[0]];
             if (lair_struct.built > obj_controller.turn) {
                 draw_set_font(fnt_40k_14b);
-                draw_text(xx + 21, yy + 65, $"This feature will be constructed in {lair_struct.built - obj_controller.turn} months.");
+                draw_text(xx + 21, yy + 65, localize("This feature will be constructed in {0} months.", [lair_struct.built - obj_controller.turn]));
             } else if (lair_struct.built <= obj_controller.turn) {
                 var button_label = "";
                 var button_desc = "";
@@ -122,8 +122,8 @@ function scr_secret_lair_view() {
                             }
 
                             cost = 1000;
-                            button_label = "Forge";
-                            button_desc = "A modest, less elaborate forge able to employ a handful of Astartes or Techpriest.";
+                            button_label = localize("Forge");
+                            button_desc = localize("A modest, less elaborate forge able to employ a handful of Astartes or Techpriest.");
                             break;
                         case 2:
                             if (lair_struct.hippo) {
@@ -131,8 +131,8 @@ function scr_secret_lair_view() {
                             }
 
                             cost = 1000;
-                            button_label = "Hippodrome";
-                            button_desc = "A moderate sized garage fit to hold, service, and display vehicles.";
+                            button_label = localize("Hippodrome");
+                            button_desc = localize("A moderate sized garage fit to hold, service, and display vehicles.");
                             break;
                         case 3:
                             if (lair_struct.beastarium) {
@@ -140,8 +140,8 @@ function scr_secret_lair_view() {
                             }
 
                             cost = 1000;
-                            button_label = "Beastarium";
-                            button_desc = "An enclosure with simulated greenery and foilage meant to hold beasts.";
+                            button_label = localize("Beastarium");
+                            button_desc = localize("An enclosure with simulated greenery and foilage meant to hold beasts.");
                             break;
                         case 4:
                             if (lair_struct.torture) {
@@ -149,8 +149,8 @@ function scr_secret_lair_view() {
                             }
 
                             cost = 500;
-                            button_label = "Torture Chamber";
-                            button_desc = "Only the best for the best.  A room full of torture tools and devices.";
+                            button_label = localize("Torture Chamber");
+                            button_desc = localize("Only the best for the best.  A room full of torture tools and devices.");
                             break;
                         case 5:
                             if (lair_struct.narcotics) {
@@ -158,8 +158,8 @@ function scr_secret_lair_view() {
                             }
 
                             cost = 500;
-                            button_label = "Narcotics";
-                            button_desc = "Several boxes worth of Obscura, Black Lethe, Kyxa... line it up.";
+                            button_label = localize("Narcotics");
+                            button_desc = localize("Several boxes worth of Obscura, Black Lethe, Kyxa... line it up.");
                             break;
                         case 6:
                             if (lair_struct.relic > 0) {
@@ -167,8 +167,8 @@ function scr_secret_lair_view() {
                             }
 
                             cost = 500;
-                            button_label = "Relic Room";
-                            button_desc = "A room meant for displaying trophies.  May be purchased successive times.";
+                            button_label = localize("Relic Room");
+                            button_desc = localize("A room meant for displaying trophies.  May be purchased successive times.");
                             break;
                         case 7:
                             if (lair_struct.cookery) {
@@ -176,8 +176,8 @@ function scr_secret_lair_view() {
                             }
 
                             cost = 250;
-                            button_label = "Cookery";
-                            button_desc = "A larger, well-stocked cookery, complete with a number of Imperial Chef servants.";
+                            button_label = localize("Cookery");
+                            button_desc = localize("A larger, well-stocked cookery, complete with a number of Imperial Chef servants.");
                             break;
                         case 8:
                             if (lair_struct.vox) {
@@ -185,8 +185,8 @@ function scr_secret_lair_view() {
                             }
 
                             cost = 250;
-                            button_label = "Vox Casters";
-                            button_desc = "All the bass one could ever imaginably need.";
+                            button_label = localize("Vox Casters");
+                            button_desc = localize("All the bass one could ever imaginably need.");
                             break;
                         case 9:
                             if (lair_struct.librarium) {
@@ -194,8 +194,8 @@ function scr_secret_lair_view() {
                             }
 
                             cost = 250;
-                            button_label = "Librarium";
-                            button_desc = "A study fit to hold a staggering amount of tomes and scrolls.";
+                            button_label = localize("Librarium");
+                            button_desc = localize("A study fit to hold a staggering amount of tomes and scrolls.");
                             break;
                         case 10:
                             if (lair_struct.throne) {
@@ -203,8 +203,8 @@ function scr_secret_lair_view() {
                             }
 
                             cost = 250;
-                            button_label = "Throne";
-                            button_desc = "A massive, ego boosting throne.";
+                            button_label = localize("Throne");
+                            button_desc = localize("A massive, ego boosting throne.");
                             break;
                         case 11:
                             if (lair_struct.stasis) {
@@ -212,8 +212,8 @@ function scr_secret_lair_view() {
                             }
 
                             cost = 200;
-                            button_label = "Stasis Pods";
-                            button_desc = "Though they start empty, you may capture and display your foes in these.";
+                            button_label = localize("Stasis Pods");
+                            button_desc = localize("Though they start empty, you may capture and display your foes in these.");
                             break;
                         case 12:
                             if (lair_struct.swimming) {
@@ -221,8 +221,8 @@ function scr_secret_lair_view() {
                             }
 
                             cost = 100;
-                            button_label = "Swimming Pool";
-                            button_desc = "A large body of water meant for excersize or relaxation.";
+                            button_label = localize("Swimming Pool");
+                            button_desc = localize("A large body of water meant for excersize or relaxation.");
                             break;
                     }
 
@@ -294,179 +294,179 @@ function scr_secret_lair_view() {
                     }
                 }
 
-                lair_window_description_text = "Deep beneath the surface of " + string(obj_temp_build.target.name) + " " + scr_roman(obj_controller.selecting_planet) + " lays your ";
+                lair_window_description_text = localize("Deep beneath the surface of {0} {1} lays your ", [obj_temp_build.target.name, scr_roman(obj_controller.selecting_planet)]);
                 if (lair_struct.inquis_hidden == 1) {
-                    lair_window_description_text += "secret lair.  ";
+                    lair_window_description_text += localize("secret lair.  ");
                 } else {
-                    lair_window_description_text += "previously discovered lair.  ";
+                    lair_window_description_text += localize("previously discovered lair.  ");
                 }
 
-                lair_window_description_text += "It is massive";
+                lair_window_description_text += localize("It is massive");
                 switch (lair_struct.style) {
                     case "BRB":
-                        lair_window_description_text += ", the walls decorated with animal hides and leather.  Among the copius body-trophies and bones are torches that hiss and spit.  ";
+                        lair_window_description_text += localize(", the walls decorated with animal hides and leather.  Among the copius body-trophies and bones are torches that hiss and spit.  ");
                         break;
                     case "DIS":
-                        lair_window_description_text += "- the main attraction is the rainbow-colored, lit up grid flooring which quickly change color.  Far overhead are metal rafters.  ";
+                        lair_window_description_text += localize("- the main attraction is the rainbow-colored, lit up grid flooring which quickly change color.  Far overhead are metal rafters.  ");
                         break;
                     case "FEU":
-                        lair_window_description_text += ", the walls made up of sturdy blocks of stones.  It is heavily decorated with wooden furniture, banners, and medieval weaponry.  ";
+                        lair_window_description_text += localize(", the walls made up of sturdy blocks of stones.  It is heavily decorated with wooden furniture, banners, and medieval weaponry.  ");
                         break;
                     case "GTH":
-                        lair_window_description_text += ", the walls made up of lightly-dusty stone.  Mosaics and statues are abundant throughout, giving it that comfortable gothic feel.  ";
+                        lair_window_description_text += localize(", the walls made up of lightly-dusty stone.  Mosaics and statues are abundant throughout, giving it that comfortable gothic feel.  ");
                         break;
                     case "MCH":
-                        lair_window_description_text += "- at a glance it appears decorated like a factory.  Those with a neural network see the lair as brightly colored and lit, full of knowledge, learning, and chapter iconography.  ";
+                        lair_window_description_text += localize("- at a glance it appears decorated like a factory.  Those with a neural network see the lair as brightly colored and lit, full of knowledge, learning, and chapter iconography.  ");
                         break;
                     case "PRS":
-                        lair_window_description_text += ", the walls made up of polished sandstone or marble.  All throughout are chapter iconography and ancient symbols, wrought in gold.  ";
+                        lair_window_description_text += localize(", the walls made up of polished sandstone or marble.  All throughout are chapter iconography and ancient symbols, wrought in gold.  ");
                         break;
                     case "RAV":
-                        lair_window_description_text += " but nearly pitch-black inside.  The only illumination is provided by loopy neon lux-casters, and strobes, which blast out light in random, flickering patterns.  ";
+                        lair_window_description_text += localize(" but nearly pitch-black inside.  The only illumination is provided by loopy neon lux-casters, and strobes, which blast out light in random, flickering patterns.  ");
                         break;
                     case "STL":
-                        lair_window_description_text += ".  All of the surfaces are made up of highly polished stainless steel.  An occasional small water fountain or plant decorates the place.  ";
+                        lair_window_description_text += localize(".  All of the surfaces are made up of highly polished stainless steel.  An occasional small water fountain or plant decorates the place.  ");
                         break;
                     case "UTL":
-                        lair_window_description_text += " and almost civilian looking in nature- the walls are up of simple concrete or plaster.  A thick carpet covers much of the floor.";
+                        lair_window_description_text += localize(" and almost civilian looking in nature- the walls are up of simple concrete or plaster.  A thick carpet covers much of the floor.");
                         break;
                 }
 
                 if (lair_struct.throne == 1) {
-                    lair_window_description_text += "  The center chamber is dominated by ";
+                    lair_window_description_text += localize("  The center chamber is dominated by ");
                     if (obj_controller.temp[104]) {
-                        lair_window_description_text += "a massive throne, which you are currently seated upon.  ";
+                        lair_window_description_text += localize("a massive throne, which you are currently seated upon.  ");
                     } else {
-                        lair_window_description_text += "a massive throne, though it is currently vacant.  ";
+                        lair_window_description_text += localize("a massive throne, though it is currently vacant.  ");
                     }
                 }
 
                 if ((lair_struct.vox > 0) && (obj_temp_build.target.p_player[obj_controller.selecting_planet] > 0)) {
-                    lair_window_description_text += "Heretical music blasts from the vox-casters, shaking the walls.  ";
+                    lair_window_description_text += localize("Heretical music blasts from the vox-casters, shaking the walls.  ");
                 }
 
                 if (lair_struct.narcotics > 0) {
-                    lair_window_description_text += "  Many of the tables have lines of white powder set on paper or bunches of needles.  Plastic straws lay close by.  ";
+                    lair_window_description_text += localize("  Many of the tables have lines of white powder set on paper or bunches of needles.  Plastic straws lay close by.  ");
                 }
 
                 if (lair_struct.cookery == 1) {
                     if (obj_temp_build.target.p_player[obj_controller.selecting_planet] > 0) {
-                        lair_window_description_text += "Imperial Chefs are currently bustling to and from the kitchen, cooking savory treats and food for those present.  ";
+                        lair_window_description_text += localize("Imperial Chefs are currently bustling to and from the kitchen, cooking savory treats and food for those present.  ");
                     }
 
                     if (obj_temp_build.target.p_player[obj_controller.selecting_planet] == 0) {
-                        lair_window_description_text += "The Imperial Chefs are mostly idle, making use of the other rooms and facilities.  ";
+                        lair_window_description_text += localize("The Imperial Chefs are mostly idle, making use of the other rooms and facilities.  ");
                     }
                 }
 
                 switch (lair_struct.stock) {
                     case 1:
-                        lair_window_description_text += "  One of the chambers is hollowed out to display war trophies and gear.  ";
+                        lair_window_description_text += localize("  One of the chambers is hollowed out to display war trophies and gear.  ");
                         break;
                     case 2:
-                        lair_window_description_text += "  One of the chambers holds war trophies from recent conquests.  ";
+                        lair_window_description_text += localize("  One of the chambers holds war trophies from recent conquests.  ");
                         break;
                     case 3:
-                        lair_window_description_text += "  War trophies taken from several Xeno races are displayed in the Relic Room.  ";
+                        lair_window_description_text += localize("  War trophies taken from several Xeno races are displayed in the Relic Room.  ");
                         break;
                     case 4:
-                        lair_window_description_text += "  Your Relic Room contains trophies and skulls, taken from every Xeno race.  ";
+                        lair_window_description_text += localize("  Your Relic Room contains trophies and skulls, taken from every Xeno race.  ");
                         break;
                     case 5:
-                        lair_window_description_text += "  Your Relic Room contains trophies, skulls, and suits of armour taken from Xenos races.  ";
+                        lair_window_description_text += localize("  Your Relic Room contains trophies, skulls, and suits of armour taken from Xenos races.  ");
                         break;
                     case 6:
-                        lair_window_description_text += "  Your Relic Room contains wargear and suits of armour from all races, several Adeptus Astartes suits included.  ";
+                        lair_window_description_text += localize("  Your Relic Room contains wargear and suits of armour from all races, several Adeptus Astartes suits included.  ");
                         break;
                     case 7:
-                        lair_window_description_text += "  One of the chambers holds wargear and suits of armour from all races.  A suit of Terminator armour is included, half of the armour taken off to reveal the inner workings.";
+                        lair_window_description_text += localize("  One of the chambers holds wargear and suits of armour from all races.  A suit of Terminator armour is included, half of the armour taken off to reveal the inner workings.");
                         break;
                     case 8:
-                        lair_window_description_text += "  Your Relic Room's trophies, skulls, and armours now spill out into the hallways, such is their number.  ";
+                        lair_window_description_text += localize("  Your Relic Room's trophies, skulls, and armours now spill out into the hallways, such is their number.  ");
                         break;
                     case 9:
-                        lair_window_description_text += "  Many of the xenos war trophies and suits of armour are placed around the Lair, filling out spare surfaces.  ";
+                        lair_window_description_text += localize("  Many of the xenos war trophies and suits of armour are placed around the Lair, filling out spare surfaces.  ");
                         break;
                     case 10:
-                        lair_window_description_text += "  In addition to the many war trophies your Relic Room also has small amounts of gold coins.  ";
+                        lair_window_description_text += localize("  In addition to the many war trophies your Relic Room also has small amounts of gold coins.  ");
                         break;
                     case 11:
-                        lair_window_description_text += "  In addition to the many war trophies your Relic Room also has small piles of gold coins and clutter.  ";
+                        lair_window_description_text += localize("  In addition to the many war trophies your Relic Room also has small piles of gold coins and clutter.  ");
                         break;
                     case 12:
-                        lair_window_description_text += "  In addition to the many war trophies your Relic Room also has sizeable piles of gold.  ";
+                        lair_window_description_text += localize("  In addition to the many war trophies your Relic Room also has sizeable piles of gold.  ");
                         break;
                     case 13:
-                        lair_window_description_text += "  In addition to the many war trophies your Relic Room also has chests and cabinets full of gold.  ";
+                        lair_window_description_text += localize("  In addition to the many war trophies your Relic Room also has chests and cabinets full of gold.  ");
                         break;
                     case 14:
-                        lair_window_description_text += "  In addition to the many war trophies your Relic Room also has chests full to the brim of gold and many precious gems.  ";
+                        lair_window_description_text += localize("  In addition to the many war trophies your Relic Room also has chests full to the brim of gold and many precious gems.  ");
                         break;
                     case 15:
-                        lair_window_description_text += "  War trophies, chests of gold, precious gems, your lair has it all.  ";
+                        lair_window_description_text += localize("  War trophies, chests of gold, precious gems, your lair has it all.  ");
                         break;
                     case 16:
-                        lair_window_description_text += "  War trophies, chests of gold, precious gems, your lair has it all, and in abundance.  ";
+                        lair_window_description_text += localize("  War trophies, chests of gold, precious gems, your lair has it all, and in abundance.  ");
                         break;
                     case 17:
-                        lair_window_description_text += "  The abundant gold and gem piles have begun to spill out into the hallway.  ";
+                        lair_window_description_text += localize("  The abundant gold and gem piles have begun to spill out into the hallway.  ");
                         break;
                     case 18:
-                        lair_window_description_text += "  The abundant gold and gems spill out into the hallway, your forces idly stepping across it.  ";
+                        lair_window_description_text += localize("  The abundant gold and gems spill out into the hallway, your forces idly stepping across it.  ");
                         break;
                     case 19:
-                        lair_window_description_text += "  A sizeable portion of your lair is carelessly covered in gold coins, objects, and gems.  ";
+                        lair_window_description_text += localize("  A sizeable portion of your lair is carelessly covered in gold coins, objects, and gems.  ");
                         break;
                     case 20:
-                        lair_window_description_text += "  Much of your lair is carelessly covered in gold coins, objects, and gems.  ";
+                        lair_window_description_text += localize("  Much of your lair is carelessly covered in gold coins, objects, and gems.  ");
                         break;
                     case 21:
                     case 22:
                     case 23:
                     case 24:
-                        lair_window_description_text += "  Your abundant wealth is evident in your lair- every surface and much of the floor smothered by gold or gems.  ";
+                        lair_window_description_text += localize("  Your abundant wealth is evident in your lair- every surface and much of the floor smothered by gold or gems.  ");
                         break;
                     case 25:
                     case 26:
                     case 27:
                     case 28:
                     case 29:
-                        lair_window_description_text += "  Gold and gems are everywhere, occasionally attached to the walls and ceiling where able.  ";
+                        lair_window_description_text += localize("  Gold and gems are everywhere, occasionally attached to the walls and ceiling where able.  ");
                         break;
                     default:
                         if (lair_struct.stock >= 30) {
-                            lair_window_description_text += "  Gold and gems are EVERYWHERE.  The main chamber in particular is a sea of gold and gems, especially deep at the corners.  In all it is nearly three feet deep.  Coins clink and settle as your forces walk through the room.  ";
+                            lair_window_description_text += localize("  Gold and gems are EVERYWHERE.  The main chamber in particular is a sea of gold and gems, especially deep at the corners.  In all it is nearly three feet deep.  Coins clink and settle as your forces walk through the room.  ");
                         }
 
                         break;
                 }
 
                 if (lair_struct.forge > 0) {
-                    lair_window_description_text += "  Your lair has a forge, fit to be used by several astartes at once.  ";
+                    lair_window_description_text += localize("  Your lair has a forge, fit to be used by several astartes at once.  ");
                 }
 
                 if (lair_struct.hippo > 0) {
-                    lair_window_description_text += "  Your lair has a hippodrome, or garage, that holds luxury vehicles.  ";
+                    lair_window_description_text += localize("  Your lair has a hippodrome, or garage, that holds luxury vehicles.  ");
                 }
 
                 if (lair_struct.torture > 0) {
-                    lair_window_description_text += "  One of the rooms is a well-stocked torture chamber.  ";
+                    lair_window_description_text += localize("  One of the rooms is a well-stocked torture chamber.  ");
                 }
 
                 if (lair_struct.librarium > 0) {
-                    lair_window_description_text += "  A large librarium makes up one of the wings, holding countless novels, books, scrolls, and documents on various topics.  ";
+                    lair_window_description_text += localize("  A large librarium makes up one of the wings, holding countless novels, books, scrolls, and documents on various topics.  ");
                 }
 
                 if (lair_struct.beastarium > 0) {
-                    lair_window_description_text += "  Your lair has a beastarium, animals native to your homeworld living within.  ";
+                    lair_window_description_text += localize("  Your lair has a beastarium, animals native to your homeworld living within.  ");
                 }
 
                 if (lair_struct.swimming > 0) {
-                    lair_window_description_text += "  A large swimming pool with chapter-themed floaties is emplaced near the entrance.  ";
+                    lair_window_description_text += localize("  A large swimming pool with chapter-themed floaties is emplaced near the entrance.  ");
                 }
 
                 if (lair_struct.stasis > 0) {
-                    lair_window_description_text += "  One of the chambers holds several stasis pods for display.  They are currently empty.  ";
+                    lair_window_description_text += localize("  One of the chambers holds several stasis pods for display.  They are currently empty.  ");
                 }
 
                 button_x1 = xx + 12;
@@ -495,108 +495,108 @@ function scr_secret_lair_view() {
                 if (scr_hit(button_x1, yy + 12, button_x2, yy + 32)) {
                     // + ((1 - 1) * 22)
                     tooltip_rp_cost = 1000;
-                    tooltip_header = "Forge";
-                    tooltip_desc = "A modest, less elaborate forge able to employ a handful of Astartes or Techpriest.";
-                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "Cost:#", fnt_40k_12, tooltip_rp_cost);
+                    tooltip_header = localize("Forge");
+                    tooltip_desc = localize("A modest, less elaborate forge able to employ a handful of Astartes or Techpriest.");
+                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, localize("Cost:#"), fnt_40k_12, tooltip_rp_cost);
                 }
 
                 // Hippodrome
                 if (scr_hit(button_x1, yy + 34, button_x2, yy + 54)) {
                     // + ((2 - 1) * 22)
                     tooltip_rp_cost = 1000;
-                    tooltip_header = "Hippodrome";
-                    tooltip_desc = "A moderate sized garage fit to hold, service, and display vehicles.";
-                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "Cost:#", fnt_40k_12, tooltip_rp_cost);
+                    tooltip_header = localize("Hippodrome");
+                    tooltip_desc = localize("A moderate sized garage fit to hold, service, and display vehicles.");
+                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, localize("Cost:#"), fnt_40k_12, tooltip_rp_cost);
                 }
 
                 // Beastarium
                 if (scr_hit(button_x1, yy + 56, button_x2, yy + 76)) {
                     // + ((3 - 1) * 22)
                     tooltip_rp_cost = 1000;
-                    tooltip_header = "Beastarium";
-                    tooltip_desc = "An enclosure with simulated greenery and foilage meant to hold beasts.";
-                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "Cost:#", fnt_40k_12, tooltip_rp_cost);
+                    tooltip_header = localize("Beastarium");
+                    tooltip_desc = localize("An enclosure with simulated greenery and foilage meant to hold beasts.");
+                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, localize("Cost:#"), fnt_40k_12, tooltip_rp_cost);
                 }
 
                 // Torture Chamber
                 if (scr_hit(button_x1, yy + 78, button_x2, yy + 98)) {
                     // + ((4 - 1) * 22)
                     tooltip_rp_cost = 500;
-                    tooltip_header = "Torture Chamber";
-                    tooltip_desc = "Only the best for the best.  A room full of torture tools and devices.";
-                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "Cost:#", fnt_40k_12, tooltip_rp_cost);
+                    tooltip_header = localize("Torture Chamber");
+                    tooltip_desc = localize("Only the best for the best.  A room full of torture tools and devices.");
+                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, localize("Cost:#"), fnt_40k_12, tooltip_rp_cost);
                 }
 
                 // Narcotics
                 if (scr_hit(button_x1, yy + 100, button_x2, yy + 120)) {
                     // + ((5 - 1) * 22)
                     tooltip_rp_cost = 500;
-                    tooltip_header = "Narcotics";
-                    tooltip_desc = "Several boxes worth of Obscura, Black Lethe, Kyxa... line it up.";
-                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "Cost:#", fnt_40k_12, tooltip_rp_cost);
+                    tooltip_header = localize("Narcotics");
+                    tooltip_desc = localize("Several boxes worth of Obscura, Black Lethe, Kyxa... line it up.");
+                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, localize("Cost:#"), fnt_40k_12, tooltip_rp_cost);
                 }
 
                 // Relic Room
                 if (scr_hit(button_x1, yy + 122, button_x2, yy + 142)) {
                     // + ((6 - 1) * 22)
                     tooltip_rp_cost = 500;
-                    tooltip_header = "Relic Room";
-                    tooltip_desc = "A room meant for displaying trophies.  May be purchased successive times.";
-                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "Cost:#", fnt_40k_12, tooltip_rp_cost);
+                    tooltip_header = localize("Relic Room");
+                    tooltip_desc = localize("A room meant for displaying trophies.  May be purchased successive times.");
+                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, localize("Cost:#"), fnt_40k_12, tooltip_rp_cost);
                 }
 
                 // Cookery
                 if (scr_hit(button_x1, yy + 144, button_x2, yy + 164)) {
                     // + ((7 - 1) * 22)
                     tooltip_rp_cost = 250;
-                    tooltip_header = "Cookery";
-                    tooltip_desc = "A larger, well-stocked cookery, complete with a number of Imperial Chef servants.";
-                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "Cost:#", fnt_40k_12, tooltip_rp_cost);
+                    tooltip_header = localize("Cookery");
+                    tooltip_desc = localize("A larger, well-stocked cookery, complete with a number of Imperial Chef servants.");
+                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, localize("Cost:#"), fnt_40k_12, tooltip_rp_cost);
                 }
 
                 // Vox Casters
                 if (scr_hit(button_x1, yy + 166, button_x2, yy + 186)) {
                     // + ((8 - 1) * 22)
                     tooltip_rp_cost = 250;
-                    tooltip_header = "Vox Casters";
-                    tooltip_desc = "All the bass one could ever imaginably need.";
-                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "Cost:#", fnt_40k_12, tooltip_rp_cost);
+                    tooltip_header = localize("Vox Casters");
+                    tooltip_desc = localize("All the bass one could ever imaginably need.");
+                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, localize("Cost:#"), fnt_40k_12, tooltip_rp_cost);
                 }
 
                 // Librarium
                 if (scr_hit(button_x1, yy + 188, button_x2, yy + 206)) {
                     // + ((9 - 1) * 22)
                     tooltip_rp_cost = 250;
-                    tooltip_header = "Librarium";
-                    tooltip_desc = "A study fit to hold a staggering amount of tomes and scrolls.";
-                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "Cost:#", fnt_40k_12, tooltip_rp_cost);
+                    tooltip_header = localize("Librarium");
+                    tooltip_desc = localize("A study fit to hold a staggering amount of tomes and scrolls.");
+                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, localize("Cost:#"), fnt_40k_12, tooltip_rp_cost);
                 }
 
                 // Throne
                 if (scr_hit(button_x1, yy + 210, button_x2, yy + 228)) {
                     // + ((10 - 1) * 22)
                     tooltip_rp_cost = 250;
-                    tooltip_header = "Throne";
-                    tooltip_desc = "A massive, ego boosting throne.";
-                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "Cost:#", fnt_40k_12, tooltip_rp_cost);
+                    tooltip_header = localize("Throne");
+                    tooltip_desc = localize("A massive, ego boosting throne.");
+                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, localize("Cost:#"), fnt_40k_12, tooltip_rp_cost);
                 }
 
                 // Stasis Pods
                 if (scr_hit(button_x1, yy + 232, button_x2, yy + 250)) {
                     // + ((11 - 1) * 22)
                     tooltip_rp_cost = 200;
-                    tooltip_header = "Stasis Pods";
-                    tooltip_desc = "Though they start empty, you may capture and display your foes in these.";
-                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "Cost:#", fnt_40k_12, tooltip_rp_cost);
+                    tooltip_header = localize("Stasis Pods");
+                    tooltip_desc = localize("Though they start empty, you may capture and display your foes in these.");
+                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, localize("Cost:#"), fnt_40k_12, tooltip_rp_cost);
                 }
 
                 // Swimming Pool
                 if (scr_hit(button_x1, yy + 254, button_x2, yy + 272)) {
                     // + ((12 - 1) * 22)
                     tooltip_rp_cost = 100;
-                    tooltip_header = "Swimming Pool";
-                    tooltip_desc = "A large body of water meant for excersize or relaxation.";
-                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, "Cost:#", fnt_40k_12, tooltip_rp_cost);
+                    tooltip_header = localize("Swimming Pool");
+                    tooltip_desc = localize("A large body of water meant for excersize or relaxation.");
+                    tooltip_draw(tooltip_desc, 350, return_mouse_consts(), #50a076, fnt_40k_14, tooltip_header, fnt_40k_14b, false, localize("Cost:#"), fnt_40k_12, tooltip_rp_cost);
                 }
             }
         }
@@ -607,18 +607,18 @@ function scr_secret_lair_view() {
     if (planet_feature_bool(planet_upgrades, eP_FEATURES.ARSENAL) == 1) {
         lair_struct = planet_upgrades[search_planet_features(planet_upgrades, eP_FEATURES.ARSENAL)[0]];
         if (lair_struct.inquis_hidden == 1) {
-            lair_window_description_text = "A moderate sized secret Arsenal, this structure has ample holding area to store any number of artifacts and wargear.  Chaos and Daemonic items will be sent here by your Master of Relics, and due to the secret nature of its existance, the Inquisition will not find them during routine inspections.";
+            lair_window_description_text = localize("A moderate sized secret Arsenal, this structure has ample holding area to store any number of artifacts and wargear.  Chaos and Daemonic items will be sent here by your Master of Relics, and due to the secret nature of its existance, the Inquisition will not find them during routine inspections.");
         } else {
-            lair_window_description_text = "A moderate sized Arsenal, this structure has ample holding area to store any number of artifacts and wargear.  Since being discovered it may no longer hide Chaos and Daemonic wargear from routine Inquisition inspections.  You may wish to construct another Arsenal on a different planet.";
+            lair_window_description_text = localize("A moderate sized Arsenal, this structure has ample holding area to store any number of artifacts and wargear.  Since being discovered it may no longer hide Chaos and Daemonic wargear from routine Inquisition inspections.  You may wish to construct another Arsenal on a different planet.");
         }
     }
 
     if (planet_feature_bool(planet_upgrades, eP_FEATURES.GENE_VAULT) == 1) {
         lair_struct = planet_upgrades[search_planet_features(planet_upgrades, eP_FEATURES.GENE_VAULT)[0]];
         if (lair_struct.inquis_hidden == 1) {
-            lair_window_description_text = "A large facility with Gene-Vaults and additional spare rooms, this structure safely stores the majority of your Gene-Seed and is ran by servitors.  Due to its secret nature you may amass Gene-Seed and Test-Slave Incubators without fear of Inquisition reprisal or taking offense.";
+            lair_window_description_text = localize("A large facility with Gene-Vaults and additional spare rooms, this structure safely stores the majority of your Gene-Seed and is ran by servitors.  Due to its secret nature you may amass Gene-Seed and Test-Slave Incubators without fear of Inquisition reprisal or taking offense.");
         } else {
-            lair_window_description_text = "A large facility with Gene-Vaults and additional spare rooms, this structure safely stores the majority of your Gene-Seed and is ran by servitors.  Since being discovered all the contents are known to the Inquisition.  Your Gene-Seed remains protected but you may wish to build a new, secret one.";
+            lair_window_description_text = localize("A large facility with Gene-Vaults and additional spare rooms, this structure safely stores the majority of your Gene-Seed and is ran by servitors.  Since being discovered all the contents are known to the Inquisition.  Your Gene-Seed remains protected but you may wish to build a new, secret one.");
         }
     }
 
@@ -629,15 +629,15 @@ function scr_secret_lair_view() {
     if (!lair_exists && !obj_temp_build.isnew) {
         draw_set_font(fnt_40k_14b);
         if (!secret_base) {
-            draw_text(xx + 21, yy + 45, "Lair");
+            draw_text(xx + 21, yy + 45, localize("Lair"));
         }
 
         if (!arsenal) {
-            draw_text(xx + 21, yy + 110, "Arsenal");
+            draw_text(xx + 21, yy + 110, localize("Arsenal"));
         }
 
         if (!gene_vault) {
-            draw_text(xx + 21, yy + 175, "Gene-Vault");
+            draw_text(xx + 21, yy + 175, localize("Gene-Vault"));
         }
 
         draw_set_font(fnt_40k_14);
@@ -651,12 +651,12 @@ function scr_secret_lair_view() {
 
         draw_text(xx + 180, yy + 47, "1000");
         draw_set_color(c_gray);
-        draw_text_ext(xx + 21, yy + 65, "Customizable hideout that your forces may garrison into.  The Lair may be upgraded further.", -6, 600);
+        draw_text_ext(xx + 21, yy + 65, localize("Customizable hideout that your forces may garrison into.  The Lair may be upgraded further."), -6, 600);
         draw_rectangle(xx + 300, yy + 45, xx + 400, yy + 65, 0);
         draw_set_halign(fa_center);
         draw_set_color(c_black);
-        draw_text(xx + 350, yy + 47, "Build");
-        draw_text(xx + 351, yy + 48, "Build");
+        draw_text(xx + 350, yy + 47, localize("Build"));
+        draw_text(xx + 351, yy + 48, localize("Build"));
         if (scr_hit(xx + 300, yy + 45, xx + 400, yy + 65)) {
             draw_set_alpha(0.2);
             draw_rectangle(xx + 300, yy + 45, xx + 400, yy + 65, 0);
@@ -679,12 +679,12 @@ function scr_secret_lair_view() {
 
         draw_text(xx + 180, yy + 112, "1500");
         draw_set_color(c_gray);
-        draw_text_ext(xx + 21, yy + 130, "Hidden armoury that stores unused Chaos and Daemonic artifacts, preventing them from discovery.", -1, 600);
+        draw_text_ext(xx + 21, yy + 130, localize("Hidden armoury that stores unused Chaos and Daemonic artifacts, preventing them from discovery."), -1, 600);
         draw_rectangle(xx + 300, yy + 110, xx + 400, yy + 130, 0);
         draw_set_halign(fa_center);
         draw_set_color(c_black);
-        draw_text(xx + 350, yy + 112, "Build");
-        draw_text(xx + 351, yy + 113, "Build");
+        draw_text(xx + 350, yy + 112, localize("Build"));
+        draw_text(xx + 351, yy + 113, localize("Build"));
         if (scr_hit(xx + 300, yy + 110, xx + 400, yy + 130)) {
             draw_set_alpha(0.2);
             draw_rectangle(xx + 300, yy + 110, xx + 400, yy + 130, 0);
@@ -707,12 +707,12 @@ function scr_secret_lair_view() {
 
         draw_text(xx + 180, yy + 177, "4000");
         draw_set_color(c_gray);
-        draw_text_ext(xx + 21, yy + 195, "Hidden gene-vault that off-sources the majority of your Gene-Seed and Test-Slave Incubators.", -1, 600);
+        draw_text_ext(xx + 21, yy + 195, localize("Hidden gene-vault that off-sources the majority of your Gene-Seed and Test-Slave Incubators."), -1, 600);
         draw_rectangle(xx + 300, yy + 175, xx + 400, yy + 195, 0);
         draw_set_halign(fa_center);
         draw_set_color(c_black);
-        draw_text(xx + 350, yy + 177, "Build");
-        draw_text(xx + 351, yy + 178, "Build");
+        draw_text(xx + 350, yy + 177, localize("Build"));
+        draw_text(xx + 351, yy + 178, localize("Build"));
         if (scr_hit(xx + 300, yy + 175, xx + 400, yy + 195)) {
             draw_set_alpha(0.2);
             draw_rectangle(xx + 300, yy + 175, xx + 400, yy + 195, 0);
@@ -732,7 +732,7 @@ function scr_secret_lair_view() {
     draw_rectangle(xx + 252, yy + 388, xx + 372, yy + 420, 0);
     draw_set_halign(fa_center);
     draw_set_color(c_black);
-    draw_text(xx + 312, yy + 388, "Back");
+    draw_text(xx + 312, yy + 388, localize("Back"));
     if (scr_hit(xx + 252, yy + 388, xx + 372, yy + 420)) {
         draw_set_alpha(0.2);
         draw_rectangle(xx + 252, yy + 388, xx + 372, yy + 420, 0);

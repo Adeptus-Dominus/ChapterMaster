@@ -60,7 +60,7 @@ function TradeAttempt(diplomacy) constructor {
             if (_opt.number == 0) {
                 continue;
             }
-            var _type = _opt.label;
+            var _type = _opt.data_label;
             if (_opt.trade_type == "equip") {
                 if (!struct_exists(trading_object, "items")) {
                     trading_object.items = {};
@@ -70,7 +70,7 @@ function TradeAttempt(diplomacy) constructor {
                     number: _opt.number,
                 };
             } else if (_opt.trade_type == "license") {
-                switch (_opt.label) {
+                switch (_opt.data_label) {
                     case "Recruiting Planet":
                         obj_controller.recruiting_worlds_bought++;
                         obj_controller.liscensing = 5;
@@ -118,9 +118,9 @@ function TradeAttempt(diplomacy) constructor {
             if (_opt.number == 0) {
                 continue;
             }
-            var _type = _opt.label;
+            var _type = _opt.data_label;
             if (_opt.trade_type == "equip") {
-                scr_add_item(_opt.label, -_opt.label);
+                scr_add_item(_opt.data_label, -_opt.data_label);
             } else if (_opt.trade_type == "req") {
                 obj_controller.requisition -= _opt.number;
                 if (_opt.number > 500 && diplomacy_faction == 6) {
@@ -273,7 +273,7 @@ function TradeAttempt(diplomacy) constructor {
             LOGGER.debug("trade_success");
             if (_success) {
                 successful_trade_attempt();
-                scr_dialogue("agree", {prepend: "[[Trade Accepted.  Shipment initialized.]]"});
+                scr_dialogue("agree", {prepend: localize("[[Trade Accepted.  Shipment initialized.]]")});
                 //force_goodbye=1;
                 obj_controller.trading = 0;
                 if ((diplomacy_faction == 6) || (diplomacy_faction == 7) || (diplomacy_faction == 8)) {
@@ -287,33 +287,33 @@ function TradeAttempt(diplomacy) constructor {
             with (obj_controller) {
                 var _rela = relationship_hostility_matrix(diplomacy);
                 if (trading_artifact == 0) {
-                    diplo_text = "[[Trade Refused]]##";
+                    diplo_text = localize("[[Trade Refused]]") + "##";
                 } else {
                     diplo_text = "";
                 }
                 annoyed[_dip] += 1;
-                scr_dialogue("disagree", {prepend: "[[Trade Refused]]"});
+                scr_dialogue("disagree", {prepend: localize("[[Trade Refused]]")});
                 rando = choose(1, 2, 3);
                 if (_rela == "hostile") {
                     force_goodbye = 1;
                     if (rando == 1) {
-                        diplo_text += "You would offer me scraps for the keys to a kingdom? You are foolish and, worse, you are unaware of your own incompetence.";
+                        diplo_text += localize("You would offer me scraps for the keys to a kingdom? You are foolish and, worse, you are unaware of your own incompetence.");
                     }
                     if (rando == 2) {
-                        diplo_text += "Do not attempt exchanges with those so far above you, lapdog of the Corpse Emperor, it makes you look even more idiotic than you already do.";
+                        diplo_text += localize("Do not attempt exchanges with those so far above you, lapdog of the Corpse Emperor, it makes you look even more idiotic than you already do.");
                     }
                     if (rando == 3) {
-                        diplo_text += "I would spit upon this ‘offer' you bring before me but I find myself too amused by it.";
+                        diplo_text += localize("I would spit upon this ‘offer' you bring before me but I find myself too amused by it.");
                     }
                 } else if (_rela != "hostile") {
                     if (rando == 1) {
-                        diplo_text += "You may consider my response to be a ‘no' and assume my attitude to be whatever you like, Chapter Master.";
+                        diplo_text += localize("You may consider my response to be a ‘no' and assume my attitude to be whatever you like, Chapter Master.");
                     }
                     if (rando == 2) {
-                        diplo_text += "Have a care that you do not overstep the mark, Chapter Master, I see no reason to accept such a trade.";
+                        diplo_text += localize("Have a care that you do not overstep the mark, Chapter Master, I see no reason to accept such a trade.");
                     }
                     if (rando == 3) {
-                        diplo_text += "An unreasonable trade, whatever our working relationship might be. I refuse.";
+                        diplo_text += localize("An unreasonable trade, whatever our working relationship might be. I refuse.");
                     }
                 }
                 if (annoyed[_dip] >= 10) {
@@ -368,18 +368,19 @@ function TradeAttempt(diplomacy) constructor {
             number_last: 0,
             diplomacy_faction,
         });
+        _option.data_label = name;
         with (_option) {
             bind_method = function() {
                 if (max_take == 1) {
                     variable_struct_set(self, "number", 1);
                 } else {
-                    get_diag_integer($"{label} wanted?", max_take, self, diplomacy_faction);
+                    get_diag_integer(localize("{0} wanted?", [label]), max_take, self, diplomacy_faction);
                 }
             };
         }
         if (trader_disp < trade_disp) {
             _option.disabled = true;
-            _option.tooltip = $"{trade_disp} disposition required";
+            _option.tooltip = localize("{0} disposition required", [trade_disp]);
         }
         array_push(demand_options, _option);
     };
@@ -440,12 +441,13 @@ function TradeAttempt(diplomacy) constructor {
             number_last: 0,
             diplomacy_faction,
         });
+        _option.data_label = name;
         with (_option) {
             bind_method = function() {
                 if (max_number == 1) {
                     number = 1;
                 } else {
-                    get_diag_integer($"{label} offered?", max_number, self, diplomacy_faction);
+                    get_diag_integer(localize("{0} offered?", [label]), max_number, self, diplomacy_faction);
                 }
             };
         }
@@ -486,11 +488,11 @@ function TradeAttempt(diplomacy) constructor {
 
         draw_set_font(fnt_40k_14b);
         draw_set_halign(fa_center);
-        draw_text(411, 330, $"{obj_controller.faction[diplomacy_faction]}\nItems");
-        draw_text(829, 330, $"{global.chapter_name}\nItems");
+        draw_text(411, 330, localize("{0}\nItems", [localize(obj_controller.faction[diplomacy_faction])]));
+        draw_text(829, 330, localize("{0}\nItems", [global.chapter_name]));
 
         if (trade_likely != "") {
-            draw_text(623, 348, $"[{trade_likely}]");
+            draw_text(623, 348, localize("[{0}]", [localize(trade_likely)]));
         }
 
         clear_button.draw();
@@ -521,16 +523,16 @@ function TradeAttempt(diplomacy) constructor {
                 }
 
                 if (_opt.max_take > 1) {
-                    draw_text(530, _y_offset, $"{_opt.label} : {_opt.number}");
+                    draw_text(530, _y_offset, localize("{0} : {1}", [_opt.label, _opt.number]));
                 } else {
-                    draw_text(530, _y_offset, $"{_opt.label}");
+                    draw_text(530, _y_offset, _opt.label);
                 }
                 _requested_count++;
             }
         }
 
         _requested_count = 0;
-        draw_text(507, 529, $"{global.chapter_name}:");
+        draw_text(507, 529, localize("{0}:", [global.chapter_name]));
         for (var i = 0; i < array_length(offer_options); i++) {
             var _opt = offer_options[i];
             if (_opt.number != _opt.number_last) {
@@ -549,9 +551,9 @@ function TradeAttempt(diplomacy) constructor {
                     recalc_values = true;
                 }
                 if (_opt.max_number > 1) {
-                    draw_text(530, _y_offset, $"{_opt.label} : {_opt.number}");
+                    draw_text(530, _y_offset, localize("{0} : {1}", [_opt.label, _opt.number]));
                 } else {
-                    draw_text(530, _y_offset, $"{_opt.label}");
+                    draw_text(530, _y_offset, _opt.label);
                 }
                 _requested_count++;
             }
@@ -576,9 +578,9 @@ function TradeAttempt(diplomacy) constructor {
         for (var i = 0; i < array_length(demand_options); i++) {
             var _opt = demand_options[i];
 
-            if (_opt.number > 0 && struct_exists(relative_trade_values, _opt.label)) {
-                their_worth += _opt.number * relative_trade_values[$ _opt.label];
-                if (_opt.label == "Artifact") {
+            if (_opt.number > 0 && struct_exists(relative_trade_values, _opt.data_label)) {
+                their_worth += _opt.number * relative_trade_values[$ _opt.data_label];
+                if (_opt.data_label == "Artifact") {
                     var _faction_barrier = 0;
                     switch (diplomacy_faction) {
                         case 2:
@@ -610,9 +612,9 @@ function TradeAttempt(diplomacy) constructor {
             if (_opt.number <= 0) {
                 continue;
             }
-            if (_opt.label == "Requisition") {
+            if (_opt.data_label == "Requisition") {
                 my_worth += _opt.number;
-            } else if (_opt.label == "Gene-Seed") {
+            } else if (_opt.data_label == "Gene-Seed") {
                 if ((diplomacy_faction == 3) || (diplomacy_faction == 4)) {
                     my_worth += _opt.number * 30;
                 }
@@ -622,7 +624,7 @@ function TradeAttempt(diplomacy) constructor {
                 if ((diplomacy_faction == 8) || (diplomacy_faction == 10)) {
                     my_worth += _opt.number * 50;
                 }
-            } else if (_opt.label == "Info Chip") {
+            } else if (_opt.data_label == "Info Chip") {
                 if (diplomacy_faction == eFACTION.MECHANICUS) {
                     my_worth += _opt.number * 100; // 20% bonus
                 } else {
@@ -631,7 +633,7 @@ function TradeAttempt(diplomacy) constructor {
                 my_worth += _opt.number * 80;
             }
 
-            if (_opt.label == "STC Fragment") {
+            if (_opt.data_label == "STC Fragment") {
                 if (diplomacy_faction == 2) {
                     my_worth += _opt.number * 900;
                 }
