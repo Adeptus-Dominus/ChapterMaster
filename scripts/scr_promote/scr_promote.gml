@@ -131,7 +131,7 @@ function target_company_radio(min_exp = 0) {
             array_push(_company_options, {str1: int_to_roman(i), font: fnt_40k_14b, val: i});
         }
     }
-    companies_select = new RadioSet(_company_options, "Target Company", {
+    companies_select = new RadioSet(_company_options, localize("Target Company"), {
         max_width: 500,
         x1: 1040,
         y1: 210,
@@ -151,20 +151,20 @@ function draw_popup_promotion() {
     draw_set_color(0);
     main_slate.draw_with_dimensions();
 
-    draw_set_font(fnt_40k_14b);
+    draw_set_font(cjk_font(fnt_40k_14b));
     draw_set_halign(fa_center);
     draw_set_color(CM_GREEN_COLOR);
-    draw_text(1292, 150, "Promoting");
+    draw_text(1292, 150, localize("Promoting"));
     var romanNumerals = scr_roman_numerals();
 
-    draw_set_font(fnt_40k_12);
+    draw_set_font(cjk_font(fnt_40k_12));
     var comp = "";
     if (company <= 10 && company > 0) {
         comp = romanNumerals[company - 1];
     } else if (company > 10) {
-        comp = "HQ";
+        comp = localize("HQ");
     }
-    draw_text(1292, 175, $"{comp} Company {unit_role}");
+    draw_text(1292, 175, localize("{0} Company {1}", [comp, localize(unit_role)]));
 
     companies_select.draw();
     if (companies_select.changed) {
@@ -173,7 +173,7 @@ function draw_popup_promotion() {
         get_unit_promotion_options();
     }
     draw_set_halign(fa_left);
-    draw_text(1020, 290, "Target Role:"); //choose new role
+    draw_text(1020, 290, localize("Target Role:")); //choose new role
     var role_x = 0;
     role_y = 0;
     if (target_comp != -1) {
@@ -187,7 +187,7 @@ function draw_popup_promotion() {
                 if (min_exp < role_exp[r]) {
                     draw_set_alpha(0.25);
                 }
-                draw_text(1030 + role_x, 310 + role_y, $"{role_name[r]} [{check}]");
+                draw_text(1030 + role_x, 310 + role_y, localize("{0} [{1}]", [localize(role_name[r]), check]));
                 if (point_and_click([1030 + role_x, 310 + role_y, 1180 + role_x, 330 + role_y])) {
                     if (min_exp >= role_exp[r]) {
                         target_role = r;
@@ -206,7 +206,7 @@ function draw_popup_promotion() {
 
     draw_set_alpha(1);
 
-    draw_text(1020, 370, string_hash_to_newline("Required Gear:"));
+    draw_text(1020, 370, string_hash_to_newline(localize("Required Gear:")));
     var gr = 0, tox = "";
 
     if (target_role > 0) {
@@ -218,7 +218,7 @@ function draw_popup_promotion() {
             } else {
                 draw_set_color(CM_GREEN_COLOR);
             }
-            draw_text(1030, 390, $"{req_armour_num} {req_armour} (Have {have_armour_num})");
+            draw_text(1030, 390, localize("{0} {1} (Have {2})", [req_armour_num, localize(req_armour), have_armour_num]));
         }
         if (req_gear != "") {
             gr = req_gear_num - have_gear_num;
@@ -228,7 +228,7 @@ function draw_popup_promotion() {
             } else {
                 draw_set_color(CM_GREEN_COLOR);
             }
-            draw_text(1030, 410, $"{req_gear_num} {req_gear} (Have {have_gear_num})");
+            draw_text(1030, 410, localize("{0} {1} (Have {2})", [req_gear_num, localize(req_gear), have_gear_num]));
         }
         if (req_mobi != "") {
             gr = req_mobi_num - have_mobi_num;
@@ -238,7 +238,7 @@ function draw_popup_promotion() {
             } else {
                 draw_set_color(CM_GREEN_COLOR);
             }
-            draw_text(1030, 430, $"{req_mobi_num} {req_mobi} (Have {have_mobi_num})");
+            draw_text(1030, 430, localize("{0} {1} (Have {2})", [req_mobi_num, localize(req_mobi), have_mobi_num]));
         }
         if (req_wep1 != "") {
             gr = req_wep1_num - have_wep1_num;
@@ -248,7 +248,7 @@ function draw_popup_promotion() {
             } else {
                 draw_set_color(CM_GREEN_COLOR);
             }
-            draw_text(1280, 390, $"{req_wep1_num} {req_wep1} (Have {have_wep1_num})");
+            draw_text(1280, 390, localize("{0} {1} (Have {2})", [req_wep1_num, localize(req_wep1), have_wep1_num]));
         }
         if (req_wep2 != "") {
             gr = req_wep2_num - have_wep2_num;
@@ -258,7 +258,7 @@ function draw_popup_promotion() {
             } else {
                 draw_set_color(CM_GREEN_COLOR);
             }
-            draw_text(1280, 410, $"{req_wep2_num} {req_wep2} (Have {have_wep2_num})");
+            draw_text(1280, 410, localize("{0} {1} (Have {2})", [req_wep2_num, localize(req_wep2), have_wep2_num]));
         }
     }
 

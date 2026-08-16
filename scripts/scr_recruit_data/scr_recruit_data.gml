@@ -130,8 +130,8 @@ function find_recruit_success_chance(local_apothecary_points, system, planet, ui
 
                 if (droll == 0) {
                     var _planet_name = p_data.name;
-                    scr_alert(#FF9900, "DIPLOMATIC DISASTER", $"Apothecaries at {_planet_name} has been spotted doing suspicious activities!", system.x, system.y);
-                    scr_event_log(#FF9900, $"Apothecaries at {_planet_name} has been spotted doing suspicious activities!", system.name);
+                    scr_alert(#FF9900, localize("DIPLOMATIC DISASTER"), localize("Apothecaries at {0} has been spotted doing suspicious activities!", [_planet_name]), system.x, system.y);
+                    scr_event_log(#FF9900, localize("Apothecaries at {0} has been spotted doing suspicious activities!", [_planet_name]), system.name);
                     p_data.add_disposition(-25);
                     if (p_data.current_owner != eFACTION.PLAYER) {
                         obj_controller.disposition[p_data.current_owner] -= 5;
@@ -297,7 +297,7 @@ function planet_training_sequence(local_apothecary_points) {
                     if (random(1) < recruit_type.seed_waste) {
                         obj_controller.gene_seed--;
                         //TODO make more informative
-                        scr_alert("red", "owner", "Blood Duels are efficient in time, but costly in risk with gene material. Gene-seed has been lost.", 0, 0);
+                        scr_alert("red", "owner", localize("Blood Duels are efficient in time, but costly in risk with gene material. Gene-seed has been lost."), 0, 0);
                     }
                 }
             }
@@ -387,7 +387,7 @@ function scr_trial_data(wanted = -1) {
                 10,
                 2,
             ],
-            long_description: $"THE BLOOD DUEL?  HA DO I EVEN NEED TO EXPLAIN, CHAPTER MASTER?  ASPIRANTS ENTER.  NEOPHYTES LEAVE.  Those worthy of serving the Emperor are rewarded justly and those merely pretending at glory are lost in the BLOOD AND THUNDER of the dome.  Do not be alarmed at the carnage.  The Apothecarium has become quite adept at rebuilding those fit to serve.  The others are given to the {role_data[eROLE.TECHMARINE]}s.  The mind is a terrible thing to waste and the Emperor does hate waste.  Not every man is useful as an Astartes but every man is useful.",
+            long_description: localize("THE BLOOD DUEL?  HA DO I EVEN NEED TO EXPLAIN, CHAPTER MASTER?  ASPIRANTS ENTER.  NEOPHYTES LEAVE.  Those worthy of serving the Emperor are rewarded justly and those merely pretending at glory are lost in the BLOOD AND THUNDER of the dome.  Do not be alarmed at the carnage.  The Apothecarium has become quite adept at rebuilding those fit to serve.  The others are given to the {0}s.  The mind is a terrible thing to waste and the Emperor does hate waste.  Not every man is useful as an Astartes but every man is useful.", [role_data[eROLE.TECHMARINE]]),
         },
         {
             name: "Hunting the Hunter",
@@ -426,7 +426,7 @@ function scr_trial_data(wanted = -1) {
                     Feudal: 1.5,
                 },
             },
-            long_description: $"To be an Astartes is to be a hunter of xenos, of traitors, of heretics, and of all those that dare defy the Emperor.  What better way to test the worthiness of Aspirants than to have to them hunt the most dangerous predator to be found on their planet?  Such a task requires a combination of wits and cunning, in addition to raw martial skill.  When they have received the blessed geneseed and become full battle brothers, they will hunt across the stars with bolter and chainsword. For now, let them hunt with nothing more than a spear and their wits.",
+            long_description: localize("To be an Astartes is to be a hunter of xenos, of traitors, of heretics, and of all those that dare defy the Emperor.  What better way to test the worthiness of Aspirants than to have to them hunt the most dangerous predator to be found on their planet?  Such a task requires a combination of wits and cunning, in addition to raw martial skill.  When they have received the blessed geneseed and become full battle brothers, they will hunt across the stars with bolter and chainsword. For now, let them hunt with nothing more than a spear and their wits."),
         },
         {
             name: "Survival of the Fittest",
@@ -455,7 +455,7 @@ function scr_trial_data(wanted = -1) {
                 5,
                 1,
             ],
-            long_description: $"To become one of the Imperium’s finest warriors, the Space Marines, is the greatest glory that any human can aspire to. And is glory not worth fighting, bleeding or even dying for? It must be, for whole worlds of ice, ash and sand have buried generations of sons in pursuit of this glory and never once called the price too dear.  To ensure the necessary bloodshed, lies, paranoia and psychosis-inducing drugs have been introduced to .  This trial will seperate the weak from the strong and the chaff from the wheat.",
+            long_description: localize("To become one of the Imperium’s finest warriors, the Space Marines, is the greatest glory that any human can aspire to. And is glory not worth fighting, bleeding or even dying for? It must be, for whole worlds of ice, ash and sand have buried generations of sons in pursuit of this glory and never once called the price too dear.  To ensure the necessary bloodshed, lies, paranoia and psychosis-inducing drugs have been introduced to .  This trial will seperate the weak from the strong and the chaff from the wheat."),
         },
         {
             name: "Exposure",
@@ -510,7 +510,7 @@ function scr_trial_data(wanted = -1) {
             recruit_count_modifier: {
                 base: 1.0,
             },
-            long_description: $"Few worlds of the Imperium are free from the adversity of pollution or toxic waste.  Still others are bequeathed with flows of lava and choking atmosphere.  The glory of rising to astartes is only granted to those that can tackle and overcome these dangerous environments.  Aspirants are placed upon the most hellish of planet in the sector, and then expected to traverse the continent with only himself to rely upon.  Those who face the impossible without faltering and survive past the point they should have perished are recovered by {role_data[eROLE.APOTHECARY]}s, judged worthy of becoming a Neophyte.",
+            long_description: localize("Few worlds of the Imperium are free from the adversity of pollution or toxic waste.  Still others are bequeathed with flows of lava and choking atmosphere.  The glory of rising to astartes is only granted to those that can tackle and overcome these dangerous environments.  Aspirants are placed upon the most hellish of planet in the sector, and then expected to traverse the continent with only himself to rely upon.  Those who face the impossible without faltering and survive past the point they should have perished are recovered by {0}s, judged worthy of becoming a Neophyte.", [role_data[eROLE.APOTHECARY]]),
         },
         {
             name: "Knowledge of self",
@@ -545,7 +545,7 @@ function scr_trial_data(wanted = -1) {
                 -5,
                 1,
             ],
-            long_description: $"An Aspirant’s spiritual and mental capability is every bit as important as his physical characteristics.  It is wise to impose Trials not upon their body, but on the mind.  Either through psychic powers, chemical agents, or endurance trials, the Aspirant’s willpower is tested.  Those unworthy do not survive the stress and trauma placed upon their hearts- only those whose minds are proven to be unbreakable are welcomed into our ranks.",
+            long_description: localize("An Aspirant’s spiritual and mental capability is every bit as important as his physical characteristics.  It is wise to impose Trials not upon their body, but on the mind.  Either through psychic powers, chemical agents, or endurance trials, the Aspirant’s willpower is tested.  Those unworthy do not survive the stress and trauma placed upon their hearts- only those whose minds are proven to be unbreakable are welcomed into our ranks."),
         },
         {
             name: "Combat Challange",
@@ -572,7 +572,7 @@ function scr_trial_data(wanted = -1) {
                 5,
                 1,
             ],
-            long_description: $"What better gauge of an Aspirant than in a duel with our astartes?  Our brother, unarmed and unarmoured, will face against the armed challenger until one cannot continue.  It is impossible for the Aspirant to actually succeed these trials, but demonstrates how far they can possibly go, and allow us to judge him accordingly.  As with most trials the Aspirant’s life is in their own hands.  He who has failed the duel- yet proven himself worthy- is rescued from the jaws of death by {role_data[eROLE.APOTHECARY]} and allowed to progress to the rank of Neophyte.",
+            long_description: localize("What better gauge of an Aspirant than in a duel with our astartes?  Our brother, unarmed and unarmoured, will face against the armed challenger until one cannot continue.  It is impossible for the Aspirant to actually succeed these trials, but demonstrates how far they can possibly go, and allow us to judge him accordingly.  As with most trials the Aspirant’s life is in their own hands.  He who has failed the duel- yet proven himself worthy- is rescued from the jaws of death by {0} and allowed to progress to the rank of Neophyte.", [role_data[eROLE.APOTHECARY]]),
         },
         {
             name: "Apprenticeship",
@@ -604,7 +604,7 @@ function scr_trial_data(wanted = -1) {
                 -10,
                 1,
             ],
-            long_description: $"What better way to cultivate astartes than to raise them from youth?  The capable children of our recruitment targets are apprenticed to our battle brothers.  Beneath their steady guidance the Aspirants spend several years learning the art of the smith.  The most able are judged by our Chapter’s {role_data[eROLE.APOTHECARY]}s and {role_data[eROLE.CHAPLAIN]} to deem if they are compatible with gene-seed implantation.  If so, the Aspirant’s trial culminates in hunting and slaying a massive beast.  Only the brightest and bravest are added to our ranks.",
+            long_description: localize("What better way to cultivate astartes than to raise them from youth?  The capable children of our recruitment targets are apprenticed to our battle brothers.  Beneath their steady guidance the Aspirants spend several years learning the art of the smith.  The most able are judged by our Chapter’s {0}s and {1} to deem if they are compatible with gene-seed implantation.  If so, the Aspirant’s trial culminates in hunting and slaying a massive beast.  Only the brightest and bravest are added to our ranks.", [role_data[eROLE.APOTHECARY], role_data[eROLE.CHAPLAIN]]),
         },
     ];
     if (wanted > -1) {
@@ -697,44 +697,44 @@ function scr_compile_trial_bonus_string(trial_data) {
     };
     if (struct_exists(trial_data, "train_time")) {
         var train_time_data = trial_data.train_time;
-        bonus_string += $"Years training : {train_time_string(train_time_data.base)}\n";
+        bonus_string += localize("Years training : {0}\n", [train_time_string(train_time_data.base)]);
         if (struct_exists(train_time_data, "planets")) {
             var planets = struct_get_names(train_time_data.planets);
             for (var i = 0; i < array_length(planets); i++) {
-                bonus_string += $"   {planets[i]} : {train_time_string(train_time_data.planets[$ planets[i]])}\n";
+                bonus_string += localize("   {0} : {1}\n", [localize(planets[i]), train_time_string(train_time_data.planets[$ planets[i]])]);
             }
         }
         bonus_string += "\n";
     }
     if (struct_exists(trial_data, "recruit_count_modifier")) {
         var recruit_count_data = trial_data.recruit_count_modifier;
-        bonus_string += $"Recruit Success Chance : X{recruit_count_data.base}\n";
+        bonus_string += localize("Recruit Success Chance : X{0}\n", [recruit_count_data.base]);
         if (struct_exists(recruit_count_data, "planets")) {
             var planets = struct_get_names(recruit_count_data.planets);
             for (var i = 0; i < array_length(planets); i++) {
-                bonus_string += $"   {planets[i]} : X{recruit_count_data.planets[$ planets[i]]}\n";
+                bonus_string += localize("   {0} : X{1}\n", [localize(planets[i]), recruit_count_data.planets[$ planets[i]]]);
             }
         }
         bonus_string += "\n";
     }
     if (struct_exists(trial_data, "exp_bonus")) {
         var exp_bonus = trial_data.exp_bonus;
-        bonus_string += $"Experience Bonus : {exp_bonus_string(exp_bonus.base)}\n";
+        bonus_string += localize("Experience Bonus : {0}\n", [exp_bonus_string(exp_bonus.base)]);
         if (struct_exists(exp_bonus, "planets")) {
             var planets = struct_get_names(exp_bonus.planets);
             for (var i = 0; i < array_length(planets); i++) {
-                bonus_string += $"   {planets[i]} : {exp_bonus_string(exp_bonus.planets[$ planets[i]])}\n";
+                bonus_string += localize("   {0} : {1}\n", [localize(planets[i]), exp_bonus_string(exp_bonus.planets[$ planets[i]])]);
             }
         }
         bonus_string += "\n";
     }
     if (struct_exists(trial_data, "seed_waste")) {
-        bonus_string += $"{trial_data.seed_waste * 100}% of gene-seed wastage per turn\n";
+        bonus_string += localize("{0}% of gene-seed wastage per turn\n", [trial_data.seed_waste * 100]);
         bonus_string += "\n";
     }
     if (struct_exists(trial_data, "corruption_bonus")) {
         var corruption_bonus = trial_data[$ "corruption_bonus"];
-        bonus_string += $"Corruption Effect : ~{corruption_bonus[0]}\n";
+        bonus_string += localize("Corruption Effect : ~{0}\n", [corruption_bonus[0]]);
         /* if (struct_exists(corruption_bonus, "planets")){
 			var planets = struct_get_names(corruption_bonus.planets);
 			for (var i=0;i<array_length(planets);i++){
@@ -745,18 +745,18 @@ function scr_compile_trial_bonus_string(trial_data) {
     }
     var _traits = global.trait_list;
     if (struct_exists(trial_data, "favoured_traits")) {
-        bonus_string += "Favoured Traits: ";
+        bonus_string += localize("Favoured Traits: ");
         for (var i = 0; i < array_length(trial_data.favoured_traits); i++) {
             var _favoured_trait = trial_data.favoured_traits[i];
-            bonus_string += $"{_traits[$ _favoured_trait].display_name}, ";
+            bonus_string += $"{localize(_traits[$ _favoured_trait].display_name)}, ";
         }
         bonus_string += "\n\n";
     }
     if (struct_exists(trial_data, "disfavoured_traits")) {
-        bonus_string += "Dis-Favoured Traits: ";
+        bonus_string += localize("Dis-Favoured Traits: ");
         for (var i = 0; i < array_length(trial_data.disfavoured_traits); i++) {
             var _disfavoured_trait = trial_data.disfavoured_traits[i];
-            bonus_string += $"{_traits[$ _disfavoured_trait].display_name}, ";
+            bonus_string += $"{localize(_traits[$ _disfavoured_trait].display_name)}, ";
         }
         bonus_string += "\n\n";
     }
@@ -794,12 +794,12 @@ function set_up_recruitment_view() {
         recruit_list_pane.inside_method = function() {
             var xx = camera_get_view_x(view_camera[0]);
             var yy = camera_get_view_y(view_camera[0]) + 60;
-            draw_set_font(fnt_40k_30b);
+            draw_set_font(cjk_font(fnt_40k_30b));
             draw_set_halign(fa_center);
-            draw_text_transformed(xx + 1242, yy + 70, "Neophytes", 0.6, 0.6, 0);
+            draw_text_transformed(xx + 1242, yy + 70, localize("Neophytes"), 0.6, 0.6, 0);
 
             if (recruit_name[0] != "") {
-                draw_set_font(fnt_40k_14);
+                draw_set_font(cjk_font(fnt_40k_14));
                 draw_set_halign(fa_left);
 
                 var t_eta = 0;
@@ -807,9 +807,9 @@ function set_up_recruitment_view() {
                     if (recruit_name[qp] != "") {
                         n++;
                         draw_rectangle(xx + 947, yy + 100 + ((n - 1) * 20), xx + 1577, yy + 100 + (n * 20), 1);
-                        draw_text(xx + 950, yy + 100 + ((n - 1) * 20), $"Neophyte {recruit_name[qp]}");
-                        draw_text(xx + 1200, yy + 100 + ((n - 1) * 20), $"Starting EXP: {recruit_exp[qp]}");
-                        draw_text(xx + 1500, yy + 100 + ((n - 1) * 20), $"ETA: {recruit_training[qp] + recruit_distance[qp]}");
+                        draw_text(xx + 950, yy + 100 + ((n - 1) * 20), localize("Neophyte {0}", [recruit_name[qp]]));
+                        draw_text(xx + 1200, yy + 100 + ((n - 1) * 20), localize("Starting EXP: {0}", [recruit_exp[qp]]));
+                        draw_text(xx + 1500, yy + 100 + ((n - 1) * 20), localize("ETA: {0}", [recruit_training[qp] + recruit_distance[qp]]));
                     }
                 }
             }
@@ -858,72 +858,72 @@ function scr_draw_recruit_advisor() {
         }
         draw_set_halign(fa_left);
         draw_set_color(c_gray);
-        draw_set_font(fnt_40k_30b);
-        draw_text_transformed(xx + 336 + 16, yy + 66, string_hash_to_newline("World " + string(obj_ini.recruiting_name)), 1, 1, 0);
-        draw_text_transformed(xx + 336 + 16, yy + 100, string_hash_to_newline("First Sergeant " + string(recruiter_name)), 0.6, 0.6, 0);
-        draw_set_font(fnt_40k_14);
+        draw_set_font(cjk_font(fnt_40k_30b));
+        draw_text_transformed(xx + 336 + 16, yy + 66, string_hash_to_newline(localize("World {0}", [obj_ini.recruiting_name])), 1, 1, 0);
+        draw_text_transformed(xx + 336 + 16, yy + 100, string_hash_to_newline(localize("First Sergeant {0}", [recruiter_name])), 0.6, 0.6, 0);
+        draw_set_font(cjk_font(fnt_40k_14));
     }
     if (menu_adept == 1) {
         // draw_sprite(spr_advisors,0,xx+16,yy+43);
         scr_image("advisor/splash", 1, xx + 16, yy + 43, 310, 828);
         draw_set_halign(fa_left);
         draw_set_color(c_gray);
-        draw_set_font(fnt_40k_30b);
-        draw_text_transformed(xx + 336 + 16, yy + 40, string_hash_to_newline("World " + string(obj_ini.recruiting_name)), 1, 1, 0);
-        draw_text_transformed(xx + 336 + 16, yy + 100, string_hash_to_newline("Adept " + string(obj_controller.adept_name)), 0.6, 0.6, 0);
-        draw_set_font(fnt_40k_14);
+        draw_set_font(cjk_font(fnt_40k_30b));
+        draw_text_transformed(xx + 336 + 16, yy + 40, string_hash_to_newline(localize("World {0}", [obj_ini.recruiting_name])), 1, 1, 0);
+        draw_text_transformed(xx + 336 + 16, yy + 100, string_hash_to_newline(localize("Adept {0}", [obj_controller.adept_name])), 0.6, 0.6, 0);
+        draw_set_font(cjk_font(fnt_40k_14));
     }
 
     var _cm = cm_obj().get_struct();
     if (menu_adept == 0) {
-        blurp = $"Hail {_cm.name()}! You asked for a report?\n\n";
+        blurp = localize("Hail {0}! You asked for a report?\n\n", [_cm.name()]);
     }
 
     if (obj_ini.doomed == 0) {
         if (recruits <= 0) {
             if (marines >= 1000) {
-                blurp += "Our Chapter currently has no Neophytes - we are at maximum strength and do not require more marines.";
+                blurp += localize("Our Chapter currently has no Neophytes - we are at maximum strength and do not require more marines.");
             }
             if ((marines < 1000) && (recruiting == 0)) {
-                blurp += "Our Chapter currently has no Neophytes. Without training more our chapter is doomed to a slow death.";
+                blurp += localize("Our Chapter currently has no Neophytes. Without training more our chapter is doomed to a slow death.");
             }
             if ((marines < 1000) && (recruiting > 0)) {
-                blurp += "Our Chapter currently has no Neophytes. We are doing our utmost best to find suitable recruits.";
+                blurp += localize("Our Chapter currently has no Neophytes. We are doing our utmost best to find suitable recruits.");
             }
         } else if (recruits == 1) {
-            blurp += $"Our Chapter currently has one recruit being trained. The Neophyte's name is {recruit_name[0]} and they are scheduled to become a battle brother in {recruit_training[0] + recruit_distance[0]} months' time.";
+            blurp += localize("Our Chapter currently has one recruit being trained. The Neophyte's name is {0} and they are scheduled to become a battle brother in {1} months' time.", [recruit_name[0], recruit_training[0] + recruit_distance[0]]);
         } else if (recruits > 1) {
-            blurp += $"Our Chapter currently has {recruits} recruits being trained. {recruit_name[0]} is the next scheduled Neophyte to become a battle brother in {recruit_training[0] + recruit_distance[0]} months' time.";
+            blurp += localize("Our Chapter currently has {0} recruits being trained. {1} is the next scheduled Neophyte to become a battle brother in {2} months' time.", [recruits, recruit_name[0], recruit_training[0] + recruit_distance[0]]);
         }
 
         if (gene_seed > 0) {
             var _recruit_rates = global.neophyte_rates;
-            var _cur_recruit_rate = $"The recruitment is {_recruit_rates[recruiting]}";
+            var _cur_recruit_rate = localize("The recruitment is {0}", [localize(_recruit_rates[recruiting])]);
             if ((recruiting == 0) && (marines >= 1000)) {
-                blurp += $"\n{_cur_recruit_rate}. You must only give me the word and I can begin further increasing our numbers... though this would violate the Codex Astartes.";
+                blurp += localize("\n{0}. You must only give me the word and I can begin further increasing our numbers... though this would violate the Codex Astartes.", [_cur_recruit_rate]);
             } else if ((recruiting == 0) && (marines < 1000)) {
-                blurp += $"\n{_cur_recruit_rate}. You must only give me the word and I can begin further increasing our numbers.";
+                blurp += localize("\n{0}. You must only give me the word and I can begin further increasing our numbers.", [_cur_recruit_rate]);
             } else if (recruiting == 1) {
-                blurp += $"\n{_cur_recruit_rate}.";
+                blurp += localize("\n{0}.", [_cur_recruit_rate]);
             }
         }
     }
 
     if (obj_ini.doomed == 1) {
-        blurp += "\nMutation of our gene-seed currently makes us unable to recruit new Neophytes. We are doomed to a slow demise unless the Apothecaries can fix it.";
+        blurp += localize("\nMutation of our gene-seed currently makes us unable to recruit new Neophytes. We are doomed to a slow demise unless the Apothecaries can fix it.");
     }
 
     if (gene_seed == 0) {
-        blurp += "\nThere is no more gene-seed in our vaults and we cannot create more neophytes as a result. Something must be done, Chapter Master.";
+        blurp += localize("\nThere is no more gene-seed in our vaults and we cannot create more neophytes as a result. Something must be done, Chapter Master.");
     }
 
     if (recruiting > 0) {
         if (string_count("|", obj_controller.recruiting_worlds) == 1) {
-            blurp += $"\nWe're recruiting from one world - {obj_ini.recruiting_name}.";
+            blurp += localize("\nWe're recruiting from one world - {0}.", [obj_ini.recruiting_name]);
         } else if (string_count("|", obj_controller.recruiting_worlds) == 2) {
-            blurp += "\nWe're recruiting from two worlds. Finding recruits is vastly accelerated.";
+            blurp += localize("\nWe're recruiting from two worlds. Finding recruits is vastly accelerated.");
         } else if (string_count("|", obj_controller.recruiting_worlds) > 2) {
-            blurp += "\nWe're recruiting from several worlds.";
+            blurp += localize("\nWe're recruiting from several worlds.");
         }
     }
 
@@ -943,9 +943,9 @@ function scr_draw_recruit_advisor() {
     draw_set_color(16291875);
     draw_set_color(c_gray);
     if ((recruiting >= 0) && (recruiting <= 1)) {
-        blur = _neophyte_rate[recruiting];
+        blur = localize(_neophyte_rate[recruiting]);
     }
-    draw_text(xx + 407, yy + 354, string_hash_to_newline("Space Marine Recruiting: " + string(blur)));
+    draw_text(xx + 407, yy + 354, string_hash_to_newline(localize("Space Marine Recruiting: {0}", [string(blur)])));
     draw_text(xx + 728, yy + 354, string_hash_to_newline("[-] [+]"));
 
     amo = 0;
@@ -977,9 +977,9 @@ function scr_draw_recruit_advisor() {
     }
     draw_set_color(c_gray);
     if ((training_apothecary >= 0) && (training_apothecary <= 6)) {
-        blur = _recruit_rate[training_apothecary];
+        blur = localize(_recruit_rate[training_apothecary]);
     }
-    draw_text(xx + 407, yy + 394, string_hash_to_newline("Apothecary Training: " + string(blur)));
+    draw_text(xx + 407, yy + 394, string_hash_to_newline(localize("Apothecary Training: {0}", [string(blur)])));
     draw_text(xx + 728, yy + 394, string_hash_to_newline("[-] [+]"));
 
     // TODO implement Spave Wolves and Iron Hands cases
@@ -1013,9 +1013,9 @@ function scr_draw_recruit_advisor() {
         }
         draw_set_color(c_gray);
         if ((training_chaplain >= 0) && (training_chaplain <= 6)) {
-            blur = _recruit_rate[training_chaplain];
+            blur = localize(_recruit_rate[training_chaplain]);
         }
-        draw_text(xx + 407, yy + 414, string_hash_to_newline("Chaplain Training: " + string(blur)));
+        draw_text(xx + 407, yy + 414, string_hash_to_newline(localize("Chaplain Training: {0}", [string(blur)])));
         draw_text(xx + 728, yy + 414, string_hash_to_newline("[-] [+]"));
     }
 
@@ -1048,9 +1048,9 @@ function scr_draw_recruit_advisor() {
     }
     draw_set_color(c_gray);
     if ((training_psyker >= 0) && (training_psyker <= 6)) {
-        blur = _recruit_rate[training_psyker];
+        blur = localize(_recruit_rate[training_psyker]);
     }
-    draw_text(xx + 407, yy + 434, string_hash_to_newline("Psyker Training: " + string(blur)));
+    draw_text(xx + 407, yy + 434, string_hash_to_newline(localize("Psyker Training: {0}", [string(blur)])));
     draw_text(xx + 728, yy + 434, string_hash_to_newline("[-] [+]"));
 
     // ** Techmarine recruitment **
@@ -1082,9 +1082,9 @@ function scr_draw_recruit_advisor() {
     }
     draw_set_color(c_gray);
     if ((training_techmarine >= 0) && (training_techmarine <= 6)) {
-        blur = _recruit_rate[training_techmarine];
+        blur = localize(_recruit_rate[training_techmarine]);
     }
-    draw_text(xx + 407, yy + 454, $"Techmarine Training: {blur}");
+    draw_text(xx + 407, yy + 454, localize("Techmarine Training: {0}", [string(blur)]));
     draw_text(xx + 728, yy + 454, "[-] [+]");
 
     // ** Neophyte Training types **
@@ -1093,13 +1093,13 @@ function scr_draw_recruit_advisor() {
     var cur_trial = trial_data[recruit_trial];
 
     draw_set_halign(fa_center);
-    draw_set_font(fnt_40k_30b);
-    draw_text_transformed(xx + 622, yy + 491, "Aspirant Trial", 0.6, 0.6, 0);
-    draw_set_font(fnt_40k_14b);
+    draw_set_font(cjk_font(fnt_40k_30b));
+    draw_text_transformed(xx + 622, yy + 491, localize("Aspirant Trial"), 0.6, 0.6, 0);
+    draw_set_font(cjk_font(fnt_40k_14b));
 
-    draw_text_ext(xx + 622, yy + 522, cur_trial.name, -1, 536);
+    draw_text_ext(xx + 622, yy + 522, localize(cur_trial.name), -1, 536);
     draw_set_halign(fa_left);
-    draw_set_font(fnt_40k_14);
+    draw_set_font(cjk_font(fnt_40k_14));
 
     yyy = string_height_ext(string_hash_to_newline(cur_trial.long_description), -1, 536) + yy + 545;
 
@@ -1112,7 +1112,7 @@ function scr_draw_recruit_advisor() {
         var xx = camera_get_view_x(view_camera[0]);
         var yy = camera_get_view_y(view_camera[0]);
         draw_set_halign(fa_left);
-        draw_set_font(fnt_40k_14);
+        draw_set_font(cjk_font(fnt_40k_14));
         if (left_panel.percent_cut > 90) {
             var trial_data = scr_trial_data();
             var cur_trial = trial_data[recruit_trial];
