@@ -1339,7 +1339,6 @@ function draw_manage_selection_buttons() {
     gen_tooltip(health_tooltip);
 
     // Draw interaction and selection buttons
-    yy -= 8;
     draw_set_font(cjk_font(fnt_40k_14b));
     draw_set_color(#50a076);
     var button = new UnitButtonObject();
