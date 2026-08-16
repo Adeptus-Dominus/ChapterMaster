@@ -20,12 +20,25 @@ function company_length(company) {
     return array_length(obj_ini.TTRPG[company]);
 }
 
+function normalise_marine_numbers(company, start_index,length){
+    for (var l = start_index; l < length; l++) {
+        obj_ini.TTRPG[company][l].marine_number = l;
+    }
+}
+
 function tally_marines() {
     obj_controller.command = 0;
     obj_controller.marines = 0;
     for (var co = 0; co <= obj_ini.companies; co++) {
-        for (var i = 0; i < company_length(co); i++) {
+        var _len = company_length(co);
+        for (var i = _len - 1; i >= 0 ; i--) {
             var _unit = fetch_unit([co, i]);
+            if (!is_struct(_unit)){
+                array_delete(obj_ini.TTRPG[co],i,1);
+                _len--;
+                normalise_marine_numbers(co, i, _len);
+                continue;
+            }
             if (_unit.base_group != "astartes") {
                 continue;
             }

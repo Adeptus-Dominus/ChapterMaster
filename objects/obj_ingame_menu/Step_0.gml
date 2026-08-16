@@ -156,7 +156,7 @@ if (settings == 1 && mouse_button_clicked(mb_left, 0, true)) {
             _index = 0;
         }
         var _dir = _lang_prev_click ? -1 : 1;
-        global.settings.language = _languages[(_index + _dir + array_length(_languages)) mod array_length(_languages)];
+        global.settings.language = _languages[(_index + _dir + array_length(_languages)) % array_length(_languages)];
         global.settings.apply_language();
         _changed = true;
     }

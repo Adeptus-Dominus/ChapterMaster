@@ -133,7 +133,6 @@ enum eIN_GAME_MENU_EFFECT {
     CLOSE_SAVELOAD = 30,
 }
 
-
 enum eEQUIPMENT_SLOT {
     WEAPON_ONE,
     WEAPON_TWO,
@@ -142,5 +141,3 @@ enum eEQUIPMENT_SLOT {
     MOBILITY,
     ALL,
 }
-
-

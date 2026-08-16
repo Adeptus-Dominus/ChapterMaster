@@ -2860,7 +2860,7 @@ function add_unit_to_company(ttrpg_name, company, role_name, role_id, wep1 = "de
 
     var _r_data = spawn_unit.get_role_data();
 
-    if (is_undefined(_r_data)){
+    if (is_undefined(_r_data)) {
         _r_data = [
             wep1,
             wep2,
@@ -2869,15 +2869,20 @@ function add_unit_to_company(ttrpg_name, company, role_name, role_id, wep1 = "de
             mobi,
         ];
         for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
-            if (_r_data[i] == "default"){
+            if (_r_data[i] == "default") {
                 _r_data[i] = "";
             }
         }
         _r_data = convert_equipment_array_into_struct(_r_data);
-
     } else {
         _r_data = variable_clone(_r_data);
-        var _equip = [wep1, wep2, armour, gear, mobi];
+        var _equip = [
+            wep1,
+            wep2,
+            armour,
+            gear,
+            mobi,
+        ];
 
         for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
             var _item = _equip[i];

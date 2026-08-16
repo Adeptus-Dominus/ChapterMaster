@@ -66,11 +66,11 @@ function scr_livery_setup() {
             if (bulk_buttons[i].draw(custom == eCHAPTER_TYPE.CUSTOM)) {
                 instance_destroy(obj_creation_popup);
                 var _data = {
-                    target_role : i + 1,
-                    type : ePOPUP_TYPE.LIVERYPICK,
-                    colour_area : "",
-                    title : bulk_buttons[i].label
-                }
+                    target_role: i + 1,
+                    type: ePOPUP_TYPE.LIVERYPICK,
+                    colour_area: "",
+                    title: bulk_buttons[i].label,
+                };
                 instance_create_depth(0, 0, -55, obj_creation_popup, _data);
             }
         }
@@ -84,11 +84,11 @@ function scr_livery_setup() {
             if (_button.draw()) {
                 instance_destroy(obj_creation_popup);
                 var _data = {
-                    target_role : _button.role_id,
-                    type : ePOPUP_TYPE.LIVERYPICK,
-                    colour_area : _button.area,
-                }
-                instance_create_depth(0, 0, -55,obj_creation_popup, _data);
+                    target_role: _button.role_id,
+                    type: ePOPUP_TYPE.LIVERYPICK,
+                    colour_area: _button.area,
+                };
+                instance_create_depth(0, 0, -55, obj_creation_popup, _data);
             }
         }
         advanced_helmet_livery.draw();
@@ -121,7 +121,7 @@ function scr_livery_setup() {
 
     if (colour_selection_options.current_selection != 2 && !_update_sprite) {
         if (_livery_type == 1) {
-            roles_radio.update({x1: 882, y1: livery_selection_options.y2 + 20,allow_changes:custom == eCHAPTER_TYPE.CUSTOM});
+            roles_radio.update({x1: 882, y1: livery_selection_options.y2 + 20, allow_changes: custom == eCHAPTER_TYPE.CUSTOM});
             roles_radio.draw();
             if (roles_radio.changed) {
                 livery_picker.swap_role_set(1, 1);
@@ -162,4 +162,3 @@ function scr_livery_setup() {
     right_data_slate.draw(1210, 5, 0.45, 1);
     pop_draw_return_values();
 }
-

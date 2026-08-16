@@ -2370,7 +2370,7 @@ function fetch_unit_careful() {}
 
 function fetch_unit_uid(uuid) {
     for (var i = 0; i <= obj_ini.companies; i++) {
-        var _comp_length = array_length(obj_ini.TTRPG[i]);
+        var _comp_length = company_length(i);
         for (var s = 0; s < _comp_length; s++) {
             var _unit = fetch_unit([i, s]);
             if (!is_struct(_unit)) {

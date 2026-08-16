@@ -17,9 +17,8 @@ enum eSYSTEM_LOC {
 
 /// @self Struct.SpecialistPointHandler
 function calculate_full_chapter_spread() {
-    obj_controller.command = 0;
-    obj_controller.marines = 0;
-    var _mar_loc, is_healer, _is_tech, key_val, veh_location, array_slot, _unit;
+    tally_marines();
+    var  veh_location, array_slot;
     var _tech_spread = {};
     var _apoth_spread = {};
     var _unit_spread = {};
@@ -29,23 +28,16 @@ function calculate_full_chapter_spread() {
         var _company_length = max(_marine_len, _veh_len);
 
         for (var v = 0; v < _company_length; v++) {
-            key_val = "";
+            var key_val = "";
             if (v < _marine_len) {
-                _unit = fetch_unit([company, v]);
-                _mar_loc = _unit.marine_location();
-                if (_unit.base_group == "astartes") {
-                    if (_unit.IsSpecialist()) {
-                        obj_controller.command++;
-                    } else {
-                        obj_controller.marines++;
-                    }
-                }
+                var _unit = fetch_unit([company, v]);
+                var _mar_loc = _unit.marine_location();
                 forge_equipment_maintenance += _unit.equipment_maintenance_burden();
-                _is_tech = _unit.IsSpecialist(SPECIALISTS_TECHS);
+                var _is_tech = _unit.IsSpecialist(SPECIALISTS_TECHS);
                 if (_is_tech) {
                     add_forge_points_to_stack(_unit);
                 }
-                is_healer = ((_unit.IsSpecialist(SPECIALISTS_APOTHECARIES, true) && _unit.gear() == "Narthecium") || (_unit.role() == "Sister Hospitaler")) && _unit.hp() >= 10;
+                var is_healer = ((_unit.IsSpecialist(SPECIALISTS_APOTHECARIES, true) && _unit.gear() == "Narthecium") || (_unit.role() == "Sister Hospitaler")) && _unit.hp() >= 10;
                 if (is_healer) {
                     add_apoth_points_to_stack(_unit);
                 }

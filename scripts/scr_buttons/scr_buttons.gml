@@ -800,7 +800,7 @@ function TextBarArea(_x, _y, _max_width = 400, _requires_input = false, data = {
     background = new DataSlate();
     background.draw_top_piece = false;
 
-    move_data_to_current_scope(data)
+    move_data_to_current_scope(data);
 
     static render_logic = function() {
         add_draw_return_values();
@@ -861,8 +861,8 @@ function TextBarArea(_x, _y, _max_width = 400, _requires_input = false, data = {
             value_allowed = requires_input ? false : true;
         }
 
-        if (array_length(blocked_values)){
-            if (array_contains(blocked_values, block_checks_case_insensitive ? string_lower(current_text) : current_text)){
+        if (array_length(blocked_values)) {
+            if (array_contains(blocked_values, block_checks_case_insensitive ? string_lower(current_text) : current_text)) {
                 draw_set_color(CM_RED_COLOR);
                 value_allowed = false;
             }
@@ -896,7 +896,7 @@ function TextBarArea(_x, _y, _max_width = 400, _requires_input = false, data = {
             obj_cursor.image_index = 0;
         }
 
-        if (_mouse_hover && tooltip != ""){
+        if (_mouse_hover && tooltip != "") {
             tooltip_draw(tooltip);
         }
 

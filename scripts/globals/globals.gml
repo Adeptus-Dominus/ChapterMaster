@@ -128,7 +128,10 @@ global.cheat_debug = false;
 global.language = LANG_EN;
 
 // Locale codes of shipped languages, and their display names in their own language.
-global.available_languages = [LANG_EN, LANG_ZH];
+global.available_languages = [
+    LANG_EN,
+    LANG_ZH,
+];
 global.language_display_names = {};
 global.language_display_names[$ LANG_EN] = "English";
 global.language_display_names[$ LANG_ZH] = "中文";
