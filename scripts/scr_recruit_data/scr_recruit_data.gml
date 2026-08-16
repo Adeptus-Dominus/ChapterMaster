@@ -945,7 +945,7 @@ function scr_draw_recruit_advisor() {
     if ((recruiting >= 0) && (recruiting <= 1)) {
         blur = localize(_neophyte_rate[recruiting]);
     }
-    draw_text(xx + 407, yy + 354, string_hash_to_newline(localize("Space Marine Recruiting: {0}", [string(blur)])));
+    draw_text(xx + 407, yy + 354, string_hash_to_newline(localize("Space Marine Recruiting: {0}", [blur])));
     draw_text(xx + 728, yy + 354, string_hash_to_newline("[-] [+]"));
 
     amo = 0;
@@ -979,7 +979,7 @@ function scr_draw_recruit_advisor() {
     if ((training_apothecary >= 0) && (training_apothecary <= 6)) {
         blur = localize(_recruit_rate[training_apothecary]);
     }
-    draw_text(xx + 407, yy + 394, string_hash_to_newline(localize("Apothecary Training: {0}", [string(blur)])));
+    draw_text(xx + 407, yy + 394, string_hash_to_newline(localize("Apothecary Training: {0}", [blur])));
     draw_text(xx + 728, yy + 394, string_hash_to_newline("[-] [+]"));
 
     // TODO implement Spave Wolves and Iron Hands cases
@@ -1015,7 +1015,7 @@ function scr_draw_recruit_advisor() {
         if ((training_chaplain >= 0) && (training_chaplain <= 6)) {
             blur = localize(_recruit_rate[training_chaplain]);
         }
-        draw_text(xx + 407, yy + 414, string_hash_to_newline(localize("Chaplain Training: {0}", [string(blur)])));
+        draw_text(xx + 407, yy + 414, string_hash_to_newline(localize("Chaplain Training: {0}", [blur])));
         draw_text(xx + 728, yy + 414, string_hash_to_newline("[-] [+]"));
     }
 
@@ -1050,7 +1050,7 @@ function scr_draw_recruit_advisor() {
     if ((training_psyker >= 0) && (training_psyker <= 6)) {
         blur = localize(_recruit_rate[training_psyker]);
     }
-    draw_text(xx + 407, yy + 434, string_hash_to_newline(localize("Psyker Training: {0}", [string(blur)])));
+    draw_text(xx + 407, yy + 434, string_hash_to_newline(localize("Psyker Training: {0}", [blur])));
     draw_text(xx + 728, yy + 434, string_hash_to_newline("[-] [+]"));
 
     // ** Techmarine recruitment **
@@ -1084,7 +1084,7 @@ function scr_draw_recruit_advisor() {
     if ((training_techmarine >= 0) && (training_techmarine <= 6)) {
         blur = localize(_recruit_rate[training_techmarine]);
     }
-    draw_text(xx + 407, yy + 454, localize("Techmarine Training: {0}", [string(blur)]));
+    draw_text(xx + 407, yy + 454, localize("Techmarine Training: {0}", [blur]));
     draw_text(xx + 728, yy + 454, "[-] [+]");
 
     // ** Neophyte Training types **
