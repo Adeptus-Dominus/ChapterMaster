@@ -10,6 +10,9 @@ if (size == 2) {
 if (size == 3) {
     sprite_index = spr_popup_large;
 }
+// Popup windows draw in Draw GUI; hide the automatic instance sprite.
+image_alpha = 0;
+image_speed = 0;
 image_wid = 0;
 image_hei = 0;
 image = "";

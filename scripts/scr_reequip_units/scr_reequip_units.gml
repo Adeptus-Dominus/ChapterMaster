@@ -113,6 +113,8 @@ function setup_UI_elements_equipment_selector(_x1, _y1) {
 }
 
 /// @self Asset.GMObject.obj_controller
+/// @desc Opens the equipment popup for the selected units.
+/// @returns {Undefined}
 function set_up_equip_popup() {
     if (instance_exists(obj_popup)) {
         return;
@@ -231,7 +233,6 @@ function set_up_equip_popup() {
         pip.company = managing;
         pip.unit_count = _units_selected_for_change;
         pip.unchangeable_armour = _unchangeable_armour;
-        pip.sprite_index = noone;
         pip.allow_quality_change = true;
         pip.from_inventory = true;
 
