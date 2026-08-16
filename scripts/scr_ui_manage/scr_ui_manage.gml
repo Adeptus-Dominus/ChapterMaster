@@ -1103,13 +1103,12 @@ function scr_ui_manage() {
             draw_sprite_stretched(spr_arrow, 2, xx + 974, yy + 141, 31, 30);
             draw_sprite_stretched(spr_arrow, 3, xx + 974, yy + 791, 31, 30);
 
-            yy += 8;
             var _draw_selec_buttons = !obj_controller.unit_profile && !stats_displayed;
             if (_draw_selec_buttons && instance_exists(obj_popup)) {
                 _draw_selec_buttons = obj_popup.type != ePOPUP_TYPE.EQUIP;
             }
             if (_draw_selec_buttons && is_struct(obj_controller.unit_focus)) {
-                draw_manage_selection_buttons(xx, yy);
+                draw_manage_selection_buttons();
             }
 
             draw_set_color(#3f7e5d);
@@ -1269,7 +1268,60 @@ function scr_ui_manage() {
 }
 
 /// @self Asset.GMObject.obj_controller
-function draw_manage_selection_buttons(xx, yy) {
+/// @desc Draws a wrapping selection-filter group and updates sel_all on click.
+/// @param {Struct.UnitButtonObject} _button The shared button used to draw each entry
+/// @param {String} _all_label Label for the leading button
+/// @param {String} _all_value Value sel_all takes when the leading button is pressed
+/// @param {Array<String>} _entries Filter names indexed 1..8; blank entries are skipped
+/// @param {Real} _left Left edge of the group
+/// @param {Real} _top Top edge of the group
+/// @param {Real} _right Right edge the rows must stay inside
+/// @returns {Real} The Y of the first free row beneath the group
+function draw_selection_filter_group(_button, _all_label, _all_value, _entries, _left, _top, _right) {
+    draw_set_font(_button.font);
+    _button.label = _all_label;
+    _button.alpha = 1;
+    _button.tooltip = "";
+    _button.x1 = _left;
+    _button.y1 = _top;
+    if (_button.draw()) {
+        sel_all = _all_value;
+    }
+
+    var _row_x = _button.x2 + _button.h_gap;
+    var _row_y = _top;
+
+    for (var i = 1; i <= 8; i++) {
+        if (_entries[i] == "") {
+            continue;
+        }
+
+        _button.label = string_truncate(_entries[i], 126);
+        _button.alpha = 1;
+        _button.x1 = _row_x;
+        _button.y1 = _row_y;
+        _button.update_loc(); // Measure before testing for row wrap.
+
+        if (_button.x2 > _right) {
+            _row_x = _left;
+            _row_y += _button.h + _button.v_gap;
+            _button.x1 = _row_x;
+            _button.y1 = _row_y;
+        }
+
+        if (_button.draw()) {
+            sel_all = _entries[i];
+        }
+        _row_x = _button.x2 + _button.h_gap;
+    }
+
+    return _row_y + _button.h + _button.v_gap;
+}
+
+/// @self Asset.GMObject.obj_controller
+/// @desc Draws and handles the Manage-screen selection controls.
+/// @returns {Undefined}
+function draw_manage_selection_buttons() {
     var sel_loading = obj_controller.selecting_ship;
     var _unit_focus = obj_controller.unit_focus;
     var _non_control_loc = location_out_of_player_control(selecting_location);
@@ -1314,7 +1366,7 @@ function draw_manage_selection_buttons(xx, yy) {
     if (button.draw() && equip_possible) {
         set_up_equip_popup();
     }
-    action_button_x += button.w + button.v_gap;
+    action_button_x += button.w + button.h_gap;
 
     // // Promote button
     button.x1 = action_button_x;
@@ -1328,7 +1380,7 @@ function draw_manage_selection_buttons(xx, yy) {
             setup_promotion_popup();
         }
     }
-    action_button_x += button.w + button.v_gap;
+    action_button_x += button.w + button.h_gap;
 
     // // Put in jail button
     button.x1 = action_button_x;
@@ -1342,7 +1394,7 @@ function draw_manage_selection_buttons(xx, yy) {
             jail_selection();
         }
     }
-    action_button_x += button.w + button.v_gap;
+    action_button_x += button.w + button.h_gap;
 
     // // Add bionics button
     button.x1 = action_button_x;
@@ -1360,7 +1412,7 @@ function draw_manage_selection_buttons(xx, yy) {
         }
     }
 
-    var action_button_top_y = action_button_bottom_y - (button.h + button.h_gap);
+    var action_button_top_y = action_button_bottom_y - (button.h + button.v_gap);
     action_button_x = right_ui_block.x1 + 26;
     button.y1 = action_button_top_y;
 
@@ -1376,7 +1428,7 @@ function draw_manage_selection_buttons(xx, yy) {
             toggle_selection_borders();
         }
     }
-    action_button_x += button.w + button.v_gap;
+    action_button_x += button.w + button.h_gap;
 
     // // Reset changes button
     button.x1 = action_button_x;
@@ -1396,7 +1448,7 @@ function draw_manage_selection_buttons(xx, yy) {
         button.alpha = 0.5;
         button.draw(false);
     }
-    action_button_x += button.w + button.v_gap;
+    action_button_x += button.w + button.h_gap;
 
     // // Transfer to another company button
     button.x1 = action_button_x;
@@ -1413,7 +1465,7 @@ function draw_manage_selection_buttons(xx, yy) {
         button.alpha = 0.5;
         button.draw(false);
     }
-    action_button_x += button.w + button.v_gap;
+    action_button_x += button.w + button.h_gap;
 
     // // Move Ship button
     button.x1 = action_button_x;
@@ -1430,7 +1482,7 @@ function draw_manage_selection_buttons(xx, yy) {
         button.alpha = 0.5;
         button.draw(false);
     }
-    action_button_x += button.w + button.v_gap;
+    action_button_x += button.w + button.h_gap;
 
     // // Manage Tags button
     button.x1 = action_button_x;
@@ -1445,7 +1497,6 @@ function draw_manage_selection_buttons(xx, yy) {
             instance_destroy(obj_popup);
         }
     }
-    //new fixes for the load shit
     button.h = _load_button_h;
     button.x1 = right_ui_block.x1 + 26;
     button.y1 = action_button_bottom_y + 30 + _load_button_h_gap;
@@ -1494,8 +1545,8 @@ function draw_manage_selection_buttons(xx, yy) {
     var top_x = actions_block.x1 + 26;
     var top_y = actions_block.y1 + 70;
 
-    var inf_type_x = top_x;
-    var inf_type_y = top_y;
+    var _filter_right = actions_block.x2 - 26;
+    var _filter_next_y = top_y;
 
     if (sel_uni[1] != "") {
         // How much space the selected unit takes
@@ -1528,7 +1579,7 @@ function draw_manage_selection_buttons(xx, yy) {
             sel_all = "all";
         }
 
-        button.x1 = top_x + button.w + button.v_gap;
+        button.x1 = top_x + button.w + button.h_gap;
         button.update_loc();
         button.label = localize("Filter Mode");
         button.alpha = filter_mode ? 1 : 0.5;
@@ -1536,73 +1587,14 @@ function draw_manage_selection_buttons(xx, yy) {
             filter_mode = !filter_mode;
         }
 
-        button.x1 = top_x;
-        button.update_loc();
-        button.y1 = top_y + button.h + button.v_gap + 4;
-        // Select all infantry button
         button.font = fnt_40k_12;
-        draw_set_font(cjk_font(fnt_40k_12));
-        button.label = localize("All Infantry");
-        button.alpha = 1;
-        if (button.draw()) {
-            sel_all = "man";
-        }
 
-        inf_type_x = button.x1 + button.w + button.v_gap;
-        inf_type_y = button.y1;
-
-        // Select infantry type buttons
-        for (var i = 1; i <= 8; i++) {
-            if (sel_uni[i] != "") {
-                if (i == 1) {
-                    button.x1 = inf_type_x;
-                    button.y1 = inf_type_y;
-                } else if (i == 5) {
-                    button.x1 = inf_type_x;
-                    button.y1 = inf_type_y + button.h + button.v_gap;
-                } else {
-                    button.x1 += button.w + button.v_gap;
-                }
-                button.label = string_truncate(localize(sel_uni[i]), 126);
-                button.alpha = 1;
-                if (button.draw()) {
-                    sel_all = sel_uni[i];
-                }
-            }
-        }
+        _filter_next_y = draw_selection_filter_group(button, "All Infantry", "man", sel_uni, top_x, top_y + button.h + button.v_gap + 4, _filter_right);
     }
 
-    // Select all vehicles button
     if (sel_veh[1] != "") {
-        button.x1 = top_x;
-        button.y1 = inf_type_y + (button.h + button.v_gap) * 2 + 4;
-        button.label = localize("All Vehicles");
-        button.alpha = 1;
-        if (button.draw()) {
-            sel_all = "vehicle";
-        }
 
-        var veh_type_x = button.x1 + button.w + button.v_gap;
-        var veh_type_y = button.y1;
-
-        // Select vehicle type buttons
-        for (var i = 1; i <= 8; i++) {
-            if (sel_veh[i] != "") {
-                if (i == 1) {
-                    button.x1 = veh_type_x;
-                    button.y1 = veh_type_y;
-                } else if (i == 5) {
-                    button.x1 = veh_type_x;
-                    button.y1 = veh_type_y + button.h + button.v_gap;
-                } else {
-                    button.x1 += button.w + button.v_gap;
-                }
-                button.label = string_truncate(localize(sel_veh[i]), 126);
-                button.alpha = 1;
-                if (button.draw()) {
-                    sel_all = sel_veh[i];
-                }
-            }
-        }
+        button.font = fnt_40k_12;
+        draw_selection_filter_group(button, "All Vehicles", "vehicle", sel_veh, top_x, _filter_next_y + 4, _filter_right);
     }
 }

@@ -1,15 +1,11 @@
 type = 0;
 size = 2;
 y_scale = 1;
-if (size == 1) {
-    sprite_index = spr_popup_small;
-}
-if (size == 2) {
-    sprite_index = spr_popup_medium;
-}
-if (size == 3) {
-    sprite_index = spr_popup_large;
-}
+sprite_index = spr_popup_medium;
+
+// Popup windows draw in Draw GUI; hide the automatic instance sprite.
+image_alpha = 0;
+image_speed = 0;
 image_wid = 0;
 image_hei = 0;
 image = "";
@@ -21,9 +17,6 @@ if (instance_exists(obj_controller)) {
         master_crafted = obj_controller.popup_master_crafted;
     }
 }
-type = 0;
-size = 2;
-image = "";
 title = "";
 fancy_title = 0;
 text_center = 0;
@@ -310,10 +303,5 @@ sel2 = 0;
 sel3 = 0;
 sel4 = 0;
 sel5 = 0;
-vehicle_equipment = 0;
 warning = "";
 item_name = [];
-
-move_to_next_stage = function() {
-    return scr_hit(0, 0, room_width, room_height) || press_exclusive(vk_enter) || press_exclusive(vk_space) || press_exclusive(vk_enter);
-};

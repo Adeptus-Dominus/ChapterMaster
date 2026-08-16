@@ -304,7 +304,8 @@ function localize_array(_keys) {
 /// @param {Real} _base_font The font asset intended for this text.
 /// @returns {Real}
 function cjk_font(_base_font) {
-    if (!variable_global_exists("localization_manager")) {
+    if (!variable_global_exists("localization_manager") || !global.localization_manager.needs_cjk) {
+
         return _base_font;
     }
 

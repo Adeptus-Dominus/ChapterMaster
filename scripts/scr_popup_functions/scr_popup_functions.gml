@@ -77,10 +77,11 @@ function popup_default_close() {
 }
 
 /// @self Asset.GMObject.obj_popup
+/// @desc Draws the popup window selected by the instance's size and type.
+/// @returns {Undefined}
 function popup_window_draw() {
     if ((size == 0) || (size == 2)) {
         sprite_index = spr_popup_medium;
-        image_alpha = 0;
         width = sprite_width - 50;
         draw_sprite_ext(spr_popup_medium, type, ((1600 - sprite_width) / 2), ((900 - sprite_height) / 2), 1, y_scale, 0, c_white, 1);
         if (image != "") {
@@ -89,7 +90,6 @@ function popup_window_draw() {
         }
     } else if (size == 1) {
         sprite_index = spr_popup_small;
-        image_alpha = 0;
         width = sprite_width - 10;
         draw_sprite_ext(spr_popup_small, type, ((1600 - sprite_width) / 2), ((900 - sprite_height) / 2), 1, y_scale, 0, c_white, 1);
         if (image != "") {
@@ -99,7 +99,6 @@ function popup_window_draw() {
     } else if (size == 3) {
         var draw_y_scale = y_scale;
         sprite_index = spr_popup_large;
-        image_alpha = 0;
         width = sprite_width - 50;
         if (image == "debug") {
             y_scale_mod = 1.5;
