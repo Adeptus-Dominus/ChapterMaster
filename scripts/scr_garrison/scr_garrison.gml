@@ -189,7 +189,7 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
             report_string += localize("The garrison is comprised of a single squad,");
         }
 
-        report_string += localize(" with a total man count of {0}.#", [string(total_garrison)]);
+        report_string += localize(" with a total man count of {0}.#", [total_garrison]);
         if (system.p_owner[planet] != eFACTION.PLAYER && system.dispo[planet] >= -100) {
             var disposition = disposition_description_chart(system.dispo[planet]);
             report_string += localize("Our Relationship with the Rulers of the planet is {0}#", [disposition]);
@@ -347,7 +347,7 @@ function determine_pdf_defence(pdf, garrison = noone, planet_forti = 0, enemy = 
     var explanations = "";
     var defence_mult = planet_forti * 0.1;
     var pdf_score = 0;
-    explanations += localize("Planet Defences:X{0}#", [string(defence_mult + 1)]);
+    explanations += localize("Planet Defences:X{0}#", [defence_mult + 1]);
     if (garrison != noone) {
         //if player supports give garrison bonus
         var garrison_mult = garrison.viable_garrison * (0.008 + (0.001 * planet_forti));
@@ -355,7 +355,7 @@ function determine_pdf_defence(pdf, garrison = noone, planet_forti = 0, enemy = 
         if (siege_masters) {
             garrison_mult *= 2;
         }
-        explanations += localize("Garrison Bonus:X{0}#", [string(garrison_mult + 1)]);
+        explanations += localize("Garrison Bonus:X{0}#", [garrison_mult + 1]);
         if (siege_masters) {
             explanations += localize("     Siege Masters:X2#");
         }
@@ -365,7 +365,7 @@ function determine_pdf_defence(pdf, garrison = noone, planet_forti = 0, enemy = 
         defence_mult += garrison_mult;
         var leader_bonus = garrison.garrison_leader.wisdom / 30;
         defence_mult *= leader_bonus; //modified by how good a commander the garrison _leader is
-        explanations += localize("     Garrison Leader Bonus:X{0}(WIS/30)#", [string(leader_bonus)]);
+        explanations += localize("     Garrison Leader Bonus:X{0}(WIS/30)#", [leader_bonus]);
         //makes pdf more effective if planet has defences or marines present
     }
 
@@ -386,7 +386,7 @@ function determine_pdf_defence(pdf, garrison = noone, planet_forti = 0, enemy = 
     } else if (pdf <= 500) {
         pdf_score = 0.1;
     }
-    explanations += localize("PDF Defence: {0}#", [string(pdf_score)]);
+    explanations += localize("PDF Defence: {0}#", [pdf_score]);
     pdf_score *= 1 + defence_mult;
     return [
         pdf_score,

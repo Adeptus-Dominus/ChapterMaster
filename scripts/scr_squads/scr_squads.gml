@@ -538,23 +538,23 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         }
         var final_loc_status = "";
         if (!same_system) {
-            final_loc_status = "Scattered";
+            final_loc_status = localize("Scattered");
         } else if (same_loc_type) {
             if (loc_type == eLOCATION_TYPES.SHIP) {
                 if (exact_loc) {
-                    final_loc_status = $"aboard {obj_ini.ship[loc_id]}";
+                    final_loc_status = localize("aboard {0}", [obj_ini.ship[loc_id]]);
                 } else if (in_orbit) {
-                    final_loc_status = $"various ships orbiting {system}";
+                    final_loc_status = localize("various ships orbiting {0}", [system]);
                 }
             } else if (loc_type == eLOCATION_TYPES.PLANET) {
                 if (exact_loc) {
                     final_loc_status = $"{system} {scr_roman_numerals()[loc_id - 1]}";
                 } else if (planet_side) {
-                    final_loc_status = $"various planets in {system}";
+                    final_loc_status = localize("various planets in {0}", [system]);
                 }
             }
         } else {
-            final_loc_status = $"system {system}";
+            final_loc_status = localize("system {0}", [system]);
         }
         return {
             text: final_loc_status,

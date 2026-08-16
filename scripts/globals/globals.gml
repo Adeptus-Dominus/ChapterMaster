@@ -86,6 +86,48 @@ global.chapter_strength_ratings = global.chapter_strength_ratings_en;
 global.chapter_cooperation_ratings = global.chapter_cooperation_ratings_en;
 global.chapter_geneseed_ratings = global.chapter_geneseed_ratings_en;
 
+// Planet info screen labels, rebuilt on language change in refresh_locale_globals().
+// Same pristine-English-source / live-localized-array pattern as faction_names so the
+// draw path never allocates or translates per frame.
+global.planet_forti_en = [
+    "None",
+    "Sparse",
+    "Light",
+    "Moderate",
+    "Heavy",
+    "Major",
+    "Extreme",
+];
+global.presence_factions_en = [
+    "Adeptas",
+    "Orks",
+    "Tau",
+    "Tyranids",
+    "Chaos",
+    "Heretics",
+    "Daemons",
+    "Necrons",
+];
+global.presence_blurbs_en = [
+    "Minima",
+    "Parvus",
+    "Moderatus",
+    "Significus",
+    "Enormicus",
+    "Extremis",
+];
+global.planet_size_en = [
+    "",
+    "Small",
+    "",
+    "Large",
+];
+
+global.planet_forti = global.planet_forti_en;
+global.presence_factions = global.presence_factions_en;
+global.presence_blurbs = global.presence_blurbs_en;
+global.planet_size = global.planet_size_en;
+
 global.xenos_factions = [
     eFACTION.ELDAR,
     eFACTION.ORK,

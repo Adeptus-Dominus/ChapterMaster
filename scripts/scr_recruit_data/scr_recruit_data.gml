@@ -875,6 +875,7 @@ function scr_draw_recruit_advisor() {
     }
 
     var _cm = cm_obj().get_struct();
+    var _adept = menu_adept == 1;
     if (menu_adept == 0) {
         blurp = localize("Hail {0}! You asked for a report?\n\n", [_cm.name()]);
     }
@@ -882,27 +883,27 @@ function scr_draw_recruit_advisor() {
     if (obj_ini.doomed == 0) {
         if (recruits <= 0) {
             if (marines >= 1000) {
-                blurp += localize("Our Chapter currently has no Neophytes - we are at maximum strength and do not require more marines.");
+                blurp += localize(_adept ? "Your Chapter currently has no Neophytes - you are at maximum strength and do not require more marines." : "Our Chapter currently has no Neophytes - we are at maximum strength and do not require more marines.");
             }
             if ((marines < 1000) && (recruiting == 0)) {
-                blurp += localize("Our Chapter currently has no Neophytes. Without training more our chapter is doomed to a slow death.");
+                blurp += localize(_adept ? "Your Chapter currently has no Neophytes. Without training more your chapter is doomed to a slow death." : "Our Chapter currently has no Neophytes. Without training more our chapter is doomed to a slow death.");
             }
             if ((marines < 1000) && (recruiting > 0)) {
-                blurp += localize("Our Chapter currently has no Neophytes. We are doing our utmost best to find suitable recruits.");
+                blurp += localize(_adept ? "Your Chapter currently has no Neophytes. You are doing your utmost best to find suitable recruits." : "Our Chapter currently has no Neophytes. We are doing our utmost best to find suitable recruits.");
             }
         } else if (recruits == 1) {
-            blurp += localize("Our Chapter currently has one recruit being trained. The Neophyte's name is {0} and they are scheduled to become a battle brother in {1} months' time.", [recruit_name[0], recruit_training[0] + recruit_distance[0]]);
+            blurp += localize(_adept ? "Your Chapter currently has one recruit being trained. The Neophyte's name is {0} and they are scheduled to become a battle brother in {1} months' time." : "Our Chapter currently has one recruit being trained. The Neophyte's name is {0} and they are scheduled to become a battle brother in {1} months' time.", [recruit_name[0], recruit_training[0] + recruit_distance[0]]);
         } else if (recruits > 1) {
-            blurp += localize("Our Chapter currently has {0} recruits being trained. {1} is the next scheduled Neophyte to become a battle brother in {2} months' time.", [recruits, recruit_name[0], recruit_training[0] + recruit_distance[0]]);
+            blurp += localize(_adept ? "Your Chapter currently has {0} recruits being trained. {1} is the next scheduled Neophyte to become a battle brother in {2} months' time." : "Our Chapter currently has {0} recruits being trained. {1} is the next scheduled Neophyte to become a battle brother in {2} months' time.", [recruits, recruit_name[0], recruit_training[0] + recruit_distance[0]]);
         }
 
         if (gene_seed > 0) {
             var _recruit_rates = global.neophyte_rates;
             var _cur_recruit_rate = localize("The recruitment is {0}", [localize(_recruit_rates[recruiting])]);
             if ((recruiting == 0) && (marines >= 1000)) {
-                blurp += localize("\n{0}. You must only give me the word and I can begin further increasing our numbers... though this would violate the Codex Astartes.", [_cur_recruit_rate]);
+                blurp += localize(_adept ? "\n{0}. You must only give me the word and I can begin further increasing your numbers... though this would violate the Codex Astartes." : "\n{0}. You must only give me the word and I can begin further increasing our numbers... though this would violate the Codex Astartes.", [_cur_recruit_rate]);
             } else if ((recruiting == 0) && (marines < 1000)) {
-                blurp += localize("\n{0}. You must only give me the word and I can begin further increasing our numbers.", [_cur_recruit_rate]);
+                blurp += localize(_adept ? "\n{0}. You must only give me the word and I can begin further increasing your numbers." : "\n{0}. You must only give me the word and I can begin further increasing our numbers.", [_cur_recruit_rate]);
             } else if (recruiting == 1) {
                 blurp += localize("\n{0}.", [_cur_recruit_rate]);
             }
@@ -910,27 +911,21 @@ function scr_draw_recruit_advisor() {
     }
 
     if (obj_ini.doomed == 1) {
-        blurp += localize("\nMutation of our gene-seed currently makes us unable to recruit new Neophytes. We are doomed to a slow demise unless the Apothecaries can fix it.");
+        blurp += localize(_adept ? "\nMutation of your gene-seed currently makes you unable to recruit new Neophytes. You are doomed to a slow demise unless the Apothecaries can fix it." : "\nMutation of our gene-seed currently makes us unable to recruit new Neophytes. We are doomed to a slow demise unless the Apothecaries can fix it.");
     }
 
     if (gene_seed == 0) {
-        blurp += localize("\nThere is no more gene-seed in our vaults and we cannot create more neophytes as a result. Something must be done, Chapter Master.");
+        blurp += localize(_adept ? "\nThere is no more gene-seed in your vaults and you cannot create more neophytes as a result. Something must be done, Chapter Master." : "\nThere is no more gene-seed in our vaults and we cannot create more neophytes as a result. Something must be done, Chapter Master.");
     }
 
     if (recruiting > 0) {
         if (string_count("|", obj_controller.recruiting_worlds) == 1) {
-            blurp += localize("\nWe're recruiting from one world - {0}.", [obj_ini.recruiting_name]);
+            blurp += localize(_adept ? "\nYou're recruiting from one world - {0}." : "\nWe're recruiting from one world - {0}.", [obj_ini.recruiting_name]);
         } else if (string_count("|", obj_controller.recruiting_worlds) == 2) {
-            blurp += localize("\nWe're recruiting from two worlds. Finding recruits is vastly accelerated.");
+            blurp += localize(_adept ? "\nYou're recruiting from two worlds. Finding recruits is vastly accelerated." : "\nWe're recruiting from two worlds. Finding recruits is vastly accelerated.");
         } else if (string_count("|", obj_controller.recruiting_worlds) > 2) {
-            blurp += localize("\nWe're recruiting from several worlds.");
+            blurp += localize(_adept ? "\nYou're recruiting from several worlds." : "\nWe're recruiting from several worlds.");
         }
-    }
-
-    if (menu_adept == 1) {
-        blurp = string_replace(blurp, "Our", "Your");
-        blurp = string_replace(blurp, " our", " your");
-        blurp = string_replace(blurp, "We", "You");
     }
 
     draw_text_ext(xx + 336 + 16, yy + 130, string_hash_to_newline(string(blurp)), -1, 536);

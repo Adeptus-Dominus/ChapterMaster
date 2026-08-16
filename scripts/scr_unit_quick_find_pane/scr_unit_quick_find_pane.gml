@@ -35,10 +35,11 @@ function UnitQuickFindPanel() constructor {
         y1: yy + 50,
         x2: xx + main_panel.width,
         y2: yy + main_panel.height,
-        headings: [localize("Capitals"), localize("Frigates"), localize("Escorts"), localize("Location")],
+        headings: ["Capitals", "Frigates", "Escorts", "Location"],
         row_key_draw: ["capitals", "frigates", "escorts", "location"],
         set_column_widths: [70, 70, 70, 100],
         row_h: 20,
+        localize_headings: true,
     });
 
     static has_troops = function(name) {
@@ -215,6 +216,16 @@ function UnitQuickFindPanel() constructor {
         fleet_table.update({row_data: _rows});
     };
 
+    static draw_specialist_point_headers = function(_x, _y) {
+        draw_set_font(cjk_font(fnt_40k_12i));
+        draw_set_halign(fa_center);
+        draw_text(_x + 160, _y + 10, localize("forge point\ntotal"));
+        draw_text(_x + 240, _y + 10, localize("forge point\nuse"));
+        draw_text(_x + 320, _y + 10, localize("apothecary\npoint total"));
+        draw_text(_x + 400, _y + 10, localize("apothecary\npoint use"));
+        draw_text(_x + 60, _y + 50, localize("Orbiting"));
+    };
+
     static draw_fleet_area = function() {
         var xx = main_panel.XX;
         var yy = main_panel.YY;
@@ -234,15 +245,7 @@ function UnitQuickFindPanel() constructor {
             var _sy = yy + 108;
             detail_slate.draw(_sx, _sy, 1.5, 1.5);
 
-            draw_set_font(cjk_font(fnt_40k_12i));
-            draw_set_halign(fa_center);
-
-            // Headers
-            draw_text(_sx + 160, _sy + 10, localize("forge point\ntotal"));
-            draw_text(_sx + 240, _sy + 10, localize("forge point\nuse"));
-            draw_text(_sx + 320, _sy + 10, localize("apothecary\npoint total"));
-            draw_text(_sx + 400, _sy + 10, localize("apothecary\npoint use"));
-            draw_text(_sx + 60, _sy + 50, localize("Orbiting"));
+            draw_specialist_point_headers(_sx, _sy);
 
             // Values
             var _vy = _sy + 50;
@@ -344,9 +347,9 @@ function UnitQuickFindPanel() constructor {
                 150,
             ],
             headings: [
-                localize("Location"),
-                localize("Mission"),
-                localize("Time\nRemaining"),
+                "Location",
+                "Mission",
+                "Time\nRemaining",
             ],
             row_data: mission_log,
             row_key_draw: [
@@ -354,6 +357,7 @@ function UnitQuickFindPanel() constructor {
                 "mission",
                 "time",
             ],
+            localize_headings: true,
         };
         mission_table = new Table(_data);
     };
@@ -368,6 +372,7 @@ function UnitQuickFindPanel() constructor {
         } else if (view_area == "garrisons") {
             var system_data;
             draw_set_color(c_white);
+            draw_set_font(cjk_font(fnt_40k_14));
             draw_set_halign(fa_center);
             draw_text(xx + 80, yy + 50, localize("System"));
             draw_text(xx + 160, yy + 50, localize("Troops"));
@@ -410,12 +415,7 @@ function UnitQuickFindPanel() constructor {
                         var _system_point_data = _special_points[$ _sys_name];
                         var _xx = xx + main_panel.width - 10;
                         var _yy = _sys_item_y - 20;
-                        draw_set_font(cjk_font(fnt_40k_12i));
-                        draw_text(_xx + 160, _yy + 10, localize("forge point\ntotal"));
-                        draw_text(_xx + 240, _yy + 10, localize("forge point\nuse"));
-                        draw_text(_xx + 320, _yy + 10, localize("apothecary\npoint total"));
-                        draw_text(_xx + 400, _yy + 10, localize("apothecary\npoint use"));
-                        draw_text(_xx + 60, _yy + 50, localize("Orbiting"));
+                        draw_specialist_point_headers(_xx, _yy);
                         for (var s = 1; s <= 4; s++) {
                             draw_text(_xx + 60, _yy + 50 + (50 * s), scr_roman(s));
                         }
@@ -847,8 +847,9 @@ function HelpfulPlaces() constructor {
 
     help_table = new Table({
         row_key_draw: ["name", "system_count", "help_requests"],
-        headings: [localize("System"), localize("Planets"), localize("Planets\nRequesting Help")],
+        headings: ["System", "Planets", "Planets\nRequesting Help"],
         row_data: _help_requests,
+        localize_headings: true,
     });
 
     var _navy_fleets = [];
@@ -886,7 +887,7 @@ function HelpfulPlaces() constructor {
 
     navy_table = new Table({
         row_key_draw: ["location", "remaining_guard"],
-        headings: [localize("Location"), localize("Remaining\nGuard")],
+        headings: ["Location", "Remaining\nGuard"],
         row_data: _navy_fleets,
         localize_values: true,
     });
@@ -927,7 +928,7 @@ function HelpfulPlaces() constructor {
 
     forges_table = new Table({
         row_key_draw: ["name", "owner_name", "owner_status"],
-        headings: [localize("Name"), localize("   Owner   "), localize("  Owner\nStatus  ")],
+        headings: ["Name", "   Owner   ", "  Owner\nStatus  "],
         row_data: _forges,
         set_column_widths: _columns,
         localize_values: true,

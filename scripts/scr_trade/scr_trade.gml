@@ -120,7 +120,7 @@ function TradeAttempt(diplomacy) constructor {
             }
             var _type = _opt.data_label;
             if (_opt.trade_type == "equip") {
-                scr_add_item(_opt.data_label, -_opt.data_label);
+                scr_add_item(_opt.data_label, -_opt.number);
             } else if (_opt.trade_type == "req") {
                 obj_controller.requisition -= _opt.number;
                 if (_opt.number > 500 && diplomacy_faction == 6) {

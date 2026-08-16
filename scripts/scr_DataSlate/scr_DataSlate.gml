@@ -499,13 +499,14 @@ function ShutterButton() constructor {
             if (cover_text != "") {
                 draw_set_valign(fa_top);
                 draw_set_font(cjk_font(fnt_Embossed_metal));
+                var _cover_text = localize(cover_text);
                 var _cover_scale = 3 * scale;
-                while (string_width(cover_text) * _cover_scale > width - (5 * scale)) {
+                while (string_width(_cover_text) * _cover_scale > width - (5 * scale)) {
                     _cover_scale -= 0.1;
                 }
-                var text_draw = xx + (width / 2) - ((string_width(cover_text) * _cover_scale) / 2);
+                var text_draw = xx + (width / 2) - ((string_width(_cover_text) * _cover_scale) / 2);
                 draw_set_color(c_black);
-                draw_text_transformed(text_draw, yy + (_cover_scale * 1), cover_text, _cover_scale, _cover_scale, 0);
+                draw_text_transformed(text_draw, yy + (_cover_scale * 1), _cover_text, _cover_scale, _cover_scale, 0);
             }
         } else if (time_open >= 2) {
             main_sprite = floor(time_open / 6) + 1;

@@ -400,8 +400,8 @@ function PlanetData(_planet, _system) constructor {
         var spec1 = 0;
         var spec2 = 0;
         var txt = localize("Your Astartes descend upon the surface of {0} and plot the movements and schedule of the governor.  ", [name()]);
-        txt += localize("Once the time is right their target is ambushed ");
-        txt += localize(choose("in their home", "in the streets", "while driving", "taking a piss")) + localize(" and tranquilized.  ");
+        var _ambush_place = choose("in their home", "in the streets", "while driving", "taking a piss");
+        txt += localize("Once the time is right their target is ambushed {0} and tranquilized.  ", [localize(_ambush_place)]);
 
         if (scr_has_disadv("Never Forgive")) {
             spec1 = 1;
@@ -901,7 +901,7 @@ function PlanetData(_planet, _system) constructor {
                     var _slaughter = new_player_ship("Gloriana", system.name, "Slaughtersong");
                     var flit = create_player_fleet(system.x, system.y, [_slaughter]);
 
-                    scr_popup(localize("Ancient Ship Restored"), localize("The ancient ship within the ruins of {0} has been fully repaired.  It is determined to be a Gloriana Class vessel and is bristling with golden age weaponry and armour.  Your {1}s are excited; the Slaughtersong is ready for it's maiden voyage, at your command.", [locy, string(obj_ini.player_role_data[eROLE.TECHMARINE].role)]), "", "");
+                    scr_popup(localize("Ancient Ship Restored"), localize("The ancient ship within the ruins of {0} has been fully repaired.  It is determined to be a Gloriana Class vessel and is bristling with golden age weaponry and armour.  Your {1}s are excited; the Slaughtersong is ready for it's maiden voyage, at your command.", [locy, obj_ini.player_role_data[eROLE.TECHMARINE].role]), "", "");
                 }
             }
         } catch (_exception) {
@@ -1270,15 +1270,7 @@ function PlanetData(_planet, _system) constructor {
                 draw_set_alpha(1);
                 draw_set_color(c_black);
             }
-            var forti_string = [
-                localize("None"),
-                localize("Sparse"),
-                localize("Light"),
-                localize("Moderate"),
-                localize("Heavy"),
-                localize("Major"),
-                localize("Extreme"),
-            ];
+            var forti_string = global.planet_forti;
             var planet_forti = localize("Defenses: {0}", [forti_string[fortification_level]]);
 
             draw_text(xx + 480, yy + 280, planet_forti);
@@ -1322,16 +1314,7 @@ function PlanetData(_planet, _system) constructor {
         draw_set_font(cjk_font(fnt_40k_14));
 
         var presence_text = "";
-        var faction_names = [
-            localize("Adeptas"),
-            localize("Orks"),
-            localize("Tau"),
-            localize("Tyranids"),
-            localize("Chaos"),
-            localize("Heretics"),
-            localize("Daemons"),
-            localize("Necrons"),
-        ];
+        var faction_names = global.presence_factions;
         var faction_ids = [
             "p_sisters",
             "p_orks",
@@ -1342,14 +1325,7 @@ function PlanetData(_planet, _system) constructor {
             "p_demons",
             "p_necrons",
         ];
-        var blurbs = [
-            localize("Minima"),
-            localize("Parvus"),
-            localize("Moderatus"),
-            localize("Significus"),
-            localize("Enormicus"),
-            localize("Extremis"),
-        ];
+        var blurbs = global.presence_blurbs;
 
         for (var t = 0; t < array_length(faction_names); t++) {
             var faction = faction_names[t];
@@ -1369,7 +1345,7 @@ function PlanetData(_planet, _system) constructor {
             }
 
             if (faction != "" && level > 0) {
-                presence_text += localize("{0}: {1} ({2})\n", [faction, blurb, string(level)]);
+                presence_text += localize("{0}: {1} ({2})\n", [faction, blurb, level]);
             }
         }
 
@@ -1378,12 +1354,7 @@ function PlanetData(_planet, _system) constructor {
         var planet_displays = [];
         var feat_count = array_length(features);
         var upgrade_count = array_length(upgrades);
-        var size = [
-            "",
-            localize("Small"),
-            "",
-            localize("Large"),
-        ];
+        var size = global.planet_size;
         if (feat_count > 0) {
             for (var i = 0; i < feat_count; i++) {
                 var cur_feature = features[i];

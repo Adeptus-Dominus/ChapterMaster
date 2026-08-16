@@ -64,7 +64,7 @@ function scr_ui_advisors() {
             draw_set_color(c_gray);
             draw_set_font(cjk_font(fnt_40k_30b));
             draw_text_transformed(xx + 336 + 16, yy + 66, localize("Reclusium"), 1, 1, 0);
-            draw_text_transformed(xx + 336 + 16, yy + 100, localize(_head.name_role()), 0.6, 0.6, 0);
+            draw_text_transformed(xx + 336 + 16, yy + 100, $"{localize(_head.role())} {_head.name()}", 0.6, 0.6, 0);
         } else {
             scr_image("advisor/splash", 1, xx + 16, yy + 43, 310, 828);
             draw_set_halign(fa_left);
@@ -127,7 +127,7 @@ function scr_ui_advisors() {
                         r_eta = "0";
                     }
                     draw_rectangle(xx + 947, yy + 100 + ((qp - 1) * 20), xx + 1577, yy + 100 + (qp * 20), 1);
-                    draw_text(xx + 950, yy + 100 + ((qp - 1) * 20), string_hash_to_newline(localize(unit.name_role())));
+                    draw_text(xx + 950, yy + 100 + ((qp - 1) * 20), string_hash_to_newline($"{localize(unit.squad_role())} {unit.name()}"));
                     draw_text(xx + 1200, yy + 100 + ((qp - 1) * 20), string_hash_to_newline(localize("ETA: {0}", [r_eta])));
                     draw_text(xx + 1432, yy + 100 + ((qp - 1) * 20), string_hash_to_newline(localize("[Execute]  [Release]")));
                 }

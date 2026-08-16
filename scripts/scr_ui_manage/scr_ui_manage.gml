@@ -309,7 +309,7 @@ function reset_manage_unit_constants(unit) {
         unit_manage_constants.exp = new LabeledIcon(spr_icon_veteran, string(floor(unit.experience)), 0, 0, {
             icon_width: 24,
             icon_height: 24,
-            tooltip: localize("==Experience==\nA measurement of how battle-hardened the unit is. Provides various bonuses across the board. Every 15 EXP, a new stat is assigned. Hover over the unit’s stats in the marine profile to see projected growth over time."),
+            tooltip: localize("==Experience==\nA measurement of how battle-hardened the unit is. Provides various bonuses across the board. Every 15 EXP, a new stat is assigned. Hover over the unit's stats in the marine profile to see projected growth over time."),
         });
 
         // Melee Attack

@@ -124,8 +124,9 @@ if (!zoomed && !zui) {
     // Checks if you are penitent
     if (faction_status[eFACTION.IMPERIUM] != "War") {
         if (penitent_max == 0) {
-            draw_text(998, 17, localize("Loyal"));
-            draw_text(998, 17.5, localize("Loyal"));
+            var _loyal_text = localize("Loyal");
+            draw_text(998, 17, _loyal_text);
+            draw_text(998, 17.5, _loyal_text);
         }
         if (penitent_max > 0) {
             var endb2 = "";
@@ -134,8 +135,9 @@ if (!zoomed && !zui) {
                 endb2 = " " + string(endb);
             }
             draw_set_color(c_red);
-            draw_text(998, 17, localize("{0}% Penitent", [string(min(100, floor((penitent_current / penitent_max) * 100)))]));
-            draw_text(998, 17.5, localize("{0}% Penitent", [string(min(100, floor((penitent_current / penitent_max) * 100)))]));
+            var _penitent_text = localize("{0}% Penitent", [string(min(100, floor((penitent_current / penitent_max) * 100)))]);
+            draw_text(998, 17, _penitent_text);
+            draw_text(998, 17.5, _penitent_text);
             draw_set_color(CM_GREEN_COLOR);
             // TODO Need a tooltip for here to display the actual amounts
         }
@@ -143,8 +145,9 @@ if (!zoomed && !zui) {
     // Sets you to renegade
     if (faction_status[eFACTION.IMPERIUM] == "War") {
         draw_set_color(255);
-        draw_text(998, 17, localize("Renegade"));
-        draw_text(998, 17.5, localize("Renegade"));
+        var _renegade_text = localize("Renegade");
+        draw_text(998, 17, _renegade_text);
+        draw_text(998, 17.5, _renegade_text);
         draw_set_color(CM_GREEN_COLOR);
     }
     if (menu == eMENU.DEFAULT || menu == eMENU.TURN_END) {

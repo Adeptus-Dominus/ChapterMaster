@@ -173,6 +173,18 @@ function LocalizationManager() constructor {
         for (var i = 0; i < array_length(global.chapter_geneseed_ratings_en); i++) {
             global.chapter_geneseed_ratings[i] = self.translate(global.chapter_geneseed_ratings_en[i]);
         }
+        for (var i = 0; i < array_length(global.planet_forti_en); i++) {
+            global.planet_forti[i] = self.translate(global.planet_forti_en[i]);
+        }
+        for (var i = 0; i < array_length(global.presence_factions_en); i++) {
+            global.presence_factions[i] = self.translate(global.presence_factions_en[i]);
+        }
+        for (var i = 0; i < array_length(global.presence_blurbs_en); i++) {
+            global.presence_blurbs[i] = self.translate(global.presence_blurbs_en[i]);
+        }
+        for (var i = 0; i < array_length(global.planet_size_en); i++) {
+            global.planet_size[i] = self.translate(global.planet_size_en[i]);
+        }
     };
 
     /// @param {real} _size Point size used for the runtime fallback font.

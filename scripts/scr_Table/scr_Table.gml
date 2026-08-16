@@ -12,6 +12,8 @@ function Table(data) constructor {
 
     localize_values = false;
 
+    localize_headings = false;
+
     halign = fa_center;
 
     colour = CM_GREEN_COLOR;
@@ -32,10 +34,13 @@ function Table(data) constructor {
         for (var i = 0; i < array_length(headings); i++) {
             var _col_width = 0;
             var _heading = headings[i];
+            var _localize_heading = localize_headings || localize_values;
             if (is_string(_heading)) {
-                headings[i] = new ReactiveString(_heading, 0, 0, {
+                var _heading_key = _heading;
+                headings[i] = new ReactiveString(_localize_heading ? localize(_heading_key) : _heading_key, 0, 0, {
                     scale_text: true,
                 });
+                headings[i].loc_key = _heading_key;
             }
 
             _heading = headings[i];
@@ -51,7 +56,8 @@ function Table(data) constructor {
                 }
             }
 
-            _heading.update({max_width: column_widths[i], x1: x1 + w + (column_widths[i] / 2), y1: y1, halign: halign});
+            var _heading_text = struct_exists(_heading, "loc_key") && _localize_heading ? localize(_heading.loc_key) : _heading.text;
+            _heading.update({text: _heading_text, max_width: column_widths[i], x1: x1 + w + (column_widths[i] / 2), y1: y1, halign: halign});
 
             if (_heading.h > header_h) {
                 header_h = _heading.h;
@@ -126,7 +132,7 @@ function Table(data) constructor {
                 for (var d = 0; d < array_length(row_key_draw) && d < _cols; d++) {
                     var _key = row_key_draw[d];
                     var _value = _row[$ _key];
-                    if (localize_values) {
+                    if (localize_values && is_string(_value)) {
                         _value = localize(_value);
                     }
                     var _scale_edits = calc_text_scale_confines(_value, column_widths[d], 0);

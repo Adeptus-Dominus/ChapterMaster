@@ -51,6 +51,8 @@ function scr_fleet_advisor() {
         _blurp = localize("Your fleet contains ");
     }
 
+    var _adept = menu_adept == 1;
+
     _blurp += localize("{0} Capital Ships, ", [string(temp[37])]);
     _blurp += localize("{0} Frigates, and ", [string(temp[38])]);
     _blurp += localize("{0} Escorts", [string(temp[39])]);
@@ -60,24 +62,18 @@ function scr_fleet_advisor() {
     if (_hull_normalized >= 1) {
         _blurp += localize(", none of which are damaged.");
     } else if (_hull_normalized < 1) {
-        _blurp += localize(".  Our most damaged vessel is the {0} - it has {1}% Hull Integrity.", [temp[40], string(min(99, round(_hull_normalized * 100)))]);
+        _blurp += localize(_adept ? ".  Your most damaged vessel is the {0} - it has {1}% Hull Integrity." : ".  Our most damaged vessel is the {0} - it has {1}% Hull Integrity.", [temp[40], string(min(99, round(_hull_normalized * 100)))]);
     }
 
     var _crippled_ships = real(temp[42]);
 
     if (_crippled_ships == 2) {
-        _blurp += localize("  Two of our ships are highly damaged.  You may wish to purchase a Repair License from the Sector Governerner.");
+        _blurp += localize(_adept ? "  Two of your ships are highly damaged.  You may wish to purchase a Repair License from the Sector Governerner." : "  Two of our ships are highly damaged.  You may wish to purchase a Repair License from the Sector Governerner.");
     } else if (_crippled_ships > 2) {
-        _blurp += localize("  Several of our ships are highly damaged.  It is advisable that you purchase a Repair License from the Sector Governer.");
+        _blurp += localize(_adept ? "  Several of your ships are highly damaged.  It is advisable that you purchase a Repair License from the Sector Governer." : "  Several of our ships are highly damaged.  It is advisable that you purchase a Repair License from the Sector Governer.");
     }
 
-    _blurp += localize("\n\nHere are the current positions of our ships and their contents:");
-
-    if (menu_adept == 1) {
-        _blurp = string_replace(_blurp, "Our", "Your");
-        _blurp = string_replace(_blurp, " our", " your");
-        _blurp = string_replace(_blurp, "We", "You");
-    }
+    _blurp += localize(_adept ? "\n\nHere are the current positions of your ships and their contents:" : "\n\nHere are the current positions of our ships and their contents:");
 
     draw_text_ext(xx + 352, yy + 130, _blurp, -1, 536);
 
@@ -291,17 +287,11 @@ function scr_fleet_advisor() {
             draw_text(xx + 495, yy + 675, localize("Speed: {0}", [cn.temp[106]]));
             draw_text(xx + 680, yy + 675, localize("Turrets: {0}", [cn.temp[109]]));
 
-            if (cn.temp[110] != "") {
-                draw_text(xx + 383, yy + 705, localize("-{0} ({1})", [localize(cn.temp[110]), cn.temp[111]]));
-            }
-            if (cn.temp[112] != "") {
-                draw_text(xx + 383, yy + 725, localize("-{0} ({1})", [localize(cn.temp[112]), cn.temp[113]]));
-            }
-            if (cn.temp[114] != "") {
-                draw_text(xx + 383, yy + 745, localize("-{0} ({1})", [localize(cn.temp[114]), cn.temp[115]]));
-            }
-            if (cn.temp[116] != "") {
-                draw_text(xx + 383, yy + 765, localize("-{0} ({1})", [localize(cn.temp[116]), cn.temp[117]]));
+            for (var s = 0; s < 4; s++) {
+                var _wep = 110 + (s * 2);
+                if (cn.temp[_wep] != "") {
+                    draw_text(xx + 383, yy + 705 + (s * 20), localize("-{0} ({1})", [localize(cn.temp[_wep]), cn.temp[_wep + 1]]));
+                }
             }
 
             draw_set_font(cjk_font(fnt_40k_12));

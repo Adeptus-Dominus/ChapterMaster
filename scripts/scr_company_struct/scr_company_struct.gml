@@ -551,12 +551,13 @@ function CompanyStruct(comp) constructor {
         //should be moved elsewhere for efficiency
         var _squad_leader = _cur_squad.determine_leader();
         if (is_struct(_squad_leader)) {
-            var leader_text = localize("Squad Leader : {0}", [localize(_squad_leader.name_role())]);
+            var _leader_name = $"{localize(_squad_leader.squad_role())} {_squad_leader.name()}";
+            var leader_text = localize("Squad Leader : {0}", [_leader_name]);
             draw_text_transformed(xx + bound_width[0] + 5, yy + bound_height[0] + 50, leader_text, 1, 1, 0);
         }
         squad_loc = _cur_squad.squad_loci();
         draw_text_transformed(xx + bound_width[0] + 5, yy + bound_height[0] + 75, localize("Squad Members : {0}", [_cur_squad.life_members]), 1, 1, 0);
-        draw_text_transformed(xx + bound_width[0] + 5, yy + bound_height[0] + 100, localize("Squad Location : {0}", [localize(squad_loc.text)]), 1, 1, 0);
+        draw_text_transformed(xx + bound_width[0] + 5, yy + bound_height[0] + 100, localize("Squad Location : {0}", [squad_loc.text]), 1, 1, 0);
 
         if (!squad_selection_mode()) {
             draw_squad_assignment_options();
