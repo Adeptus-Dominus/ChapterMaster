@@ -1103,13 +1103,12 @@ function scr_ui_manage() {
             draw_sprite_stretched(spr_arrow, 2, xx + 974, yy + 141, 31, 30);
             draw_sprite_stretched(spr_arrow, 3, xx + 974, yy + 791, 31, 30);
 
-            yy += 8;
             var _draw_selec_buttons = !obj_controller.unit_profile && !stats_displayed;
             if (_draw_selec_buttons && instance_exists(obj_popup)) {
                 _draw_selec_buttons = obj_popup.type != ePOPUP_TYPE.EQUIP;
             }
             if (_draw_selec_buttons && is_struct(obj_controller.unit_focus)) {
-                draw_manage_selection_buttons(xx, yy);
+                draw_manage_selection_buttons();
             }
 
             draw_set_color(#3f7e5d);
@@ -1269,7 +1268,9 @@ function scr_ui_manage() {
 }
 
 /// @self Asset.GMObject.obj_controller
-function draw_manage_selection_buttons(xx, yy) {
+/// @desc Draws and handles the Manage-screen selection controls.
+/// @returns {Undefined}
+function draw_manage_selection_buttons() {
     var sel_loading = obj_controller.selecting_ship;
     var _unit_focus = obj_controller.unit_focus;
     var _non_control_loc = location_out_of_player_control(selecting_location);
@@ -1287,7 +1288,6 @@ function draw_manage_selection_buttons(xx, yy) {
     gen_tooltip(health_tooltip);
 
     // Draw interaction and selection buttons
-    yy -= 8;
     draw_set_font(fnt_40k_14b);
     draw_set_color(#50a076);
     var button = new UnitButtonObject();
