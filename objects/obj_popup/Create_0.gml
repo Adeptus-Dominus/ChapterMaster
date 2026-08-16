@@ -303,10 +303,5 @@ sel2 = 0;
 sel3 = 0;
 sel4 = 0;
 sel5 = 0;
-vehicle_equipment = 0;
 warning = "";
 item_name = [];
-
-move_to_next_stage = function() {
-    return scr_hit(0, 0, room_width, room_height) || press_exclusive(vk_enter) || press_exclusive(vk_space) || press_exclusive(vk_enter);
-};
