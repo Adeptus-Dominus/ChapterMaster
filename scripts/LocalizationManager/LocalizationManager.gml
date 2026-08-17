@@ -91,16 +91,7 @@ function LocalizationManager() constructor {
         }
 
         if (_args != undefined) {
-            var _count = array_length(_args);
-            var _tokens = [];
-            for (var i = 0; i < _count; i++) {
-                var _token = chr(2) + "LOC_ARG_" + string(i) + chr(2);
-                array_push(_tokens, _token);
-                _value = string_replace_all(_value, "{" + string(i) + "}", _token);
-            }
-            for (var i = 0; i < _count; i++) {
-                _value = string_replace_all(_value, _tokens[i], string(_args[i]));
-            }
+            _value = string_substitute_args(_value, _args);
         }
 
         return _value;
@@ -276,13 +267,37 @@ function LocalizationManager() constructor {
     };
 }
 
-/// @desc Global shorthand for speaking localized text. Falls back to the raw English key.
+/// @desc Replaces {0}, {1}, ... placeholders in a string with the given arguments. Shared by
+///       LocalizationManager.translate and the localize() fallback so interpolation behaves the
+///       same whether or not the manager is loaded yet.
+/// @param {string} _value The template string containing {0}, {1} placeholders.
+/// @param {Array} _args Values substituted into the placeholders.
+/// @returns {string}
+function string_substitute_args(_value, _args) {
+    var _count = array_length(_args);
+    var _tokens = [];
+    for (var i = 0; i < _count; i++) {
+        var _token = chr(2) + "LOC_ARG_" + string(i) + chr(2);
+        array_push(_tokens, _token);
+        _value = string_replace_all(_value, "{" + string(i) + "}", _token);
+    }
+    for (var i = 0; i < _count; i++) {
+        _value = string_replace_all(_value, _tokens[i], string(_args[i]));
+    }
+    return _value;
+}
+
+/// @desc Global shorthand for speaking localized text. Falls back to the English key, still
+///       interpolating _args so placeholders never leak as literal "{0}" before the manager loads.
 /// @param {string} _key English text used as the localization key.
 /// @param {Array} _args (Optional) Values substituted into {0}, {1}, ... placeholders.
 /// @returns {string}
 function localize(_key, _args = undefined) {
     if (variable_global_exists("localization_manager")) {
         return global.localization_manager.translate(_key, _args);
+    }
+    if (_args != undefined) {
+        return string_substitute_args(_key, _args);
     }
     return _key;
 }

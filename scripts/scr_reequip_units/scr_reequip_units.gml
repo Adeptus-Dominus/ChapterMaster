@@ -271,7 +271,7 @@ function draw_popup_equip(before_after_styling = true) {
     draw_set_font(fnt_40k_14);
     draw_set_color(CM_GREEN_COLOR);
     draw_set_halign(fa_center);
-    draw_text(_x1 + main_slate.width / 2, _y1 + 7, localize(before_after_styling ? "Change" : "Set") + " " + localize("Equipment"));
+    draw_text(_x1 + main_slate.width / 2, _y1 + 7, localize(before_after_styling ? "Change Equipment" : "Set Equipment"));
 
     draw_set_font(fnt_40k_12);
     var comp = "";
