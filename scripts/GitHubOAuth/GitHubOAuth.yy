@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"GitHubOAuth",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"GitHubOAuth",
+  "parent":{
+    "name":"GitHub.GML",
+    "path":"folders/Libraries/GitHub.GML.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

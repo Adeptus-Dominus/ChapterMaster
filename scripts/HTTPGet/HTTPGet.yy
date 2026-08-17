@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"HTTPGet",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"HTTPGet",
+  "parent":{
+    "name":"HTTP",
+    "path":"folders/Libraries/GitHub.GML/HTTP.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
