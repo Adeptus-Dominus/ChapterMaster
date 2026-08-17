@@ -39,7 +39,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
         unit_specialist = is_specialist(_unit.role());
         if (_unit.in_jail()) {
             jailed = true;
-            _loc_name = "=Penitorium=";
+            _loc_name = localize("=Penitorium=");
         } else {
             var unit_location = _unit.marine_location();
             string_role = _unit.name_role();
@@ -58,10 +58,10 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
             if (assignment != "none") {
                 _loc_name += $"({assignment})";
             } else if ((fest_planet == 0) && (fest_sid > -1) && (fest_repeats > 0) && (ma_lid[selected] == fest_sid)) {
-                _loc_name = "=Event=";
+                _loc_name = localize("=Event=");
                 eventing = true;
             } else if ((fest_planet == 1) && (fest_wid > 0) && (fest_repeats > 0) && (ma_wid[selected] == fest_wid) && (ma_loc[selected] == fest_star)) {
-                _loc_name = "=Event=";
+                _loc_name = localize("=Event=");
                 eventing = true;
             }
         }
@@ -304,7 +304,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
             }
         }
 
-        var exp_string = $"{round(ma_exp[selected])} EXP";
+        var exp_string = $"{localize("{0} EXP", [round(ma_exp[selected])])}";
         var hpText = [
             xx + 240 + 8,
             yy + 66,
@@ -321,14 +321,14 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
         if (man[selected] == "man") {
             if (ma_health[selected] <= 0) {
                 hpColor = c_red;
-                array_push(health_tooltip, ["Critical Health State! Bionic augmentation is required!", [xx + 250, yy + 64, xx + 300, yy + 85]]);
+                array_push(health_tooltip, [localize("Critical Health State! Bionic augmentation is required!"), [xx + 250, yy + 64, xx + 300, yy + 85]]);
             } else if (ma_health[selected] <= 15) {
                 hpColor = c_yellow;
             }
 
             if (ma_promote[selected] > 0 && !unit_specialist && obj_controller.command_set[2] != 0) {
                 xpColor = c_yellow;
-                array_push(promotion_tooltip, ["Promotion Recommended", [xx + 335, yy + 64, xx + 385, yy + 85]]);
+                array_push(promotion_tooltip, [localize("Promotion Recommended"), [xx + 335, yy + 64, xx + 385, yy + 85]]);
             }
 
             draw_text_color(xpText[0], xpText[1], xpText[2], xpColor, xpColor, xpColor, xpColor, 1);
@@ -342,7 +342,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
         draw_text_transformed(xx + 27.5 + 8, yy + 66.5, string_hash_to_newline(string(string_role)), name_xr, 1, 0);
 
         // Draw current location
-        if (location_out_of_player_control(_loc_name) || (_loc_name == "=Penitorium=") || (assignment != "none")) {
+        if (location_out_of_player_control(_loc_name) || (_loc_name == localize("=Penitorium=")) || (assignment != "none")) {
             draw_set_alpha(0.5);
         }
 
@@ -439,10 +439,10 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
                         if (!array_contains(obj_controller.management_tags, _tag)) {
                             array_delete(_unit.manage_tags, t, 1);
                         } else {
-                            _tooltip += $"{_tag}\n";
+                            _tooltip += $"{localize(_tag)}\n";
                         }
                     }
-                    _tooltip += "Click to set filter to units tags";
+                    _tooltip += localize("Click to set filter to units tags");
                     tooltip_draw(_tooltip);
                 }
                 if (point_and_click(_tag_button)) {

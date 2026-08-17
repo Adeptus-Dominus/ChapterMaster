@@ -168,78 +168,78 @@ function EquipmentStruct(item_data = undefined, core_type = "", quality_request 
             switch (stat) {
                 case "description":
                     if (description != "") {
-                        item_desc_tooltip += $"{description}##";
+                        item_desc_tooltip += $"{localize(description)}##";
                     }
                     break;
                 case "quality":
                     if (quality != "") {
-                        item_desc_tooltip += $"Quality: {quality_string_conversion(quality)}##";
+                        item_desc_tooltip += $"{localize("Quality: {0}##", [localize(quality_string_conversion(quality))])}";
                     }
                     break;
                 case "armour_value":
                     if (armour_value != 0) {
                         if (item_type == "armour") {
-                            item_desc_tooltip += $"Armour: {armour_value}#";
+                            item_desc_tooltip += $"{localize("Armour: {0}#", [armour_value])}";
                         } else {
-                            item_desc_tooltip += $"Armour: {format_number_with_sign(armour_value)}#";
+                            item_desc_tooltip += $"{localize("Armour: {0}#", [format_number_with_sign(armour_value)])}";
                         }
                     }
                     break;
                 case "hp_mod":
                     if (hp_mod != 0) {
-                        item_desc_tooltip += $"Health Mod: {format_number_with_sign(hp_mod)}%#";
+                        item_desc_tooltip += $"{localize("Health Mod: {0}%#", [format_number_with_sign(hp_mod)])}";
                     }
                     break;
                 case "damage_resistance_mod":
                     if (damage_resistance_mod != 0) {
-                        item_desc_tooltip += $"Damage Res: {format_number_with_sign(damage_resistance_mod)}%#";
+                        item_desc_tooltip += $"{localize("Damage Res: {0}%#", [format_number_with_sign(damage_resistance_mod)])}";
                     }
                     break;
                 case "attack":
                     if (attack != 0) {
-                        item_desc_tooltip += $"Damage: {attack}#";
+                        item_desc_tooltip += $"{localize("Damage: {0}#", [attack])}";
                     }
                     break;
                 case "spli":
                     if (item_type == "weapon") {
-                        item_desc_tooltip += $"Max Kills: {max(1, spli)}#";
+                        item_desc_tooltip += $"{localize("Max Kills: {0}#", [max(1, spli)])}";
                     }
                     break;
                 case "ranged_mod":
                     if (ranged_mod != 0) {
-                        item_desc_tooltip += $"Ranged Mod: {format_number_with_sign(ranged_mod)}%#";
+                        item_desc_tooltip += $"{localize("Ranged Mod: {0}%#", [format_number_with_sign(ranged_mod)])}";
                     }
                     break;
                 case "melee_mod":
                     if (melee_mod != 0) {
-                        item_desc_tooltip += $"Melee Mod: {format_number_with_sign(melee_mod)}%#";
+                        item_desc_tooltip += $"{localize("Melee Mod: {0}%#", [format_number_with_sign(melee_mod)])}";
                     }
                     break;
                 case "ammo":
                     if (ammo != 0) {
-                        item_desc_tooltip += $"Ammo: {ammo}#";
+                        item_desc_tooltip += $"{localize("Ammo: {0}#", [ammo])}";
                     }
                     break;
                 case "range":
                     if (range > 1.1) {
-                        item_desc_tooltip += $"Range: {range}#";
+                        item_desc_tooltip += $"{localize("Range: {0}#", [range])}";
                     }
                     break;
                 case "melee_hands":
                     if (melee_hands != 0) {
                         if (item_type == "weapon") {
-                            item_desc_tooltip += $"Melee Burden: {melee_hands}#";
+                            item_desc_tooltip += $"{localize("Melee Burden: {0}#", [melee_hands])}";
                         } else {
-                            item_desc_tooltip += $"Melee Burden Cap: {format_number_with_sign(melee_hands)}#";
+                            item_desc_tooltip += $"{localize("Melee Burden Cap: {0}#", [format_number_with_sign(melee_hands)])}";
                         }
                     }
                     break;
                 case "ranged_hands":
                     if (ranged_hands != 0) {
                         if (item_type == "weapon") {
-                            item_desc_tooltip += $"Ranged Burden: {ranged_hands}#";
+                            item_desc_tooltip += $"{localize("Ranged Burden: {0}#", [ranged_hands])}";
                         } else {
-                            item_desc_tooltip += $"Ranged Burden Cap: {format_number_with_sign(ranged_hands)}#";
+                            item_desc_tooltip += $"{localize("Ranged Burden Cap: {0}#", [format_number_with_sign(ranged_hands)])}";
                         }
                     }
                     break;
@@ -247,25 +247,25 @@ function EquipmentStruct(item_data = undefined, core_type = "", quality_request 
                     var special_properties_array = [];
                     if (array_length(special_properties) > 0) {
                         for (var k = 0; k < array_length(special_properties); k++) {
-                            array_push(special_properties_array, special_properties[k]);
+                            array_push(special_properties_array, localize(special_properties[k]));
                         }
                     }
                     if (arp == 4) {
-                        array_push(special_properties_array, "Anti Vehicle");
+                        array_push(special_properties_array, localize("Anti Vehicle"));
                     } else if (arp == 1) {
-                        array_push(special_properties_array, "Low Penetration");
+                        array_push(special_properties_array, localize("Low Penetration"));
                     } else if (arp == 2) {
-                        array_push(special_properties_array, "Medium Penetration");
+                        array_push(special_properties_array, localize("Medium Penetration"));
                     } else if (arp == 3) {
-                        array_push(special_properties_array, "High Penetration");
+                        array_push(special_properties_array, localize("High Penetration"));
                     }
                     if (array_length(second_profiles) > 0) {
                         for (var h = 0; h < array_length(second_profiles); h++) {
                             if (string_pos("Integrated", second_profiles[h]) == 0) {
-                                var integrated_member = "Integrated " + second_profiles[h];
+                                var integrated_member = localize("Integrated {0}", [localize(second_profiles[h])]);
                                 array_push(special_properties_array, integrated_member);
                             } else {
-                                array_push(special_properties_array, second_profiles[h]);
+                                array_push(special_properties_array, localize(second_profiles[h]));
                             }
                         }
                     }
@@ -276,7 +276,7 @@ function EquipmentStruct(item_data = undefined, core_type = "", quality_request 
                         for (var j = 0; j < array_length(_specials); j++) {
                             var _special = _specials[j];
                             var _special_value = specials[$ _special];
-                            _specials_string += $"{format_underscore_string(_special)} ({_special_value})";
+                            _specials_string += localize("{0} ({1})", [localize(format_underscore_string(_special)), _special_value]);
                             array_push(special_properties_array, _specials_string);
                         }
                     }
@@ -284,34 +284,34 @@ function EquipmentStruct(item_data = undefined, core_type = "", quality_request 
                     var _array_length = array_length(special_properties_array);
                     if (_array_length > 0) {
                         var special_properties_string = array_to_string_order(special_properties_array, false, false);
-                        item_desc_tooltip += $"#Properties:#{special_properties_string}#";
+                        item_desc_tooltip += $"{localize("#Properties:#{0}#", [special_properties_string])}";
                     }
                     break;
                 case "special_description":
                     if (special_description != "") {
-                        item_desc_tooltip += $"#{special_description}#";
+                        item_desc_tooltip += $"#{localize(special_description)}#";
                     }
                     break;
                 case "req_exp":
                     if (req_exp > 0) {
-                        item_desc_tooltip += $"#Requires {req_exp} EXP#";
+                        item_desc_tooltip += $"{localize("#Requires {0} EXP#", [req_exp])}";
                     }
                     break;
                 case "tags":
                     if (array_length(tags) > 0) {
                         var tagString = "";
                         for (var j = 0; j < array_length(tags); j++) {
-                            tagString += tags[j];
+                            tagString += localize(tags[j]);
                             if (j < array_length(tags) - 1) {
                                 tagString += ", ";
                             }
                         }
-                        item_desc_tooltip += $"#Keywords:#{tagString}#";
+                        item_desc_tooltip += $"{localize("#Keywords:#{0}#", [tagString])}";
                     }
                     break;
                 case "maintenance":
                     if (maintenance > 0) {
-                        item_desc_tooltip += $"Maintenance: {maintenance}#";
+                        item_desc_tooltip += $"{localize("Maintenance: {0}#", [maintenance])}";
                     }
                     break;
             }

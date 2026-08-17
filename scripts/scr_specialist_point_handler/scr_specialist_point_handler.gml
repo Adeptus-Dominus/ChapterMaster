@@ -341,7 +341,7 @@ function SpecialistPointHandler() constructor {
         draw_set_color(c_gray);
         draw_rectangle(xx, yy, xx + _box_width, yy + 15, 0);
         draw_set_alpha(1);
-        draw_set_font(fnt_40k_14);
+        draw_set_font(cjk_font(fnt_40k_14));
         draw_set_color(0);
         draw_text(xx, yy, "Name");
         draw_text(xx + 141, yy, "Number");

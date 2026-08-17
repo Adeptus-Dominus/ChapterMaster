@@ -465,13 +465,13 @@ function alter_unit_equipment(update_equipment, from_armoury = true, to_armoury 
                 break;
         }
         if (_outcome == "no_items") {
-            _missing_items += $"{_missing_items == "" ? "" : ","} {_item}";
+            _missing_items += $"{_missing_items == "" ? "" : ","} {localize(_item)}";
             _success = false;
         }
     }
 
     if (_missing_items != "") {
-        _outcome_desc += no_equip + _missing_items;
+        _outcome_desc += localize(no_equip) + _missing_items;
     }
     var _final_outcome = {
         success: _success,
@@ -780,24 +780,24 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
         if (is_present("armour") && is_present("mobi")) {
             if (_armour_data.has_tag("terminator") && !_mobility_data.has_tag("terminator") && !_mobility_data.has_tag("terminator_only")) {
                 _result.valid = false;
-                _result.warning = "Cannot use this with Terminator Armour.";
+                _result.warning = localize("Cannot use this with Terminator Armour.");
             } else if (!_armour_data.has_tag("terminator") && _mobility_data.has_tag("terminator_only")) {
                 _result.valid = false;
-                _result.warning = "Cannot use this without Terminator Armour.";
+                _result.warning = localize("Cannot use this without Terminator Armour.");
             } else if (_armour_data.has_tag("dreadnought") && !_mobility_data.has_tag("dreadnought") && !_mobility_data.has_tag("dreadnought_only")) {
                 _result.valid = false;
-                _result.warning = "Cannot use this with Dreadnought Armour.";
+                _result.warning = localize("Cannot use this with Dreadnought Armour.");
             } else if (!_armour_data.has_tag("dreadnought") && _mobility_data.has_tag("dreadnought_only")) {
                 _result.valid = false;
-                _result.warning = "Cannot use this without Dreadnought Armour.";
+                _result.warning = localize("Cannot use this without Dreadnought Armour.");
             }
         } else if (!is_present("armour") && is_present("mobi")) {
             if (_mobility_data.has_tag("terminator") || _mobility_data.has_tag("terminator_only")) {
                 _result.valid = false;
-                _result.warning = "Cannot use this without Terminator Armour.";
+                _result.warning = localize("Cannot use this without Terminator Armour.");
             } else if (_mobility_data.has_tag("dreadnought") || _mobility_data.has_tag("dreadnought_only")) {
                 _result.valid = false;
-                _result.warning = "Cannot use this without Dreadnought Armour.";
+                _result.warning = localize("Cannot use this without Dreadnought Armour.");
             }
         }
 
@@ -863,7 +863,7 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
                 if (slot == eEQUIPMENT_SLOT.ARMOUR && !get_item("armour").has_tag("dreadnought")) {
                     if (_unit.is_dreadnought()) {
                         equipment_found_and_valid[slot] = false;
-                        warning += "Marines may not exit Dreadnoughts.";
+                        warning += localize("Marines may not exit Dreadnoughts.");
                     }
                 }
             }
@@ -873,17 +873,17 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
         equipment_found_and_valid[slot] = equipment_found_and_valid[slot] && _found >= needed_count;
 
         if (!equipment_found_and_valid[slot]) {
-            warning += $"Not enough {_wanted_item}; {needed_count - _found} more are required.";
+            warning += localize("Not enough {0}; {1} more are required.", [localize(_wanted_item), needed_count - _found]);
         }
         if (_marines_without_exp > 0) {
             equipment_found_and_valid[slot] = false;
-            warning += $"{_marines_without_exp} units don't have exp for {_wanted_item}: {_item.req_exp} required.";
+            warning += localize("{0} units don't have exp for {1}: {2} required.", [_marines_without_exp, localize(_wanted_item), _item.req_exp]);
         }
 
         if (_item.has_tag("terminator_only")) {
             if (!get_item("armour").has_tag("terminator")) {
                 equipment_found_and_valid[slot] = false;
-                warning = $"Cannot use {_wanted_item} without Terminator/Dreadnought Armour.";
+                warning = localize("Cannot use {0} without Terminator/Dreadnought Armour.", [localize(_wanted_item)]);
             }
         }
 
@@ -895,11 +895,11 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
             var _armour_required = "";
             for (var r = 0; r < array_length(_class_locks); r++) {
                 if (_item.has_tag(_class_locks[r])) {
-                    _armour_required += " " + _class_locks[r];
+                    _armour_required += _armour_required == "" ? localize(_class_locks[r]) : ", " + localize(_class_locks[r]);
                 }
             }
             equipment_found_and_valid[slot] = false;
-            warning += $"Cannot use {_wanted_item} without {_armour_required} Armour.";
+            warning += localize("Cannot use {0} without {1} Armour.", [localize(_wanted_item), _armour_required]);
         }
     };
 
