@@ -271,7 +271,7 @@ function draw_popup_equip(before_after_styling = true) {
     draw_set_font(fnt_40k_14);
     draw_set_color(CM_GREEN_COLOR);
     draw_set_halign(fa_center);
-    draw_text(_x1 + main_slate.width / 2, _y1 + 7, $"{before_after_styling ? "Change" : "Set"} Equipment");
+    draw_text(_x1 + main_slate.width / 2, _y1 + 7, localize(before_after_styling ? "Change" : "Set") + " " + localize("Equipment"));
 
     draw_set_font(fnt_40k_12);
     var comp = "";
@@ -289,7 +289,7 @@ function draw_popup_equip(before_after_styling = true) {
         _descriptor = "Vehicles";
     }
     if (company != -1) {
-        draw_text(_x1 + 286, _y1 + 32, $"{comp} Company, {unit_count} {_descriptor}");
+        draw_text(_x1 + 286, _y1 + 32, $"{comp} {localize("Company")}, {unit_count} {localize(_descriptor)}");
     }
 
     draw_set_halign(fa_left);
@@ -299,20 +299,20 @@ function draw_popup_equip(before_after_styling = true) {
     // Need to not show the artifact tags here somehow
 
     if (before_after_styling) {
-        draw_text_outline(_x1 + 14, _y1 + 52, "Before");
+        draw_text_outline(_x1 + 14, _y1 + 52, localize("Before"));
 
         for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
             var _current = current_equipment[i];
             if (_current == "") {
                 _current = ITEM_NAME_NONE;
             }
-            draw_text(_x1 + 18, _y1 + 72 + (i * 20), _current);
+            draw_text(_x1 + 18, _y1 + 72 + (i * 20), localize(_current));
         }
 
-        draw_text_outline(_x1 + 290, _y1 + 52, "After");
+        draw_text_outline(_x1 + 290, _y1 + 52, localize("After"));
     } else {
         for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
-            var _title = $"{get_slot_name(target_role, i)}: ";
+            var _title = $"{localize(get_slot_name(target_role, i))}: ";
             draw_text(_x1 + 18, _y1 + 72 + (i * 20), _title);
         }
     }
@@ -362,7 +362,7 @@ function draw_popup_equip(before_after_styling = true) {
                 box_y + 20,
             ];
             check = needed_equipment[equipment_area] == item_name[o] ? "x" : " ";
-            item_string = $"[{check}] {item_name[o]}";
+            item_string = $"[{check}] {localize(item_name[o])}";
             draw_text_transformed(box_x, box_y, item_string, mct, 1, 0);
             if (scr_hit(box)) {
                 tooltip_draw(gen_item_tooltip(item_name[o]));

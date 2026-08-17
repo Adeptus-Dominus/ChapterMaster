@@ -1197,7 +1197,8 @@ function PlanetData(_planet, _system) constructor {
         draw_set_font(cjk_font(fnt_40k_14b));
         draw_set_halign(fa_left);
         if (!is_craftworld && !is_hulk) {
-            draw_text(xx + 480, yy + 196, localize("{0} {1}  ({2})", [system.name, nm, localize(planet_type)]));
+            var _planet_type_key = planet_type == "Forge" ? "Forge World" : planet_type;
+            draw_text(xx + 480, yy + 196, localize("{0} {1}  ({2})", [system.name, nm, localize(_planet_type_key)]));
         }
         if (is_craftworld) {
             draw_text(xx + 480, yy + 196, localize("{0} (Craftworld)", [system.name]));
