@@ -143,7 +143,7 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
             if (!is_struct(_leader)) {
                 continue;
             }
-            if (!is_Struct(garrison_leader)) {
+            if (!is_struct(garrison_leader)) {
                 garrison_leader = _leader;
                 for (var r = 0; r < array_length(hierarchy); r++) {
                     if (hierarchy[r] == _leader.role()) {
