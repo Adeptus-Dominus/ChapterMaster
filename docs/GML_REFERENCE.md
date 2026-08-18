@@ -17,7 +17,6 @@ GameMaker Language (GML) is syntactically similar to JavaScript ES3 but has sign
 - [Constructors](#constructors)
 - [Methods and Binding](#methods-and-binding)
 - [Data Structures and Accessors](#data-structures-and-accessors)
-- [Constants and Macros](#constants-and-macros)
 - [Built-in Functions List](#built-in-functions-list)
 - [Keywords List](#keywords-list)
 
@@ -222,15 +221,29 @@ While scope defines *where* a variable can be accessed, GML features distinct ca
 
 ### Constant
 
-- **Enums:** Named integer constants.
+**Enums:** Named integer constants. Values start at 0 and auto-increment.
+```gml
+enum COLORS {
+    DARK_RED,
+    BLUE,
+    GREEN
+}
+```
 
 ### Compile-Time
 
 Not true variables in the runtime memory sense, but named values resolved at compile-time. They are globally available and not tied to any struct.
 
-- **Macros:** Compile-time textual replacement. Do not use for arrays; each reference creates a new array instance.
 - **Asset IDs:** References to objects, sprites, sounds, etc. (e.g., `obj_player`).
 - **Function identifiers:** The names of globally hoisted script functions.
+- **Macros:** Compile-time textual replacement.
+  - **Do not** use for arrays; each reference creates a new array instance.
+  - **Do not** add `=` during assignment, or `;` at the end.
+  - Can span lines with trailing `\`.
+```gml
+#macro SFX_CLICK "click_sound.wav"
+#macro MAX_HP 100
+```
 
 ---
 
@@ -351,6 +364,9 @@ When using explicit binding via `method()`, there are specific rules regarding s
 
 ## Data Structures and Accessors
 
+> [!NOTE]
+> No native properties (like `.length`), use built-in functions.
+
 ### Arrays
 
 ```gml
@@ -360,9 +376,8 @@ _arr[1] = 35;
 array_push(_arr, 40);   // Push to end
 ```
 
-No `.length` property - use `array_length(_arr)`.
-
-**Copy on Write:** This project has `option_copy_on_write_enabled: true`. When an array is passed into a function, modifying it inside the function creates a temporary copy unless the `@` accessor is used:
+> [!IMPORTANT]
+> **Copy on Write:** This project has `option_copy_on_write_enabled: true`. When an array is passed into a function, modifying it inside the function creates a temporary copy unless the `@` accessor is used:
 ```gml
 function modify(_arr) {
     _arr[@ 1] = 200;    // Bypasses CoW, modifies original
@@ -381,49 +396,24 @@ _s[$ "name"];         // Struct accessor (bracket with $)
 
 ### Legacy DS Structures
 
-| Type | Accessor | Creation |
+> [!WARNING]
+> DS structures don't have native garbage-collection, and must be manually destroyed with `ds_destroy()` or they leak memory. As such, GML documentation recommends arrays and structs instead of `ds_list`,  `ds_map` and `ds_grid`, where possible.
+
+| Type | Accessor | Description |
 |---|---|---|
-| `ds_list` | `[\| index]` | `ds_list_create()` |
-| `ds_map` | `[? key]` | `ds_map_create()` |
-| `ds_grid` | `[# x, y]` | `ds_grid_create(w, h)` |
-| `ds_stack` | Built-in functions | `ds_stack_create()` |
-| `ds_queue` | Built-in functions | `ds_queue_create()` |
-| `ds_priority` | Built-in functions | `ds_priority_create()` |
-
-DS structures must be manually destroyed with `ds_destroy()` or they leak memory. GML documentation recommends arrays and structs instead, where possible.
-
----
-
-## Constants and Macros
-
-### Enums
-
-```gml
-enum COLORS {
-    DARK_RED,
-    BLUE,
-    GREEN
-}
-```
-
-Values start at 0 and auto-increment.
-
-### Macros
-
-```gml
-#macro SFX_CLICK "click_sound.wav"
-#macro MAX_HP 100
-```
-
-- Compile-time textual replacement.
-- **Do not** use `#macro` for arrays - each reference creates a new array instance.
-- **Do not** add `=` during assignment, or `;` at the end.
+| `ds_list` | `[\| index]` | Ordered collection of values, accessed by numeric index (old-style array). |
+| `ds_map` | `[? key]` | Key-value pairs (dictionary / hash map). An important quirk: unlike structs, the key isn't limited to strings and can be of any type, including a struct. |
+| `ds_grid` | `[# x, y]` | 2D grid of values, accessed by column and row coordinates. |
+| `ds_stack` | Built-in functions | LIFO (last in, first out) collection; push and pop. |
+| `ds_queue` | Built-in functions | FIFO (first in, first out) collection; enqueue and dequeue. |
+| `ds_priority` | Built-in functions | Collection of prioritized values, popped in priority order. |
 
 ---
 
 ## Built-in Functions List
 
-Primitives have no internal methods; use library functions instead.
+> [!NOTE]
+> Primitives have no internal methods; use library functions instead.
 
 ### Strings
 
@@ -489,4 +479,3 @@ var             while           with            xor
 ```
 
 - `#region` / `#endregion` create code-folding blocks in the IDE.
-- `#macro NAME value` - compile-time textual replacement. Can span lines with trailing `\`.
