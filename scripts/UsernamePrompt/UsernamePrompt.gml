@@ -15,7 +15,7 @@ function UsernamePrompt() constructor {
             _suggestion = "";
         }
 
-        prompt_id = get_string_async("Enter a name (Discord username or any identifier) for bug reports:", _suggestion);
+        prompt_id = get_string_async("Enter a name (Discord or GitHub username preferred) for bug reports:", _suggestion);
     };
 
     /// @desc Handles async dialog result. Call from Async-Dialog event.

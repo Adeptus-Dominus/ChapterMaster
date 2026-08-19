@@ -1,7 +1,7 @@
 #macro ERROR_HANDLER global.error_handler
 #macro STR_ERROR_MESSAGE_HEAD $"Your game just encountered and caught an error!"
 #macro STR_ERROR_MESSAGE_HEAD2 $"Your game just encountered a critical error! :("
-#macro STR_ERROR_MESSAGE_PS $"P.S. You can ALT-TAB and try to continue playing, though it's recommended to wait for a response in the bug-report forum."
+#macro STR_ERROR_MESSAGE_PS $"P.S. You can ALT-TAB and try to continue playing, though it's recommended to wait for a response to your bug report."
 
 function GameError(_header, _message, _stacktrace = "", _critical = false, _report_title = "") constructor {
     var _context = ERROR_HANDLER.get_context();
@@ -84,10 +84,10 @@ function GameError(_header, _message, _stacktrace = "", _critical = false, _repo
             _msg += "You are using an outdated build. Automated bug reports are only accepted for the latest version.\n\n";
             _msg += "Do you want to open the latest release page in your browser?";
         } else if (critical) {
-            _msg += "Do you want to send the error log, debug log, and your last autosave to our Discord as a bug report? The process is automated and takes a few seconds, you won't notice anything.";
+            _msg += "Do you want to send this error as a bug report? The process is automated and takes a few seconds, you won't notice anything.";
         } else {
             _msg += "After closing this message, you will be prompted to describe what you were doing.\n";
-            _msg += "Your message and the error log will be sent to our Discord automatically. You can decline by pressing 'cancel'.\n\n";
+            _msg += "Your message and the error details will be sent automatically. You can decline by pressing 'cancel'.\n\n";
             _msg += $"{STR_ERROR_MESSAGE_PS}";
         }
         return _msg;
@@ -131,7 +131,6 @@ function ErrorHandler() constructor {
         if (_id == _pending_async_id) {
             if (!UPDATE_CHECKER.compiled && _status && _result != "") {
                 ERROR_HANDLER.__send(_result);
-                show_message_async("Report sent to the Administratum.");
             }
             _pending_async_id = -1;
 
@@ -271,15 +270,10 @@ function ErrorHandler() constructor {
         _pending_async_id = async_id;
     };
 
-    /// @desc Sends the report to Discord with optional user notes.
+    /// @desc Sends the report to Discord and GitHub with optional user notes.
     /// @param {string} _user_text Optional user description text.
     static __send = function(_user_text = "") {
         var _url = "__DISCORD_WEBHOOK_URL__";
-
-        if (_url == "" || string_pos("__", _url) == 1) {
-            LOGGER.error("No Webhook URL found. Build is likely local/dev.");
-            return;
-        }
 
         if (!is_instanceof(pending_error, GameError)) {
             LOGGER.error("Not a valid GameError");
@@ -291,16 +285,30 @@ function ErrorHandler() constructor {
             return;
         }
 
+        if (_url == "" || string_pos("__", _url) == 1) {
+            LOGGER.debug("Discord webhook not configured; skipping Discord report.");
+        } else {
+            __send_discord(pending_error, _url, _user_text);
+        }
+
+        GITHUB_BUG_REPORTER.report(pending_error, _user_text);
+    };
+
+    /// @desc Packages and dispatches the report to Discord.
+    /// @param {Struct.GameError} _error The GameError to report.
+    /// @param {String} _url The Discord webhook URL.
+    /// @param {String} _user_text Optional user description text.
+    static __send_discord = function(_error, _url, _user_text) {
         try {
             var embed = new DiscordEmbed();
-            embed.SetTitle("Error Details").SetDescription(pending_error.full_log).SetColor(0x00ff00).AddField("Username:", pending_error.username);
+            embed.SetTitle("Error Details").SetDescription(_error.full_log).SetColor(0x00ff00).AddField("Username:", _error.username);
 
             if (_user_text != "") {
                 embed.AddField("User Message:", _user_text);
             }
 
             var _hook = new DiscordWebhook(_url);
-            _hook.SetUser("Bug Reporter").SetThread(pending_error.report_title).AddEmbed(embed);
+            _hook.SetUser("Bug Reporter").SetThread(_error.report_title).AddEmbed(embed);
 
             if (file_exists(PATH_LAST_MESSAGES)) {
                 _hook.AddFile(PATH_LAST_MESSAGES);
@@ -311,7 +319,7 @@ function ErrorHandler() constructor {
                 var _save_data = is_struct(_save) ? _save[$ "Save"] : undefined;
                 if (is_struct(_save_data)) {
                     var _seed = _save_data[$ "game_seed"];
-                    if (!is_undefined(_seed) && _seed == pending_error.seed) {
+                    if (!is_undefined(_seed) && _seed == _error.seed) {
                         _hook.AddFile(PATH_AUTOSAVE_FILE);
                     }
                 }

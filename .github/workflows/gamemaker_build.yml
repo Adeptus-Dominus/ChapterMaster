@@ -52,6 +52,16 @@ jobs:
           $content = [regex]::Replace($content, [regex]::Escape($placeholder), $url)
           Set-Content $file -Value $content -NoNewline
 
+      - name: Inject GitHub issues token
+        shell: pwsh
+        run: |
+          $file = "scripts/GitHubBugReporter/GitHubBugReporter.gml"
+          $placeholder = "__GITHUB_ISSUES_TOKEN__"
+          $token = "${{ secrets.GH_BUG_REPORT_TOKEN }}"
+          $content = Get-Content $file -Raw
+          $content = [regex]::Replace($content, [regex]::Escape($placeholder), $token)
+          Set-Content $file -Value $content -NoNewline
+
       - name: Set date-time and version info
         id: version_info
         shell: pwsh

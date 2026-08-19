@@ -2,6 +2,7 @@
 function boot_sequence() {
     // Phase 1: Error handling & logging
     global.error_handler = new ErrorHandler();
+    global.github_bug_reporter = new GitHubBugReporter();
     global.logger = new Logger();
     global.logger.active_level = (code_is_compiled()) ? eLOG_LEVEL.WARNING : eLOG_LEVEL.DEBUG;
     global.update_checker = new UpdateChecker();
