@@ -2,13 +2,12 @@ try {
     tooltip = "";
     tooltip2 = "";
 
-    if (type == ePOPUP_TYPE.LIVERYPICK ) {
-        if (livery_pick_type == eLIVERY_COLOURING_OPTIONS.BULK){
+    if (type == ePOPUP_TYPE.LIVERYPICK) {
+        if (livery_pick_type == eLIVERY_COLOURING_OPTIONS.BULK) {
             assign_picked_liveries();
-        } else if (livery_pick_type == eLIVERY_COLOURING_OPTIONS.ADVANCED){
+        } else if (livery_pick_type == eLIVERY_COLOURING_OPTIONS.ADVANCED) {
             assign_complex_picked_liveries();
         }
-        
     } else if (type == ePOPUP_TYPE.EQUIP) {
         draw_popup_equip(before_after_styling);
         draw_set_font(cjk_font(fnt_40k_30b));

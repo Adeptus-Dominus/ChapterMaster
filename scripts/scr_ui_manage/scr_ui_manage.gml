@@ -199,7 +199,7 @@ function reset_manage_unit_constants(unit) {
         var _armour_val = $"{unit.armour_calc()}";
         var _armour_tool = localize("Reduces incoming damage at a flat rate. Certain enemies may attack in ways that may bypass your armor entirely, for example power weapons and some warp sorceries.\n\nContributing factors:\n");
 
-		_armour_tool += _equip_data.set_attribute_string("armour_value");
+        _armour_tool += _equip_data.set_attribute_string("armour_value");
 
         if (obj_controller.stc_bonus[1] == 5 || obj_controller.stc_bonus[2] == 3) {
             _armour_tool += localize("STC Bonus: x1.05\n");
@@ -1497,7 +1497,6 @@ function draw_manage_selection_buttons() {
     }
 
     if (sel_veh[1] != "") {
-
         button.font = fnt_40k_12;
         draw_selection_filter_group(button, "All Vehicles", "vehicle", sel_veh, top_x, _filter_next_y + 4, _filter_right);
     }

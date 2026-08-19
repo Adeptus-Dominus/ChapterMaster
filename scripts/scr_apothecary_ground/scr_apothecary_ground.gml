@@ -18,7 +18,7 @@ enum eSYSTEM_LOC {
 /// @self Struct.SpecialistPointHandler
 function calculate_full_chapter_spread() {
     tally_marines();
-    var  veh_location, array_slot;
+    var veh_location, array_slot;
     var _tech_spread = {};
     var _apoth_spread = {};
     var _unit_spread = {};

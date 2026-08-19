@@ -695,15 +695,15 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
         return _string;
     };
 
-    static set_attribute_string = function(attribute){
+    static set_attribute_string = function(attribute) {
         var _str = "";
-        for (var i = 0; i < array_length(present_items); i++){
+        for (var i = 0; i < array_length(present_items); i++) {
             var _item = equipment[$ present_items[i]];
             var _m_string = _item.item_attribute_string(attribute);
-            _str +=  _m_string != "" ? _m_string + "\n" : "";
+            _str += _m_string != "" ? _m_string + "\n" : "";
         }
         return _str;
-    }
+    };
 
     static has_equipped = function(slot = eEQUIPMENT_SLOT.ALL, item) {
         if (is_string(slot)) {

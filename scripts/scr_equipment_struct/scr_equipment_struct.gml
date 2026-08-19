@@ -222,7 +222,6 @@ function EquipmentStruct(item_data = undefined, core_type = "", quality_request 
         return localize(_label);
     };
 
-
     static item_tooltip_desc_gen = function() {
         item_desc_tooltip = "";
         var stat_order;
@@ -400,12 +399,12 @@ function EquipmentStruct(item_data = undefined, core_type = "", quality_request 
     /// @desc Returns a formatted attribute string for the item
     /// @param {string} attribute The attribute key to format (e.g. "hp_mod", "damage_resistance_mod", "armour_value")
     /// @returns {string} The formatted attribute string, or empty string if the attribute value is 0
-    static item_attribute_string = function(attribute){
-        if (!stat_display_has_value(attribute)){
+    static item_attribute_string = function(attribute) {
+        if (!stat_display_has_value(attribute)) {
             return "";
         }
         return $"{name}: {stat_display_value_conversion(attribute)}";
-    }
+    };
 
     static special_value = function(special) {
         if (is_struct(specials)) {

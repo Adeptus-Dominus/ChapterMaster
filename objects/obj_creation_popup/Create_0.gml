@@ -114,13 +114,13 @@ possible_custom_roles = [
 
 var _is_livery = type == ePOPUP_TYPE.LIVERYPICK;
 livery_pick_type = -1;
-if (_is_livery){
+if (_is_livery) {
     livery_pick_type = obj_creation.colour_selection_options.current_selection;
 }
 if (_is_livery && livery_pick_type == eLIVERY_COLOURING_OPTIONS.BULK) {
     if (target_role <= 0 || target_role >= 8) {
         instance_destroy();
-        exit;            
+        exit;
     }
     assign_picked_liveries = function() {
         draw_set_font(fnt_40k_30b);
@@ -138,24 +138,21 @@ if (_is_livery && livery_pick_type == eLIVERY_COLOURING_OPTIONS.BULK) {
         var _col = picker.chosen;
         if (start_colour == -1) {
             start_colour = variable_instance_get(obj_creation, type_fields[target_role]);
-            
         }
-
 
         if (_col == -1) {
             _col = start_colour;
         }
 
         variable_instance_set(obj_creation, type_fields[target_role], _col);
-        
 
         with (obj_creation) {
             bulk_selection_buttons_setup();
         }
     };
-} else if (_is_livery && livery_pick_type == eLIVERY_COLOURING_OPTIONS.ADVANCED){
+} else if (_is_livery && livery_pick_type == eLIVERY_COLOURING_OPTIONS.ADVANCED) {
     start_colour = obj_creation.complex_livery_data[$ target_role][$ colour_area];
-    assign_complex_picked_liveries = function(){
+    assign_complex_picked_liveries = function() {
         var _action = picker.draw();
         if (_action == "destroy") {
             instance_destroy();
@@ -173,9 +170,8 @@ if (_is_livery && livery_pick_type == eLIVERY_COLOURING_OPTIONS.BULK) {
             with (obj_creation) {
                 set_complex_livery_buttons();
             }
-
         }
-    }
+    };
 } else if (type == ePOPUP_TYPE.EQUIP) {
     role_name_input = new TextBarArea(800, 170, 380, true);
 

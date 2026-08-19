@@ -76,10 +76,10 @@ function scr_livery_setup() {
             }
         }
 
-        bulk_armour_pattern.update({y1:bulk_buttons[6].y2 + 20});
+        bulk_armour_pattern.update({y1: bulk_buttons[6].y2 + 20});
         bulk_armour_pattern.draw();
         col_special = bulk_armour_pattern.current_selection;
-    } else if (_cur_colouring_options == eLIVERY_COLOURING_OPTIONS.ADVANCED){
+    } else if (_cur_colouring_options == eLIVERY_COLOURING_OPTIONS.ADVANCED) {
         for (var i = 0; i < array_length(complex_livery_buttons); i++) {
             var _button = complex_livery_buttons[i];
 
