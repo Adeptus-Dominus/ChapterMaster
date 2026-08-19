@@ -294,6 +294,7 @@ try {
         }
         if (current_button != "") {
             if (array_contains(["Build", "Base", "Arsenal", "Gene-Vault"], current_button)) {
+                /// @type {Id.Instance.obj_temp_build}
                 var building = instance_create(x, y, obj_temp_build);
                 building.target = target;
                 building.planet = obj_controller.selecting_planet;

@@ -1,4 +1,5 @@
 owner = 0;
+/// @type {Id.Instance.obj_star}
 target = instance_nearest(x, y, obj_star);
 loading = 0;
 loading_name = "";
@@ -57,6 +58,7 @@ torpedo = scr_item_count("Cyclonic Torpedo");
 
 /// @type {Struct.FeatureSelected}
 feature = "";
+/// @type {String|Struct.GarrisonForce}
 garrison = "";
 population = false;
 

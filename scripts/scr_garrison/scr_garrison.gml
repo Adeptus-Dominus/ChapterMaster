@@ -31,6 +31,7 @@ function disposition_description_chart(dispo) {
 function GarrisonForce(system, planet, type = "garrison") constructor {
     garrison_squads = [];
     total_garrison = 0;
+    /// @type {Undefined|Struct.TTRPG_stats}
     garrison_leader = undefined;
     garrison_force = false;
     members = [];
