@@ -16,7 +16,7 @@ function GitHubOAuth(_clientID, _clientSecret = undefined) constructor {
     /// @arg {Array.String} scope An array of authentication scopes.
     /// @arg {Real} [expireTime] Expiry time in seconds to allow the authentication request to expire.
     /// @returns {Any}
-    static requestAuthenticationViaWebPage = function(_scope, _expireTime = undefined) {
+    static requestAuthenticationViaWebPage = function(_scope, _expireTime = GITHUB_GML_OAUTH_DEFAULT_EXPIRE_SECONDS) {
         // Ensure that we are on a desktop platform
         if (!GITHUB_GML_FOR_DESKTOP) {
             __GitHubError("requestAuthenticationViaWebPage: Web-flow authentication is only supported on desktop platforms, please use device-flow for non-desktop platforms");
@@ -81,7 +81,7 @@ function GitHubOAuth(_clientID, _clientSecret = undefined) constructor {
     /// @arg {Real} [expireTime] The time in seconds in which the current authentication device code will expire.
     /// @arg {Real} [maxAttempts] The maximum number of attempts to make to poll the authentication.
     /// @returns {Any}
-    static pollAuthentication = function(_deviceCode, _interval, _expireTime = 900, _maxAttempts = 10) {
+    static pollAuthentication = function(_deviceCode, _interval, _expireTime = GITHUB_GML_OAUTH_DEFAULT_EXPIRE_SECONDS, _maxAttempts = 10) {
         // Clamp the interval and max attempts
         _interval = clamp(_interval, 5, GITHUB_GML_OAUTH_MAX_POLL_INTERVAL);
         _maxAttempts = clamp(_maxAttempts, 1, GITHUB_GML_OAUTH_MAX_POLLS);
@@ -89,14 +89,22 @@ function GitHubOAuth(_clientID, _clientSecret = undefined) constructor {
         // System
         var _system = __GitHubSystem();
 
+        // Save the clamped interval so slow_down responses can lengthen it (RFC 8628)
+        _system.__authenticationPollInterval = _interval;
+
         // Save device code
         _system.__deviceCode = _deviceCode;
+
+        // Reset poll counters and track the configured attempt limit
+        _system.__authenticationAttempts = 0;
+        _system.__authenticationMaxAttempts = _maxAttempts;
 
         // Set the expiry time
         _system.__authenticationExpireTime = _expireTime;
 
-        // Create the time source
-        _system.__pollTimesource = time_source_create(time_source_global, _interval, time_source_units_seconds, __pollAuthentication, [], _maxAttempts, time_source_expire_after);
+        // Create the time source. One extra repetition so the final invocation
+        // reports the timeout after all maxAttempts polls have run.
+        _system.__pollTimesource = time_source_create(time_source_global, _interval, time_source_units_seconds, __pollAuthentication, [], _maxAttempts + 1, time_source_expire_after);
 
         // Start the timesource
         time_source_start(_system.__pollTimesource);
@@ -106,19 +114,20 @@ function GitHubOAuth(_clientID, _clientSecret = undefined) constructor {
     /// @desc Cancels the current authentication request.
     /// @returns {N/A}
     static cancelAuthentication = function() {
+        // System
+        var _system = __GitHubSystem();
+
         // Check server for an active web-flow authentication
         __GitHubRequestServerShutdown();
 
-        // Check the timesource for an active device-flow authentication
-        if (__GitHubSystem().__pollTimesource != undefined) {
-            // Reset expire time
-            __GitHubSystem().__authenticationExpireTime = undefined;
-
-            // Clear timesources
-            time_source_stop(__GitHubSystem().__pollTimesource);
-            time_source_destroy(__GitHubSystem().__pollTimesource);
-            __GitHubSystem().__pollTimesource = undefined;
+        // Abandon any in-flight device token request
+        if (_system.__pollRequest != undefined) {
+            var _requestID = _system.__pollRequest.requestID;
+            __GitHubRequestCleanup(_requestID);
         }
+
+        // Clear the poll state and stop the timesource
+        __GitHubStopPolling();
     };
 
     /// @func hasActiveRequest()
@@ -202,34 +211,31 @@ function GitHubOAuth(_clientID, _clientSecret = undefined) constructor {
     /// @desc Authentication poll for the timesource.
     /// @ignore
     static __pollAuthentication = function() {
-        // Check if we have hit out max attempts or not
+        // System
+        var _system = __GitHubSystem();
+
+        // Check the attempt limit and device code expiry BEFORE scheduling the poll, so the
+        // full maxAttempts polls run and the final invocation reports the timeout
         // TODO: Do something about the timeout time that GitHub returns back
-        if (__GitHubSystem().__authenticationAttempts >= GITHUB_GML_OAUTH_MAX_POLLS || (__GitHubSystem().__authenticationExpireTime != undefined && __GitHubSystem().__authenticationExpireTime <= 0)) {
-            // And we call the timeout callback
-            if (__GitHubSystem().__authenticationTimeoutCallback != undefined) {
-                __GitHubSystem().__authenticationTimeoutCallback();
-
-                // Reset expire time
-                __GitHubSystem().__authenticationExpireTime = undefined;
-
-                // Clear timesources
-                time_source_stop(_system.__pollTimesource);
-                time_source_destroy(_system.__pollTimesource);
-                _system.__pollTimesource = undefined;
-
-                return;
+        if (_system.__authenticationAttempts >= _system.__authenticationMaxAttempts || (_system.__authenticationExpireTime != undefined && _system.__authenticationExpireTime <= 0)) {
+            // Abandon any token request still in-flight when the timeout fires
+            if (_system.__pollRequest != undefined) {
+                __GitHubRequestCleanup(_system.__pollRequest.requestID);
             }
+
+            // Always clean up the timesource so hasActiveRequest() clears
+            __GitHubStopPolling();
+
+            // And we call the timeout callback
+            if (_system.__authenticationTimeoutCallback != undefined) {
+                _system.__authenticationTimeoutCallback();
+            }
+
+            return;
         }
 
         // Create Header
-        var _header = ds_map_create();
-
-        // Build Header
-        ds_map_add(_header, "Accept", "application/json");
-        ds_map_add(_header, "Content-Type", "application/x-www-form-urlencoded");
-
-        // System
-        var _system = __GitHubSystem();
+        var _header = __createDefaultHeaders();
 
         // Build body
         var _body = "client_id=" + _system.__clientID + "&device_code=" + _system.__deviceCode + "&grant_type=" + GITHUB_GML_OAUTH_GRANT_TYPE;
@@ -240,28 +246,62 @@ function GitHubOAuth(_clientID, _clientSecret = undefined) constructor {
         // Create GitHub Request
         _system.__pollRequest = new GitHubRequest(_request.requestID);
 
+        // Count this attempt once the poll request is scheduled
+        _system.__authenticationAttempts++;
+
         // Create the callback
         _system.__pollRequest
             .setCallback(function(_resultBody, _request) {
-                // Check that the response has come back clean and that there is no error.
-                if (_request.httpStatus == 200 && !variable_struct_exists(_resultBody, "error")) {
-                    // Get system
-                    var _system = __GitHubSystem();
+                // Get system
+                var _system = __GitHubSystem();
 
-                    // Set user authentication
-                    _system.__currentUserAuthToken = _resultBody.access_token;
-                    _system.__currentUserTokenType = _resultBody.token_type;
-                    _system.__currentUserTokenScope = string_split(_resultBody.scope, ",");
+                // Ignore stale responses (poll was cancelled or superseded)
+                if (_system.__pollTimesource == undefined || _system.__pollRequest == undefined || _request.requestID != _system.__pollRequest.requestID) {
+                    return;
+                }
 
-                    // Clear timesources
-                    time_source_stop(_system.__pollTimesource);
-                    time_source_destroy(_system.__pollTimesource);
-                    _system.__pollTimesource = undefined;
-
-                    // Run the poll callback
-                    if (_system.__authenticationCallback != undefined) {
-                        _system.__authenticationCallback(_resultBody, _request);
+                // A 200 response can still carry an OAuth error (user denied, expired device code, ...)
+                if (variable_struct_exists(_resultBody, "error")) {
+                    // authorization_pending is expected between polls; keep polling
+                    if (_resultBody.error == "authorization_pending") {
+                        return;
                     }
+
+                    // Terminal error - stop polling
+                    __GitHubStopPolling();
+
+                    // Run the poll errorback
+                    if (_system.__authenticationErrorback != undefined) {
+                        _system.__authenticationErrorback(_resultBody, _request);
+                    }
+
+                    return;
+                }
+
+                // A 200 response without a token is not a success
+                if (!variable_struct_exists(_resultBody, "access_token")) {
+                    // Stop polling and report the failure
+                    __GitHubStopPolling();
+
+                    // Run the poll errorback
+                    if (_system.__authenticationErrorback != undefined) {
+                        _system.__authenticationErrorback(_resultBody, _request);
+                    }
+
+                    return;
+                }
+
+                // Set user authentication
+                _system.__currentUserAuthToken = _resultBody.access_token;
+                _system.__currentUserTokenType = _resultBody.token_type;
+                _system.__currentUserTokenScope = (_resultBody.scope != undefined) ? string_split(_resultBody.scope, ",") : [];
+
+                // Clear timesources
+                __GitHubStopPolling();
+
+                // Run the poll callback
+                if (_system.__authenticationCallback != undefined) {
+                    _system.__authenticationCallback(_resultBody, _request);
                 }
             });
 
@@ -271,35 +311,47 @@ function GitHubOAuth(_clientID, _clientSecret = undefined) constructor {
                 // Get system
                 var _system = __GitHubSystem();
 
-                // Clear timesources
-                time_source_stop(_system.__pollTimesource);
-                time_source_destroy(_system.__pollTimesource);
-                _system.__pollTimesource = undefined;
+                // Ignore stale responses (poll was cancelled or superseded)
+                if (_system.__pollTimesource == undefined || _system.__pollRequest == undefined || _request.requestID != _system.__pollRequest.requestID) {
+                    return;
+                }
 
-                // Run the poll errorback
+                // GitHub reports pending polls as HTTP 400 - not failures
+                if (is_struct(_resultBody) && variable_struct_exists(_resultBody, "error")) {
+                    if (_resultBody.error == "authorization_pending") {
+                        return;
+                    }
+
+                    // slow_down (RFC 8628 3.5): lengthen the interval by 5s or every
+                    // later poll stays throttled. Non-terminal even on the last poll -
+                    // the extra timeout invocation reports the exhaustion instead
+                    if (_resultBody.error == "slow_down") {
+                        _system.__authenticationPollInterval = min(_system.__authenticationPollInterval + 5, GITHUB_GML_OAUTH_MAX_POLL_INTERVAL);
+
+                        // Remaining attempts (this poll already counted) plus the final timeout invocation
+                        var _remaining = _system.__authenticationMaxAttempts - _system.__authenticationAttempts + 1;
+                        time_source_stop(_system.__pollTimesource);
+                        time_source_destroy(_system.__pollTimesource);
+                        _system.__pollTimesource = time_source_create(time_source_global, _system.__authenticationPollInterval, time_source_units_seconds, __pollAuthentication, [], _remaining, time_source_expire_after);
+                        time_source_start(_system.__pollTimesource);
+                        return;
+                    }
+                }
+
+                // Terminal - stop polling and report
+                __GitHubStopPolling();
                 if (_system.__authenticationErrorback != undefined) {
                     _system.__authenticationErrorback(_resultBody, _request);
                 }
             });
-
-        // Increment authentication attempts
-        __GitHubSystem().__authenticationAttempts++;
     };
 
     /// @func __constructScopeString(scope)
     /// @desc Construct a scope string.
     /// @ignore
     static __constructScopeString = function(_scope) {
-        var _returnString = "";
-        var _scopeCount = array_length(_scope);
-        var _i = 0;
-
-        repeat (_scopeCount) {
-            _returnString += _scope[_i] + "%20";
-            _i++;
-        }
-
-        return _returnString;
+        // Join between scopes only - a trailing %20 becomes an empty scope item
+        return string_join_ext("%20", _scope);
     };
 
     /// @func __createDefaultHeaders()
@@ -317,4 +369,42 @@ function GitHubOAuth(_clientID, _clientSecret = undefined) constructor {
         // Return Header
         return _header;
     };
+}
+
+/// Stops and destroys the device-flow polling timesource and clears the poll state.
+/// Shared by the timeout branch, terminal-error path, success callback, errorback
+/// and cancelAuthentication so lifecycle handling cannot diverge.
+/// @ignore
+function __GitHubStopPolling() {
+    // System
+    var _system = __GitHubSystem();
+
+    // Reset expire time and attempt counter
+    _system.__authenticationExpireTime = undefined;
+    _system.__authenticationAttempts = 0;
+
+    // Clear timesources
+    if (_system.__pollTimesource != undefined) {
+        time_source_stop(_system.__pollTimesource);
+        time_source_destroy(_system.__pollTimesource);
+        _system.__pollTimesource = undefined;
+    }
+
+    // Clear the in-flight request reference
+    _system.__pollRequest = undefined;
+}
+
+/// Handles a failed token exchange: requests the server shutdown and runs the
+/// authentication errorback. Shared by the web-flow success and error callbacks
+/// so failure handling cannot diverge.
+/// @ignore
+function __GitHubAuthenticationFailure(_resultBody, _requestObject) {
+    // Request server shutdown and report the failure
+    __GitHubRequestServerShutdown();
+
+    // Run the authentication errorback
+    var _system = __GitHubSystem();
+    if (_system.__authenticationErrorback != undefined) {
+        _system.__authenticationErrorback(_resultBody, _requestObject);
+    }
 }

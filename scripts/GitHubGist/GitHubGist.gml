@@ -10,12 +10,14 @@ function GitHubGist(_description = undefined, _public = undefined) constructor {
     description = _description;
     public = _public;
     files = {};
+    removedFiles = {};
 
     // Methods
-    /// @func generateJSON()
+    /// @func generateJSON([isUpdate])
     /// @desc Generates JSON data to be sent with the POST request.
+    /// @arg {Bool} [isUpdate] Whether the payload is for an update (PATCH) request.
     /// @return {String} The JSON data.
-    static generateJSON = function() {
+    static generateJSON = function(_isUpdate = false) {
         // Create Struct
         var _struct = {};
 
@@ -30,10 +32,28 @@ function GitHubGist(_description = undefined, _public = undefined) constructor {
         }
 
         // Files
-        if (variable_struct_names_count(files) > 0) {
-            _struct[$ "files"] = files;
+        if (_isUpdate) {
+            // Merge the remaining files with deletion markers for removed files.
+            // json_stringify serializes undefined as JSON null, which is the
+            // deletion marker for the GitHub update API.
+            var _filesPayload = {};
+            var _fileNames = variable_struct_get_names(files);
+            for (var i = 0; i < array_length(_fileNames); i++) {
+                _filesPayload[$ _fileNames[i]] = files[$ _fileNames[i]];
+            }
+            var _removedNames = variable_struct_get_names(removedFiles);
+            for (var i = 0; i < array_length(_removedNames); i++) {
+                _filesPayload[$ _removedNames[i]] = undefined;
+            }
+            if (variable_struct_names_count(_filesPayload) > 0) {
+                _struct[$ "files"] = _filesPayload;
+            }
         } else {
-            __GitHubError("GitHubGist requires files to be able to be uploaded.");
+            if (variable_struct_names_count(files) > 0) {
+                _struct[$ "files"] = files;
+            } else {
+                __GitHubError("GitHubGist requires files to be able to be uploaded.");
+            }
         }
 
         // Return JSON
@@ -47,6 +67,11 @@ function GitHubGist(_description = undefined, _public = undefined) constructor {
     /// @arg {String} [newFilename] The new filename of the file (used only for editing gists).
     /// @return {Any}
     static addFile = function(_filename, _content, _newFilename = undefined) {
+        // Re-adding a previously removed file restores it for update payloads
+        if (variable_struct_exists(removedFiles, _filename)) {
+            variable_struct_remove(removedFiles, _filename);
+        }
+
         var _contentStruct = {
             content: _content,
         };
@@ -64,5 +89,8 @@ function GitHubGist(_description = undefined, _public = undefined) constructor {
         if (variable_struct_exists(files, _filename)) {
             variable_struct_remove(files, _filename);
         }
+
+        // Keep the file out of create payloads but mark it for deletion in update payloads
+        removedFiles[$ _filename] = true;
     };
 }

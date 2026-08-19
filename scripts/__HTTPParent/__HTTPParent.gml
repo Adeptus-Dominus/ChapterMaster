@@ -8,6 +8,7 @@ function __HTTPParent() constructor {
     requestID = undefined;
     status = undefined;
     result = "null";
+    resultRaw = undefined;
     requestURL = undefined;
     httpStatus = undefined;
     headerMap = undefined;
@@ -26,8 +27,18 @@ function __HTTPParent() constructor {
     /// @func parseResult(result)
     /// @desc Parses the incoming JSON data into the struct.
     /// @arg {String} result The incoming JSON data.
+    /// @returns {Bool} Whether the JSON was parsed successfully.
     static parseResult = function(_result) {
-        result = json_parse(_result);
+        try {
+            result = json_parse(_result);
+            resultRaw = undefined;
+            return true;
+        } catch (_exception) {
+            show_debug_message($"__HTTPParent.parseResult: failed to parse JSON response: {_exception}");
+            result = undefined;
+            resultRaw = _result;
+            return false;
+        }
     };
 
     /// @func setCallback(method)

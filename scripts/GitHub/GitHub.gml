@@ -48,13 +48,7 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Optional Query Params
-        var _queryParams = "?";
-        if (_perPage != undefined) {
-            _queryParams += $"per_page={clamp(round(_perPage), 30, 100)}&";
-        }
-        if (_page != undefined) {
-            _queryParams += $"page={clamp(round(_page), 1, 100)}&";
-        }
+        var _queryParams = "?" + __buildPaginationQueryParams(_perPage, _page);
 
         // Create Request
         var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/releases{_queryParams}", "GET", _header, "");
@@ -204,13 +198,7 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Optional Query Params
-        var _queryParams = "?";
-        if (_perPage != undefined) {
-            _queryParams += $"per_page={clamp(round(_perPage), 30, 100)}&";
-        }
-        if (_page != undefined) {
-            _queryParams += $"page={clamp(round(_page), 1, 100)}&";
-        }
+        var _queryParams = "?" + __buildPaginationQueryParams(_perPage, _page);
 
         // Create Request
         var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/releases/{_releaseID}/assets{_queryParams}", "GET", _header, "");
@@ -235,10 +223,18 @@ function GitHub(_authToken = undefined) constructor {
     static uploadReleaseAsset = function(_owner, _repo, _releaseID, _buffer, _contentType, _targetFilename, _label = "") {
         // Create Default Headers
         var _header = __createDefaultHeaders();
-        _header.add("Content-Length", buffer_get_size(_buffer));
-        _header.add("Content-Type", _contentType);
 
-        // Seek To 0x01 In Buffer
+        // Written bytes, not allocation - buffer_get_size would report unused capacity
+        var _contentLength = buffer_get_used_size(_buffer);
+        if (_contentLength <= 0) {
+            __GitHubError("uploadReleaseAsset: The buffer has no written content to upload (buffer_get_used_size is 0).");
+            return undefined;
+        }
+
+        ds_map_add(_header, "Content-Length", _contentLength);
+        ds_map_add(_header, "Content-Type", _contentType);
+
+        // http_request sends no body when the seek position is at 0 - seek to byte 1
         buffer_seek(_buffer, buffer_seek_start, 1);
 
         // Create Request
@@ -316,13 +312,7 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Optional Query Params
-        var _queryParams = "?";
-        if (_perPage != undefined) {
-            _queryParams += $"per_page={clamp(round(_perPage), 30, 100)}&";
-        }
-        if (_page != undefined) {
-            _queryParams += $"page={clamp(round(_page), 1, 100)}&";
-        }
+        var _queryParams = "?" + __buildPaginationQueryParams(_perPage, _page);
 
         // Create Request
         var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/assignees{_queryParams}", "GET", _header, "");
@@ -460,11 +450,8 @@ function GitHub(_authToken = undefined) constructor {
         if (_since != undefined) {
             _queryParams += $"since={_since}&";
         }
-        if (_perPage != undefined) {
-            _queryParams += $"per_page={clamp(round(_perPage), 30, 100)}&";
-        }
-        if (_page != undefined) {
-            _queryParams += $"page={clamp(round(_page), 1, 100)}&";
+        if (_perPage != undefined || _page != undefined) {
+            _queryParams += __buildPaginationQueryParams(_perPage, _page);
         }
 
         // Create Request
@@ -509,7 +496,7 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Request
-        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/comments/{_commentID}", "PATCH", _header, $"\{\"body\": \"{_body}\"\}");
+        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/comments/{_commentID}", "PATCH", _header, json_stringify({body: _body}));
 
         // Create GitHub Request
         var _githubRequest = new GitHubRequest(_request.requestID);
@@ -556,11 +543,8 @@ function GitHub(_authToken = undefined) constructor {
         if (_since != undefined) {
             _queryParams += $"since={_since}&";
         }
-        if (_perPage != undefined) {
-            _queryParams += $"per_page={clamp(round(_perPage), 30, 100)}&";
-        }
-        if (_page != undefined) {
-            _queryParams += $"page={clamp(round(_page), 1, 100)}&";
+        if (_perPage != undefined || _page != undefined) {
+            _queryParams += __buildPaginationQueryParams(_perPage, _page);
         }
 
         // Create Request
@@ -585,7 +569,7 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Request
-        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/{_issueID}/comments", "POST", _header, $"\{\"body\": \"{_body}\"\}");
+        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/{_issueID}/comments", "POST", _header, json_stringify({body: _body}));
 
         // Create GitHub Request
         var _githubRequest = new GitHubRequest(_request.requestID);
@@ -649,11 +633,8 @@ function GitHub(_authToken = undefined) constructor {
         if (_pulls != undefined) {
             _queryParams += $"pulls={_pulls ? "true" : "false"}&";
         }
-        if (_perPage != undefined) {
-            _queryParams += $"per_page={clamp(round(_perPage), 30, 100)}&";
-        }
-        if (_page != undefined) {
-            _queryParams += $"page={clamp(round(_page), 1, 100)}&";
+        if (_perPage != undefined || _page != undefined) {
+            _queryParams += __buildPaginationQueryParams(_perPage, _page);
         }
 
         // Create Request
@@ -702,11 +683,8 @@ function GitHub(_authToken = undefined) constructor {
         if (_since != undefined) {
             _queryParams += $"since={_since}&";
         }
-        if (_perPage != undefined) {
-            _queryParams += $"per_page={clamp(round(_perPage), 30, 100)}&";
-        }
-        if (_page != undefined) {
-            _queryParams += $"page={clamp(round(_page), 1, 100)}&";
+        if (_perPage != undefined || _page != undefined) {
+            _queryParams += __buildPaginationQueryParams(_perPage, _page);
         }
 
         // Create Request
@@ -772,11 +750,8 @@ function GitHub(_authToken = undefined) constructor {
         if (_since != undefined) {
             _queryParams += $"since={_since}&";
         }
-        if (_perPage != undefined) {
-            _queryParams += $"per_page={clamp(round(_perPage), 30, 100)}&";
-        }
-        if (_page != undefined) {
-            _queryParams += $"page={clamp(round(_page), 1, 100)}&";
+        if (_perPage != undefined || _page != undefined) {
+            _queryParams += __buildPaginationQueryParams(_perPage, _page);
         }
 
         // Create Request
@@ -796,6 +771,13 @@ function GitHub(_authToken = undefined) constructor {
     /// @arg {Struct.GitHubIssue} issue The issue struct.
     /// Documentation: https://docs.github.com/en/rest/issues/issues#create-an-issue
     static createIssue = function(_owner, _repo, _issue) {
+        // GitHub rejects title-less payloads; the check lives at the create
+        // boundary because GitHubIssue allows title omission for PATCH updates
+        if (_issue.title == undefined || !is_string(_issue.title) || string_trim(_issue.title) == "") {
+            __GitHubError("createIssue: The issue title is required and must not be empty.");
+            return undefined;
+        }
+
         // Create Default Headers
         var _header = __createDefaultHeaders();
 
@@ -862,7 +844,7 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Request
-        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/{_issueID}/lock", "PUT", _header, $"\{\"lock_reason\":\"{_lockReason}\"\}");
+        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/{_issueID}/lock", "PUT", _header, json_stringify({lock_reason: _lockReason}));
 
         // Create GitHub Request
         var _githubRequest = new GitHubRequest(_request.requestID);
@@ -907,13 +889,7 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Optional Query Params
-        var _queryParams = "?";
-        if (_perPage != undefined) {
-            _queryParams += $"per_page={clamp(round(_perPage), 30, 100)}&";
-        }
-        if (_page != undefined) {
-            _queryParams += $"page={clamp(round(_page), 1, 100)}&";
-        }
+        var _queryParams = "?" + __buildPaginationQueryParams(_perPage, _page);
 
         // Create Request
         var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/events{_queryParams}", "GET", _header, "");
@@ -958,13 +934,7 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Optional Query Params
-        var _queryParams = "?";
-        if (_perPage != undefined) {
-            _queryParams += $"per_page={clamp(round(_perPage), 30, 100)}&";
-        }
-        if (_page != undefined) {
-            _queryParams += $"page={clamp(round(_page), 1, 100)}&";
-        }
+        var _queryParams = "?" + __buildPaginationQueryParams(_perPage, _page);
 
         // Create Request
         var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/{_issueID}/events{_queryParams}", "GET", _header, "");
@@ -993,13 +963,7 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Optional Query Params
-        var _queryParams = "?";
-        if (_perPage != undefined) {
-            _queryParams += $"per_page={clamp(round(_perPage), 30, 100)}&";
-        }
-        if (_page != undefined) {
-            _queryParams += $"page={clamp(round(_page), 1, 100)}&";
-        }
+        var _queryParams = "?" + __buildPaginationQueryParams(_perPage, _page);
 
         // Create Request
         var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/{_issueID}/labels{_queryParams}", "GET", _header, "");
@@ -1023,7 +987,7 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Request
-        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/{_issueID}/labels", "POST", _header, $"\{\"labels\":{json_stringify(_labels)}\}");
+        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/{_issueID}/labels", "POST", _header, json_stringify({labels: _labels}));
 
         // Create GitHub Request
         var _githubRequest = new GitHubRequest(_request.requestID);
@@ -1044,7 +1008,7 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Request
-        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/{_issueID}/labels", "PUT", _header, $"\{\"labels\":{json_stringify(_labels)}\}");
+        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/{_issueID}/labels", "PUT", _header, json_stringify({labels: _labels}));
 
         // Create GitHub Request
         var _githubRequest = new GitHubRequest(_request.requestID);
@@ -1106,13 +1070,7 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Optional Query Params
-        var _queryParams = "?";
-        if (_perPage != undefined) {
-            _queryParams += $"per_page={clamp(round(_perPage), 30, 100)}&";
-        }
-        if (_page != undefined) {
-            _queryParams += $"page={clamp(round(_page), 1, 100)}&";
-        }
+        var _queryParams = "?" + __buildPaginationQueryParams(_perPage, _page);
 
         // Create Request
         var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/labels{_queryParams}", "GET", _header, "");
@@ -1187,7 +1145,7 @@ function GitHub(_authToken = undefined) constructor {
     /// @arg {Constant.Color} [color] The new color of the label.
     /// @arg {String} [description] The new description of the label.
     /// Documentation: https://docs.github.com/en/rest/issues/labels#update-a-label
-    static createLabel = function(_owner, _repo, _name, _newName = undefined, _color = undefined, _description = undefined) {
+    static updateLabel = function(_owner, _repo, _name, _newName = undefined, _color = undefined, _description = undefined) {
         // Create Default Headers
         var _header = __createDefaultHeaders();
 
@@ -1248,13 +1206,7 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Optional Query Params
-        var _queryParams = "?";
-        if (_perPage != undefined) {
-            _queryParams += $"per_page={clamp(round(_perPage), 30, 100)}&";
-        }
-        if (_page != undefined) {
-            _queryParams += $"page={clamp(round(_page), 1, 100)}&";
-        }
+        var _queryParams = "?" + __buildPaginationQueryParams(_perPage, _page);
 
         // Create Request
         var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/milestones/{_milestoneID}/labels{_queryParams}", "GET", _header, "");
@@ -1295,11 +1247,8 @@ function GitHub(_authToken = undefined) constructor {
         if (_direction != undefined) {
             _queryParams += $"direction={_direction}&";
         }
-        if (_perPage != undefined) {
-            _queryParams += $"per_page={clamp(round(_perPage), 30, 100)}&";
-        }
-        if (_page != undefined) {
-            _queryParams += $"page={clamp(round(_page), 1, 100)}&";
+        if (_perPage != undefined || _page != undefined) {
+            _queryParams += __buildPaginationQueryParams(_perPage, _page);
         }
 
         // Create Request
@@ -1356,7 +1305,7 @@ function GitHub(_authToken = undefined) constructor {
     /// @arg {String} repo The repository name.
     /// @arg {Real} milestoneID The ID of the milestone.
     /// Documentation: https://docs.github.com/en/rest/issues/milestones#get-a-milestone
-    static getMilestones = function(_owner, _repo, _milestoneID) {
+    static getMilestone = function(_owner, _repo, _milestoneID) {
         // Create Default Headers
         var _header = __createDefaultHeaders();
 
@@ -1388,7 +1337,7 @@ function GitHub(_authToken = undefined) constructor {
         var _bodyStruct = {};
 
         // Other properties
-        if (_state != undefined) {
+        if (_title != undefined) {
             _bodyStruct[$ "title"] = _title;
         }
         if (_state != undefined) {
@@ -1467,7 +1416,7 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Request
-        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/{_issueID}/sub_issue", "DELETE", _header, $"\{\"sub_issue_id\":\"{_subIssueID}\"\}");
+        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/{_issueID}/sub_issue", "DELETE", _header, json_stringify({sub_issue_id: _subIssueID}));
 
         // Create GitHub Request
         var _githubRequest = new GitHubRequest(_request.requestID);
@@ -1489,13 +1438,7 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Optional Query Params
-        var _queryParams = "?";
-        if (_perPage != undefined) {
-            _queryParams += $"per_page={clamp(round(_perPage), 30, 100)}&";
-        }
-        if (_page != undefined) {
-            _queryParams += $"page={clamp(round(_page), 1, 100)}&";
-        }
+        var _queryParams = "?" + __buildPaginationQueryParams(_perPage, _page);
 
         // Create Request
         var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/{_issueID}/sub_issues{_queryParams}", "GET", _header, "");
@@ -1590,13 +1533,7 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Optional Query Params
-        var _queryParams = "?";
-        if (_perPage != undefined) {
-            _queryParams += $"per_page={clamp(round(_perPage), 30, 100)}&";
-        }
-        if (_page != undefined) {
-            _queryParams += $"page={clamp(round(_page), 1, 100)}&";
-        }
+        var _queryParams = "?" + __buildPaginationQueryParams(_perPage, _page);
 
         // Create Request
         var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/{_issueID}/timeline{_queryParams}", "GET", _header, "");
@@ -1631,11 +1568,8 @@ function GitHub(_authToken = undefined) constructor {
         if (_since != undefined) {
             _queryParams += $"since={_since}&";
         }
-        if (_perPage != undefined) {
-            _queryParams += $"per_page={clamp(round(_perPage), 30, 100)}&";
-        }
-        if (_page != undefined) {
-            _queryParams += $"page={clamp(round(_page), 1, 100)}&";
+        if (_perPage != undefined || _page != undefined) {
+            _queryParams += __buildPaginationQueryParams(_perPage, _page);
         }
 
         // Create Request
@@ -1681,11 +1615,8 @@ function GitHub(_authToken = undefined) constructor {
         if (_since != undefined) {
             _queryParams += $"since={_since}&";
         }
-        if (_perPage != undefined) {
-            _queryParams += $"per_page={clamp(round(_perPage), 30, 100)}&";
-        }
-        if (_page != undefined) {
-            _queryParams += $"page={clamp(round(_page), 1, 100)}&";
+        if (_perPage != undefined || _page != undefined) {
+            _queryParams += __buildPaginationQueryParams(_perPage, _page);
         }
 
         // Create Request
@@ -1713,11 +1644,8 @@ function GitHub(_authToken = undefined) constructor {
         if (_since != undefined) {
             _queryParams += $"since={_since}&";
         }
-        if (_perPage != undefined) {
-            _queryParams += $"per_page={clamp(round(_perPage), 30, 100)}&";
-        }
-        if (_page != undefined) {
-            _queryParams += $"page={clamp(round(_page), 1, 100)}&";
+        if (_perPage != undefined || _page != undefined) {
+            _queryParams += __buildPaginationQueryParams(_perPage, _page);
         }
 
         // Create Request
@@ -1758,7 +1686,7 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Request
-        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}gists/{_gistID}", "PATCH", _header, _gist.generateJSON());
+        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}gists/{_gistID}", "PATCH", _header, _gist.generateJSON(true));
 
         // Create GitHub Request
         var _githubRequest = new GitHubRequest(_request.requestID);
@@ -1796,13 +1724,7 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Optional Query Params
-        var _queryParams = "?";
-        if (_perPage != undefined) {
-            _queryParams += $"per_page={clamp(round(_perPage), 30, 100)}&";
-        }
-        if (_page != undefined) {
-            _queryParams += $"page={clamp(round(_page), 1, 100)}&";
-        }
+        var _queryParams = "?" + __buildPaginationQueryParams(_perPage, _page);
 
         // Create Request
         var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}gists/{_gistID}/commits{_queryParams}", "GET", _header, "");
@@ -1825,13 +1747,7 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Optional Query Params
-        var _queryParams = "?";
-        if (_perPage != undefined) {
-            _queryParams += $"per_page={clamp(round(_perPage), 30, 100)}&";
-        }
-        if (_page != undefined) {
-            _queryParams += $"page={clamp(round(_page), 1, 100)}&";
-        }
+        var _queryParams = "?" + __buildPaginationQueryParams(_perPage, _page);
 
         // Create Request
         var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}gists/{_gistID}/forks{_queryParams}", "GET", _header, "");
@@ -1920,7 +1836,7 @@ function GitHub(_authToken = undefined) constructor {
     /// @arg {String} gistID The ID of the gist.
     /// @arg {String} sha The sha of the gist.
     /// Documentation: https://docs.github.com/en/rest/gists/gists#get-a-gist-revision
-    static isGistStarred = function(_gistID, _sha) {
+    static getGistRevision = function(_gistID, _sha) {
         // Create Default Headers
         var _header = __createDefaultHeaders();
 
@@ -1950,11 +1866,8 @@ function GitHub(_authToken = undefined) constructor {
         if (_since != undefined) {
             _queryParams += $"since={_since}&";
         }
-        if (_perPage != undefined) {
-            _queryParams += $"per_page={clamp(round(_perPage), 30, 100)}&";
-        }
-        if (_page != undefined) {
-            _queryParams += $"page={clamp(round(_page), 1, 100)}&";
+        if (_perPage != undefined || _page != undefined) {
+            _queryParams += __buildPaginationQueryParams(_perPage, _page);
         }
 
         // Create Request
@@ -1982,13 +1895,7 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Optional Query Params
-        var _queryParams = "?";
-        if (_perPage != undefined) {
-            _queryParams += $"per_page={clamp(round(_perPage), 30, 100)}&";
-        }
-        if (_page != undefined) {
-            _queryParams += $"page={clamp(round(_page), 1, 100)}&";
-        }
+        var _queryParams = "?" + __buildPaginationQueryParams(_perPage, _page);
 
         // Create Request
         var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}gists/{_gistID}/comments{_queryParams}", "GET", _header, "");
@@ -2010,7 +1917,7 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Request
-        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}gists/{_gistID}/comments", "POST", _header, $"\{\"body\": \"{_body}\"\}");
+        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}gists/{_gistID}/comments", "POST", _header, json_stringify({body: _body}));
 
         // Create GitHub Request
         var _githubRequest = new GitHubRequest(_request.requestID);
@@ -2049,7 +1956,7 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Request
-        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}gists/{_gistID}/comments/{_commentID}", "PATCH", _header, $"\{\"body\": \"{_body}\"\}");
+        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}gists/{_gistID}/comments/{_commentID}", "PATCH", _header, json_stringify({body: _body}));
 
         // Create GitHub Request
         var _githubRequest = new GitHubRequest(_request.requestID);
@@ -2099,10 +2006,7 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Optional Query Params
-        var _queryParams = "?";
-        if (_perPage != undefined) {
-            _queryParams += $"per_page={_perPage}&";
-        }
+        var _queryParams = "?" + __buildPaginationQueryParams(_perPage);
         if (_before != undefined) {
             _queryParams += $"before={_before}&";
         }
@@ -2137,7 +2041,7 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Request
-        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}users/{_username}/attestations/digest/{_subjectDigest}", "DETELE", _header, "");
+        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}users/{_username}/attestations/digest/{_subjectDigest}", "DELETE", _header, "");
 
         // Create GitHub Request
         var _githubRequest = new GitHubRequest(_request.requestID);
@@ -2156,7 +2060,7 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Request
-        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}users/{_username}/attestations/{_attestationID}", "DETELE", _header, "");
+        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}users/{_username}/attestations/{_attestationID}", "DELETE", _header, "");
 
         // Create GitHub Request
         var _githubRequest = new GitHubRequest(_request.requestID);
@@ -2179,10 +2083,7 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Optional Query Params
-        var _queryParams = "?";
-        if (_perPage != undefined) {
-            _queryParams += $"per_page={_perPage}&";
-        }
+        var _queryParams = "?" + __buildPaginationQueryParams(_perPage);
         if (_before != undefined) {
             _queryParams += $"before={_before}&";
         }
@@ -2190,7 +2091,7 @@ function GitHub(_authToken = undefined) constructor {
             _queryParams += $"after={_after}&";
         }
         if (_predicateType != undefined) {
-            _queryParams += $"prediacte_type={_predicateType}&";
+            _queryParams += $"predicate_type={_predicateType}&";
         }
 
         // Create Request
@@ -2306,12 +2207,9 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Optional Query Params
-        var _queryParams = "?";
+        var _queryParams = "?" + __buildPaginationQueryParams(_perPage);
         if (_since != undefined) {
             _queryParams += $"since={_since}&";
-        }
-        if (_perPage != undefined) {
-            _queryParams += $"per_page={_perPage}&";
         }
 
         // Create Request
@@ -2357,7 +2255,7 @@ function GitHub(_authToken = undefined) constructor {
         }
 
         // Create Request
-        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}users/{_username}{_queryParams}", "GET", _header, "");
+        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}users/{_username}/hovercard{_queryParams}", "GET", _header, "");
 
         // Create GitHub Request
         var _githubRequest = new GitHubRequest(_request.requestID);
@@ -2377,7 +2275,7 @@ function GitHub(_authToken = undefined) constructor {
     /// @arg {String} owner The account owner of the repository.
     /// @arg {String} repo The name of the repository without the .git extension.
     /// @arg {String} path Path parameter.
-    /// @arg {String} [ref] The name of the commit/branch/tag. Default: the repository’s default branch.
+    /// @arg {String} [ref] The name of the commit/branch/tag. Default: the repository's default branch.
     /// Documentation: https://docs.github.com/en/rest/repos/contents#get-repository-content
     static getRepositoryContent = function(_owner, _repo, _path, _ref = undefined) {
         // Create Default Headers
@@ -2503,6 +2401,26 @@ function GitHub(_authToken = undefined) constructor {
 
         // Return Header
         return _header;
+    };
+
+    /// @func __buildPaginationQueryParams(perPage, [page])
+    /// @desc Builds the shared per_page/page query string for paginated endpoints,
+    /// clamping values so every endpoint enforces the same bounds. Callers prepend
+    /// the leading "?" themselves.
+    /// @arg {Real} perPage The number of results per page (max 100).
+    /// @arg {Real} [page] The page number of the results to fetch.
+    /// @return {String}
+    /// @ignore
+    static __buildPaginationQueryParams = function(_perPage = undefined, _page = undefined) {
+        var _paginationParams = "";
+        if (_perPage != undefined) {
+            // GitHub accepts 1-100; a higher minimum would silently bump smaller requests
+            _paginationParams += $"per_page={clamp(round(_perPage), 1, 100)}&";
+        }
+        if (_page != undefined) {
+            _paginationParams += $"page={clamp(round(_page), 1, 100)}&";
+        }
+        return _paginationParams;
     };
 
     #endregion

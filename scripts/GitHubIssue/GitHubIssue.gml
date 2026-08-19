@@ -10,7 +10,7 @@
 /// @arg {Array.String} [assignees] A list of users to assign this issue to.
 /// @arg {String} [type] The name of the issue type to associate with this issue.
 /// @arg {String} [state] The state of the issue, either "open" or "closed" (only use when updating an issue).
-/// @arg {String} [stateReason] The state reason of the issue, either "completed", "not_planned", "duplicate", "repopened" or "null" (only use when updating an issue).
+/// @arg {String} [stateReason] The state reason of the issue, either "completed", "not_planned" or "reopened" (only use when updating an issue).
 /// Documentation: https://docs.github.com/en/rest/issues/issues#create-an-issue
 function GitHubIssue(_title = undefined, _body = undefined, _assignee = undefined, _milestone = undefined, _labels = undefined, _assignees = undefined, _type = undefined, _state = undefined, _stateReason = undefined) constructor {
     // Variables

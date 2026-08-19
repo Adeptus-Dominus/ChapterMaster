@@ -12,7 +12,7 @@
 /// @arg {Bool} [generateReleaseNotes] Whether to generate release notes based on the commit history for this release.
 /// @arg {Bool} [makeLatest] Whether to make this the latest release or not.
 /// Documentation: https://docs.github.com/en/rest/releases/releases#create-a-release
-function GitHubRelease(_tagName, _targetCommitish = undefined, _name = undefined, _body = undefined, _draft = false, _prerelease = false, _discussionCategoryName = undefined, _generateReleaseNotes = false, _makeLatest = false) constructor {
+function GitHubRelease(_tagName, _targetCommitish = undefined, _name = undefined, _body = undefined, _draft = undefined, _prerelease = undefined, _discussionCategoryName = undefined, _generateReleaseNotes = undefined, _makeLatest = undefined) constructor {
     // Variables
     tagName = _tagName; // Required
     targetCommitish = _targetCommitish;
@@ -56,10 +56,14 @@ function GitHubRelease(_tagName, _targetCommitish = undefined, _name = undefined
         }
 
         // Draft
-        _struct[$ "draft"] = bool(draft);
+        if (draft != undefined) {
+            _struct[$ "draft"] = bool(draft);
+        }
 
         // Pre-Release
-        _struct[$ "prerelease"] = bool(prerelease);
+        if (prerelease != undefined) {
+            _struct[$ "prerelease"] = bool(prerelease);
+        }
 
         // Discussion Category Name
         if (discussionCategoryName != undefined) {
@@ -67,10 +71,14 @@ function GitHubRelease(_tagName, _targetCommitish = undefined, _name = undefined
         }
 
         // Generate Release Notes
-        _struct[$ "generate_release_notes"] = bool(generateReleaseNotes);
+        if (generateReleaseNotes != undefined) {
+            _struct[$ "generate_release_notes"] = bool(generateReleaseNotes);
+        }
 
         // Make Latest
-        _struct[$ "make_latest"] = makeLatest ? "true" : "false";
+        if (makeLatest != undefined) {
+            _struct[$ "make_latest"] = makeLatest ? "true" : "false";
+        }
 
         // Return JSON
         return json_stringify(_struct);

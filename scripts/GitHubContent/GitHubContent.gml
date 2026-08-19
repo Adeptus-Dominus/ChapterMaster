@@ -5,7 +5,7 @@
 /// @arg {String} commitMessage The commit message.
 /// @arg {Any} content The new file content.
 /// @arg {String} [sha] Required if you are updating a file. The blob SHA of the file being replaced.
-/// @arg {String} [branch] The branch name. Default: the repository’s default branch.
+/// @arg {String} [branch] The branch name. Default: the repository's default branch.
 /// @arg {String} [commiterName] The name of the author or committer of the commit. You'll receive a 422 status code if name is omitted.
 /// @arg {String} [commiterEmail] The email of the author or committer of the commit. You'll receive a 422 status code if email is omitted.
 /// @arg {String} [committerDate] the date of the commit.
@@ -36,7 +36,12 @@ function GitHubContent(_commitMessage, _content, _sha = undefined, _branch = und
 
         // Name and content
         _struct[$ "message"] = commitMessage;
-        _struct[$ "content"] = is_string(content) ? base64_encode(content) : buffer_base64_encode(content, 0, buffer_get_size(content));
+        if (is_string(content)) {
+            _struct[$ "content"] = base64_encode_advanced(content);
+        } else {
+            // Written bytes, not allocation - the allocation would encode trailing padding
+            _struct[$ "content"] = buffer_base64_encode(content, 0, buffer_get_used_size(content));
+        }
 
         // Optional params
         if (sha != undefined) {
@@ -45,26 +50,39 @@ function GitHubContent(_commitMessage, _content, _sha = undefined, _branch = und
         if (branch != undefined) {
             _struct[$ "branch"] = branch;
         }
-        if (committerName != undefined && committerEmail != undefined) {
-            _struct[$ "comitter"] = {
-                name: committerName,
-                email: committerEmail,
-            };
-            if (committerDate != undefined) {
-                _struct[$ "comitter"][$ "date"] = committerDate;
-            }
+        var _committer = __buildPersonPayload(committerName, committerEmail, committerDate);
+        if (_committer != undefined) {
+            _struct[$ "committer"] = _committer;
         }
-        if (authorName != undefined && authorEmail != undefined) {
-            _struct[$ "author"] = {
-                name: authorName,
-                email: authorEmail,
-            };
-            if (authorDate != undefined) {
-                _struct[$ "author"][$ "date"] = authorDate;
-            }
+        var _author = __buildPersonPayload(authorName, authorEmail, authorDate);
+        if (_author != undefined) {
+            _struct[$ "author"] = _author;
         }
 
         // Return JSON
         return json_stringify(_struct);
+    };
+
+    /// @func __buildPersonPayload(name, email, [date])
+    /// @desc Builds the committer/author payload, or undefined when the required
+    /// name/email pair is missing so the field is omitted from the JSON.
+    /// @arg {String} name The person's name.
+    /// @arg {String} email The person's email.
+    /// @arg {String} [date] The commit date string.
+    /// @return {Struct|Undefined}
+    /// @ignore
+    static __buildPersonPayload = function(_name, _email, _date = undefined) {
+        if (_name == undefined || _email == undefined) {
+            return undefined;
+        }
+
+        var _person = {
+            name: _name,
+            email: _email,
+        };
+        if (_date != undefined) {
+            _person[$ "date"] = _date;
+        }
+        return _person;
     };
 }
