@@ -243,8 +243,7 @@ try {
                 } else {
                     garrison_data_slate.sub_title = "";
                 }
-                    garrison_data_slate.sub_title = localize("Garrison Leader {0}", [garrison.garrison_leader.name_role()]);
-                }
+
                 garrison_data_slate.body_text = garrison.garrison_report();
 
                 garrison_data_slate.inside_method = function() {
