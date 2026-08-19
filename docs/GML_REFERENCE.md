@@ -38,6 +38,7 @@ GameMaker Language (GML) is syntactically similar to JavaScript ES3 but has sign
 | `class` | `function ... constructor` + `new` |
 | `var`, `let`, `const` | `var` only |
 | Block scoping with `let`/`const` | Function-level only |
+| closures: inner functions capture enclosing locals | no closures - a method captures only `self`, never enclosing locals (see [Methods and Binding](#methods-and-binding)) |
 | No preprocessor | `#macro` for compile-time constants |
 | `a.length`, `s.length` | `array_length(a)`, `string_length(s)` |
 | `obj["key"]` | `struct[$ "key"]` |
@@ -69,8 +70,8 @@ Objects in GameMaker are **blueprints** (similar to JavaScript classes) from whi
   - `Step` - runs every frame (like an `update()` loop).
   - `Draw` - runs every frame when the instance is visible (like a `render()` method).
   - `Alarm` - timed callbacks, set with `alarm[0] = steps;`.
-  - Collision events, Input events, etc. - triggered by engine‑detected interactions.
-- **Built‑in Instance Variables** - every Object comes with a rich set of default fields (e.g., `x`, `y`, `speed`, `direction`, `image_index`, `visible`, `solid`). These are analogous to predefined properties on a class that the engine uses for movement, rendering, and collision.
+  - Collision events, Input events, etc. - triggered by engine-detected interactions.
+- **Built-in Instance Variables** - every Object comes with a rich set of default fields (e.g., `x`, `y`, `speed`, `direction`, `image_index`, `visible`, `solid`). These are analogous to predefined properties on a class that the engine uses for movement, rendering, and collision.
 - **Inheritance** - Objects can have a **Parent** Object. A child inherits all events and instance variables from its parent, and can override them by defining its own events. The child's events can call the parent's version with `event_inherited()`.
 
 ---
@@ -160,6 +161,7 @@ GML has three primary runtime scopes. At runtime, variable names are resolved in
 
 - Bound to the current function body or event.
 - Control-flow blocks (`if`, `for`, `switch`, `try`) do **not** create a new local scope.
+- Methods created inside a function do **not** inherit its locals - GML has no closures (see [Methods and Binding](#methods-and-binding)).
 
 ### Instance Scope
 
@@ -352,6 +354,21 @@ var _unbound_fn = function() { return self.name; };
 var _bound = method(_context, _unbound_fn);
 // _bound() will return "Cassius"
 ```
+
+> [!WARNING]
+> **No local-scope closures.**
+> Unlike JavaScript, a method does NOT capture the local variables of the function it was created in. When the method runs later, name resolution starts at its own locals, then its bound context (`self`), then globals and built-ins. Reading an outer local from inside a callback fails (or worse, resolves to a same-named variable in the method's own scope chain) - typically a "variable not set" error.
+>
+> Carry the values on a context struct and bind with `method()`:
+> ```gml
+> function fetch_report(_error) {
+>     var _ctx = { error: _error };
+>     var _req = new Request();
+>     _req.setCallback(method(_ctx, function(_result, _request) {
+>         process(self.error, _result); // self.error works, _error does NOT
+>     }));
+> }
+> ```
 
 **Quirks of `method()` and Static Structs:**
 When using explicit binding via `method()`, there are specific rules regarding static structs:
