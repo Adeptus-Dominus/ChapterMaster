@@ -405,7 +405,9 @@ function format_underscore_string(input_string) {
 function base64_encode_advanced(input_string) {
     var _buffer = buffer_create(1, buffer_grow, 1);
     buffer_write(_buffer, buffer_string, input_string);
-    var _encoded_string = buffer_base64_encode(_buffer, 0, buffer_get_size(_buffer));
+    // Encode only the string bytes: buffer_string appends a NUL terminator,
+    // which buffer_get_size would otherwise include in the encoded output.
+    var _encoded_string = buffer_base64_encode(_buffer, 0, string_byte_length(input_string));
     buffer_delete(_buffer);
 
     return _encoded_string;
