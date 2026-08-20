@@ -13,6 +13,7 @@
   },
   "formatter": false,
   "instructions": [
+    "docs/AGENTS.md",
     "docs/GML_REFERENCE.md",
     "docs/CODE_STYLE.md"
   ],
