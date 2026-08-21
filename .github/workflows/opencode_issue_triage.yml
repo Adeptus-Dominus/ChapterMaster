@@ -31,39 +31,46 @@ jobs:
                 "gh issue list *": "allow",
                 "gh issue view *": "allow",
                 "gh issue edit *": "allow",
+                "gh issue comment *": "allow",
                 "gh label list *": "allow",
                 "gh api repos/*/issues/*/comments*": "allow"
               },
-              "write": "deny",
+              "write": {
+                "*": "deny",
+                "/tmp/*": "allow"
+              },
+              "external_directory": {
+                "/tmp/*": "allow"
+              }
               "edit": "deny",
               "webfetch": "deny"
             }
         run: |
           PROMPT="Issue #${ISSUE_NUMBER} opened at ${REPO}.
-          Use \`gh issue view\` and \`gh issue list\` to search through existing issues to find potential duplicates.
-          Consider:
-          1. Similar titles or descriptions
-          2. Same error messages or symptoms
-          If duplicates were found, add \`Status: Duplicate\` label, and post a comment with potential duplicates with links, in this format:
-          \`\`\`
-          This issue might be a duplicate of existing issues. Please check:
-          - #[issue_number]: [brief description of similarity]
-          \`\`\`
-          If no duplicates found, label \`Priority: X\` based on: crash/hardlock=\`Critical\`, error blocking gameplay=\`High\`, feature broken with workaround=\`Medium\`, visual/text=\`Low\`.
-          Useful Commands:
-          - gh issue list --repo ${REPO} --limit 30 --state all --json number,title,body,state,labels,createdAt,author --jq '.[] | \"\(.number) | \(.state) | \(.title) | \(.labels | map(.name) | join(\",\"))\"'
-          - gh issue list --repo ${REPO} --search \"keyword\" --limit 30 --state all --json number,title,body,state
-          - gh issue view --repo ${REPO} <number> --json number,title,body,state,labels,author,comments --jq '{number,title,body,state,labels: [.labels[].name], author: .author.login}'
-          - gh issue view --repo ${REPO} <number> --comments
-          - gh label list --repo ${REPO} --json name,description --jq '.[] | \"\(.name) | \(.description)\"'
-          - gh issue edit --repo ${REPO} <number> --add-label \"Priority: Critical\"
-          - gh issue edit --repo ${REPO} <number> --remove-label \"needs:compliance\"
-          - gh api repos/${REPO}/issues/<number>/comments --method POST -f body=\"comment text\""
+
+          Perform the following triage tasks:
+          1. Classify the issue type:
+             - Types: \`Bug\`, \`Feature\`, or \`Task\`
+             - Command: \`gh issue edit ${ISSUE_NUMBER} --type '<Type>'\`
+
+          2. Assess priority based on severity:
+             - Crash / Data loss / Blocker: \`Urgent\`
+             - Major functionality broken (no workaround): \`High\`
+             - Minor issue or has a workaround: \`Medium\`
+             - Typo / Visual glitch / Cosmetic: \`Low\`
+             - Command: \`gh issue edit ${ISSUE_NUMBER} --priority '<Priority>'\`
+
+          3. Check for duplicates:
+             - Search existing issues using \`gh issue list --state all\`
+             - If a duplicate is found:
+               a. Add duplicate label: \`gh issue edit ${ISSUE_NUMBER} --add-label 'Status: Duplicate'\`
+               b. Post a comment: \`gh issue comment ${ISSUE_NUMBER} --body 'This issue might be a duplicate of (list): - #[number] - [similarity summary]'\`"
 
           opencode run -m opencode/muse-spark-1.2-contributor-free "$PROMPT"
 
       - name: Investigation
         env:
+          REPO: ${{ github.repository }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -72,10 +79,17 @@ jobs:
               "bash": {
                 "*": "deny",
                 "gh issue view *": "allow",
+                "gh issue comment *": "allow",
                 "gh api repos/*/issues/*/comments*": "allow"
               },
-              "write": "deny",
-              "edit": "deny"
+              "edit": "deny",
+              "write": {
+                "*": "deny",
+                "/tmp/*": "allow"
+              },
+              "external_directory": {
+                "/tmp/*": "allow"
+              }
             }
         run: |
           if gh issue view "$ISSUE_NUMBER" --json labels --jq '.labels[].name' | grep -q "^Status: Duplicate$"; then
@@ -83,6 +97,12 @@ jobs:
             exit 0
           fi
 
-          opencode run -m opencode/muse-spark-1.2-contributor-free --agent explore "Investigate issue #$ISSUE_NUMBER.
-          Read relevant GML files, pinpoint likely source, then propose 1-3 fixes.
-          Post as a reply comment."
+          PROMPT="You are investigating Issue #${ISSUE_NUMBER} at ${REPO}.
+          1. Retrieve issue details using: \`gh issue view ${ISSUE_NUMBER} --json title,body\`
+          2. Inspect and read the repository codebase to locate the root cause.
+          3. Propose 1-3 solutions/fixes.
+          4. Post your investigation and proposed fixes as a comment:
+             - Write the markdown response to \`/tmp/comment.md\`
+             - Post it using: \`gh issue comment ${ISSUE_NUMBER} --body-file /tmp/comment.md\`"
+
+          opencode run -m opencode/muse-spark-1.2-contributor-free "$PROMPT"
