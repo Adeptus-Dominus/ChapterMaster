@@ -1,0 +1,50 @@
+name: Bug report
+description: Report an issue that should be fixed
+body:
+  - type: input
+    id: game-version
+    attributes:
+      label: Game version
+      description: What version of ChapterMaster are you using?
+      placeholder: e.g., main-2026-08-19-1803, v0.11.1
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating System
+      description: What OS are you using?
+      placeholder: e.g., macOS 26.0.1, Ubuntu 22.04, Windows 11
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the bug you encountered
+      placeholder: What happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: How can we reproduce this issue?
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: false
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Attach a screenshots, if needed
+      placeholder: Drop screenshots here
+    validations:
+      required: false
