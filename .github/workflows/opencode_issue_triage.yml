@@ -34,7 +34,7 @@ jobs:
               "webfetch": "deny"
             }
         run: |
-          opencode run -m muse-spark-1.2-contributor-free "Issue #${{ github.event.issue.number }} opened.
+          opencode run -m opencode/muse-spark-1.2-contributor-free "Issue #${{ github.event.issue.number }} opened.
           Use \`gh issue view\` and \`gh issue list\` to search through existing issues to find potential duplicates.
           Consider:
           1. Similar titles or descriptions
@@ -67,6 +67,6 @@ jobs:
             exit 0
           fi
 
-          opencode run -m muse-spark-1.2-contributor-free --agent explore "Investigate issue #${{ github.event.issue.number }}.
+          opencode run -m opencode/muse-spark-1.2-contributor-free --agent explore "Investigate issue #${{ github.event.issue.number }}.
           Read relevant GML files, pinpoint likely source, then propose 1-3 fixes.
           Post as a reply comment."
