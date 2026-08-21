@@ -6,6 +6,7 @@ on:
 jobs:
   triage:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
       contents: read
       issues: write
@@ -26,24 +27,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENCODE_PERMISSION: |
             {
-              "bash": {
-                "*": "deny",
-                "gh issue list *": "allow",
-                "gh issue view *": "allow",
-                "gh issue edit *": "allow",
-                "gh issue comment *": "allow",
-                "gh label list *": "allow",
-                "gh api repos/*/issues/*/comments*": "allow"
-              },
-              "write": {
-                "*": "deny",
-                "/tmp/*": "allow"
-              },
-              "external_directory": {
-                "/tmp/*": "allow"
-              }
-              "edit": "deny",
-              "webfetch": "deny"
+              "bash": "allow",
+              "read": "allow",
+              "write": "allow",
+              "external_directory": "allow"
             }
         run: |
           PROMPT="Issue #${ISSUE_NUMBER} opened at ${REPO}.
@@ -76,20 +63,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENCODE_PERMISSION: |
             {
-              "bash": {
-                "*": "deny",
-                "gh issue view *": "allow",
-                "gh issue comment *": "allow",
-                "gh api repos/*/issues/*/comments*": "allow"
-              },
-              "edit": "deny",
-              "write": {
-                "*": "deny",
-                "/tmp/*": "allow"
-              },
-              "external_directory": {
-                "/tmp/*": "allow"
-              }
+              "bash": "allow",
+              "read": "allow",
+              "write": "allow",
+              "external_directory": "allow"
             }
         run: |
           if gh issue view "$ISSUE_NUMBER" --json labels --jq '.labels[].name' | grep -q "^Status: Duplicate$"; then
