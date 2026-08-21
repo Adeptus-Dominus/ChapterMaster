@@ -15,58 +15,74 @@ jobs:
         with:
           fetch-depth: 1
 
-      - run: curl -fsSL https://opencode.ai/install | bash
+      - name: Install OpenCode
+        run: curl -fsSL https://opencode.ai/install | bash
 
       - name: Triage
         env:
+          REPO: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENCODE_PERMISSION: |
             {
               "bash": {
                 "*": "deny",
-                "gh issue*": "allow",
-                "gh api *": "allow",
-                "gh api *DELETE*": "deny"
+                "gh issue list *": "allow",
+                "gh issue view *": "allow",
+                "gh issue edit *": "allow",
+                "gh label list *": "allow",
+                "gh api repos/*/issues/*/comments*": "allow"
               },
               "write": "deny",
               "edit": "deny",
               "webfetch": "deny"
             }
         run: |
-          opencode run -m opencode/muse-spark-1.2-contributor-free "Issue #${{ github.event.issue.number }} opened.
+          PROMPT="Issue #${ISSUE_NUMBER} opened at ${REPO}.
           Use \`gh issue view\` and \`gh issue list\` to search through existing issues to find potential duplicates.
           Consider:
           1. Similar titles or descriptions
           2. Same error messages or symptoms
-          If duplicates were found, use \`gh issue edit\` to add \`Status: Duplicate\` label, and post a comment with potential duplicates with links, in this format:
+          If duplicates were found, add \`Status: Duplicate\` label, and post a comment with potential duplicates with links, in this format:
           \`\`\`
           This issue might be a duplicate of existing issues. Please check:
           - #[issue_number]: [brief description of similarity]
           \`\`\`
-          If no duplicates found, use \`gh issue edit\` to label \`Priority: X\` based on: crash/hardlock=\`Critical\`, error blocking gameplay=\`High\`, feature broken with workaround=\`Medium\`, visual/text=\`Low\`."
+          If no duplicates found, label \`Priority: X\` based on: crash/hardlock=\`Critical\`, error blocking gameplay=\`High\`, feature broken with workaround=\`Medium\`, visual/text=\`Low\`.
+          Useful Commands:
+          - gh issue list --repo ${REPO} --limit 30 --state all --json number,title,body,state,labels,createdAt,author --jq '.[] | \"\(.number) | \(.state) | \(.title) | \(.labels | map(.name) | join(\",\"))\"'
+          - gh issue list --repo ${REPO} --search \"keyword\" --limit 30 --state all --json number,title,body,state
+          - gh issue view --repo ${REPO} <number> --json number,title,body,state,labels,author,comments --jq '{number,title,body,state,labels: [.labels[].name], author: .author.login}'
+          - gh issue view --repo ${REPO} <number> --comments
+          - gh label list --repo ${REPO} --json name,description --jq '.[] | \"\(.name) | \(.description)\"'
+          - gh issue edit --repo ${REPO} <number> --add-label \"Priority: Critical\"
+          - gh issue edit --repo ${REPO} <number> --remove-label \"needs:compliance\"
+          - gh api repos/${REPO}/issues/<number>/comments --method POST -f body=\"comment text\""
+
+          opencode run -m opencode/muse-spark-1.2-contributor-free "$PROMPT"
 
       - name: Investigation
         env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENCODE_PERMISSION: |
             {
               "bash": {
                 "*": "deny",
-                "gh issue*": "allow",
-                "gh api *": "allow",
-                "gh api *DELETE*": "deny"
+                "gh issue view *": "allow",
+                "gh api repos/*/issues/*/comments*": "allow"
               },
               "write": "deny",
               "edit": "deny"
             }
         run: |
-          if gh issue view ${{ github.event.issue.number }} --json labels --jq '.labels[].name' | grep -q "Status: Duplicate"; then
+          if gh issue view "$ISSUE_NUMBER" --json labels --jq '.labels[].name' | grep -q "^Status: Duplicate$"; then
             echo "Skipping investigation - duplicate"
             exit 0
           fi
 
-          opencode run -m opencode/muse-spark-1.2-contributor-free --agent explore "Investigate issue #${{ github.event.issue.number }}.
+          opencode run -m opencode/muse-spark-1.2-contributor-free --agent explore "Investigate issue #$ISSUE_NUMBER.
           Read relevant GML files, pinpoint likely source, then propose 1-3 fixes.
           Post as a reply comment."
