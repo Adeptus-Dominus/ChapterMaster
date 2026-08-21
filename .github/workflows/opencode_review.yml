@@ -90,4 +90,4 @@ jobs:
 
           Only create comments for actual violations. If the code follows all guidelines, comment using gh cli that it looks good and nothing else.
           PROMPT_EOF
-          cat /tmp/prompt.txt | opencode run -m muse-spark-1.2-contributor-free --variant xhigh --agent pr_review
+          cat /tmp/prompt.txt | opencode run -m opencode/muse-spark-1.2-contributor-free --variant xhigh --agent pr_review
