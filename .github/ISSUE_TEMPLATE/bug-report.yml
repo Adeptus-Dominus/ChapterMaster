@@ -1,4 +1,5 @@
-name: Bug report
+name: 🐞 Bug report
+type: Bug
 description: Report an issue that should be fixed
 body:
   - type: input
