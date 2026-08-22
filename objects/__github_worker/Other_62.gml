@@ -104,7 +104,11 @@ if (variable_struct_exists(_system.__activeRequests, async_load[? "id"])) {
         _requestObject.httpStatus = async_load[? "http_status"];
 
         // No response body exists - carry the failure details instead
-        var _errorBody = {error: "network_error", status: async_load[? "status"], url: async_load[? "url"]};
+        var _errorBody = {
+            error: "network_error",
+            status: async_load[? "status"],
+            url: async_load[? "url"],
+        };
 
         if (is_method(_requestObject.errorback)) {
             _requestObject.errorback(_errorBody, _requestObject);
