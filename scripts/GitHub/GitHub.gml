@@ -496,7 +496,9 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Request
-        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/comments/{_commentID}", "PATCH", _header, json_stringify({body: _body}));
+        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/comments/{_commentID}", "PATCH", _header, json_stringify({
+            body: _body,
+        }));
 
         // Create GitHub Request
         var _githubRequest = new GitHubRequest(_request.requestID);
@@ -569,7 +571,9 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Request
-        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/{_issueID}/comments", "POST", _header, json_stringify({body: _body}));
+        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/{_issueID}/comments", "POST", _header, json_stringify({
+            body: _body,
+        }));
 
         // Create GitHub Request
         var _githubRequest = new GitHubRequest(_request.requestID);
@@ -844,7 +848,9 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Request
-        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/{_issueID}/lock", "PUT", _header, json_stringify({lock_reason: _lockReason}));
+        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/{_issueID}/lock", "PUT", _header, json_stringify({
+            lock_reason: _lockReason,
+        }));
 
         // Create GitHub Request
         var _githubRequest = new GitHubRequest(_request.requestID);
@@ -987,7 +993,9 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Request
-        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/{_issueID}/labels", "POST", _header, json_stringify({labels: _labels}));
+        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/{_issueID}/labels", "POST", _header, json_stringify({
+            labels: _labels,
+        }));
 
         // Create GitHub Request
         var _githubRequest = new GitHubRequest(_request.requestID);
@@ -1008,7 +1016,9 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Request
-        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/{_issueID}/labels", "PUT", _header, json_stringify({labels: _labels}));
+        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/{_issueID}/labels", "PUT", _header, json_stringify({
+            labels: _labels,
+        }));
 
         // Create GitHub Request
         var _githubRequest = new GitHubRequest(_request.requestID);
@@ -1416,7 +1426,9 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Request
-        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/{_issueID}/sub_issue", "DELETE", _header, json_stringify({sub_issue_id: _subIssueID}));
+        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}repos/{_owner}/{_repo}/issues/{_issueID}/sub_issue", "DELETE", _header, json_stringify({
+            sub_issue_id: _subIssueID,
+        }));
 
         // Create GitHub Request
         var _githubRequest = new GitHubRequest(_request.requestID);
@@ -1917,7 +1929,9 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Request
-        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}gists/{_gistID}/comments", "POST", _header, json_stringify({body: _body}));
+        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}gists/{_gistID}/comments", "POST", _header, json_stringify({
+            body: _body,
+        }));
 
         // Create GitHub Request
         var _githubRequest = new GitHubRequest(_request.requestID);
@@ -1956,7 +1970,9 @@ function GitHub(_authToken = undefined) constructor {
         var _header = __createDefaultHeaders();
 
         // Create Request
-        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}gists/{_gistID}/comments/{_commentID}", "PATCH", _header, json_stringify({body: _body}));
+        var _request = new HTTPRequest($"{GITHUB_GML_ROOT_URL}gists/{_gistID}/comments/{_commentID}", "PATCH", _header, json_stringify({
+            body: _body,
+        }));
 
         // Create GitHub Request
         var _githubRequest = new GitHubRequest(_request.requestID);
