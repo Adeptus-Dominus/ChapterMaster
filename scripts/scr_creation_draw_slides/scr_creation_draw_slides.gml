@@ -13,15 +13,15 @@ function draw_chapter_select() {
     draw_set_color(CM_GREEN_COLOR);
     draw_set_font(cjk_font(fnt_40k_30b));
     draw_set_halign(fa_center);
-    draw_text(800, 80, localize("Select Chapter"));
+    draw_text(800, 80, localize("STR_CREATE_SELECT_CHAPTER"));
 
     draw_set_font(cjk_font(fnt_40k_30b));
     draw_set_halign(fa_left);
 
-    draw_text_transformed(440, founding_y, localize("Founding Chapters"), 0.75, 0.75, 0);
-    draw_text_transformed(440, successor_y, localize("Existing Chapters"), 0.75, 0.75, 0);
-    draw_text_transformed(440, custom_y, localize("Custom Chapters"), 0.75, 0.75, 0);
-    draw_text_transformed(440, other_y, localize("Other"), 0.75, 0.75, 0);
+    draw_text_transformed(440, founding_y, localize("STR_CREATE_FOUNDING_CHAPTERS"), 0.75, 0.75, 0);
+    draw_text_transformed(440, successor_y, localize("STR_CREATE_EXISTING_CHAPTERS"), 0.75, 0.75, 0);
+    draw_text_transformed(440, custom_y, localize("STR_CREATE_CUSTOM_CHAPTERS"), 0.75, 0.75, 0);
+    draw_text_transformed(440, other_y, localize("STR_CREATE_OTHER"), 0.75, 0.75, 0);
 
     /// @localvar grid object to keep track of where to draw icon boxes
     var grid = {
@@ -354,7 +354,7 @@ function draw_chapter_select() {
             var chap = all_chapters[highlight];
             tooltip = localize(chap.name);
             if (chap.progenitor != 0 && chap.progenitor < 10) {
-                tooltip += "  - " + localize("Progenitor: {0}", [localize(all_chapters[chap.progenitor].name)]);
+                tooltip += "  - " + localize("STR_CREATE_PROGENITOR", [localize(all_chapters[chap.progenitor].name)]);
             }
             tooltip2 = localize(chap.tooltip);
         }
@@ -362,7 +362,7 @@ function draw_chapter_select() {
             tooltip = localize("Custom");
         }
         if (highlight == 1002) {
-            tooltip = localize("Randomize");
+            tooltip = localize("STR_CREATE_RANDOMIZE");
         }
         if (highlight == 1001) {
             tooltip2 = localize("Create your own customized Chapter, deciding the origins, strength, and weaknesses.  Custom Chapters are weaker than Founding Chapters.");
@@ -382,7 +382,7 @@ function setup_chapter_trait_select() {
             tooltip: localize("Homeworld\nYour Chapter has a homeworld that they base on.  Contained upon it is a massive Fortress Monastery, which provides high levels of defense and automated weapons."),
         },
         {
-            str1: localize("Fleet Based"),
+            str1: localize("STR_CREATE_FLEET_BASED"),
             font: fnt_40k_14b,
             tooltip: localize("Fleet Based\nRather than a homeworld, your Chapter begins near their recruiting world.  The fleet includes a Battle Barge, which serves as a mobile base, and powerful ship."),
         },
@@ -391,7 +391,7 @@ function setup_chapter_trait_select() {
             font: fnt_40k_14b,
             tooltip: localize("Penitent\nAs with Fleet Based, but you must crusade and fight until your penitence meter runs out.  Note that recruiting is disabled until then."),
         },
-    ], localize("Chapter Type"), {
+    ], localize("STR_CREATE_CHAPTER_TYPE"), {
         x1: 445,
         y1: 211,
         max_width: 1125 - 445,
@@ -437,7 +437,7 @@ function draw_chapter_trait_select() {
     }
 
     draw_set_color(CM_GREEN_COLOR);
-    draw_text_transformed(800, 120, string_hash_to_newline(localize("Points: {0}/{1}", [points, maxpoints])), 0.6, 0.6, 0);
+    draw_text_transformed(800, 120, string_hash_to_newline(localize("STR_CREATE_POINTS", [points, maxpoints])), 0.6, 0.6, 0);
 
     obj_cursor.image_index = 0;
     if ((custom != eCHAPTER_TYPE.PREMADE) && (restarted == 0)) {
@@ -467,13 +467,13 @@ function draw_chapter_trait_select() {
         draw_line(445, 291, 1125, 291);
 
         draw_set_halign(fa_center);
-        draw_text_transformed(800, 301, localize("Chapter Stats"), 0.6, 0.6, 0);
+        draw_text_transformed(800, 301, localize("STR_CREATE_CHAPTER_STATS"), 0.6, 0.6, 0);
         draw_set_halign(fa_left);
 
-        draw_text_transformed(505, 332, localize("Strength: {0} ({1})", [global.chapter_strength_ratings[strength], string(strength)]), 0.5, 0.5, 0);
-        draw_text_transformed(505, 387, localize("Cooperation: {0}  ({1})", [global.chapter_cooperation_ratings[cooperation], string(cooperation)]), 0.5, 0.5, 0);
-        draw_text_transformed(505, 442, localize("Gene-Seed Purity: {0} ({1})", [global.chapter_geneseed_ratings[purity], string(purity)]), 0.5, 0.5, 0);
-        draw_text_transformed(505, 497, localize("Gene-Seed Stability: ({0}%)", [string(stability)]), 0.5, 0.5, 0);
+        draw_text_transformed(505, 332, localize("STR_CREATE_STRENGTH_2", [global.chapter_strength_ratings[strength], string(strength)]), 0.5, 0.5, 0);
+        draw_text_transformed(505, 387, localize("STR_CREATE_COOPERATION_2", [global.chapter_cooperation_ratings[cooperation], string(cooperation)]), 0.5, 0.5, 0);
+        draw_text_transformed(505, 442, localize("STR_CREATE_SEED_PURITY_2", [global.chapter_geneseed_ratings[purity], string(purity)]), 0.5, 0.5, 0);
+        draw_text_transformed(505, 497, localize("STR_CREATE_SEED_STABILITY_2", [string(stability)]), 0.5, 0.5, 0);
 
         var arrow_buttons_controls = [
             strength,
@@ -505,8 +505,8 @@ function draw_chapter_trait_select() {
                 draw_sprite_stretched(spr_arrow, 0, 436, 325 + (i * 55), 32, 32);
                 if (scr_hit(436, 325 + (i * 55), 436 + sprite_get_width(spr_arrow), 357 + (i * 55))) {
                     obj_cursor.image_index = 1;
-                    tooltip = localize("Decrease");
-                    tooltip2 = localize("(Hold Ctrl to decrease by 10)");
+                    tooltip = localize("STR_MISC_DECREASE");
+                    tooltip2 = localize("STR_CREATE_STAT_DEC_TOOLTIP");
                     if (mouse_button_clicked() && (arrow_buttons_controls[i] - click_change) >= scores_min[i]) {
                         arrow_buttons_controls[i] -= click_change;
                         points -= score_costs[i] * click_change;
@@ -515,8 +515,8 @@ function draw_chapter_trait_select() {
                 draw_sprite_stretched(spr_arrow, 1, 470, 325 + (i * 55), 32, 32);
                 if (scr_hit(470, 325 + (i * 55), 470 + sprite_get_width(spr_arrow), 357 + (i * 55))) {
                     obj_cursor.image_index = 1;
-                    tooltip = localize("Increase");
-                    tooltip2 = localize("(Hold Ctrl to increase by 10)");
+                    tooltip = localize("STR_MISC_INCREASE");
+                    tooltip2 = localize("STR_CREATE_STAT_INC_TOOLTIP");
                     if (mouse_button_clicked() && (arrow_buttons_controls[i] + click_change) <= scores_max[i] && (points + (score_costs[i] * click_change) <= maxpoints)) {
                         arrow_buttons_controls[i] += click_change;
                         points += score_costs[i] * click_change;
@@ -535,15 +535,15 @@ function draw_chapter_trait_select() {
             tooltip2 = localize("How many Space Marines your Chapter has. \nFor every score below five a company will be removed; conversely, each score higher grants 50 additional Astartes.");
         }
         if (scr_hit(505, 380, 800, 412)) {
-            tooltip = localize("Cooperation");
+            tooltip = localize("STR_CREATE_COOPERATION");
             tooltip2 = localize("How diplomatic your Chapter is. \nA low score will lower starting dispositions of Imperial factions and make disposition increases less likely to occur.");
         }
         if (scr_hit(505, 435, 800, 467)) {
-            tooltip = localize("Gene-Seed Purity");
+            tooltip = localize("STR_CREATE_SEED_PURITY");
             tooltip2 = localize("How many inherent mutations your gene-seed has. \nEach score below ten requires one mutation to be chosen.");
         }
         if (scr_hit(505, 490, 800, 522)) {
-            tooltip = localize("Gene-Seed Stability");
+            tooltip = localize("STR_CREATE_SEED_STABILITY");
             tooltip2 = localize("How easily new mutations and corruption can occur with your Chapter's gene-seed. \nAffects the amount of random mutations your existing Space Marines have, and the amount new Aspirants get after the implantation is finished.");
         }
     }
@@ -562,11 +562,11 @@ function draw_chapter_trait_select() {
 
         draw_set_alpha(1);
         if (scr_hit(436, 564, 631, 583)) {
-            tooltip = localize("Chapter Advantages");
+            tooltip = localize("STR_CREATE_CHAPTER_ADVANTAGES");
             tooltip2 = localize("Advantages cost points, and improve the performance of your Chapter in a specific domain. You can only have one trait of the same category, shown in brackets.");
         }
         if (scr_hit(810, 564, 1030, 583)) {
-            tooltip = localize("Chapter Disadvantages");
+            tooltip = localize("STR_CREATE_CHAPTER_DISADVANTAGES");
             tooltip2 = localize("Disadvantages grant additional points, and penalize the performance of your Chapter. You can only have one trait of the same category, shown in brackets.");
         }
     } else if (popup == "icons") {
@@ -581,7 +581,7 @@ function draw_chapter_trait_select() {
 
         draw_set_font(cjk_font(fnt_40k_30b));
         draw_set_halign(fa_center);
-        draw_text_transformed(800, 211, localize("Select an Icon"), 0.6, 0.6, 0);
+        draw_text_transformed(800, 211, localize("STR_CREATE_SELECT_AN_ICON"), 0.6, 0.6, 0);
         draw_text_transformed(800, 687, localize("Cancel"), 0.6, 0.6, 0);
 
         var cw = string_width(localize("Cancel")) * 0.6;
@@ -681,7 +681,7 @@ function draw_chapter_homeworld_select() {
     left_data_slate.inside_method = function() {
         if (!buttons.complex_homeworld.active) {
             var trial_data = scr_trial_data();
-            var _trial_label = localize("Aspirant Trial");
+            var _trial_label = localize("STR_CREATE_ASPIRANT_TRIAL");
             draw_text_transformed(160, 90, _trial_label, 0.6, 0.6, 0);
 
             if (custom == eCHAPTER_TYPE.CUSTOM) {
@@ -717,7 +717,7 @@ function draw_chapter_homeworld_select() {
             draw_text_ext_transformed(160, 150, asp_info, -1, left_data_slate.width - 20, 0.4, 0.4, 0);
 
             if (scr_hit(50, 480, 950, 510)) {
-                tooltip = localize("Aspirant Trial");
+                tooltip = localize("STR_CREATE_ASPIRANT_TRIAL");
                 tooltip2 = localize("A special challenge is needed for Aspirants to be judged worthy of becoming Astartes.  After completing the Trial they then become a Neophyte, beginning implantation and training.  (This can be changed once in game, but the chosen trial here will affect the spawn characteristics of your starting Space Marines).");
             }
         } else {

@@ -162,13 +162,13 @@ function reset_manage_unit_constants(unit) {
 
         // Corruption
         if ((obj_controller.chaos_rating > 0) && (_psionic != "")) {
-            _psionic = localize("{0}\n{1}% Corruption.", [_psionic, max(0, unit.corruption())]);
+            _psionic = localize("STR_VIEW_CORRUPTION", [_psionic, max(0, unit.corruption())]);
         }
 
         unit_manage_constants.psy = new LabeledIcon(spr_icon_psyker, _psionic, 0, 0, {
             icon_width: 24,
             icon_height: 24,
-            tooltip: localize("==Psychic Stats==\n{0}", [_tooltip]),
+            tooltip: localize("STR_VIEW_PSYCHIC_STATS", [_tooltip]),
         });
         // Damage Resistance
 
@@ -183,7 +183,7 @@ function reset_manage_unit_constants(unit) {
         });
         var _hp_val = $"{round(unit.hp())}/{unit.max_health()}";
         var _hp_tool = localize("A measure of how much punishment the creature can take. Marines can go into the negatives and still survive, but they'll require a bionic to become fighting fit once more.\n\nContributing factors:\n");
-        _hp_tool += localize("CON: {0}\n", [unit.constitution * 3]);
+        _hp_tool += localize("STR_STAT_CON_2", [unit.constitution * 3]);
 
         _hp_tool += _equip_data.set_attribute_string("hp_mod");
 
@@ -202,7 +202,7 @@ function reset_manage_unit_constants(unit) {
         _armour_tool += _equip_data.set_attribute_string("armour_value");
 
         if (obj_controller.stc_bonus[1] == 5 || obj_controller.stc_bonus[2] == 3) {
-            _armour_tool += localize("STC Bonus: x1.05\n");
+            _armour_tool += localize("STR_STAT_STC_BONUS_X1_05");
         }
 
         unit_manage_constants.armour = new LabeledIcon(spr_icon_shield2, _armour_val, 0, 0, {
@@ -222,7 +222,7 @@ function reset_manage_unit_constants(unit) {
         unit_manage_constants.melee_attack = new LabeledIcon(spr_icon_weapon_skill, $"{round(_melee[0])}", 0, 0, {
             icon_width: 24,
             icon_height: 24,
-            tooltip: localize("==Melee Attack==\n{0}", [_melee[1]]),
+            tooltip: localize("STR_STAT_MELEE_ATTACK", [_melee[1]]),
             colour: unit.encumbered_melee ? #bf4040 : CM_GREEN_COLOR,
         });
 
@@ -230,7 +230,7 @@ function reset_manage_unit_constants(unit) {
         unit_manage_constants.melee_burden = new LabeledIcon(spr_icon_weight, $"{_carry[0]}/{_carry[1]}", 0, 0, {
             icon_width: 24,
             icon_height: 24,
-            tooltip: localize("==Melee Burden==\n{0}", [_carry[2]]),
+            tooltip: localize("STR_STAT_MELEE_BURDEN", [_carry[2]]),
             colour: unit.encumbered_melee ? #bf4040 : CM_GREEN_COLOR,
         });
 
@@ -239,7 +239,7 @@ function reset_manage_unit_constants(unit) {
         unit_manage_constants.ranged_attack = new LabeledIcon(spr_icon_ballistic_skill, $"{round(_range[0])}", 0, 0, {
             icon_width: 24,
             icon_height: 24,
-            tooltip: localize("==Ranged Attack==\n{0}", [_range[1]]),
+            tooltip: localize("STR_STAT_RANGED_ATTACK", [_range[1]]),
             colour: unit.encumbered_ranged ? #bf4040 : CM_GREEN_COLOR,
         });
 
@@ -247,7 +247,7 @@ function reset_manage_unit_constants(unit) {
         unit_manage_constants.ranged_burden = new LabeledIcon(spr_icon_weight, $"{_carry[0]}/{_carry[1]}", 0, 0, {
             icon_width: 24,
             icon_height: 24,
-            tooltip: localize("==Ranged Burden==\n{0}", [_carry[2]]),
+            tooltip: localize("STR_STAT_RANGED_BURDEN", [_carry[2]]),
             colour: unit.encumbered_ranged ? #bf4040 : CM_GREEN_COLOR,
         });
 
@@ -258,7 +258,7 @@ function reset_manage_unit_constants(unit) {
         var _bionic_tool = localize("Bionic Augmentation is something a unit can do to both enhance their capabilities, but also replace a missing limb to get back into the fight.");
         _bionic_tool += localize("\nThere is a limit of 10 Bionic augmentations. After that the damage is so extensive that a marine requires a dreadnought to keep going.");
         _bionic_tool += localize("\nFor everyone else? It's time for the emperor's mercy.");
-        _bionic_tool += localize("\n\nCurrent Bionic Augmentations:\n");
+        _bionic_tool += localize("STR_STAT_CURRENT_BIONIC_AUGMENTATIONS");
 
         var _body_parts = global.unit_body_parts;
         var _body_parts_display = global.unit_body_parts_display;
@@ -266,29 +266,29 @@ function reset_manage_unit_constants(unit) {
         for (var part = 0; part < array_length(_body_parts); part++) {
             if (struct_exists(unit.body[$ _body_parts[part]], "bionic")) {
                 var part_display = _body_parts_display[part];
-                _bionic_tool += localize("Bionic {0}", [localize(part_display)]);
+                _bionic_tool += localize("STR_STAT_BIONIC", [localize(part_display)]);
                 switch (part_display) {
                     case "Left Leg":
                     case "Right Leg":
-                        _bionic_tool += localize(" (CON: +2 STR: +1 DEX: -2)\n");
+                        _bionic_tool += localize("STR_STAT_CON_2_STR_1_DEX_2");
                         break;
                     case "Left Eye":
                     case "Right Eye":
-                        _bionic_tool += localize(" (CON: +1 WIS: +1 DEX: +1)\n");
+                        _bionic_tool += localize("STR_BIONIC_EYE_TOOLTIP");
                         break;
                     case "Left Arm":
                     case "Right Arm":
-                        _bionic_tool += localize(" (CON: +2 STR: +2 WS: -1)\n");
+                        _bionic_tool += localize("STR_BIONIC_ARM_TOOLTIP");
                         break;
                     case "Torso":
-                        _bionic_tool += localize(" (CON: +4 STR: +1 DEX: -1)\n");
+                        _bionic_tool += localize("STR_BIONIC_TORSO_TOOLTIP");
                         break;
                     case "Throat":
-                        _bionic_tool += localize(" (CHA: -1)\n");
+                        _bionic_tool += localize("STR_BIONIC_THROAT_TOOLTIP");
                         break;
                     case "Jaw":
                     case "Head":
-                        _bionic_tool += localize(" (CON: +1)\n");
+                        _bionic_tool += localize("STR_BIONIC_HEAD_TOOLTIP");
                         break;
                 }
             }
@@ -332,10 +332,10 @@ function reset_manage_unit_constants(unit) {
         if (unit.company <= 0) {
             _role_name = localize(unit.squad_role());
         } else if (unit.IsSpecialist()) {
-            _comp_string = localize("{0} Company", [unit.company_roman()]);
+            _comp_string = localize("STR_COMPANY_COMPANY", [unit.company_roman()]);
             _role_name = localize(unit.role());
         } else {
-            _comp_string = localize("{0} Company", [unit.company_roman()]);
+            _comp_string = localize("STR_COMPANY_COMPANY", [unit.company_roman()]);
             _role_name = localize(unit.squad_role());
         }
 
@@ -379,7 +379,7 @@ function company_specific_management() {
     if (managing > 20) {
         _comp = managing - 10;
     } else if ((managing >= 1) && (managing <= 10)) {
-        _company_name = localize("{0} Company", [int_to_roman(managing)]);
+        _company_name = localize("STR_COMPANY_COMPANY", [int_to_roman(managing)]);
         _comp = managing;
     } else if (managing > 10) {
         switch (managing) {
@@ -387,13 +387,13 @@ function company_specific_management() {
                 _company_name = localize("Headquarters");
                 break;
             case 12:
-                _company_name = localize("Apothecarion");
+                _company_name = localize("STR_MANAGE_APOTHECARIUM_2");
                 break;
             case 13:
                 _company_name = localize("Librarium");
                 break;
             case 14:
-                _company_name = localize("Reclusium");
+                _company_name = localize("STR_MANAGE_RECLUSIUM");
                 break;
             case 15:
                 _company_name = localize("Armamentarium");
@@ -401,7 +401,7 @@ function company_specific_management() {
         }
     }
     // Draw the company followed by chapters name
-    draw_text(800, 64, localize("{0}, {1}", [_company_name, global.chapter_name]));
+    draw_text(800, 64, localize("STR_COMPANY_FRAG", [_company_name, global.chapter_name]));
     if (managing <= 10) {
         var _text_input = management_buttons.company_namer;
 
@@ -578,7 +578,7 @@ function draw_sprite_and_unit_equip_data() {
                     var cur_squad = company_data.grab_current_squad();
                     var sgt_possible = cur_squad.type != "command_squad" && !selected_unit.IsSpecialist(SPECIALISTS_SQUAD_LEADERS);
                     if (!is_struct(cur_squad.squad_leader) || selected_unit.uid != cur_squad.squad_leader.uid) {
-                        if (point_and_click(draw_unit_buttons([xx + 200 + 50, yy + 329], localize("Make Sgt"), [1, 1], #50a076,,, sgt_possible ? 1 : 0.5)) && sgt_possible) {
+                        if (point_and_click(draw_unit_buttons([xx + 200 + 50, yy + 329], localize("STR_COMPANY_MAKE_SGT"), [1, 1], #50a076,,, sgt_possible ? 1 : 0.5)) && sgt_possible) {
                             cur_squad.change_sgt(selected_unit);
                         }
                     }
@@ -816,7 +816,7 @@ function scr_ui_manage() {
                     },
                     purpose: localize("{0} Company Captain Candidates", [int_to_roman(managing)]),
                     purpose_code: "captain_promote",
-                    button_text: localize("New Captain Required"),
+                    button_text: localize("STR_COMPANY_NO_CAPTAIN"),
                     unit_check: "captain",
                 },
                 {
@@ -837,7 +837,7 @@ function scr_ui_manage() {
                     },
                     purpose: localize("{0} Company Champion Candidates", [int_to_roman(managing)]),
                     purpose_code: "champion_promote",
-                    button_text: localize("Champion Required"),
+                    button_text: localize("STR_COMPANY_NO_CHAMPION"),
                     unit_check: "champion",
                 },
                 {
@@ -851,7 +851,7 @@ function scr_ui_manage() {
                     },
                     purpose: localize("{0} Company Ancient Candidates", [int_to_roman(managing)]),
                     purpose_code: "ancient_promote",
-                    button_text: localize("Ancient Required"),
+                    button_text: localize("STR_COMPANY_NO_ANCIENT"),
                     unit_check: "ancient",
                 },
                 {
@@ -872,7 +872,7 @@ function scr_ui_manage() {
                     },
                     purpose: localize("{0} Company Chaplain Candidates", [int_to_roman(managing)]),
                     purpose_code: "chaplain_promote",
-                    button_text: localize("Chaplain Required"),
+                    button_text: localize("STR_COMPANY_NO_CHAPLAIN"),
                     unit_check: "chaplain",
                 },
                 {
@@ -893,7 +893,7 @@ function scr_ui_manage() {
                     },
                     purpose: localize("{0} Company Apothecary Candidates", [int_to_roman(managing)]),
                     purpose_code: "apothecary_promote",
-                    button_text: localize("Apothecary Required"),
+                    button_text: localize("STR_COMPANY_NO_APOTHECARY"),
                     unit_check: "apothecary",
                 },
                 {
@@ -914,13 +914,13 @@ function scr_ui_manage() {
                     },
                     purpose: localize("{0} Company Tech Marine Candidates", [int_to_roman(managing)]),
                     purpose_code: "tech_marine_promote",
-                    button_text: localize("Tech Marine Required"),
+                    button_text: localize("STR_COMPANY_NO_TECHMARINE"),
                     unit_check: "tech_marine",
                 },
             ];
 
             if (!scr_has_disadv("Psyker Intolerant")) {
-                array_push(_command_slots_data, {search_params: {companies: [managing, 0]}, role_group_params: {group: [SPECIALISTS_LIBRARIANS, false, false], location: "", opposite: false}, purpose: localize("{0} Company Librarian Candidates", [int_to_roman(managing)]), purpose_code: "librarian_promote", button_text: localize("Librarian Required"), unit_check: "lib"});
+                array_push(_command_slots_data, {search_params: {companies: [managing, 0]}, role_group_params: {group: [SPECIALISTS_LIBRARIANS, false, false], location: "", opposite: false}, purpose: localize("{0} Company Librarian Candidates", [int_to_roman(managing)]), purpose_code: "librarian_promote", button_text: localize("STR_COMPANY_NO_LIBRARIAN"), unit_check: "lib"});
             }
 
             return _command_slots_data;
@@ -1078,20 +1078,20 @@ function scr_ui_manage() {
         // Draw companies
         if (managing > 0) {
             if (managing >= 1 && managing <= 10) {
-                fx = localize("{0} Company", [int_to_roman(managing)]);
+                fx = localize("STR_COMPANY_COMPANY", [int_to_roman(managing)]);
             } else if (managing > 10) {
                 switch (managing) {
                     case 11:
                         fx = localize("Headquarters");
                         break;
                     case 12:
-                        fx = localize("Apothecarion");
+                        fx = localize("STR_MANAGE_APOTHECARIUM_2");
                         break;
                     case 13:
                         fx = localize("Librarium");
                         break;
                     case 14:
-                        fx = localize("Reclusium");
+                        fx = localize("STR_MANAGE_RECLUSIUM");
                         break;
                     case 15:
                         fx = localize("Armamentarium");
@@ -1108,7 +1108,7 @@ function scr_ui_manage() {
         if (managing >= 0 && managing <= 10) {
             if (obj_ini.company_title[managing] != "") {
                 draw_set_font(cjk_font(fnt_fancy));
-                draw_text(xx + 800, yy + 110, localize("''{0}''", [obj_ini.company_title[managing]]));
+                draw_text(xx + 800, yy + 110, localize("STR_UNIT_FRAG", [obj_ini.company_title[managing]]));
             }
         }
 
@@ -1261,11 +1261,11 @@ function draw_manage_selection_buttons() {
     button.y2 = button.y1 + button.h;
 
     // // Re equip button
-    button.label = localize("Re-equip");
+    button.label = localize("STR_UNIT_REEQUIP");
     var equip_possible = !_non_control_loc && man_size > 0;
     button.alpha = equip_possible ? 1 : 0.5;
     button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("E"));
-    button.tooltip = localize("Press Shift E");
+    button.tooltip = localize("STR_UNIT_PRESS_SHIFT_E");
 
     if (button.draw() && equip_possible) {
         set_up_equip_popup();
@@ -1276,7 +1276,7 @@ function draw_manage_selection_buttons() {
     button.x1 = action_button_x;
     button.label = localize("Promote");
     button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("P"));
-    button.tooltip = localize("Press Shift P");
+    button.tooltip = localize("STR_UNIT_PRESS_SHIFT_P");
     var promote_possible = sel_promoting > 0 && !_non_control_loc && man_size > 0;
     button.alpha = promote_possible ? 1 : 0.5;
     if (button.draw()) {
@@ -1288,9 +1288,9 @@ function draw_manage_selection_buttons() {
 
     // // Put in jail button
     button.x1 = action_button_x;
-    button.label = localize("Jail");
+    button.label = localize("STR_UNIT_JAIL");
     button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("J"));
-    button.tooltip = localize("Press Shift J");
+    button.tooltip = localize("STR_UNIT_PRESS_SHIFT_J");
     var jail_possible = man_size > 0;
     button.alpha = jail_possible ? 1 : 0.5;
     if (button.draw()) {
@@ -1302,9 +1302,9 @@ function draw_manage_selection_buttons() {
 
     // // Add bionics button
     button.x1 = action_button_x;
-    button.label = localize("Add Bionics");
+    button.label = localize("STR_UNIT_ADD_BIONICS");
     button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("B"));
-    button.tooltip = localize("Press Shift B");
+    button.tooltip = localize("STR_UNIT_PRESS_SHIFT_B");
     var bionics_possible = man_size > 0;
     button.alpha = bionics_possible ? 1 : 0.5;
     if (button.draw()) {
@@ -1322,9 +1322,9 @@ function draw_manage_selection_buttons() {
 
     // // Designate as boarder unit
     button.x1 = action_button_x;
-    button.label = localize("Set Boarder");
+    button.label = localize("STR_UNIT_SET_BOARDER");
     button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("Q"));
-    button.tooltip = localize("Press Shift Q");
+    button.tooltip = localize("STR_UNIT_PRESS_SHIFT_Q");
     var boarder_possible = sel_loading != -1 && man_size > 0;
     button.alpha = boarder_possible ? 1 : 0.5;
     if (button.draw() && boarder_possible) {
@@ -1336,9 +1336,9 @@ function draw_manage_selection_buttons() {
 
     // // Reset changes button
     button.x1 = action_button_x;
-    button.label = localize("Reset");
+    button.label = localize("STR_MISC_RESET");
     button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("R"));
-    button.tooltip = localize("Press Shift R");
+    button.tooltip = localize("STR_UNIT_PRESS_SHIFT_R");
     var reset_possible = !_non_control_loc && man_size > 0;
     if (reset_possible) {
         button.alpha = 1;
@@ -1358,7 +1358,7 @@ function draw_manage_selection_buttons() {
     button.x1 = action_button_x;
     button.label = localize("Transfer");
     button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("T"));
-    button.tooltip = localize("Press Shift T");
+    button.tooltip = localize("STR_UNIT_PRESS_SHIFT_T");
     var transfer_possible = !_non_control_loc && man_size > 0;
     if (transfer_possible) {
         button.alpha = 1;
@@ -1373,9 +1373,9 @@ function draw_manage_selection_buttons() {
 
     // // Move Ship button
     button.x1 = action_button_x;
-    button.label = localize("Move Ship");
+    button.label = localize("STR_UNIT_MOVE_SHIP");
     button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("M"));
-    button.tooltip = localize("Press Shift M");
+    button.tooltip = localize("STR_UNIT_PRESS_SHIFT_M");
     var moveship_possible = !_non_control_loc && man_size > 0 && selecting_ship > -1;
     if (moveship_possible) {
         button.alpha = 1;
@@ -1390,9 +1390,9 @@ function draw_manage_selection_buttons() {
 
     // // Manage Tags button
     button.x1 = action_button_x;
-    button.label = localize("Manage Tags");
+    button.label = localize("STR_UNIT_MANAGE_TAGS");
     button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("F"));
-    button.tooltip = localize("Press Shift F"); //Press Shift F";
+    button.tooltip = localize("STR_UNIT_PRESS_SHIFT_F"); //Press Shift F";
     button.alpha = 1;
     if (button.draw()) {
         if (!instance_exists(obj_popup)) {
@@ -1409,7 +1409,7 @@ function draw_manage_selection_buttons() {
     button.label = localize("Load");
     var load_unload_possible = man_size > 0;
     button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("L"));
-    button.tooltip = localize("Press Shift L");
+    button.tooltip = localize("STR_UNIT_PRESS_SHIFT_L");
     if (load_unload_possible) {
         button.alpha = 1;
         if (sel_loading == -1) {
@@ -1417,7 +1417,7 @@ function draw_manage_selection_buttons() {
                 load_selection();
             }
         } else if (sel_loading != -1) {
-            button.label = localize("Unload");
+            button.label = localize("STR_UNIT_UNLOAD");
             if (button.draw()) {
                 unload_selection();
             }
@@ -1429,7 +1429,7 @@ function draw_manage_selection_buttons() {
 
     button.move("right", true);
 
-    button.label = localize("Reload");
+    button.label = localize("STR_UNIT_RELOAD");
     button.keystroke = false;
     if (instance_exists(obj_controller) && is_struct(_unit_focus)) {
         button.tooltip = $"{_unit_focus.last_ship.name}";
@@ -1455,7 +1455,7 @@ function draw_manage_selection_buttons() {
     if (sel_uni[1] != "") {
         // How much space the selected unit takes
         draw_set_font(cjk_font(fnt_40k_30b));
-        draw_text_transformed(actions_block.x1 + 26, actions_block.y1 + 6, localize("Selection: {0} space", [man_size]), 0.5, 0.5, 0);
+        draw_text_transformed(actions_block.x1 + 26, actions_block.y1 + 6, localize("STR_UNIT_SELECTION_SPACE", [man_size]), 0.5, 0.5, 0);
         // List of selected units
         draw_set_font(cjk_font(fnt_40k_14));
         draw_text_ext(actions_block.x1 + 26, actions_block.y1 + 30, selecting_dudes, -1, 550);
@@ -1472,7 +1472,7 @@ function draw_manage_selection_buttons() {
         button.font = fnt_40k_14b;
         button.text_scale = 1;
 
-        button.label = localize("Select All");
+        button.label = localize("STR_UNIT_SELECT_ALL");
         button.x1 = top_x;
         button.y1 = top_y;
         button.update_loc();
@@ -1485,7 +1485,7 @@ function draw_manage_selection_buttons() {
 
         button.x1 = top_x + button.w + button.h_gap;
         button.update_loc();
-        button.label = localize("Filter Mode");
+        button.label = localize("STR_UNIT_FILTER_MODE");
         button.alpha = filter_mode ? 1 : 0.5;
         if (button.draw()) {
             filter_mode = !filter_mode;

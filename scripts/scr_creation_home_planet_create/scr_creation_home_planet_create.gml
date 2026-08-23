@@ -104,7 +104,7 @@ function scr_creation_game_play_date() {
 
 function scr_creation_home_planet_create() {
     add_draw_return_values();
-    var fleet_type_text = fleet_type == ePLAYER_BASE.HOME_WORLD ? localize("Homeworld") : localize("Flagship");
+    var fleet_type_text = fleet_type == ePLAYER_BASE.HOME_WORLD ? localize("Homeworld") : localize("STR_SHIP_FLAGSHIP");
     draw_text_transformed(644, 218, fleet_type_text, 0.6, 0.6, 0);
 
     var _cur_planet_index = scr_planet_image_numbers(homeworld);
@@ -229,11 +229,11 @@ function scr_creation_home_planet_create() {
             tooltip2 = localize("The name of your Flagship Battle Barge.");
         } else if (fleet_type == ePLAYER_BASE.HOME_WORLD) {
             tooltip = localize("Homeworld");
-            tooltip2 = localize("The world that your Chapter's Fortress Monastery is located upon.  More civilized worlds are more easily defensible but the citizens may pose a risk or be a nuisance.");
+            tooltip2 = localize("STR_HOMEWORLD_THE_WORLD_THAT_YOUR_2");
         }
     }
     if (scr_hit(895, 216, 1075, 242)) {
-        tooltip = localize("Recruiting World");
+        tooltip = localize("STR_HOMEWORLD_RECRUITING_WORLD");
         tooltip2 = localize("The world that your Chapter selects recruits from.  More harsh worlds provide recruits with more grit and warrior mentality.  If you are a homeworld-based Chapter, you may uncheck 'Recruiting World' to recruit from your homeworld instead.");
     }
 
@@ -250,22 +250,22 @@ function scr_creation_home_planet_create() {
         }
         var _homeworld_types = [
             {
-                name: localize("Planetary Governer"),
-                tooltip: localize("Planetary Governer"),
+                name: localize("STR_HOMEWORLD_PLANETARY_GOVERNER"),
+                tooltip: localize("STR_HOMEWORLD_PLANETARY_GOVERNER"),
                 tooltip2: localize("Your Chapter's homeworld is ruled by a single Planetary Governer, who does with the planet mostly as they see fit.  While heavily influenced by your Astartes the planet is sovereign."),
             },
             {
-                name: localize("Passive Supervision"),
-                tooltip: localize("Passive Supervision"),
+                name: localize("STR_HOMEWORLD_PASSIVE_SUPERVISION"),
+                tooltip: localize("STR_HOMEWORLD_PASSIVE_SUPERVISION"),
                 tooltip2: localize("Instead of a Planetary Governer the planet is broken up into many countries or clans.  The people are less united but happier, and see your illusive Astartes as semi-divine beings."),
             },
             {
-                name: localize("Personal Rule"),
-                tooltip: localize("Personal Rule"),
+                name: localize("STR_HOMEWORLD_PERSONAL_RULE"),
+                tooltip: localize("STR_HOMEWORLD_PERSONAL_RULE"),
                 tooltip2: localize("You personally take the rule of the Planetary Governer, ruling over your homeworld with an iron fist.  Your every word and directive, be they good or bad, are absolute law."),
             },
         ];
-        draw_text_transformed(445, 480, localize("Homeworld Rule"), 0.6, 0.6, 0);
+        draw_text_transformed(445, 480, localize("STR_HOMEWORLD_HOMEWORLD_RULE"), 0.6, 0.6, 0);
 
         var _coords = [
             445,

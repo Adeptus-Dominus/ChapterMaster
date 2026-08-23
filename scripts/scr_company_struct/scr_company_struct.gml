@@ -302,7 +302,7 @@ function CompanyStruct(comp) constructor {
         var _squad_sys = squad_loc.system;
         var _cur_squad = grab_current_squad();
         if (_cur_squad.assignment == "none") {
-            draw_text_transformed(xx + bound_width[0] + 5, yy + bound_height[0] + 125, localize("Squad has no current assignments"), 1, 1, 0);
+            draw_text_transformed(xx + bound_width[0] + 5, yy + bound_height[0] + 125, localize("STR_FLEET_SQUAD_HAS_NO_CURRENT_ASSIGNMENTS"), 1, 1, 0);
 
             var send_on_mission = false, mission_type;
             if (squad_loc.same_system && (_squad_sys != "Warp" && _squad_sys != "Lost")) {
@@ -328,8 +328,8 @@ function CompanyStruct(comp) constructor {
                 return;
             }
             var cur_assignment = _cur_squad.assignment;
-            draw_text_transformed(xx + bound_width[0] + 5, yy + bound_height[0] + 125, localize("Assignment : {0}", [localize(cur_assignment.type)]), 1, 1, 0);
-            var tooltip_text = localize("Cancel Assignment");
+            draw_text_transformed(xx + bound_width[0] + 5, yy + bound_height[0] + 125, localize("STR_FLEET_ASSIGNMENT", [localize(cur_assignment.type)]), 1, 1, 0);
+            var tooltip_text = localize("STR_SQUAD_CANCEL_ASSIGNMENT");
             var cancel_but = draw_unit_buttons([xx + bound_width[0] + 5, yy + bound_height[0] + 150], tooltip_text, [1, 1], c_red,,,, true);
             if (point_and_click(cancel_but) || keyboard_check_pressed(ord("C"))) {
                 var cancel_system = noone;
@@ -353,7 +353,7 @@ function CompanyStruct(comp) constructor {
             }
             bound_height[0] += 180;
             if (cur_assignment.type == "garrison") {
-                var garrison_but = draw_unit_buttons([cancel_but[2] + 10, cancel_but[1]], localize("View Garrison"), [1, 1], c_red,,,, true);
+                var garrison_but = draw_unit_buttons([cancel_but[2] + 10, cancel_but[1]], localize("STR_SQUAD_VIEW_GARRISON"), [1, 1], c_red,,,, true);
                 if (point_and_click(garrison_but)) {
                     var garrrison_star = find_star_by_name(cur_assignment.location);
                     obj_controller.view_squad = false;
@@ -588,13 +588,13 @@ function CompanyStruct(comp) constructor {
         previous_squad_button.keystroke = press_exclusive(vk_left);
         next_squad_button.keystroke = press_exclusive(vk_tab);
         //TODO compartmentalise drop down option logic
-        var deploy_text = localize("Squad will deploy in the");
+        var deploy_text = localize("STR_FLEET_SQUAD_WILL_DEPLOY_IN_THE");
         if (_cur_squad.formation_place != "") {
             //draw_set_font(cjk_font(fnt_40k_14b))
             draw_text_transformed(xx + bound_width[0] + 5, yy + bound_height[0], deploy_text, 1, 1, 0);
             button = draw_unit_buttons([xx + bound_width[0] + 5 + string_width(deploy_text), yy + bound_height[0] - 2], _cur_squad.formation_place, [1, 1], c_green,,,, true);
             draw_set_color(c_red);
-            draw_text_transformed(xx + bound_width[0] + 5 + string_width(deploy_text) + string_width(_cur_squad.formation_place) + 9, yy + bound_height[0], localize("column"), 1, 1, 0);
+            draw_text_transformed(xx + bound_width[0] + 5 + string_width(deploy_text) + string_width(_cur_squad.formation_place) + 9, yy + bound_height[0], localize("STR_FLEET_COLUMN"), 1, 1, 0);
             draw_set_color(c_gray);
             if (array_length(_cur_squad.formation_options) > 1) {
                 if (scr_hit(button)) {

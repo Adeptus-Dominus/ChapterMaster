@@ -39,7 +39,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
         unit_specialist = is_specialist(_unit.role());
         if (_unit.in_jail()) {
             jailed = true;
-            _loc_name = localize("=Penitorium=");
+            _loc_name = localize("STR_MISC_PENITORIUM");
         } else {
             var unit_location = _unit.marine_location();
             string_role = _unit.name_role();
@@ -58,10 +58,10 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
             if (assignment != "none") {
                 _loc_name += $"({assignment})";
             } else if ((fest_planet == 0) && (fest_sid > -1) && (fest_repeats > 0) && (ma_lid[selected] == fest_sid)) {
-                _loc_name = localize("=Event=");
+                _loc_name = localize("STR_MISC_EVENT");
                 eventing = true;
             } else if ((fest_planet == 1) && (fest_wid > 0) && (fest_repeats > 0) && (ma_wid[selected] == fest_wid) && (ma_loc[selected] == fest_star)) {
-                _loc_name = localize("=Event=");
+                _loc_name = localize("STR_MISC_EVENT");
                 eventing = true;
             }
         }
@@ -304,7 +304,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
             }
         }
 
-        var exp_string = $"{localize("{0} EXP", [round(ma_exp[selected])])}";
+        var exp_string = $"{localize("STR_MISC_EXP", [round(ma_exp[selected])])}";
         var hpText = [
             xx + 240 + 8,
             yy + 66,
@@ -328,7 +328,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
 
             if (ma_promote[selected] > 0 && !unit_specialist && obj_controller.command_set[2] != 0) {
                 xpColor = c_yellow;
-                array_push(promotion_tooltip, [localize("Promotion Recommended"), [xx + 335, yy + 64, xx + 385, yy + 85]]);
+                array_push(promotion_tooltip, [localize("STR_MISC_PROMOTION_RECOMMENDED"), [xx + 335, yy + 64, xx + 385, yy + 85]]);
             }
 
             draw_text_color(xpText[0], xpText[1], xpText[2], xpColor, xpColor, xpColor, xpColor, 1);
@@ -342,7 +342,7 @@ function scr_draw_management_unit(selected, yy = 0, xx = 0, draw = true, click_l
         draw_text_transformed(xx + 27.5 + 8, yy + 66.5, string_hash_to_newline(string(string_role)), name_xr, 1, 0);
 
         // Draw current location
-        if (location_out_of_player_control(_loc_name) || (_loc_name == localize("=Penitorium=")) || (assignment != "none")) {
+        if (location_out_of_player_control(_loc_name) || (_loc_name == localize("STR_MISC_PENITORIUM")) || (assignment != "none")) {
             draw_set_alpha(0.5);
         }
 

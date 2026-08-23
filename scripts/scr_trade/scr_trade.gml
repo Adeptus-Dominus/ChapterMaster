@@ -287,12 +287,12 @@ function TradeAttempt(diplomacy) constructor {
             with (obj_controller) {
                 var _rela = relationship_hostility_matrix(diplomacy);
                 if (trading_artifact == 0) {
-                    diplo_text = localize("[[Trade Refused]]") + "##";
+                    diplo_text = localize("STR_DIPLO_BARTER_TRADE_REFUSED") + "##";
                 } else {
                     diplo_text = "";
                 }
                 annoyed[_dip] += 1;
-                scr_dialogue("disagree", {prepend: localize("[[Trade Refused]]")});
+                scr_dialogue("disagree", {prepend: localize("STR_DIPLO_BARTER_TRADE_REFUSED")});
                 rando = choose(1, 2, 3);
                 if (_rela == "hostile") {
                     force_goodbye = 1;
@@ -374,13 +374,13 @@ function TradeAttempt(diplomacy) constructor {
                 if (max_take == 1) {
                     variable_struct_set(self, "number", 1);
                 } else {
-                    get_diag_integer(localize("{0} wanted?", [label]), max_take, self, diplomacy_faction);
+                    get_diag_integer(localize("STR_DIPLO_BARTER_WANTED", [label]), max_take, self, diplomacy_faction);
                 }
             };
         }
         if (trader_disp < trade_disp) {
             _option.disabled = true;
-            _option.tooltip = localize("{0} disposition required", [trade_disp]);
+            _option.tooltip = localize("STR_DIPLO_BARTER_DISPOSITION_REQUIRED", [trade_disp]);
         }
         array_push(demand_options, _option);
     };
@@ -447,7 +447,7 @@ function TradeAttempt(diplomacy) constructor {
                 if (max_number == 1) {
                     number = 1;
                 } else {
-                    get_diag_integer(localize("{0} offered?", [label]), max_number, self, diplomacy_faction);
+                    get_diag_integer(localize("STR_DIPLO_BARTER_OFFERED", [label]), max_number, self, diplomacy_faction);
                 }
             };
         }
@@ -488,11 +488,11 @@ function TradeAttempt(diplomacy) constructor {
 
         draw_set_font(cjk_font(fnt_40k_14b));
         draw_set_halign(fa_center);
-        draw_text(411, 330, localize("{0}\nItems", [localize(obj_controller.faction[diplomacy_faction])]));
-        draw_text(829, 330, localize("{0}\nItems", [global.chapter_name]));
+        draw_text(411, 330, localize("STR_DIPLO_BARTER_ITEMS", [localize(obj_controller.faction[diplomacy_faction])]));
+        draw_text(829, 330, localize("STR_DIPLO_BARTER_ITEMS", [global.chapter_name]));
 
         if (trade_likely != "") {
-            draw_text(623, 348, localize("[{0}]", [localize(trade_likely)]));
+            draw_text(623, 348, localize("STR_DIPLO_BARTER_FRAG", [localize(trade_likely)]));
         }
 
         clear_button.draw();
@@ -523,7 +523,7 @@ function TradeAttempt(diplomacy) constructor {
                 }
 
                 if (_opt.max_take > 1) {
-                    draw_text(530, _y_offset, localize("{0} : {1}", [_opt.label, _opt.number]));
+                    draw_text(530, _y_offset, localize("STR_DIPLO_BARTER_FRAG_2", [_opt.label, _opt.number]));
                 } else {
                     draw_text(530, _y_offset, _opt.label);
                 }
@@ -532,7 +532,7 @@ function TradeAttempt(diplomacy) constructor {
         }
 
         _requested_count = 0;
-        draw_text(507, 529, localize("{0}:", [global.chapter_name]));
+        draw_text(507, 529, localize("STR_DIPLO_BARTER_FRAG_3", [global.chapter_name]));
         for (var i = 0; i < array_length(offer_options); i++) {
             var _opt = offer_options[i];
             if (_opt.number != _opt.number_last) {
@@ -551,7 +551,7 @@ function TradeAttempt(diplomacy) constructor {
                     recalc_values = true;
                 }
                 if (_opt.max_number > 1) {
-                    draw_text(530, _y_offset, localize("{0} : {1}", [_opt.label, _opt.number]));
+                    draw_text(530, _y_offset, localize("STR_DIPLO_BARTER_FRAG_2", [_opt.label, _opt.number]));
                 } else {
                     draw_text(530, _y_offset, _opt.label);
                 }

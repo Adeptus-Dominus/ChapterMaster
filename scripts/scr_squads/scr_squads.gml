@@ -538,11 +538,11 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         }
         var final_loc_status = "";
         if (!same_system) {
-            final_loc_status = localize("Scattered");
+            final_loc_status = localize("STR_MISC_SCATTERED");
         } else if (same_loc_type) {
             if (loc_type == eLOCATION_TYPES.SHIP) {
                 if (exact_loc) {
-                    final_loc_status = localize("aboard {0}", [obj_ini.ship[loc_id]]);
+                    final_loc_status = localize("STR_MISC_ABOARD", [obj_ini.ship[loc_id]]);
                 } else if (in_orbit) {
                     final_loc_status = localize("various ships orbiting {0}", [system]);
                 }
@@ -554,7 +554,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
                 }
             }
         } else {
-            final_loc_status = localize("system {0}", [system]);
+            final_loc_status = localize("STR_MISC_SYSTEM_2", [system]);
         }
         return {
             text: final_loc_status,

@@ -9,7 +9,7 @@ function draw_character_diplomacy_base_page() {
             alliance.draw();
             denounce.draw();
             praise.draw();
-            declare_war.draw_shutter(praise.x1, alliance.y2, localize("WAR"), 0.4);
+            declare_war.draw_shutter(praise.x1, alliance.y2, localize("STR_DIPLO_WAR"), 0.4);
         }
     } else {
         if (!valid_diplomacy_options()) {
@@ -251,7 +251,7 @@ function set_up_diplomacy_buttons() {
     var _war = diplo_buttons.declare_war;
     _war.XX = 640;
     _war.YY = diplo_buttons.alliance.y2;
-    _war.label = localize("DECLARE WAR");
+    _war.label = localize("STR_DIPLO_DECLARE_WAR");
     _war.tooltip = localize("Unfinished");
     _war.color = CM_RED_COLOR;
     _war.cover_text = "Declare War";
@@ -402,7 +402,7 @@ function set_up_diplomacy_persons() {
                     txt = localize("{0} {1}", [localize(obj_controller.faction_title[_faction_enum]), obj_controller.faction_leader[_faction_enum]]);
                 }
                 draw_text_transformed(xx + 169, yy + 50, txt, 0.7, 0.7, 0);
-                draw_text_transformed(xx + 169, yy + 65, localize("Disposition: {0}", [obj_controller.disposition[_faction_enum]]), 0.7, 0.7, 0);
+                draw_text_transformed(xx + 169, yy + 65, localize("STR_DIPLO_DISPOSITION", [obj_controller.disposition[_faction_enum]]), 0.7, 0.7, 0);
                 scr_draw_rainbow(xx + 250, yy + 66, xx + 400, yy + 76, (obj_controller.disposition[_faction_enum] / 200) + 0.5);
 
                 if (((obj_controller.known[_faction_enum] > 0.7) && (obj_controller.faction_defeated[_faction_enum] == 0)) || global.cheat_debug) {
@@ -463,7 +463,7 @@ function scr_ui_diplomacy() {
         draw_set_color(CM_GREEN_COLOR);
         draw_set_font(cjk_font(fnt_40k_30b));
         draw_set_halign(fa_center);
-        draw_text(xx + 800, yy + 74, string_hash_to_newline(localize("Diplomacy")));
+        draw_text(xx + 800, yy + 74, string_hash_to_newline(localize("STR_MANAGE_DIPLOMACY")));
 
         xx += 55;
         yy -= 20;
@@ -494,7 +494,7 @@ function scr_ui_diplomacy() {
         draw_set_color(CM_GREEN_COLOR);
         draw_rectangle(xx + 688, yy + 240, xx + 1028, yy + 281, 0);
         draw_set_color(c_black);
-        draw_text_transformed(xx + 688, yy + 241, localize("Meet Chaos Emissary"), 0.7, 0.7, 0);
+        draw_text_transformed(xx + 688, yy + 241, localize("STR_DIPLO_MEET_CHAOS"), 0.7, 0.7, 0);
         //color blending stuff if hovering over the meeting chaos icon
         if (point_in_rectangle(mouse_x, mouse_y, xx + 688, yy + 240, xx + 1028, yy + 281)) {
             draw_set_alpha(0.2);
@@ -564,15 +564,15 @@ function scr_ui_diplomacy() {
         draw_text_transformed(xx + 622, yy + 66, _diplomacy_faction_name, 1, 1, 0);
 
         if (daemon) {
-            draw_text_transformed(xx + 622, yy + 104, localize("The Emmmisary"), 0.6, 0.6, 0);
+            draw_text_transformed(xx + 622, yy + 104, localize("STR_DIPLO_CHAOS_EMISSARY"), 0.6, 0.6, 0);
             show_stuff = true;
         } else {
-            draw_text_transformed(xx + 622, yy + 104, localize("{0} {1} {2}", [localize(faction_title[diplomacy]), faction_leader[diplomacy], localize(_diplomacy_faction_alligience)]), 0.6, 0.6, 0);
+            draw_text_transformed(xx + 622, yy + 104, localize("STR_LAIR_STYLE_FRAG", [localize(faction_title[diplomacy]), faction_leader[diplomacy], localize(_diplomacy_faction_alligience)]), 0.6, 0.6, 0);
         }
 
         draw_set_font(cjk_font(fnt_40k_14));
         if (!daemon) {
-            _disposition_rating = localize("Disposition: {0} ({1})", [localize(faction_disposition_rating_string(diplomacy)), disposition[diplomacy]]);
+            _disposition_rating = localize("STR_DIPLO_DISPOSITION_2", [localize(faction_disposition_rating_string(diplomacy)), disposition[diplomacy]]);
             draw_text(xx + 622, yy + 144, _disposition_rating);
             scr_draw_rainbow(xx + 366, yy + 165, xx + 871, yy + 175, (disposition[diplomacy] / 200) + 0.5);
         }

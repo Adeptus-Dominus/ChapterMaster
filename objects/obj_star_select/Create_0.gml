@@ -39,7 +39,7 @@ debug_options = new RadioSet([
     {
         str1: "Add Feature",
     },
-], localize("Debug options"), {
+], localize("STR_SYSTEM_DEBUG_OPTIONS"), {
     x1: 36,
     y1: 129,
     max_width: 300,
@@ -63,7 +63,7 @@ garrison = "";
 population = false;
 
 garrison_data_slate = new DataSlate();
-garrison_data_slate.title = localize("Garrison Report");
+garrison_data_slate.title = localize("STR_SYSTEM_GARRISON_REPORT");
 main_data_slate = new DataSlate();
 
 potential_donors = [];

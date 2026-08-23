@@ -226,7 +226,7 @@ function scr_chapter_new(chapter_identifier) {
         if (!successfully_loaded) {
             var issue = localize("No json file exists for chapter id {0} and name {1}", [string(chapter_id), chapter_identifier]);
             // LOGGER.error(issue);
-            scr_popup(localize("Error Loading Chapter"), issue, "debug");
+            scr_popup(localize("STR_ERROR_ERROR_LOADING_CHAPTER"), issue, "debug");
             return false;
         }
 
@@ -243,7 +243,7 @@ function scr_chapter_new(chapter_identifier) {
         if (!successfully_loaded) {
             var issue = localize("No json file exists for chapter id {0} and name {1}", [string(chapter_identifier), chapter_identifier]);
             LOGGER.error(issue);
-            scr_popup(localize("Error Loading Chapter"), issue, "debug");
+            scr_popup(localize("STR_ERROR_ERROR_LOADING_CHAPTER"), issue, "debug");
             return false;
         }
         global.chapter_creation_object = chapter_obj;

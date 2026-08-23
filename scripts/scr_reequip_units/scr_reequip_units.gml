@@ -299,7 +299,7 @@ function draw_popup_equip(before_after_styling = true) {
     // Need to not show the artifact tags here somehow
 
     if (before_after_styling) {
-        draw_text_outline(_x1 + 14, _y1 + 52, localize("Before"));
+        draw_text_outline(_x1 + 14, _y1 + 52, localize("STR_EQUIP_BEFORE"));
 
         for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
             var _current = current_equipment[i];
@@ -309,7 +309,7 @@ function draw_popup_equip(before_after_styling = true) {
             draw_text(_x1 + 18, _y1 + 72 + (i * 20), localize(_current));
         }
 
-        draw_text_outline(_x1 + 290, _y1 + 52, localize("After"));
+        draw_text_outline(_x1 + 290, _y1 + 52, localize("STR_EQUIP_AFTER"));
     } else {
         for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
             var _title = $"{localize(get_slot_name(target_role, i))}: ";

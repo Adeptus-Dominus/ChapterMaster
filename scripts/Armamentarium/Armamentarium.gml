@@ -90,7 +90,7 @@ function ShopItem(_name) constructor {
 
             var _is_vehicle_item = area == "vehicles" || area == "vehicle_gear";
             if (_is_vehicle_item && !_has_hangars) {
-                array_push(_missing_reqs, localize("Vehicle Hangar"));
+                array_push(_missing_reqs, localize("STR_FORGE_VEHICLE_HANGAR"));
             }
 
             meets_requirements = array_length(_missing_reqs) == 0;
@@ -112,15 +112,15 @@ function ShopItem(_name) constructor {
             return "";
         }
 
-        return $"{localize("Missing Requirements:\n{0}", [string_join_ext("\n", missing_technologies)])}";
+        return $"{localize("STR_FORGE_MISSING_REQUIREMENTS", [string_join_ext("\n", missing_technologies)])}";
     };
 
     static get_buy_cost_tooltip = function() {
-        var _text = $"{localize("Base Value: {0}\n\n", [value])}";
+        var _text = $"{localize("STR_FORGE_BASE_VALUE", [value])}";
         var _seller = (best_seller == "rogue_trader") ? localize("Rogue Trader") : string_upper_first(best_seller);
 
-        _text += $"{localize("Best Seller: {0}\n", [_seller])}";
-        _text += $"{localize("Disposition Modifier: x{0}", [buy_cost_mod])}";
+        _text += $"{localize("STR_FORGE_BEST_SELLER", [_seller])}";
+        _text += $"{localize("STR_FORGE_DISPOSITION_MODIFIER_X", [buy_cost_mod])}";
 
         return _text;
     };
@@ -134,7 +134,7 @@ function ShopItem(_name) constructor {
 
         if (_stc_details != "") {
             _text += $"\n{_stc_details}";
-            _text += $"\n{localize("Total Modifier: x{0}", [string_format(forge_cost_mod, 1, 2)])}";
+            _text += $"\n{localize("STR_FORGE_TOTAL_MODIFIER_X", [string_format(forge_cost_mod, 1, 2)])}";
         }
 
         return _text;
@@ -187,7 +187,7 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
         x1: 0,
         y1: 0,
         style: "pixel",
-        label: localize("Gift"),
+        label: localize("STR_FORGE_GIFT"),
         set_width: true,
         w: 90,
         color: c_red,
@@ -196,7 +196,7 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
         x1: 0,
         y1: 0,
         style: "pixel",
-        label: localize("Identify"),
+        label: localize("STR_FORGE_IDENTIFY"),
         set_width: true,
         w: 90,
         color: c_red,
@@ -265,7 +265,7 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
         var _points_per_turn = controller.specialist_point_handler.research_points;
 
         if (_points_per_turn <= 0) {
-            advisor_eta_text = localize("Research: Stalled (No Research Points)");
+            advisor_eta_text = localize("STR_MISC_RESEARCH_STALLED_NO_RESEARCH_POINTS");
             return;
         }
 
@@ -281,7 +281,7 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
         var _remaining = (STC_POINTS_PER_LEVEL * (_level + 1)) - controller.stc_research[$ _focus];
         var _months = ceil(_remaining / _points_per_turn);
 
-        advisor_eta_text = localize("Research: Next {0} breakthrough in {1} months.", [localize(_focus_label), _months]);
+        advisor_eta_text = localize("STR_MISC_RESEARCH_NEXT_BREAKTHROUGH_IN_MONTHS", [localize(_focus_label), _months]);
     };
 
     refresh_eta();
@@ -309,7 +309,7 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
         if (scr_hit(_rect)) {
             draw_set_color(c_white);
             draw_rectangle_array(_rect, true);
-            tooltip_draw(localize("Click to focus research on {0}", [localize(_label)]));
+            tooltip_draw(localize("STR_MISC_CLICK_TO_FOCUS_RESEARCH_ON", [localize(_label)]));
 
             if (mouse_button_clicked()) {
                 controller.stc_research.research_focus = _cat;
@@ -362,7 +362,7 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
 
         draw_set_font(cjk_font(fnt_aldrich_12));
         draw_set_color(c_gray);
-        draw_text(_x + 34, _y, $"{localize("{0} Unidentified Fragments", [_total_un])}");
+        draw_text(_x + 34, _y, $"{localize("STR_FORGE_UNIDENTIFIED_FRAGMENTS", [_total_un])}");
 
         var _has_fragments = _total_un > 0;
         draw_set_alpha(_has_fragments ? 1 : 0.25);
@@ -387,29 +387,29 @@ function STCResearchPanel(_controller_ref, _on_change_callback) constructor {
         static _data = {
             wargear: [
                 localize("None"),
-                localize("8% discount"),
-                localize("Enhanced Bolts"),
-                localize("16% discount"),
-                localize("Enhanced Fist Weapons"),
-                localize("25% discount"),
-                localize("Can produce Terminator Armour and Dreadnoughts."),
+                localize("STR_FORGE_8_DISCOUNT"),
+                localize("STR_FORGE_ENHANCED_BOLTS"),
+                localize("STR_FORGE_16_DISCOUNT"),
+                localize("STR_FORGE_ENHANCED_FIST_WEAPONS"),
+                localize("STR_FORGE_25_DISCOUNT"),
+                localize("STR_FORGE_CAN_PRODUCE_TERMINATOR_ARMOUR_AND_DREADNOUGHTS"),
             ],
             vehicles: [
                 localize("None"),
-                localize("8% discount"),
-                localize("Enhanced Hull"),
-                localize("16% discount"),
-                localize("Enhanced Armour"),
-                localize("25% discount"),
+                localize("STR_FORGE_8_DISCOUNT"),
+                localize("STR_FORGE_ENHANCED_HULL"),
+                localize("STR_FORGE_16_DISCOUNT"),
+                localize("STR_FORGE_ENHANCED_ARMOUR"),
+                localize("STR_FORGE_25_DISCOUNT"),
                 localize("Can produce Land Speeders and Land Raiders."),
             ],
             ships: [
                 localize("None"),
-                localize("8% discount"),
-                localize("Enhanced Hull"),
-                localize("16% discount"),
-                localize("Enhanced Armour"),
-                localize("25% discount"),
+                localize("STR_FORGE_8_DISCOUNT"),
+                localize("STR_FORGE_ENHANCED_HULL"),
+                localize("STR_FORGE_16_DISCOUNT"),
+                localize("STR_FORGE_ENHANCED_ARMOUR"),
+                localize("STR_FORGE_25_DISCOUNT"),
                 localize("Warp Speed is increased and ships self-repair."),
             ],
         };
@@ -484,7 +484,7 @@ function Armamentarium(_controller) constructor {
     stc_panel = new STCResearchPanel(controller, method(self, refresh_catalog));
 
     enter_forge_button = new ShutterButton();
-    enter_forge_button.cover_text = localize("FORGE");
+    enter_forge_button.cover_text = localize("STR_FORGE_ENTER");
 
     forge_button = new SpriteButton({
         sprite: spr_build_tiny,
@@ -506,7 +506,7 @@ function Armamentarium(_controller) constructor {
             value: "armour",
         },
         {
-            label: localize("Equipment"),
+            label: localize("STR_FORGE_CAT_EQUIPMENT"),
             value: "mobility",
         },
         {
@@ -518,7 +518,7 @@ function Armamentarium(_controller) constructor {
             value: "vehicles",
         },
         {
-            label: localize("Vehicle Gear"),
+            label: localize("STR_FORGE_CAT_VEHICLE_GEAR"),
             value: "vehicle_gear",
         },
         {
@@ -526,7 +526,7 @@ function Armamentarium(_controller) constructor {
             value: "ships",
         },
         {
-            label: localize("Technologies"),
+            label: localize("STR_FORGE_CAT_TECH"),
             value: "technologies",
         },
     ];
@@ -550,7 +550,7 @@ function Armamentarium(_controller) constructor {
     var _roman_length = array_length(_roman);
 
     for (var i = 0, _limit = min(obj_ini.companies, _roman_length); i < _limit; i++) {
-        array_push(_comp_options, {label: localize("{0} Company", [_roman[i]]), value: i + 1});
+        array_push(_comp_options, {label: localize("STR_COMPANY_COMPANY", [_roman[i]]), value: i + 1});
     }
 
     company_dropdown = new UIDropdown(_comp_options, 180);
@@ -811,7 +811,7 @@ function Armamentarium(_controller) constructor {
             case "mobility":
                 discount_stc = controller.stc_wargear * 5;
                 if (discount_stc > 0) {
-                    global_cost_tooltip += $"{localize("Wargear STC: -{0}%\n", [discount_stc])}";
+                    global_cost_tooltip += $"{localize("STR_FORGE_WARGEAR_STC", [discount_stc])}";
                 }
                 break;
             case "vehicles":
@@ -825,7 +825,7 @@ function Armamentarium(_controller) constructor {
             case "ships":
                 discount_stc = controller.stc_ships * 5;
                 if (discount_stc > 0) {
-                    global_cost_tooltip += $"{localize("Ship STC: -{0}%\n", [discount_stc])}";
+                    global_cost_tooltip += $"{localize("STR_FORGE_SHIP_STC", [discount_stc])}";
                 }
                 break;
         }
@@ -841,10 +841,10 @@ function Armamentarium(_controller) constructor {
 
         var _text = $"{localize("Subject ID confirmed. Rank Identified. Salutations Chapter Master. The status report is ready.")}";
         _text += $"\n\n{localize("Personnel: {0}s: {1}, Aspirants: {2}.", [_role_tech, count_techmarines, count_aspirants])}";
-        _text += $"\n\n{localize("Training: ")}";
+        _text += $"\n\n{localize("STR_FORGE_TRAINING")}";
 
         if (controller.faction_status[eFACTION.MECHANICUS] != "War") {
-            _text += (_diff > 0) ? $"{localize("We can train {0} more {1}(s).", [_diff, _role_tech])}" : $"{localize("To train more, we need {0} more Mechanicus Disposition.", [_req_dispo])}";
+            _text += (_diff > 0) ? $"{localize("STR_FORGE_WE_CAN_TRAIN_MORE_S", [_diff, _role_tech])}" : $"{localize("To train more, we need {0} more Mechanicus Disposition.", [_req_dispo])}";
         } else {
             _text += $"{localize("Training handled internally due to Mechanicus hostilities.")}";
         }
@@ -959,7 +959,7 @@ function Armamentarium(_controller) constructor {
         draw_text(352, 66, localize(is_in_forge ? "Forge" : "Armamentarium"));
 
         draw_set_font(cjk_font(fnt_aldrich_12));
-        var _sub = _is_adept ? localize("Adept {0}", [controller.adept_name]) : localize("Forge Master {0}", [fetch_unit([0, 1]).name()]);
+        var _sub = _is_adept ? localize("STR_FLEET_ADEPT", [controller.adept_name]) : localize("STR_FORGE_FORGE_MASTER", [fetch_unit([0, 1]).name()]);
         draw_text(352, 100, _sub);
     };
 
@@ -975,9 +975,9 @@ function Armamentarium(_controller) constructor {
         var _header_y = 159;
         draw_text(962, _header_y, localize("Name"));
         if (shop_type != "technologies") {
-            draw_text(1280, _header_y, localize("Stocked"));
+            draw_text(1280, _header_y, localize("STR_FORGE_STOCKED"));
         }
-        draw_text(1410, _header_y, localize("{0} Cost", [is_in_forge ? "FP" : "RP"]));
+        draw_text(1410, _header_y, localize("STR_FORGE_COST", [is_in_forge ? "FP" : "RP"]));
 
         var _list = shop_items[$ shop_type];
         var _items_per_page = 27;
@@ -1050,7 +1050,7 @@ function Armamentarium(_controller) constructor {
         if (is_in_forge) {
             var _can_forge = _item.meets_requirements || global.cheat_debug;
 
-            forge_button.update({tooltip_text: _can_forge ? localize("Add to Forge Queue") : _item.get_missing_technologies_tooltip(), x1: 1530, y1: _y + 2});
+            forge_button.update({tooltip_text: _can_forge ? localize("STR_FORGE_ADD_QUEUE") : _item.get_missing_technologies_tooltip(), x1: 1530, y1: _y + 2});
 
             forge_button.draw(_can_forge);
 
@@ -1069,7 +1069,7 @@ function Armamentarium(_controller) constructor {
         var _can_afford = (controller.requisition >= _cost) || global.cheat_debug;
         var _can_buy = _item.buyable || global.cheat_debug;
 
-        buy_button.update({tooltip_text: !_can_buy ? localize("Unavailable for purchase") : (_can_afford ? localize("Buy") : localize("Insufficient Requisition")), x1: 1530, y1: _y + 2});
+        buy_button.update({tooltip_text: !_can_buy ? localize("STR_FORGE_UNAVAILABLE") : (_can_afford ? localize("STR_FORGE_BUY") : localize("STR_FORGE_INSUFFICIENT_REQ")), x1: 1530, y1: _y + 2});
 
         buy_button.draw(_can_buy && _can_afford);
 
@@ -1079,7 +1079,7 @@ function Armamentarium(_controller) constructor {
 
         var _can_sell = !array_contains(["ships", "vehicles"], shop_type) && _item.stocked > 0;
 
-        sell_button.update({tooltip_text: localize("Sell for {0}", [_item.sell_cost * min(_item.stocked, _count)]), x1: 1480, y1: _y + 2});
+        sell_button.update({tooltip_text: localize("STR_FORGE_SELL_FOR", [_item.sell_cost * min(_item.stocked, _count)]), x1: 1480, y1: _y + 2});
 
         sell_button.draw(_can_sell);
 
@@ -1138,7 +1138,7 @@ function Armamentarium(_controller) constructor {
         draw_text_ext(352, 130, advisor_report_text, -1, 500);
 
         var _btn_y = 225 + string_height_ext(advisor_report_text, -1, 536);
-        if (enter_forge_button.draw_shutter(526, _btn_y, localize("Enter Forge"), 0.5)) {
+        if (enter_forge_button.draw_shutter(526, _btn_y, localize("STR_FORGE_ENTER_2"), 0.5)) {
             is_in_forge = true;
             if (shop_type == "ships") {
                 _switch_tab("weapons");
@@ -1167,8 +1167,8 @@ function Armamentarium(_controller) constructor {
         var _master_craft = controller.master_craft_chance;
         var _forge_count = controller.player_forge_data.player_forges;
 
-        var _text = $"{localize("Status Report:\n\n")}";
-        _text += $"{localize("Forge Point production per turn: {0}\n", [controller.forge_points])}";
+        var _text = $"{localize("STR_FORGE_STATUS_REPORT")}";
+        _text += $"{localize("STR_FORGE_FORGE_POINT_PRODUCTION_PER_TURN", [controller.forge_points])}";
         _text += $"{localize("Chapter Total {0}s: {1}\n\n", [_role_name, count_total])}";
         _text += $"{localize("Planetary Forges in operation: {0}\n\n", [_forge_count])}";
         _text += $"{localize("Master Craft Forge Chance: {0}%\n", [_master_craft])}";
@@ -1218,7 +1218,7 @@ function Armamentarium(_controller) constructor {
                 array_push(_localized_unlocks, localize(_unlocks[u]));
             }
 
-            var _unlock_text = "\n\n" + localize("Required for:\n- {0}", [string_join_ext("\n- ", _localized_unlocks)]);
+            var _unlock_text = "\n\n" + localize("STR_FORGE_REQUIRED_FOR", [string_join_ext("\n- ", _localized_unlocks)]);
             _item.item_tooltip += _unlock_text;
         }
     };

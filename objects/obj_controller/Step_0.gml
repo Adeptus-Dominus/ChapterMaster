@@ -402,7 +402,7 @@ try {
         repair_ships = 0;
 
         var pip = instance_create(0, 0, obj_popup);
-        pip.title = localize("Ships Repaired");
+        pip.title = localize("STR_MANAGE_SHIPS_REPAIRED");
         pip.text = localize("In accordance with the Imperial Repair License, all {0} ships orbiting friendly planets have been repaired. Note that repaired ships, and their fleets, are unable to act further this turn.", [obj_ini.chapter_name]);
         pip.image = "shipyard";
         pip.cooldown = 15;

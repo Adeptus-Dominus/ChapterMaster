@@ -15,11 +15,11 @@ if (settings == 1) {
 
     draw_set_halign(fa_left);
     draw_set_font(cjk_font(fnt_cul_18));
-    draw_text(493, 224, localize("Master Volume"));
-    draw_text(493, 281, localize("Effects Volume"));
-    draw_text(493, 339, localize("Music Volume"));
-    draw_text(493, 423, localize("Full Screen?:"));
-    draw_text(493, 483, localize("Enable Autosaves?:"));
+    draw_text(493, 224, localize("STR_SETTING_VOLUME_MASTER"));
+    draw_text(493, 281, localize("STR_SETTING_VOLUME_EFFECTS"));
+    draw_text(493, 339, localize("STR_SETTING_VOLUME_MUSIC"));
+    draw_text(493, 423, localize("STR_SETTING_FULLSCREEN"));
+    draw_text(493, 483, localize("STR_SETTING_AUTOSAVE"));
 
     var _vols = [
         global.settings.master_volume,
@@ -59,7 +59,7 @@ if (settings == 1) {
     // Language selector
     draw_set_halign(fa_left);
     draw_set_font(cjk_font(fnt_cul_18));
-    draw_text(493, 543, localize("Language"));
+    draw_text(493, 543, localize("STR_SETTING_LANGUAGE"));
 
     draw_set_halign(fa_center);
     draw_text(842, 543, global.language_display_names[$ global.settings.language]);
@@ -71,7 +71,7 @@ if (settings == 1) {
     draw_set_color(c_gray);
     draw_set_halign(fa_center);
     draw_set_font(cjk_font(fnt_cul_14));
-    draw_text_transformed(929, 149, localize("Menu"), 1.5, 1.5, 0);
+    draw_text_transformed(929, 149, localize("STR_UI_MENU"), 1.5, 1.5, 0);
 }
 
 pop_draw_return_values();

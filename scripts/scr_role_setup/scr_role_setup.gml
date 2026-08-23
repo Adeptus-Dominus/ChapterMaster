@@ -173,11 +173,11 @@ function scr_distribution_and_advisor_setup() {
     }
     draw_set_halign(fa_left);
     if (scr_hit(540, 547, 800, 725)) {
-        tooltip = localize("Advisor Names");
+        tooltip = localize("STR_FLEET_SETUP_ADVISOR_NAMES");
         tooltip2 = localize("The names of your main Advisors.  They provide useful information and reports on the divisions of your Chapter.");
     }
 
-    draw_text_transformed(444, 550, string_hash_to_newline(localize("Advisor Names")), 0.6, 0.6, 0);
+    draw_text_transformed(444, 550, string_hash_to_newline(localize("STR_FLEET_SETUP_ADVISOR_NAMES")), 0.6, 0.6, 0);
     draw_set_font(cjk_font(fnt_40k_14b));
     draw_set_halign(fa_right);
     var _apoths_allowed = player_role_data[eROLE.APOTHECARY].available_to_player;
@@ -186,16 +186,16 @@ function scr_distribution_and_advisor_setup() {
     var _techs_allowed = player_role_data[eROLE.TECHMARINE].available_to_player;
 
     if (_apoths_allowed) {
-        draw_text(594, 575, localize("Chief Apothecary: "));
+        draw_text(594, 575, localize("STR_FLEET_SETUP_CHIEF_APOTHECARY"));
     }
     if (player_role_data[eROLE.CHAPLAIN].available_to_player) {
-        draw_text(594, 597, localize("High Chaplain: "));
+        draw_text(594, 597, localize("STR_FLEET_SETUP_HIGH_CHAPLAIN"));
     }
     if (player_role_data[eROLE.LIBRARIAN].available_to_player) {
-        draw_text(594, 619, localize("Chief Librarian: "));
+        draw_text(594, 619, localize("STR_FLEET_SETUP_CHIEF_LIBRARIAN"));
     }
     if (player_role_data[eROLE.TECHMARINE].available_to_player) {
-        draw_text(594, 641, localize("Forge Master: "));
+        draw_text(594, 641, localize("STR_FLEET_SETUP_FORGE_MASTER"));
     }
     draw_text(594, 663, localize("Master of Recruits: "));
     draw_text(594, 685, localize("Master of the Fleet: "));
@@ -479,7 +479,7 @@ function scr_role_setup() {
     draw_set_color(CM_GREEN_COLOR);
 
     roles_radio.current_selection = -1;
-    draw_text_color_simple(800, 80, localize("Roles"), CM_GREEN_COLOR);
+    draw_text_color_simple(800, 80, localize("STR_FLEET_SETUP_ROLES"), CM_GREEN_COLOR);
     if (!instance_exists(obj_creation_popup)) {
         roles_radio.update({y1: 150});
         roles_radio.draw();

@@ -790,24 +790,24 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
         if (is_present("armour") && is_present("mobi")) {
             if (_armour_data.has_tag("terminator") && !_mobility_data.has_tag("terminator") && !_mobility_data.has_tag("terminator_only")) {
                 _result.valid = false;
-                _result.warning = localize("Cannot use this with Terminator Armour.");
+                _result.warning = localize("STR_MISC_CANNOT_USE_THIS_WITH_TERMINATOR_ARMOUR");
             } else if (!_armour_data.has_tag("terminator") && _mobility_data.has_tag("terminator_only")) {
                 _result.valid = false;
-                _result.warning = localize("Cannot use this without Terminator Armour.");
+                _result.warning = localize("STR_MISC_CANNOT_USE_THIS_WITHOUT_TERMINATOR_ARMOUR");
             } else if (_armour_data.has_tag("dreadnought") && !_mobility_data.has_tag("dreadnought") && !_mobility_data.has_tag("dreadnought_only")) {
                 _result.valid = false;
-                _result.warning = localize("Cannot use this with Dreadnought Armour.");
+                _result.warning = localize("STR_MISC_CANNOT_USE_THIS_WITH_DREADNOUGHT_ARMOUR");
             } else if (!_armour_data.has_tag("dreadnought") && _mobility_data.has_tag("dreadnought_only")) {
                 _result.valid = false;
-                _result.warning = localize("Cannot use this without Dreadnought Armour.");
+                _result.warning = localize("STR_MISC_CANNOT_USE_THIS_WITHOUT_DREADNOUGHT_ARMOUR");
             }
         } else if (!is_present("armour") && is_present("mobi")) {
             if (_mobility_data.has_tag("terminator") || _mobility_data.has_tag("terminator_only")) {
                 _result.valid = false;
-                _result.warning = localize("Cannot use this without Terminator Armour.");
+                _result.warning = localize("STR_MISC_CANNOT_USE_THIS_WITHOUT_TERMINATOR_ARMOUR");
             } else if (_mobility_data.has_tag("dreadnought") || _mobility_data.has_tag("dreadnought_only")) {
                 _result.valid = false;
-                _result.warning = localize("Cannot use this without Dreadnought Armour.");
+                _result.warning = localize("STR_MISC_CANNOT_USE_THIS_WITHOUT_DREADNOUGHT_ARMOUR");
             }
         }
 
@@ -873,7 +873,7 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
                 if (slot == eEQUIPMENT_SLOT.ARMOUR && !get_item("armour").has_tag("dreadnought")) {
                     if (_unit.is_dreadnought()) {
                         equipment_found_and_valid[slot] = false;
-                        warning += localize("Marines may not exit Dreadnoughts.");
+                        warning += localize("STR_MISC_MARINES_MAY_NOT_EXIT_DREADNOUGHTS");
                     }
                 }
             }
@@ -883,7 +883,7 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
         equipment_found_and_valid[slot] = equipment_found_and_valid[slot] && _found >= needed_count;
 
         if (!equipment_found_and_valid[slot]) {
-            warning += localize("Not enough {0}; {1} more are required.", [localize(_wanted_item), needed_count - _found]);
+            warning += localize("STR_MISC_NOT_ENOUGH_MORE_ARE_REQUIRED", [localize(_wanted_item), needed_count - _found]);
         }
         if (_marines_without_exp > 0) {
             equipment_found_and_valid[slot] = false;
@@ -893,7 +893,7 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
         if (_item.has_tag("terminator_only")) {
             if (!get_item("armour").has_tag("terminator")) {
                 equipment_found_and_valid[slot] = false;
-                warning = localize("Cannot use {0} without Terminator/Dreadnought Armour.", [localize(_wanted_item)]);
+                warning = localize("STR_MISC_CANNOT_USE_WITHOUT_TERMINATOR_DREADNOUGHT_ARMOUR", [localize(_wanted_item)]);
             }
         }
 

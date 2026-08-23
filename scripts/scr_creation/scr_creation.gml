@@ -47,7 +47,7 @@ function set_complex_livery_buttons() {
                 y1: 342,
                 style: "pixel",
                 tooltip: localize("Helm Lens Colour\nHelm lens colour of {0}", [localize(_name)]),
-                label: localize("Lens : {0}", [localize(get_colour_name(_data.helm_lens))]),
+                label: localize("STR_LIVERY_LENS_2", [localize(get_colour_name(_data.helm_lens))]),
                 area: "helm_lens",
                 role_id: _type,
                 alpha: _alpha,
@@ -78,7 +78,7 @@ function update_creation_roles_radio(start_role = 1) {
         y1: 220,
         y_gap: 1,
     };
-    roles_radio = new RadioSet(_role_choice_array, localize("Role Settings"), _radio_data);
+    roles_radio = new RadioSet(_role_choice_array, localize("STR_LIVERY_ROLE_SETTINGS"), _radio_data);
     roles_radio.current_selection = -1;
 }
 
@@ -89,37 +89,37 @@ function bulk_selection_buttons_setup() {
     var _start_x = 500;
     var _button_data = [
         {
-            text: localize("Primary : {0}", [localize(col[main_color])]),
-            tooltip: localize("Primary"),
+            text: localize("STR_LIVERY_PRIMARY", [localize(col[main_color])]),
+            tooltip: localize("STR_MISC_PRIMARY"),
             tooltip2: localize("The main color of your Astartes and their vehicles. And the colour of your chapters Ships"),
         },
         {
-            text: localize("Secondary: {0}", [localize(col[secondary_color])]),
-            tooltip: localize("Secondary"),
+            text: localize("STR_LIVERY_SECONDARY", [localize(col[secondary_color])]),
+            tooltip: localize("STR_MISC_SECONDARY"),
             tooltip2: localize("The secondary color of your Astartes and their vehicles."),
         },
         {
-            text: localize("Pauldron 1: {0}", [localize(col[left_pauldron])]),
-            tooltip: localize("First Pauldron"),
+            text: localize("STR_LIVERY_PAULDRON_1", [localize(col[left_pauldron])]),
+            tooltip: localize("STR_LIVERY_FIRST_PAULDRON"),
             tooltip2: localize("The color of your Astartes' left Pauldron.  Normally this Pauldron displays their rank and designation."),
         },
         {
-            text: localize("Pauldron 2: {0}", [localize(col[right_pauldron])]),
-            tooltip: localize("Second Pauldron"),
-            tooltip2: localize("The color of your Astartes' right Pauldron.  Normally this Pauldron contains the Chapter Insignia."),
+            text: localize("STR_LIVERY_PAULDRON_2", [localize(col[right_pauldron])]),
+            tooltip: localize("STR_LIVERY_SECOND_PAULDRON"),
+            tooltip2: localize("STR_LIVERY_THE_COLOR_OF_YOUR_3"),
         },
         {
-            text: localize("Trim: {0}", [localize(col[main_trim])]),
-            tooltip: localize("Trim"),
+            text: localize("STR_LIVERY_TRIM_2", [localize(col[main_trim])]),
+            tooltip: localize("STR_LIVERY_TRIM"),
             tooltip2: localize("The trim color that appears on the Pauldrons, armour plating, and any decorations."),
         },
         {
-            text: localize("Lens: {0}", [localize(col[lens_color])]),
-            tooltip: localize("Lens"),
-            tooltip2: localize("The color of your Astartes' lenses.  Most of the time this will be the visor color."),
+            text: localize("STR_LIVERY_LENS_3", [localize(col[lens_color])]),
+            tooltip: localize("STR_LIVERY_LENS"),
+            tooltip2: localize("STR_LIVERY_THE_COLOR_OF_YOUR_2"),
         },
         {
-            text: localize("Weapon: {0}", [localize(col[weapon_color])]),
+            text: localize("STR_LIVERY_WEAPON_2", [localize(col[weapon_color])]),
             tooltip: localize("Weapon"),
             tooltip2: localize("The primary color of your Astartes' weapons."),
         },
@@ -180,25 +180,25 @@ function scr_creation(slide_num) {
             draw_set_font(cjk_font(fnt_40k_12));
             complex_livery_radio = new RadioSet([
                 {
-                    str1: localize("Sergeant Markers"),
+                    str1: localize("STR_LIVERY_SERGEANT_MARKERS"),
                     font: fnt_40k_12,
                     value: "sgt",
                     display_name: localize("Sergeant"),
                 },
                 {
-                    str1: localize("Veteran Sergeant Markers"),
+                    str1: localize("STR_LIVERY_VETERAN_SERGEANT_MARKERS"),
                     font: fnt_40k_12,
                     value: "vet_sgt",
                     display_name: localize("Veteran Sergeant"),
                 },
                 {
-                    str1: localize("Captain Markers"),
+                    str1: localize("STR_LIVERY_CAPTAIN_MARKERS"),
                     font: fnt_40k_12,
                     value: "captain",
                     display_name: localize("Captain"),
                 },
                 {
-                    str1: localize("Veteran Markers"),
+                    str1: localize("STR_LIVERY_VETERAN_MARKERS"),
                     font: fnt_40k_12,
                     value: "veteran",
                     display_name: localize("Veteran"),
@@ -211,22 +211,22 @@ function scr_creation(slide_num) {
 
             bulk_armour_pattern = new RadioSet([
                 {
-                    str1: localize("Single Colour"),
+                    str1: localize("STR_LIVERY_SINGLE_COLOUR"),
                     font: fnt_40k_12,
                     style: "box",
                 },
                 {
-                    str1: localize("Breastplate"),
+                    str1: localize("STR_LIVERY_BREASTPLATE"),
                     font: fnt_40k_12,
                     style: "box",
                 },
                 {
-                    str1: localize("Vertical"),
+                    str1: localize("STR_LIVERY_VERTICAL"),
                     font: fnt_40k_12,
                     style: "box",
                 },
                 {
-                    str1: localize("Quadrant"),
+                    str1: localize("STR_LIVERY_QUADRANT"),
                     font: fnt_40k_12,
                     style: "box",
                 },
@@ -238,22 +238,22 @@ function scr_creation(slide_num) {
 
             advanced_helmet_livery = new RadioSet([
                 {
-                    str1: localize("Single Colour"),
+                    str1: localize("STR_LIVERY_SINGLE_COLOUR"),
                     font: fnt_40k_12,
                     style: "box",
                 },
                 {
-                    str1: localize("Stripe"),
+                    str1: localize("STR_LIVERY_STRIPE"),
                     font: fnt_40k_12,
                     style: "box",
                 },
                 {
-                    str1: localize("Muzzle"),
+                    str1: localize("STR_LIVERY_MUZZLE"),
                     font: fnt_40k_12,
                     style: "box",
                 },
                 {
-                    str1: localize("Pattern"),
+                    str1: localize("STR_LIVERY_PATTERN"),
                     font: fnt_40k_12,
                     style: "box",
                 },
@@ -290,16 +290,16 @@ function scr_creation(slide_num) {
                 [
                     {
                         str1: localize("Standard"),
-                        tooltip: localize("standard options to colour marine"),
+                        tooltip: localize("STR_LIVERY_STANDARD_OPTIONS_TO_COLOUR_MARINE"),
                         font: fnt_40k_14b,
                     },
                     {
-                        str1: localize("Bulk"),
-                        tooltip: localize("bulk colouring for ease and speed"),
+                        str1: localize("STR_LIVERY_BULK"),
+                        tooltip: localize("STR_LIVERY_BULK_COLOURING_FOR_EASE_AND_SPEED"),
                         font: fnt_40k_14b,
                     },
                     {
-                        str1: localize("Advanced"),
+                        str1: localize("STR_LIVERY_ADVANCED"),
                         tooltip: localize("Advanced options for colouring"),
                         font: fnt_40k_14b,
                     },

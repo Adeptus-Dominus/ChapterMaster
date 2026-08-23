@@ -40,7 +40,7 @@ if (global.load == -1 && (obj_controller.zoomed || in_camera_view(star_box_shape
     if (garrison) {
         draw_sprite(spr_new_resource, 3, x - 30, y + 15);
         if (scr_hit(x - 40, y + 10, x - 10, y + 35)) {
-            tooltip_draw(localize("Marine Garrison in system"));
+            tooltip_draw(localize("STR_SYSTEM_MARINE_GARRISON"));
         }
     }
     if (point_in_rectangle(mouse_x, mouse_y, x - 128, y, x + 128, y + 80) && obj_controller.zoomed) {

@@ -70,7 +70,7 @@ try {
         obj_cursor.image_index = 0;
         if (scr_hit(436, 74, 436 + 128, 74 + 128) && (popup == "")) {
             obj_cursor.image_index = 1;
-            tooltip = localize("Chapter Icon");
+            tooltip = localize("STR_CREATE_CHAPTER_ICON");
             tooltip2 = localize("Your Chapter's icon.  Click to edit.");
         }
 
@@ -90,7 +90,7 @@ try {
 
             draw_set_font(cjk_font(fnt_40k_30b));
             if (scr_hit(1164 - 128, 74, 1164, 74 + 128)) {
-                tooltip = localize("Founding Chapter");
+                tooltip = localize("STR_CREATE_FOUNDING_CHAPTER");
                 tooltip2 = localize("The parent Chapter whose gene-seed your own originates from.");
             }
 
@@ -146,21 +146,21 @@ try {
 
         draw_set_color(CM_GREEN_COLOR);
         draw_set_halign(fa_left);
-        draw_text_transformed(580, 118, string_hash_to_newline(localize("Successor Chapters: {0}", [string(successors)])), 0.6, 0.6, 0);
+        draw_text_transformed(580, 118, string_hash_to_newline(localize("STR_CREATE_SUCCESSOR_CHAPTERS", [string(successors)])), 0.6, 0.6, 0);
         draw_set_font(cjk_font(fnt_40k_14b));
 
         draw_rectangle(445, 200, 1125, 202, true);
 
         draw_set_halign(fa_center);
         draw_set_font(cjk_font(fnt_40k_30b));
-        draw_text_transformed(800, 210, string_hash_to_newline(localize("Gene-Seed Mutations")), 0.6, 0.6, 0);
+        draw_text_transformed(800, 210, string_hash_to_newline(localize("STR_CREATE_SEED_MUTATIONS")), 0.6, 0.6, 0);
         if (purity == 10) {
-            draw_text_transformed(800, 230, localize("The gene-seed is perfectly pure"), 0.5, 0.5, 0);
+            draw_text_transformed(800, 230, localize("STR_CREATE_NO_MUTATION"), 0.5, 0.5, 0);
         } else {
             if (mutations > mutations_selected) {
                 draw_text_transformed(800, 230, localize("Select {0} more, according to your purity score", [string(mutations - mutations_selected)]), 0.5, 0.5, 0);
             } else {
-                draw_text_transformed(800, 230, localize("The gene-seed is mutated enough"), 0.5, 0.5, 0);
+                draw_text_transformed(800, 230, localize("STR_CREATE_ENOUGH_MUTATION"), 0.5, 0.5, 0);
                 draw_set_alpha(0.5);
             }
         }
@@ -173,14 +173,14 @@ try {
         }
         var mutations_defects = [
             {
-                t_tip: localize("Anemic Preomnor"),
+                t_tip: localize("STR_CREATE_MUTATION_PREOMNOR"),
                 t_tip2: localize("Your Astartes lack the detoxifying gland called the Preomnor.  They are more susceptible to poisons and toxins."),
                 data: preomnor,
                 mutation_points: 1,
                 disposition: [],
             },
             {
-                t_tip: localize("Disturbing Voice"),
+                t_tip: localize("STR_CREATE_MUTATION_VOICE"),
                 t_tip2: localize("Your Astartes have a voice like a creaking door or a rumble.  Decreases Imperium disposition."),
                 data: voice,
                 mutation_points: 1,
@@ -192,7 +192,7 @@ try {
                 ],
             },
             {
-                t_tip: localize("Doomed"),
+                t_tip: localize("STR_CREATE_MUTATION_DOOMED"),
                 t_tip2: localize("Your Chapter cannot make more Astartes until enough research is generated.  Counts as four mutations and decreases Imperium disposition while increasing that of other Astartes."),
                 data: doomed,
                 mutation_points: 4,
@@ -208,56 +208,56 @@ try {
                 ],
             },
             {
-                t_tip: localize("Faulty Lyman's Ear"),
+                t_tip: localize("STR_CREATE_MUTATION_EAR"),
                 t_tip2: localize("Lacking a working Lyman's ear, all deep-striked Astartes receive moderate penalties to both attack and defense."),
                 data: lyman,
                 mutation_points: 1,
                 disposition: [],
             },
             {
-                t_tip: localize("Hyper-Stimulated Omophagea"),
+                t_tip: localize("STR_CREATE_MUTATION_OMOPHAGEA"),
                 t_tip2: localize("After every battle the Astartes have a chance to feast upon their fallen enemies, or seldom, their allies."),
                 data: omophagea,
                 mutation_points: 1,
                 disposition: [],
             },
             {
-                t_tip: localize("Hyperactive Ossmodula"),
+                t_tip: localize("STR_CREATE_MUTATION_OSSMODULA"),
                 t_tip2: localize("Instead of wound tissue bone is generated; Apothecaries must spend twice the normal time healing your Astartes."),
                 data: ossmodula,
                 mutation_points: 1,
                 disposition: [],
             },
             {
-                t_tip: localize("Lost Zygote"),
+                t_tip: localize("STR_CREATE_MUTATION_ZYGOTE"),
                 t_tip2: localize("One of the Zygotes is faulty or missing.  Your Astartes only have one each, generating half the normal gene-seed.  Counts as two mutations."),
                 data: zygote,
                 mutation_points: 2,
                 disposition: [],
             },
             {
-                t_tip: localize("Inactive Sus-an Membrane"),
+                t_tip: localize("STR_CREATE_MUTATION_MEMBRANE"),
                 t_tip2: localize("Your Astartes do not have a Sus-an Membrane; they cannot enter suspended animation and receive more casualties."),
                 data: membrane,
                 mutation_points: 1,
                 disposition: [],
             },
             {
-                t_tip: localize("Missing Betchers Gland"),
+                t_tip: localize("STR_CREATE_MUTATION_BETCHERS"),
                 t_tip2: localize("Your Astartes cannot spit acid, and as a result, have slightly less attack in melee combat."),
                 data: betchers,
                 mutation_points: 1,
                 disposition: [],
             },
             {
-                t_tip: localize("Mutated Catalepsean Node"),
+                t_tip: localize("STR_CREATE_MUTATION_CATALEPSEAN"),
                 t_tip2: localize("Your Astartes have reduced awareness when tired.  Slightly less attack in ranged and melee combat."),
                 data: catalepsean,
                 mutation_points: 1,
                 disposition: [],
             },
             {
-                t_tip: localize("Oolitic Secretions"),
+                t_tip: localize("STR_CREATE_MUTATION_SECRETIONS"),
                 t_tip2: localize("Either by secretions or radiation, your Astartes have an unusual or strange skin color.  Decreases Imperium disposition."),
                 data: secretions,
                 mutation_points: 1,
@@ -269,7 +269,7 @@ try {
                 ],
             },
             {
-                t_tip: localize("Oversensitive Occulobe"),
+                t_tip: localize("STR_CREATE_MUTATION_OCCULOBE"),
                 t_tip2: localize("Your Astartes are no longer immune to stun grenades or bright lights, and have a massive penalty during morning battles."),
                 data: occulobe,
                 mutation_points: 1,
@@ -281,7 +281,7 @@ try {
                 ],
             },
             {
-                t_tip: localize("Rampant Mucranoid"),
+                t_tip: localize("STR_CREATE_MUTATION_MUCRANOID"),
                 t_tip2: localize("Your Astartes' Mucranoid cannot be turned off; the slime lowers most dispositions and occasionally damages their armour."),
                 data: mucranoid,
                 mutation_points: 1,
@@ -371,7 +371,7 @@ try {
 
         draw_set_font(cjk_font(fnt_40k_30b));
         draw_set_halign(fa_center);
-        draw_text_transformed(800, 515, string_hash_to_newline(localize("Starting Disposition")), 0.6, 0.6, 0);
+        draw_text_transformed(800, 515, string_hash_to_newline(localize("STR_CREATE_STARTING_DISPOSITION")), 0.6, 0.6, 0);
 
         draw_set_font(cjk_font(fnt_40k_14b));
         draw_set_halign(fa_right);
@@ -381,9 +381,9 @@ try {
         draw_text(650, 600, string_hash_to_newline(global.faction_names[eFACTION.ECCLESIARCHY] + " (" + string(disposition[eFACTION.ECCLESIARCHY]) + ")"));
         draw_text(650, 625, string_hash_to_newline(global.faction_names[eFACTION.INQUISITION] + " (" + string(disposition[eFACTION.INQUISITION]) + ")"));
         if (founding != ePROGENITOR.NONE) {
-            draw_text(650, 650, string_hash_to_newline(localize("Progenitor ({0})", [string(disposition[1])])));
+            draw_text(650, 650, string_hash_to_newline(localize("STR_CREATE_PROGENITOR_2", [string(disposition[1])])));
         }
-        draw_text(650, 675, localize("Adeptus Astartes ({0})", [string(disposition[6])]));
+        draw_text(650, 675, localize("STR_CREATE_DIPLO_ASTARTES", [string(disposition[6])]));
 
         draw_rectangle(655, 552, 1150, 567, 1);
         draw_rectangle(655, 552 + 25, 1150, 567 + 25, 1);
@@ -473,7 +473,7 @@ try {
         draw_line(445, 202, 1125, 202);
 
         draw_set_font(cjk_font(fnt_40k_30b));
-        draw_text_transformed(444, 215, string_hash_to_newline(localize("Select Two Weapons")), 0.6, 0.6, 0);
+        draw_text_transformed(444, 215, string_hash_to_newline(localize("STR_CREATE_SELECT_TWO_WEAPONS")), 0.6, 0.6, 0);
         draw_text_transformed(444, 240, string_hash_to_newline(localize("Melee")), 0.6, 0.6, 0);
         draw_text_transformed(800, 240, string_hash_to_newline(localize("Ranged")), 0.6, 0.6, 0);
 
@@ -591,15 +591,15 @@ try {
                 "",
             ],
             [
-                localize("Born Leader"),
+                localize("STR_CREATE_CM_TRAIT_LEADER"),
                 localize("You always know the right words to inspire your men or strike doubt in the hearts of the enemy.  Increases Disposition and Grants a +10% Requisition Income Bonus."),
             ],
             [
-                localize("Paragon"),
+                localize("STR_CREATE_TRAIT_PARAGON"),
                 localize("Even before your rise to Chapter Master you were a renowned warrior, nearly without compare.  Increases Chapter Master Experience and all stats."),
             ],
             [
-                localize("Psyker"),
+                localize("STR_CREATE_CM_TRAIT_PSYKER"),
                 localize("The impossible is nothing to you; despite being a Psyker you have slowly risen to lead a Chapter.  Chapter Master gains every Power within the chosen Discipline."),
             ],
         ];
@@ -656,12 +656,12 @@ try {
             draw_set_font(cjk_font(fnt_40k_14b));
             if (scr_hit(_sc_box.x1, _sc_box.y1, _sc_box.x2, _sc_box.y2)) {
                 tooltip = localize("Do you want to save your Chapter?");
-                tooltip2 = localize("Click to save your Chapter.");
+                tooltip2 = localize("STR_CREATE_BTN_SAVE_CHAPTER");
                 if (mouse_button_clicked()) {
                     scr_save_chapter(global.chapter_id);
 
                     tooltip = localize("Do you want to save your Chapter?");
-                    tooltip2 = localize("Chapter Saved!");
+                    tooltip2 = localize("STR_CREATE_CHAPTER_SAVED");
                 }
             }
         }
@@ -803,7 +803,7 @@ try {
             var _lock = false;
             if (scr_hit([925, 756, 997, 824])) {
                 if (slide == eCREATION_SLIDES.CHAPTERTRAITS && points > maxpoints) {
-                    tooltip_draw(localize("Points Too High!!"));
+                    tooltip_draw(localize("STR_CREATE_POINTS_TOO_HIGH"));
                     _lock = true;
                 }
             }

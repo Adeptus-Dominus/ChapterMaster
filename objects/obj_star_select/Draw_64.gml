@@ -116,7 +116,7 @@ try {
             var _unit_dispersement = _viewer.garrison_log;
             var _sys_name = target.name;
             if (struct_exists(_unit_dispersement, target.name)) {
-                group_selection(_unit_dispersement[$ _sys_name].units, {purpose: localize("{0} Management", [target.name]), purpose_code: "manage", number: 0, system: target.id, feature: "none", planet: 0, selections: []});
+                group_selection(_unit_dispersement[$ _sys_name].units, {purpose: localize("STR_SYSTEM_MANAGEMENT", [target.name]), purpose_code: "manage", number: 0, system: target.id, feature: "none", planet: 0, selections: []});
                 instance_destroy();
                 pop_draw_return_values();
                 exit;
@@ -127,7 +127,7 @@ try {
     if (loading != 0) {
         draw_set_font(cjk_font(fnt_40k_14));
         draw_set_color(CM_GREEN_COLOR);
-        draw_text(184, 202, localize("Select Destination"));
+        draw_text(184, 202, localize("STR_SYSTEM_SELECT_DESTINATION"));
     }
 
     //the draw and click on planets logic
@@ -239,14 +239,14 @@ try {
                 draw_set_font(cjk_font(fnt_40k_14));
 
                 if (!is_undefined(garrison.garrison_leader)) {
-                    garrison_data_slate.sub_title = localize("Garrison Leader {0}", [garrison.garrison_leader.name_role()]);
+                    garrison_data_slate.sub_title = localize("STR_SYSTEM_GARRISON_LEADER", [garrison.garrison_leader.name_role()]);
                 } else {
                     garrison_data_slate.sub_title = "";
                 }
                 garrison_data_slate.body_text = garrison.garrison_report();
 
                 garrison_data_slate.inside_method = function() {
-                    garrison_data_slate.title = localize("Garrison Report");
+                    garrison_data_slate.title = localize("STR_SYSTEM_GARRISON_REPORT");
                     draw_set_color(c_gray);
                     var xx = garrison_data_slate.XX;
                     var yy = garrison_data_slate.YY;
@@ -273,7 +273,7 @@ try {
                 garrison_data_slate.draw(340 + main_data_slate.width, 160, 0.6, 0.6);
             }
         } else if (population) {
-            garrison_data_slate.title = localize("Population Report");
+            garrison_data_slate.title = localize("STR_SYSTEM_POPULATION_REPORT");
             garrison_data_slate.inside_method = function() {
                 p_data.draw_planet_population_controls();
             };
@@ -388,11 +388,11 @@ try {
 
             draw_set_color(0);
             draw_set_font(cjk_font(fnt_40k_14b));
-            draw_text(37, 413, localize("Select Fleet Combat"));
+            draw_text(37, 413, localize("STR_SYSTEM_SELECT_FLEET_COMBAT"));
 
             draw_set_color(CM_GREEN_COLOR);
             draw_set_font(cjk_font(fnt_40k_14b));
-            draw_text(37.5, 413.5, localize("Select Fleet Combat"));
+            draw_text(37.5, 413.5, localize("STR_SYSTEM_SELECT_FLEET_COMBAT"));
 
             var x3 = 49, y3 = 441;
 

@@ -130,7 +130,7 @@ function find_recruit_success_chance(local_apothecary_points, system, planet, ui
 
                 if (droll == 0) {
                     var _planet_name = p_data.name;
-                    scr_alert(#FF9900, localize("DIPLOMATIC DISASTER"), localize("Apothecaries at {0} has been spotted doing suspicious activities!", [_planet_name]), system.x, system.y);
+                    scr_alert(#FF9900, localize("STR_EVENT_SUSPICIOUS_APOTHE"), localize("Apothecaries at {0} has been spotted doing suspicious activities!", [_planet_name]), system.x, system.y);
                     scr_event_log(#FF9900, localize("Apothecaries at {0} has been spotted doing suspicious activities!", [_planet_name]), system.name);
                     p_data.add_disposition(-25);
                     if (p_data.current_owner != eFACTION.PLAYER) {
@@ -701,7 +701,7 @@ function scr_compile_trial_bonus_string(trial_data) {
         if (struct_exists(train_time_data, "planets")) {
             var planets = struct_get_names(train_time_data.planets);
             for (var i = 0; i < array_length(planets); i++) {
-                bonus_string += localize("   {0} : {1}\n", [localize(planets[i]), train_time_string(train_time_data.planets[$ planets[i]])]);
+                bonus_string += localize("STR_APOTHECARIUM_FRAG", [localize(planets[i]), train_time_string(train_time_data.planets[$ planets[i]])]);
             }
         }
         bonus_string += "\n";
@@ -712,7 +712,7 @@ function scr_compile_trial_bonus_string(trial_data) {
         if (struct_exists(recruit_count_data, "planets")) {
             var planets = struct_get_names(recruit_count_data.planets);
             for (var i = 0; i < array_length(planets); i++) {
-                bonus_string += localize("   {0} : X{1}\n", [localize(planets[i]), recruit_count_data.planets[$ planets[i]]]);
+                bonus_string += localize("STR_APOTHECARIUM_FRAG_2", [localize(planets[i]), recruit_count_data.planets[$ planets[i]]]);
             }
         }
         bonus_string += "\n";
@@ -723,13 +723,13 @@ function scr_compile_trial_bonus_string(trial_data) {
         if (struct_exists(exp_bonus, "planets")) {
             var planets = struct_get_names(exp_bonus.planets);
             for (var i = 0; i < array_length(planets); i++) {
-                bonus_string += localize("   {0} : {1}\n", [localize(planets[i]), exp_bonus_string(exp_bonus.planets[$ planets[i]])]);
+                bonus_string += localize("STR_APOTHECARIUM_FRAG", [localize(planets[i]), exp_bonus_string(exp_bonus.planets[$ planets[i]])]);
             }
         }
         bonus_string += "\n";
     }
     if (struct_exists(trial_data, "seed_waste")) {
-        bonus_string += localize("{0}% of gene-seed wastage per turn\n", [trial_data.seed_waste * 100]);
+        bonus_string += localize("STR_RECRUITE_SEED_WASTAGE", [trial_data.seed_waste * 100]);
         bonus_string += "\n";
     }
     if (struct_exists(trial_data, "corruption_bonus")) {
@@ -745,7 +745,7 @@ function scr_compile_trial_bonus_string(trial_data) {
     }
     var _traits = global.trait_list;
     if (struct_exists(trial_data, "favoured_traits")) {
-        bonus_string += localize("Favoured Traits: ");
+        bonus_string += localize("STR_APOTHECARIUM_FAVOURED_TRAITS");
         for (var i = 0; i < array_length(trial_data.favoured_traits); i++) {
             var _favoured_trait = trial_data.favoured_traits[i];
             bonus_string += $"{localize(_traits[$ _favoured_trait].display_name)}, ";
@@ -753,7 +753,7 @@ function scr_compile_trial_bonus_string(trial_data) {
         bonus_string += "\n\n";
     }
     if (struct_exists(trial_data, "disfavoured_traits")) {
-        bonus_string += localize("Dis-Favoured Traits: ");
+        bonus_string += localize("STR_APOTHECARIUM_DIS_FAVOURED_TRAITS");
         for (var i = 0; i < array_length(trial_data.disfavoured_traits); i++) {
             var _disfavoured_trait = trial_data.disfavoured_traits[i];
             bonus_string += $"{localize(_traits[$ _disfavoured_trait].display_name)}, ";
@@ -796,7 +796,7 @@ function set_up_recruitment_view() {
             var yy = camera_get_view_y(view_camera[0]) + 60;
             draw_set_font(cjk_font(fnt_40k_30b));
             draw_set_halign(fa_center);
-            draw_text_transformed(xx + 1242, yy + 70, localize("Neophytes"), 0.6, 0.6, 0);
+            draw_text_transformed(xx + 1242, yy + 70, localize("STR_RECRUITE_NEOPHYTES"), 0.6, 0.6, 0);
 
             if (recruit_name[0] != "") {
                 draw_set_font(cjk_font(fnt_40k_14));
@@ -807,9 +807,9 @@ function set_up_recruitment_view() {
                     if (recruit_name[qp] != "") {
                         n++;
                         draw_rectangle(xx + 947, yy + 100 + ((n - 1) * 20), xx + 1577, yy + 100 + (n * 20), 1);
-                        draw_text(xx + 950, yy + 100 + ((n - 1) * 20), localize("Neophyte {0}", [recruit_name[qp]]));
-                        draw_text(xx + 1200, yy + 100 + ((n - 1) * 20), localize("Starting EXP: {0}", [recruit_exp[qp]]));
-                        draw_text(xx + 1500, yy + 100 + ((n - 1) * 20), localize("ETA: {0}", [recruit_training[qp] + recruit_distance[qp]]));
+                        draw_text(xx + 950, yy + 100 + ((n - 1) * 20), localize("STR_RECRUITE_NEOPHYTE", [recruit_name[qp]]));
+                        draw_text(xx + 1200, yy + 100 + ((n - 1) * 20), localize("STR_RECRUITE_STARTING_EXP", [recruit_exp[qp]]));
+                        draw_text(xx + 1500, yy + 100 + ((n - 1) * 20), localize("STR_APOTHECARIUM_ETA", [recruit_training[qp] + recruit_distance[qp]]));
                     }
                 }
             }
@@ -859,8 +859,8 @@ function scr_draw_recruit_advisor() {
         draw_set_halign(fa_left);
         draw_set_color(c_gray);
         draw_set_font(cjk_font(fnt_40k_30b));
-        draw_text_transformed(xx + 336 + 16, yy + 66, string_hash_to_newline(localize("World {0}", [obj_ini.recruiting_name])), 1, 1, 0);
-        draw_text_transformed(xx + 336 + 16, yy + 100, string_hash_to_newline(localize("First Sergeant {0}", [recruiter_name])), 0.6, 0.6, 0);
+        draw_text_transformed(xx + 336 + 16, yy + 66, string_hash_to_newline(localize("STR_RECRUITE_REC_WORLD", [obj_ini.recruiting_name])), 1, 1, 0);
+        draw_text_transformed(xx + 336 + 16, yy + 100, string_hash_to_newline(localize("STR_APOTHECARIUM_FIRST_SERGEANT", [recruiter_name])), 0.6, 0.6, 0);
         draw_set_font(cjk_font(fnt_40k_14));
     }
     if (menu_adept == 1) {
@@ -869,15 +869,15 @@ function scr_draw_recruit_advisor() {
         draw_set_halign(fa_left);
         draw_set_color(c_gray);
         draw_set_font(cjk_font(fnt_40k_30b));
-        draw_text_transformed(xx + 336 + 16, yy + 40, string_hash_to_newline(localize("World {0}", [obj_ini.recruiting_name])), 1, 1, 0);
-        draw_text_transformed(xx + 336 + 16, yy + 100, string_hash_to_newline(localize("Adept {0}", [obj_controller.adept_name])), 0.6, 0.6, 0);
+        draw_text_transformed(xx + 336 + 16, yy + 40, string_hash_to_newline(localize("STR_RECRUITE_REC_WORLD", [obj_ini.recruiting_name])), 1, 1, 0);
+        draw_text_transformed(xx + 336 + 16, yy + 100, string_hash_to_newline(localize("STR_FLEET_ADEPT", [obj_controller.adept_name])), 0.6, 0.6, 0);
         draw_set_font(cjk_font(fnt_40k_14));
     }
 
     var _cm = cm_obj().get_struct();
     var _adept = menu_adept == 1;
     if (menu_adept == 0) {
-        blurp = localize("Hail {0}! You asked for a report?\n\n", [_cm.name()]);
+        blurp = localize("STR_RECRUITE_GREETING", [_cm.name()]);
     }
 
     if (obj_ini.doomed == 0) {
@@ -905,7 +905,7 @@ function scr_draw_recruit_advisor() {
             } else if ((recruiting == 0) && (marines < 1000)) {
                 blurp += localize(_adept ? "\n{0}. You must only give me the word and I can begin further increasing your numbers." : "\n{0}. You must only give me the word and I can begin further increasing our numbers.", [_cur_recruit_rate]);
             } else if (recruiting == 1) {
-                blurp += localize("\n{0}.", [_cur_recruit_rate]);
+                blurp += localize("STR_APOTHECARIUM_FRAG_3", [_cur_recruit_rate]);
             }
         }
     }
@@ -974,7 +974,7 @@ function scr_draw_recruit_advisor() {
     if ((training_apothecary >= 0) && (training_apothecary <= 6)) {
         blur = localize(_recruit_rate[training_apothecary]);
     }
-    draw_text(xx + 407, yy + 394, string_hash_to_newline(localize("Apothecary Training: {0}", [blur])));
+    draw_text(xx + 407, yy + 394, string_hash_to_newline(localize("STR_RECRUITE_TRAIN_APOTHE", [blur])));
     draw_text(xx + 728, yy + 394, string_hash_to_newline("[-] [+]"));
 
     // TODO implement Spave Wolves and Iron Hands cases
@@ -1010,7 +1010,7 @@ function scr_draw_recruit_advisor() {
         if ((training_chaplain >= 0) && (training_chaplain <= 6)) {
             blur = localize(_recruit_rate[training_chaplain]);
         }
-        draw_text(xx + 407, yy + 414, string_hash_to_newline(localize("Chaplain Training: {0}", [blur])));
+        draw_text(xx + 407, yy + 414, string_hash_to_newline(localize("STR_RECRUITE_TRAINING_CHAPLAIN", [blur])));
         draw_text(xx + 728, yy + 414, string_hash_to_newline("[-] [+]"));
     }
 
@@ -1045,7 +1045,7 @@ function scr_draw_recruit_advisor() {
     if ((training_psyker >= 0) && (training_psyker <= 6)) {
         blur = localize(_recruit_rate[training_psyker]);
     }
-    draw_text(xx + 407, yy + 434, string_hash_to_newline(localize("Psyker Training: {0}", [blur])));
+    draw_text(xx + 407, yy + 434, string_hash_to_newline(localize("STR_RECRUITE_TRAINING_PSYKER", [blur])));
     draw_text(xx + 728, yy + 434, string_hash_to_newline("[-] [+]"));
 
     // ** Techmarine recruitment **
@@ -1079,7 +1079,7 @@ function scr_draw_recruit_advisor() {
     if ((training_techmarine >= 0) && (training_techmarine <= 6)) {
         blur = localize(_recruit_rate[training_techmarine]);
     }
-    draw_text(xx + 407, yy + 454, localize("Techmarine Training: {0}", [blur]));
+    draw_text(xx + 407, yy + 454, localize("STR_RECRUITE_TRAINING_TECHMARINE", [blur]));
     draw_text(xx + 728, yy + 454, "[-] [+]");
 
     // ** Neophyte Training types **
@@ -1089,7 +1089,7 @@ function scr_draw_recruit_advisor() {
 
     draw_set_halign(fa_center);
     draw_set_font(cjk_font(fnt_40k_30b));
-    draw_text_transformed(xx + 622, yy + 491, localize("Aspirant Trial"), 0.6, 0.6, 0);
+    draw_text_transformed(xx + 622, yy + 491, localize("STR_CREATE_ASPIRANT_TRIAL"), 0.6, 0.6, 0);
     draw_set_font(cjk_font(fnt_40k_14b));
 
     draw_text_ext(xx + 622, yy + 522, localize(cur_trial.name), -1, 536);

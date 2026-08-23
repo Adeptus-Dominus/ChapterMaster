@@ -106,17 +106,17 @@ function tech_uprising_event() {
             choice_func: tech_uprising_event_aftermath,
         },
         {
-            str1: localize("Support the heretics"),
+            str1: localize("STR_FORGE_ELECT_SUPPORT_HERETICS"),
             choice_func: tech_uprising_event_aftermath,
         },
         {
-            str1: localize("Support the Cult mechanicus faithfuls"),
+            str1: localize("STR_FORGE_ELECT_SUPPORT_FAITHFULS"),
             choice_func: tech_uprising_event_aftermath,
         },
     ];
 
     _pop_data.options = _options;
-    scr_popup(localize("Technical Differences!"), localize("You Recive an Urgent Transmision A serious breakdown in culture has coccured causing believers in tech heresy to demand that they are given preseidence and assurance to continue their practises"), "tech_uprising", _pop_data);
+    scr_popup(localize("STR_FORGE_ELECT_TECHNICAL_DIFFERENCES"), localize("You Recive an Urgent Transmision A serious breakdown in culture has coccured causing believers in tech heresy to demand that they are given preseidence and assurance to continue their practises"), "tech_uprising", _pop_data);
 }
 
 function setup_new_forge_master_popup(techs) {
@@ -151,7 +151,7 @@ function setup_new_forge_master_popup(techs) {
     }
     var _options = [
         {
-            str1: localize("Popular Pick"),
+            str1: localize("STR_FORGE_ELECT_POPULAR_PICK"),
             choice_func: function() {
                 new_forge_master_chosen(pop_data.charisma_pick);
             },
@@ -160,7 +160,7 @@ function setup_new_forge_master_popup(techs) {
             },
         },
         {
-            str1: localize("Experience Pick"),
+            str1: localize("STR_FORGE_ELECT_EXPERIENCE_PICK"),
             choice_func: function() {
                 new_forge_master_chosen(pop_data.experience_pick);
             },
@@ -169,7 +169,7 @@ function setup_new_forge_master_popup(techs) {
             },
         },
         {
-            str1: localize("Talent Pick"),
+            str1: localize("STR_FORGE_ELECT_TALENT_PICK"),
             choice_func: function() {
                 new_forge_master_chosen(pop_data.talent_pick);
             },
@@ -179,7 +179,7 @@ function setup_new_forge_master_popup(techs) {
         },
     ];
     _pop_data.options = _options;
-    scr_popup(localize("New Forge Master"), localize("The Demise of Forge Master {0} means a replacement must be chosen. Several Options have already been put forward to you but it is ultimatly your decision.", [localize(last_master)]), "new_forge_master", _pop_data);
+    scr_popup(localize("STR_FORGE_ELECT_NEW_FORGE_MASTER"), localize("The Demise of Forge Master {0} means a replacement must be chosen. Several Options have already been put forward to you but it is ultimatly your decision.", [localize(last_master)]), "new_forge_master", _pop_data);
 }
 
 /// @self Asset.GMObject.obj_popup
@@ -233,22 +233,22 @@ function new_forge_master_chosen(pick) {
 
         var likability = "";
         if (dislike <= 5) {
-            likability = localize("He is generally well liked");
+            likability = localize("STR_FORGE_ELECT_GENERALLY_LIKED");
         }
         if (dislike > 5) {
-            likability = localize("He is not generally well liked");
+            likability = localize("STR_FORGE_ELECT_NOT_GENERALLY_LIKED");
         }
         if (dislike > 10) {
-            likability = localize("He mostly disliked");
+            likability = localize("STR_FORGE_ELECT_HE_MOSTLY_DISLIKED");
         }
         if (dislike == 0) {
             likability = localize("He is like by all of his tech brothers");
         }
-        text = localize("{0} is selected as the new {1} {2}.", [localize(pick.name()), localize(pick.role()), likability]);
+        text = localize("STR_FORGE_ELECT_IS_SELECTED_AS_THE_NEW", [localize(pick.name()), localize(pick.role()), likability]);
         if (skill_lack > 0 && skill_lack < 6) {
             text += localize("There are some questions about his ability.");
         } else if (skill_lack > 6) {
-            text += localize("Many Question his Technical Talents.");
+            text += localize("STR_FORGE_ELECT_QUESTIONED_TALENTS");
         }
         if (exp_lack > 0 && exp_lack < 6) {
             text += localize("A few have raised questions over his experience.");
@@ -256,13 +256,13 @@ function new_forge_master_chosen(pick) {
             text += localize("There have been Many concerns over his experience.");
         }
         if (popularity_lack > 1 && popularity_lack < 6) {
-            text += localize("He is not unanimously liked.");
+            text += localize("STR_FORGE_ELECT_NOT_UNANIMOUSLY_LIKED");
         } else if (popularity_lack >= 6) {
-            text += localize("He is disliked by many.");
+            text += localize("STR_FORGE_ELECT_DISLIKED_BY_MANY");
         }
         var lacks = skill_lack + exp_lack + popularity_lack;
         if (lacks < ((array_length(techs) - 1) / 10)) {
-            text += localize("Your choice Is almost unanimously respected");
+            text += localize("STR_FORGE_ELECT_UNANIMOUSLY_RESPECTED");
         } else if (lacks < ((array_length(techs) - 1) / 4)) {
             text += localize("While a few may have preferred another there are no serious concerns");
         } else if (lacks < ((array_length(techs) - 1) / 2)) {

@@ -333,18 +333,18 @@ function EquipmentStruct(item_data = undefined, core_type = "", quality_request 
                         }
                     }
                     if (arp == 4) {
-                        array_push(special_properties_array, localize("Anti Vehicle"));
+                        array_push(special_properties_array, localize("STR_WEAP_TRAIT_ANTI_VEHICLE"));
                     } else if (arp == 1) {
-                        array_push(special_properties_array, localize("Low Penetration"));
+                        array_push(special_properties_array, localize("STR_WEAP_TRAIT_LOW_PEN"));
                     } else if (arp == 2) {
-                        array_push(special_properties_array, localize("Medium Penetration"));
+                        array_push(special_properties_array, localize("STR_WEAP_TRAIT_MED_PEN"));
                     } else if (arp == 3) {
-                        array_push(special_properties_array, localize("High Penetration"));
+                        array_push(special_properties_array, localize("STR_WEAP_TRAIT_HIGH_PEN"));
                     }
                     if (array_length(second_profiles) > 0) {
                         for (var h = 0; h < array_length(second_profiles); h++) {
                             if (string_pos("Integrated", second_profiles[h]) == 0) {
-                                var integrated_member = localize("Integrated {0}", [localize(second_profiles[h])]);
+                                var integrated_member = localize("STR_FORGE_INTEGRATED", [localize(second_profiles[h])]);
                                 array_push(special_properties_array, integrated_member);
                             } else {
                                 array_push(special_properties_array, localize(second_profiles[h]));
@@ -358,7 +358,7 @@ function EquipmentStruct(item_data = undefined, core_type = "", quality_request 
                         for (var j = 0; j < array_length(_specials); j++) {
                             var _special = _specials[j];
                             var _special_value = specials[$ _special];
-                            _specials_string += localize("{0} ({1})", [localize(format_underscore_string(_special)), _special_value]);
+                            _specials_string += localize("STR_TRAIT_FRAG_2", [localize(format_underscore_string(_special)), _special_value]);
                             array_push(special_properties_array, _specials_string);
                         }
                     }
@@ -376,7 +376,7 @@ function EquipmentStruct(item_data = undefined, core_type = "", quality_request 
                     break;
                 case "req_exp":
                     if (req_exp > 0) {
-                        item_desc_tooltip += $"{localize("#Requires {0} EXP#", [req_exp])}";
+                        item_desc_tooltip += $"{localize("STR_ITEM_REQUIRES", [req_exp])}";
                     }
                     break;
                 case "tags":

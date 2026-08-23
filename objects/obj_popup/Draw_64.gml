@@ -28,7 +28,7 @@ try {
             draw_set_font(cjk_font(fnt_large));
             draw_set_halign(fa_center);
             draw_set_color(CM_GREEN_COLOR);
-            draw_text_transformed(320, 60, localize("SELECT DESTINATION"), 0.5, 0.5, 0);
+            draw_text_transformed(320, 60, localize("STR_SYSTEM_SELECT_DESTINATION_2"), 0.5, 0.5, 0);
             draw_set_halign(fa_left);
         } else if (type == 10) {
             target_comp += 1;

@@ -63,15 +63,15 @@ function scr_ui_advisors() {
             draw_set_halign(fa_left);
             draw_set_color(c_gray);
             draw_set_font(cjk_font(fnt_40k_30b));
-            draw_text_transformed(xx + 336 + 16, yy + 66, localize("Reclusium"), 1, 1, 0);
+            draw_text_transformed(xx + 336 + 16, yy + 66, localize("STR_MANAGE_RECLUSIUM"), 1, 1, 0);
             draw_text_transformed(xx + 336 + 16, yy + 100, localized_name_role(_head), 0.6, 0.6, 0);
         } else {
             scr_image("advisor/splash", 1, xx + 16, yy + 43, 310, 828);
             draw_set_halign(fa_left);
             draw_set_color(c_gray);
             draw_set_font(cjk_font(fnt_40k_30b));
-            draw_text_transformed(xx + 336 + 16, yy + 66, localize("Reclusium"), 1, 1, 0);
-            draw_text_transformed(xx + 336 + 16, yy + 100, localize("Adept {0}", [obj_controller.adept_name]), 0.6, 0.6, 0);
+            draw_text_transformed(xx + 336 + 16, yy + 66, localize("STR_MANAGE_RECLUSIUM"), 1, 1, 0);
+            draw_text_transformed(xx + 336 + 16, yy + 100, localize("STR_FLEET_ADEPT", [obj_controller.adept_name]), 0.6, 0.6, 0);
         }
 
         draw_set_font(cjk_font(fnt_40k_14));
@@ -83,7 +83,7 @@ function scr_ui_advisors() {
             blurp = localize("Sir!  You requested a report?  Currently, we have deployed {0} {1}s to watch over the health of our Battle-Brothers in the field.  We have an additional {2} {1}s who await only your order to carry the word to the troops.", [temp[36], localize(_chap_role), temp[37]]);
         }
         if (temp[36] == "0") {
-            blurp = localize("Sir!  You requested a report?  Currently, we have {0} {1}s who await only your order to carry the word to the troops.", [temp[37], localize(_chap_role)]);
+            blurp = localize("STR_REPORT_SIR_YOU_REQUESTED_A_2", [temp[37], localize(_chap_role)]);
         }
         if ((global.chapter_name != "Space Wolves") && (global.chapter_name != "Iron Hands")) {
             blurp += localize("##Currently, we are training additional {0} at a ", [localize(_chap_role)]);
@@ -93,7 +93,7 @@ function scr_ui_advisors() {
                 var training_points_values = global.chaplain_training_tiers;
                 eta = floor((47 - chaplain_points) / training_points_values[training_chaplain]) + 1;
             }
-            blurp += localize(" rate");
+            blurp += localize("STR_REPORT_RATE");
             if (training_chaplain > 0) {
                 blurp += localize(" and expect to see a new one in {0} month's time.", [eta]);
             }
@@ -106,7 +106,7 @@ function scr_ui_advisors() {
 
             draw_set_font(cjk_font(fnt_40k_30b));
             draw_set_halign(fa_center);
-            draw_text_transformed(xx + 1262, yy + 70, localize("Penitorium"), 0.6, 0.6, 0);
+            draw_text_transformed(xx + 1262, yy + 70, localize("STR_REPORT_PENITORIUM"), 0.6, 0.6, 0);
 
             if (penitorium > 0) {
                 draw_set_font(cjk_font(fnt_40k_14));
@@ -121,15 +121,15 @@ function scr_ui_advisors() {
                     if (unit.corruption > 0) {
                         r_eta = string(round((unit.corruption * unit.corruption) / 50));
                         if (unit.corruption >= 90) {
-                            r_eta = localize("Never");
+                            r_eta = localize("STR_REPORT_NEVER");
                         }
                     } else if (unit.corruption <= 0) {
                         r_eta = "0";
                     }
                     draw_rectangle(xx + 947, yy + 100 + ((qp - 1) * 20), xx + 1577, yy + 100 + (qp * 20), 1);
                     draw_text(xx + 950, yy + 100 + ((qp - 1) * 20), string_hash_to_newline(localized_name_role(unit)));
-                    draw_text(xx + 1200, yy + 100 + ((qp - 1) * 20), string_hash_to_newline(localize("ETA: {0}", [r_eta])));
-                    draw_text(xx + 1432, yy + 100 + ((qp - 1) * 20), string_hash_to_newline(localize("[Execute]  [Release]")));
+                    draw_text(xx + 1200, yy + 100 + ((qp - 1) * 20), string_hash_to_newline(localize("STR_APOTHECARIUM_ETA", [r_eta])));
+                    draw_text(xx + 1432, yy + 100 + ((qp - 1) * 20), string_hash_to_newline(localize("STR_REPORT_EXECUTE_RELEASE")));
                 }
             }
             draw_set_font(cjk_font(fnt_40k_14));
@@ -148,7 +148,7 @@ function scr_ui_advisors() {
                     blurp += localize(_recruit_pace[training_chaplain]);
                 }
                 if (training_chaplain > 0) {
-                    blurp += localize("  The next {0} is expected in {1} months.", [localize(obj_ini.player_role_data[eROLE.CHAPLAIN].role), eta]);
+                    blurp += localize("STR_REPORT_THE_NEXT_IS_EXPECTED_IN_MONTHS", [localize(obj_ini.player_role_data[eROLE.CHAPLAIN].role), eta]);
                 }
             }
         }
@@ -159,7 +159,7 @@ function scr_ui_advisors() {
         draw_set_halign(fa_center);
         draw_set_color(c_gray);
         draw_set_font(cjk_font(fnt_40k_30b));
-        draw_text_transformed(xx + 622, yy + 440, string_hash_to_newline(localize("Chapter Revelry")), 0.6, 0.6, 0);
+        draw_text_transformed(xx + 622, yy + 440, string_hash_to_newline(localize("STR_REVELRY_CHAPTER_REVELRY")), 0.6, 0.6, 0);
         draw_set_halign(fa_left);
         draw_set_color(c_gray);
         draw_set_font(cjk_font(fnt_40k_14));
@@ -180,7 +180,7 @@ function scr_ui_advisors() {
             }
             if (fest_scheduled == 1) {
                 if (fest_type != "Chapter Relic") {
-                    blurp2 = localize("A {0} has been scheduled on ", [localize(fest_type)]);
+                    blurp2 = localize("STR_REVELRY_A_HAS_BEEN_SCHEDULED_ON", [localize(fest_type)]);
                 }
                 if (fest_type == "Chapter Relic") {
                     blurp2 = localize("Chapter Relic construction has been scheduled on ");
@@ -194,7 +194,7 @@ function scr_ui_advisors() {
                 }
 
                 if (fest_honoring == 0) {
-                    blurp2 += localize(".  ");
+                    blurp2 += localize("STR_REVELRY_FRAG");
                 }
                 if (fest_honoring == 1) {
                     blurp2 += localize(" in your name.  ");
@@ -211,10 +211,10 @@ function scr_ui_advisors() {
                 }
                 if (fest_honoring == 4) {
                     // faction
-                    blurp2 += localize(", honoring ");
+                    blurp2 += localize("STR_REVELRY_HONORING");
                 }
                 if (fest_honoring == 5) {
-                    blurp2 += localize(", giving praise to The Emperor.  ");
+                    blurp2 += localize("STR_REVELRY_GIVING_PRAISE_TO_THE_EMPEROR");
                 }
                 if (fest_honoring == 6) {
                     blurp2 += localize(" to honor our chapter.  ");
@@ -240,7 +240,7 @@ function scr_ui_advisors() {
                     blurp2 += localize(".  It is set to run for {0} month.", [fest_repeats]);
                 }
                 if (fest_repeats > 1) {
-                    blurp2 += localize(".  It is set to run for {0} months.", [fest_repeats]);
+                    blurp2 += localize("STR_REVELRY_IT_IS_SET_TO_2", [fest_repeats]);
                 }
 
                 if (fest_type == "Great Feast") {
@@ -253,10 +253,10 @@ function scr_ui_advisors() {
                             blurp2 += localize("drugs and alcohol will be present for those who wish to partake.");
                         }
                         if ((fest_feature2 == 1) && (fest_feature3 == 0)) {
-                            blurp2 += localize("alcohol will also be present.");
+                            blurp2 += localize("STR_REVELRY_ALCOHOL_WILL_ALSO_BE_PRESENT");
                         }
                         if ((fest_feature2 == 0) && (fest_feature3 == 1)) {
-                            blurp2 += localize("drugs will also be present.");
+                            blurp2 += localize("STR_REVELRY_DRUGS_WILL_ALSO_BE_PRESENT");
                         }
                     }
                     if (fest_feature1 == 0) {
@@ -264,7 +264,7 @@ function scr_ui_advisors() {
                             blurp2 = localize("  The feast will only be such in name, and actually primarily be composed of alcohol consumption and roudy behavior.");
                         }
                         if ((fest_feature2 == 0) && (fest_feature3 == 1)) {
-                            blurp2 = localize("  The feast will only be such in name, and actually primarily be composed of lines of drugs and roudy behavior.");
+                            blurp2 = localize("STR_REVELRY_THE_FEAST_WILL_ONLY_2");
                         }
                     }
                 }
@@ -289,10 +289,10 @@ function scr_ui_advisors() {
                         blurp2 += localize("  Our {0}s aim to create a weapon.", [localize(obj_ini.player_role_data[eROLE.TECHMARINE].role)]);
                     }
                     if (fest_feature2 == 1) {
-                        blurp2 += localize("  Our {0}s aim to create a suit of armour.", [localize(obj_ini.player_role_data[eROLE.TECHMARINE].role)]);
+                        blurp2 += localize("STR_REVELRY_OUR_S_AIM_TO_2", [localize(obj_ini.player_role_data[eROLE.TECHMARINE].role)]);
                     }
                     if (fest_feature3 == 1) {
-                        blurp2 += localize("  Our {0}s aim to hone and strengthen an already existing relic.", [localize(obj_ini.player_role_data[eROLE.TECHMARINE].role)]);
+                        blurp2 += localize("STR_REVELRY_OUR_S_AIM_TO_3", [localize(obj_ini.player_role_data[eROLE.TECHMARINE].role)]);
                     }
                 }
                 if (fest_type == "Imperial Mass") {
@@ -308,7 +308,7 @@ function scr_ui_advisors() {
                         blurp2 += localize("  The Chapter Cult Sermon is pointedly sanctioned within the bounds of the Codex Astartes and Imperial tradition.");
                     }
                     if ((fest_feature1 == 0) && (fest_feature2 + fest_feature3 == 0)) {
-                        blurp2 += localize("  The Chapter Cult Sermon contains some radical or questionable practices, but such is allowed, as our traditions.");
+                        blurp2 += localize("STR_REVELRY_THE_CHAPTER_CULT_SERMON_2");
                     }
                     if (fest_feature2 == 1) {
                         blurp2 += localize("  Blood sacrifices are a primary focus with the sermon, celebrating martial prowess and our semi-divinity.");
@@ -345,18 +345,18 @@ function scr_ui_advisors() {
         var _checkbox_sprite_index = 0;
         draw_set_font(cjk_font(fnt_40k_14b));
         draw_set_color(c_gray);
-        draw_text_transformed(xx + 1262, yy + 70, localize("Scheduling Event"), 0.6, 0.6, 0);
-        draw_text_transformed(xx + 962, yy + 126, string_hash_to_newline(localize("Event Type: ")), 1, 1, 0);
-        draw_text_transformed(xx + 962, yy + 185, string_hash_to_newline(localize("Event Location: ")), 1, 1, 0);
-        draw_text_transformed(xx + 962, yy + 266, string_hash_to_newline(localize("Grandoise: ")), 1, 1, 0);
-        draw_text_transformed(xx + 962, yy + 324, string_hash_to_newline(localize("Features: ")), 1, 1, 0);
-        draw_text_transformed(xx + 962, yy + 379, string_hash_to_newline(localize("Display: ")), 1, 1, 0);
+        draw_text_transformed(xx + 1262, yy + 70, localize("STR_REVELRY_SCHEDULING_EVENT"), 0.6, 0.6, 0);
+        draw_text_transformed(xx + 962, yy + 126, string_hash_to_newline(localize("STR_REVELRY_EVENT_TYPE")), 1, 1, 0);
+        draw_text_transformed(xx + 962, yy + 185, string_hash_to_newline(localize("STR_REVELRY_EVENT_LOCATION")), 1, 1, 0);
+        draw_text_transformed(xx + 962, yy + 266, string_hash_to_newline(localize("STR_REVELRY_GRANDOISE")), 1, 1, 0);
+        draw_text_transformed(xx + 962, yy + 324, string_hash_to_newline(localize("STR_REVELRY_FEATURES")), 1, 1, 0);
+        draw_text_transformed(xx + 962, yy + 379, string_hash_to_newline(localize("STR_REVELRY_DISPLAY")), 1, 1, 0);
 
-        draw_text_transformed(xx + 962, yy + 434, string_hash_to_newline(localize("Repeat: ")), 1, 1, 0);
-        draw_text_transformed(xx + 1225, yy + 434, string_hash_to_newline(localize("Honoring: ")), 1, 1, 0);
+        draw_text_transformed(xx + 962, yy + 434, string_hash_to_newline(localize("STR_REVELRY_REPEAT")), 1, 1, 0);
+        draw_text_transformed(xx + 1225, yy + 434, string_hash_to_newline(localize("STR_REVELRY_HONORING_2")), 1, 1, 0);
 
-        draw_text_transformed(xx + 962, yy + 527, string_hash_to_newline(localize("Attendees: ")), 1, 1, 0);
-        draw_text_transformed(xx + 1246, yy + 527, string_hash_to_newline(localize("Public: ")), 1, 1, 0);
+        draw_text_transformed(xx + 962, yy + 527, string_hash_to_newline(localize("STR_REVELRY_ATTENDEES")), 1, 1, 0);
+        draw_text_transformed(xx + 1246, yy + 527, string_hash_to_newline(localize("STR_REVELRY_PUBLIC")), 1, 1, 0);
 
         draw_set_font(cjk_font(fnt_40k_14));
 
@@ -376,7 +376,7 @@ function scr_ui_advisors() {
         var cx = xx + 990;
         var cy = yy + 212;
 
-        draw_text(cx, cy, string_hash_to_newline(localize("Planet")));
+        draw_text(cx, cy, string_hash_to_newline(localize("STR_REVELRY_PLANET")));
 
         cx -= 35;
         cy -= 4;
@@ -411,7 +411,7 @@ function scr_ui_advisors() {
         cx = xx + 1100;
         cy = yy + 212;
 
-        draw_text(cx, cy, string_hash_to_newline(localize("Ship")));
+        draw_text(cx, cy, string_hash_to_newline(localize("STR_REVELRY_SHIP")));
 
         cx -= 35;
         cy -= 4;
@@ -661,7 +661,7 @@ function scr_ui_advisors() {
         draw_rectangle(xx + 1302, yy + 780, xx + 1433, yy + 805, 0);
         draw_set_alpha(1);
         draw_set_color(c_black);
-        draw_text(xx + 1305, yy + 784, string_hash_to_newline(localize("Schedule")));
+        draw_text(xx + 1305, yy + 784, string_hash_to_newline(localize("STR_REVELRY_SCHEDULE")));
 
         draw_sprite_ext(spr_requisition, 0, xx + 1374, yy + 787, 1, 1, 0, c_white, 1);
         draw_set_color(c_blue);
@@ -757,15 +757,15 @@ function scr_ui_advisors() {
 
         var eqp = "", tempe = "";
 
-        draw_text(xx + 222, yy + 83, localize("Equipment:"));
-        draw_text(xx + 222.5, yy + 83.5, localize("Equipment:"));
+        draw_text(xx + 222, yy + 83, localize("STR_REVELRY_EQUIPMENT"));
+        draw_text(xx + 222.5, yy + 83.5, localize("STR_REVELRY_EQUIPMENT"));
 
         draw_set_font(cjk_font(fnt_tiny));
         draw_text_ext(xx + 222, yy + 99, string_hash_to_newline(string(eqp)), -1, 396);
 
         draw_set_font(cjk_font(fnt_small));
-        draw_text(xx + 222, yy + 200, localize("Kills:"));
-        draw_text(xx + 222.5, yy + 200.5, localize("Kills:"));
+        draw_text(xx + 222, yy + 200, localize("STR_REVELRY_KILLS"));
+        draw_text(xx + 222.5, yy + 200.5, localize("STR_REVELRY_KILLS"));
 
         // draw_text_ext(xx + 222, yy + 216, string_hash_to_newline(string(tot_ki)), -1, 396);
         var unit = fetch_unit([0, 1]);
@@ -777,7 +777,7 @@ function scr_ui_advisors() {
             }
         }
 
-        draw_text(xx + 222.5, yy + 380.5, string_hash_to_newline(localize("Current Location:#Health:")));
+        draw_text(xx + 222.5, yy + 380.5, string_hash_to_newline(localize("STR_REVELRY_CURRENT_LOCATION_HEALTH_2")));
 
         draw_sprite(spr_arrow, 0, xx + 217, yy + 32);
     }
@@ -814,6 +814,6 @@ function scr_ui_advisors() {
         draw_set_font(cjk_font(fnt_40k_30b));
         draw_set_halign(fa_center);
         draw_set_color(c_gray);
-        draw_text(xx + 800, yy + 74, localize("{0} Chapter Organization", [global.chapter_name]));
+        draw_text(xx + 800, yy + 74, localize("STR_REVELRY_CHAPTER_ORGANIZATION", [global.chapter_name]));
     }
 }

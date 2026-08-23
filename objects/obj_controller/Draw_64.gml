@@ -83,19 +83,19 @@ if (!zoomed && !zui) {
     draw_set_color(c_white);
 
     if (!instance_exists(obj_popup)) {
-        menu_buttons.chapter_manage.draw(34, 838 + y_slide, localize("Chapter Management"), 1, 1, 145);
-        menu_buttons.chapter_settings.draw(179, 838 + y_slide, localize("Chapter Settings"), 1, 1, 145);
+        menu_buttons.chapter_manage.draw(34, 838 + y_slide, localize("STR_MANAGE_CHAPTER"), 1, 1, 145);
+        menu_buttons.chapter_settings.draw(179, 838 + y_slide, localize("STR_MANAGE_SETTINGS"), 1, 1, 145);
         menu_buttons.apoth.draw(357, 838 + y_slide, localize("Apothecarium"));
-        menu_buttons.reclu.draw(473, 838 + y_slide, localize("Reclusium"));
+        menu_buttons.reclu.draw(473, 838 + y_slide, localize("STR_MANAGE_RECLUSIUM"));
         menu_buttons.lib.draw(590, 838 + y_slide, localize("Librarium"));
         menu_buttons.arm.draw(706, 838 + y_slide, localize("Armamentarium"));
         menu_buttons.recruit.draw(822, 838 + y_slide, localize("Recruitment"));
         menu_buttons.fleet.draw(938, 838 + y_slide, localize("Fleet"));
-        menu_buttons.diplo.draw(1130, 838 + y_slide, localize("Diplomacy"), 1, 1, 145);
-        menu_buttons.event.draw(1275, 838 + y_slide, localize("Event Log"), 1, 1, 145);
-        menu_buttons.end_turn.draw(1420, 838 + y_slide, localize("End Turn"), 1, 1, 145);
-        menu_buttons.help.draw(1374, 8 + y_slide, localize("Help"));
-        menu_buttons.menu.draw(1484, 8 + y_slide, localize("Menu"));
+        menu_buttons.diplo.draw(1130, 838 + y_slide, localize("STR_MANAGE_DIPLOMACY"), 1, 1, 145);
+        menu_buttons.event.draw(1275, 838 + y_slide, localize("STR_MANAGE_EVENT_LOG"), 1, 1, 145);
+        menu_buttons.end_turn.draw(1420, 838 + y_slide, localize("STR_MANAGE_END_TURN"), 1, 1, 145);
+        menu_buttons.help.draw(1374, 8 + y_slide, localize("STR_MANAGE_HELP"));
+        menu_buttons.menu.draw(1484, 8 + y_slide, localize("STR_UI_MENU"));
     }
 
     if (y_slide > 0) {
@@ -117,14 +117,14 @@ if (!zoomed && !zui) {
     draw_set_halign(fa_center);
     draw_set_valign(fa_top);
     // Draws the sector name
-    var _sector_string = localize("Sector {0}", [obj_ini.sector_name ?? "Terra Nova"]);
+    var _sector_string = localize("STR_MANAGE_SECTOR", [obj_ini.sector_name ?? "Terra Nova"]);
     draw_text(775, 17, _sector_string);
     draw_text(775.5, 17.5, _sector_string);
 
     // Checks if you are penitent
     if (faction_status[eFACTION.IMPERIUM] != "War") {
         if (penitent_max == 0) {
-            var _loyal_text = localize("Loyal");
+            var _loyal_text = localize("STR_MANAGE_LOYAL");
             draw_text(998, 17, _loyal_text);
             draw_text(998, 17.5, _loyal_text);
         }
@@ -135,7 +135,7 @@ if (!zoomed && !zui) {
                 endb2 = " " + string(endb);
             }
             draw_set_color(c_red);
-            var _penitent_text = localize("{0}% Penitent", [string(min(100, floor((penitent_current / penitent_max) * 100)))]);
+            var _penitent_text = localize("STR_MANAGE_PENITENT", [string(min(100, floor((penitent_current / penitent_max) * 100)))]);
             draw_text(998, 17, _penitent_text);
             draw_text(998, 17.5, _penitent_text);
             draw_set_color(CM_GREEN_COLOR);
@@ -145,7 +145,7 @@ if (!zoomed && !zui) {
     // Sets you to renegade
     if (faction_status[eFACTION.IMPERIUM] == "War") {
         draw_set_color(255);
-        var _renegade_text = localize("Renegade");
+        var _renegade_text = localize("STR_MANAGE_RENEGADE");
         draw_text(998, 17, _renegade_text);
         draw_text(998, 17.5, _renegade_text);
         draw_set_color(CM_GREEN_COLOR);
@@ -217,7 +217,7 @@ draw_set_halign(fa_left);
 draw_set_alpha(1);
 // Sets up debut mode
 if (global.cheat_debug) {
-    draw_text(1124, 7, localize("DEBUG MODE"));
+    draw_text(1124, 7, localize("STR_MANAGE_DEBUG_MODE"));
 }
 
 function draw_line(x1, y1, y_slide, variable) {

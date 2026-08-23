@@ -364,7 +364,7 @@ function PlanetData(_planet, _system) constructor {
                 system.p_first[planet] = eFACTION.PLAYER;
             }
             set_player_disposition(100);
-            scr_event_log("", localize("Planetary Governor of {0} assassinated.  One of your Chapter Serfs take their position.", [name()]));
+            scr_event_log("", localize("STR_EVENT_PLANETARY_GOVERNOR_OF_ASSASSINATED_2", [name()]));
         }
 
         if (_discovery_threshold <= (_discovery_rate * discovery_modifier)) {
@@ -459,7 +459,7 @@ function PlanetData(_planet, _system) constructor {
         txt += localize("What is thy will?");
 
         var pip = instance_create(0, 0, obj_popup);
-        pip.title = localize("Planetary Governor Assassinated");
+        pip.title = localize("STR_EVENT_PLANETARY_GOVERNOR_ASSASSINATED");
         pip._text = txt;
         pip.planet = planet;
         pip.p_data = self;
@@ -533,7 +533,7 @@ function PlanetData(_planet, _system) constructor {
                 var _grow_orks = true;
                 if (sabatours.garrison_force) {
                     if (irandom(3) < 2) {
-                        scr_event_log("green", localize("sabotage force on {0} disrupts ork forces", [name()]), name);
+                        scr_event_log("green", localize("STR_EVENT_SABOTAGE_FORCE_ON_DISRUPTS_ORK_FORCES", [name()]), name);
                         _grow_orks = false;
                     }
                 }
@@ -723,7 +723,7 @@ function PlanetData(_planet, _system) constructor {
                 _ork_fleet.cargo_data.ork_warboss = _warboss;
                 delete_feature(eP_FEATURES.ORKWARBOSS);
                 if (!_warboss.player_hidden || !irandom(5)) {
-                    scr_alert("red", "ork", localize("{0} departs {1} as his waaagh gains momentum", [_warboss.name, name()]), 0, 0);
+                    scr_alert("red", "ork", localize("STR_EVENT_DEPARTS_AS_HIS_WAAAGH_GAINS_MOMENTUM", [_warboss.name, name()]), 0, 0);
                 }
             }
         }
@@ -901,7 +901,7 @@ function PlanetData(_planet, _system) constructor {
                     var _slaughter = new_player_ship("Gloriana", system.name, "Slaughtersong");
                     var flit = create_player_fleet(system.x, system.y, [_slaughter]);
 
-                    scr_popup(localize("Ancient Ship Restored"), localize("The ancient ship within the ruins of {0} has been fully repaired.  It is determined to be a Gloriana Class vessel and is bristling with golden age weaponry and armour.  Your {1}s are excited; the Slaughtersong is ready for it's maiden voyage, at your command.", [locy, obj_ini.player_role_data[eROLE.TECHMARINE].role]), "", "");
+                    scr_popup(localize("STR_EVENT_ANCIENT_SHIP_RESTORED"), localize("The ancient ship within the ruins of {0} has been fully repaired.  It is determined to be a Gloriana Class vessel and is bristling with golden age weaponry and armour.  Your {1}s are excited; the Slaughtersong is ready for it's maiden voyage, at your command.", [locy, obj_ini.player_role_data[eROLE.TECHMARINE].role]), "", "");
                 }
             }
         } catch (_exception) {
@@ -1152,7 +1152,7 @@ function PlanetData(_planet, _system) constructor {
 
         if (!_succession) {
             if ((player_disposition >= 0) && (origional_owner <= eFACTION.ECCLESIARCHY) && (current_owner <= eFACTION.ECCLESIARCHY) && (population > 0)) {
-                draw_text(xx + 534, yy + 176, localize("Disposition: {0}/100", [string(min(100, player_disposition))]));
+                draw_text(xx + 534, yy + 176, localize("STR_SYSTEM_DISPOSITION_100", [string(min(100, player_disposition))]));
             }
             if ((player_disposition > -30) && (player_disposition < 0) && (current_owner <= eFACTION.ECCLESIARCHY) && (population > 0)) {
                 draw_text(xx + 534, yy + 176, localize("Disposition: ???/100"));
@@ -1162,10 +1162,10 @@ function PlanetData(_planet, _system) constructor {
             }
 
             if (player_disposition <= -3000) {
-                draw_text(xx + 534, yy + 176, localize("Disposition: N/A"));
+                draw_text(xx + 534, yy + 176, localize("STR_SYSTEM_DISPOSITION_N_A"));
             }
         } else if (_succession) {
-            draw_text(xx + 534, yy + 176, localize("War of _Succession"));
+            draw_text(xx + 534, yy + 176, localize("STR_SYSTEM_WAR_OF_SUCCESSION"));
         }
         // End draw disposition
         draw_set_color(c_gray);
@@ -1192,16 +1192,16 @@ function PlanetData(_planet, _system) constructor {
         }
 
         draw_set_color(c_white);
-        draw_text(xx + 534, yy + 194, localize("Population Influence"));
+        draw_text(xx + 534, yy + 194, localize("STR_SYSTEM_POPULATION_INFLUENCE"));
         yy += 20;
         draw_set_font(cjk_font(fnt_40k_14b));
         draw_set_halign(fa_left);
         if (!is_craftworld && !is_hulk) {
             var _planet_type_key = planet_type == "Forge" ? "Forge World" : planet_type;
-            draw_text(xx + 480, yy + 196, localize("{0} {1}  ({2})", [system.name, nm, localize(_planet_type_key)]));
+            draw_text(xx + 480, yy + 196, localize("STR_SYSTEM_FRAG", [system.name, nm, localize(_planet_type_key)]));
         }
         if (is_craftworld) {
-            draw_text(xx + 480, yy + 196, localize("{0} (Craftworld)", [system.name]));
+            draw_text(xx + 480, yy + 196, localize("STR_SYSTEM_CRAFTWORLD", [system.name]));
         }
         if (is_hulk) {
             draw_text(xx + 480, yy + 196, localize("Space Hulk"));
@@ -1211,7 +1211,7 @@ function PlanetData(_planet, _system) constructor {
         draw_rectangle(xx + 349, yy + 194, xx + 477, yy + 322, 1);
         draw_set_font(cjk_font(fnt_40k_14));
 
-        var pop_string = localize("Population: {0}", [display_population()]);
+        var pop_string = localize("STR_SYSTEM_POPULATION", [display_population()]);
 
         var _button_manager = obj_star_select.button_manager;
         _button_manager.update({label: pop_string, tooltip: "population data toggle with 'P'", keystroke: press_exclusive(ord("P")), x1: xx + 480, y1: yy + 217, w: 200, h: 22});
@@ -1227,12 +1227,12 @@ function PlanetData(_planet, _system) constructor {
             var y7 = 240;
             var temp3 = string(scr_display_number(guardsmen));
             if (guardsmen > 0) {
-                draw_text(xx + 480, yy + y7, localize("Imperial Guard: {0}", [temp3]));
+                draw_text(xx + 480, yy + y7, localize("STR_SYSTEM_IMPERIAL_GUARD", [temp3]));
                 y7 += 20;
             }
             var temp4 = string(scr_display_number(pdf));
             if (current_owner != 8) {
-                draw_text(xx + 480, yy + y7, localize("Defense Force: {0}", [temp4]));
+                draw_text(xx + 480, yy + y7, localize("STR_SYSTEM_DEFENSE_FORCE", [temp4]));
             }
             if (current_owner == 8) {
                 draw_text(xx + 480, yy + y7, localize("Gue'Vesa Force:  {0}", [temp4]));
@@ -1272,7 +1272,7 @@ function PlanetData(_planet, _system) constructor {
                 draw_set_color(c_black);
             }
             var forti_string = global.planet_forti;
-            var planet_forti = localize("Defenses: {0}", [forti_string[fortification_level]]);
+            var planet_forti = localize("STR_SYSTEM_DEFENSES", [forti_string[fortification_level]]);
 
             draw_text(xx + 480, yy + 280, planet_forti);
         }
@@ -1280,7 +1280,7 @@ function PlanetData(_planet, _system) constructor {
         draw_set_color(c_gray);
 
         if (is_hulk) {
-            temp5 = localize("Integrity: {0}%", [string(floor(fortification_level * 20))]);
+            temp5 = localize("STR_SYSTEM_INTEGRITY", [string(floor(fortification_level * 20))]);
             draw_text(xx + 480, yy + 280, temp5);
         }
 
@@ -1292,7 +1292,7 @@ function PlanetData(_planet, _system) constructor {
         } else if (target_planet_heresy <= 10) {
             temp6 = localize("None");
         } else if (target_planet_heresy <= 30) {
-            temp6 = localize("Little");
+            temp6 = localize("STR_EVENT_LITTLE");
         } else if (target_planet_heresy <= 50) {
             temp6 = localize("Major");
         } else if (target_planet_heresy <= 70) {
@@ -1300,18 +1300,18 @@ function PlanetData(_planet, _system) constructor {
         } else if (target_planet_heresy <= 96) {
             temp6 = localize("Extreme");
         } else if (target_planet_heresy <= 100) {
-            temp6 = localize("Maximum");
+            temp6 = localize("STR_EVENT_MAXIMUM");
         } else if (target_planet_heresy > 100) {
             temp6 = localize("DEBUG: Heresy above 100!");
         } else {
-            temp6 = localize("DEBUG: Heresy somehow unknown value!");
+            temp6 = localize("STR_EVENT_DEBUG_HERESY_SOMEHOW_UNKNOWN_VALUE");
         }
 
-        draw_text(xx + 480, yy + 300, localize("Corruption: {0}", [temp6]));
+        draw_text(xx + 480, yy + 300, localize("STR_SYSTEM_CORRUPTION", [temp6]));
 
         draw_set_font(cjk_font(fnt_40k_14b));
-        draw_text(xx + 349, yy + 326, localize("Planetary Presence"));
-        draw_text(xx + 535, yy + 326, localize("Planetary Features"));
+        draw_text(xx + 349, yy + 326, localize("STR_SYSTEM_PRESENCE"));
+        draw_text(xx + 535, yy + 326, localize("STR_SYSTEM_FEATURES"));
         draw_set_font(cjk_font(fnt_40k_14));
 
         var presence_text = "";
@@ -1346,7 +1346,7 @@ function PlanetData(_planet, _system) constructor {
             }
 
             if (faction != "" && level > 0) {
-                presence_text += localize("{0}: {1} ({2})\n", [faction, blurb, level]);
+                presence_text += localize("STR_EVENT_FRAG", [faction, blurb, level]);
             }
         }
 
@@ -1373,7 +1373,7 @@ function PlanetData(_planet, _system) constructor {
                         if (cur_feature.f_type == eP_FEATURES.MONASTERY) {
                             if (cur_feature.forge > 0) {
                                 var forge = cur_feature.forge_data;
-                                var size_string = localize("{0} Chapter Forge", [size[forge.size]]);
+                                var size_string = localize("STR_EVENT_CHAPTER_FORGE", [size[forge.size]]);
                                 array_push(planet_displays, [size_string, forge]);
                             }
                         }
@@ -1390,7 +1390,7 @@ function PlanetData(_planet, _system) constructor {
                 if (_upgrade.f_type == eP_FEATURES.SECRET_BASE) {
                     if (_upgrade.forge > 0) {
                         var forge = _upgrade.forge_data;
-                        var size_string = localize("{0} Chapter Forge", [size[forge.size]]);
+                        var size_string = localize("STR_EVENT_CHAPTER_FORGE", [size[forge.size]]);
                         array_push(planet_displays, [size_string, forge]);
                     }
                 }
@@ -1404,7 +1404,7 @@ function PlanetData(_planet, _system) constructor {
             var problem_data = problems_data[i];
             if (struct_exists(problem_data, "stage")) {
                 if (problem_data.stage == "preliminary") {
-                    var mission_string = localize("{0} Audience", [problem_data.applicant]);
+                    var mission_string = localize("STR_EVENT_AUDIENCE", [problem_data.applicant]);
                     problem_data.f_type = eP_FEATURES.MISSION;
                     problem_data.time = problem_timers[i];
                     problem_data.problem = problems[i];
@@ -1636,11 +1636,11 @@ function PlanetData(_planet, _system) constructor {
                 }
 
                 var _recruit_world = get_features(eP_FEATURES.RECRUITING_WORLD)[0];
-                var _recruit_string = localize("Abduct");
+                var _recruit_string = localize("STR_EVENT_ABDUCT");
                 if ((_recruit_world.recruit_type == 0) && (owner_status() != "War" && owner_status() != "Antagonism" || player_disposition >= 50)) {
-                    _recruit_string = localize("Open: Voluntery");
+                    _recruit_string = localize("STR_EVENT_OPEN_VOLUNTERY");
                 } else if (_recruit_world.recruit_type == 0 && player_disposition <= 50) {
-                    _recruit_string = localize("Covert: Voluntery");
+                    _recruit_string = localize("STR_EVENT_COVERT_VOLUNTERY");
                 }
 
                 draw_text(xx + (spacing_x * 3) + 35, _half_way - 20, _recruit_string);
@@ -1650,7 +1650,7 @@ function PlanetData(_planet, _system) constructor {
 
                 _type_button.draw(true);
 
-                draw_text(xx + (spacing_x * 3) - 15, _half_way + spacing_y - 20, localize("Req:{0}", [_recruit_world.recruit_cost * 2]));
+                draw_text(xx + (spacing_x * 3) - 15, _half_way + spacing_y - 20, localize("STR_EVENT_REQ", [_recruit_world.recruit_cost * 2]));
 
                 if (_recruit_world.recruit_cost > 0) {
                     obj_star_select.recruitment_costdown_button.update({x1: xx + (spacing_x * 2) + 35, y1: _half_way + spacing_y, allow_click: true});
@@ -1688,7 +1688,7 @@ function PlanetData(_planet, _system) constructor {
             }
             if (sabotage_force && irandom(2) < 2) {
                 planet_forces[eFACTION.NECRONS]--;
-                scr_event_log("green", localize("sabotage force on {0} disrupts necron forces", [name()]), name);
+                scr_event_log("green", localize("STR_EVENT_SABOTAGE_FORCE_ON_DISRUPTS_NECRON_FORCES", [name()]), name);
             }
 
             if (has_awake_tomb) {
@@ -1840,14 +1840,14 @@ function PlanetData(_planet, _system) constructor {
                     var find_cult_chance = irandom(50);
                     var alert_text = localize("A hidden Genestealer Cult on {0} Has suddenly burst forth from hiding!", [name()]);
                     if (planet_garrison.garrison_force) {
-                        alert_text = localize("A hidden Genestealer Cult on {0} Has been discovered by marine garrisons!", [name()]);
+                        alert_text = localize("STR_EVENT_A_HIDDEN_GENESTEALER_CULT_2", [name()]);
                         find_cult_chance -= 25;
                     }
                     if (find_cult_chance < 1) {
                         cult.hiding = false;
                         scr_popup(localize("System Lost"), alert_text, "Genestealer Cult", "");
                         set_new_owner(eFACTION.TYRANIDS);
-                        scr_event_log("red", localize("A hidden Genestealer Cult on {0} has Started a revolt.", [name()]), system.name);
+                        scr_event_log("red", localize("STR_EVENT_A_HIDDEN_GENESTEALER_CULT_3", [name()]), system.name);
                         edit_forces(eFACTION.TYRANIDS, 1);
                     }
                 }
@@ -1955,16 +1955,16 @@ function PlanetData(_planet, _system) constructor {
 
                         if (planet_forces[eFACTION.HERETICS] == 0) {
                             if (pdf > 0) {
-                                tixt = localize("{0} PDF killed in a rebellion on {1}.", [scr_display_number(lost), name()]);
+                                tixt = localize("STR_EVENT_PDF_KILLED_IN_A_REBELLION_ON", [scr_display_number(lost), name()]);
                             } else if (pdf == 0) {
-                                tixt = localize("Heretic cults have appeared in {0}.", [name()]);
+                                tixt = localize("STR_EVENT_HERETIC_APPEARED_IN", [name()]);
                             }
 
                             scr_alert("purple", "owner", tixt, x, y);
                             scr_event_log("purple", tixt, system.name);
                         }
                     } else {
-                        tixt = localize("Marine garrisons prevents rebellion on {0}", [name()]);
+                        tixt = localize("STR_EVENT_MARINE_GARRISONS_PREVENTS_REBELLION_ON", [name()]);
                         scr_alert("green", "owner", tixt, x, y);
                         scr_event_log("green", tixt, system.name);
                         corruption -= irandom(5);
@@ -1978,7 +1978,7 @@ function PlanetData(_planet, _system) constructor {
                     }
 
                     edit_forces(eFACTION.HERETICS, traitor_mod);
-                    tixt = localize("Heretic cults have appeared in {0}.", [name()]);
+                    tixt = localize("STR_EVENT_HERETIC_APPEARED_IN", [name()]);
                 } else if ((_rando >= 81) && (_rando < 91) && (planet_forces[eFACTION.HERETICS] < 3)) {
                     // Minor uprising
                     if (is_garrison_force) {
@@ -1987,7 +1987,7 @@ function PlanetData(_planet, _system) constructor {
                         traitor_mod = 3;
                     }
                     edit_forces(eFACTION.HERETICS, traitor_mod);
-                    tixt = localize("Heretic cults have spread around {0}.", [name()]);
+                    tixt = localize("STR_EVENT_HERETIC_SPREAD_AROUND", [name()]);
                 } // Major uprising
 
                 // major and huge uprisings are impossible as long as a garrisons of at least 10 marines is present
@@ -2000,7 +2000,7 @@ function PlanetData(_planet, _system) constructor {
                     }
 
                     var n_name = name();
-                    scr_popup(localize("Heretic Revolt"), localize("A massive heretic uprising on {0} threatens to plunge the star system into chaos.", [n_name]), "chaos_cultist", "");
+                    scr_popup(localize("STR_EVENT_HERETIC_REVOLT"), localize("A massive heretic uprising on {0} threatens to plunge the star system into chaos.", [n_name]), "chaos_cultist", "");
                     scr_alert("red", "owner", localize("Massive heretic uprising on {0}.", [n_name]), x, y);
                     scr_event_log("purple", localize("Massive heretic uprising on {0}.", [n_name]), system.name);
                 } // Huge uprising
@@ -2052,7 +2052,7 @@ function PlanetData(_planet, _system) constructor {
 
         var _text = localize("Sources indicate one of the Fallen may be upon {0}.  We have {1} months to send out a strike team and scour the planet.  Any longer and any Fallen that might be there will have escaped.", [name(), _eta]);
         scr_popup(localize("Hunt the Fallen"), _text, "fallen", "");
-        scr_event_log("", localize("Sources indicate one of the Fallen may be upon {0}.  We have {1} months to investigate.", [name(), _eta]));
+        scr_event_log("", localize("STR_EVENT_SOURCES_INDICATE_ONE_OF_2", [name(), _eta]));
         var star_alert = create_alert();
         star_alert.image_alpha = 1;
         star_alert.image_speed = 1;
