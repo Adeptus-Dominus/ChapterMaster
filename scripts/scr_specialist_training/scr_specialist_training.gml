@@ -119,6 +119,8 @@ function spec_data_set(specialist) {
 }
 
 /// @self Asset.GMObject.obj_controller
+/// @desc Runs one turn of apothecary training: accrues recruitment points, then graduates a waiting aspirant or recruits a new one.
+/// @returns {Undefined}
 function apothecary_training() {
     // ** Training **
     // * Apothecary *
