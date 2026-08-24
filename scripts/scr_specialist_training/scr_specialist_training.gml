@@ -130,19 +130,14 @@ function apothecary_training() {
 
     var novice_type = string("{0} Aspirant", _apoth_role.role);
     if (training_apothecary > 0) {
-        recruit_count = scr_role_count(novice_type, "");
+        /// @type {Array<Struct.TTRPG_stats>}
+        var _aspirants = scr_role_count(novice_type, "", "units");
+        recruit_count = array_length(_aspirants);
 
         if (apothecary_recruit_points >= 48) {
             if (recruit_count > 0) {
-                var random_marine = scr_random_marine(novice_type, 0);
-                if (random_marine == "none") {
-                    return;
-                }
                 /// @type {Struct.TTRPG_stats}
-                var _unit = fetch_unit(random_marine);
-                if (!is_struct(_unit)) {
-                    return;
-                }
+                var _unit = _aspirants[irandom(recruit_count - 1)];
 
                 apothecary_recruit_points -= 48;
                 scr_alert("green", "recruitment", _unit.name_role() + " has finished training.", 0, 0);
