@@ -167,6 +167,8 @@ function apothecary_training() {
         } else if ((apothecary_recruit_points >= 4) && (recruit_count == 0)) {
             var random_marine = spec_data_set(eROLE_TAG.Apothecary);
             if (random_marine == "none") {
+                training_apothecary = 0;
+                scr_alert("red", "recruitment", $"No marines available for {obj_ini.player_role_data[eROLE.APOTHECARY].role} training", 0, 0);
                 return;
             }
             var _unit = fetch_unit(random_marine);
@@ -177,9 +179,6 @@ function apothecary_training() {
             _unit.update_gear("");
             _unit.update_mobility_item("");
             scr_alert("green", "recruitment", _unit.name_role() + " begins training.", 0, 0);
-        } else {
-            training_apothecary = 0;
-            scr_alert("red", "recruitment", $"No marines available for {obj_ini.player_role_data[eROLE.APOTHECARY].role} training", 0, 0);
         }
     }
 }
