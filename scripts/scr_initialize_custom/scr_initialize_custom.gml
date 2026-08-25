@@ -2842,11 +2842,20 @@ function add_veh_to_company(name, company, slot, wep1, wep2, wep3, upgrade, acce
     obj_ini.veh_wid[company][slot] = 2;
 }
 
-/// @description helper function to streamline code inside of scr_initialize_custom, should only be used as part of
-/// game setup and not during normal gameplay.
-/// each item slot can be "" or "default" or a named item. "" will assign items from the available item pool.
-/// Use "" if you want to set weapons and gear via squad layouts.
-/// "default" will set it to the value in the default slot for the given role, see `load_default_gear`
+/// @desc Spawns one unit into a company and equips it. Part of game setup; not for use during
+/// normal gameplay. Each equipment argument takes either a named item, which is used as given, or
+/// "" or "default", both of which leave the role default in place. Role defaults are read from
+/// obj_ini.player_role_data indexed by role_id, and are loaded by `load_default_gear`.
+/// @param {String} ttrpg_name Stat template the unit is built from, such as "marine" or "scout".
+/// @param {Real} company Index of the company the unit is added to.
+/// @param {String} role_name Display name of the role. Need not be one of the player's role names.
+/// @param {Real} role_id The eROLE member supplying this unit's default equipment.
+/// @param {String} [wep1] Primary weapon.
+/// @param {String} [wep2] Secondary weapon.
+/// @param {String} [gear] Gear item.
+/// @param {String} [mobi] Mobility item.
+/// @param {String} [armour] Armour.
+/// @returns {Struct.TTRPG_stats}
 function add_unit_to_company(ttrpg_name, company, role_name, role_id, wep1 = "default", wep2 = "default", gear = "default", mobi = "default", armour = "default") {
     var _slot = find_company_open_slot(company);
     var spawn_unit = new TTRPG_stats("chapter", company, _slot, ttrpg_name);
