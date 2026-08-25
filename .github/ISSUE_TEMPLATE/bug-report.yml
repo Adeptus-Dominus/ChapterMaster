@@ -7,7 +7,7 @@ body:
     attributes:
       label: Game version
       description: What version of ChapterMaster are you using?
-      placeholder: e.g., main-2026-08-19-1803, v0.11.1
+      placeholder: e.g., main/2026-08-19-1803, v0.11.1
     validations:
       required: true
 
@@ -39,13 +39,12 @@ body:
         2.
         3.
     validations:
-      required: false
+      required: true
 
-  - type: textarea
+  - type: upload
     id: screenshots
     attributes:
-      label: Screenshots
-      description: Attach a screenshots, if needed
-      placeholder: Drop screenshots here
+      label: Upload screenshots
+      description: If applicable, add screenshots to help explain your problem.
     validations:
       required: false
