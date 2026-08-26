@@ -145,7 +145,6 @@ function ChapterData() constructor {
     custom_squads = {};
 
     custom_advisors = {};
-    scout_company_behaviour = 0;
     artifact = [];
     squad_builder = [];
     companies = {};
@@ -409,10 +408,6 @@ function scr_chapter_new(chapter_identifier) {
             var _legacy_specialists = struct_exists(chapter_object, "equal_specialists") ? chapter_object.equal_specialists : 0;
             var _legacy_scouts = struct_exists(chapter_object, "equal_scouts") ? chapter_object.equal_scouts : 0;
             squad_distribution = (_legacy_specialists ? 1 : 0) + (_legacy_scouts ? 2 : 0);
-        }
-
-        if (struct_exists(chapter_object, "scout_company_behaviour")) {
-            scout_company_behaviour = chapter_object.scout_company_behaviour;
         }
 
         mutations = 0;

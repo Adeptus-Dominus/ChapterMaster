@@ -2180,14 +2180,6 @@ function scr_initialize_custom() {
     }
 
     var squad_distribution = obj_creation.squad_distribution;
-    var scout_company_behaviour = 0;
-    if (variable_instance_exists(obj_creation, "scout_company_behaviour")) {
-        scout_company_behaviour = obj_creation.scout_company_behaviour;
-    }
-    if (scout_company_behaviour == 1) {
-        load_default_gear(eROLE.SCOUT, "Neophyte", "Bolter", "", "Scout Armour", "", "");
-    }
-
     var equal_scouts = squad_distribution == 2 || squad_distribution == 3;
     obj_ini.equal_scouts = equal_scouts; // for use in squad creation later
 
