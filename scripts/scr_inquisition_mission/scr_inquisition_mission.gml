@@ -321,7 +321,6 @@ function mission_inquistion_hunt_inquisitor(star_id = noone) {
 function add_new_inquis_mission() {
     if (add_new_problem(pop_data.planet, pop_data.mission, pop_data.estimate, mission_star)) {
         new_star_event_marker("green");
-        mission_is_go = true;
     }
 }
 
@@ -351,7 +350,6 @@ function init_mission_hunt_inquisitor() {
 
     if (add_new_problem(pop_data.planet, pop_data.mission, pop_data.estimate, mission_star, pop_data.mission_data)) {
         new_star_event_marker("green");
-        mission_is_go = true;
     }
 
     title = "Inquisition Mission Accepted";
