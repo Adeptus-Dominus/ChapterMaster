@@ -139,6 +139,9 @@ function scr_kill_ship(index) {
             }
             for (var i = 0; i < array_length(_units_on_ship); i++) {
                 _unit = _units_on_ship[i];
+                if (!is_struct(_unit)) {
+                    continue;
+                }
                 // The ship arrays already shrank: invalidate the unit's location so
                 // clear_bearer() drops its artifacts at the destroyed ship's location
                 // instead of the ship that now occupies the stale index.
@@ -148,7 +151,7 @@ function scr_kill_ship(index) {
                 } else {
                     _unit.location_string = "";
                 }
-                unit.kill(false, false);
+                _unit.kill(false, false);
             }
         }
     } catch (_exception) {
