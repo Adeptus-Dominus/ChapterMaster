@@ -21,7 +21,7 @@ function radical_inquisitor_mission_ship_arrival() {
     //TODO make a centralised player_fleet present method
     var _p_fleet = instance_nearest(x, y, obj_p_fleet);
     var _intercept_fleet = noone;
-    if (point_distance(x, y, _p_fleet.x, _p_fleet.y) < 10 && instance_exists(_p_fleet.orbiting)) {
+    if (instance_exists(_p_fleet) && point_distance(x, y, _p_fleet.x, _p_fleet.y) < 10 && instance_exists(_p_fleet.orbiting)) {
         _intercept_fleet = _p_fleet;
     }
 
