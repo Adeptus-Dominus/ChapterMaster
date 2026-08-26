@@ -350,6 +350,10 @@ function init_mission_hunt_inquisitor() {
         new_star_event_marker("green");
         mission_is_go = true;
     }
+
+    title = "Inquisition Mission Accepted";
+    text = $"{global.chapter_name} will intercept the radical Inquisitor {pop_data.mission_data.inquisitor_name} at {mission_star.name}, expected within {pop_data.estimate} months.";
+    reset_popup_options();
 }
 
 /// @self Asset.GMObject.obj_popup
