@@ -35,6 +35,7 @@ function radical_inquisitor_mission_ship_arrival() {
         alter_disposition(eFACTION.INQUISITION, -15);
         scr_popup("Inquisitor Mission Failed", "The radical Inquisitor has departed from the planned intercept coordinates.  They will now be nearly impossible to track- the mission is a failure.", "inquisition", "");
         scr_event_log("red", "Inquisition Mission Failed: The radical Inquisitor has departed from the planned intercept coordinates.");
+        resolve_radical_inquisitor_mission(_radical_inquisitor);
     } else {
         action = "";
         var _gender = string_gender_third_person(_radical_inquisitor.inquisitor_gender);

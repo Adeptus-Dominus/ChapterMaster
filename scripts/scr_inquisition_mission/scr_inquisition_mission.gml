@@ -299,8 +299,11 @@ function mission_inquistion_hunt_inquisitor(star_id = noone) {
     ];
 
     var _mission_data = {
+        mission_id: scr_uuid_generate(),
         inquisitor_name: _name,
         inquisitor_gender: _gender,
+        system: _star.name,
+        planet: planet,
     };
     var _pop_data = {
         system: _star.name,
@@ -356,6 +359,56 @@ function init_mission_hunt_inquisitor() {
     reset_popup_options();
 }
 
+/// @desc Clears only the resolved radical inquisitor mission's log entry.
+/// @param {Struct} _mission_data Mission data carrying its ID and target location.
+/// @returns {Bool} Whether the matching mission log entry was cleared.
+function resolve_radical_inquisitor_mission(_mission_data) {
+    if (!is_struct(_mission_data) || !struct_exists(_mission_data, "mission_id") || !struct_exists(_mission_data, "system") || !struct_exists(_mission_data, "planet")) {
+        LOGGER.error("Radical inquisitor mission data is missing its ID or target location");
+        return false;
+    }
+
+    var _mission_star = find_star_by_name(_mission_data.system);
+    if (_mission_star == noone) {
+        LOGGER.error($"Radical inquisitor mission target system {_mission_data.system} could not be found");
+        return false;
+    }
+
+    var _planet = _mission_data.planet;
+    var _mission_id = _mission_data.mission_id;
+    var _mission_removed = false;
+
+    with (_mission_star) {
+        var _problem_count = array_length(p_problem[_planet]);
+        for (var i = 0; i < _problem_count; i++) {
+            if (p_problem[_planet][i] != "inquisitor") {
+                continue;
+            }
+
+            var _stored_data = p_problem_other_data[_planet][i];
+            if (!is_struct(_stored_data) || !struct_exists(_stored_data, "mission_id")) {
+                continue;
+            }
+
+            if (_stored_data.mission_id != _mission_id) {
+                continue;
+            }
+
+            p_problem[_planet][i] = "";
+            p_timer[_planet][i] = -1;
+            p_problem_other_data[_planet][i] = {};
+            _mission_removed = true;
+            break;
+        }
+    }
+
+    if (!_mission_removed) {
+        LOGGER.error($"No radical inquisitor mission entry matches mission ID {_mission_id}");
+    }
+
+    return _mission_removed;
+}
+
 /// @self Asset.GMObject.obj_popup
 function mission_hunt_inquisitor_hear_out_radical_inquisitor() {
     var _offer = choose(1, 1, 2, 2, 3);
@@ -402,6 +455,7 @@ function mission_hunt_inquisitor_hear_out_radical_inquisitor() {
         text = $"{global.chapter_name} allow communications.  As soon as the vox turns on {global.chapter_name} hear a sickly, hateful voice.  They begin to speak of the inevitable death of your marines, the fall of all that is and ever shall be, and " + string(gender_pronoun) + " Lord of Decay.  Their ship is fired upon and destroyed without hesitation.";
         reset_popup_options();
         scr_event_log("", "Inquisition Mission Completed: The radical Inquisitor has been purged.");
+        resolve_radical_inquisitor_mission(pop_data);
         exit;
     }
     exit;
@@ -425,6 +479,7 @@ function mission_hunt_inquisitor_take_artifact_bribe() {
     image = "artifact_recovered";
     scr_event_log("", "Artifact Recovered from radical Inquisitor.");
     scr_event_log("", "Inquisition Mission Completed: The radical Inquisitor has been purged.");
+    resolve_radical_inquisitor_mission(pop_data);
 
     add_event({e_id: "inquisitor_spared", duration: irandom_range(6, 18) + 1, variation: 1});
 }
@@ -444,6 +499,7 @@ function mission_hunt_inquisitor_take_artifact_double_cross() {
     image = "exploding_ship";
     scr_event_log("", "Artifact recovered from radical Inquisitor.");
     scr_event_log("", "Inquisition Mission Completed: The radical Inquisitor has been purged.");
+    resolve_radical_inquisitor_mission(pop_data);
 }
 
 /// @self Asset.GMObject.obj_popup
@@ -461,6 +517,7 @@ function mission_hunt_inquisitor_show_mercy() {
     reset_popup_options();
 
     scr_event_log("", "Inquisition Mission Completed?: The radical Inquisitor has been allowed to flee in order to weaken the forces of Chaos, as they promised.");
+    resolve_radical_inquisitor_mission(pop_data);
 
     add_event({e_id: "inquisitor_spared", duration: irandom_range(6, 18) + 1, variation: 2});
 }
@@ -488,6 +545,7 @@ function mission_hunt_inquisitor_destroy_inquisitor_ship() {
     reset_popup_options();
 
     scr_event_log("", "Inquisition Mission Completed: The radical Inquisitor has been purged.");
+    resolve_radical_inquisitor_mission(pop_data);
     with (pop_data.inquisitor_ship) {
         instance_destroy();
     }
