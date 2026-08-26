@@ -40,8 +40,7 @@ function GitHubBugReporter() constructor {
         // Fetches the current lookup page, reusing the same handlers for every page
         _context.fetch_page = method(_context, function() {
             self.lookup = self.client.getIssues(GITHUB_ISSUES_OWNER, GITHUB_ISSUES_REPO, undefined, "open", undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, GITHUB_ISSUES_PAGE_SIZE, self.lookup_page);
-            self.lookup.setCallback(self.lookup_handler)
-                .setErrorback(self.lookup_error_handler);
+            self.lookup.setCallback(self.lookup_handler).setErrorback(self.lookup_error_handler);
         });
 
         // Shared one-shot retry timesource. GML methods cannot capture locals, so
