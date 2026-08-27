@@ -22,13 +22,8 @@ function GitHubOAuth(_clientID, _clientSecret = undefined) constructor {
             __GitHubError("requestAuthenticationViaWebPage: Web-flow authentication is only supported on desktop platforms, please use device-flow for non-desktop platforms");
         }
 
-        // Ensure worker is available before checking server (deactivated worker hides __server)
-        if (!instance_exists(__github_worker)) {
-            __GitHubEnsureInstance();
-        }
-
-        // Ensure server does not exist
-        if (__GitHubSystem().__pollTimesource != undefined || __github_worker.__server != undefined) {
+        // Ensure no active request (centralized check handles deactivated worker)
+        if (__GitHubHasActiveRequest()) {
             __GitHubWarn("requestAuthenticationViaWebPage: Request is already in progress, ensure there is not another authentication request in-progress.");
             return;
         }
@@ -37,6 +32,11 @@ function GitHubOAuth(_clientID, _clientSecret = undefined) constructor {
         if (__GitHubSystem().__clientSecret == undefined) {
             __GitHubError("requestAuthenticationViaWebPage: Client secret has not been set, please set this when constructing GitHubOAuth or set using setClientSecret().");
             return;
+        }
+
+        // Ensure worker exists before creating the server
+        if (!instance_exists(__github_worker)) {
+            __GitHubEnsureInstance();
         }
 
         // Create the server
@@ -54,16 +54,8 @@ function GitHubOAuth(_clientID, _clientSecret = undefined) constructor {
     /// @arg {Array.String} scope An array of authentication scopes.
     /// @returns {Struct.GitHubRequest}
     static requestAuthentication = function(_scope) {
-        // Ensure worker is available before checking server (deactivated worker hides __server)
-        if (!instance_exists(__github_worker)) {
-            instance_activate_object(__github_worker);
-            if (!instance_exists(__github_worker)) {
-                __GitHubEnsureInstance();
-            }
-        }
-
-        // Ensure server does not exist
-        if (__GitHubSystem().__pollTimesource != undefined || __github_worker.__server != undefined) {
+        // Ensure no active request (centralized check handles deactivated worker)
+        if (__GitHubHasActiveRequest()) {
             __GitHubWarn("requestAuthentication: Request is already in progress, ensure there is not another authentication request in-progress.");
             return;
         }
@@ -147,10 +139,7 @@ function GitHubOAuth(_clientID, _clientSecret = undefined) constructor {
     /// @desc Returns if there is an active authentication request in-progress.
     /// @returns {Bool}
     static hasActiveRequest = function() {
-        if (!instance_exists(__github_worker)) {
-            instance_activate_object(__github_worker);
-        }
-        return __GitHubSystem().__pollTimesource != undefined || (instance_exists(__github_worker) && __github_worker.__server != undefined);
+        return __GitHubHasActiveRequest();
     };
 
     /// @func setAuthenticationCallback(callback)
@@ -385,6 +374,15 @@ function GitHubOAuth(_clientID, _clientSecret = undefined) constructor {
         // Return Header
         return _header;
     };
+}
+
+/// @ignore
+// Centralized active-request check - ensures worker is visible before checking __server (deactivated hides handle)
+function __GitHubHasActiveRequest() {
+    if (!instance_exists(__github_worker)) {
+        instance_activate_object(__github_worker);
+    }
+    return __GitHubSystem().__pollTimesource != undefined || (instance_exists(__github_worker) && __github_worker.__server != undefined);
 }
 
 /// Stops and destroys the device-flow polling timesource and clears the poll state.

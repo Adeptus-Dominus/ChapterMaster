@@ -3,17 +3,27 @@
 /// @ignore
 function __GitHubTick() {
     var _system = __GitHubSystem();
+    var _expire = _system.__authenticationExpireTime;
 
-    if (_system.__authenticationExpireTime != undefined && _system.__authenticationExpireTime > 0) {
+    if (_expire != undefined && _expire > 0) {
         _system.__authenticationExpireTime--;
-    } else if (_system.__authenticationExpireTime != undefined && _system.__authenticationExpireTime <= 0 && instance_exists(__github_worker) && __github_worker.__server != undefined && !__GitHubServerShuttingDown()) {
-        // Always request the shutdown first so a throwing timeout callback
-        // cannot leave the authentication server active
-        __GitHubRequestServerShutdown();
+        return;
+    }
 
-        // Fire the timeout callback only once per shutdown sequence.
-        if (is_callable(_system.__authenticationTimeoutCallback)) {
-            _system.__authenticationTimeoutCallback();
-        }
+    if (_expire == undefined || _expire > 0) {
+        return;
+    }
+
+    if (!instance_exists(__github_worker) || __github_worker.__server == undefined || __GitHubServerShuttingDown()) {
+        return;
+    }
+
+    // Always request the shutdown first so a throwing timeout callback
+    // cannot leave the authentication server active
+    __GitHubRequestServerShutdown();
+
+    // Fire the timeout callback only once per shutdown sequence.
+    if (is_callable(_system.__authenticationTimeoutCallback)) {
+        _system.__authenticationTimeoutCallback();
     }
 }
