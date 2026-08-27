@@ -34,4 +34,5 @@ function instance_deactivate_all_safe() {
     instance_activate_object(obj_controller);
     instance_activate_object(obj_ini);
     instance_activate_object(obj_cursor);
+    instance_activate_object(obj_timer);
 }

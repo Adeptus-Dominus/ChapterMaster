@@ -34,9 +34,6 @@ function GitHubOAuth(_clientID, _clientSecret = undefined) constructor {
             return;
         }
 
-        // Ensure worker exists before creating the server
-        __GitHubEnsureInstance();
-
         // Create the server
         __github_worker.__server = network_create_server_raw(network_socket_tcp, GITHUB_GML_LOCALHOST_PORT, 1);
 
