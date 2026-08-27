@@ -824,6 +824,9 @@ try {
                     highlighting = 0;
                     old_highlight = 0;
                 }
+                if (goto_slide == eCREATION_SLIDES.CHAPTERLIVERY) {
+                    update_creation_roles_radio();
+                }
             }
         }
     }
