@@ -281,7 +281,7 @@ function PlanetData(_planet, _system) constructor {
     };
 
     static collect_planet_group = function(group = "all", opposite = false, search_conditions = {companies: "all"}, return_as_UnitGroup = true) {
-        return collect_role_group(group, [system.name, planet], opposite, search_conditions, return_as_UnitGroup);
+        return collect_role_group(group, [system.name, planet, -1], opposite, search_conditions, return_as_UnitGroup);
     };
 
     defence_lasers = system.p_lasers[planet];
