@@ -229,6 +229,7 @@ function drop_select_unit_selection() {
             }
 
             instance_deactivate_all(true);
+            instance_activate_object(__github_worker); // keep alive - deactivation crashes IDE (#1479)
             instance_activate_object(obj_controller);
             instance_activate_object(obj_ini);
             instance_activate_object(obj_drop_select);

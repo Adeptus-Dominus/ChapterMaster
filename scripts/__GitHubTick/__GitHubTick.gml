@@ -6,7 +6,7 @@ function __GitHubTick() {
 
     if (_system.__authenticationExpireTime != undefined && _system.__authenticationExpireTime > 0) {
         _system.__authenticationExpireTime--;
-    } else if (_system.__authenticationExpireTime != undefined && _system.__authenticationExpireTime <= 0 && __github_worker.__server != undefined && !__GitHubServerShuttingDown()) {
+    } else if (_system.__authenticationExpireTime != undefined && _system.__authenticationExpireTime <= 0 && instance_exists(__github_worker) && __github_worker.__server != undefined && !__GitHubServerShuttingDown()) {
         // Always request the shutdown first so a throwing timeout callback
         // cannot leave the authentication server active
         __GitHubRequestServerShutdown();

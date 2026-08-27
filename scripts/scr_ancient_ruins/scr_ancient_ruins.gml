@@ -19,6 +19,7 @@ function scr_ancient_ruins_setup() {
 function scr_ruins_suprise_attack_player() {
     try {
         instance_deactivate_all(true);
+        instance_activate_object(__github_worker); // keep alive - deactivation crashes IDE (#1479)
         instance_activate_object(obj_controller);
         instance_activate_object(obj_ini);
         instance_activate_object(obj_star_select);
@@ -343,6 +344,7 @@ function ruins_exploration_main_sequence() {
             str1: "To Battle",
             choice_func: function() {
                 instance_deactivate_all(true);
+                instance_activate_object(__github_worker); // keep alive - deactivation crashes IDE (#1479)
                 instance_activate_object(obj_ground_mission);
                 instance_activate_object(obj_popup);
                 var _explore_feature = obj_ground_mission.explore_feature;

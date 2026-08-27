@@ -176,6 +176,7 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_drop_select)) {
                     combating = 1;
 
                     instance_deactivate_all(true);
+                    instance_activate_object(__github_worker); // keep alive - deactivation crashes IDE (#1479)
                     instance_activate_object(obj_controller);
                     instance_activate_object(obj_ini);
                     instance_activate_object(p_fleet);

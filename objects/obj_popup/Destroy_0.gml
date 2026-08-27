@@ -5,6 +5,7 @@ if ((image == "chaos_symbol") && (title == "Concealed Heresy") && instance_exist
         is_in_combat = true;
 
         instance_deactivate_all(true);
+        instance_activate_object(__github_worker); // keep alive - deactivation crashes IDE (#1479)
         instance_activate_object(obj_controller);
         instance_activate_object(obj_ini);
         instance_activate_object(obj_drop_select);
@@ -98,6 +99,7 @@ if (instance_exists(obj_controller)) {
         scr_civil_roster(obj_ncombat.battle_loc, obj_ncombat.battle_id, true);
 
         instance_deactivate_all(true);
+        instance_activate_object(__github_worker); // keep alive - deactivation crashes IDE (#1479)
         instance_activate_object(obj_controller);
         instance_activate_object(obj_ini);
         instance_activate_object(obj_temp_meeting);

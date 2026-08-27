@@ -22,8 +22,13 @@ function GitHubOAuth(_clientID, _clientSecret = undefined) constructor {
             __GitHubError("requestAuthenticationViaWebPage: Web-flow authentication is only supported on desktop platforms, please use device-flow for non-desktop platforms");
         }
 
+        // Ensure worker is available before checking server (deactivated worker hides __server)
+        if (!instance_exists(__github_worker)) {
+            __GitHubEnsureInstance();
+        }
+
         // Ensure server does not exist
-        if (__github_worker.__server != undefined || __GitHubSystem().__pollTimesource != undefined) {
+        if (__GitHubSystem().__pollTimesource != undefined || __github_worker.__server != undefined) {
             __GitHubWarn("requestAuthenticationViaWebPage: Request is already in progress, ensure there is not another authentication request in-progress.");
             return;
         }
@@ -49,6 +54,14 @@ function GitHubOAuth(_clientID, _clientSecret = undefined) constructor {
     /// @arg {Array.String} scope An array of authentication scopes.
     /// @returns {Struct.GitHubRequest}
     static requestAuthentication = function(_scope) {
+        // Ensure worker is available before checking server (deactivated worker hides __server)
+        if (!instance_exists(__github_worker)) {
+            instance_activate_object(__github_worker);
+            if (!instance_exists(__github_worker)) {
+                __GitHubEnsureInstance();
+            }
+        }
+
         // Ensure server does not exist
         if (__GitHubSystem().__pollTimesource != undefined || __github_worker.__server != undefined) {
             __GitHubWarn("requestAuthentication: Request is already in progress, ensure there is not another authentication request in-progress.");
@@ -134,7 +147,10 @@ function GitHubOAuth(_clientID, _clientSecret = undefined) constructor {
     /// @desc Returns if there is an active authentication request in-progress.
     /// @returns {Bool}
     static hasActiveRequest = function() {
-        return __GitHubSystem().__pollTimesource != undefined || __github_worker.__server != undefined;
+        if (!instance_exists(__github_worker)) {
+            instance_activate_object(__github_worker);
+        }
+        return __GitHubSystem().__pollTimesource != undefined || (instance_exists(__github_worker) && __github_worker.__server != undefined);
     };
 
     /// @func setAuthenticationCallback(callback)
