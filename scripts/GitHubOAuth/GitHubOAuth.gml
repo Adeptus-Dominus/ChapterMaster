@@ -35,9 +35,7 @@ function GitHubOAuth(_clientID, _clientSecret = undefined) constructor {
         }
 
         // Ensure worker exists before creating the server
-        if (!instance_exists(__github_worker)) {
-            __GitHubEnsureInstance();
-        }
+        __GitHubEnsureInstance();
 
         // Create the server
         __github_worker.__server = network_create_server_raw(network_socket_tcp, GITHUB_GML_LOCALHOST_PORT, 1);
@@ -379,10 +377,8 @@ function GitHubOAuth(_clientID, _clientSecret = undefined) constructor {
 /// @ignore
 // Centralized active-request check - ensures worker is visible before checking __server (deactivated hides handle)
 function __GitHubHasActiveRequest() {
-    if (!instance_exists(__github_worker)) {
-        instance_activate_object(__github_worker);
-    }
-    return __GitHubSystem().__pollTimesource != undefined || (instance_exists(__github_worker) && __github_worker.__server != undefined);
+    __GitHubEnsureInstance();
+    return __GitHubSystem().__pollTimesource != undefined || (__github_worker.__server != undefined);
 }
 
 /// Stops and destroys the device-flow polling timesource and clears the poll state.

@@ -14,7 +14,9 @@ function __GitHubTick() {
         return;
     }
 
-    if (!instance_exists(__github_worker) || __github_worker.__server == undefined || __GitHubServerShuttingDown()) {
+    __GitHubEnsureInstance();
+
+    if (__github_worker.__server == undefined || __GitHubServerShuttingDown()) {
         return;
     }
 
