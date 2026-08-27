@@ -228,10 +228,7 @@ function drop_select_unit_selection() {
                 obj_controller.last_raid_form = formation_possible[formation_current];
             }
 
-            instance_deactivate_all(true);
-            instance_activate_object(__github_worker); // keep alive - deactivation crashes IDE (#1479)
-            instance_activate_object(obj_controller);
-            instance_activate_object(obj_ini);
+            instance_deactivate_all_safe();
             instance_activate_object(obj_drop_select);
 
             // 135 ; temporary balancing

@@ -178,10 +178,7 @@ function scr_purge_world(action_type, action_score) {
                 obj_controller.cooldown = 30;
                 combating = 1; // Start battle here
 
-                instance_deactivate_all(true);
-                instance_activate_object(__github_worker); // keep alive - deactivation crashes IDE (#1479)
-                instance_activate_object(obj_controller);
-                instance_activate_object(obj_ini);
+                instance_deactivate_all_safe();
                 instance_activate_object(obj_drop_select);
 
                 instance_create(0, 0, obj_ncombat);

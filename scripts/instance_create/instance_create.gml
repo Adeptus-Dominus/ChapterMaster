@@ -23,3 +23,15 @@ function instances_exist_any(instance_set = []) {
     }
     return _exists;
 }
+
+/// @desc Deactivates all instances but preserves critical infrastructure workers.
+function instance_deactivate_all_safe() {
+    instance_deactivate_all(true);
+    instance_activate_object(__github_worker);
+    instance_activate_object(obj_persistent);
+    instance_activate_object(obj_garbage_collector);
+    instance_activate_object(obj_img);
+    instance_activate_object(obj_controller);
+    instance_activate_object(obj_ini);
+    instance_activate_object(obj_cursor);
+}

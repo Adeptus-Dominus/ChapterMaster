@@ -452,10 +452,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                 }
                 scr_civil_roster(obj_ncombat.battle_loc, obj_ncombat.battle_id, true);
 
-                instance_deactivate_all(true);
-                instance_activate_object(__github_worker); // keep alive - deactivation crashes IDE (#1479)
-                instance_activate_object(obj_controller);
-                instance_activate_object(obj_ini);
+                instance_deactivate_all_safe();
                 instance_activate_object(obj_temp_meeting);
                 instance_activate_object(obj_ncombat);
                 instance_activate_object(obj_centerline);

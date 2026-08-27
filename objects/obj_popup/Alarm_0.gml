@@ -21,10 +21,7 @@ if (battle_special == 3.1) {
     obj_ncombat.threat = 4;
     obj_ncombat.formation_set = 3;
 
-    instance_deactivate_all(true);
-    instance_activate_object(__github_worker); // keep alive - deactivation crashes IDE (#1479)
-    instance_activate_object(obj_ini);
-    instance_activate_object(obj_controller);
+    instance_deactivate_all_safe();
     instance_activate_object(obj_ncombat);
 
     _roster = new Roster();
