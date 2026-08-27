@@ -40,6 +40,10 @@ function get_marine_icon_set(key) {
     return variable_clone(sprite_set);
 }
 
+/// @desc Sets the full livery shader uniforms for one role, optionally layering a unit's company and personal livery over them.
+/// @param {String} setup_role Role name of the marine being drawn.
+/// @param {Struct.TTRPG_stats|Struct.DummyMarine|String} [unit] Unit whose company and personal livery override the role livery, or "none".
+/// @returns {Struct} Texture draw requests keyed by texture or icon name.
 function setup_complex_livery_shader(setup_role, unit = "none") {
     shader_reset();
     shader_set(full_livery_shader);
@@ -75,6 +79,8 @@ function setup_complex_livery_shader(setup_role, unit = "none") {
                 data_set = _full_liveries[eROLE.TECHMARINE];
             } else if (is_specialist(setup_role, SPECIALISTS_CHAPLAINS)) {
                 data_set = _full_liveries[eROLE.CHAPLAIN];
+            } else if (setup_role == _roles[eROLE.CHAPTERMASTER]) {
+                data_set = _full_liveries[eROLE.CHAPTERMASTER];
             }
         } else {
             for (var i = 0; i < array_length(_roles) && i < array_length(_full_liveries); i++) {
