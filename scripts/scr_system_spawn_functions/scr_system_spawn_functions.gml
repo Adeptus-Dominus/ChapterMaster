@@ -154,13 +154,24 @@ function set_player_recruit_planet(recruit_planet) {
     }
 }
 
-/// @param {Id.Instance.obj_star} chosen_star
+/// @desc Turns the chosen star into the player's home system, expanding it to the requested
+/// planet count and placing the monastery and recruiting worlds.
+/// @param {Id.Instance.obj_star} chosen_star Star to convert into the home system.
+/// @returns {Undefined}
 function set_player_homeworld_star(chosen_star) {
     with (chosen_star) {
         if (obj_ini.recruit_relative_loc == 1 && obj_ini.home_planet_count == 0) {
             obj_ini.home_planet_count++;
         }
         planets = obj_ini.home_planet_count + 1;
+
+        for (var _slot = 1; _slot <= planets; _slot++) {
+            if (p_owner[_slot] == eFACTION.NONE) {
+                p_owner[_slot] = eFACTION.IMPERIUM;
+                p_first[_slot] = eFACTION.IMPERIUM;
+            }
+        }
+
         var _home_planet = irandom_range(1, planets);
 
         player_home_planet(_home_planet);
