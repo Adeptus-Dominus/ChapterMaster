@@ -26,7 +26,7 @@ var _spawn_factions = [
         faction_id: eFACTION.CHAOS,
     },
     {
-        enabled: false,
+        enabled: true,
         weight: 1,
         faction_id: eFACTION.GENESTEALER,
     },
