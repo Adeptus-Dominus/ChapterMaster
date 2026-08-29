@@ -1,3 +1,7 @@
+/// @desc Builds the player roster for a boarding battle aboard the target ship.
+/// @param {Real} target_ship_id Index into obj_ini.ship of the ship the battle is fought over.
+/// @param {Real} cooridor_width Second ship index whose occupants also count as present.
+/// @returns {Undefined}
 function scr_ship_battle(target_ship_id, cooridor_width) {
     // determine occupants
     // determine who is fighting
@@ -5,32 +9,17 @@ function scr_ship_battle(target_ship_id, cooridor_width) {
     // set battle special
 
     // if (argument2=true){
-    var co, v, stop, okay, sofar, _unit;
-    co = 0;
-    v = 0;
-    stop = 0;
-    okay = 0;
-    sofar = 0;
+    var sofar = 0;
 
-    repeat (3600) {
-        if (co < 11) {
-            v += 1;
-            okay = 0;
+    for (var co = 0; co < array_length(obj_ini.TTRPG); co++) {
+        var _company_length = company_length(co);
 
-            if (v > 300) {
-                co += 1;
-                v = 1;
+        for (var v = 0; v < _company_length; v++) {
+            var okay = 0;
+            var _unit = fetch_unit([co, v]);
+            if (!is_struct(_unit)) {
+                continue;
             }
-
-            if (co > 10) {
-                stop = 1;
-            }
-
-            if (stop == 0) {
-                _unit = fetch_unit([co, v]);
-                if (!is_struct(_unit)) {
-                    continue;
-                }
                 if ((_unit.ship_location == target_ship_id) && _unit.hp()) {
                     okay = 1;
                 }
@@ -213,7 +202,6 @@ function scr_ship_battle(target_ship_id, cooridor_width) {
                     targ = instance_nearest(col * 10, 240, obj_pnunit);
                     with (targ) {
                         scr_add_unit_to_roster(_unit);
-                    }
                 }
             }
         }

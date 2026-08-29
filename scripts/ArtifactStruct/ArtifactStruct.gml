@@ -203,6 +203,7 @@ function ArtifactStruct(_type_name = "", _tags = [], _identification_timer = 0, 
     };
 
     /// @desc Destroys the artifact. Daemonic artifacts destroyed while on a ship may trigger a demon summoning battle.
+    /// @returns {Undefined}
     static destroy_artifact = function() {
         if (has_tag("daemonic")) {
             var _resolved = __resolve_location();
@@ -210,13 +211,20 @@ function ArtifactStruct(_type_name = "", _tags = [], _identification_timer = 0, 
                 var demonSummonChance = roll_dice_chapter(1, 100, "high");
 
                 if ((demonSummonChance <= DEMON_SUMMON_THRESHOLD) && (obj_ini.ship_carrying[_resolved.ship_id] > 0)) {
+                    instance_deactivate_all_safe();
+                    instance_activate_object(obj_star);
+
                     /// @type {Asset.GMObject.obj_ncombat}
                     var _combat = instance_create_depth(0, 0, 0, obj_ncombat);
                     _combat.battle_special = "ship_demon";
                     _combat.formation_set = 1;
                     _combat.enemy = DEMON_SUMMON_ENEMIES;
                     _combat.battle_id = _resolved.ship_id;
+
+                    instance_deactivate_object(obj_star);
+                    setup_battle_formations();
                     scr_ship_battle(_resolved.ship_id, 999);
+                    main_map_defaults();
                 }
             }
         }
