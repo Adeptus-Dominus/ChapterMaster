@@ -4,7 +4,7 @@
         "name": "Minotaurs",
         "flavor": "Bronze-clad Astartes of unknown Founding, the Minotaurs prefer to channel their righteous fury in a massive storm of fire, with tanks and artillery. They could be considered the Inquisition’s attack dog, since they often attack fellow chapters suspected of heresy.",
         "origin": 2, // 1 - Founding, 2 - Successor, 3 - Other/non-canon/fanmade, 4 - Custom
-        "points": 450,
+        "points": 250,
         "founding": 10, // The id of the founding chapter, 0 for unknown or none, 10 for random
         "splash": 11, // in \images\creation\chapters\splash folder, the img number, 1 being Dark Angels etc.
         "icon_name": "minotaurs",

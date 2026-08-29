@@ -4,7 +4,7 @@
         "name": "Tome Keepers",
         "flavor": "The Tome Keepers are renowned for their diligent record-keeping and strategic insights, particularly against Xenos such as the Necrons. After each battle, Tome Keepers meticulously record their observations of their foe and devise new tactics for their destruction. Their knowledge has shortened wars that the Administratum thought would take years.",
         "origin": 2, // 1 - Founding, 2 -successor, 3 - Other/non-canon/fanmade, 4 - Custom
-        "points": 100,
+        "points": 250,
         "founding": 7, // The id of the founding chapter, 0 for unknown or none
         "splash": 32, // this will get reworked
         "icon_name": "tome_keepers",

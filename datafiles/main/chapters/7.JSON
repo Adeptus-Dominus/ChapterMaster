@@ -4,7 +4,7 @@
         "name": "Ultramarines",
         "flavor": "An honourable and venerated chapter, the Ultramarines are considered to be amongst the best of the best. Their Primarch was the author of the great tome of the “Codex Astartes”, and they are considered exemplars of what a perfect Space Marine Chapter should be like.",
         "origin": 1, // 1 - Founding, 2 -successor, 3 - Other/non-canon/fanmade, 4 - Custom
-        "points": 150,
+        "points": 250,
         "founding": 0, // The id of the founding chapter, 0 for unknown or none
         "splash": 7,
         "icon_name": "ultramarines",

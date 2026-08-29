@@ -4,7 +4,7 @@
         "name": "Raven Guard",
         "flavor": "Clinging to the shadows and riding the edge of lightning the Raven Guard strike out at the hated enemy with stealth and speed. Using lightning strikes, hit and run tactics, and guerrilla warfare, they are known for being there one second and gone the next.",
         "origin": 1, // 1 - Founding, 2 -successor, 3 - Other/non-canon/fanmade, 4 - Custom
-        "points": 150,
+        "points": 250,
         "founding": 0, // The id of the founding chapter, 0 for unknown or none
         "splash": 9,
         "icon_name": "raven_guard",

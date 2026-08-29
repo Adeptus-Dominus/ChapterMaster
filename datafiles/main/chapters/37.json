@@ -4,7 +4,7 @@
         "name": "Consecrators",
         "flavor": "The Consecrators are a secretive Dark Angels successor chapter dedicated to preserving ancient technologies and traditions from the early Imperium, maintaining a substantial armory of rare Heresy-era weaponry and equipment while continuing their parent chapter's hunt for the Fallen Angels.",
         "origin": 2, // 1 - Founding, 2 - Successor, 3 - Other/non-canon/fanmade, 4 - Custom
-        "points": 150,
+        "points": 250,
         "founding": 0, // The id of the founding chapter, 0 for unknown or none, 10 for random
         "splash": 1, // in \images\creation\chapters\splash folder, the img number, 1 being Dark Angels etc.
         "icon_name": "consecrators",

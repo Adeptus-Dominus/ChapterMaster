@@ -6,7 +6,7 @@
     "flavor": "The Dark Angels are the Progenitor Chapter formed from the First Legion of Primarch Lion El'Jonson. Though through their secretive nature their allegiance and actions may be questionable, they are some of the most deadly and well-armed Astartes in the Imperium", //the short description that appears on popup when you hover over a chapter image
     "battle_cry": "Repent! For tomorrow you die!", //this is where you cry. I mean this is where you say what are you crying about. I mean... fuck it just type shit here to scream at people
     "origin": 1, //[1] Founding [2] Successor [3] Other [4] Custom
-    "points": 150, //creation points, feel free to cheat here for more wild stuff in custom if you don't like doing it via files
+    "points": 250, //creation points, feel free to cheat here for more wild stuff in custom if you don't like doing it via files
     "founding": 1, //ID of the progenitor chapter, as per fiels in datafiles/main/chapters
     "successors": 19, //write how many successors your chapter has. Go bonkers. Show them you got the seed to have 666 successors
     "splash": 1, //the more artsy image on the left side of selection screen. Highly advised to use the same number as chapter ID

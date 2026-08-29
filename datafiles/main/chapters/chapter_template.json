@@ -1,10 +1,28 @@
 {
     "chapter": {
+        /*
+        * * This folder contains premade chapters. Each file is named <id>.JSON to
+        * * match the "id" stored inside it.
+        * *
+        * * Do not place custom chapters in this folder. They must be saved in
+        * * %LocalAppData%\ChapterMaster\ and named chaptersave#<id>.json.
+        * *
+        * * Custom chapters use IDs 21 through 30, corresponding to the ten custom
+        * * slots on the chapter select screen. For example, chaptersave#21.json
+        * * must contain "id": 21.
+        * *
+        * * To create a custom chapter, copy this template or an existing premade
+        * * chapter, change its "id" to a number from 21 through 30, and save it in
+        * * %LocalAppData%\ChapterMaster\ using the matching filename.
+        * *
+        * * Starting a game in a custom slot rewrites its file, so keep a separate
+        * * copy of any chapter you want to preserve.
+        */
         "id": 1,
         "name": "Chapter Name",
         "flavor": "Chapter Lore",
         "origin": 3, // 1 - Founding, 2 - Successor, 3 - Other/non-canon/fanmade, 4 - Custom
-        "points": 150,
+        "points": 250,
         "founding": 0, // The id of the founding chapter, 0 for unknown or none, 10 for random
         "splash": 1, // in \images\creation\chapters\splash folder, the img number, 1 being Dark Angels etc.
         "icon_name": "unknown",

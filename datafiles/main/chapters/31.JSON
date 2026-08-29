@@ -4,7 +4,7 @@
         "name": "Red Scorpions",
         "flavor": "No records remain of the chapter's founding or from which Space Marine Legion their geneseed was first taken. This secrecy has led to some of the Imperium's hierarchy questioning the loyalty of a chapter that keeps its history secret and holds itself answerable to the Emperor alone. Despite this, the chapter assists wherever it can, carrying out thousands of relief missions.",
         "origin": 2, // 1 - Founding, 2 -successor, 3 - Other/non-canon/fanmade, 4 - Custom
-        "points": 150,
+        "points": 250,
         "founding": 0, // The id of the founding chapter, 0 for unknown or none
         "splash": 22, // this will get reworked
         "icon_name": "red_scorpions",

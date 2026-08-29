@@ -4,7 +4,7 @@
         "name": "Deathwatch",
         "flavor": "Known as the Shield that Slays, they are the Chamber Militant of the Ordo Xenos, charged with protecting it in its search of information, containment, and ultimate destruction of all xeno species. Consisting of Battle-Brothers drawn from many Chapters, the Deathwatch operates from Watch Fortresses and Watch Stations across the whole of the Imperium.",
         "origin": 3, // 1 - Founding, 2 - Successor, 3 - Other/non-canon/fanmade, 4 - Custom
-        "points": 150,
+        "points": 250,
         "founding": 0, // The id of the founding chapter, 0 for unknown or none, 10 for random
         "splash": 33, // in \images\creation\chapters\splash folder, the img number, 1 being Dark Angels etc.
         "icon_name": "deathwatch",

@@ -4,7 +4,7 @@
         "name": "Carcharodons",
         "flavor": "Rumored to be Successors of the Raven Guard, these Astartes are known for their sudden attacks and shock assaults. Travelling through the Imperium via self-sufficient Nomad-Predation based fleets, no enemy is safe from the fury of these bloodthirsty Space Marines.",
         "origin": 2, // 1 - Founding, 2 - Successor, 3 - Other/non-canon/fanmade, 4 - Custom
-        "points": 100,
+        "points": 250,
         "founding": 9, // The id of the founding chapter, 0 for unknown or none, 10 for random
         "splash": 99, // in \images\creation\chapters\splash folder, the img number, 1 being Dark Angels etc.
         "icon_name": "carcharodons",

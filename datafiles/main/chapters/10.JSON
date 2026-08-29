@@ -4,7 +4,7 @@
         "name": "Black Templars",
         "flavor": "Not adhering to the Codex Astartes, Black Templars are a Chapter on an Eternal Crusade with unique organization and high numbers. Masters of assault, they charge at the enemy with zeal unmatched. They hate psykers, and as such, have no Librarians.",
         "origin": 2, // 1 - Founding, 2 -successor, 3 - Other/non-canon/fanmade, 4 - Custom
-        "points": 200,
+        "points": 250,
         "founding": 4, // The id of the founding chapter, 0 for unknown or none
         "splash": 10,
         "icon_name": "black_templars",

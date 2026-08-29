@@ -554,7 +554,7 @@
     {"$GMIncludedFile":"","%Name":"7.JSON","CopyToMask":-1,"filePath":"datafiles/main/chapters","name":"7.JSON","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"8.JSON","CopyToMask":-1,"filePath":"datafiles/main/chapters","name":"8.JSON","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"9.JSON","CopyToMask":-1,"filePath":"datafiles/main/chapters","name":"9.JSON","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
-    {"$GMIncludedFile":"","%Name":"template.JSON","CopyToMask":-1,"filePath":"datafiles/main/chapters","name":"template.JSON","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"chapter_template.json","CopyToMask":-1,"filePath":"datafiles/main/chapters","name":"chapter_template.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"help.ini","CopyToMask":9223372036854775807,"filePath":"datafiles/main","name":"help.ini","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"name_loader.json","CopyToMask":-1,"filePath":"datafiles/main","name":"name_loader.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"chaos.json","CopyToMask":-1,"filePath":"datafiles/main/names","name":"chaos.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},

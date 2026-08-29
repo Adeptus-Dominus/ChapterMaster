@@ -4,7 +4,7 @@
         "name": "Imperial Fists",
         "flavor": "Siege-masters of utmost excellence, the Imperial Fists stoicism has lead them to great victories and horrifying defeats. To them, the idea of a tactical retreat is utterly inconsiderable. They hold ground on Terra vigilantly, refusing to back down from any fight.",
         "origin": 1, // 1 - Founding, 2 -successor, 3 - Other/non-canon/fanmade, 4 - Custom
-        "points": 150,
+        "points": 250,
         "founding": 0, // The id of the founding chapter, 0 for unknown or none
         "splash": 4,
         "icon_name": "imperial_fists",

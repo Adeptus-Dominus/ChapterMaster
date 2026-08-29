@@ -230,7 +230,7 @@ function scr_chapter_new(chapter_identifier) {
         }
 
         global.chapter_creation_object = chapter_obj;
-        maxpoints = 150;
+        maxpoints = (is_real(chapter_obj.points) && chapter_obj.points >= 1) ? floor(chapter_obj.points) : 250;
     }
 
     #region Custom Chapter
@@ -246,7 +246,7 @@ function scr_chapter_new(chapter_identifier) {
             return false;
         }
         global.chapter_creation_object = chapter_obj;
-        maxpoints = 100;
+        maxpoints = (is_real(chapter_obj.points) && chapter_obj.points >= 1) ? floor(chapter_obj.points) : 100;
     }
     #endregion
 

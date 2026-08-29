@@ -4,7 +4,7 @@
         "name": "Soul Drinkers",
         "flavor": "Sharing ancestry of the Black Templars or Crimson fists. As proud sons of Dorn they share the strong void combat traditions, fielding a large amount of Battle Barges. As well as being fearsome in close combat. Whispers of the Ruinous Powers are however quite enticing.",
         "origin": 2, // 1 - Founding, 2 - Successor, 3 - Other/non-canon/fanmade, 4 - Custom
-        "points": 200,
+        "points": 250,
         "founding": 4, // The id of the founding chapter, 0 for unknown or none, 10 for random
         "splash": 16, // in \images\creation\chapters\splash folder, the img number, 1 being Dark Angels etc.
         "icon_name": "soul_drinkers",
