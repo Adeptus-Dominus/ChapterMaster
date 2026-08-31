@@ -224,7 +224,7 @@ function set_fleet_movement(_fastest_route = true, _new_action = "move", _minimu
     // Finalize Movement State
     fleet_unregister_from_star(id);
     action = _new_action;
-    action_eta = clamp(_eta, _minimum_eta, _maximum_eta);
+    action_eta = _eta > 5000 ? _eta : clamp(_eta, _minimum_eta, _maximum_eta);
 }
 
 /// @param {Id.Instance.obj_en_fleet|Id.Instance.obj_p_fleet} fleet
