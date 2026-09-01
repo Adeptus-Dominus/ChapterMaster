@@ -717,6 +717,9 @@ function mission_investigate_planet() {
 }
 
 /// @self Asset.GMObject.obj_star
+/// @desc Queues the Necron Tomb mission prompt when a Plasma Bomb is present.
+/// @param {Real} planet Planet index containing the Necron Tomb.
+/// @returns {Undefined}
 function setup_necron_tomb_raid(planet) {
     LOGGER.info($"player on planet with necron mission {name} planet: {planet}");
     var have_bomb;
@@ -726,7 +729,7 @@ function setup_necron_tomb_raid(planet) {
         var tixt;
         tixt = $"Your marines on {planet_numeral_name(planet, id)}";
         tixt += " are prepared and ready to enter the Necron Tombs.  A Plasma Bomb is in tow.";
-        var _number = instance_exists(obj_turn_end) ? obj_turn_end.current_popup : 0;
+        var _number = instance_exists(obj_turn_end) ? 1 : 0;
         var _pop_data = {
             mission: "necron_tomb_excursion",
             loc: name,
@@ -741,7 +744,7 @@ function setup_necron_tomb_raid(planet) {
                 },
                 {
                     str1: "Not Yet",
-                    choice_func: instance_destroy,
+                    choice_func: popup_default_close,
                 },
             ],
         };
@@ -750,17 +753,58 @@ function setup_necron_tomb_raid(planet) {
 }
 
 /// @self Asset.GMObject.obj_popup
+/// @desc Initializes the popup and choices for a Necron Tomb mission.
+/// @returns {Undefined}
 function necron_tomb_mission_start() {
     mission_star = find_star_by_name(pop_data.loc);
     planet = pop_data.planet;
 
     title = $"Necron Tunnels : {pop_data.mission_stage}";
-    replace_options([{str1: "Continue", choice_func: necron_tomb_mission_sequence}, {str1: "Return to the surface", choice_func: instance_destroy}]);
+    replace_options([{str1: "Continue", choice_func: necron_tomb_mission_sequence}, {str1: "Return to the surface", choice_func: popup_default_close}]);
     image = "necron_tunnels_1";
     text = "Your marines enter the massive tunnel complex, following the energy readings.  At first the walls are cramped and tiny, closing about them, but the tunnels widen at a rapid pace.";
 }
 
 /// @self Asset.GMObject.obj_popup
+/// @desc Advances the Necron Tomb mission and renders the resulting popup state.
+/// @returns {Bool} Whether the mission reached completion.
+function advance_necron_tomb_mission() {
+    pop_data.mission_stage++;
+    title = $"Necron Tunnels : {pop_data.mission_stage}";
+
+    if (pop_data.mission_stage == 2) {
+        image = "necron_tunnels_2";
+        text = "The energy readings are much stronger, now that your marines are deep inside the tunnels.  What was once cramped is now luxuriously large, the tunnel ceiling far overhead decorated by stalactites.";
+        return false;
+    }
+    if (pop_data.mission_stage == 3) {
+        image = "necron_tunnels_3";
+        text = "After several hours of descent the entrance to the Necron Tomb finally looms ahead- dancing, sickly green light shining free.  Your marine confirms that the Plasma Bomb is ready.";
+        return false;
+    }
+    if (pop_data.mission_stage >= 4) {
+        image = "";
+        title = "Inquisition Mission Completed";
+        text = "Your marines finally enter the deepest catacombs of the Necron Tomb.  There they place the Plasma Bomb and arm it.  All around are signs of increasing Necron activity.  With half an hour set, your men escape back to the surface.  There is a brief rumble as the charge goes off, your mission a success.";
+        reset_popup_options();
+
+        alter_disposition(eFACTION.INQUISITION, obj_controller.demanding ? choose(0, 0, 1) : 1);
+
+        mission_star = find_star_by_name(pop_data.loc);
+        remove_planet_problem(planet, "necron", mission_star);
+        seal_tomb_world(mission_star.p_feature[planet]);
+
+        scr_event_log("", $"Inquisition Mission Completed: Your Astartes have sealed the Necron Tomb on {mission_star.name} {scr_roman(planet)}.", mission_star.name);
+        scr_gov_disp(mission_star.name, planet, irandom_range(3, 7));
+        scr_check_equip("Plasma Bomb", pop_data.loc, pop_data.planet, 1);
+        return true;
+    }
+    return false;
+}
+
+/// @self Asset.GMObject.obj_popup
+/// @desc Advances the Necron Tomb mission or starts a combat encounter.
+/// @returns {Undefined}
 function necron_tomb_mission_sequence() {
     var battle;
     var player_forces = 0;
@@ -792,33 +836,8 @@ function necron_tomb_mission_sequence() {
 
     // Result
     if (roll <= 60) {
-        pop_data.mission_stage += 1;
-        title = $"Necron Tunnels : {pop_data.mission_stage}";
-
-        if (pop_data.mission_stage == 2) {
-            image = "necron_tunnels_2";
-            text = "The energy readings are much stronger, now that your marines are deep inside the tunnels.  What was once cramped is now luxuriously large, the tunnel ceiling far overhead decorated by stalactites.";
-        } else if (pop_data.mission_stage == 3) {
-            image = "necron_tunnels_3";
-            text = "After several hours of descent the entrance to the Necron Tomb finally looms ahead- dancing, sickly green light shining free.  Your marine confirms that the Plasma Bomb is ready.";
-        } else if (pop_data.mission_stage >= 4) {
-            image = "";
-            title = "Inquisition Mission Completed";
-            text = "Your marines finally enter the deepest catacombs of the Necron Tomb.  There they place the Plasma Bomb and arm it.  All around are signs of increasing Necron activity.  With half an hour set, your men escape back to the surface.  There is a brief rumble as the charge goes off, your mission a success.";
-            reset_popup_options();
-
-            alter_disposition(eFACTION.INQUISITION, obj_controller.demanding ? choose(0, 0, 1) : 1);
-
-            mission_star = find_star_by_name(pop_data.loc);
-            remove_planet_problem(planet, "necron", mission_star);
-            seal_tomb_world(mission_star.p_feature[planet]);
-            // mission_star.p_feature[planet][search_planet_features(mission_star.p_feature[planet], eP_FEATURES.NECRON_TOMB)[0]].sealed = 1;
-
-            scr_event_log("", $"Inquisition Mission Completed: Your Astartes have sealed the Necron Tomb on {mission_star.name} {scr_roman(planet)}.", mission_star.name);
-            scr_gov_disp(mission_star.name, planet, irandom_range(3, 7));
-            var have_bomb = scr_check_equip("Plasma Bomb", pop_data.loc, pop_data.planet, 1);
-            exit;
-        }
+        advance_necron_tomb_mission();
+        exit;
     }
     if ((roll > 60) && (roll <= 82)) {
         // Necron Wraith attack

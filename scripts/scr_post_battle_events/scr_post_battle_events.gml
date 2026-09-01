@@ -1,4 +1,6 @@
 /// @self Asset.GMObject.obj_ncombat
+/// @desc Resolves Necron Tomb combat and resumes or completes the mission.
+/// @returns {Undefined}
 function necron_tomb_raid_post_battle_sequence() {
     if (!string_count("wake", battle_special)) {
         if (defeat == 1) {
@@ -6,14 +8,18 @@ function necron_tomb_raid_post_battle_sequence() {
             obj_controller.cooldown = 10;
             obj_turn_end.alarm[1] = 4;
         } else if (defeat == 0) {
-            battle_data.mission_stage += 1;
             obj_controller.combat = 0;
             var pip = instance_create(0, 0, obj_popup);
             pip.pop_data = battle_data;
 
             with (pip) {
                 necron_tomb_mission_start();
-                necron_tomb_mission_sequence();
+                var _completed = advance_necron_tomb_mission();
+                if (_completed) {
+                    keyboard_clear(vk_enter);
+                } else {
+                    text = "The last of the attackers is cut down.  Your marines regroup in the tunnel and ready themselves to press deeper into the complex.\n\n" + text;
+                }
                 number = pop_data.number;
             }
         }
