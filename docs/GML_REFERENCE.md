@@ -427,6 +427,43 @@ _s[$ "name"];         // Struct accessor (bracket with $)
 
 ---
 
+## Garbage Collection & Object Lifetime
+
+GML features automatic garbage collection (GC) for structs and instances. An object becomes eligible for garbage collection when there are no **strong references** remaining to it. A strong reference is any variable that directly holds the object (e.g., `my_instance = instance_create(...)`).
+
+### Weak References: `weak_ref_create`
+
+To hold a reference to an object **without** preventing its garbage collection, use `weak_ref_create`. This returns a special **weak reference struct**.
+
+**Key Behavior:**
+- The weak reference struct contains a `ref` variable. Accessing it yields the **strong reference** to the original object if it still exists, or `undefined` if it has been garbage collected.
+- Use `instanceof()` to identify a weak reference (`"weakref"`) versus a strong reference (`"struct"` or a constructor name).
+- **`weak_ref_alive`** can be used to check if the tracked object is still alive.
+
+**Example:**
+```gml
+// Create a weak reference to an inventory struct
+inventory_ref = weak_ref_create(inventory); // Returns a weak reference struct
+
+// ... later, in another script or frame ...
+if (weak_ref_alive(inventory_ref)) {
+    // Safe to use the strong reference stored in .ref
+    show_debug_message("Items: " + string(array_length(inventory_ref.ref.items)));
+} else {
+    show_debug_message("Inventory has been destroyed.");
+}
+```
+
+### Common Pitfalls & Best Practices
+
+1. **Accidental Strong References**: Storing a direct reference in a long-lived structure (like `global`, `static`, or an array in a persistent object) will **prevent garbage collection** of that instance.
+2. **Checking Existence**: Always check for existence before using an instance reference, especially if it might have been destroyed since you last saw it.
+  - **For strong references**: Use `instance_exists(instance_id)`.
+  - **For weak references**: Use `weak_ref_alive(weak_ref)` or check `is_struct(weak_ref.ref)`.
+3. **Use Case - Event Listeners**: When a system (e.g., a UI element) subscribes to events from another system (e.g., a game manager), it should use a weak reference. This allows the UI element to be destroyed without leaving a dangling reference in the game manager's listener list.
+
+---
+
 ## Built-in Functions List
 
 > [!NOTE]
