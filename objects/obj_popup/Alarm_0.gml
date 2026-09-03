@@ -23,6 +23,7 @@ if (battle_special == 3.1) {
 
     instance_deactivate_all_safe();
     instance_activate_object(obj_ncombat);
+    instance_activate_object(obj_pnunit);
 
     _roster = new Roster();
     with (_roster) {
@@ -36,6 +37,7 @@ if (battle_special == 3.1) {
             add_to_battle();
         } else {
             instance_destroy(obj_ncombat);
+            instance_destroy(obj_pnunit);
             instance_activate_all();
             delete _roster;
         }
