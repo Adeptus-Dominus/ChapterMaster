@@ -44,7 +44,6 @@ jobs:
           echo "title<<EOF" >> $GITHUB_OUTPUT
           jq -r .title pr_data.json >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
-          echo "sha=$(jq -r .head.sha pr_data.json)" >> $GITHUB_OUTPUT
           echo "base=$(jq -r .base.ref pr_data.json)" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
@@ -55,10 +54,11 @@ jobs:
       - name: Run OpenCode
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          GH_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
           GITHUB_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
           OPENCODE_PERMISSION: '{ "external_directory": { "/home/runner/work/**": "allow", "/tmp/*": "allow" } }'
           PR_TITLE: ${{ steps.pr-details.outputs.title }}
-          PR_SHA: ${{ steps.pr-details.outputs.sha }}
+          PR_SHA: ${{ steps.pr-git.outputs.sha }}
           PR_BASE: ${{ steps.pr-details.outputs.base }}
           PR_NUMBER: ${{ steps.pr-number.outputs.number }}
         run: |
