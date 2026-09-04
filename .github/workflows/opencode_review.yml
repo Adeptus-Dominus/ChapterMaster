@@ -47,7 +47,7 @@ jobs:
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OPENCODE_PERMISSION: '{ "bash": {  "*": "deny", "gh*": "allow", "gh pr review*": "deny", "gh auth*": "deny", "gh api *DELETE*": "deny" } }'
+          OPENCODE_PERMISSION: '{ "external_directory": { "/home/runner/work/**": "allow", "/tmp/*": "allow" } }'
           PR_TITLE: ${{ steps.pr-details.outputs.title }}
           PR_SHA: ${{ steps.pr-details.outputs.sha }}
           PR_NUMBER: ${{ steps.pr-number.outputs.number }}
