@@ -15,11 +15,6 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 1
-
       - name: Get PR number
         id: pr-number
         run: |
@@ -28,6 +23,16 @@ jobs:
           else
             echo "number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
           fi
+    
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Checkout PR Branch
+        run: gh pr checkout ${{ steps.pr-number.outputs.number }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get PR details
         id: pr-details
@@ -37,6 +42,7 @@ jobs:
           jq -r .title pr_data.json >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
           echo "sha=$(jq -r .head.sha pr_data.json)" >> $GITHUB_OUTPUT
+          echo "base=$(jq -r .base.ref pr_data.json)" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -50,35 +56,30 @@ jobs:
           OPENCODE_PERMISSION: '{ "external_directory": { "/home/runner/work/**": "allow", "/tmp/*": "allow" } }'
           PR_TITLE: ${{ steps.pr-details.outputs.title }}
           PR_SHA: ${{ steps.pr-details.outputs.sha }}
+          PR_BASE: ${{ steps.pr-details.outputs.base }}
           PR_NUMBER: ${{ steps.pr-number.outputs.number }}
         run: |
           PR_BODY=$(jq -r .body pr_data.json)
           cat > /tmp/prompt.txt <<PROMPT_EOF
-          A new pull request has been created: '$PR_TITLE'
-
-          <pr-number>
-          $PR_NUMBER
-          </pr-number>
+          You are reviewing Pull Request #$PR_NUMBER: '$PR_TITLE'
+          Base branch: origin/$PR_BASE
+          Head commit: $PR_SHA
 
           <pr-description>
           $PR_BODY
           </pr-description>
 
-          Review this pull request:
-          - Look for potential bugs and regressions
-          - Check for code quality issues
-          - Suggest improvements
-          Respond terse. All technical substance stays. Only fluff dies.
+          Guidelines:
+          - Review the code for bugs, regressions, performance issues, code quality, and readability.
+          - Suggest improvments or fixes.
+          - Check the list of changed files using: git diff --name-only origin/$PR_BASE...HEAD
+          - Read local files directly from the workspace to maintain full context.
+          - Diffs are important but make sure you read the entire file when needed to get full context.
+          - Avoid running huge unbounded diff commands into stdout.
+          - Keep comments terse and actionable. Technical substance stays. Fluff dies.
+          - When critiquing, don't be a zealot if the code is overal readable.
 
-          Diffs are important but make sure you read the entire file to get proper context.
-          When critiquing, don't be a zealot if the code is readable.
-
-          Use the gh cli to create comments on the files for the violations.
-          Try to leave the comment on the exact line number.
-          If you have a suggested fix include it in a suggestion code block.
-          Write a comment instead of writing suggested change.
-
-          Command MUST be like this:
+          For specific code issues, post inline comments using:
           \`\`\`
           gh api \
             --method POST \
@@ -88,6 +89,12 @@ jobs:
             -f 'body=[summary of issue]' -f 'commit_id=$PR_SHA' -f 'path=[path-to-file]' -F "line=[line]" -f 'side=RIGHT'
           \`\`\`
 
-          Only create comments for actual violations. If the code follows all guidelines, comment using gh cli that it looks good and nothing else.
+          If you have a suggested fix include it in a suggestion code block.
+          Only create comments for actual violations.
+
+          When finished, ALWAYS post an overall summary comment to the PR thread:
+          \`gh pr comment $PR_NUMBER --body "[Your overall summary and verdict here]"\`
+          
+          If the code follows all guidelines, comment that it looks good and nothing else. Don't summarize or explain it.
           PROMPT_EOF
           cat /tmp/prompt.txt | opencode run -m opencode/muse-spark-1.2-contributor-free --variant xhigh --agent pr_review
