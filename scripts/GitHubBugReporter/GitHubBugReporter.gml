@@ -23,6 +23,24 @@ function GitHubBugReporter() constructor {
             return;
         }
 
+        // Critical errors close the game next frame, so the async GET dedup would never finish.
+        // Skip the paginated open-issue lookup and create the issue directly via a one-way POST,
+        // matching Discord's fire-and-forget handling for critical errors.
+        if (_error.critical) {
+            var _body_critical = __build_body(_error, _user_text);
+            var _client_critical = new GitHub(_token);
+            var _issue_critical = _client_critical.createIssue(GITHUB_ISSUES_OWNER, GITHUB_ISSUES_REPO, new GitHubIssue(_error.report_title, _body_critical));
+            if (_issue_critical != undefined) {
+                _issue_critical.setCallback(function(_result, _request) {
+                    LOGGER.debug($"New issue created (critical, no dedup): #{_result.number}.");
+                    show_message_async("Report sent to the Administratum.");
+                }).setErrorback(function(_result, _request) {
+                    LOGGER.error($"Failed to create issue (critical): {_result}");
+                });
+            }
+            return;
+        }
+
         // GML methods do not capture local variables
         var _context = {
             client: new GitHub(_token),
