@@ -17,6 +17,7 @@ GameMaker Language (GML) is syntactically similar to JavaScript ES3 but has sign
 - [Constructors](#constructors)
 - [Methods and Binding](#methods-and-binding)
 - [Data Structures and Accessors](#data-structures-and-accessors)
+- [Garbage Collection and Object Lifetime](#garbage-collection-and-object-lifetime)
 - [Built-in Functions List](#built-in-functions-list)
 - [Keywords List](#keywords-list)
 
@@ -427,7 +428,7 @@ _s[$ "name"];         // Struct accessor (bracket with $)
 
 ---
 
-## Garbage Collection & Object Lifetime
+## Garbage Collection and Object Lifetime
 
 GML features automatic garbage collection (GC) for structs and instances. An object becomes eligible for garbage collection when there are no **strong references** remaining to it. A strong reference is any variable that directly holds the object (e.g., `my_instance = instance_create(...)`).
 
@@ -458,8 +459,8 @@ if (weak_ref_alive(inventory_ref)) {
 
 1. **Accidental Strong References**: Storing a direct reference in a long-lived structure (like `global`, `static`, or an array in a persistent object) will **prevent garbage collection** of that instance.
 2. **Checking Existence**: Always check for existence before using an instance reference, especially if it might have been destroyed since you last saw it.
-  - **For strong references**: Use `instance_exists(instance_id)`.
-  - **For weak references**: Use `weak_ref_alive(weak_ref)` or check `is_struct(weak_ref.ref)`.
+   - **For strong references**: Use `instance_exists(instance_id)`.
+   - **For weak references**: Use `weak_ref_alive(weak_ref)` or check `is_struct(weak_ref.ref)`.
 3. **Use Case - Event Listeners**: When a system (e.g., a UI element) subscribes to events from another system (e.g., a game manager), it should use a weak reference. This allows the UI element to be destroyed without leaving a dangling reference in the game manager's listener list.
 
 ---
