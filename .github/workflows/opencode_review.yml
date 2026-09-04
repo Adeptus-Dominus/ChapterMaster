@@ -25,14 +25,17 @@ jobs:
           fi
     
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Checkout PR Branch
-        run: gh pr checkout ${{ steps.pr-number.outputs.number }}
+        run: |
+          gh pr checkout ${{ steps.pr-number.outputs.number }}
+          echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+        id: pr-git
         env:
-          GH_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
+          GH_TOKEN: ${{ secrets.BOT_PAT }}
 
       - name: Get PR details
         id: pr-details
