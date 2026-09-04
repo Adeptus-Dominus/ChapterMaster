@@ -2,7 +2,6 @@
 try {
     scr_ui_manage();
     scr_ui_advisors();
-    scr_ui_tooltip();
     if (menu == eMENU.DIPLOMACY) {
         scr_ui_diplomacy();
     }

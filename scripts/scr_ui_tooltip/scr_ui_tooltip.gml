@@ -1,6 +1,5 @@
-/// @function scr_ui_tooltip()
-/// @category UI
-/// @description Handles tooltip logics around the main play screen
+/// @desc Handles tooltip logics around the main play screen
+/// @returns {Undefined}
 function scr_ui_tooltip() {
     if ((selected != noone) && (!instance_exists(selected))) {
         selected = noone;
@@ -9,12 +8,10 @@ function scr_ui_tooltip() {
         exit;
     }
 
-    var xx = camera_get_view_x(view_camera[0]);
-    var yy = camera_get_view_y(view_camera[0]);
     var tooltip = "";
 
     // Requisition income tooltip
-    if (scr_hit(xx + 5, yy + 10, xx + 137, yy + 38)) {
+    if (scr_hit(5, 10, 137, 38)) {
         tooltip = "Requisition Points";
         tooltip += string("#Base Income: {0}{1}", income_base > 0 ? "+" : "", income_base);
         if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
@@ -47,7 +44,7 @@ function scr_ui_tooltip() {
     }
 
     // Current Loyalty tooltip
-    if (scr_hit(xx + 247, yy + 10, xx + 328, yy + 38)) {
+    if (scr_hit(247, 10, 328, 38)) {
         for (var i = 1; i <= 20; i++) {
             if (loyal_num[i] > 1) {
                 tooltip += string(loyal[i]) + ": -" + string(loyal_num[i]) + "#";
@@ -62,29 +59,29 @@ function scr_ui_tooltip() {
     }
 
     // Stored Gene-Seed tooltip
-    if (scr_hit(xx + 373, yy + 10, xx + 443, yy + 38)) {
+    if (scr_hit(373, 10, 443, 38)) {
         tooltip = "Gene-Seed#" + obj_controller.apothecary_string;
         tooltip_draw(tooltip);
     }
     // Current Astartes tooltip
-    if (scr_hit(xx + 478, yy + 3, xx + 552, yy + 38)) {
+    if (scr_hit(478, 3, 552, 38)) {
         tooltip = "Astartes (Normal/Command)#" + string(obj_controller.marines);
         tooltip_draw(tooltip);
     }
     // Turn tooltip
     if ((menu == eMENU.DEFAULT) && (diplomacy <= 0)) {
-        if (scr_hit(xx + 1435, yy + 40, xx + 1580, yy + 267)) {
+        if (scr_hit(1435, 40, 1580, 267)) {
             tooltip = $"Turn :{obj_controller.turn}";
             tooltip_draw(tooltip);
         }
     }
     // Forge Points income tooltip
-    if (scr_hit(xx + 153, yy + 10, xx + 241, yy + 38)) {
+    if (scr_hit(153, 10, 241, 38)) {
         tooltip_draw(obj_controller.forge_string);
     }
 
     // Penitence/Blood Debt tooltip
-    if (scr_hit(xx + 923, yy + 10, xx + 1060, yy + 38) && (penitent == 1)) {
+    if (scr_hit(923, 10, 1060, 38) && (penitent == 1)) {
         var bd_decay_rate = min(0, (((penitent_turn + 1) * (penitent_turn + 1)) - 512) * -1);
 
         if (obj_controller.blood_debt == 1) {

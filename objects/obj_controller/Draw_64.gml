@@ -62,6 +62,7 @@ if (menu == eMENU.DIPLOMACY) {
 // Main UI
 if (!zoomed && !zui) {
     add_draw_return_values();
+    scr_ui_tooltip();
     if (menu == eMENU.DEFAULT) {
         location_viewer.draw();
         helpful_places_button.update({x1: 1451, y1: 62 + sprite_get_height(spr_new_banner)});
