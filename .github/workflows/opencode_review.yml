@@ -32,7 +32,7 @@ jobs:
       - name: Checkout PR Branch
         run: gh pr checkout ${{ steps.pr-number.outputs.number }}
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
 
       - name: Get PR details
         id: pr-details
@@ -44,7 +44,7 @@ jobs:
           echo "sha=$(jq -r .head.sha pr_data.json)" >> $GITHUB_OUTPUT
           echo "base=$(jq -r .base.ref pr_data.json)" >> $GITHUB_OUTPUT
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
 
       - name: Install OpenCode
         run: curl -fsSL https://opencode.ai/install | bash
@@ -52,7 +52,7 @@ jobs:
       - name: Run OpenCode
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
           OPENCODE_PERMISSION: '{ "external_directory": { "/home/runner/work/**": "allow", "/tmp/*": "allow" } }'
           PR_TITLE: ${{ steps.pr-details.outputs.title }}
           PR_SHA: ${{ steps.pr-details.outputs.sha }}
