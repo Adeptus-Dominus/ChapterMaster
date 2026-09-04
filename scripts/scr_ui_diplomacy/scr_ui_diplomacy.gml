@@ -115,6 +115,7 @@ function exit_diplomacy_dialogue() {
         cooldown = 8;
         diplomacy = 0;
         force_goodbye = 0;
+        clear_diplo_choices();
         _close_diplomacy = false;
     }
     // No need to check for next audience

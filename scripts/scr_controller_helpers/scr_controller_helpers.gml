@@ -74,13 +74,14 @@ function scr_change_menu(wanted_menu, specific_area_function = undefined) {
     }
 }
 
+/// @desc Returns the controller to the main map state.
+/// @returns {Undefined}
 function main_map_defaults() {
     with (obj_controller) {
         menu = eMENU.DEFAULT;
         menu_lock = false;
         hide_banner = 0;
         location_viewer.update_garrison_log();
-        managing = 0;
         managing = 0;
         menu_adept = 0;
         view_squad = false;
@@ -89,6 +90,7 @@ function main_map_defaults() {
         hide_banner = 0;
         diplomacy = 0;
         audience = 0;
+        clear_diplo_choices();
         zoomed = 0;
     }
 }
