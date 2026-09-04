@@ -35,7 +35,7 @@ jobs:
           echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
         id: pr-git
         env:
-          GH_TOKEN: ${{ secrets.BOT_PAT }}
+          GH_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
 
       - name: Get PR details
         id: pr-details
