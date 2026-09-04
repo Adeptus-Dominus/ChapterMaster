@@ -1,3 +1,7 @@
+if (os_type == os_macosx) {
+    exit;
+}
+
 if (gc_timer > 0) {
     gc_timer -= 1;
     // show_debug_message($"obj_garbage_collector: gc_timer = {gc_timer}");
