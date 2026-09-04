@@ -252,6 +252,8 @@ try {
         }
     } else if (menu == eMENU.LIBRARIUM) {
         scr_librarium_gui();
+    } else if (menu == eMENU.SECRET_LAIR) {
+        scr_secret_lair_view();
     } else if (menu >= eMENU.SETTINGS && menu <= eMENU.FORMATIONS_SETTINGS) {
         scr_ui_settings();
     }

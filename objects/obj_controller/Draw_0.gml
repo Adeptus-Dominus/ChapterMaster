@@ -5,9 +5,6 @@ try {
     if (menu == eMENU.DIPLOMACY) {
         scr_ui_diplomacy();
     }
-    if (menu == eMENU.SECRET_LAIR) {
-        scr_secret_lair_view();
-    }
 } catch (_exception) {
     ERROR_HANDLER.handle_exception(_exception);
     main_map_defaults();

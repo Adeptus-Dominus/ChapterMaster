@@ -1,9 +1,8 @@
-/// @function scr_secret_lair_view()
-/// @category UI
-/// @description Displays information on secret lairs
+/// @desc Displays information on secret lairs.
+/// @returns {Undefined}
 function scr_secret_lair_view() {
-    var xx = camera_get_view_x(view_camera[0]) + 25;
-    var yy = camera_get_view_y(view_camera[0]) + 165;
+    var xx = 25;
+    var yy = 165;
 
     add_draw_return_values();
     draw_sprite(spr_popup_large, 1, xx, yy);
