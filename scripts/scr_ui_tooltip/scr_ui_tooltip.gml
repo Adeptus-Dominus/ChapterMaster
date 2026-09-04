@@ -4,9 +4,6 @@ function scr_ui_tooltip() {
     if ((selected != noone) && (!instance_exists(selected))) {
         selected = noone;
     }
-    if (zoomed != 0) {
-        exit;
-    }
 
     var tooltip = "";
 
