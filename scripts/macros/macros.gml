@@ -38,6 +38,10 @@
 // Offmap shove distance for non-combatant fleets during battle resolution; must exceed room size so they read as !in_room().
 #macro FLEET_BATTLE_DISPLACEMENT 100000
 
+// Gates the "Meet Chaos Emissary" entry point on the diplomacy screen until the Chaos Emissary is implemented.
+// TODO set to true or just remove this macro once the emissary is implemented.
+#macro CHAOS_EMISSARY_ENABLED false
+
 #macro STR_ANY_POWER_ARMOUR "Any Power Armour"
 #macro STR_ANY_TERMINATOR_ARMOUR "Any Terminator Armour"
 

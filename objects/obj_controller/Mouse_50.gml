@@ -175,7 +175,7 @@ if ((menu == eMENU.DIPLOMACY) && (diplomacy > 0) || ((diplomacy < -5) && (diplom
     }
 }
 // Diplomacy
-if ((zoomed == 0) && (cooldown <= 0) && (menu == eMENU.DIPLOMACY) && (diplomacy == 0)) {
+if (CHAOS_EMISSARY_ENABLED && (zoomed == 0) && (cooldown <= 0) && (menu == eMENU.DIPLOMACY) && (diplomacy == 0)) {
     xx += 55;
     yy -= 20;
     // Daemon emmissary

@@ -488,18 +488,20 @@ function scr_ui_diplomacy() {
         scr_image("symbol", 1, xx + 525, yy + 174, 109, 54);
         scr_image("symbol", 2, xx + 1147, yy + 174, 217, 107);
 
-        //draw the meet chaos button
-        draw_set_font(cjk_font(fnt_40k_14b));
-        draw_set_halign(fa_left);
-        draw_set_color(CM_GREEN_COLOR);
-        draw_rectangle(xx + 688, yy + 240, xx + 1028, yy + 281, 0);
-        draw_set_color(c_black);
-        draw_text_transformed(xx + 688, yy + 241, localize("Meet Chaos Emissary"), 0.7, 0.7, 0);
-        //color blending stuff if hovering over the meeting chaos icon
-        if (point_in_rectangle(mouse_x, mouse_y, xx + 688, yy + 240, xx + 1028, yy + 281)) {
-            draw_set_alpha(0.2);
+        if (CHAOS_EMISSARY_ENABLED) {
+            //draw the meet chaos button
+            draw_set_font(cjk_font(fnt_40k_14b));
+            draw_set_halign(fa_left);
+            draw_set_color(CM_GREEN_COLOR);
             draw_rectangle(xx + 688, yy + 240, xx + 1028, yy + 281, 0);
-            draw_set_alpha(1);
+            draw_set_color(c_black);
+            draw_text_transformed(xx + 688, yy + 241, localize("Meet Chaos Emissary"), 0.7, 0.7, 0);
+            //color blending stuff if hovering over the meeting chaos icon
+            if (point_in_rectangle(mouse_x, mouse_y, xx + 688, yy + 240, xx + 1028, yy + 281)) {
+                draw_set_alpha(0.2);
+                draw_rectangle(xx + 688, yy + 240, xx + 1028, yy + 281, 0);
+                draw_set_alpha(1);
+            }
         }
     }
 
