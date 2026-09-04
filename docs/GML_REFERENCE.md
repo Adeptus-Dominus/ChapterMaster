@@ -448,7 +448,7 @@ inventory_ref = weak_ref_create(inventory); // Returns a weak reference struct
 // ... later, in another script or frame ...
 if (weak_ref_alive(inventory_ref)) {
     // Safe to use the strong reference stored in .ref
-    show_debug_message("Items: " + string(array_length(inventory_ref.ref.items)));
+    show_debug_message($"Items: {array_length(inventory_ref.ref.items)}");
 } else {
     show_debug_message("Inventory has been destroyed.");
 }
