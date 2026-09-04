@@ -36,6 +36,7 @@ jobs:
         uses: anomalyco/opencode/github@v1.18.9
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          OPENCODE_PERMISSION: '{ "external_directory": "allow"}'
         with:
           model: opencode/muse-spark-1.2-contributor-free
           variant: xhigh
