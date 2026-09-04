@@ -1,8 +1,3 @@
-xx = camera_get_view_x(view_camera[0]);
-yy = camera_get_view_y(view_camera[0]);
-ww = camera_get_view_width(view_camera[0]);
-hh = camera_get_view_height(view_camera[0]);
-
 // Sets the bombard target, its forces and draws the ships wich will bombard said target
 bomb_window = {
     x1: 0,
@@ -14,8 +9,8 @@ bomb_window = {
     x3: 0,
     y3: 0,
 };
-bomb_window.x1 = xx + (ww / 2) - bomb_window.w / 2;
-bomb_window.y1 = yy + (hh / 2) - bomb_window.h / 2;
+bomb_window.x1 = (display_get_gui_width() / 2) - (bomb_window.w / 2);
+bomb_window.y1 = (display_get_gui_height() / 2) - (bomb_window.h / 2);
 bomb_window.x2 = bomb_window.x1 + bomb_window.w;
 bomb_window.y2 = bomb_window.y1 + bomb_window.h;
 bomb_window.x3 = bomb_window.x1 + (bomb_window.w / 2);
