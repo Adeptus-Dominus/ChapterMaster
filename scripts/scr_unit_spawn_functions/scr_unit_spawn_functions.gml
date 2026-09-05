@@ -38,9 +38,9 @@ function scr_marine_spawn_age() {
     }
 
     var _venerable_dred = string_concat("Venerable ", obj_ini.player_role_data[eROLE.DREADNOUGHT].role);
-
+    var _roles = active_roles();
     switch (role()) {
-        case obj_ini.player_role_data[eROLE.DREADNOUGHT].role:
+        case _roles[eROLE.DREADNOUGHT]:
             _minimum_age = 400;
             _maximum_age = 600;
             _apply_gauss = true;
@@ -51,7 +51,7 @@ function scr_marine_spawn_age() {
             _apply_gauss = true;
             break;
         // HQ only
-        case obj_ini.player_role_data[eROLE.CHAPTERMASTER].role:
+        case _roles[eROLE.CHAPTERMASTER]:
             _minimum_age = 250;
             _maximum_age = 350;
             _apply_gauss = true;
@@ -60,47 +60,47 @@ function scr_marine_spawn_age() {
         case "Forge Master":
         case "Master of Sanctity":
         case "Master of the Apothecarion":
-        case obj_ini.player_role_data[eROLE.HONOURGUARD].role:
+        case _roles[eROLE.HONOURGUARD]:
             _minimum_age = 200;
             _maximum_age = 300;
             _apply_gauss = true;
             break;
         // Command Squads and HQ
-        case obj_ini.player_role_data[eROLE.CHAPLAIN].role:
-        case obj_ini.player_role_data[eROLE.APOTHECARY].role:
-        case obj_ini.player_role_data[eROLE.TECHMARINE].role:
-        case obj_ini.player_role_data[eROLE.LIBRARIAN].role:
+        case _roles[eROLE.CHAPLAIN]:
+        case _roles[eROLE.APOTHECARY]:
+        case _roles[eROLE.TECHMARINE]:
+        case _roles[eROLE.LIBRARIAN]:
             _minimum_age += 80;
             _maximum_age += 150;
             _apply_gauss = true;
             break;
-        case "Codiciery":
+        case _roles[eROLE.CODICIERY]:
             _minimum_age = 40;
             _maximum_age = 60;
             break;
-        case "Lexicanum":
+        case _roles[eROLE.LEXICANUM]:
             _minimum_age = 20;
             _maximum_age = 40;
             break;
         // 1st company only
-        case obj_ini.player_role_data[eROLE.VETERAN].role:
+        case _roles[eROLE.VETERAN]:
             _minimum_age = 100;
             _maximum_age = 140;
             break;
-        case obj_ini.player_role_data[eROLE.TERMINATOR].role:
+        case _roles[eROLE.TERMINATOR]:
             _minimum_age = 120;
             _maximum_age = 160;
             break;
-        case obj_ini.player_role_data[eROLE.VETERANSERGEANT].role:
+        case _roles[eROLE.VETERANSERGEANT]:
             _minimum_age = 160;
             _maximum_age = 180;
             break;
         // Command Squads
-        case obj_ini.player_role_data[eROLE.ANCIENT].role:
+        case _roles[eROLE.ANCIENT]:
             _minimum_age += 100;
             _maximum_age += 110;
             break;
-        case obj_ini.player_role_data[eROLE.CAPTAIN].role:
+        case [_roleseROLE.CAPTAIN]:
             _minimum_age += 80;
             _maximum_age += 90;
             break;

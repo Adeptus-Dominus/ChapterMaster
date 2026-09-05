@@ -544,7 +544,7 @@ function add_unit_to_battle(unit, meeting, is_local) {
         new_combat.player_starting_dudes++;
     }
 
-    if (_unit_role == obj_ini.player_role_data[eROLE.SERGEANT].role) {
+    if (_unit_role == _role[eROLE.SERGEANT]) {
         col = obj_controller.bat_tactical_column; //sergeants
         new_combat.sgts++;
     } else if (_unit_role == _role[19]) {
@@ -555,7 +555,7 @@ function add_unit_to_battle(unit, meeting, is_local) {
         //scouts
         col = obj_controller.bat_scout_column;
         new_combat.scouts++;
-    } else if (array_contains([obj_ini.player_role_data[eROLE.TACTICAL].role, $"{_role[15]} Aspirant", $"{_role[14]} Aspirant"], _unit_role)) {
+    } else if (array_contains([_role[eROLE.TACTICAL], $"{_role[15]} Aspirant", $"{_role[14]} Aspirant"], _unit_role)) {
         col = obj_controller.bat_tactical_column; //tactical_marines
         new_combat.tacticals++;
     } else if (_unit_role == _role[3]) {

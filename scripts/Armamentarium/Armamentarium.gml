@@ -746,7 +746,7 @@ function Armamentarium(_controller) constructor {
     static _refresh_personnel_counts = function() {
         var _role_name = obj_ini.player_role_data[eROLE.TECHMARINE].role;
         count_techmarines = scr_role_count(_role_name, "");
-        count_aspirants = scr_role_count($"{_role_name} Aspirant", "");
+        count_aspirants = scr_role_count(obj_ini.player_role_data[eROLE.TECHMARINEASPIRANT].role;);
         count_total = count_techmarines + count_aspirants;
     };
 

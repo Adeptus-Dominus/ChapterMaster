@@ -1182,10 +1182,15 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static role_refresh = function() {
-        if (role() == "Lexicanum" && psionic >= 5 && experience > 50) {
-            update_role("Codiciery");
-        } else if (role() == "Codiciery" && psionic >= 8 && experience > 100) {
-            update_role(obj_ini.player_role_data[eROLE.LIBRARIAN].role);
+        var _r_data = obj_ini.player_role_data;
+        var _codiciery = _r_data[CODICIERY].role;
+        var _lexicanum = _r_data[LEXICANUM].role;
+        var _librarian = _r_data[LIBRARIAN].role;
+
+        if (role() == _codiciery && psionic >= 5 && experience > 50) {
+            update_role(_lexicanum);
+        } else if (role() == _codiciery && psionic >= 8 && experience > 100) {
+            update_role(_librarian);
         }
     };
 

@@ -294,7 +294,7 @@ function calculate_equipment_needs() {
 
     var rall = role_name[target_role];
 
-    if (rall == "Codiciery") {
+    if (rall == obj_ini.player_role_data[eROLE.CODICIERY]) {
         req_armour = "";
         req_armour_num = 0;
         req_wep1 = "";
@@ -305,7 +305,7 @@ function calculate_equipment_needs() {
         req_mobi_num = 0;
         req_gear = obj_ini.player_role_data[eROLE.LIBRARIAN].gear;
         req_gear_num = units;
-    } else if (rall == "Lexicanum") {
+    } else if (rall == obj_ini.player_role_data[eROLE.LEXICANUM]) {
         req_armour = "";
         req_armour_num = 0;
         req_wep1 = "";
