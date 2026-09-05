@@ -316,22 +316,18 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
 
                     if (_unit.role() == "Forge Master") {
                         col = 22 - obj_controller.bat_command_column;
-                        new_combat.en_important_dudes += 1;
                     }
                     if (_unit.role() == "Master of Sanctity") {
                         col = 22 - obj_controller.bat_command_column;
-                        new_combat.en_important_dudes += 1;
                         if (new_combat.en_big_mofo > 2) {
                             new_combat.en_big_mofo = 2;
                         }
                     }
                     if (_unit.role() == "Master of the Apothecarion") {
                         col = 22 - obj_controller.bat_command_column;
-                        new_combat.en_important_dudes += 1;
                     }
                     if (_unit.role() == "Chief " + string(obj_ini.player_role_data[eROLE.LIBRARIAN].role)) {
                         col = 22 - obj_controller.bat_command_column;
-                        new_combat.en_important_dudes += 1;
                         if (new_combat.en_big_mofo > 3) {
                             new_combat.en_big_mofo = 3;
                         }
@@ -595,9 +591,7 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
                         }
                         if (_unit.role() == obj_ini.player_role_data[eROLE.CHAPLAIN].role) {
                             new_combat.chaplains += 1;
-                            if (new_combat.big_mofo > 5) {
-                                new_combat.big_mofo = 5;
-                            }
+
                         }
 
                         col = obj_controller.bat_tactical_column;
@@ -617,9 +611,7 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
                     if ((_unit.role() == obj_ini.player_role_data[eROLE.CAPTAIN].role) || (_unit.role() == obj_ini.player_role_data[eROLE.ANCIENT].role) || (_unit.role() == obj_ini.player_role_data[eROLE.CHAMPION].role)) {
                         if (_unit.role() == obj_ini.player_role_data[eROLE.CAPTAIN].role) {
                             new_combat.captains += 1;
-                            if (new_combat.big_mofo > 5) {
-                                new_combat.big_mofo = 5;
-                            }
+ 
                         }
                         if (_unit.role() == obj_ini.player_role_data[eROLE.ANCIENT].role) {
                             new_combat.standard_bearers += 1;
@@ -651,8 +643,6 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
 
                     if (_unit.role() == obj_ini.player_role_data[eROLE.CHAPTERMASTER].role) {
                         col = obj_controller.bat_command_column;
-                        new_combat.important_dudes += 1;
-                        new_combat.big_mofo = 1;
                         if (string_count("0", _unit.specials) > 0) {
                             new_combat.chapter_master_psyker = 1;
                         } else {
@@ -661,25 +651,16 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
                     }
                     if (_unit.role() == "Forge Master") {
                         col = obj_controller.bat_command_column;
-                        new_combat.important_dudes += 1;
                     }
                     if (_unit.role() == "Master of Sanctity") {
                         col = obj_controller.bat_command_column;
-                        new_combat.important_dudes += 1;
-                        if (new_combat.big_mofo > 2) {
-                            new_combat.big_mofo = 2;
-                        }
+
                     }
                     if (_unit.role() == "Master of the Apothecarion") {
                         col = obj_controller.bat_command_column;
-                        new_combat.important_dudes += 1;
                     }
                     if (_unit.role() == "Chief " + string(obj_ini.player_role_data[eROLE.LIBRARIAN].role)) {
                         col = obj_controller.bat_command_column;
-                        new_combat.important_dudes += 1;
-                        if (new_combat.big_mofo > 3) {
-                            new_combat.big_mofo = 3;
-                        }
                     }
 
                     if (col == 0) {

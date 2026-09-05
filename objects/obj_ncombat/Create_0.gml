@@ -188,6 +188,8 @@ timer_maxspeed = 1;
 timer_pause = -1;
 turns = 1;
 
+
+player_unit_index = new UnitIndex([]);
 scouts = 0;
 tacticals = 0;
 veterans = 0;
@@ -204,16 +206,12 @@ champions = 0;
 important_dudes = 0;
 chaplains = 0;
 apothecaries = 0;
-sgts = 0;
-vet_sgts = 0;
 
 rhinos = 0;
 predators = 0;
 land_raiders = 0;
 land_speeders = 0;
 whirlwinds = 0;
-
-big_mofo = 10;
 
 enemy_dudes = "";
 

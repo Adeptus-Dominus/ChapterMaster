@@ -942,7 +942,6 @@
     {"id":{"name":"scr_secret_lair_view","path":"scripts/scr_secret_lair_view/scr_secret_lair_view.yy",},},
     {"id":{"name":"scr_serialization_functions","path":"scripts/scr_serialization_functions/scr_serialization_functions.yy",},},
     {"id":{"name":"scr_shader_initialize","path":"scripts/scr_shader_initialize/scr_shader_initialize.yy",},},
-    {"id":{"name":"scr_ship_battle","path":"scripts/scr_ship_battle/scr_ship_battle.yy",},},
     {"id":{"name":"scr_ship_count","path":"scripts/scr_ship_count/scr_ship_count.yy",},},
     {"id":{"name":"scr_ship_functions","path":"scripts/scr_ship_functions/scr_ship_functions.yy",},},
     {"id":{"name":"scr_ship_occupants","path":"scripts/scr_ship_occupants/scr_ship_occupants.yy",},},

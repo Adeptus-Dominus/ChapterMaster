@@ -32,10 +32,13 @@ var d7 = "";
 var _newline = "";
 var _newline_color = eMSG_COLOR.DEFAULT;
 
-var temp = scouts + tacticals + veterans + devastators + assaults + librarians;
-temp += techmarines + honors + dreadnoughts + terminators + captains;
-temp += standard_bearers + champions + important_dudes + chaplains + apothecaries;
-temp += sgts + vet_sgts;
+var _marine_roles = active_roles();
+array_push(_marine_roles, "Forge Master");
+array_push(_marine_roles, "Master of Sanctity");
+array_push(_marine_roles, "Master of the Apothecarion");
+array_push(_marine_roles, $"Chief {obj_ini.player_role_data[eROLE.LIBRARIAN].role}");
+
+var _marine_count = player_unit_index.sum_roles(_marine_roles);
 
 // Random variations; dark out, rain pooling down, dawn shining off of the armour, etc.
 var variation = choose("", "dawn", "rain");
@@ -73,24 +76,26 @@ if (battle_special == "space_hulk") {
     }
 }
 
+var _dread_count = player_unit_index.sum_roles([_marine_roles[eROLE.DREADNOUGHT], "Venerable " + _marine_roles[eROLE.DREADNOUGHT]]);
+
 if (battle_special == "") {
     if (!dropping) {
-        if (temp - dreadnoughts > 0) {
+        if (_marine_count - _dread_count > 0) {
             if (variation == "") {
-                p1 = "Dirt crunches beneath the soles of " + string(temp) + " " + string(global.chapter_name) + " as they form up.  Your ranks are made up of ";
+                p1 = "Dirt crunches beneath the soles of " + string(_marine_count) + " " + string(global.chapter_name) + " as they form up.  Your ranks are made up of ";
             }
             if (variation == "rain") {
-                p1 = "Rain pelts the ground and fogs the air, partly veiling the " + string(temp) + " " + string(global.chapter_name) + ".  Your ranks are made up of ";
+                p1 = "Rain pelts the ground and fogs the air, partly veiling the " + string(_marine_count) + " " + string(global.chapter_name) + ".  Your ranks are made up of ";
             }
             if (variation == "dawn") {
-                p1 = "The bright light of dawn reflects off the " + string_lower(color_descr) + " ceremite of " + string(temp) + " " + string(global.chapter_name) + ".  Your ranks are made up of ";
+                p1 = "The bright light of dawn reflects off the " + string_lower(color_descr) + " ceremite of " + string(_marine_count) + " " + string(global.chapter_name) + ".  Your ranks are made up of ";
             }
         }
     }
     if (dropping) {
-        if (temp - dreadnoughts > 0) {
+        if (_marine_count - _dread_count > 0) {
             // lyman
-            p1 = "The air rumbles and quakes as " + string(temp) + " " + string(global.chapter_name) + " descend in drop-pods.  ";
+            p1 = "The air rumbles and quakes as " + string(_marine_count) + " " + string(global.chapter_name) + " descend in drop-pods.  ";
         }
     }
 }
@@ -162,131 +167,87 @@ if (string_count("_attack", battle_special) > 0) {
     exit;
 }
 
-if ((tacticals > 0) && (veterans > 0)) {
-    p2 = string(tacticals + veterans) + " " + string(obj_ini.player_role_data[eROLE.TACTICAL].role) + "s, ";
-}
-if ((tacticals > 0) && (veterans == 0)) {
-    if (tacticals == 1) {
-        p2 = string(tacticals) + " " + string(obj_ini.player_role_data[eROLE.TACTICAL].role) + ", ";
-    }
-    if (tacticals > 1) {
-        p2 = string(tacticals) + " " + string(obj_ini.player_role_data[eROLE.TACTICAL].role) + "s, ";
-    }
-}
-if ((tacticals == 0) && (veterans > 0)) {
-    if (veterans == 1) {
-        p2 = string(veterans) + " " + string(obj_ini.player_role_data[eROLE.VETERAN].role) + ", ";
-    }
-    if (veterans > 1) {
-        p2 = string(veterans) + " " + string(obj_ini.player_role_data[eROLE.VETERAN].role) + "s, ";
+
+
+p2 = "";
+var _auto_include = [
+    _marine_roles[eROLE.TACTICAL],
+    _marine_roles[eROLE.VETERAN],
+    _marine_roles[eROLE.ASSAULT],
+    _marine_roles[eROLE.DEVASTATOR],
+]
+
+for (var i = 0; i < array_length(_auto_include); i++){
+    var _role = _auto_include[i];
+    if (player_unit_index.role_count(_role) > 0){
+        p2 += player_unit_index.plural_string_role(_role) + ", ";
     }
 }
 
-if (assaults > 0) {
-    if (assaults == 1) {
-        p2 += string(assaults) + " " + string(obj_ini.player_role_data[eROLE.ASSAULT].role) + ", ";
+var _small_include = [
+    _marine_roles[eROLE.TERMINATOR],
+    _marine_roles[eROLE.CHAPLAIN],
+    _marine_roles[eROLE.APOTHECARY],
+    _marine_roles[eROLE.LIBRARIAN],
+    _marine_roles[eROLE.TECHMARINE],
+    _marine_roles[eROLE.SERGEANT],
+    _marine_roles[eROLE.VETERANSERGEANT],
+    _marine_roles[eROLE.SCOUT],
+]
+if (_marine_count < 200) {
+    for (var i = 0; i < array_length(_small_include); i++){
+        var _role = _small_include[i];
+        if (player_unit_index.role_count(_role) > 0){
+            p2 += player_unit_index.plural_string_role(_role) + ", ";
+        }
     }
-    if (assaults > 1) {
-        p2 += string(assaults) + " " + string(obj_ini.player_role_data[eROLE.ASSAULT].role) + "s, ";
-    }
-}
-if (devastators > 0) {
-    if (devastators == 1) {
-        p2 += string(devastators) + " " + string(obj_ini.player_role_data[eROLE.DEVASTATOR].role) + ", ";
-    }
-    if (devastators > 1) {
-        p2 += string(devastators) + " " + string(obj_ini.player_role_data[eROLE.DEVASTATOR].role) + "s, ";
+} else {
+    var _others = _marine_count - player_unit_index.sum_roles(_auto_include);
+    _others -= _dread_count;
+p2 = "";
+
+var _auto_include = [
+    _marine_roles[eROLE.TACTICAL],
+    _marine_roles[eROLE.VETERAN],
+    _marine_roles[eROLE.ASSAULT],
+    _marine_roles[eROLE.DEVASTATOR],
+];
+
+for (var i = 0; i < array_length(_auto_include); i++) {
+    var _role = _auto_include[i];
+    if (player_unit_index.role_count(_role) > 0) {
+        p2 += player_unit_index.plural_string_role(_role) + ", ";
     }
 }
 
-if ((temp < 200) && (terminators > 0)) {
-    if (terminators == 1) {
-        p2 += string(terminators) + " Terminator, ";
+var _small_include = [
+    _marine_roles[eROLE.TERMINATOR],
+    _marine_roles[eROLE.CHAPLAIN],
+    _marine_roles[eROLE.APOTHECARY],
+    _marine_roles[eROLE.LIBRARIAN],
+    _marine_roles[eROLE.TECHMARINE],
+    _marine_roles[eROLE.SERGEANT],
+    _marine_roles[eROLE.VETERANSERGEANT],
+    _marine_roles[eROLE.SCOUT],
+];
+
+var _other_count = _marine_count
+    - player_unit_index.sum_roles(_auto_include)
+    - _dread_count;
+
+if (_marine_count < 200) {
+    for (var i = 0; i < array_length(_small_include); i++) {
+        var _role = _small_include[i];
+        if (player_unit_index.role_count(_role) > 0) {
+            p2 += player_unit_index.plural_string_role(_role) + ", ";
+        }
     }
-    if (terminators > 1) {
-        p2 += string(terminators) + " Terminators, ";
-    }
+
+    _other_count -= player_unit_index.sum_roles(_small_include);
 }
 
-if ((temp < 200) && (chaplains > 0)) {
-    if (chaplains == 1) {
-        p2 += string(chaplains) + " " + string(obj_ini.player_role_data[eROLE.CHAPLAIN].role) + ", ";
-    }
-    if (chaplains > 1) {
-        p2 += string(chaplains) + " " + string(obj_ini.player_role_data[eROLE.CHAPLAIN].role) + ", ";
-    }
-}
-
-if ((temp < 200) && (apothecaries > 0)) {
-    if (apothecaries == 1) {
-        p2 += string(apothecaries) + " " + string(obj_ini.player_role_data[eROLE.APOTHECARY].role) + ", ";
-    }
-    if (apothecaries > 1) {
-        p2 += string(apothecaries) + " " + string(obj_ini.player_role_data[eROLE.APOTHECARY].role) + ", ";
-    }
-}
-
-if ((temp < 200) && (librarians > 0)) {
-    if (librarians == 1) {
-        p2 += string(librarians) + " " + string(obj_ini.player_role_data[eROLE.LIBRARIAN].role) + ", ";
-    }
-    if (librarians > 1) {
-        p2 += string(librarians) + " " + string(obj_ini.player_role_data[eROLE.LIBRARIAN].role) + ", ";
-    }
-}
-
-if ((temp < 200) && (techmarines > 0)) {
-    if (techmarines == 1) {
-        p2 += string(techmarines) + " " + string(obj_ini.player_role_data[eROLE.TECHMARINE].role) + ", ";
-    }
-    if (techmarines > 1) {
-        p2 += string(techmarines) + " " + string(obj_ini.player_role_data[eROLE.TECHMARINE].role) + ", ";
-    }
-}
-if ((temp < 200) && (sgts > 0)) {
-    if (techmarines == 1) {
-        p2 += string(techmarines) + " " + string(obj_ini.player_role_data[eROLE.SERGEANT].role) + ", ";
-    }
-    if (techmarines > 1) {
-        p2 += string(techmarines) + " " + string(obj_ini.player_role_data[eROLE.SERGEANT].role) + ", ";
-    }
-}
-if ((temp < 200) && (vet_sgts > 0)) {
-    if (techmarines == 1) {
-        p2 += string(techmarines) + " " + string(obj_ini.player_role_data[eROLE.VETERANSERGEANT].role) + ", ";
-    }
-    if (techmarines > 1) {
-        p2 += string(techmarines) + " " + string(obj_ini.player_role_data[eROLE.VETERANSERGEANT].role) + ", ";
-    }
-}
-
-if (scouts > 0) {
-    if (scouts == 1) {
-        p2 += string(scouts) + " " + string(obj_ini.player_role_data[eROLE.SCOUT].role) + ", ";
-    }
-    if (scouts > 1) {
-        p2 += string(scouts) + " " + string(obj_ini.player_role_data[eROLE.SCOUT].role) + "s, ";
-    }
-}
-
-temp6 = honors + captains + important_dudes + standard_bearers;
-if (temp >= 200) {
-    temp6 += terminators;
-}
-if (temp >= 200) {
-    temp6 += chaplains;
-}
-if (temp >= 200) {
-    temp6 += apothecaries;
-}
-if (temp >= 200) {
-    temp6 += techmarines;
-}
-if (temp >= 200) {
-    temp6 += librarians;
-}
-if (temp6 > 0) {
-    p2 += string(temp6) + " other various Astartes, ";
+if (_other_count > 0) {
+    p2 += $"{_other_count} other various Astartes, ";
 }
 
 var woo = string_length(p2);
@@ -303,52 +264,38 @@ if (string_count(", ", p2) == 1) {
 }
 p2 += ".";
 
-if ((standard_bearers > 1) && (!dropping)) {
+if ((player_unit_index.role_count(_marine_roles[eROLE.ANCIENT]) > 1) && (!dropping)) {
     p5 = "  Chapter Ancients hold your Chapter heraldry high and proud.";
 }
 
-if (dreadnoughts + predators + land_raiders > 3) {
+if (_dread_count + predators + land_raiders > 3) {
     p6 = "  Forming up the armoured division is ";
-    if (dreadnoughts == 1) {
-        p6 += string(dreadnoughts) + " " + string(obj_ini.player_role_data[eROLE.DREADNOUGHT].role) + ", ";
-    }
-    if (dreadnoughts > 1) {
-        p6 += string(dreadnoughts) + " " + string(obj_ini.player_role_data[eROLE.DREADNOUGHT].role) + "s, ";
-    }
-
-    if (rhinos == 1) {
-        p6 += string(rhinos) + " Rhino, ";
-    }
-    if (rhinos > 1) {
-        p6 += string(rhinos) + " Rhinos, ";
+if (_dread_count > 0) {
+    p6 += string_plural_count(
+        _marine_roles[eROLE.DREADNOUGHT],
+        _dread_count,
+        false
+    ) + ", ";
     }
 
-    if (predators == 1) {
-        p6 += string(predators) + " Predator, ";
+    if (rhinos > 0) {
+        p6 += string_plural_count("Rhino", rhinos) + ", ";
     }
-    if (predators > 1) {
-        p6 += string(predators) + " Predators, ";
-    }
-
-    if (land_raiders == 1) {
-        p6 += string(land_raiders) + " Land Raider, ";
-    }
-    if (land_raiders > 1) {
-        p6 += string(land_raiders) + " Land Raiders, ";
+    
+    if (predators > 0) {
+        p6 += string_plural_count("Predator", predators) + ", ";
     }
 
-    if (land_speeders == 1) {
-        p6 += string(land_speeders) + " Land Speeder, ";
-    }
-    if (land_speeders > 1) {
-        p6 += string(land_speeders) + " Land Speeders, ";
+    if (land_raiders > 0) {
+        p6 += string_plural_count("Land Raider", land_raiders) + ", ";
     }
 
-    if (whirlwinds == 1) {
-        p6 += string(whirlwinds) + " Whirlwind, ";
+    if (land_speeders > 0) {
+        p6 += string_plural_count("Land Speeder", land_speeders) + ", ";
     }
-    if (whirlwinds > 1) {
-        p6 += string(whirlwinds) + " Whirlwinds, ";
+
+    if (whirlwinds > 0) {
+        p6 += string_plural_count("Whirlwind", whirlwinds) + ", ";
     }
 
     // Other vehicles here?
@@ -589,8 +536,25 @@ if ((fortified > 1) && !dropping && !(enemy == eFACTION.CHAOS && threat == 7)) {
     combat_log.push(_newline, _newline_color);
 }
 
+var _roles = active_roles();
+var _speech_giver_role_priority = [
+    _roles[eROLE.CHAPTERMASTER],
+    "Master of Sanctity",
+    "Chief " + _roles[eROLE.LIBRARIAN],
+    _roles[eROLE.CAPTAIN],
+    _roles[eROLE.CHAPLAIN],
+]
+
+var _speech_giver_role = -1;
+for (var i = 0; i < array_length(_speech_giver_role_priority); i++){
+    if (player_unit_index.has_role(_speech_giver_role_priority[i])){
+        _speech_giver_role = i;
+        break;
+    }
+}
+
 // Check for battlecry here
-if ((temp >= 100) && (threat > 1) && (big_mofo > 0) && (big_mofo < 10) && !dropping) {
+if ((_marine_count >= 100) && (threat > 1) && _speech_giver_role > -1 && !dropping) {
     p1 = "";
     p2 = "";
     p3 = "";
@@ -600,67 +564,62 @@ if ((temp >= 100) && (threat > 1) && (big_mofo > 0) && (big_mofo < 10) && !dropp
     temp4 = 0;
     temp5 = 0;
 
-    if (big_mofo == 1) {
+    var _r_name = _speech_giver_role_priority[_speech_giver_role];
+    var _index = player_unit_index.role_index;
+    var _speech_giver = _index[$ _r_name][0];
+
+    var _cm_giving_speech = _speech_giver_role == 0;
+    if (_cm_giving_speech) {
         p1 = "You ";
-    }
-    if (big_mofo == 2) {
-        p1 = "The Master of Sanctity ";
-    }
-    if (big_mofo == 3) {
-        p1 = "Chief " + string(obj_ini.player_role_data[eROLE.LIBRARIAN].role) + " ";
-    }
-    if (big_mofo == 5) {
-        p1 = "A Captain ";
-    }
-    if (big_mofo == 8) {
-        p1 = "A Chaplain ";
+    } else {
+        p1 = _speech_giver.name_role() + " ";
     }
 
     var standard_cry = 0;
     if (global.chapter_name == "Salamanders") {
         standard_cry = 1;
         rand = choose(1, 2, 3, 4, 5);
-        if ((rand == 1) && (big_mofo != 1)) {
+        if ((rand == 1) && (_cm_giving_speech != 1)) {
             p2 = "breaks the silence, begining the Chapter Battlecry-";
         }
-        if ((rand == 1) && (big_mofo == 1)) {
+        if ((rand == 1) && (_cm_giving_speech == 1)) {
             p2 = "break the silence, begining the Chapter Battlecry-";
         }
-        if ((rand == 2) && (big_mofo != 1)) {
+        if ((rand == 2) && (_cm_giving_speech != 1)) {
             p2 = "roars the first half of the Chapter Battlecry-";
         }
-        if ((rand == 2) && (big_mofo == 1)) {
+        if ((rand == 2) && (_cm_giving_speech == 1)) {
             p2 = "roar the first half of the Chapter Battlecry-";
         }
-        if ((rand == 3) && (big_mofo != 1)) {
+        if ((rand == 3) && (_cm_giving_speech != 1)) {
             p2 = "shouts the start of the Chapter Battlecry-";
         }
-        if ((rand == 3) && (big_mofo == 1)) {
+        if ((rand == 3) && (_cm_giving_speech == 1)) {
             p2 = "shout the start of the Chapter Battlecry-";
         }
-        if ((rand == 4) && (big_mofo != 1)) {
+        if ((rand == 4) && (_cm_giving_speech != 1)) {
             p2 = "calls out to your marines-";
         }
-        if ((rand == 4) && (big_mofo == 1)) {
+        if ((rand == 4) && (_cm_giving_speech == 1)) {
             p2 = "call out to your marines-";
         }
-        if ((rand == 5) && (big_mofo != 1)) {
+        if ((rand == 5) && (_cm_giving_speech != 1)) {
             p2 = "roars to your marines-";
         }
-        if ((rand == 5) && (big_mofo == 1)) {
+        if ((rand == 5) && (_cm_giving_speech == 1)) {
             p2 = "roar to your marines-";
         }
         p3 = "''Into the fires of battle!''";
-        if ((temp >= 100) && (temp < 200)) {
+        if ((_marine_count >= 100) && (_marine_count < 200)) {
             p4 = "Over a hundred Astartes roar in return, their voice one-";
         }
-        if ((temp >= 200) && (temp < 400)) {
+        if ((_marine_count >= 200) && (_marine_count < 400)) {
             p4 = "Several hundred Astartes roar in return, their voice one-";
         }
-        if ((temp >= 500) && (temp < 800)) {
+        if ((_marine_count >= 500) && (_marine_count < 800)) {
             p4 = "Your battle brothers echoe the cry, a massive sound felt more than heard-";
         }
-        if (temp > 800) {
+        if (_marine_count > 800) {
             p4 = "The sound is deafening as the " + string(global.chapter_name) + " shout in unison-";
         }
         p5 = "''UNTO THE ANVIL OF WAR!''";
@@ -676,35 +635,35 @@ if ((temp >= 100) && (threat > 1) && (big_mofo > 0) && (big_mofo < 10) && !dropp
     if (obj_ini.battle_cry == "...") {
         standard_cry = 1;
         rand = choose(1, 2, 3);
-        if ((rand == 1) && (big_mofo != 1)) {
+        if ((rand == 1) && (_cm_giving_speech != 1)) {
             p2 = "remains silent as the Chapter forms for battle-";
         }
-        if ((rand == 1) && (big_mofo == 1)) {
+        if ((rand == 1) && (_cm_giving_speech == 1)) {
             p2 = "remain silent as the Chapter forms for battle-";
         }
-        if ((rand == 2) && (big_mofo != 1)) {
+        if ((rand == 2) && (_cm_giving_speech != 1)) {
             p2 = "remains silent and issues orders to the Chapter for battle-";
         }
-        if ((rand == 2) && (big_mofo == 1)) {
+        if ((rand == 2) && (_cm_giving_speech == 1)) {
             p2 = "remain silent and issues orders to the Chapter for battle-";
         }
-        if ((rand == 3) && (big_mofo != 1)) {
+        if ((rand == 3) && (_cm_giving_speech != 1)) {
             p2 = "issues orders to the Chapter over Vox-";
         }
-        if ((rand == 3) && (big_mofo == 1)) {
+        if ((rand == 3) && (_cm_giving_speech == 1)) {
             p2 = "whisper to your brothers the plans for initial deployment over vox-";
         }
         p3 = "''Sharp gestures and handsigns from officers direct the Marines''";
-        if ((temp >= 100) && (temp < 200)) {
+        if ((_marine_count >= 100) && (_marine_count < 200)) {
             p4 = "Over a hundred Astartes nod in acknowledgement and move quickly-";
         }
-        if ((temp >= 200) && (temp < 400)) {
+        if ((_marine_count >= 200) && (_marine_count < 400)) {
             p4 = "Several hundred Astartes nod in acknowledgement and move swiftly-";
         }
-        if ((temp >= 500) && (temp < 800)) {
+        if ((_marine_count >= 500) && (_marine_count < 800)) {
             p4 = "Your battle brothers all nod in acknowledgement and move hastily-";
         }
-        if (temp > 800) {
+        if (_marine_count > 800) {
             p4 = "The fluidity is astounding as the " + string(global.chapter_name) + " move seamlessly into position ready for battle-";
         }
         p5 = "''They stand ready to engage the enemy''";
@@ -721,47 +680,47 @@ if ((temp >= 100) && (threat > 1) && (big_mofo > 0) && (big_mofo < 10) && !dropp
     if ((global.chapter_name == "Iron Warriors") && (global.custom == eCHAPTER_TYPE.PREMADE)) {
         standard_cry = 1;
         rand = choose(1, 2, 3, 4, 5);
-        if ((rand == 1) && (big_mofo != 1)) {
+        if ((rand == 1) && (_cm_giving_speech != 1)) {
             p2 = "breaks the silence, begining the Chapter Battlecry-";
         }
-        if ((rand == 1) && (big_mofo == 1)) {
+        if ((rand == 1) && (_cm_giving_speech == 1)) {
             p2 = "break the silence, begining the Chapter Battlecry-";
         }
-        if ((rand == 2) && (big_mofo != 1)) {
+        if ((rand == 2) && (_cm_giving_speech != 1)) {
             p2 = "roars the first half of the Chapter Battlecry-";
         }
-        if ((rand == 2) && (big_mofo == 1)) {
+        if ((rand == 2) && (_cm_giving_speech == 1)) {
             p2 = "roar the first half of the Chapter Battlecry-";
         }
-        if ((rand == 3) && (big_mofo != 1)) {
+        if ((rand == 3) && (_cm_giving_speech != 1)) {
             p2 = "shouts the start of the Chapter Battlecry-";
         }
-        if ((rand == 3) && (big_mofo == 1)) {
+        if ((rand == 3) && (_cm_giving_speech == 1)) {
             p2 = "shout the start of the Chapter Battlecry-";
         }
-        if ((rand == 4) && (big_mofo != 1)) {
+        if ((rand == 4) && (_cm_giving_speech != 1)) {
             p2 = "calls out to your marines-";
         }
-        if ((rand == 4) && (big_mofo == 1)) {
+        if ((rand == 4) && (_cm_giving_speech == 1)) {
             p2 = "call out to your marines-";
         }
-        if ((rand == 5) && (big_mofo != 1)) {
+        if ((rand == 5) && (_cm_giving_speech != 1)) {
             p2 = "roars to your marines-";
         }
-        if ((rand == 5) && (big_mofo == 1)) {
+        if ((rand == 5) && (_cm_giving_speech == 1)) {
             p2 = "roar to your marines-";
         }
         p3 = "''Iron within!''";
-        if ((temp >= 100) && (temp < 200)) {
+        if ((_marine_count >= 100) && (_marine_count < 200)) {
             p4 = "Over a hundred Astartes roar in return, their voice one-";
         }
-        if ((temp >= 200) && (temp < 400)) {
+        if ((_marine_count >= 200) && (_marine_count < 400)) {
             p4 = "Several hundred Astartes roar in return, their voice one-";
         }
-        if ((temp >= 500) && (temp < 800)) {
+        if ((_marine_count >= 500) && (_marine_count < 800)) {
             p4 = "Your battle brothers echoe the cry, a massive sound felt more than heard-";
         }
-        if (temp > 800) {
+        if (_marine_count > 800) {
             p4 = "The sound is deafening as the " + string(global.chapter_name) + " shout in unison-";
         }
         p5 = "''IRON WITHOUT!''";
@@ -779,55 +738,55 @@ if ((temp >= 100) && (threat > 1) && (big_mofo > 0) && (big_mofo < 10) && !dropp
         standard_cry = 1;
         rand = choose(1, 2, 3, 4);
         if (rand == 1) {
-            if (big_mofo != 1) {
+            if (_cm_giving_speech != 1) {
                 p2 = "breaks ";
             }
-            if (big_mofo == 1) {
+            if (_cm_giving_speech == 1) {
                 p2 = "break ";
             }
             p2 += "the silence, calling out the Chapter Battlecry-";
         }
         if (rand == 2) {
-            if (big_mofo != 1) {
+            if (_cm_giving_speech != 1) {
                 p2 = "roars ";
             }
-            if (big_mofo == 1) {
+            if (_cm_giving_speech == 1) {
                 p2 = "roar ";
             }
             p2 += "the Chapter Battlecry-";
         }
         if (rand == 3) {
-            if (big_mofo != 1) {
+            if (_cm_giving_speech != 1) {
                 p2 = "shouts ";
             }
-            if (big_mofo == 1) {
+            if (_cm_giving_speech == 1) {
                 p2 = "shout ";
             }
             p2 += "the Chapter Battlecry-";
         }
         if (rand == 4) {
-            if (big_mofo != 1) {
+            if (_cm_giving_speech != 1) {
                 p2 = "roars ";
             }
-            if (big_mofo == 1) {
+            if (_cm_giving_speech == 1) {
                 p2 = "roar ";
             }
             p2 += "to your marines-";
         }
         p3 = "''" + string(obj_ini.battle_cry) + "!''";
-        if ((temp >= 100) && (temp < 200)) {
+        if ((_marine_count >= 100) && (_marine_count < 200)) {
             p4 = "Over a hundred Astartes echoe the cry or let out shouts of their own.";
         }
-        if ((temp >= 200) && (temp < 400)) {
+        if ((_marine_count >= 200) && (_marine_count < 400)) {
             p4 = "Several hundred Astartes roar in return, echoing the cry.";
         }
-        if ((temp >= 500) && (temp < 800)) {
+        if ((_marine_count >= 500) && (_marine_count < 800)) {
             p4 = "Your battle brothers echoe the cry, a massive sound felt more than heard.";
         }
-        if ((temp > 800) && (rand >= 3)) {
+        if ((_marine_count > 800) && (rand >= 3)) {
             p4 = "The sound is deafening as the " + string(global.chapter_name) + " add their voices.";
         }
-        if ((temp > 800) && (rand <= 2)) {
+        if ((_marine_count > 800) && (rand <= 2)) {
             p4 = "The sound is deafening as the " + string(global.chapter_name) + " return the cry and magnify it a thousand times.";
         }
         _newline = p1 + p2;

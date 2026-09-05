@@ -541,8 +541,20 @@ function UnitIndex(units) constructor {
     add_to_index(units);
 
     static role_count = function(role) {
-        return array_length(role_index[$ role]);
+        return struct_exists(role_index, role) ? array_length(role_index[$ role]) : 0;
     };
+
+    static plural_string_role = function(role, use_x = false) {
+        return string_plural_count(role, role_count(role), use_x);
+    }
+
+    static sum_roles = function(roles){
+        var _sum = 0;
+        for (var i = 0; i < array_length(roles); i++){
+            _sum += role_count(roles[i]);
+        }
+        return _sum;
+    }
 
     static has_role = function(role) {
         return struct_exists(role_index, role) && array_length(role_index[$ role]) > 0;
@@ -606,7 +618,7 @@ function UnitIndex(units) constructor {
                     array_push(_strings_array, string(_keys[i]));
                 }
             } else {
-                array_push(_strings_array, string_plural_count(_keys[i], role_count(_keys[i]), false));
+                array_push(_strings_array, plural_string_role(_keys[i]));
             }
         }
 

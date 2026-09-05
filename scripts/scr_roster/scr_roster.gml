@@ -546,52 +546,40 @@ function add_unit_to_battle(unit, meeting, is_local) {
 
     if (_unit_role == obj_ini.player_role_data[eROLE.SERGEANT].role) {
         col = obj_controller.bat_tactical_column; //sergeants
-        new_combat.sgts++;
     } else if (_unit_role == _role[19]) {
         col = obj_controller.bat_veteran_column;
-        new_combat.vet_sgts++;
     }
     if (_unit_role == _role[12]) {
         //scouts
         col = obj_controller.bat_scout_column;
-        new_combat.scouts++;
     } else if (array_contains([obj_ini.player_role_data[eROLE.TACTICAL].role, $"{_role[15]} Aspirant", $"{_role[14]} Aspirant"], _unit_role)) {
         col = obj_controller.bat_tactical_column; //tactical_marines
-        new_combat.tacticals++;
     } else if (_unit_role == _role[3]) {
         //veterans and veteran sergeants
         col = obj_controller.bat_veteran_column;
-        new_combat.veterans++;
     } else if (_unit_role == _role[9]) {
         //devastators
         col = obj_controller.bat_devastator_column;
-        new_combat.devastators++;
     } else if (_unit_role == _role[10]) {
         //assualt marines
         col = obj_controller.bat_assault_column;
-        new_combat.assaults++;
 
         //librarium roles
     } else if (unit.IsSpecialist(SPECIALISTS_LIBRARIANS, true)) {
         col = obj_controller.bat_librarian_column; //librarium
-        new_combat.librarians++;
         moov = 1;
     } else if (_unit_role == _role[16]) {
         //techmarines
         col = obj_controller.bat_techmarine_column;
-        new_combat.techmarines++;
         moov = 2;
     } else if (_unit_role == _role[2]) {
         //honour guard
         col = obj_controller.bat_honor_column;
-        new_combat.honors++;
     } else if (unit.IsSpecialist(SPECIALISTS_DREADNOUGHTS)) {
         col = obj_controller.bat_dreadnought_column; //dreadnoughts
-        new_combat.dreadnoughts++;
     } else if (_unit_role == obj_ini.player_role_data[eROLE.TERMINATOR].role) {
         //terminators
         col = obj_controller.bat_terminator_column;
-        new_combat.terminators++;
     }
 
     if (moov > 0) {
@@ -613,17 +601,6 @@ function add_unit_to_battle(unit, meeting, is_local) {
     if ((_unit_role == _role[15]) || (_unit_role == _role[14]) || unit.IsSpecialist(SPECIALISTS_TRAINEES)) {
         if (_unit_role == string(_role[14]) + " Aspirant") {
             col = obj_controller.bat_tactical_column;
-            new_combat.tacticals++;
-        }
-
-        if (_unit_role == _role[15]) {
-            new_combat.apothecaries++;
-        }
-        if (_unit_role == _role[14]) {
-            new_combat.chaplains++;
-            if (new_combat.big_mofo > 5) {
-                new_combat.big_mofo = 5;
-            }
         }
 
         col = obj_controller.bat_tactical_column;
@@ -638,18 +615,6 @@ function add_unit_to_battle(unit, meeting, is_local) {
     }
 
     if ((_unit_role == _role[5]) || (_unit_role == _role[11]) || (_unit_role == _role[7])) {
-        if (_unit_role == _role[5]) {
-            new_combat.captains++;
-            if (new_combat.big_mofo > 5) {
-                new_combat.big_mofo = 5;
-            }
-        }
-        if (_unit_role == _role[11]) {
-            new_combat.standard_bearers++;
-        }
-        if (_unit_role == _role[7]) {
-            new_combat.champions++;
-        }
         if (company >= 2) {
             col = obj_controller.bat_tactical_column;
         }
@@ -663,8 +628,6 @@ function add_unit_to_battle(unit, meeting, is_local) {
 
     if (_unit_role == obj_ini.player_role_data[eROLE.CHAPTERMASTER].role) {
         col = obj_controller.bat_command_column;
-        new_combat.important_dudes++;
-        new_combat.big_mofo = 1;
         if (string_count("0", unit.specials) > 0) {
             new_combat.chapter_master_psyker = 1;
         } else {
@@ -673,13 +636,6 @@ function add_unit_to_battle(unit, meeting, is_local) {
     }
     if (unit.IsSpecialist(SPECIALISTS_HEADS)) {
         col = obj_controller.bat_command_column;
-        new_combat.important_dudes++;
-    }
-    if (new_combat.big_mofo > 2) {
-        new_combat.big_mofo = 2;
-    }
-    if (new_combat.big_mofo > 3) {
-        new_combat.big_mofo = 3;
     }
     if (unit.squad != "none") {
         var squad = unit.get_squad();
@@ -724,6 +680,7 @@ function add_unit_to_battle(unit, meeting, is_local) {
 
     targ = instance_nearest(col * 10, 240, obj_pnunit);
 
+    obj_ncombat.player_unit_index.add_to_index([unit]);
     with (targ) {
         scr_add_unit_to_roster(unit, is_local);
     }
