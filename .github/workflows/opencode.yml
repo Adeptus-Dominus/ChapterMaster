@@ -37,6 +37,7 @@ jobs:
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
           OPENCODE_PERMISSION: '{ "external_directory": { "/home/runner/work/**": "allow" } }'
+          OPENCODE_MAIN_MODEL: ${{ vars.OPENCODE_MAIN_MODEL }}
         with:
           model: ${{ secrets.OPENCODE_MAIN_MODEL }}
           variant: xhigh
