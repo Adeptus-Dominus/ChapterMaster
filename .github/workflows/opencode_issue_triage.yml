@@ -35,7 +35,7 @@ jobs:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
           OPENCODE_MAIN_MODEL: ${{ vars.OPENCODE_MAIN_MODEL }}
-          OPENCODE_PERMISSION: '{ "bash": {  "*": "deny", "gh*": "allow", "gh pr review*": "deny" }, "external_directory": "allow"}'
+          OPENCODE_PERMISSION: '{ "external_directory": { "/home/runner/work/**": "allow", "/tmp/*": "allow" } }'
         run: |
           PROMPT="Issue #${ISSUE_NUMBER} opened at ${REPO}.
 
@@ -66,7 +66,7 @@ jobs:
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
-          OPENCODE_PERMISSION: '{ "external_directory": "allow"}'
+          OPENCODE_PERMISSION: '{ "external_directory": { "/home/runner/work/**": "allow", "/tmp/*": "allow" } }'
           OPENCODE_MAIN_MODEL: ${{ vars.OPENCODE_MAIN_MODEL }}
         run: |
           if gh issue view "$ISSUE_NUMBER" --json labels --jq '.labels[].name' | grep -q "^Status: Duplicate$"; then
