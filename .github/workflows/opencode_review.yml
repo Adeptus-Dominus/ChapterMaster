@@ -61,6 +61,7 @@ jobs:
           PR_SHA: ${{ steps.pr-git.outputs.sha }}
           PR_BASE: ${{ steps.pr-details.outputs.base }}
           PR_NUMBER: ${{ steps.pr-number.outputs.number }}
+          OPENCODE_MAIN_MODEL: ${{ secrets.OPENCODE_MAIN_MODEL }}
         run: |
           PR_BODY=$(jq -r .body pr_data.json)
           cat > /tmp/prompt.txt <<PROMPT_EOF
@@ -100,4 +101,4 @@ jobs:
           
           If the code follows all guidelines, comment that it looks good and nothing else. Don't summarize or explain it.
           PROMPT_EOF
-          cat /tmp/prompt.txt | opencode run -m opencode/muse-spark-1.2-contributor-free --variant xhigh --agent pr_review
+          cat /tmp/prompt.txt | opencode run -m $OPENCODE_MAIN_MODEL --variant xhigh --agent pr_review
