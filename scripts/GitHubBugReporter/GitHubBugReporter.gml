@@ -30,7 +30,7 @@ function GitHubBugReporter() constructor {
         if (_error.critical) {
             var _body_critical = __build_body(_error, _user_text);
             var _client_critical = new GitHub(_token);
-            __create_issue(_client_critical, _error.report_title, _body_critical, true);
+            __create_issue(_client_critical, _error.report_title, _body_critical);
             return;
         }
 
@@ -154,7 +154,7 @@ function GitHubBugReporter() constructor {
                     }));
             } else if (_create_allowed) {
                 // No duplicate - create a new issue.
-                self.create_issue(self.client, self.error.report_title, self.body, false);
+                self.create_issue(self.client, self.error.report_title, self.body);
             } else {
                 LOGGER.error("No duplicate found and dedup data is incomplete; issue not created.");
             }
@@ -215,21 +215,20 @@ function GitHubBugReporter() constructor {
     /// @param {Struct.GitHub} _client GitHub client instance.
     /// @param {String} _title Issue title.
     /// @param {String} _body Issue body.
-    /// @param {Bool} _is_critical Whether this is the critical fire-and-forget path.
     /// @returns {Struct.GitHubRequest|Undefined} The request, or undefined if validation failed.
-    static __create_issue = function(_client, _title, _body, _is_critical = false) {
+    static __create_issue = function(_client, _title, _body) {
         var _issue = _client.createIssue(GITHUB_ISSUES_OWNER, GITHUB_ISSUES_REPO, new GitHubIssue(_title, _body));
         if (_issue == undefined) {
             return undefined;
         }
     
         _issue.setCallback(function(_result, _request) {
-            LOGGER.debug(_is_critical ? $"New issue created (critical, no dedup): #{_result.number}." : $"New issue created: #{_result.number}.");
+            LOGGER.debug($"New issue created: #{_result.number}.");
             show_message_async(GITHUB_BUG_REPORT_SENT_MESSAGE);
-        })
-            .setErrorback(function(_result, _request) {
-                LOGGER.error(_is_critical ? $"Failed to create issue (critical): {_result}" : $"Failed to create issue: {_result}");
-            });
+        }).setErrorback(function(_result, _request) {
+            LOGGER.error($"Failed to create issue: {_result}");
+        });
+
         return _issue;
     };
 
