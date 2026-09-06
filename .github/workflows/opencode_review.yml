@@ -61,7 +61,7 @@ jobs:
           PR_SHA: ${{ steps.pr-git.outputs.sha }}
           PR_BASE: ${{ steps.pr-details.outputs.base }}
           PR_NUMBER: ${{ steps.pr-number.outputs.number }}
-          OPENCODE_MAIN_MODEL: ${{ secrets.OPENCODE_MAIN_MODEL }}
+          OPENCODE_MAIN_MODEL: ${{ vars.OPENCODE_MAIN_MODEL }}
         run: |
           PR_BODY=$(jq -r .body pr_data.json)
           cat > /tmp/prompt.txt <<PROMPT_EOF
