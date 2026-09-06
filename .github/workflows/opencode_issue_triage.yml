@@ -2,9 +2,18 @@ name: opencode-issue-triage
 on:
   issues:
     types: [opened]
+  issue_comment:
+    types: [created]
 
 jobs:
   triage:
+    if: |
+      (github.event_name == 'issue_comment'
+        && !github.event.issue.pull_request
+        && startsWith(github.event.comment.body, '/triage')
+        && contains(fromJson('["OWNER","MEMBER"]'), github.event.comment.author_association))
+      || github.event_name == 'issues'
+
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
