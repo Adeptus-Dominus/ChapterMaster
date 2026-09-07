@@ -6,10 +6,6 @@ on:
   issue_comment:
     types: [created]
 
-concurrency:
-  group: issue-${{ github.event.issue.number }}
-  cancel-in-progress: true
-
 jobs:
   triage:
     if: |
@@ -22,6 +18,10 @@ jobs:
         && startsWith(github.event.comment.body, '/triage')
         && contains(fromJson('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association)
       )
+
+    concurrency:
+      group: issue-${{ github.event.issue.number }}
+      cancel-in-progress: true
 
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -73,7 +73,7 @@ jobs:
           3. Check for duplicates:
              - Extract unique identifiers (error messages, function names, crash signatures) or core keywords.
              - Search for potential duplicates across all states:
-               gh issue list --search "<keywords>" --state all --json number,title,state --limit 10
+               gh issue list --search '<keywords>' --state all --json number,title,state --limit 10
              - If a potential duplicate is found, view its details to confirm:
                gh issue view <candidate_number> --json title,body
              - If confirmed:
