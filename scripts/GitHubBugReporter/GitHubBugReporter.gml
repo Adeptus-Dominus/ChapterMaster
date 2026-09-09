@@ -221,13 +221,14 @@ function GitHubBugReporter() constructor {
         if (_issue == undefined) {
             return undefined;
         }
-    
+
         _issue.setCallback(function(_result, _request) {
             LOGGER.debug($"New issue created: #{_result.number}.");
             show_message_async(GITHUB_BUG_REPORT_SENT_MESSAGE);
-        }).setErrorback(function(_result, _request) {
-            LOGGER.error($"Failed to create issue: {_result}");
-        });
+        })
+            .setErrorback(function(_result, _request) {
+                LOGGER.error($"Failed to create issue: {_result}");
+            });
 
         return _issue;
     };

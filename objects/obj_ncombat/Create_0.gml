@@ -188,7 +188,6 @@ timer_maxspeed = 1;
 timer_pause = -1;
 turns = 1;
 
-
 player_unit_index = new UnitIndex([]);
 scouts = 0;
 tacticals = 0;

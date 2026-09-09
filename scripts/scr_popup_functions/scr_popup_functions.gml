@@ -294,7 +294,7 @@ function calculate_equipment_needs() {
 
     var _targ_role = role_name[target_role];
 
-    if (role_compare(_targ_role,eROLE.CODICIERY)) {
+    if (role_compare(_targ_role, eROLE.CODICIERY)) {
         req_armour = "";
         req_armour_num = 0;
         req_wep1 = "";
@@ -305,7 +305,7 @@ function calculate_equipment_needs() {
         req_mobi_num = 0;
         req_gear = obj_ini.player_role_data[eROLE.LIBRARIAN].gear;
         req_gear_num = units;
-    } else if (role_compare(_targ_role,eROLE.LEXICANUM)){
+    } else if (role_compare(_targ_role, eROLE.LEXICANUM)) {
         req_armour = "";
         req_armour_num = 0;
         req_wep1 = "";
@@ -314,7 +314,7 @@ function calculate_equipment_needs() {
         req_wep2_num = 0;
         req_mobi = "";
         req_mobi_num = 0;
-    } else if (role_compare(_targ_role,eROLE.ANCIENT)) {
+    } else if (role_compare(_targ_role, eROLE.ANCIENT)) {
         req_armour = STR_ANY_POWER_ARMOUR;
         req_armour_num = units;
         req_wep2 = "Company Standard";
@@ -339,7 +339,7 @@ function calculate_equipment_needs() {
     }
 
     var _dread_role = obj_ini.player_role_data[eROLE.DREADNOUGHT];
-    if (role_compare(_targ_role,eROLE.DREADNOUGHT)) {
+    if (role_compare(_targ_role, eROLE.DREADNOUGHT)) {
         req_armour = "Dreadnought";
         req_armour_num = units;
         req_wep1 = _dread_role.wep1;

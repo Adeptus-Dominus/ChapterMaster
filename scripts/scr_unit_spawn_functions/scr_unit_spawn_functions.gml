@@ -43,10 +43,10 @@ function scr_marine_spawn_age() {
             _minimum_age = 400;
             _maximum_age = 600;
             _apply_gauss = true;
-            if (has_trait("ancient")){
+            if (has_trait("ancient")) {
                 _minimum_age = 650;
                 _maximum_age = 0;
-                _apply_gauss = true;                
+                _apply_gauss = true;
             }
             break;
         // HQ only

@@ -546,15 +546,15 @@ function UnitIndex(units) constructor {
 
     static plural_string_role = function(role, use_x = false) {
         return string_plural_count(role, role_count(role), use_x);
-    }
+    };
 
-    static sum_roles = function(roles){
+    static sum_roles = function(roles) {
         var _sum = 0;
-        for (var i = 0; i < array_length(roles); i++){
+        for (var i = 0; i < array_length(roles); i++) {
             _sum += role_count(roles[i]);
         }
         return _sum;
-    }
+    };
 
     static has_role = function(role) {
         return struct_exists(role_index, role) && array_length(role_index[$ role]) > 0;

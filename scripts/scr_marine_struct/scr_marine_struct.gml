@@ -440,7 +440,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     role_style = "";
 
     static has_role = function(search_role) {
-        if (!is_string(search_role)){
+        if (!is_string(search_role)) {
             return role1 == obj_ini.player_role_data[search_role].role;
         } else {
             return role1 == search_role;
@@ -466,7 +466,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static update_role = function(new_role) {
-        if (!is_string(new_role)){
+        if (!is_string(new_role)) {
             new_role = obj_ini.player_role_data[new_role].role;
         }
         if (has_role(new_role)) {
@@ -1881,7 +1881,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
         if (include_role) {
             var _temp_role = squad_role();
-            if (role_style != ""){
+            if (role_style != "") {
                 _temp_role = role_style + " " + _temp_role;
             }
             if (localize_role) {

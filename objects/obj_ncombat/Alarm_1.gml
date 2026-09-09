@@ -163,19 +163,17 @@ if (string_count("_attack", battle_special) > 0) {
     exit;
 }
 
-
-
 p2 = "";
 var _auto_include = [
     _marine_roles[eROLE.TACTICAL],
     _marine_roles[eROLE.VETERAN],
     _marine_roles[eROLE.ASSAULT],
     _marine_roles[eROLE.DEVASTATOR],
-]
+];
 
-for (var i = 0; i < array_length(_auto_include); i++){
+for (var i = 0; i < array_length(_auto_include); i++) {
     var _role = _auto_include[i];
-    if (player_unit_index.role_count(_role) > 0){
+    if (player_unit_index.role_count(_role) > 0) {
         p2 += player_unit_index.plural_string_role(_role) + ", ";
     }
 }
@@ -189,19 +187,16 @@ var _small_include = [
     _marine_roles[eROLE.SERGEANT],
     _marine_roles[eROLE.VETERANSERGEANT],
     _marine_roles[eROLE.SCOUT],
-]
+];
 if (_marine_count < 200) {
-    for (var i = 0; i < array_length(_small_include); i++){
+    for (var i = 0; i < array_length(_small_include); i++) {
         var _role = _small_include[i];
-        if (player_unit_index.role_count(_role) > 0){
+        if (player_unit_index.role_count(_role) > 0) {
             p2 += player_unit_index.plural_string_role(_role) + ", ";
         }
     }
 } else {
-
-    var _other_count = _marine_count
-        - player_unit_index.sum_roles(_auto_include)
-        - _dread_count;
+    var _other_count = _marine_count - player_unit_index.sum_roles(_auto_include) - _dread_count;
 
     if (_other_count > 0) {
         p2 += $"{_other_count} other various Astartes, ";
@@ -228,11 +223,7 @@ if ((player_unit_index.role_count(_marine_roles[eROLE.ANCIENT]) > 1) && (!droppi
 
 if (_dread_count > 0) {
     p6 = "  Venerably inspiring the chapter stand ";
-    p6 += string_plural_count(
-        _marine_roles[eROLE.DREADNOUGHT],
-        _dread_count,
-        false
-    ) + ".";
+    p6 += string_plural_count(_marine_roles[eROLE.DREADNOUGHT], _dread_count, false) + ".";
 }
 
 if (predators + land_raiders > 3) {
@@ -241,7 +232,7 @@ if (predators + land_raiders > 3) {
     if (rhinos > 0) {
         p6 += string_plural_count("Rhino", rhinos) + ", ";
     }
-    
+
     if (predators > 0) {
         p6 += string_plural_count("Predator", predators) + ", ";
     }
@@ -503,11 +494,11 @@ var _speech_giver_role_priority = [
     _roles[eROLE.CHIEFLIBRARIAN],
     _roles[eROLE.CAPTAIN],
     _roles[eROLE.CHAPLAIN],
-]
+];
 
 var _speech_giver_role = -1;
-for (var i = 0; i < array_length(_speech_giver_role_priority); i++){
-    if (player_unit_index.has_role(_speech_giver_role_priority[i])){
+for (var i = 0; i < array_length(_speech_giver_role_priority); i++) {
+    if (player_unit_index.has_role(_speech_giver_role_priority[i])) {
         _speech_giver_role = i;
         break;
     }

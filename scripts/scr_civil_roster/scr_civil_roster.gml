@@ -584,7 +584,6 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
                         }
                         if (_unit.role() == obj_ini.player_role_data[eROLE.CHAPLAIN].role) {
                             new_combat.chaplains += 1;
-
                         }
 
                         col = obj_controller.bat_tactical_column;
@@ -604,7 +603,6 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
                     if ((_unit.role() == obj_ini.player_role_data[eROLE.CAPTAIN].role) || (_unit.role() == obj_ini.player_role_data[eROLE.ANCIENT].role) || (_unit.role() == obj_ini.player_role_data[eROLE.CHAMPION].role)) {
                         if (_unit.role() == obj_ini.player_role_data[eROLE.CAPTAIN].role) {
                             new_combat.captains += 1;
- 
                         }
                         if (_unit.role() == obj_ini.player_role_data[eROLE.ANCIENT].role) {
                             new_combat.standard_bearers += 1;
@@ -647,7 +645,6 @@ function scr_civil_roster(_unit_location, _target_location, _is_planet) {
                     }
                     if (_unit.role() == "Master of Sanctity") {
                         col = obj_controller.bat_command_column;
-
                     }
                     if (_unit.role() == "Master of the Apothecarion") {
                         col = obj_controller.bat_command_column;

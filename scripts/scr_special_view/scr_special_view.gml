@@ -171,7 +171,7 @@ function scr_special_view(command_group) {
                     n = 1;
                 }
 
-                if (!n){
+                if (!n) {
                     n = is_specialist(squad_typ, SPECIALISTS_HEADS);
                 }
 

@@ -1993,7 +1993,7 @@ function scr_initialize_custom() {
 
     // Techmarines in the armoury
     repeat (techmarines) {
-        add_unit_to_company("marine", _company_i,  eROLE.TECHMARINE, "default", choose_weighted(global.weapon_list_weighted_ranged_pistols));
+        add_unit_to_company("marine", _company_i, eROLE.TECHMARINE, "default", choose_weighted(global.weapon_list_weighted_ranged_pistols));
     }
 
     // Librarians in the librarium
@@ -2007,17 +2007,17 @@ function scr_initialize_custom() {
 
     // Lexicanum
     repeat (lexicanum) {
-        var _lexi = add_unit_to_company("marine", _company_i,  eROLE.LEXICANUM, "default", choose_weighted(global.weapon_list_weighted_ranged_pistols));
+        var _lexi = add_unit_to_company("marine", _company_i, eROLE.LEXICANUM, "default", choose_weighted(global.weapon_list_weighted_ranged_pistols));
     }
 
     // Apothecaries in Apothecarion
     repeat (apothecary) {
-        add_unit_to_company("marine", _company_i,  eROLE.APOTHECARY, "Chainsword", choose_weighted(global.weapon_list_weighted_ranged_pistols));
+        add_unit_to_company("marine", _company_i, eROLE.APOTHECARY, "Chainsword", choose_weighted(global.weapon_list_weighted_ranged_pistols));
     }
 
     // Chaplains in Reclusium
     repeat (chaplains) {
-        add_unit_to_company("marine", _company_i,eROLE.CHAPLAIN, "default", choose_weighted(global.weapon_list_weighted_ranged_pistols));
+        add_unit_to_company("marine", _company_i, eROLE.CHAPLAIN, "default", choose_weighted(global.weapon_list_weighted_ranged_pistols));
     }
 
     // Honour Guard
@@ -2032,7 +2032,7 @@ function scr_initialize_custom() {
         _honour_guard_count = 3;
     }
     for (var i = 0; i < min(_honour_guard_count, 10); i++) {
-        add_unit_to_company("marine", _company_i,  eROLE.HONOURGUARD);
+        add_unit_to_company("marine", _company_i, eROLE.HONOURGUARD);
     }
 
     #endregion
@@ -2888,7 +2888,7 @@ function add_unit_to_company(ttrpg_name, company, role_id, wep1 = "default", wep
         if (scr_has_adv("Venerable Ancients") || company == 1) {
             spawn_unit.add_trait("ancient");
             role_style = "Venerable";
-        }  
+        }
     }
     return spawn_unit;
 }

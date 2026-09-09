@@ -234,7 +234,6 @@ function ArtifactStruct(_type_name = "", _tags = [], _identification_timer = 0, 
             _roster.add_to_battle();
             main_map_defaults();
         }
-
     };
 
     /// @desc Unequips this artifact from its bearer, clearing the appropriate equipment slot.

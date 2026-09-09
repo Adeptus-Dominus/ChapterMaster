@@ -235,7 +235,7 @@ deserialize = function(save_data) {
         "artifact_list",
         "sector_handler",
         "company_lengths",
-        "player_role_data"
+        "player_role_data",
     ]; // skip automatic setting of certain vars, handle explicitly later
 
     // Automatic var setting
@@ -351,14 +351,14 @@ deserialize = function(save_data) {
     if (struct_exists(save_data, "player_role_data")) {
         var _defaults = setup_default_gears();
         var _save = save_data.player_role_data;
-        for (var i = 0; i < array_length(_save); i++){
-            if (!is_struct(_save[i])){
+        for (var i = 0; i < array_length(_save); i++) {
+            if (!is_struct(_save[i])) {
                 continue;
             }
             var _required_names = global.role_data_keys;
-            for (var k = 0 ;k < array_length(_required_names); k++){
+            for (var k = 0; k < array_length(_required_names); k++) {
                 var _name = _required_names[k];
-                if (struct_exists(_save[i], _name)){
+                if (struct_exists(_save[i], _name)) {
                     _defaults[i][$ _name] = _save[i][$ _name];
                 }
             }

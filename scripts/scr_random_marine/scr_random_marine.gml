@@ -24,7 +24,7 @@ function scr_random_marine(role, exp_req, search_params = {}) {
         var company = company_list[new_comp];
         array_delete(company_list, new_comp, 1);
         if (!is_array(role)) {
-            if (array_contains(role_groups(SPECIALISTS_TRAINEES),role)) {
+            if (array_contains(role_groups(SPECIALISTS_TRAINEES), role)) {
                 comp_shuffle = 15;
                 company = 0;
             }

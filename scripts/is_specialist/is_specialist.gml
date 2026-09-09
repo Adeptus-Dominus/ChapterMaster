@@ -131,18 +131,18 @@ function role_groups(group, include_trainee = false, include_heads = true) {
             if (_chap_name == "Space Wolves") {
                 array_push(_role_list, _roles[eROLE.CHAPLAIN]);
                 if (include_trainee) {
-                    array_push(_role_list,_roles[eROLE.CHAPLAINASPIRANT])
+                    array_push(_role_list, _roles[eROLE.CHAPLAINASPIRANT]);
                 }
                 if (include_heads) {
-                    array_push(_role_list,_roles[eROLE.MASTERCHAPLAIN])
+                    array_push(_role_list, _roles[eROLE.MASTERCHAPLAIN]);
                 }
             }
             if (include_trainee) {
-                array_push(_role_list,_roles[eROLE.APOTHECARYASPIRANT])
+                array_push(_role_list, _roles[eROLE.APOTHECARYASPIRANT]);
             }
             if (include_heads) {
-                array_push(_role_list,_roles[eROLE.MASTERAPOTHECARY])
-			}
+                array_push(_role_list, _roles[eROLE.MASTERAPOTHECARY]);
+            }
             break;
 
         case SPECIALISTS_TRAINEES:
@@ -198,9 +198,7 @@ function role_groups(group, include_trainee = false, include_heads = true) {
             ];
             break;
         case SPECIALISTS_DREADNOUGHTS:
-            _role_list = [
-                _roles[eROLE.DREADNOUGHT],
-            ];
+            _role_list = [_roles[eROLE.DREADNOUGHT]];
             break;
         case SPECIALISTS_CAPTAIN_CANDIDATES:
             _role_list = [
@@ -227,11 +225,11 @@ function role_groups(group, include_trainee = false, include_heads = true) {
 function is_specialist(unit_role, type = SPECIALISTS_STANDARD, include_trainee = false, include_heads = true) {
     var _specialists = role_groups(type, include_trainee, include_heads);
     var _check_string = "";
-    if (is_string(unit_role)){
+    if (is_string(unit_role)) {
         _check_string = unit_role;
     } else {
         var _obj = instance_exists(obj_ini) ? obj_ini : obj_creation;
-        _check_string =  _obj.player_role_data[unit_role].role;
+        _check_string = _obj.player_role_data[unit_role].role;
     }
     return array_contains(_specialists, _check_string);
 }

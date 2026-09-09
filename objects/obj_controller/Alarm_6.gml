@@ -43,7 +43,7 @@ if ((menu == eMENU.MANAGE) && (managing > 0)) {
                 } else if (unit.role() == obj_ini.player_role_data[eROLE.TECHMARINE].role) {
                     tech += 1;
                 } else if (unit.role() == obj_ini.player_role_data[eROLE.DREADNOUGHT].role) {
-                    if (unit.has_trait("ancient")){
+                    if (unit.has_trait("ancient")) {
                         vdrea++;
                     } else {
                         drea++;

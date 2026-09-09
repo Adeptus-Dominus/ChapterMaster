@@ -9,7 +9,6 @@ function scr_kill_unit() {
             global.defeat = 1;
         }
 
-
         if (weapon_one() == "Company Standard" || weapon_two() == "Company Standard") {
             scr_loyalty("Lost Standard", "+");
         }

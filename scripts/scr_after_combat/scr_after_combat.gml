@@ -276,7 +276,7 @@ function after_combat_recover_marine_gene_seed(unit) {
         var recent = true;
         if (unit.IsSpecialist(SPECIALISTS_TRAINEES)) {
             recent = false;
-        } else if (unit.IsSpecialist(SPECIALISTS_LIBRARIANS)){
+        } else if (unit.IsSpecialist(SPECIALISTS_LIBRARIANS)) {
             recent = false;
         }
         if (recent == true) {

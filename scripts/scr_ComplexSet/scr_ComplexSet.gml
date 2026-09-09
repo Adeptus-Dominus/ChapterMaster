@@ -438,7 +438,7 @@ function ComplexSet(_unit) constructor {
             var _status_level = _mod.assign_by_rank;
             var _roles = active_roles();
             var tiers = [
-                [_roles[eROLE.CHAPTERMASTER],],
+                [_roles[eROLE.CHAPTERMASTER]],
                 [
                     _roles[eROLE.FORGEMASTER],
                     _roles[eROLE.CHIEFLIBRARIAN],
