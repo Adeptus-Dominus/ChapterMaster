@@ -23,7 +23,9 @@ jobs:
           else
             echo "number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
           fi
-    
+
+      - uses: ./.github/actions/setup-opencode
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -47,8 +49,6 @@ jobs:
           echo "base=$(jq -r .base.ref pr_data.json)" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
-
-      - uses: ./.github/actions/setup-opencode
 
       - name: Run OpenCode
         env:
