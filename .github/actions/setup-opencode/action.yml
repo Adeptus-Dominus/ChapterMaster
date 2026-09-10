@@ -1,0 +1,13 @@
+name: 'Setup OpenCode'
+description: 'Installs OpenCode CLI'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install OpenCode
+      shell: bash
+      run: |
+        if ! command -v opencode &> /dev/null; then
+          curl -fsSL https://opencode.ai/install | bash
+          echo "$HOME/.opencode/bin" >> $GITHUB_PATH
+        fi
