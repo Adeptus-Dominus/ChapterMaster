@@ -43,8 +43,7 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Install OpenCode
-        run: curl -fsSL https://opencode.ai/install | bash
+      - uses: ./.github/actions/setup-opencode
 
       - name: Triage
         env:
