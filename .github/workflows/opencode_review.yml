@@ -48,8 +48,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
 
-      - name: Install OpenCode
-        run: curl -fsSL https://opencode.ai/install | bash
+      - uses: ./.github/actions/setup-opencode
 
       - name: Run OpenCode
         env:
