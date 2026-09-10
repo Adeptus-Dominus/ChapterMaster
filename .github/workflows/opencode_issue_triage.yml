@@ -39,11 +39,11 @@ jobs:
         run: |
           gh api repos/${{ github.repository }}/issues/comments/${COMMENT_ID}/reactions -f content='eyes'
 
+      - uses: ./.github/actions/setup-opencode
+
       - uses: actions/checkout@v6
         with:
           fetch-depth: 1
-
-      - uses: ./.github/actions/setup-opencode
 
       - name: Triage
         env:
