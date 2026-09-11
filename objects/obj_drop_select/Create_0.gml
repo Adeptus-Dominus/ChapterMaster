@@ -116,25 +116,16 @@ if (!instance_exists(obj_saveload)) {
         }
     }
 
-    if (attack == 0) {
-        formation_current = obj_controller.last_raid_form;
-        for (var i = 0; i < array_length(formation_possible); i++) {
-            if (formation_possible[i] == formation_current) {
-                formation_current = i;
-                break;
-            }
-        }
-    } else if (attack == 1) {
-        formation_current = obj_controller.last_attack_form;
-        for (var i = 0; i < array_length(formation_possible); i++) {
-            if (formation_possible[i] == formation_current) {
-                formation_current = i;
-                break;
-            }
+    formation_current = 0;
+    var _stored_form = (attack == 1) ? obj_controller.last_attack_form : obj_controller.last_raid_form;
+    for (var i = 0; i < array_length(formation_possible); i++) {
+        if (formation_possible[i] == _stored_form) {
+            formation_current = i;
+            break;
         }
     }
-    if (formation_current == -1) {
-        formation_current = 0;
+    if (array_length(formation_possible) > 0) {
+        formation_current = clamp(formation_current, 0, array_length(formation_possible) - 1);
     }
 
     fighting = array_create(11, array_create(501));
