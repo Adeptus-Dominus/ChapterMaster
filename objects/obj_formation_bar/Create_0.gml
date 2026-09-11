@@ -157,6 +157,10 @@ mouse_release = function() {
             bat_for[@ obj_controller.formating] = mah_target.col_parent;
             obj_cursor.dragging = 0;
             obj_cursor.image_index = 0;
+            dragging = false;
+            col_target = 0;
+            nearest_col = 0;
+            nobar = false;
 
             with (obj_temp8) {
                 instance_destroy();
