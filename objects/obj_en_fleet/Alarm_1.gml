@@ -150,39 +150,21 @@ try {
                 if (string_count("investigate", trade_goods) > 0) {
                     // Check for xenos or demon-equip items on those planets
                     //TODO update this to check weapon or artifact tags
-                    var e = 0;
-                    var ia = -1;
-                    var ca = 0;
-                    var _unit;
-                    repeat (4400) {
-                        if ((ca <= 10) && (ca >= 0)) {
-                            ia += 1;
-                            if (ia == 400) {
-                                ca += 1;
-                                ia = 1;
-                                if (ca == 11) {
-                                    ca = -5;
-                                }
+                    for (var ca = 0; ca <= obj_ini.companies; ca++) {
+                        var _len = company_length(ca);
+                        for (var ia = 0; ia < _len; ia++) {
+                            var _unit = fetch_unit([ca, ia]);
+                            if (!is_struct(_unit)) {
+                                continue;
                             }
-                            if ((ca >= 0) && (ca < 11)) {
-                                _unit = fetch_unit([ca, ia]);
-                                if (!is_struct(_unit)) {
-                                    continue;
+                            if ((_unit.location_string == cur_star.name) && (_unit.planet_location > 0)) {
+                                var _role = _unit.role();
+                                if ((_role == "Ork Sniper") || (_role == "Flash Git") || (_role == "Ranger")) {
+                                    tem1_base = 3;
                                 }
-                                if ((_unit.location_string == cur_star.name) && (_unit.planet_location > 0)) {
-                                    if (_unit.role() == "Ork Sniper") {
-                                        tem1_base = 3;
-                                    }
-                                    if (_unit.role() == "Flash Git") {
-                                        tem1_base = 3;
-                                    }
-                                    if (_unit.role() == "Ranger") {
-                                        tem1_base = 3;
-                                    }
-                                    if (_unit.equipped_artifact_tag("daemon")) {
-                                        tem1_base += 3;
-                                        dem += 1;
-                                    }
+                                if (_unit.equipped_artifact_tag("daemon")) {
+                                    tem1_base += 3;
+                                    dem += 1;
                                 }
                             }
                         }
