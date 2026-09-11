@@ -33,7 +33,7 @@ jobs:
           persist-credentials: false
 
       - name: Run OpenCode
-        uses: anomalyco/opencode/github@v1.18.9
+        uses: anomalyco/opencode/github@v1.18.30
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
           OPENCODE_PERMISSION: '{ "external_directory": { "/home/runner/work/**": "allow" } }'
