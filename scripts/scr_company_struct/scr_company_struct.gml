@@ -219,21 +219,33 @@ function CompanyStruct(comp) constructor {
         var sprite_draw_delay = "none";
         var unit_sprite_coords = {};
         var _cur_squad = grab_current_squad();
+        var _member_count = array_length(_cur_squad.members);
         var _reset_surface = false;
-        var _member = _cur_squad.fetch_member(0);
-        if (array_length(squad_draw_surfaces) == 0 || (squad_draw_surfaces[0][0] != _member.uid)) {
+        var _member = _member_count > 0 ? _cur_squad.fetch_member(0) : undefined;
+        var _first_uid = is_struct(_member) ? _member.uid : undefined;
+        var _cache_len = array_length(squad_draw_surfaces);
+        var _first_changed = _first_uid != undefined && (_cache_len == 0 || squad_draw_surfaces[0][0] != _first_uid);
+        if (_cache_len != _member_count || _first_changed) {
             reset_squad_surface();
             _reset_surface = true;
         }
-        for (var i = 0; i < array_length(_cur_squad.members); i++) {
+        for (var i = 0; i < _member_count; i++) {
             _member = _cur_squad.fetch_member(i);
-
-            if (_reset_surface) {
-                array_push(squad_draw_surfaces, [_member.uid, _member.draw_unit_image()]);
+            if (_reset_surface || i >= array_length(squad_draw_surfaces)) {
+                if (is_struct(_member)) {
+                    array_push(squad_draw_surfaces, [_member.uid, _member.draw_unit_image()]);
+                } else {
+                    array_push(squad_draw_surfaces, [undefined, undefined]);
+                }
             }
-
             var _mem_draw_data = squad_draw_surfaces[i];
+            if (!is_array(_mem_draw_data) || !is_struct(_member)) {
+                continue;
+            }
             var cur_member_surface = _mem_draw_data[1];
+            if (!is_struct(cur_member_surface)) {
+                continue;
+            }
             if (_member.name() == "") {
                 continue;
             }
