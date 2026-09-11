@@ -75,11 +75,31 @@ init_drag = function() {
 
 drag_logic = function() {
     if (mouse_check_button(mb_left)) {
+        if (!instance_exists(obj_temp8)) {
+            nobar = true;
+            col_target = noone;
+            nearest_col = noone;
+            return;
+        }
         x = mouse_consts[0] + rel_mousex;
         y = mouse_consts[1] + rel_mousey;
         obj_cursor.image_index = 3;
         col_target = instance_nearest(x, 224, obj_temp8);
+        if (!instance_exists(col_target)) {
+            nobar = true;
+            nearest_col = noone;
+            return;
+        }
+        if (!instance_exists(obj_formation_bar)) {
+            nearest_col = noone;
+            nobar = true;
+            return;
+        }
         nearest_col = instance_nearest(col_target.x, col_target.y, obj_formation_bar);
+        if (!instance_exists(nearest_col)) {
+            nobar = true;
+            return;
+        }
         nobar = false;
         if (point_distance(col_target.x, col_target.y, nearest_col.x, nearest_col.y) > 2) {
             nobar = true;
