@@ -46,17 +46,29 @@ function drop_select_unit_selection() {
         // draw_rectangle(xx+1084,yy+215,xx+1142,yy+273,0);
 
         // Formation
-        var _formation_str = $"Formation: {obj_controller.bat_formation[formation_possible[formation_current]]}";
+        var _formation_count = array_length(formation_possible);
+        if (_formation_count > 0) {
+            formation_current = clamp(formation_current, 0, _formation_count - 1);
+        } else {
+            formation_current = -1;
+        }
+        var _formation_str = "Formation: None";
+        if (formation_current >= 0) {
+            _formation_str = $"Formation: {obj_controller.bat_formation[formation_possible[formation_current]]}";
+        }
         btn_formation.x1 = x2 - 50 - string_width(_formation_str);
         btn_formation.y1 = y1 + 80;
         btn_formation.button_color = CM_GREEN_COLOR;
         btn_formation.text_color = CM_GREEN_COLOR;
+        btn_formation.active = (formation_current >= 0);
         btn_formation.update({str1: _formation_str});
         btn_formation.draw();
         if (btn_formation.clicked()) {
-            formation_current++;
-            if (formation_current >= array_length(formation_possible)) {
-                formation_current = 0;
+            if (formation_current >= 0) {
+                formation_current++;
+                if (formation_current >= array_length(formation_possible)) {
+                    formation_current = 0;
+                }
             }
         }
 
@@ -210,7 +222,7 @@ function drop_select_unit_selection() {
     btn_attack.y1 = btn_back.y1;
     if (purge == eDROP_TYPE.RAIDATTACK) {
         btn_attack.str1 = (attack) ? "ATTACK!" : "RAID!";
-        btn_attack.active = roster.selected_count() > 0 && race_quantity > 0;
+        btn_attack.active = roster.selected_count() > 0 && race_quantity > 0 && formation_current >= 0 && formation_current < array_length(formation_possible);
     } else if (purge > 1) {
         btn_attack.str1 = "PURGE";
         btn_attack.active = roster.selected_count() > 0;
@@ -219,6 +231,9 @@ function drop_select_unit_selection() {
     btn_attack.draw();
     if (btn_attack.clicked()) {
         if (purge == 0) {
+            if (formation_current < 0 || formation_current >= array_length(formation_possible)) {
+                exit;
+            }
             combating = 1; // Start battle here
 
             if (attack == 1) {
