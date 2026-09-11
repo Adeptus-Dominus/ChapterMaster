@@ -349,6 +349,7 @@ function scr_ui_settings() {
             if (bat_formation[formating] == "") {
                 bat_formation_type[formating] = 0;
             }
+            sanitize_stored_formation_ids();
             pop_draw_return_values();
             with (obj_mass_equip) {
                 instance_destroy();

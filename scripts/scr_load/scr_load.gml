@@ -107,6 +107,9 @@ function scr_load(save_part, save_id) {
 
             global.star_name_colors[1] = make_color_rgb(col_r[main_color], col_g[main_color], col_b[main_color]);
         }
+        with (obj_controller) {
+            sanitize_stored_formation_ids();
+        }
         LOGGER.info("CONTROLLER loaded");
     }
 

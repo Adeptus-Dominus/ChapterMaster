@@ -287,9 +287,11 @@ function scr_draw_formation_settings() {
         if (_new_val == "attack") {
             bat_formation_type[formating] = 1;
             scr_ui_formation_bars();
+            sanitize_stored_formation_ids();
         } else if (_new_val == "raid") {
             bat_formation_type[formating] = 2;
             scr_ui_formation_bars();
+            sanitize_stored_formation_ids();
         }
     }
 
