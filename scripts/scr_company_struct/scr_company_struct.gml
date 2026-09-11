@@ -187,7 +187,7 @@ function CompanyStruct(comp) constructor {
         }
     };
 
-    static draw_squad_unit_sprites = function() {
+    static draw_squad_unit_sprites = function(_cur_squad = undefined) {
         add_draw_return_values();
         var member_width = 0, member_height = 0;
         var x_mod = 0, y_mod = 0;
@@ -218,7 +218,10 @@ function CompanyStruct(comp) constructor {
         }
         var sprite_draw_delay = "none";
         var unit_sprite_coords = {};
-        var _cur_squad = grab_current_squad();
+        _cur_squad ??= grab_current_squad();
+        if (!is_struct(_cur_squad)) {
+            return;
+        }
         var _member_count = array_length(_cur_squad.members);
         var _reset_surface = false;
         var _member = _member_count > 0 ? _cur_squad.fetch_member(0) : undefined;
@@ -643,6 +646,6 @@ function CompanyStruct(comp) constructor {
         mass_equip_toggle.draw();
         _cur_squad.allow_bulk_swap = mass_equip_toggle.active;
 
-        draw_squad_unit_sprites();
+        draw_squad_unit_sprites(_cur_squad);
     };
 }
