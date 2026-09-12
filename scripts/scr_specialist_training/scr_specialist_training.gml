@@ -184,65 +184,66 @@ function apothecary_training() {
 function chaplain_training() {
     // * Chaplain training *
     // TODO add functionality for Space Wolves and Iron Hands
+    if (scr_has_adv("Spiritual Healers") || global.chapter_name == "Iron Hands") {
+        exit;
+    }
     var recruit_count = 0;
     var training_points_values = global.chaplain_training_tiers;
-    if ((global.chapter_name != "Space Wolves") && (global.chapter_name != "Iron Hands")) {
-        chaplain_points += training_points_values[training_chaplain];
-        var _novice_type = obj_ini.player_role_data[eROLE.CHAPLAINASPIRANT].role;
+    chaplain_points += training_points_values[training_chaplain];
+    var _novice_type = obj_ini.player_role_data[eROLE.CHAPLAINASPIRANT].role;
 
-        if (training_chaplain > 0) {
-            recruit_count = scr_role_count(_novice_type, "");
-            if (chaplain_points >= 48) {
-                if (recruit_count > 0) {
-                    var random_marine = scr_random_marine(_novice_type, 0);
-                    if (random_marine == "none") {
-                        return;
-                    }
-                    var _chap_role = obj_ini.player_role_data[eROLE.CHAPLAIN];
-                    var _unit = fetch_unit(random_marine);
-
-                    scr_alert("green", "recruitment", _unit.name_role() + " has finished training.", 0, 0);
-                    chaplain_points -= 48;
-                    _unit.update_role(_chap_role.role);
-                    _unit.role_tag = [
-                        0,
-                        0,
-                        0,
-                        0,
-                    ];
-                    _unit.add_exp(10);
-                    chaplain_aspirant = 0;
-                    var _warn = "";
-                    var _outcome = _unit.alter_equipment(_chap_role, true, true);
-
-                    if (!_outcome.success) {
-                        scr_alert("red", "recruitment", $"{_outcome.description}!", 0, 0);
-                    }
-                } else {
-                    chaplain_points = 0;
+    if (training_chaplain > 0) {
+        recruit_count = scr_role_count(_novice_type, "");
+        if (chaplain_points >= 48) {
+            if (recruit_count > 0) {
+                var random_marine = scr_random_marine(_novice_type, 0);
+                if (random_marine == "none") {
+                    return;
                 }
-            } else if ((chaplain_points >= 4) && (recruit_count == 0)) {
-                var random_marine = spec_data_set(eROLE_TAG.Chaplain);
-                if (random_marine != "none") {
-                    var _unit = fetch_unit(random_marine);
-                    if (!is_struct(_unit)) {
-                        return;
-                    }
+                var _chap_role = obj_ini.player_role_data[eROLE.CHAPLAIN];
+                var _unit = fetch_unit(random_marine);
 
-                    _unit.move_to_company(0);
+                scr_alert("green", "recruitment", _unit.name_role() + " has finished training.", 0, 0);
+                chaplain_points -= 48;
+                _unit.update_role(_chap_role.role);
+                _unit.role_tag = [
+                    0,
+                    0,
+                    0,
+                    0,
+                ];
+                _unit.add_exp(10);
+                chaplain_aspirant = 0;
+                var _warn = "";
+                var _outcome = _unit.alter_equipment(_chap_role, true, true);
 
-                    chaplain_aspirant = 1;
-                    _unit.update_role(_novice_type);
-                    _unit.update_gear("");
-                    _unit.update_mobility_item("");
-                    scr_alert("green", "recruitment", $"{_unit.name_role()} begins training.", 0, 0);
-                    with (obj_ini) {
-                        scr_company_order(0);
-                    }
-                } else {
-                    training_chaplain = 0;
-                    scr_alert("red", "recruitment", $"No remaining {obj_ini.player_role_data[eROLE.CHAPLAIN].role} applicant marines for training", 0, 0);
+                if (!_outcome.success) {
+                    scr_alert("red", "recruitment", $"{_outcome.description}!", 0, 0);
                 }
+            } else {
+                chaplain_points = 0;
+            }
+        } else if ((chaplain_points >= 4) && (recruit_count == 0)) {
+            var random_marine = spec_data_set(eROLE_TAG.Chaplain);
+            if (random_marine != "none") {
+                var _unit = fetch_unit(random_marine);
+                if (!is_struct(_unit)) {
+                    return;
+                }
+
+                _unit.move_to_company(0);
+
+                chaplain_aspirant = 1;
+                _unit.update_role(_novice_type);
+                _unit.update_gear("");
+                _unit.update_mobility_item("");
+                scr_alert("green", "recruitment", $"{_unit.name_role()} begins training.", 0, 0);
+                with (obj_ini) {
+                    scr_company_order(0);
+                }
+            } else {
+                training_chaplain = 0;
+                scr_alert("red", "recruitment", $"No remaining {obj_ini.player_role_data[eROLE.CHAPLAIN].role} applicant marines for training", 0, 0);
             }
         }
     }

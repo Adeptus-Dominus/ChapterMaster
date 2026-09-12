@@ -237,8 +237,6 @@ function scr_draw_unit_image(_background = false) {
             var unit_armour = armour();
             var unit_gear = gear();
             var unit_back = mobility_item();
-            var unit_specialization = eUNIT_SPECIALIZATION.NONE;
-            var unit_special_colours = 0;
             var skin_color = obj_creation ? 0 : obj_ini.skin_color;
             var armour_type = eARMOUR_TYPE.NORMAL;
             var armour_sprite = spr_weapon_blank;
@@ -248,16 +246,6 @@ function scr_draw_unit_image(_background = false) {
             var halo = 0;
             var body_part;
             static _body_parts = global.unit_body_parts;
-
-
-            if (is_specialist(unit_role, SPECIALISTS_APOTHECARIES, true)) {
-                // Apothecary
-                if (unit_chapter == "Space Wolves") {
-                    unit_specialization = eUNIT_SPECIALIZATION.WOLFPRIEST;
-                } else {
-                    unit_specialization = eUNIT_SPECIALIZATION.APOTHECARY;
-                }
-            }
 
             if (unit_back == "Servo-arm") {
                 servo_arm = 1;
@@ -431,7 +419,7 @@ function scr_draw_unit_image(_background = false) {
                 }
 
                 // Apothecary Details
-                if (unit_specialization == eUNIT_SPECIALIZATION.APOTHECARY) {
+                if (is_specialist(unit_role, SPECIALISTS_APOTHECARIES, true)) {
                     if (gear() == "Narthecium") {
                         if (armour_type == eARMOUR_TYPE.NORMAL) {
                             draw_sprite(spr_narthecium_2, 0, x_surface_offset + 66, y_surface_offset + 5);

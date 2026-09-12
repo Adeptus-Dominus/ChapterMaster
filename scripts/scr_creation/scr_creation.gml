@@ -64,8 +64,35 @@ function set_complex_livery_buttons() {
 /// @self Asset.GMObject.obj_creation
 function update_creation_roles_radio(start_role = 1) {
     var _role_choice_array = [];
+    var _blocked_roles = [];
+    for (var i = 0; i < array_length(obj_creation.all_advantages); i++) {
+        var _adv = obj_creation.all_advantages[i];
+        if (_adv.activated) {
+            _blocked_roles = array_concat(_blocked_roles,_adv.bans_roles);
+        }
+    }
 
+    for (var i = 0; i < array_length(obj_creation.all_disadvantages); i++) {
+        var _dis_adv = obj_creation.all_disadvantages[i];
+        if (_dis_adv.activated) {
+            _blocked_roles = array_concat(_blocked_roles,_dis_adv.bans_roles);
+        }
+    }
+
+    for (var i=array_length(_blocked_roles) - 1;i>=0;i--){
+        if (struct_exists(global.string_to_enum_roles_map , _blocked_roles[i])){
+            _blocked_roles[i] = global.string_to_enum_roles_map[$ _blocked_roles[i]];
+        } else {
+            array_delete(_blocked_roles,i, 1);
+        }
+    }
     for (var i = start_role; i < array_length(player_role_data); i++) {
+        if (array_contains(_blocked_roles, i)){
+            player_role_data[i].available_to_player = false;
+            continue;
+        } else {
+            player_role_data[i].available_to_player = true;
+        }
         var _role_data = player_role_data[i];
         if (_role_data.available_to_player && _role_data.role != "") {
             array_push(_role_choice_array, {str1: localize(_role_data.role), font: fnt_40k_14b, role_id: i});
@@ -159,15 +186,13 @@ function scr_creation(slide_num) {
         if (name_bad == 0) {
             change_slide = true;
             goto_slide = 3;
-            player_role_data[eROLE.LIBRARIAN].available_to_player = true;
         }
     }
 
     if (slide_num == eCREATION_SLIDES.CHAPTERTRAITS && custom == eCHAPTER_TYPE.PREMADE) {
         change_slide = true;
         goto_slide = 3;
-        player_role_data[eROLE.LIBRARIAN].available_to_player = true;
-        player_role_data[eROLE.CHAPLAIN].available_to_player = chapter_name != "Iron Hands" && chapter_name != "Space Wolves";
+        player_role_data[eROLE.CHAPLAIN].available_to_player = chapter_name != "Iron Hands";
     }
 
     if (slide_num == eCREATION_SLIDES.CHAPTERHOME) {

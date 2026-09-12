@@ -29,6 +29,7 @@ if ((menu == eMENU.MANAGE) && (managing > 0)) {
                 stahp = 1;
             }
 
+            //TODO replace with index
             // sets up count for the marines
             if (man[f] == "man") {
                 manz += 1;

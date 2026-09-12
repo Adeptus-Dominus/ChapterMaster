@@ -574,9 +574,6 @@ try {
         // draw_text_transformed(444,505,"Select Speciality",0.6,0.6,0);
         draw_set_halign(fa_center);
 
-        if (scr_has_disadv("Psyker Intolerant")) {
-            player_role_data[eROLE.LIBRARIAN].available_to_player = false;
-        }
         var _lib_role = player_role_data[eROLE.LIBRARIAN];
         if ((chapter_master_specialty == 3) && !_lib_role.available_to_player) {
             chapter_master_speciality = choose(1, 2);

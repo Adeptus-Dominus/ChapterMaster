@@ -157,6 +157,13 @@
       }
     ],
     "suspicion" : -2,
+    "bans_roles" : [
+      "librarian_aspirant",
+      "lexicanum",
+      "codiciery",
+      "chief_librarian",
+      "librarian"
+    ]
   },
   {
     "name": "Obliterated",

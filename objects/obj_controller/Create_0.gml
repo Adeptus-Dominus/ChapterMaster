@@ -1102,10 +1102,13 @@ serialize = function() {
         "armamentarium",
         "helpful_places_button",
         "lair_styles",
+        "reclusiam_vars",
+        "management_buttons",
+        "settings_buttons_ui_components"
     ];
-    var excluded_from_save_start = ["restart_"];
+    var _excluded_from_save_start = ["restart_"];
 
-    copy_serializable_fields(object_controller, save_data, excluded_from_save, excluded_from_save_start);
+    copy_serializable_fields(object_controller, save_data, excluded_from_save, _excluded_from_save_start);
 
     return save_data;
 };
@@ -1234,7 +1237,7 @@ if (instance_exists(obj_ini)) {
     if (scr_has_disadv("Psyker Intolerant")) {
         training_psyker = 0;
     }
-    if (global.chapter_name == "Space Wolves") {
+    if (scr_has_adv("Spiritual Healers")) {
         training_chaplain = 0;
     }
 }

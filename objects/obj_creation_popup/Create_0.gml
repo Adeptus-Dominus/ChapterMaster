@@ -37,81 +37,6 @@ type_fields = [
     "weapon_color",
 ];
 
-possible_custom_roles = [
-    [
-        "chapter_master",
-        eROLE.CHAPTERMASTER,
-    ],
-    [
-        "honour_guard",
-        eROLE.HONOURGUARD,
-    ],
-    [
-        "veteran",
-        eROLE.VETERAN,
-    ],
-    [
-        "terminator",
-        eROLE.TERMINATOR,
-    ],
-    [
-        "captain",
-        eROLE.CAPTAIN,
-    ],
-    [
-        "dreadnought",
-        eROLE.DREADNOUGHT,
-    ],
-    [
-        "champion",
-        eROLE.CHAMPION,
-    ],
-    [
-        "tactical",
-        eROLE.TACTICAL,
-    ],
-    [
-        "devastator",
-        eROLE.DEVASTATOR,
-    ],
-    [
-        "assault",
-        eROLE.ASSAULT,
-    ],
-    [
-        "ancient",
-        eROLE.ANCIENT,
-    ],
-    [
-        "scout",
-        eROLE.SCOUT,
-    ],
-    [
-        "chaplain",
-        eROLE.CHAPLAIN,
-    ],
-    [
-        "apothecary",
-        eROLE.APOTHECARY,
-    ],
-    [
-        "techmarine",
-        eROLE.TECHMARINE,
-    ],
-    [
-        "librarian",
-        eROLE.LIBRARIAN,
-    ],
-    [
-        "sergeant",
-        eROLE.SERGEANT,
-    ],
-    [
-        "veteran_sergeant",
-        eROLE.VETERANSERGEANT,
-    ],
-];
-
 var _is_livery = type == ePOPUP_TYPE.LIVERYPICK;
 livery_pick_type = -1;
 if (_is_livery) {
@@ -175,15 +100,8 @@ if (_is_livery && livery_pick_type == eLIVERY_COLOURING_OPTIONS.BULK) {
 } else if (type == ePOPUP_TYPE.EQUIP) {
     role_name_input = new TextBarArea(800, 170, 380, true);
 
-    var _blocked_names = [
-        "Chapter Master",
-        "Master of Sanctity",
-        "Master of the Apothecarion",
-        "Forge Master",
-    ];
-
     editing_role_data = obj_creation.player_role_data[target_role];
-
+    _blocked_names = [];
     for (var i = 0; i < array_length(obj_creation.player_role_data); i++) {
         if (i == target_role) {
             continue;

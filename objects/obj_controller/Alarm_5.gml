@@ -477,12 +477,12 @@ try {
         scr_loyalty("Xeno Associate", "+");
     }
 
-    var loyalty_counter = scr_role_count(obj_ini.player_role_data[eROLE.APOTHECARY].role, "");
+    var loyalty_counter = array_length(collect_role_group([SPECIALISTS_APOTHECARIES,false, true]));
     if (loyalty_counter == 0) {
         scr_loyalty("Lack of Apothecary", "+");
     }
 
-    loyalty_counter = scr_role_count(obj_ini.player_role_data[eROLE.CHAPLAIN].role, "");
+    loyalty_counter = array_length(collect_role_group([SPECIALISTS_CHAPLAINS,false, true]));
     if (loyalty_counter == 0) {
         scr_loyalty("Undevout", "+");
     }

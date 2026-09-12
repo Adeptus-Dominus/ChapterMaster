@@ -697,6 +697,11 @@ function scr_ui_manage() {
 
     if ((zoomed == 0) && (menu == 1) && (managing >= 0)) {
         if (managing > 0) {
+            if (managing == 14){
+                if (scr_has_adv("Spiritual Healers")){
+                    managing = 12;
+                }
+            }
             company_manage_actions();
         }
         if (allow_shortcuts) {

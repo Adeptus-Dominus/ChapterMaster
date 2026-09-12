@@ -240,10 +240,15 @@ function scr_toggle_reclu() {
             hide_banner = 1;
             menu_adept = is_undefined(get_department_head(eCHAPTER_DEPARTMENTS.CHAP));
             if (menu != eMENU.RECLUSIAM) {
+                var _active_roles = active_roles();
                 menu = eMENU.RECLUSIAM;
+                reclusiam_vars = {
+                    chapter_chaplains : collect_role_group([SPECIALISTS_CHAPLAINS, true, true], "", false, {}, true),
+                    spiritual_healers : scr_has_adv("Spiritual Healers"),
+                }
 
-                temp[36] = string(scr_role_count(obj_ini.player_role_data[eROLE.CHAPLAIN].role, "field"));
-                temp[37] = string(scr_role_count(obj_ini.player_role_data[eROLE.CHAPLAIN].role, "home"));
+                reclusiam_vars.chaplain_role = reclusiam_vars.spiritual_healers ? _active_roles[eROLE.APOTHECARY] : _active_roles[eROLE.CHAPLAIN];
+                
                 penitorium = 0;
 
                 // Get list of jailed marines

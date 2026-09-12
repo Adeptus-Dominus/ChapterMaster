@@ -202,7 +202,7 @@ function scr_distribution_and_advisor_setup() {
         tooltip2 = localize("The names of your main Advisors.  They provide useful information and reports on the divisions of your Chapter.");
     }
 
-    draw_text_transformed(444, 550, string_hash_to_newline(localize("Advisor Names")), 0.6, 0.6, 0);
+    draw_text_transformed(444, 550, localize("Advisor Names"), 0.6, 0.6, 0);
     draw_set_font(cjk_font(fnt_40k_14b));
     draw_set_halign(fa_right);
     var _apoths_allowed = player_role_data[eROLE.APOTHECARY].available_to_player;
@@ -213,13 +213,13 @@ function scr_distribution_and_advisor_setup() {
     if (_apoths_allowed) {
         draw_text(594, 575, localize("Chief Apothecary: "));
     }
-    if (player_role_data[eROLE.CHAPLAIN].available_to_player) {
+    if (_chaps_allowed) {
         draw_text(594, 597, localize("High Chaplain: "));
     }
-    if (player_role_data[eROLE.LIBRARIAN].available_to_player) {
+    if (_libs_allowed) {
         draw_text(594, 619, localize("Chief Librarian: "));
     }
-    if (player_role_data[eROLE.TECHMARINE].available_to_player) {
+    if (_techs_allowed) {
         draw_text(594, 641, localize("Forge Master: "));
     }
     draw_text(594, 663, localize("Master of Recruits: "));

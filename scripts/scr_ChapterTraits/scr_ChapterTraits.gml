@@ -76,6 +76,8 @@ function ChapterTrait(trait) constructor {
     character_spawn_increase = [];
     character_spawn_decrease = [];
 
+    bans_roles = [];
+
     move_data_to_current_scope(trait);
 
     static evaluate_unit_trait = function(initial_rate, data, trait_name) {
@@ -211,6 +213,17 @@ function ChapterTrait(trait) constructor {
 
         if (array_length(character_spawn_decrease)) {
             _str += localize("Decrease Character trait spawns : {0}\n", [character_spawn_decrease]);
+        }
+
+        if (array_length(bans_roles)){
+            for (var i = 0; i < array_length(bans_roles); i++){
+                if (!struct_exists(global.string_to_enum_roles_map , bans_roles[i])){
+                    continue;
+                }
+                var _role_id = global.string_to_enum_roles_map[$ bans_roles[i]];
+                var _role = obj_creation.default_role_data[_role_id].role;
+                _str += localize("Restricts chapter use of : {0}\n", [_role])
+            }
         }
         return _str;
     };

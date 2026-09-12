@@ -1189,6 +1189,10 @@ function scr_initialize_custom() {
         apothecary += 5;
     }
 
+    if (!player_role_data[eROLE.CHAPLAIN].available_to_player){
+        chaplains = 0;
+    }
+
     if (global.chapter_name == "Lamenters") {
         predator = 0;
     }
@@ -1467,89 +1471,15 @@ function scr_initialize_custom() {
 
     if (variable_instance_exists(obj_creation, "custom_roles")) {
         var c_roles = obj_creation.custom_roles;
-        var possible_custom_roles = [
-            [
-                "chapter_master",
-                eROLE.CHAPTERMASTER,
-            ],
-            [
-                "honour_guard",
-                eROLE.HONOURGUARD,
-            ],
-            [
-                "veteran",
-                eROLE.VETERAN,
-            ],
-            [
-                "terminator",
-                eROLE.TERMINATOR,
-            ],
-            [
-                "captain",
-                eROLE.CAPTAIN,
-            ],
-            [
-                "dreadnought",
-                eROLE.DREADNOUGHT,
-            ],
-            [
-                "champion",
-                eROLE.CHAMPION,
-            ],
-            [
-                "tactical",
-                eROLE.TACTICAL,
-            ],
-            [
-                "devastator",
-                eROLE.DEVASTATOR,
-            ],
-            [
-                "assault",
-                eROLE.ASSAULT,
-            ],
-            [
-                "ancient",
-                eROLE.ANCIENT,
-            ],
-            [
-                "scout",
-                eROLE.SCOUT,
-            ],
-            [
-                "chaplain",
-                eROLE.CHAPLAIN,
-            ],
-            [
-                "apothecary",
-                eROLE.APOTHECARY,
-            ],
-            [
-                "techmarine",
-                eROLE.TECHMARINE,
-            ],
-            [
-                "librarian",
-                eROLE.LIBRARIAN,
-            ],
-            [
-                "sergeant",
-                eROLE.SERGEANT,
-            ],
-            [
-                "veteran_sergeant",
-                eROLE.VETERANSERGEANT,
-            ],
-        ];
         var possible_custom_attributes = global.unit_equip_slots;
         /**
 		 * check whether the json structure exists to populate custom role names and 
-		 * attributes then set them using the map above 
 		 */
-        for (var c = 0; c < array_length(possible_custom_roles); c++) {
-            if (struct_exists(c_roles, possible_custom_roles[c][0])) {
-                var c_rolename = possible_custom_roles[c][0];
-                var c_roleid = possible_custom_roles[c][1];
+        var _role_names = struct_get_names(global.string_to_enum_roles_map);
+        for (var c = 0; c < array_length(_role_names); c++) {
+            var c_rolename = _role_names[c];
+            if (struct_exists(c_roles, c_rolename)) {
+                var c_roleid = global.string_to_enum_roles_map[$ c_rolename];
                 for (var a = 0; a < array_length(possible_custom_attributes); a++) {
                     var attribute = possible_custom_attributes[a];
                     if (struct_exists(c_roles[$ c_rolename], attribute)) {
@@ -1968,7 +1898,7 @@ function scr_initialize_custom() {
     }
 
     // Master of Sanctity (Chaplain)
-    if (chaplains > 0) {
+    if (chaplains > 0 && player_role_data[eROLE.MASTERCHAPLAIN].available_to_player) {
         var _hchap = add_unit_to_company("marine", _company_i, eROLE.MASTERCHAPLAIN, "default", "Plasma Pistol", "default", "default", _hq_armour);
         _hchap.set_name(high_chaplain_name);
         _hchap.edit_corruption(-100);

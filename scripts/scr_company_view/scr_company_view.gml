@@ -498,15 +498,38 @@ function company_manage_actions() {
         view_squad = false;
         unit_profile = false;
     }
-    // Previous company
-    if (point_and_click([xx + 424, yy + 80, xx + 496, yy + 128]) || (keyboard_check_pressed(ord(string("N"))) && allow_shortcuts)) {
-        var new_view = managing == 1 ? 15 : managing - 1;
-        switch_view_company(new_view);
-    }
+    var _change = false;
+    var _change_value = 0;
 
-    // Next company
-    if (point_and_click([xx + 1105, yy + 80, xx + 1178, yy + 128]) || (keyboard_check_pressed(ord(string("M"))) && allow_shortcuts)) {
-        var new_view = managing == 15 ? 1 : managing + 1;
+    //TODO attatch these to OOP constructs
+    // Previous company
+    if (allow_shortcuts){
+        var _back_check = keyboard_check_pressed(ord(string("N")));
+        var _forward_check =  keyboard_check_pressed(ord(string("M")));
+        if (point_and_click([xx + 424, yy + 80, xx + 496, yy + 128]) || _back_check) {
+            _change = true;
+            _change_value = -1;
+        }
+
+        // Next company
+        if (point_and_click([xx + 1105, yy + 80, xx + 1178, yy + 128]) || _forward_check) {
+            _change = true;
+            _change_value = 1;
+        }
+    }
+    if (_change){
+        _new_view = managing + _change_value;
+        if (scr_has_adv("Spiritual Healers")){
+            if (_new_view == 14){
+                _new_view += _change_value;
+            }
+        }
+        if (_new_view > 15){
+            _new_view = 1;
+        }
+        if (_new_view == 0){
+            _new_view = 15;
+        }
         switch_view_company(new_view);
     }
 }
