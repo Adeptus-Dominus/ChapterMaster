@@ -1,16 +1,16 @@
 /// @description Returns the active game controller either obj_controller or obj_creation
 /// @returns {Id.Object}
-function active_game_controller(){
+function active_game_controller() {
     return instance_exists(obj_creation) ? obj_creation : obj_controller;
 }
 
 /// @description Returns the active game ini obj either obj_ini or obj_creation
 /// @returns {Id.Instance}
-function active_game_ini(){
+function active_game_ini() {
     return instance_exists(obj_creation) ? obj_creation : obj_ini;
 }
 
-/// @description Cleans up the current game menu area to allow changing menus 
+/// @description Cleans up the current game menu area to allow changing menus
 /// @returns {Any}
 function scr_menu_clear_up(specific_area_function) {
     var spec_func = specific_area_function;
