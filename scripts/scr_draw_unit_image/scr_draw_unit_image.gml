@@ -249,7 +249,6 @@ function scr_draw_unit_image(_background = false) {
             var body_part;
             static _body_parts = global.unit_body_parts;
 
-
             if (is_specialist(unit_role, SPECIALISTS_APOTHECARIES, true)) {
                 // Apothecary
                 if (unit_chapter == "Space Wolves") {

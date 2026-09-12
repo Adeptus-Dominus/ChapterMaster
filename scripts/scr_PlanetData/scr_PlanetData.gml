@@ -1544,7 +1544,7 @@ function PlanetData(_planet, _system) constructor {
     };
 
     static planet_selection_logic = function() {
-        if (!instance_exists(obj_star_select)){
+        if (!instance_exists(obj_star_select)) {
             exit;
         }
         var planet_is_allies = scr_is_planet_owned_by_allies(system, planet);

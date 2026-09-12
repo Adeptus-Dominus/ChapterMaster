@@ -60,7 +60,7 @@ function drop_select_unit_selection() {
         btn_formation.y1 = y1 + 80;
         btn_formation.button_color = CM_GREEN_COLOR;
         btn_formation.text_color = CM_GREEN_COLOR;
-        btn_formation.active = (formation_current >= 0);
+        btn_formation.active = formation_current >= 0;
         btn_formation.update({str1: _formation_str});
         btn_formation.draw();
         if (btn_formation.clicked()) {
