@@ -1247,19 +1247,19 @@ function fleet_respond_crusade() {
         if (ok) {
             action_x = ns.x;
             action_y = ns.y;
-            set_fleet_movement();
-            home_x = orbiting.x;
-            home_y = orbiting.y;
 
-            var i;
-            i = 0;
-            repeat (orbiting.planets) {
-                i += 1;
-                if ((orbiting.p_owner[i] == eFACTION.IMPERIUM) && (orbiting.p_guardsmen[i] > 500)) {
-                    guardsmen += round(orbiting.p_guardsmen[i] / 2);
-                    orbiting.p_guardsmen[i] = round(orbiting.p_guardsmen[i] / 2);
+            var _home = orbiting;
+            home_x = _home.x;
+            home_y = _home.y;
+
+            for (var i = 0; i < _home.planets; i++) {
+                if ((_home.p_owner[i] == eFACTION.IMPERIUM) && (_home.p_guardsmen[i] > 500)) {
+                    guardsmen += round(_home.p_guardsmen[i] / 2);
+                    _home.p_guardsmen[i] = round(_home.p_guardsmen[i] / 2);
                 }
             }
+
+            set_fleet_movement();
 
             alarm[5] = 2;
 
