@@ -1252,7 +1252,7 @@ function fleet_respond_crusade() {
             home_x = _home.x;
             home_y = _home.y;
 
-            for (var i = 0; i < _home.planets; i++) {
+            for (var i = 1; i <= _home.planets; i++) {
                 if ((_home.p_owner[i] == eFACTION.IMPERIUM) && (_home.p_guardsmen[i] > 500)) {
                     guardsmen += round(_home.p_guardsmen[i] / 2);
                     _home.p_guardsmen[i] = round(_home.p_guardsmen[i] / 2);
