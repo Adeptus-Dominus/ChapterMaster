@@ -75,9 +75,9 @@ try {
             if ((ns.owner != eFACTION.ORK) && (point_distance(x, y, ns.x, ns.y) <= max_dis) && (point_distance(x, y, ns.x, ns.y) > 40) && instance_exists(obj_crusade) && (image_index > 3)) {
                 action_x = ns.x;
                 action_y = ns.y;
-                set_fleet_movement();
                 home_x = orbiting.x;
                 home_y = orbiting.y;
+                set_fleet_movement();
                 exit;
             }
 
