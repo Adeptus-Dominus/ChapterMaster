@@ -409,6 +409,9 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static handle_stat_growth = unit_stat_growth;
 
     static move_to_company = function(new_company, keep_squad = true) {
+        if (new_company == company) {
+            return;
+        }
         var _slot = find_company_open_slot(new_company);
         array_delete(obj_ini.TTRPG[company], marine_number, 1);
         normalise_marine_numbers(company, marine_number);
