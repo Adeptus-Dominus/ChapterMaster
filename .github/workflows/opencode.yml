@@ -35,10 +35,10 @@ jobs:
       - name: Run OpenCode
         uses: anomalyco/opencode/github@v1.18.30
         env:
-          GITHUB_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
-          GH_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
+          GITHUB_TOKEN: ${{ secrets.LYRA_CONTENTS_PRS_ISSUES_PAT }}
+          GH_TOKEN: ${{ secrets.LYRA_CONTENTS_PRS_ISSUES_PAT }}
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
-          OPENCODE_PERMISSION: '{ "external_directory": { "*": "deny", "/home/runner/work/**": "allow" } }'
+          OPENCODE_PERMISSION: '{ "external_directory": { "*": "deny", "/home/runner/work/**": "allow" }, "doom_loop": deny }'
         with:
           use_github_token: true
           model: ${{ vars.OPENCODE_MAIN_MODEL }}
