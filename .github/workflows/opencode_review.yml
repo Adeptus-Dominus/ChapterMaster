@@ -132,21 +132,12 @@ jobs:
           PAST_REVIEWS=$(cat past_reviews.json)
 
           cat > /tmp/prompt.txt <<PROMPT_EOF
-          You are reviewing Pull Request #$PR_NUMBER: '$PR_TITLE'
-          Target Base Branch: origin/$PR_BASE
-          Head Commit: $PR_SHA
-          Review Mode: $REVIEW_MODE
-          Diff Comparison Base: $DIFF_BASE
+          # ROLE & OBJECTIVE
 
-          <pr-description>
-          $PR_BODY
-          </pr-description>
+          You are an expert code reviewer evaluating Pull Request #$PR_NUMBER: $PR_TITLE
 
-          <previous-reviews-by-you>
-          $PAST_REVIEWS
-          </previous-reviews-by-you>
+          # REVIEW GUIDELINES
 
-          Guidelines:
           - If Review Mode is:
             - "INCREMENTAL": Focus primarily on changes between $DIFF_BASE and HEAD. Check if issues raised in your previous review have been resolved.
             - "FULL_AFTER_FORCE_PUSH": A rebase/force-push occurred. Review the entire PR against origin/$PR_BASE, keeping in mind past feedback.
@@ -160,7 +151,24 @@ jobs:
           - Keep comments terse and actionable. Technical substance stays. Fluff dies.
           - When critiquing, don't be a zealot if the code is overal readable.
 
-          ### Submitting the Review
+          # PR CONTEXT
+
+          - Target Base Branch: origin/$PR_BASE
+          - Head Commit: $PR_SHA
+          - Review Mode: $REVIEW_MODE
+          - Diff Base: $DIFF_BASE
+
+          <pr-description>
+          $PR_BODY
+          </pr-description>
+
+          <previous-reviews-by-you>
+          $PAST_REVIEWS
+          </previous-reviews-by-you>
+
+
+
+          # REVIEW SUBMISSION
 
           Do NOT post individual inline comments one-by-one.
           Instead, collect all feedback and prepare a JSON payload at \`/tmp/review.json\` matching this structure:
