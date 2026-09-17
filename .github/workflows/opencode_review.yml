@@ -151,7 +151,7 @@ jobs:
             - "FULL": This is the initial review.
           - Review the code for bugs, regressions, performance issues, code quality, and readability.
           - Suggest improvments or fixes.
-          - Check the list of changed files using: git diff --name-only origin/$DIFF_BASE...HEAD
+          - Check the list of changed files using: git diff --name-only $DIFF_BASE...HEAD
           - Read local files directly from the workspace to maintain full context.
           - Diffs are important but make sure you read the entire file when needed to get full context.
           - Avoid running huge unbounded diff commands into stdout.
