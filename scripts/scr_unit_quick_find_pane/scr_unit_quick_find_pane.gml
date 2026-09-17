@@ -265,10 +265,8 @@ function UnitQuickFindPanel() constructor {
             for (var i = 1; i <= planets; i++) {
                 var problems = p_problem[i];
                 for (var p = 0; p < array_length(problems); p++) {
-                    if (problems[p] == "") {
-                        continue;
-                    }
-                    if (problem_has_key_and_value(i, p, "stage", "preliminary")) {
+                    var _problem = problems[p];
+                    if (_problem.stage_id == "preliminary") {
                         continue;
                     }
                     var mission_explain = mission_name_key(problems[p]);
@@ -276,9 +274,10 @@ function UnitQuickFindPanel() constructor {
                         var _data = {
                             system: name,
                             mission: mission_explain,
-                            time: p_timer[i][p],
+                            time: _problem.timer,
                             planet: i,
                             system_id: id,
+                            problem :  _problem,
                         };
 
                         _data.click_left = method(_data, function() {

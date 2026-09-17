@@ -232,7 +232,8 @@ function launch_crusade() {
         star_alert.image_alpha = 1;
         star_alert.image_speed = 1;
         scr_event_log("", $"A Crusade is called; our forces are expected at {star_id.name} in {_eta} months.", star_id.name);
-        assigned_crusade = add_new_problem(irandom_range(1, star_id.planets), "great_crusade", _eta, star_id);
+        var _p_data = star_id.get_planet_data(irandom_range(1, star_id.planets));
+        assigned_crusade = _p_data.new_problem("great_crusade", _eta);
         return true;
     }
 }

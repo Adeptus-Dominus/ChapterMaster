@@ -93,24 +93,9 @@ function scr_chaos_alliance_test() {
             diplo_text = "[Error: No WL10 planet feature found.]";
         }
         if (instance_exists(that_star)) {
-            var meeeting_arranged = false;
-            if (result == "success_trap") {
-                meeeting_arranged = add_new_problem(that_planet, "meeting_trap", 36, that_star);
-            } else {
-                meeeting_arranged = add_new_problem(that_planet, "meeting", 36, that_star);
-            }
-            if (meeeting_arranged) {
-                var rando, new_event;
-                rando = choose(1, 2);
-                if (rando == 1) {
-                    diplo_text += "A proposal that needs further consideration and some negotiation.  Meet me at " + string(that_title) + " and we shall resolve this.";
-                }
-                if (rando == 2) {
-                    diplo_text += "Interesting. I shall be at " + string(that_title) + " and, if you are sincere, you will come to me and we can take this proposal to its logical conclusion.";
-                }
-                scr_event_log("", "Chaos Lord " + string(obj_controller.faction_leader[eFACTION.CHAOS]) + " agrees to meet with you on " + string(that_title) + " to discuss an alliance.");
-                new_star_event_marker("purple");
-            }
+            var meeting_arranged = false;
+            var _p_data = that_star.get_planet_data(that_planet);
+            _p_data.new_problem(result == "success_trap" ? "meeting_trap" : "meeting", 36);
         }
     }
     if (result == "fail") {

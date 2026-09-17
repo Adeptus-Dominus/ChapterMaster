@@ -21,10 +21,6 @@ function scr_enemy_ai_d() {
         }
 
         var wob = 0;
-        var fallen = find_problem_planet(i, "fallen");
-        if (fallen > -1 && storm - 1 > 0) {
-            p_timer[i][fallen]++;
-        }
 
         // Requesting help here
         if (((p_halp[i] == 1) || (p_halp[i] == 1.1)) && (p_population[i] > 0) && (p_owner[i] <= eFACTION.ECCLESIARCHY)) {
@@ -85,35 +81,12 @@ function scr_enemy_ai_d() {
         }
     }
     for (var i = 1; i <= planets; i++) {
-        problem_count_down(i);
-        if (planet_problemless(i)) {
+if (array_length(p_problem[i]) == 0){
             continue;
         }
+        problem_count_down(i);
 
         var _pdata = get_planet_data(i);
-        with (_pdata) {
-            problem_end_turn_checks();
-        }
-
-        mechanicus_missions_end_turn(i);
-
-        var _beast_hunt = has_problem_planet_and_time(i, "hunt_beast", 0);
-        if (_beast_hunt > -1) {
-            try {
-                complete_beast_hunt_mission(i, _beast_hunt);
-            } catch (_exception) {
-                ERROR_HANDLER.handle_exception(_exception);
-            }
-        }
-
-        var train_forces = has_problem_planet_and_time(i, "train_forces", 0);
-        if (train_forces > -1) {
-            try {
-                complete_train_forces_mission(i, train_forces);
-            } catch (_exception) {
-                ERROR_HANDLER.handle_exception(_exception);
-            }
-        }
 
         if (((p_tyranids[i] == 3) || (p_tyranids[i] == 4)) && (p_population[i] > 0)) {
             if (!has_problem_planet(i, "Hive Fleet")) {
@@ -186,7 +159,7 @@ function scr_enemy_ai_d() {
     if (storm > 0) {
         storm -= 1;
         if (storm == 0) {
-            var tr = "Warp Storms over " + string(name) + " dissipate.";
+            var tr = $"Warp Storms over {name} dissipate.";
             scr_alert("green", "Warp", tr, x, y);
             scr_event_log("green", tr);
         }

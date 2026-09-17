@@ -226,11 +226,12 @@ function mission_inquisition_tomb_world(tomb_worlds) {
 /// @self Asset.GMObject.obj_popup
 function init_mission_inquisition_tomb_world() {
     mission_star = find_star_by_name(pop_data.system);
+    var _p_data = mission_star.get_planet_data(pop_data.planet);
     if (mission_star == noone) {
         popup_default_close();
         exit;
     }
-    scr_event_log("", $"Inquisition Mission Accepted: {global.chapter_name} have been given a Bomb to seal the Necron Tomb on {mission_star.name} {scr_roman(pop_data.planet)}.", mission_star.name);
+    scr_event_log("", $"Inquisition Mission Accepted: {global.chapter_name} have been given a Bomb to seal the Necron Tomb on {_p_data.name()}.", mission_star.name);
 
     image = "necron_cave";
     title = "New Equipment";
@@ -239,7 +240,7 @@ function init_mission_inquisition_tomb_world() {
     text = $"{global.chapter_name} have been provided with 1x Plasma Bomb in order to complete the mission.";
 
     if (demand) {
-        text = $"The Inquisition demands that your Chapter demonstrate its loyalty.  {global.chapter_name} have been given a Plasma Bomb to seal the Necron Tomb on {mission_star.name} {scr_roman(pop_data.planet)}.  It is expected to be completed within {pop_data.estimate} months.";
+        text = $"The Inquisition demands that your Chapter demonstrate its loyalty.  {global.chapter_name} have been given a Plasma Bomb to seal the Necron Tomb on {_p_data.name()}.  It is expected to be completed within {pop_data.estimate} months.";
     }
     reset_popup_options();
     scr_add_item("Plasma Bomb", 1);
@@ -247,7 +248,7 @@ function init_mission_inquisition_tomb_world() {
     if (demand) {
         demand = 0;
     }
-    add_new_inquis_mission();
+    _p_data.new_problem("necron", estimate, {});
     exit;
 }
 
