@@ -36,7 +36,7 @@ jobs:
         uses: anomalyco/opencode/github@v1.18.30
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
-          OPENCODE_PERMISSION: '{ "external_directory": { "/home/runner/work/**": "allow" } }'
+          OPENCODE_PERMISSION: '{ "external_directory": { "*": "deny", "/home/runner/work/**": "allow" } }'
         with:
           model: ${{ vars.OPENCODE_MAIN_MODEL }}
           variant: xhigh
