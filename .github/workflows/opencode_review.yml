@@ -3,26 +3,37 @@ name: opencode-review
 on:
   issue_comment:
     types: [created]
+  pull_request:
+    types: [review_requested]
 
 jobs:
   review:
     concurrency:
-      group: pr-${{ github.event.issue.number }}
+      group: pr-${{ github.event.issue.number || github.event.pull_request.number }}
       cancel-in-progress: true
 
     if: |
-      github.event.issue.pull_request
-      && startsWith(github.event.comment.body, '/review')
-      && contains(fromJson('["OWNER","MEMBER"]'), github.event.comment.author_association)
+      (
+        github.event_name == 'issue_comment' &&
+        github.event.issue.pull_request &&
+        startsWith(github.event.comment.body, '/review') &&
+        contains(fromJson('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
+      ) || (
+        github.event_name == 'pull_request' &&
+        github.event.requested_reviewer.login == 'lyra-the-bot'
+      )
+
     runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: write
+
     steps:
       - name: Get PR number
         id: pr-number
         run: |
-          echo "number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+          PR_NUM="${{ github.event.issue.number || github.event.pull_request.number }}"
+          echo "number=$PR_NUM" >> $GITHUB_OUTPUT
     
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -31,23 +42,72 @@ jobs:
           persist-credentials: false
 
       - name: Checkout PR Branch
+        id: pr-git
         run: |
           gh pr checkout ${{ steps.pr-number.outputs.number }}
           echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
-        id: pr-git
         env:
           GH_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
 
       - name: Get PR details
         id: pr-details
+        env:
+          GH_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
+          PR_NUM: ${{ steps.pr-number.outputs.number }}
         run: |
-          gh api /repos/${{ github.repository }}/pulls/${{ steps.pr-number.outputs.number }} > pr_data.json
+          # 1. Fetch PR details
+          gh api "/repos/${{ github.repository }}/pulls/$PR_NUM" > pr_data.json
           echo "title<<EOF" >> $GITHUB_OUTPUT
           jq -r .title pr_data.json >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
           echo "base=$(jq -r .base.ref pr_data.json)" >> $GITHUB_OUTPUT
-        env:
-          GH_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
+
+          # 2. Identify the bot's username dynamically
+          BOT_USER=$(gh api user --jq .login)
+          echo "Bot user identified as: $BOT_USER"
+
+          # 3. Fetch previous reviews by the bot
+          gh api "/repos/${{ github.repository }}/pulls/$PR_NUM/reviews" > reviews.json
+          
+          # Filter only reviews made by the bot that contain a commit_id
+          jq --arg bot "$BOT_USER" '[.[] | select(.user.login == $bot and .commit_id != null)]' reviews.json > bot_reviews.json
+          
+          LAST_REVIEWED_SHA=$(jq -r '.[-1].commit_id // empty' bot_reviews.json)
+          
+          # 4. Check for incremental vs full review
+          REVIEW_MODE="FULL"
+          DIFF_BASE="origin/$(jq -r .base.ref pr_data.json)"
+          
+          if [ -n "$LAST_REVIEWED_SHA" ]; then
+            echo "Found previous review at commit: $LAST_REVIEWED_SHA"
+            # Check if previous reviewed SHA still exists in the branch history (no force push)
+            if git merge-base --is-ancestor "$LAST_REVIEWED_SHA" HEAD 2>/dev/null; then
+              if [ "$LAST_REVIEWED_SHA" = "$(git rev-parse HEAD)" ]; then
+                echo "No new commits since last review."
+                REVIEW_MODE="NO_CHANGES"
+              else
+                echo "Clean commit ancestry confirmed. Running incremental review."
+                REVIEW_MODE="INCREMENTAL"
+                DIFF_BASE="$LAST_REVIEWED_SHA"
+              fi
+            else
+              echo "Force-push or rebase detected! Falling back to full review."
+              REVIEW_MODE="FULL_AFTER_FORCE_PUSH"
+            fi
+          fi
+
+          echo "review_mode=$REVIEW_MODE" >> $GITHUB_OUTPUT
+          echo "diff_base=$DIFF_BASE" >> $GITHUB_OUTPUT
+          echo "last_sha=$LAST_REVIEWED_SHA" >> $GITHUB_OUTPUT
+
+          # 5. Extract past feedback summary to provide to the agent
+          jq '[.[] | {state: .state, body: .body, submitted_at: .submitted_at}]' bot_reviews.json > past_reviews.json
+
+      - name: Stop if no changes
+        if: steps.pr-details.outputs.review_mode == 'NO_CHANGES'
+        run: |
+          echo "Head commit hasn't changed since last review. Skipping run."
+          exit 0
 
       - name: Install OpenCode
         run: curl -fsSL https://opencode.ai/install | bash
@@ -62,22 +122,36 @@ jobs:
           PR_SHA: ${{ steps.pr-git.outputs.sha }}
           PR_BASE: ${{ steps.pr-details.outputs.base }}
           PR_NUMBER: ${{ steps.pr-number.outputs.number }}
+          DIFF_BASE: ${{ steps.pr-details.outputs.diff_base }}
+          REVIEW_MODE: ${{ steps.pr-details.outputs.review_mode }}
           OPENCODE_MAIN_MODEL: ${{ vars.OPENCODE_MAIN_MODEL }}
         run: |
           PR_BODY=$(jq -r .body pr_data.json)
+          PAST_REVIEWS=$(cat past_reviews.json)
+
           cat > /tmp/prompt.txt <<PROMPT_EOF
           You are reviewing Pull Request #$PR_NUMBER: '$PR_TITLE'
-          Base branch: origin/$PR_BASE
-          Head commit: $PR_SHA
+          Target Base Branch: origin/$PR_BASE
+          Head Commit: $PR_SHA
+          Review Mode: $REVIEW_MODE
+          Diff Comparison Base: $DIFF_BASE
 
           <pr-description>
           $PR_BODY
           </pr-description>
 
+          <previous-reviews-by-you>
+          $PAST_REVIEWS
+          </previous-reviews-by-you>
+
           Guidelines:
+          - If Review Mode is:
+            - "INCREMENTAL": Focus primarily on changes between $DIFF_BASE and HEAD. Check if issues raised in your previous review have been resolved.
+            - "FULL_AFTER_FORCE_PUSH": A rebase/force-push occurred. Review the entire PR against origin/$PR_BASE, keeping in mind past feedback.
+            - "FULL": This is the initial review.
           - Review the code for bugs, regressions, performance issues, code quality, and readability.
           - Suggest improvments or fixes.
-          - Check the list of changed files using: git diff --name-only origin/$PR_BASE...HEAD
+          - Check the list of changed files using: git diff --name-only origin/$DIFF_BASE...HEAD
           - Read local files directly from the workspace to maintain full context.
           - Diffs are important but make sure you read the entire file when needed to get full context.
           - Avoid running huge unbounded diff commands into stdout.
@@ -107,7 +181,7 @@ jobs:
           Rules for \`event\`:
           - Use "APPROVE" if the code looks great with no blockers (empty \`comments: []\` or only minor nits).
           - Use "REQUEST_CHANGES" if there are critical bugs, security issues, or breaking changes.
-          - Use "COMMENT" for general non-blocking feedback.
+          - Use "COMMENT" if the code looks great with no blockers, but the changes are too drastic, and require the opinion of other maintainers.
 
           Rules for \`comments\`:
           - \`line\` MUST be a line number present in the diff (added or modified context).
