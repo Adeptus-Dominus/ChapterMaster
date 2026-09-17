@@ -136,6 +136,11 @@ jobs:
 
           You are an expert code reviewer evaluating Pull Request #$PR_NUMBER: $PR_TITLE
 
+          - Target Base Branch: origin/$PR_BASE
+          - Head Commit: $PR_SHA
+          - Review Mode: $REVIEW_MODE
+          - Diff Base: $DIFF_BASE
+
           # REVIEW GUIDELINES
 
           - If Review Mode is:
@@ -153,11 +158,6 @@ jobs:
 
           # PR CONTEXT
 
-          - Target Base Branch: origin/$PR_BASE
-          - Head Commit: $PR_SHA
-          - Review Mode: $REVIEW_MODE
-          - Diff Base: $DIFF_BASE
-
           <pr-description>
           $PR_BODY
           </pr-description>
@@ -165,8 +165,6 @@ jobs:
           <previous-reviews-by-you>
           $PAST_REVIEWS
           </previous-reviews-by-you>
-
-
 
           # REVIEW SUBMISSION
 
