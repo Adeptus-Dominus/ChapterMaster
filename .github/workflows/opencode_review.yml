@@ -29,6 +29,15 @@ jobs:
       pull-requests: write
 
     steps:
+      - name: Acknowledge Command
+        if: github.event_name == 'issue_comment'
+        env:
+          GITHUB_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
+          GH_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
+          COMMENT_ID: ${{ github.event.comment.id }}
+        run: |
+          gh api repos/${{ github.repository }}/issues/comments/${COMMENT_ID}/reactions -f content='eyes'
+    
       - name: Get PR number
         id: pr-number
         run: |
