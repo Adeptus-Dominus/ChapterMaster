@@ -3,6 +3,7 @@ function SectorHandler() constructor {
     year_fraction = 0;
     year = 735;
     check_number = 5;
+    sector_clusters = [];
 
     static date = function() {
         var yf = "";
