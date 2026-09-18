@@ -697,11 +697,11 @@ function scr_ui_manage() {
 
     if ((zoomed == 0) && (menu == 1) && (managing >= 0)) {
         if (managing > 0) {
-            if (managing == 14){
-                if (scr_has_adv("Spiritual Healers")){
+            if (managing == 14) {
+                if (scr_has_adv("Spiritual Healers")) {
                     switch_view_company(12);
                 }
-                if (scr_has_adv("Tech-Cult Religion")){
+                if (scr_has_adv("Tech-Cult Religion")) {
                     switch_view_company(15);
                 }
             }

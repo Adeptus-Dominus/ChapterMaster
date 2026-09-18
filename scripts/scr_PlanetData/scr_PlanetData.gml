@@ -1545,7 +1545,7 @@ function PlanetData(_planet, _system) constructor {
     };
 
     static planet_selection_logic = function() {
-        if (!instance_exists(obj_star_select)){
+        if (!instance_exists(obj_star_select)) {
             exit;
         }
         var planet_is_allies = scr_is_planet_owned_by_allies(system, planet);
@@ -1606,6 +1606,7 @@ function PlanetData(_planet, _system) constructor {
             exit;
         }
     };
+
     static psionic_chart = [
         "Inert",
         "Minor",
@@ -1614,6 +1615,7 @@ function PlanetData(_planet, _system) constructor {
         "Widespread",
         "Rampant",
     ];
+
     static draw_planet_population_controls = function() {
         if (is_hulk) {
             return;
@@ -1630,18 +1632,13 @@ function PlanetData(_planet, _system) constructor {
         draw_set_halign(fa_left);
 
         var _psionic_string = obj_star_select.planet_psionic_rating;
-        _psionic_string.update({
-            x1 : xx + 35,
-            y1 : yy + 70,
-            text : $"Psionic Factor : {psionic_chart[population_psionic]}({population_psionic})",
-            tooltip : $"the general susceptibility of the population to be psionically gifted;\na higher psionic factor will yield more marines eligible for training as {string_plural(obj_ini.player_role_data[eROLE.LIBRARIAN].role, 2)}\nHigher factors will also on average produce more potent psykers.",
-        });
+        _psionic_string.update({x1: xx + 35, y1: yy + 70, text: $"Psionic Factor : {psionic_chart[population_psionic]}({population_psionic})", tooltip: $"the general susceptibility of the population to be psionically gifted;\na higher psionic factor will yield more marines eligible for training as {string_plural(obj_ini.player_role_data[eROLE.LIBRARIAN].role, 2)}\nHigher factors will also on average produce more potent psykers."});
 
-        if (scr_has_disadv("Psyker Intolerant")){
+        if (scr_has_disadv("Psyker Intolerant")) {
             _psionic_string.tooltip = $"Due to your chapter's hatred of Psykers a higher Psionic Factor within the population will generally slow recruitment as your {string_plural(obj_ini.player_role_data[eROLE.APOTHECARY].role, 2)} screen out even latently gifted recruits.";
         }
 
-        if (population_psionic == 0){
+        if (population_psionic == 0) {
             _psionic_string.tooltip += $" This planet will yield virtually no useful Psykers for whatever unknown reason its population is more or less all psionically inert.";
         }
 
