@@ -1104,7 +1104,7 @@ serialize = function() {
         "lair_styles",
         "reclusiam_vars",
         "management_buttons",
-        "settings_buttons_ui_components"
+        "settings_buttons_ui_components",
     ];
     var _excluded_from_save_start = ["restart_"];
 

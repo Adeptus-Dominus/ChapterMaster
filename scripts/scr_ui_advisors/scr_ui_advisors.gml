@@ -78,7 +78,7 @@ function scr_ui_advisors() {
         draw_set_alpha(1);
         draw_set_color(c_gray);
         var _active_roles = active_roles();
-        var _chap_role = reclusiam_vars.chaplain_role
+        var _chap_role = reclusiam_vars.chaplain_role;
         var _chap_count = reclusiam_vars.chapter_chaplains.number();
 
         if (_chap_count > 0) {
