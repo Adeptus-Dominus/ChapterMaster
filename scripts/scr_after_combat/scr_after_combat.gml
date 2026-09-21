@@ -1,66 +1,69 @@
 /// @self Asset.GMObject.obj_pnunit
+
 function add_marines_to_recovery() {
     var _roles = active_roles();
+    
+    var _bonus_specific = {};
+    
+
+    _bonus_specific[$ obj_ini.role[100][eROLE.CHAPTERMASTER]] = 720;
+    
+
+    _bonus_specific[$ "Forge Master"] = 360;
+    _bonus_specific[$ "Master of Sanctity"] = 360;
+    _bonus_specific[$ "Master of the Apothecarion"] = 360;
+    _bonus_specific[$ $"Chief {_roles[eROLE.LIBRARIAN]}"] = 360;
+    
+
+    _bonus_specific[$ _roles[eROLE.CAPTAIN]] = 160;
+    _bonus_specific[$ _roles[eROLE.HONOURGUARD]] = 160;
+    _bonus_specific[$ _roles[eROLE.ANCIENT]] = 160;
+    
+
+    _bonus_specific[$ _roles[eROLE.VETERANSERGEANT]] = 80;
+    _bonus_specific[$ _roles[eROLE.TERMINATOR]] = 80;
+    
+
+    _bonus_specific[$ _roles[eROLE.VETERAN]] = 40;
+    _bonus_specific[$ _roles[eROLE.SERGEANT]] = 40;
+    _bonus_specific[$ _roles[eROLE.CHAMPION]] = 40;
+    _bonus_specific[$ _roles[eROLE.CHAPLAIN]] = 40;
+    _bonus_specific[$ _roles[eROLE.APOTHECARY]] = 40;
+    _bonus_specific[$ _roles[eROLE.TECHMARINE]] = 40;
+    _bonus_specific[$ _roles[eROLE.LIBRARIAN]] = 40;
+    _bonus_specific[$ "Codiciery"] = 40;
+    _bonus_specific[$ "Lexicanum"] = 40;
+    
+
+    _bonus_specific[$ _roles[eROLE.TACTICAL]] = 20;
+    _bonus_specific[$ _roles[eROLE.ASSAULT]] = 20;
+    _bonus_specific[$ _roles[eROLE.DEVASTATOR]] = 20;
+
     for (var i = 0; i < array_length(unit_struct); i++) {
         var _unit = unit_struct[i];
-        if (is_struct(_unit) && ally[i] == false) {
-            if (marine_dead[i] == 1 && marine_type[i] != "") {
-                var _role_priority_bonus = 0;
-                var _chief_librarian = $"Chief {_roles[eROLE.LIBRARIAN]}";
-                switch (_unit.role()) {
-                    case obj_ini.role[100][eROLE.CHAPTERMASTER]:
-                        _role_priority_bonus = 720;
-                        break;
-                    case "Forge Master":
-                    case "Master of Sanctity":
-                    case "Master of the Apothecarion":
-                    case _chief_librarian:
-                        _role_priority_bonus = 360;
-                        break;
-                    case _roles[eROLE.CAPTAIN]:
-                    case _roles[eROLE.HONOURGUARD]:
-                    case _roles[eROLE.ANCIENT]:
-                        _role_priority_bonus = 160;
-                        break;
-                    case _roles[eROLE.VETERANSERGEANT]:
-                    case _roles[eROLE.TERMINATOR]:
-                        _role_priority_bonus = 80;
-                        break;
-                    case _roles[eROLE.VETERAN]:
-                    case _roles[eROLE.SERGEANT]:
-                    case _roles[eROLE.CHAMPION]:
-                    case _roles[eROLE.CHAPLAIN]:
-                    case _roles[eROLE.APOTHECARY]:
-                    case _roles[eROLE.TECHMARINE]:
-                    case _roles[eROLE.LIBRARIAN]:
-                    case "Codiciery":
-                    case "Lexicanum":
-                        _role_priority_bonus = 40;
-                        break;
-                    case _roles[eROLE.TACTICAL]:
-                    case _roles[eROLE.ASSAULT]:
-                    case _roles[eROLE.DEVASTATOR]:
-                        _role_priority_bonus = 20;
-                        break;
-                    case _roles[eROLE.SCOUT]:
-                    default:
-                        _role_priority_bonus = 0;
-                        break;
-                }
+        
+        if (!is_struct(_unit) || ally[i] == true) continue;
+        if (marine_dead[i] != 1 || marine_type[i] == "") continue;
 
-                var _priority = _unit.experience + _role_priority_bonus;
-                var _recovery_candidate = {
-                    "id": i,
-                    "unit": _unit,
-                    "column_id": id,
-                    "priority": _priority,
-                };
+        
+        var _role_title = _unit.role();
+        var _role_priority_bonus = struct_exists(_bonus_specific, _role_title) ? _bonus_specific[$ _role_title] : 0;
+        
+        var _priority = _unit.experience + _role_priority_bonus;
+        var _recovery_candidate = {
+            "id": i,
+            "unit": _unit,
+            "column_id": id,
+            "priority": _priority,
+        };
 
-                ds_priority_add(obj_ncombat.marines_to_recover, _recovery_candidate, _recovery_candidate.priority);
-            }
-        }
+        ds_priority_add(obj_ncombat.marines_to_recover, _recovery_candidate, _recovery_candidate.priority);
     }
 }
+
+
+
+
 
 /// @self Asset.GMObject.obj_pnunit
 function add_vehicles_to_recovery() {
