@@ -348,6 +348,17 @@ function generate_advantages() {
     return json_to_gamemaker(working_directory + $"main/chapter_advantages.json", json_parse);
 }
 
+/// @desc Clears activated traits and shared meta so each chapter pick starts clean.
+function reset_chapter_traits() {
+    obj_creation.chapter_trait_meta = [];
+    for (var i = 0; i < array_length(obj_creation.all_advantages); i++) {
+        obj_creation.all_advantages[i].activated = false;
+    }
+    for (var i = 0; i < array_length(obj_creation.all_disadvantages); i++) {
+        obj_creation.all_disadvantages[i].activated = false;
+    }
+}
+
 function setup_chapter_traits() {
     Advantage.id_start = 1;
     Disadvantage.id_start = 1;

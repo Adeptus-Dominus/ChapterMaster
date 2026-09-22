@@ -189,6 +189,7 @@ function ChapterData() constructor {
 /// @description called when a chapter's icon is clicked on the first page after the main menu.
 /// used to set up initialise the data that is later fed into `scr_initialize_custom` when the game starts
 function scr_chapter_new(chapter_identifier) {
+    reset_chapter_traits();
     full_liveries = ""; // until chapter objects are in full use kicks off livery propogation
 
     company_liveries = "";

@@ -23,6 +23,7 @@ function scr_chapter_random(custom_or_random) {
     found_secret = 0;
     points = 0;
     maxpoints = 100;
+    reset_chapter_traits();
     fleet_type = 1;
     strength = 5;
     cooperation = 5;
