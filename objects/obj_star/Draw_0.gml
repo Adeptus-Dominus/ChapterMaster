@@ -37,7 +37,7 @@ draw_set_font(cjk_font(fnt_cul_14));
 draw_set_alpha(1);
 
 if (global.load == -1 && (obj_controller.zoomed || in_camera_view(star_box_shape()))) {
-    if (garrison) {
+    if (has_garrison()) {
         draw_sprite(spr_new_resource, 3, x - 30, y + 15);
         if (scr_hit(x - 40, y + 10, x - 10, y + 35)) {
             tooltip_draw(localize("Marine Garrison in system"));

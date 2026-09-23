@@ -121,7 +121,28 @@ add_feature = function(planet, feature) {
 };
 
 system_player_ground_forces = 0;
-garrison = false;
+
+/// @desc Reports whether any planet in this system holds a garrison squad that still has members.
+/// @returns {Bool}
+function has_garrison() {
+    for (var _planet = 1; _planet <= planets; _planet++) {
+        var _operative_count = array_length(p_operatives[_planet]);
+        for (var i = 0; i < _operative_count; i++) {
+            var _operative = p_operatives[_planet][i];
+            if (_operative.type != "squad") {
+                continue;
+            }
+            if (_operative.job != "garrison") {
+                continue;
+            }
+            if (array_length(fetch_squad(_operative.reference).members) > 0) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
 
 var _array_size = 23;
 present_fleet = array_create(_array_size, 0);
@@ -172,6 +193,7 @@ serialize = function() {
         "serialize",
         "deserialize",
         "arraysum",
+        "garrison",
         "system_garrison",
         "system_sabatours",
         "system_datas",

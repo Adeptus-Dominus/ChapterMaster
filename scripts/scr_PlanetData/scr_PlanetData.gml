@@ -1522,7 +1522,6 @@ function PlanetData(_planet, _system) constructor {
             task_time: 0,
         };
         add_operatives(operation_data);
-        system.garrison = true;
 
         //if there was an outstanding mission to provide the given garrison
         var garrison_request = find_problem("provide_garrison");
@@ -1534,7 +1533,6 @@ function PlanetData(_planet, _system) constructor {
 
     static set_star_select_planet = function() {
         obj_star_select.garrison = garrisons;
-        system.garrison = garrisons.garrison_force;
         obj_star_select.feature = "";
         buttons_selected = false;
         garrisons.update();
