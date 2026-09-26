@@ -76,7 +76,6 @@ function setup_default_gears() {
     return default_role_data;
 }
 
-
 function update_role_data_wth_defaults() {
     for (var i = 0; i < array_length(player_role_data); i++) {
         var _role_data = player_role_data[i];
