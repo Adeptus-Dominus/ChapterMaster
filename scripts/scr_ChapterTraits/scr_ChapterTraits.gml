@@ -215,14 +215,14 @@ function ChapterTrait(trait) constructor {
             _str += localize("Decrease Character trait spawns : {0}\n", [character_spawn_decrease]);
         }
 
-        if (array_length(bans_roles)){
-            for (var i = 0; i < array_length(bans_roles); i++){
-                if (!struct_exists(global.string_to_enum_roles_map , bans_roles[i])){
+        if (array_length(bans_roles)) {
+            for (var i = 0; i < array_length(bans_roles); i++) {
+                if (!struct_exists(global.string_to_enum_roles_map, bans_roles[i])) {
                     continue;
                 }
                 var _role_id = global.string_to_enum_roles_map[$ bans_roles[i]];
                 var _role = obj_creation.default_role_data[_role_id].role;
-                _str += localize("Restricts chapter use of : {0}\n", [_role])
+                _str += localize("Restricts chapter use of : {0}\n", [_role]);
             }
         }
         return _str;
@@ -498,11 +498,11 @@ function ChapterGameData(data = {}) constructor {
         }
 
         //ensure alter value never brings disposition higher thann 100 or lower than 0
-        var _final_disp_val =  alter_value + obj_controller.disposition[faction];
-        if (_final_disp_val > 100){
+        var _final_disp_val = alter_value + obj_controller.disposition[faction];
+        if (_final_disp_val > 100) {
             alter_value -= _final_disp_val - 100;
-        } else if (_final_disp_val < -100){
-            alter_value += (_final_disp_val * -1);
+        } else if (_final_disp_val < -100) {
+            alter_value += _final_disp_val * -1;
         }
         return alter_value;
     };

@@ -8,26 +8,26 @@ function ChapterMaster() constructor {
         return fetch_unit([0, 0]);
     };
 
-    static check_alive = function(){
-        if (obj_controller.alarm[7] != -1){
+    static check_alive = function() {
+        if (obj_controller.alarm[7] != -1) {
             exit;
         }
         var _alive = true;
-        if (array_length(obj_ini.TTRPG[0]) == 0){
+        if (array_length(obj_ini.TTRPG[0]) == 0) {
             _alive = false;
         }
 
-        if (_alive){
+        if (_alive) {
             var _cm = get_struct();
-            if (!is_struct(_cm) || !_cm.has_role(eROLE.CHAPTERMASTER)){
+            if (!is_struct(_cm) || !_cm.has_role(eROLE.CHAPTERMASTER)) {
                 _alive = false;
             }
         }
 
-        if (!_alive){
+        if (!_alive) {
             obj_controller.alarm[7] = 15;
         }
-    }
+    };
 }
 
 function cm_obj() {

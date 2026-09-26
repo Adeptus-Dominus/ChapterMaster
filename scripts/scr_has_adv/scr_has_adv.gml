@@ -16,14 +16,13 @@ function scr_has_adv(advantage) {
     return result;
 }
 
-
 /**
  * @arg {array} array of advantages; advantage name e.g. ["Tech-Scavengers"]
  * @return {Bool}
  */
-function scr_has_adv_any(advantages){
-    for (var i = 0; i < array_length(advantages); i++){
-        if (scr_has_adv(advantages[i])){
+function scr_has_adv_any(advantages) {
+    for (var i = 0; i < array_length(advantages); i++) {
+        if (scr_has_adv(advantages[i])) {
             return true;
         }
     }

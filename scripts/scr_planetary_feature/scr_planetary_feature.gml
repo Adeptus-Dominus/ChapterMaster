@@ -591,7 +591,7 @@ function discover_stc_fragment_popup(techies, mechanicus_reps) {
         }
 
         var _trade = new TradeAttempt(eFACTION.MECHANICUS);
-        if (_trade.find_trade_locations()){
+        if (_trade.find_trade_locations()) {
             array_push(options, {str1: "Send it to the Adeptus Mechanicuss.", choice_func: send_stc_to_adeptus_mech});
         }
     }
@@ -968,7 +968,7 @@ function receive_artifact_in_discussion() {
 function send_stc_to_adeptus_mech() {
     with (obj_ground_mission) {
         var _trade = new TradeAttempt(eFACTION.MECHANICUS);
-        _trade.find_trade_locations()
+        _trade.find_trade_locations();
         _trade.demand_options = [];
         _trade.offer_options = [];
         _trade.new_demand_buttons(0, "Requisition", "req");
@@ -1004,7 +1004,7 @@ function send_stc_to_adeptus_mech() {
             _increment = 11;
         }
 
-        if (_increment > 0){
+        if (_increment > 0) {
             alter_disposition(eFACTION.MECHANICUS, _increment);
         }
         with (obj_controller) {

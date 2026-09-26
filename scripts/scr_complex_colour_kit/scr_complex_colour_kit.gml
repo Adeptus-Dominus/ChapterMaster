@@ -77,7 +77,7 @@ function setup_complex_livery_shader(setup_role, unit = "none") {
                 break;
             }
         }
-        
+
         if (_is_unit) {
             _data_set = variable_clone(_data_set);
             var _company_livery = obj_ini.company_liveries[unit.company];
