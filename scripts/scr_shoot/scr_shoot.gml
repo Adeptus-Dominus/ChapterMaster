@@ -495,6 +495,20 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                         target_object.dudes_num[target_type] -= casualties;
                         obj_ncombat.enemy_forces -= casualties;
                     }
+                    if (obj_ncombat.battle_special != ""){
+                        if (is_struct(obj_ncombat.special_feature) && is_instanceof(obj_ncombat.special_feature, PlanetProblem)){
+                            var _feat = obj_ncombat.special_feature;
+                            _feat.casualty_packet = {
+                                number : casualties,
+                                target : target_object,
+                                target_type,
+                                weapon : weapon_index_position < 0 ? "defences" : wep_title[weapon_index_position]
+
+                            }
+                            _feat.battle_on_enemy_casulties();
+                        }
+                    }
+
                 }
             }
 

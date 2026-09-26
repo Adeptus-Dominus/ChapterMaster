@@ -155,6 +155,7 @@ btn_back.button_color = CM_GREEN_COLOR;
 btn_back.width = 90;
 
 if (purge == 0) {
+    var _p_data = p_target.get_planet_data(planet_number);
     sisters = p_target.p_sisters[planet_number];
     eldar = p_target.p_eldar[planet_number];
     ork = p_target.p_orks[planet_number];
@@ -211,11 +212,11 @@ if (purge == 0) {
     }
 
     var spesh = false;
-    if ((planet_feature_bool(p_target.p_feature[planet_number], eP_FEATURES.WARLORD10) == 1) && (obj_controller.faction_defeated[10] == 0) && (obj_controller.faction_gender[10] == 1) && (obj_controller.known[eFACTION.CHAOS] > 0) && (obj_controller.turn >= obj_controller.chaos_turn)) {
+    if ((_p_data.has_feature(eP_FEATURES.WARLORD10)) && (obj_controller.faction_defeated[10] == 0) && (obj_controller.faction_gender[10] == 1) && (obj_controller.known[eFACTION.CHAOS] > 0) && (obj_controller.turn >= obj_controller.chaos_turn)) {
         spesh = true;
     }
 
-    if (has_problem_planet(planet_number, "tyranid_org", p_target)) {
+    if (_p_data.has_problem("tyranid_org")) {
         tyranids = 2;
         attacking = 9;
     }

@@ -210,31 +210,33 @@ try {
     if ((press == 0) && array_length(options) || ((demand == 1) && (mission != "") && (string_count("Inquisition", title) > 0)) || ((demand == 1) && (title == "Inquisition Recon"))) {
         if (title == "Inquisition Recon") {
             obj_controller.temp[200] = string(loc);
-            var mission_star = find_star_by_name(obj_controller.temp[200]);
-            if (add_new_problem(planet, "recon", estimate, mission_star)) {
-                title = "Inquisition Mission Demand";
-                text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  {global.chapter_name} are to land Astartes on {mission_star.name} {scr_roman(planet)} to investigate the planet within {estimate} months.";
-                with (mission_star) {
-                    new_star_event_marker("green");
-                }
-                scr_event_log("", $"Inquisition Mission Accepted: The Inquisition wish for Astartes to land on and investigate {mission_star.name} {scr_roman(planet)} within {estimate} months.", mission_star.name);
+            var _mission_star = find_star_by_name(obj_controller.temp[200]);
+            var _pdata = _mission_star.get_planet_data(planet);
+            var _problem = new_problem("recon", estimate);
+
+            title = "Inquisition Mission Demand";
+            text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  {global.chapter_name} are to land Astartes on {_mission_star.name} {scr_roman(planet)} to investigate the planet within {estimate} months.";
+            with (_mission_star) {
+                new_star_event_marker("green");
             }
+            scr_event_log("", $"Inquisition Mission Accepted: The Inquisition wish for Astartes to land on and investigate {_mission_star.name} {scr_roman(planet)} within {estimate} months.", _mission_star.name);
+
         }
 
         if ((mission != "") && (title == "Inquisition Mission")) {
             obj_controller.temp[200] = string(loc);
             var onceh = 0;
-            var mission_star = find_star_by_name(obj_controller.temp[200]);
+            var _mission_star = find_star_by_name(obj_controller.temp[200]);
             var mission_is_go = false;
-            if (mission_star != noone && planet > 0) {
+            if (_mission_star != noone && planet > 0) {
                 var _estimate = estimate;
                 var _planet = planet;
                 var _mission = mission;
-                with (mission_star) {
-                    if (add_new_problem(_planet, _mission, _estimate)) {
-                        new_star_event_marker("green");
-                        mission_is_go = true;
-                    }
+                var _p_data = _mission_star.get_planet_data(_planet);
+                with (_mission_star) {
+                    _p_data.new_problem(_mission, _estimate)
+                    new_star_event_marker("green");
+                    mission_is_go = true;
                 }
 
                 if (mission_is_go) {
@@ -243,41 +245,21 @@ try {
                     }
 
                     if (mission == "purge") {
-                        scr_event_log("", $"Inquisition Mission Accepted: The nobles of {mission_star.name} {scr_roman(planet)} must be selectively purged within {estimate} months.", mission_star.name);
+                        scr_event_log("", $"Inquisition Mission Accepted: The nobles of {_mission_star.name} {scr_roman(planet)} must be selectively purged within {estimate} months.", _mission_star.name);
                         if (demand) {
-                            text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  {global.chapter_name} are to selectively purge the Nobles on {mission_star.name} {scr_roman(onceh)} within {estimate} months.";
+                            text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  {global.chapter_name} are to selectively purge the Nobles on {_mission_star.name} {scr_roman(onceh)} within {estimate} months.";
                         }
                     } else if (mission == "cleanse") {
-                        scr_event_log("", $"Inquisition Mission Accepted: The mutants beneath {planet_numeral_name(planet, mission_star)} must be cleansed by fire within {estimate} months.", mission_star.name);
+                        scr_event_log("", $"Inquisition Mission Accepted: The mutants beneath {planet_numeral_name(planet, _mission_star)} must be cleansed by fire within {estimate} months.", _mission_star.name);
                         if (demand) {
-                            text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  {global.chapter_name} are to cleanse by fire the mutants in Hive {planet_numeral_name(planet, mission_star)} within {estimate} months.";
+                            text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  {global.chapter_name} are to cleanse by fire the mutants in Hive {planet_numeral_name(planet, _mission_star)} within {estimate} months.";
                         }
                     }
                     if (mission == "spyrer") {
-                        scr_event_log("", $"Inquisition Mission Accepted: The Spyrer on {mission_star.name} {scr_roman(planet)} must be killed within {estimate} months.", mission_star.name);
+                        scr_event_log("", $"Inquisition Mission Accepted: The Spyrer on {_mission_star.name} {scr_roman(planet)} must be killed within {estimate} months.", _mission_star.name);
                         if (demand) {
-                            text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  An out of control Spyrer on Hive {mission_star.name} {scr_roman(onceh)} must be removed within {estimate} months.";
+                            text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  An out of control Spyrer on Hive {_mission_star.name} {scr_roman(onceh)} must be removed within {estimate} months.";
                         }
-                    } else if (mission == "tyranid_org") {
-                        image = "webber";
-                        title = "New Equipment";
-                        fancy_title = 0;
-                        text_center = 0;
-                        text = $"{global.chapter_name} have been provided with 4x Astartes Webbers in order to complete the mission.";
-
-                        if (demand) {
-                            text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  {global.chapter_name} are to capture a Gaunt organism and return it, unharmed- 4x Webbers have been provided for this purpose.";
-                        }
-
-                        reset_popup_options();
-                        scr_add_item("Webber", 4);
-                        obj_controller.cooldown = 10;
-                        scr_event_log("", $"Inquisition Mission Accepted: The Inquisition wishes for the capture of a particular strain Gaunt noticed on {mission_star.name} {scr_roman(planet)} is advisable.", mission_star.name);
-                        obj_controller.useful_info += "Tyr|";
-                        if (demand) {
-                            demand = 0;
-                        }
-                        exit;
                     } else if (mission == "ethereal") {
                         with (obj_star) {
                             if ((p_tau[1] >= 4) || (p_tau[2] >= 4) || (p_tau[3] >= 4) || (p_tau[4] >= 4)) {
@@ -289,15 +271,10 @@ try {
 
                         if (demand) {
                             title = "Inquisition Mission Demand";
-                            text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  {global.chapter_name} are to capture the Tau Ethereal somewhere within the {mission_star.name} system.";
+                            text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  {global.chapter_name} are to capture the Tau Ethereal somewhere within the {_mission_star.name} system.";
                         }
-                        if (has_problem_star("recon", mission_star)) {
-                            scr_event_log("", $"Inquisition Mission Accepted: The Inquisition wish for {global.chapter_name} to capture the Tau Ethereal somewhere within {mission_star.name}.", mission_star.name);
-                        }
-                    } else if (mission == "demon_world") {
-                        scr_event_log("", $"Inquisition Mission Accepted: The demon world of {mission_star.name} {scr_roman(planet)} will be purged by your hand.", mission_star.name);
-                        if (demand) {
-                            text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  An out of control Demon World {mission_star.name} {scr_roman(onceh)} must be cleansed within {estimate} months.";
+                        if (has_problem_star("recon", _mission_star)) {
+                            scr_event_log("", $"Inquisition Mission Accepted: The Inquisition wish for {global.chapter_name} to capture the Tau Ethereal somewhere within {_mission_star.name}.", _mission_star.name);
                         }
                     }
                 }
@@ -352,11 +329,6 @@ try {
             } // Remove multi-choices
         }
 
-        if ((image == "inquisition") && (title == "Investigation Completed")) {
-            obj_temp7.alarm[1] = 1;
-            instance_destroy();
-        }
-
         if (image == "artifact2") {
             ground_forces_collect_artifact();
             obj_controller.cooldown = 10;
@@ -378,12 +350,6 @@ try {
         }
         if (title == "Inquisition Recon") {
             obj_controller.disposition[4] -= 2;
-        }
-        if ((image == "inquisition") && (title == "Investigation Completed")) {
-            with (obj_temp7) {
-                instance_destroy();
-            }
-            instance_destroy();
         }
 
         if (title == "Mercy Plea") {

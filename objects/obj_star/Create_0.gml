@@ -67,13 +67,12 @@ p_operatives = array_create_advanced(_planet_array_size, []);
 p_feature = array_create_advanced(_planet_array_size, []);
 p_upgrades = array_create_advanced(_planet_array_size, []);
 p_influence = array_create_advanced(_planet_array_size, array_create(15, 0));
-p_problem = array_create_advanced(_planet_array_size, array_create(8, ""));
-p_problem_other_data = array_create_advanced(_planet_array_size, array_create_advanced(8, {}));
-p_timer = array_create_advanced(_planet_array_size, array_create(8, -1));
+p_problem = array_create_advanced(_planet_array_size, []);
 p_psionic = [];
 for (var i = 0; i < _planet_array_size; i++) {
     p_psionic[i] = irandom(5);
 }
+
 system_datas = array_create(8, undefined);
 system_garrison = array_create(8, undefined);
 system_sabatours = array_create(8, undefined);
@@ -119,6 +118,25 @@ get_planet_data = function(planet) {
 add_feature = function(planet, feature) {
     array_push(p_feature[planet], feature);
 };
+
+system_problems = [];
+
+add_problem = function(p_id, data){
+    var _prob = new SystemProblem(name, data, system);
+    array_push(system_problems, _prob);
+    return _prob;
+}
+
+/// @self Asset.GMObject.obj_star
+has_orbiting_player_fleet = function () {
+    if (instance_exists(obj_p_fleet)) {
+        var _nearest = instance_nearest(x, y, obj_p_fleet);
+        if (point_distance(_nearest.x, _nearest.y, x, y) == 0) {
+            return true;
+        }
+    }
+    return false;
+}
 
 system_player_ground_forces = 0;
 

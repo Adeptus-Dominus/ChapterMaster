@@ -212,27 +212,16 @@ function scr_crusade() {
 
 //TODO never place the star out of reach of a player fleet, eiter increase allowed response time or find nearer planet
 function launch_crusade() {
-    var star_id = scr_random_find(2, true, "", "");
-    if (star_id == noone) {
+    var _star_id = scr_random_find(2, true, "", "");
+    if (_star_id == noone) {
         LOGGER.error("RE: Crusade, couldn't find a star for the crusade");
         return false;
     } else {
-        //TODO decide the target/purpose of the crusade to create more variety and to help with post crusade rewards
-        var _nearest_player_fleet = get_nearest_player_fleet(star_id.x, star_id.y);
+        var _nearest_player_fleet = get_nearest_player_fleet(_star_id.x, _star_id.y);
         if (_nearest_player_fleet == noone) {
             return false;
         }
-        var travel_leeway = 10;
-        if (_nearest_player_fleet.action == "move") {
-            travel_leeway += _nearest_player_fleet.action_eta;
-        }
-        var _eta = get_viable_travel_time(travel_leeway, _nearest_player_fleet.x, _nearest_player_fleet.y, star_id.x, star_id.y, _nearest_player_fleet, false);
-        scr_popup("Crusade", $"Fellow Astartes legions are preparing to embark on a Crusade to a nearby sector.  Your forces are expected at {star_id.name}; {_eta} months from now your ships there shall begin their journey.", "crusade", "");
-        var star_alert = instance_create(star_id.x + 16, star_id.y - 24, obj_star_event);
-        star_alert.image_alpha = 1;
-        star_alert.image_speed = 1;
-        scr_event_log("", $"A Crusade is called; our forces are expected at {star_id.name} in {_eta} months.", star_id.name);
-        assigned_crusade = add_new_problem(irandom_range(1, star_id.planets), "great_crusade", _eta, star_id);
+        _star_id.add_problem("great_crusade", {nearest_player_fleet:_nearest_player_fleet})
         return true;
     }
 }

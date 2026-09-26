@@ -128,7 +128,7 @@ function scr_cheatcode(argument0) {
                     }
                     with (obj_star) {
                         for (var i = 1; i <= planets; i++) {
-                            var existing_problem = false; //has_any_problem_planet(i);
+                            var existing_problem = false;
                             if (!existing_problem) {
                                 if (p_owner[i] == eFACTION.IMPERIUM) {
                                     LOGGER.debug("mission");
@@ -225,8 +225,6 @@ function scr_cheatcode(argument0) {
                         new_inquisitor_inspection();
                     } else if (cheat_arguments[0] == "slaughtersong") {
                         create_starship_event();
-                    } else if (cheat_arguments[0] == "fallen") {
-                        event_fallen();
                     } else if (cheat_arguments[0] == "surfremove") {
                         var _star_id = scr_random_find(0, true, "", "");
                         add_event({duration: 2, e_id: "governor_assassination", variant: 2, system: _star_id.name, planet: irandom_range(1, _star_id.planets)});
@@ -497,12 +495,13 @@ function draw_planet_debug_problems() {
             tooltip_draw(mission_name_key(_keys[i]));
             if (mouse_button_clicked()) {
                 var _p_data = obj_star_select.p_data;
+                _p_data.new_problem(_keys[i], 3);
                 switch (_keys[i]) {
                     case "inquisitor":
                         mission_inquistion_hunt_inquisitor(target.id);
                         break;
-                    case "necron":
-                        mission_inquisition_tomb_world(target.id);
+                    case "inquisition_necron":
+                        mission_inquisition_necron_world(target.id);
                         break;
                     case "mech_raider":
                         spawn_mechanicus_mission("mech_raider");
@@ -515,9 +514,6 @@ function draw_planet_debug_problems() {
                         break;
                     case "succession":
                         _p_data.init_war_of_succession();
-                        break;
-                    case "fallen":
-                        _p_data.init_fallen_marines();
                         break;
                     default:
                         scr_popup("error", "no specific debug action created please consider helping to make one", "");

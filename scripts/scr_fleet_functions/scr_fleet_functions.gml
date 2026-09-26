@@ -1047,7 +1047,7 @@ function fleet_arrival_logic() {
             }
         }
 
-        var kay = 0, temp5 = 0, temp6 = 0, temp7 = 0;
+        var kay = 0, temp5 = 0, temp6 = 0, _final_star = 0;
 
         var _nearest_star = instance_nearest(x, y, obj_star);
 
@@ -1076,23 +1076,23 @@ function fleet_arrival_logic() {
                 if (kay == 50) {
                     temp5 = x + choose(random(300), random(300) * -1);
                     temp6 = y + choose(random(300), random(300) * -1);
-                    temp7 = instance_nearest(temp5, temp6, obj_star);
+                    _final_star = instance_nearest(temp5, temp6, obj_star);
 
-                    if ((owner == eFACTION.ORK) && (temp7.owner != eFACTION.ORK) && (temp7.planets > 0) && (temp7.image_alpha >= 1)) {
+                    if ((owner == eFACTION.ORK) && (_final_star.owner != eFACTION.ORK) && (_final_star.planets > 0) && (_final_star.image_alpha >= 1)) {
                         kay = 55;
                     }
-                    if ((owner == eFACTION.TAU) && (temp7.owner != eFACTION.TAU) && (temp7.planets > 0) && (temp7.image_alpha >= 1)) {
+                    if ((owner == eFACTION.TAU) && (_final_star.owner != eFACTION.TAU) && (_final_star.planets > 0) && (_final_star.image_alpha >= 1)) {
                         kay = 55;
                     }
-                    if ((owner == eFACTION.CHAOS) && (temp7.owner != eFACTION.CHAOS) && (temp7.planets > 0) && (temp7.image_alpha >= 1)) {
+                    if ((owner == eFACTION.CHAOS) && (_final_star.owner != eFACTION.CHAOS) && (_final_star.planets > 0) && (_final_star.image_alpha >= 1)) {
                         kay = 55;
                     }
                 }
             }
 
-            if ((kay == 55) && instance_exists(temp7)) {
-                action_x = temp7.x;
-                action_y = temp7.y;
+            if ((kay == 55) && instance_exists(_final_star)) {
+                action_x = _final_star.x;
+                action_y = _final_star.y;
                 set_fleet_movement();
             }
 

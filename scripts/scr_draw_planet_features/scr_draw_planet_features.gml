@@ -237,7 +237,7 @@ function FeatureSelected(_feature, _system, _planet) constructor {
                         button_text = "Send Hunters";
                         button_function = function() {
                             var dudes = collect_role_group("all", obj_star_select.target.name);
-                            group_selection(dudes, {purpose: "Beast Hunt", purpose_code: feature.problem, number: 3, system: planet_data.system, feature: obj_star_select.feature, planet: planet_data.planet, array_slot: feature.array_position, selections: []});
+                            group_selection(dudes, {purpose: "Beast Hunt", purpose_code: feature.problem, number: 3, system: planet_data.system, feature: obj_star_select.feature, planet: planet_data.planet, selections: []});
                             destroy = true;
                         };
                         break;
@@ -248,7 +248,7 @@ function FeatureSelected(_feature, _system, _planet) constructor {
                         _button_tooltip = "milage may vary on playability of this mission progress at your own risk";
                         button_function = function() {
                             var dudes = collect_role_group("all", obj_star_select.target.name);
-                            group_selection(dudes, {purpose: "Select Squad for Ambush", purpose_code: feature.problem, number: 1, system: planet_data.system, feature: obj_star_select.feature, planet: planet_data.planet, array_slot: feature.array_position, select_type: eMISSION_SELECT_TYPE.SQUADS, selections: []});
+                            group_selection(dudes, {purpose: "Select Squad for Ambush", purpose_code: feature.problem, number: 1, system: planet_data.system, feature: obj_star_select.feature, planet: planet_data.planet, select_type: eMISSION_SELECT_TYPE.SQUADS, selections: []});
                             destroy = true;
                         };
                         break;
@@ -258,7 +258,7 @@ function FeatureSelected(_feature, _system, _planet) constructor {
                         button_text = "Assign Officer";
                         button_function = function() {
                             var dudes = collect_role_group(SPECIALISTS_CAPTAIN_CANDIDATES, obj_star_select.target.name);
-                            group_selection(dudes, {purpose: "Select Officer", purpose_code: feature.problem, number: 1, system: planet_data.system, feature: obj_star_select.feature, planet: planet_data.planet, array_slot: feature.array_position, selections: []});
+                            group_selection(dudes, {purpose: "Select Officer", purpose_code: feature.problem, number: 1, system: planet_data.system, feature: obj_star_select.feature, planet: planet_data.planet, selections: []});
                             destroy = true;
                         };
                         break;

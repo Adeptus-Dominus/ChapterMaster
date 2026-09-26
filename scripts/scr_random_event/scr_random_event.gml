@@ -433,26 +433,22 @@ function scr_random_event(execute_now) {
         }
     } else if (chosen_event == eEVENT.HARLEQUINS) {
         LOGGER.info("RE: Harlequins");
-        var owner = choose(1, 2, 2, 2, 3);
-        var star = scr_random_find(owner, true, "", "");
-        if (!instance_exists(star) && owner != 2) {
-            owner = 2;
-            star = scr_random_find(owner, true, "", "");
+        var _owner = choose(1, 2, 2, 2, 3);
+        var _star = scr_random_find(_owner, true, "", "");
+        if (!instance_exists(_star) && _owner != 2) {
+            _owner = 2;
+            _star = scr_random_find(_owner, true, "", "");
         }
-        if (!instance_exists(star)) {
+        if (!instance_exists(_star)) {
             LOGGER.error("RE: Harlequins, couldn't find star");
             exit;
         }
 
-        var planet = irandom_range(1, star.planets);
-        if (add_new_problem(planet, "harlequins", irandom_range(2, 5), star)) {
-            var text = "Eldar Harlequins have been seen on planet " + string(star.name) + " " + scr_roman(planet) + ". Their purposes are unknown.";
-            scr_popup("Harlequin Troupe", text, "harlequin", "");
-            var star_alert = instance_create(star.x + 16, star.y - 24, obj_star_event);
-            star_alert.image_alpha = 1;
-            star_alert.image_speed = 1;
-            star_alert.col = "green";
-        }
+        var _planet = irandom_range(1, _star.planets);
+        var _pdata = _star.get_planet_data(_planet);
+        _pdata.new_problem("harlequins", irandom_range(2, 5));
+
+
     } else if (chosen_event == eEVENT.SUCCESSION_WAR) {
         LOGGER.info("RE: Succession War");
         var eligible_stars = [];
@@ -719,7 +715,24 @@ function scr_random_event(execute_now) {
     } else if (chosen_event == eEVENT.NECRON_AWAKEN) {
         _evented = awaken_tomb_event();
     } else if (chosen_event == eEVENT.FALLEN) {
-        event_fallen();
+        LOGGER.info("RE: Hunt the Fallen");
+        var stars = scr_get_stars();
+        var valid_stars = scr_get_stars(false, [eFACTION.IMPERIUM]);
+
+        if (array_length(valid_stars) == 0) {
+            LOGGER.error("RE: Hunt the Fallen, coulnd't find a star");
+            exit;
+        }
+        LOGGER.info($"Fallen: valid_stars {valid_stars}");
+
+        var star = array_random_element(stars);
+        var planet = scr_get_planet_with_owner(star, eFACTION.IMPERIUM);
+
+        if (planet > 0 && instance_exists(star)) {
+            var _p_data = star.get_planet_data(planet);
+            var _eta = scr_mission_eta(star.x, star.y, 1);
+            _p_data.new_problem("hunt_fallen");
+        }
         _evented = true;
     }
 
@@ -739,24 +752,4 @@ function scr_random_event(execute_now) {
     //with(obj_p_fleet){if (x<-10000){x+=20000;y+=20000;}}
     //with(obj_en_fleet){if (x<-10000){x+=20000;y+=20000;}}
     //with(obj_star){if (x<-10000){x+=20000;y+=20000;}}
-}
-
-function event_fallen() {
-    LOGGER.info("RE: Hunt the Fallen");
-    var stars = scr_get_stars();
-    var valid_stars = scr_get_stars(false, [eFACTION.IMPERIUM]);
-
-    if (array_length(valid_stars) == 0) {
-        LOGGER.error("RE: Hunt the Fallen, coulnd't find a star");
-        exit;
-    }
-    LOGGER.info($"Fallen: valid_stars {valid_stars}");
-
-    var star = choose_array(stars);
-    var planet = scr_get_planet_with_owner(star, eFACTION.IMPERIUM);
-
-    if (planet > 0 && instance_exists(star)) {
-        var _p_data = star.get_planet_data(planet);
-        _p_data.init_fallen_marines();
-    }
 }

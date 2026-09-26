@@ -231,6 +231,7 @@ function drop_select_unit_selection() {
     btn_attack.draw();
     if (btn_attack.clicked()) {
         if (purge == 0) {
+            var _p_data = p_target.get_planet_data(planet_number);
             if (formation_current < 0 || formation_current >= array_length(formation_possible)) {
                 exit;
             }
@@ -271,22 +272,20 @@ function drop_select_unit_selection() {
             if (obj_ncombat.battle_object.space_hulk == 1) {
                 obj_ncombat.battle_special = "space_hulk";
             }
-            if ((planet_feature_bool(_planet, eP_FEATURES.WARLORD6) == 1) && (obj_ncombat.enemy == eFACTION.ELDAR) && (obj_controller.faction_defeated[6] == 0)) {
+            if ((_p_data.has_feature(eP_FEATURES.WARLORD6)) && (obj_ncombat.enemy == eFACTION.ELDAR) && (obj_controller.faction_defeated[6] == 0)) {
                 obj_ncombat.leader = 1;
             }
-            if (obj_ncombat.enemy == eFACTION.ORK && planet_feature_bool(_planet, eP_FEATURES.ORKWARBOSS)) {
+            if (obj_ncombat.enemy == eFACTION.ORK && _p_data.has_feature(eP_FEATURES.ORKWARBOSS)) {
                 obj_ncombat.leader = 1;
                 obj_ncombat.ork_warboss = _planet[search_planet_features(_planet, eP_FEATURES.ORKWARBOSS)[0]];
             }
 
-            if ((obj_ncombat.enemy == eFACTION.TYRANIDS) && (obj_ncombat.battle_object.space_hulk == 0)) {
-                if (has_problem_planet(planet_number, "tyranid_org", p_target)) {
-                    obj_ncombat.battle_special = "tyranid_org";
-                }
+            for (var i=0; i<array_length(_p_data.problems);i++){
+                _p_data.problems[i].before_battle_effects();
             }
 
             if (obj_ncombat.enemy == eFACTION.HERETICS) {
-                if (planet_feature_bool(obj_ncombat.battle_object.p_feature[obj_ncombat.battle_id], eP_FEATURES.CHAOSWARBAND) == 1) {
+                if (_p_data.has_feature(eP_FEATURES.CHAOSWARBAND)) {
                     obj_ncombat.battle_special = "ChaosWarband";
                     obj_ncombat.leader = 1;
                 }
@@ -396,9 +395,7 @@ function drop_select_unit_selection() {
                 _purge_score = roster.selected_count();
             }
 
-            var _p_data = p_target.system_datas[planet_number];
-
-            _p_data.refresh_data();
+            var _p_data = p_target.get_planet_data(planet_number);
 
             _p_data.purge(purge, _purge_score);
         }
@@ -415,6 +412,7 @@ function drop_select_draw() {
         // God, save us;
         if (menu == eMENU.DEFAULT) {
             if (purge == 1) {} else if (purge >= 2) {
+                var _p_data = p_target.get_planet_data(planet_number);
                 draw_set_halign(fa_center);
                 draw_set_font(fnt_40k_30b);
 
@@ -431,13 +429,13 @@ function drop_select_draw() {
                     "Selective Purging {0}",
                     "Assassinate Governor ({0})",
                 ];
-                var _planet_string = planet_numeral_name(planet_number, p_target);
+                var _planet_string = _p_data.name();
                 draw_text_transformed(x2 + 14, y2 + 12, string(_purge_strings[purge - 2], _planet_string), 0.6, 0.6, 0);
 
                 // Disposition here
                 var pp = planet_number;
 
-                var succession = has_problem_planet(pp, "succession", p_target);
+                var succession = _p_data.has_problem("succession");
 
                 if (((p_target.dispo[pp] >= 0) && (p_target.p_owner[pp] <= eFACTION.ECCLESIARCHY) && (p_target.p_population[pp] > 0)) && (!succession)) {
                     var wack = 0;
@@ -501,6 +499,7 @@ function collect_local_units() {
     purge_d = ship_max[500];
 
     if (purge == 1) {
+        var _p_data = p_target.get_planet_data(planet_number);
         if (sh_target != noone) {
             max_ships = sh_target.capital_number + sh_target.frigate_number + sh_target.escort_number;
 
@@ -581,7 +580,7 @@ function collect_local_units() {
         var pp = planet_number;
         purge_d = p_target.p_type[pp] != "Dead";
 
-        if (has_problem_planet(pp, "succession", p_target)) {
+        if (_p_data.has_problem("succession")) {
             purge_d = 0;
         }
 

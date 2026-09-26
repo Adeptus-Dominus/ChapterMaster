@@ -19,13 +19,14 @@ function scr_manage_task_selector() {
             exit;
         }
     }
+    var _man_count;
     if (selection_data.select_type == eMISSION_SELECT_TYPE.UNITS) {
-        man_count = array_sum(man_sel);
+        _man_count = array_sum(man_sel);
     } else {
-        man_count = array_length(company_data.selected_squads);
+        _man_count = array_length(company_data.selected_squads);
     }
     if (selection_data.purpose_code != "manage") {
-        if (man_count == 0 || man_count > selection_data.number) {
+        if (_man_count == 0 || _man_count > selection_data.number) {
             proceed_button.draw_shutter(1110, 70, "Proceed", 0.5, false);
         } else if (proceed_button.draw_shutter(1110, 70, "Proceed", 0.5, true)) {
             if (selection_data.select_type == eMISSION_SELECT_TYPE.UNITS) {
@@ -39,20 +40,26 @@ function scr_manage_task_selector() {
 
 /// @self Asset.GMObject.obj_controller
 function task_selector_squad_manage() {
+    var _squads = [];
     for (var i = 0; i < array_length(company_data.selected_squads); i++) {
         var _squad = fetch_squad(company_data.selected_squads[i]);
-        switch (selection_data.purpose_code) {
-            case "protect_raiders":
-                init_protect_raider_mission(_squad);
-                break;
+        /*switch (selection_data.purpose_code) {
+
+        }*/
+        array_push(_squads, _squad);
+    }
+    if (struct_exists(selection_data , "feature") && array_length(_squads)){
+        var _feat = selection_data.feature;
+        if (is_struct(_feat) && is_instanceof(_feat, PlanetProblem)){
+            _feat.data.squads = _squads;
+            _feat.on_squad_selection();
         }
     }
 }
 
 /// @self Asset.GMObject.obj_controller
 function task_selector_man_manage() {
-    man_count = array_sum(man_sel);
-    selections = [];
+    var _selections = [];
     for (var i = 0; i < array_length(display_unit); i++) {
         if (ma_name[i] == "") {
             continue;
@@ -60,6 +67,7 @@ function task_selector_man_manage() {
         /// @type {Struct.TTRPG_stats}
         var _unit = display_unit[i];
         if (man_sel[i]) {
+            array_push(_selections, _unit);
             switch (selection_data.purpose_code) {
                 case "forge_assignment":
                     var _forge = selection_data.feature;
@@ -124,25 +132,6 @@ function task_selector_man_manage() {
                     managing = selection_data.target_company;
                     update_general_manage_view();
                     exit;
-                case "hunt_beast":
-                    _unit.job = {
-                        type: selection_data.purpose_code,
-                        planet: selection_data.planet,
-                        location: selection_data.system.name,
-                    };
-                    _unit.unload(selection_data.planet, selection_data.system);
-                    break;
-                case "train_forces":
-                    _unit.job = {
-                        type: selection_data.purpose_code,
-                        planet: selection_data.planet,
-                        location: selection_data.system.name,
-                    };
-                    _unit.unload(selection_data.planet, selection_data.system);
-                    init_train_forces_mission(selection_data.planet, selection_data.system, selection_data.array_slot, _unit);
-                    obj_controller.close_popups = false;
-                    exit_adhoc_manage();
-                    exit;
                 case "artifact_equip":
                     scr_toggle_lib();
                     var _arti = fetch_artifact(selection_data.artifact);
@@ -167,14 +156,16 @@ function task_selector_man_manage() {
             }
         }
     }
+    selection_data.selections = _selections;
+    if (struct_exists(selection_data, "feature")){
+        var _feat = selection_data.feature;
+        if (is_struct(_feat) && is_instanceof(_feat, PlanetProblem)){
+            _feat.on_unit_selection();
+        }
+    }
     switch (selection_data.purpose_code) {
         case "forge_assignment":
             specialist_point_handler.calculate_research_points();
-            break;
-        case "hunt_beast":
-            var problem_slot = selection_data.array_slot;
-            init_beast_hunt_mission(selection_data.planet, selection_data.system, problem_slot);
-            obj_controller.close_popups = false;
             break;
     }
     exit_adhoc_manage();

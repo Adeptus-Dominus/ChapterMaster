@@ -83,7 +83,7 @@ function scr_inquisition_mission(event, forced_mission = eINQUISITION_MISSION.RA
 
         var chosen_mission = forced_mission;
         if (chosen_mission == eINQUISITION_MISSION.RANDOM) {
-            chosen_mission = choose_array(inquisition_missions);
+            chosen_mission = array_random_element(inquisition_missions);
         }
         switch (chosen_mission) {
             case eINQUISITION_MISSION.PURGE:
@@ -99,34 +99,41 @@ function scr_inquisition_mission(event, forced_mission = eINQUISITION_MISSION.RA
                 mission_inquisition_artifact();
                 break;
             case eINQUISITION_MISSION.TOMB_WORLD:
-                mission_inquisition_tomb_world(necron_tomb_worlds);
+                mission_inquisition_necron_world(necron_tomb_worlds);
                 break;
             case eINQUISITION_MISSION.TYRANID_ORGANISM:
-                mission_inquisition_tyranid_organism(tyranid_org_worlds);
+                LOGGER.info("RE: Gaunt Capture");
+                var _star = array_random_element(worlds);
+                var planet = -1;
+                for (var i = 1; i <= _star.planets; i++) {
+                    if (_star.p_tyranids[i] > 4) {
+                        planet = i;
+                        break;
+                    }
+                }
+
+                var eta = scr_mission_eta(_star.x, _star.y, 1);
+                eta = min(max(eta, 6), 50);
+
+                _star.get_planet_data(planet).new_problem("tyranid_org", eta);
                 break;
             case eINQUISITION_MISSION.ETHEREAL:
                 mission_inquisition_ethereal();
                 break;
             case eINQUISITION_MISSION.DEMON_WORLD:
-                mission_inquisition_demon_world(demon_worlds);
+                var _star = array_random_element(demon_worlds);
+                var _planet = -1;
+                for (var i = 1; i <= _star.planets; i++) {
+                    if (_star.p_demons[i] > 1) {
+                        _planet = i;
+                        break;
+                    }
+                }
+                var _eta = scr_mission_eta(_star.x, _star.y, 25);
+                _star.get_planet_data(_planet).new_problem("inquisition_demon_world", _eta)
                 break;
         }
     }
-}
-
-function mission_inquisition_demon_world(demon_worlds) {
-    var _star = choose_array(demon_worlds);
-    var planet = -1;
-    for (var i = 1; i <= _star.planets; i++) {
-        if (_star.p_demons[i] > 1) {
-            planet = i;
-            break;
-        }
-    }
-    var eta = scr_mission_eta(_star.x, _star.y, 25);
-    var text = $"The Inquisitor is trusting you with a special mission.  The planet {string(_star.name)} {scr_roman(planet)}";
-    text += $" has been uncovered as a Demon World. The taint of chaos must be eradicated from this system.  Can your chapter handle this mission?";
-    scr_popup("Inquisition Mission", text, "inquisition", $"demon_world|{string(_star.name)}|{string(planet)}|{string(eta + 1)}|");
 }
 
 function mission_inquisition_ethereal() {
@@ -160,25 +167,9 @@ function mission_inquisition_ethereal() {
 }
 
 function mission_inquisition_tyranid_organism(worlds) {
-    LOGGER.info("RE: Gaunt Capture");
-    var _star = choose_array(worlds);
-    var planet = -1;
-    for (var i = 1; i <= _star.planets; i++) {
-        if (_star.p_tyranids[i] > 4) {
-            planet = i;
-            break;
-        }
-    }
-
-    var eta = scr_mission_eta(_star.x, _star.y, 1);
-    eta = min(max(eta, 6), 50);
-
-    var text = $"An Inquisitor is trusting you with a special mission.  The planet {string(_star.name)} {scr_roman(planet)}";
-    text += " is ripe with Tyranid organisms.  They require that you capture one of the Gaunt species for research purposes.  Can your chapter handle this mission?";
-    scr_popup("Inquisition Mission", text, "inquisition", $"tyranid_org|{string(_star.name)}|{string(planet)}|{string(eta + 1)}|");
 }
 
-function mission_inquisition_tomb_world(tomb_worlds) {
+function mission_inquisition_necron_world(tomb_worlds) {
     LOGGER.info("RE: Necron Tomb Bombing");
     var _star = noone;
     if (is_array(tomb_worlds)) {
@@ -201,7 +192,7 @@ function mission_inquisition_tomb_world(tomb_worlds) {
     var _options = [
         {
             str1: "Accept",
-            choice_func: init_mission_inquisition_tomb_world,
+            choice_func: init_mission_inquisition_necron_world,
         },
         {
             str1: "Refuse",
@@ -212,7 +203,7 @@ function mission_inquisition_tomb_world(tomb_worlds) {
         system: _star.name,
         planet: planet,
         estimate: eta,
-        mission: "necron",
+        mission: "inquisition_necron",
         options: _options,
     };
 
@@ -224,13 +215,14 @@ function mission_inquisition_tomb_world(tomb_worlds) {
 }
 
 /// @self Asset.GMObject.obj_popup
-function init_mission_inquisition_tomb_world() {
-    mission_star = find_star_by_name(pop_data.system);
-    if (mission_star == noone) {
+function init_mission_inquisition_necron_world() {
+    var _mission_star = find_star_by_name(pop_data.system);
+    var _p_data = _mission_star.get_planet_data(pop_data.planet);
+    if (_mission_star == noone) {
         popup_default_close();
         exit;
     }
-    scr_event_log("", $"Inquisition Mission Accepted: {global.chapter_name} have been given a Bomb to seal the Necron Tomb on {mission_star.name} {scr_roman(pop_data.planet)}.", mission_star.name);
+    scr_event_log("", $"Inquisition Mission Accepted: {global.chapter_name} have been given a Bomb to seal the Necron Tomb on {_p_data.name()}.", _mission_star.name);
 
     image = "necron_cave";
     title = "New Equipment";
@@ -239,7 +231,7 @@ function init_mission_inquisition_tomb_world() {
     text = $"{global.chapter_name} have been provided with 1x Plasma Bomb in order to complete the mission.";
 
     if (demand) {
-        text = $"The Inquisition demands that your Chapter demonstrate its loyalty.  {global.chapter_name} have been given a Plasma Bomb to seal the Necron Tomb on {mission_star.name} {scr_roman(pop_data.planet)}.  It is expected to be completed within {pop_data.estimate} months.";
+        text = $"The Inquisition demands that your Chapter demonstrate its loyalty.  {global.chapter_name} have been given a Plasma Bomb to seal the Necron Tomb on {_p_data.name()}.  It is expected to be completed within {pop_data.estimate} months.";
     }
     reset_popup_options();
     scr_add_item("Plasma Bomb", 1);
@@ -247,7 +239,7 @@ function init_mission_inquisition_tomb_world() {
     if (demand) {
         demand = 0;
     }
-    add_new_inquis_mission();
+    _p_data.new_problem("inquisition_necron", estimate, {});
     exit;
 }
 
@@ -318,42 +310,33 @@ function mission_inquistion_hunt_inquisitor(star_id = noone) {
 }
 
 /// @self Asset.GMObject.obj_popup
-function add_new_inquis_mission() {
-    if (add_new_problem(pop_data.planet, pop_data.mission, pop_data.estimate, mission_star)) {
-        new_star_event_marker("green");
-    }
-}
-
-/// @self Asset.GMObject.obj_popup
 function init_mission_hunt_inquisitor() {
-    mission_star = find_star_by_name(pop_data.system);
-    if (mission_star == noone) {
+    var _mission_star = find_star_by_name(pop_data.system);
+    if (_mission_star == noone) {
         popup_default_close();
         exit;
     }
-    scr_event_log("", $"Inquisition Mission Accepted: The radical Inquisitor {pop_data.mission_data.inquisitor_name} enroute to {mission_star.name} must be removed.  Estimated arrival in {pop_data.estimate} months.", mission_star.name);
+    scr_event_log("", $"Inquisition Mission Accepted: The radical Inquisitor {pop_data.mission_data.inquisitor_name} enroute to {_mission_star.name} must be removed.  Estimated arrival in {pop_data.estimate} months.", _mission_star.name);
 
-    var _radical_inquisitor_fleet = create_enemy_fleet(mission_star.x - irandom_range(-400, 400), mission_star.y - irandom_range(-400, 400), eFACTION.INQUISITION);
+    var _radical_inquisitor_fleet = create_enemy_fleet(_mission_star.x - irandom_range(-400, 400), _mission_star.y - irandom_range(-400, 400), eFACTION.INQUISITION);
     with (_radical_inquisitor_fleet) {
         base_inquis_fleet();
     }
 
     fleet_add_cargo("radical_inquisitor", pop_data.mission_data, true, _radical_inquisitor_fleet);
 
-    _radical_inquisitor_fleet.action_x = mission_star.x;
-    _radical_inquisitor_fleet.action_y = mission_star.y;
+    _radical_inquisitor_fleet.action_x = _mission_star.x;
+    _radical_inquisitor_fleet.action_y = _mission_star.y;
 
     var _est = pop_data.estimate;
     with (_radical_inquisitor_fleet) {
         set_fleet_movement(false, "move", _est, _est);
     }
-
-    if (add_new_problem(pop_data.planet, pop_data.mission, pop_data.estimate, mission_star, pop_data.mission_data)) {
-        new_star_event_marker("green");
-    }
+    var _p_data = _mission_star.get_planet_data(pop_data.planet);
+    _p_data.new_problem(pop_data.mission, pop_data.estimate,pop_data.mission_data)
 
     title = "Inquisition Mission Accepted";
-    text = $"{global.chapter_name} will intercept the radical Inquisitor {pop_data.mission_data.inquisitor_name} at {mission_star.name}, expected within {pop_data.estimate} months.";
+    text = $"{global.chapter_name} will intercept the radical Inquisitor {pop_data.mission_data.inquisitor_name} at {_mission_star.name}, expected within {pop_data.estimate} months.";
     reset_popup_options();
 }
 
@@ -383,7 +366,7 @@ function resolve_radical_inquisitor_mission(_mission_data) {
                 continue;
             }
 
-            var _stored_data = p_problem_other_data[_planet][i];
+            var _stored_data = p_problem[_planet][i].data;
             if (!is_struct(_stored_data) || !struct_exists(_stored_data, "mission_id")) {
                 continue;
             }
@@ -392,9 +375,7 @@ function resolve_radical_inquisitor_mission(_mission_data) {
                 continue;
             }
 
-            p_problem[_planet][i] = "";
-            p_timer[_planet][i] = -1;
-            p_problem_other_data[_planet][i] = {};
+            p_problem[_planet][i].delete = true;
             _mission_removed = true;
             break;
         }
@@ -716,206 +697,6 @@ function mission_investigate_planet() {
     scr_popup("Inquisition Recon", text, "inquisition", $"recon|{string(_star.name)}|{string(planet)}|{string(eta)}|");
 }
 
-/// @self Asset.GMObject.obj_star
-/// @desc Queues the Necron Tomb mission prompt when a Plasma Bomb is present.
-/// @param {Real} planet Planet index containing the Necron Tomb.
-/// @returns {Undefined}
-function setup_necron_tomb_raid(planet) {
-    LOGGER.info($"player on planet with necron mission {name} planet: {planet}");
-    var have_bomb;
-    have_bomb = scr_check_equip("Plasma Bomb", name, planet, 0);
-    LOGGER.info($"have bomb? {have_bomb} ");
-    if (have_bomb > 0) {
-        var tixt;
-        tixt = $"Your marines on {planet_numeral_name(planet, id)}";
-        tixt += " are prepared and ready to enter the Necron Tombs.  A Plasma Bomb is in tow.";
-        var _number = instance_exists(obj_turn_end) ? 1 : 0;
-        var _pop_data = {
-            mission: "necron_tomb_excursion",
-            loc: name,
-            planet: planet,
-            estimate: 999,
-            number: _number,
-            mission_stage: 1,
-            options: [
-                {
-                    str1: "Begin the Mission",
-                    choice_func: necron_tomb_mission_start,
-                },
-                {
-                    str1: "Not Yet",
-                    choice_func: popup_default_close,
-                },
-            ],
-        };
-        scr_popup("Necron Tomb Excursion", tixt, $"necron_cave", _pop_data);
-    }
-}
-
-/// @self Asset.GMObject.obj_popup
-/// @desc Initializes the popup and choices for a Necron Tomb mission.
-/// @returns {Undefined}
-function necron_tomb_mission_start() {
-    mission_star = find_star_by_name(pop_data.loc);
-    planet = pop_data.planet;
-
-    title = $"Necron Tunnels : {pop_data.mission_stage}";
-    replace_options([{str1: "Continue", choice_func: necron_tomb_mission_sequence}, {str1: "Return to the surface", choice_func: popup_default_close}]);
-    image = "necron_tunnels_1";
-    text = "Your marines enter the massive tunnel complex, following the energy readings.  At first the walls are cramped and tiny, closing about them, but the tunnels widen at a rapid pace.";
-}
-
-/// @self Asset.GMObject.obj_popup
-/// @desc Advances the Necron Tomb mission and renders the resulting popup state.
-/// @returns {Bool} Whether the mission reached completion.
-function advance_necron_tomb_mission() {
-    pop_data.mission_stage++;
-    title = $"Necron Tunnels : {pop_data.mission_stage}";
-
-    if (pop_data.mission_stage == 2) {
-        image = "necron_tunnels_2";
-        text = "The energy readings are much stronger, now that your marines are deep inside the tunnels.  What was once cramped is now luxuriously large, the tunnel ceiling far overhead decorated by stalactites.";
-        return false;
-    }
-    if (pop_data.mission_stage == 3) {
-        image = "necron_tunnels_3";
-        text = "After several hours of descent the entrance to the Necron Tomb finally looms ahead- dancing, sickly green light shining free.  Your marine confirms that the Plasma Bomb is ready.";
-        return false;
-    }
-    if (pop_data.mission_stage >= 4) {
-        image = "";
-        title = "Inquisition Mission Completed";
-        text = "Your marines finally enter the deepest catacombs of the Necron Tomb.  There they place the Plasma Bomb and arm it.  All around are signs of increasing Necron activity.  With half an hour set, your men escape back to the surface.  There is a brief rumble as the charge goes off, your mission a success.";
-        reset_popup_options();
-
-        alter_disposition(eFACTION.INQUISITION, obj_controller.demanding ? choose(0, 0, 1) : 1);
-
-        mission_star = find_star_by_name(pop_data.loc);
-        remove_planet_problem(planet, "necron", mission_star);
-        seal_tomb_world(mission_star.p_feature[planet]);
-
-        scr_event_log("", $"Inquisition Mission Completed: Your Astartes have sealed the Necron Tomb on {mission_star.name} {scr_roman(planet)}.", mission_star.name);
-        scr_gov_disp(mission_star.name, planet, irandom_range(3, 7));
-        scr_check_equip("Plasma Bomb", pop_data.loc, pop_data.planet, 1);
-        return true;
-    }
-    return false;
-}
-
-/// @self Asset.GMObject.obj_popup
-/// @desc Advances the Necron Tomb mission or starts a combat encounter.
-/// @returns {Undefined}
-function necron_tomb_mission_sequence() {
-    var battle;
-    var player_forces = 0;
-    var penalty = 0;
-    var roll = roll_dice_chapter(1, 100, "low");
-    battle = 0;
-    instance_activate_all();
-    player_forces = mission_star.p_player[planet];
-
-    // SMALL TEAM OF MARINES
-    if (player_forces > 6) {
-        penalty = 10;
-    }
-    if (player_forces > 10) {
-        penalty = 20;
-    }
-    if (player_forces >= 20) {
-        penalty = 30;
-    }
-    if (player_forces >= 40) {
-        penalty = 50;
-    }
-    if (player_forces >= 60) {
-        penalty = 100;
-    }
-    roll += penalty;
-
-    // roll=30;if (string_count("3",title)>0) then roll=70;
-
-    // Result
-    if (roll <= 60) {
-        advance_necron_tomb_mission();
-        exit;
-    }
-    if ((roll > 60) && (roll <= 82)) {
-        // Necron Wraith attack
-        battle = 1;
-    }
-    if ((roll > 82) && (roll <= 92)) {
-        // Tomb Spyder attack
-        battle = 2;
-    }
-    if ((roll > 92) && (roll <= 97)) {
-        // Tomb Stalker
-        battle = 3;
-    }
-    if (roll > 97) {
-        // Tomb World wakes up
-        if (player_forces <= 30) {
-            battle = 4;
-        }
-        if (player_forces > 30) {
-            battle = 5;
-        }
-        if (player_forces > 100) {
-            battle = 6;
-        }
-    }
-
-    if (battle > 0) {
-        instance_deactivate_all_safe();
-        instance_activate_object(obj_star);
-
-        instance_create(0, 0, obj_ncombat);
-        _roster = new Roster();
-        var _pop_data = pop_data;
-        with (_roster) {
-            roster_location = _pop_data.loc;
-            roster_planet = _pop_data.planet;
-            determine_full_roster();
-            only_locals();
-            update_roster();
-            if (array_length(selected_units)) {
-                setup_battle_formations();
-                add_to_battle();
-            }
-        }
-        delete _roster;
-
-        mission_star = find_star_by_name(pop_data.loc);
-
-        obj_ncombat.battle_object = mission_star;
-        instance_deactivate_object(obj_star);
-        obj_ncombat.battle_loc = pop_data.loc;
-        obj_ncombat.battle_id = pop_data.planet;
-        obj_ncombat.dropping = 0;
-        obj_ncombat.attacking = 0;
-        obj_ncombat.enemy = eFACTION.NECRONS;
-        obj_ncombat.threat = 1;
-        obj_ncombat.formation_set = 1;
-        obj_ncombat.battle_mission = "necron_tomb_excursion";
-        obj_ncombat.battle_data = pop_data;
-        if (battle == 1) {
-            obj_ncombat.battle_special = "wraith_attack";
-        } else if (battle == 2) {
-            obj_ncombat.battle_special = "spyder_attack";
-        } else if (battle == 3) {
-            obj_ncombat.battle_special = "stalker_attack";
-        } else if (battle == 4) {
-            obj_ncombat.battle_special = "wake1_attack";
-        } else if (battle == 5) {
-            obj_ncombat.battle_special = "wake2_attack";
-        } else if (battle == 6) {
-            obj_ncombat.battle_special = "wake2_attack";
-        }
-
-        instance_destroy();
-    }
-
-    exit;
-}
 
 function set_gender() {
     return choose(eGENDER.FEMALE, eGENDER.MALE);

@@ -29,6 +29,9 @@ vehicles_to_recover = 0;
 end_alive_units = [];
 average_battle_exp_gain = 0;
 upgraded_librarians = [];
+special_feature = undefined;
+reduce_fortification = true;
+reduce_power = true;
 
 view_x = obj_controller.x;
 view_y = obj_controller.y;
@@ -63,9 +66,7 @@ if (instance_exists(obj_star)) {
     LOGGER.error("No obj_star instance found for combat; battle_object defaulted to noone");
 }
 battle_id = 0;
-battle_mission = "";
 battle_special = "";
-battle_data = {};
 defeat = 0;
 defeat_message = 0;
 fugg = 0;
@@ -77,7 +78,6 @@ stage_elapsed2 = 0;
 battle_over = 0;
 done = 0;
 
-captured_gaunt = 0;
 ethereal = 0;
 hulk_treasure = 0;
 four_show = 0;
@@ -118,6 +118,7 @@ charged = 0;
 
 fadein = 40;
 enemy = undefined;
+battle_enemy_data = undefined;
 enem = "Orks";
 enem_sing = "Ork";
 threat = 0;
