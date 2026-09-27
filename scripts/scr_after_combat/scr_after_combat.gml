@@ -6,7 +6,7 @@ function add_marines_to_recovery() {
     var _bonus_specific = {};
     
 
-    _bonus_specific[$ obj_ini.role[100][eROLE.CHAPTERMASTER]] = 720;
+    _bonus_specific[$ _roles[eROLE.CHAPTERMASTER]] = 720;
     
 
     _bonus_specific[$ "Forge Master"] = 360;
