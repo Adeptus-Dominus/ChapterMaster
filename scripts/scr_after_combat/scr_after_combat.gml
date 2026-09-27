@@ -42,8 +42,13 @@ function add_marines_to_recovery() {
     for (var i = 0; i < array_length(unit_struct); i++) {
         var _unit = unit_struct[i];
         
-        if (!is_struct(_unit) || ally[i] == true) continue;
-        if (marine_dead[i] != 1 || marine_type[i] == "") continue;
+        if (!is_struct(_unit) || ally[i] == true){
+			continue
+		};
+        
+		if (marine_dead[i] != 1 || marine_type[i] == ""){
+			continue
+		};
 
         
         var _role_title = _unit.role();
