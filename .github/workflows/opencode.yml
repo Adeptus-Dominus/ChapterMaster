@@ -133,6 +133,10 @@ jobs:
           fi
           echo "branch=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
 
+          git config user.name "lyra-the-bot"
+          git config user.email "lyra-the-bot@users.noreply.github.com"
+          echo "base_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
           # Diff context for review comments
           if [ "$EVENT_NAME" = "pull_request_review_comment" ]; then
             FILE_PATH=$(jq -r '.comment.path' "$GITHUB_EVENT_PATH")
@@ -190,6 +194,9 @@ jobs:
 
           # GUIDELINES
           - If the request asks for code modifications, make the changes directly to the workspace files.
+          - Commit your changes yourself with git: group independent changes into separate commits, write clear conventional commit messages with a short description body when needed.
+          - Only create new commits on top of the current HEAD. Never amend, reset, rebase, or rewrite existing history.
+          - Never push.
           - If the request is purely informational or asks a question, do not touch files. Write your response clearly.
           - Reference code files using permalinks: https://github.com/${{ github.repository }}/blob/main/<path-to-file>#L<line>
           - Keep commentary concise and technical.
@@ -239,18 +246,21 @@ jobs:
           TARGET_NUM: ${{ steps.context.outputs.num }}
           BRANCH_NAME: ${{ steps.context.outputs.branch }}
           FORK: ${{ steps.context.outputs.fork }}
+          BASE_SHA: ${{ steps.context.outputs.base_sha }}
         run: |
-          git config user.name "lyra-the-bot"
-          git config user.email "lyra-the-bot@users.noreply.github.com"
-          
           gh auth setup-git
 
-          HAS_CHANGES="false"
-          [ -n "$(git status --porcelain)" ] && HAS_CHANGES="true"
-
-          if [ "$HAS_CHANGES" = "true" ] && { [ "$IS_PR" != "true" ] || [ "$FORK" != "true" ]; }; then
+          if [ -n "$(git status --porcelain)" ]; then
             git add -A
             git commit -m "chore: automated changes requested via /oc"
+          fi
+
+          HAS_CHANGES="false"
+          if [ -n "$BASE_SHA" ] && [ "$(git rev-parse HEAD)" != "$BASE_SHA" ]; then
+            HAS_CHANGES="true"
+          fi
+
+          if [ "$HAS_CHANGES" = "true" ] && { [ "$IS_PR" != "true" ] || [ "$FORK" != "true" ]; }; then
             git push origin "$BRANCH_NAME"
 
             if [ "$IS_PR" = "true" ]; then
