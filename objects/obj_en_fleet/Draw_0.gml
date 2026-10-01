@@ -2,10 +2,10 @@ if ((obj_controller.menu != eMENU.DEFAULT && obj_controller.menu != eMENU.TURN_E
     exit;
 }
 
-if (obj_controller.camera_moved_this_turn){
+if (obj_controller.camera_moved_this_turn) {
     in_view = in_camera_view(star_box_shape());
 }
-if (!in_view){
+if (!in_view) {
     exit;
 }
 

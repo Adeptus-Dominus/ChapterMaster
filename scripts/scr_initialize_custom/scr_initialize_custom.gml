@@ -1189,7 +1189,7 @@ function scr_initialize_custom() {
         apothecary += 5;
     }
 
-    if (!player_role_data[eROLE.CHAPLAIN].available_to_player){
+    if (!player_role_data[eROLE.CHAPLAIN].available_to_player) {
         chaplains = 0;
     }
 
@@ -1487,7 +1487,7 @@ function scr_initialize_custom() {
                         player_role_data[c_roleid][$ attribute] = value;
                     }
                 }
-                if (struct_exists(_c_roles[$ c_rolename], "name")){
+                if (struct_exists(_c_roles[$ c_rolename], "name")) {
                     player_role_data[c_roleid][$ "role"] = _c_roles[$ c_rolename][$ "name"];
                 }
             }
@@ -2757,7 +2757,7 @@ function add_veh_to_company(name, company, slot, wep1, wep2, wep3, upgrade, acce
 /// @param {String} [armour] Armour.
 /// @returns {Struct.TTRPG_stats|undefined}}
 function add_unit_to_company(ttrpg_name, company, role_id, wep1 = "default", wep2 = "default", gear = "default", mobi = "default", armour = "default") {
-    if (!player_role_data[role_id].available_to_player){
+    if (!player_role_data[role_id].available_to_player) {
         return undefined;
     }
     var _slot = find_company_open_slot(company);
