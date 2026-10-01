@@ -45,7 +45,7 @@ function main_map_move_keys() {
                 y += spd;
                 camera_moved_this_turn = true;
             }
-            if (array_length(location_viewer.travel_target) > 0){
+            if (array_length(location_viewer.travel_target) > 0) {
                 camera_moved_this_turn = true;
             }
         }
@@ -77,32 +77,33 @@ function WarpLane(_star_1, _star_2, _grade) constructor {
     line_y_travel = 0;
     last_map_scale = 0;
 
-    static calc_in_view = function(){
+    static calc_in_view = function() {
         in_view = star_1.in_view || star_2.in_view;
-    }
+    };
 
-    static draw_basic_lane = function(){
+    static draw_basic_lane = function() {
         draw_set_alpha(line_alpha);
         draw_line_width(x1, y1, x2, y2, handler.line_width);
-        draw_set_alpha(1);       
-    }
+        draw_set_alpha(1);
+    };
 
     static warp_route_tooltip = "Major warp route to {0} (x4 travel speed for warp capable crafts)\n\nHold Shift and click Left Mouse Button to see destination.";
-    static major_warp_route_hit_box = function(star = 1){
-        var _dest_star = star == 1 ? star_2 :  star_1;
+
+    static major_warp_route_hit_box = function(star = 1) {
+        var _dest_star = star == 1 ? star_2 : star_1;
         var _hover_star = star == 1 ? star_1 : star_2;
 
         var _warp_center = {
-            x1 : star == 1 ? _hover_star.x + line_x_travel : _hover_star.x - line_x_travel,
-            y1 : star == 1 ? _hover_star.y + line_y_travel : _hover_star.y - line_y_travel,
-        }
+            x1: star == 1 ? _hover_star.x + line_x_travel : _hover_star.x - line_x_travel,
+            y1: star == 1 ? _hover_star.y + line_y_travel : _hover_star.y - line_y_travel,
+        };
 
         for (var s = 0; s < grade; s++) {
             draw_set_alpha(line_alpha);
             draw_line_width(_hover_star.x, _hover_star.y, _warp_center.x1, _warp_center.y1, handler.line_width);
             draw_set_alpha(1);
         }
-        if (!_hover_star.in_view){
+        if (!_hover_star.in_view) {
             exit;
         }
         draw_sprite_centered(spr_warp_storm, handler.warp_image + index, _warp_center.x1, _warp_center.y1, 0.75, 0.75, 0, c_white, 1);
@@ -114,7 +115,6 @@ function WarpLane(_star_1, _star_2, _grade) constructor {
             _warp_center.y1 + (handler.warp_height / 2),
         ];
 
-        
         if (scr_hit(_hit_box)) {
             //TODO centralise this for efficiency so it's only run once at the beggingin of step sequence
             var _star_overlap = false;
@@ -126,7 +126,6 @@ function WarpLane(_star_1, _star_2, _grade) constructor {
             }
 
             if (!_star_overlap) {
-
                 if (handler.allow_tooltips) {
                     tooltip_draw(string(warp_route_tooltip, _dest_star.name));
                 }
@@ -136,9 +135,9 @@ function WarpLane(_star_1, _star_2, _grade) constructor {
                 }
             }
         }
-    }
+    };
 
-    static update_draw_distance_from_star = function(){
+    static update_draw_distance_from_star = function() {
         var _direction_x = x2 - x1;
         var _direction_y = y2 - y1;
         var _forward = _direction_x >= 0 ? 1 : -1;
@@ -151,29 +150,29 @@ function WarpLane(_star_1, _star_2, _grade) constructor {
         line_x_travel = sqrt(_pythag_dist * _x_ratio) * _forward;
         line_y_travel = sqrt(_pythag_dist * _y_ratio) * _downward;
         last_map_scale = obj_controller.map_scale;
-    }
-    static draw_major_warp_route = function(){
+    };
+
+    static draw_major_warp_route = function() {
         draw_set_color(c_yellow);
         //TODO abstract code as a ratio distance function
-        if (last_map_scale != obj_controller.map_scale){
+        if (last_map_scale != obj_controller.map_scale) {
             update_draw_distance_from_star();
         }
 
         major_warp_route_hit_box();
         major_warp_route_hit_box(2);
+    };
 
-    }
-    static draw = function(){
+    static draw = function() {
         if (grade < 4) {
             draw_basic_lane();
         } else if (grade == 4) {
             draw_major_warp_route();
         }
-    }
-
+    };
 }
 
-function WarpLaneHandler() constructor{
+function WarpLaneHandler() constructor {
     routes = [];
     static current_seed = global.game_seed;
     static warp_image = -1;
@@ -184,8 +183,8 @@ function WarpLaneHandler() constructor{
 
     allow_tooltips = true;
 
-    static calc_warp_lanes = function(){
-        current_seed = global.game_seed
+    static calc_warp_lanes = function() {
+        current_seed = global.game_seed;
         routes = [];
         var _star_degrade_list = [];
         var _total_stars = instance_number(obj_star);
@@ -204,7 +203,7 @@ function WarpLaneHandler() constructor{
                     var _check_star = instance_find(obj_star, _star_degrade_list[s]);
                     var _connection = determine_warp_join(_check_star.id, _this_star);
                     if (_connection) {
-                        array_push(routes, new WarpLane(_check_star, _this_star,_connection));
+                        array_push(routes, new WarpLane(_check_star, _this_star, _connection));
                     }
                 }
             }
@@ -212,9 +211,9 @@ function WarpLaneHandler() constructor{
             _total_stars--;
             i--;
         }
-    }
+    };
 
-    static draw = function(){
+    static draw = function() {
         line_width = 2 * obj_controller.scale_mod;
         warp_image += 0.5;
         if (warp_image == 58) {
@@ -235,16 +234,16 @@ function WarpLaneHandler() constructor{
         for (var i = 0; i < array_length(routes); i++) {
             draw_set_color(c_gray);
             var _route = routes[i];
-            if (obj_controller.camera_moved_this_turn){
+            if (obj_controller.camera_moved_this_turn) {
                 _route.calc_in_view();
             }
-            if (!_route.in_view){
+            if (!_route.in_view) {
                 continue;
             }
 
             _route.draw();
         }
-    }
+    };
 }
 
 function create_complex_star_routes(player_star) {

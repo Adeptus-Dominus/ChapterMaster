@@ -88,9 +88,7 @@ function role_groups(group, include_trainee = false, include_heads = true, allow
             }
             break;
         case SPECIALISTS_TECHS:
-            _role_list = [
-                "Techpriest",
-            ];
+            _role_list = ["Techpriest"];
             _role_list = array_concat(_role_list, role_groups(SPECIALISTS_TECHMARINES, include_trainee, include_heads, false));
             break;
         case SPECIALISTS_TECHMARINES:

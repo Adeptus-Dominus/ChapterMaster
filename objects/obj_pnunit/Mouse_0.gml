@@ -45,4 +45,3 @@ show_message(blarg);*/
 "+string(dudes_num[14])+"x "+string(dudes[14])+"
 "+string(dudes_num[15])+"x "+string(dudes[15])+"
 "+string(dudes_num[16])+"x "+string(dudes[16]));*/
-
