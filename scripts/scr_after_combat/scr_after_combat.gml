@@ -1,68 +1,5 @@
 /// @self Asset.GMObject.obj_pnunit
 function add_marines_to_recovery() {
-<<<<<<< Updated upstream
-    var _roles = active_roles();
-    for (var i = 0; i < array_length(unit_struct); i++) {
-        var _unit = unit_struct[i];
-        if (is_struct(_unit) && ally[i] == false) {
-            if (marine_dead[i] == 1 && marine_type[i] != "") {
-                var _role_priority_bonus = 0;
-                switch (_unit.role()) {
-                    case obj_ini.player_role_data[eROLE.CHAPTERMASTER].role:
-                        _role_priority_bonus = 720;
-                        break;
-                    case _roles[eROLE.FORGEMASTER]:
-                    case _roles[eROLE.CHIEFLIBRARIAN]:
-                    case _roles[eROLE.MASTERAPOTHECARY]:
-                    case _roles[eROLE.MASTERCHAPLAIN]:
-                        _role_priority_bonus = 360;
-                        break;
-                    case _roles[eROLE.CAPTAIN]:
-                    case _roles[eROLE.HONOURGUARD]:
-                    case _roles[eROLE.ANCIENT]:
-                        _role_priority_bonus = 160;
-                        break;
-                    case _roles[eROLE.VETERANSERGEANT]:
-                    case _roles[eROLE.TERMINATOR]:
-                        _role_priority_bonus = 80;
-                        break;
-                    case _roles[eROLE.VETERAN]:
-                    case _roles[eROLE.SERGEANT]:
-                    case _roles[eROLE.CHAMPION]:
-                    case _roles[eROLE.CHAPLAIN]:
-                    case _roles[eROLE.APOTHECARY]:
-                    case _roles[eROLE.TECHMARINE]:
-                    case _roles[eROLE.LIBRARIAN]:
-                    case _roles[eROLE.CODICIERY]:
-                    case _roles[eROLE.LEXICANUM]:
-                        _role_priority_bonus = 40;
-                        break;
-                    case _roles[eROLE.TACTICAL]:
-                    case _roles[eROLE.ASSAULT]:
-                    case _roles[eROLE.DEVASTATOR]:
-                        _role_priority_bonus = 20;
-                        break;
-                    case _roles[eROLE.SCOUT]:
-                    default:
-                        _role_priority_bonus = 0;
-                        break;
-                }
-
-                var _priority = _unit.experience + _role_priority_bonus;
-                var _recovery_candidate = {
-                    "id": i,
-                    "unit": _unit,
-                    "column_id": id,
-                    "priority": _priority,
-                };
-
-                ds_priority_add(obj_ncombat.marines_to_recover, _recovery_candidate, _recovery_candidate.priority);
-            }
-        }
-    }
-}
-
-=======
 	var _roles = active_roles();
 	var role_priority_bonuses = {};
 	
@@ -96,13 +33,14 @@ function add_marines_to_recovery() {
 	
 	
 	for (var i = 0; i < array_length(unit_struct); i++) {
-		if (is_struct(_unit) && ally[i] == false) {
-			continue;
-		}
-		
-		if (marine_dead[i] == 1 && marine_type[i] != "") {
-			continue;
-		}
+
+		if (!is_struct(_unit) || ally[i] != false){
+			continue
+		};
+
+		if (marine_dead[i] != 1 || marine_type[i] == "") {
+			continue
+		};
 		
 		var _priority = _unit.experience + _role_priority_bonuses;
 		
@@ -168,20 +106,20 @@ function add_marines_to_recovery() {
 //                }
 
 //                var _priority = _unit.experience + _role_priority_bonus;
-                var _recovery_candidate = {
-                    "id": i,
-                    "unit": _unit,
-                    "column_id": id,
-                    "priority": _priority,
-                };
+                //var _recovery_candidate = {
+                //    "id": i,
+                //    "unit": _unit,
+                //    "column_id": id,
+                //    "priority": _priority,
+                //};
 
-                ds_priority_add(obj_ncombat.marines_to_recover, _recovery_candidate, _recovery_candidate.priority);
+                //ds_priority_add(obj_ncombat.marines_to_recover, _recovery_candidate, _recovery_candidate.priority);
 //            }
 //        }
 //    }
 //}
 
->>>>>>> Stashed changes
+
 /// @self Asset.GMObject.obj_pnunit
 function add_vehicles_to_recovery() {
     var _vehicles_priority = {
