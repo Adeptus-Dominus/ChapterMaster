@@ -5,7 +5,7 @@ ship_use = [];
 ship_max = [];
 ship_ide = [];
 
-var _ships = fleet_full_ship_array(sh_target);
+var _ships = sh_target.full_ship_array();
 max_ships = array_length(_ships);
 bomb_a = calculate_fleet_bombard_score(_ships);
 var _total_fleet_loaded = calculate_fleet_content_size(_ships);

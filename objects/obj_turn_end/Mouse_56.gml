@@ -149,7 +149,16 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_popup) && !instance_e
                 obj_ncombat.fortified = 0;
             }
 
-            obj_ncombat.battle_special = battle_special[current_battle];
+            if (is_struct(battle_special[current_battle])){
+                var _spec_data = battle_special[current_battle];
+                obj_ncombat.battle_special = _spec_data.special_id;
+                obj_ncombat.special_feature = _spec_data.special_feature;
+                if (struct_exists(_spec_data, "battle_enemy_data")){
+                    obj_ncombat.battle_enemy_data = _spec_data.battle_enemy_data;
+                }
+            } else {
+                obj_ncombat.battle_special = battle_special[current_battle];
+            }
             obj_ncombat.battle_climate = _planet_data.planet_type;
 
             if (_enemy == eFACTION.IMPERIUM) {

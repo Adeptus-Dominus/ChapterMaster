@@ -18,9 +18,6 @@ if ((p_type[1] == "Craftworld") && (obj_controller.known[eFACTION.ELDAR] == 0)) 
 
 var show = name;
 
-if (global.cheat_debug == true) {
-    show = string(name) + "#" + string(p_problem[1][1]) + ":" + string(p_timer[1][1]) + "#" + string(p_problem[1][2]) + ":" + string(p_timer[1][2]) + "#" + string(p_problem[1][3]) + ":" + string(p_timer[1][3]);
-}
 var _scale = obj_controller.star_scale;
 draw_set_color(c_white);
 draw_set_alpha(0.25);

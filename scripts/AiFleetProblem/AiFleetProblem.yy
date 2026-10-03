@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_crusade",
+  "%Name":"AiFleetProblem",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_crusade",
+  "name":"AiFleetProblem",
   "parent":{
-    "name":"Combat",
-    "path":"folders/Scripts/Combat.yy",
+    "name":"Constructors",
+    "path":"folders/Scripts/Constructors.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

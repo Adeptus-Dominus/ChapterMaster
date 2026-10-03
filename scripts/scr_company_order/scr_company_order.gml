@@ -76,7 +76,7 @@ function scr_company_order(company) {
         for (var i = 0; i < array_length(_squad_ids); i++) {
             var _squad = fetch_squad(_squad_ids[i]);
             if (_squad.base_company != co) {
-                if (!bool(array_length(_squad.members))) {
+                if (!bool(array_length(_squad.get_members()))) {
                     array_push(_empty_squads, _squad);
                 }
                 continue;

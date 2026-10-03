@@ -219,18 +219,18 @@ function scr_random_event(execute_now) {
         LOGGER.info("RE: Space Hulk");
         var own = choose(1, 1, 2);
 
-        var star_id = scr_random_find(own, true, "", "");
-        if (star_id == noone && own == 1) {
+        var _star_id = scr_random_find(own, true, "", "");
+        if (_star_id == noone && own == 1) {
             // find the nearest star to a player fleet and user that one, dukecode did that
             // we could also try to find to find another star but this one is owned by the imperium and not the player, this code is doing that
             own = 2;
-            star_id = scr_random_find(own, true, "", "");
+            _star_id = scr_random_find(own, true, "", "");
         }
-        if (star_id == noone && own == 2) {
-            star_id = scr_random_find(0, true, "", ""); // try for litteraly any star
+        if (_star_id == noone && own == 2) {
+            _star_id = scr_random_find(0, true, "", ""); // try for litteraly any star
         }
 
-        if (star_id == noone) {
+        if (_star_id == noone) {
             LOGGER.error("RE: Space Hulk, couldn't find a star for the spacehulk");
             exit;
         } else {
@@ -238,26 +238,26 @@ function scr_random_event(execute_now) {
             var spaceHulkX, spaceHulkY, tries_to_place_space_hulk;
             tries_to_place_space_hulk = 0;
             while (!positionFound && tries_to_place_space_hulk < 50) {
-                spaceHulkX = star_id.x + (choose(-1, 1) * irandom_range(50, 60));
-                spaceHulkY = star_id.y + (choose(-1, 1) * irandom_range(50, 80));
+                spaceHulkX = _star_id.x + (choose(-1, 1) * irandom_range(50, 60));
+                spaceHulkY = _star_id.y + (choose(-1, 1) * irandom_range(50, 80));
                 spaceHulkY = max(spaceHulkY, 40);
-                var distanceToNearestStarOk = point_distance(spaceHulkX, spaceHulkY, instance_nearest(spaceHulkX, spaceHulkY, obj_star).x, instance_nearest(spaceHulkX, spaceHulkY, obj_star).y) >= 70;
-                if (distanceToNearestStarOk) {
+                var _distanceToNearestStarOk = point_distance(spaceHulkX, spaceHulkY, instance_nearest(spaceHulkX, spaceHulkY, obj_star).x, instance_nearest(spaceHulkX, spaceHulkY, obj_star).y) >= 70;
+                if (_distanceToNearestStarOk) {
                     positionFound = true;
                 }
                 tries_to_place_space_hulk++;
             }
             if (tries_to_place_space_hulk >= 50) {
                 // its possible for there to be no good spot for the space hulk at a star, if there are too many stars in close proximity
-                LOGGER.error($"RE: Space Hulk, couldn't find a spot for the spacehulk at the {star_id.name} system");
+                LOGGER.error($"RE: Space Hulk, couldn't find a spot for the spacehulk at the {_star_id.name} system");
                 exit;
             }
             try {
                 var spaceHulk = scr_create_space_hulk(spaceHulkX, spaceHulkY);
 
-                scr_alert(own ? "red" : "green", "space_hulk", $"The Space Hulk {spaceHulk.name} appears near the {star_id.name} system.", spaceHulkX, spaceHulkY);
+                scr_alert(own ? "red" : "green", "space_hulk", $"The Space Hulk {spaceHulk.name} appears near the {_star_id.name} system.", spaceHulkX, spaceHulkY);
 
-                scr_event_log("", $"The Space Hulk {spaceHulk.name} appears near the {star_id.name} system.", star_id.name);
+                scr_event_log("", $"The Space Hulk {spaceHulk.name} appears near the {_star_id.name} system.", _star_id.name);
                 _evented = true;
             } catch (_exception) {
                 ERROR_HANDLER.handle_exception(_exception);
@@ -277,15 +277,10 @@ function scr_random_event(execute_now) {
             LOGGER.error("RE: Promotion, couldn't pick a space marine");
             exit;
         }
-        var role = _unit.role();
-        var text = _unit.name_role();
-        var company_text = scr_convert_company_to_string(company);
-        //var company_text = scr_company_string(company);
-        if (company_text != "") {
-            company_text = "(" + company_text + ")";
-        }
-        text += company_text;
-        text += " has distinguished himself.##He åis up for review to be promoted.";
+        var _text = _unit.name_role();
+        var _company_text = $"({scr_convert_company_to_string(company)})";
+        _text += _company_text;
+        _text += " has distinguished himself.##He åis up for review to be promoted.";
 
         if (company != 10) {
             _unit.add_exp(10);
@@ -293,8 +288,8 @@ function scr_random_event(execute_now) {
             _unit.add_exp(max(20, _unit.experience));
         }
 
-        scr_popup("Promotions!", text, "distinguished", "");
-        scr_event_log("green", text);
+        scr_popup("Promotions!", _text, "distinguished", "");
+        scr_event_log("green", _text);
         _evented = true;
     } else if (chosen_event == eEVENT.STRANGE_BUILDING) {
         _evented = strange_build_event();
@@ -302,36 +297,36 @@ function scr_random_event(execute_now) {
         LOGGER.info("RE: Sororitas Company");
         var own;
         own = choose(1, 2);
-        var star_id = scr_random_find(own, true, "", "");
+        var _star_id = scr_random_find(own, true, "", "");
 
-        if (star_id == noone && own == 1) {
+        if (_star_id == noone && own == 1) {
             own = 2;
-            star_id = scr_random_find(own, true, "", "");
+            _star_id = scr_random_find(own, true, "", "");
         }
 
-        if (star_id == noone) {
+        if (_star_id == noone) {
             LOGGER.error("RE: Sororitas Company, couldn't find a star for the company");
             exit;
         } else {
             var eligible_planets = [];
-            for (var i = 1; i <= star_id.planets; i++) {
-                if (star_id.p_type[i] != "Dead") {
+            for (var i = 1; i <= _star_id.planets; i++) {
+                if (_star_id.p_type[i] != "Dead") {
                     array_push(eligible_planets, i);
                 }
             }
             if (array_length(eligible_planets) == 0) {
-                LOGGER.error("RE: Sororitas Company, couldn't find a planet on the " + star_id.name + " system for the company");
+                LOGGER.error("RE: Sororitas Company, couldn't find a planet on the " + _star_id.name + " system for the company");
                 exit;
             }
 
-            var planet = eligible_planets[irandom(array_length(eligible_planets) - 1)];
-            ++star_id.p_sisters[planet];
+            var _planet = _star_id.get_planet_data(array_random_element(eligible_planets));
+            _planet.add_forces(eFACTION.ECCLESIARCHY, 1);
             _evented = true;
 
-            if ((own != 1) && (star_id.p_player[planet] <= 0) && (star_id.present_fleet[1] == 0)) {
-                scr_alert("green", "sororitas", "Sororitas place a company of sisters on " + string(star_id.name) + " " + string(planet) + ".", star_id.x, star_id.y);
+            if ((own != 1) && (_planet.player_forces <= 0) && (_star_id.present_fleet[1] == 0)) {
+                scr_alert("green", "sororitas", $"Sororitas place a company of sisters on {_planet.name()}.", _star_id.x, _star_id.y);
             } else {
-                scr_popup("Sororitas", "The Ecclesiarchy have placed a company of sisters on " + string(star_id.name) + " " + string(planet) + ".", "sororitas", "");
+                scr_popup("Sororitas", $"The Ecclesiarchy have placed a company of sisters on {_planet.name()}.", "sororitas", "");
                 if (known[eFACTION.ECCLESIARCHY] == 0) {
                     known[eFACTION.ECCLESIARCHY] = 1; // this seesms like a thing another part of code already does, not sure tho
                 }
@@ -433,26 +428,22 @@ function scr_random_event(execute_now) {
         }
     } else if (chosen_event == eEVENT.HARLEQUINS) {
         LOGGER.info("RE: Harlequins");
-        var owner = choose(1, 2, 2, 2, 3);
-        var star = scr_random_find(owner, true, "", "");
-        if (!instance_exists(star) && owner != 2) {
-            owner = 2;
-            star = scr_random_find(owner, true, "", "");
+        var _owner = choose(1, 2, 2, 2, 3);
+        var _star = scr_random_find(_owner, true, "", "");
+        if (!instance_exists(_star) && _owner != 2) {
+            _owner = 2;
+            _star = scr_random_find(_owner, true, "", "");
         }
-        if (!instance_exists(star)) {
+        if (!instance_exists(_star)) {
             LOGGER.error("RE: Harlequins, couldn't find star");
             exit;
         }
 
-        var planet = irandom_range(1, star.planets);
-        if (add_new_problem(planet, "harlequins", irandom_range(2, 5), star)) {
-            var text = "Eldar Harlequins have been seen on planet " + string(star.name) + " " + scr_roman(planet) + ". Their purposes are unknown.";
-            scr_popup("Harlequin Troupe", text, "harlequin", "");
-            var star_alert = instance_create(star.x + 16, star.y - 24, obj_star_event);
-            star_alert.image_alpha = 1;
-            star_alert.image_speed = 1;
-            star_alert.col = "green";
-        }
+        var _planet = irandom_range(1, _star.planets);
+        var _pdata = _star.get_planet_data(_planet);
+        _pdata.new_problem("harlequins", irandom_range(2, 5));
+
+
     } else if (chosen_event == eEVENT.SUCCESSION_WAR) {
         LOGGER.info("RE: Succession War");
         var eligible_stars = [];
@@ -557,25 +548,25 @@ function scr_random_event(execute_now) {
             own = choose(1, 1, 2, 0, 0);
         }
 
-        var star_id = scr_random_find(own, true, "", "");
-        if (star_id == noone && own == 1) {
+        var _star_id = scr_random_find(own, true, "", "");
+        if (_star_id == noone && own == 1) {
             own = 2;
-            star_id = scr_random_find(own, true, "", "");
+            _star_id = scr_random_find(own, true, "", "");
         }
-        if (star_id == noone && own == 2) {
+        if (_star_id == noone && own == 2) {
             own = 0;
-            star_id = scr_random_find(own, true, "", "");
+            _star_id = scr_random_find(own, true, "", "");
         }
 
-        if (star_id == noone) {
+        if (_star_id == noone) {
             LOGGER.error("RE: Warp Storm, couldn't pick a star for the warp storm");
             exit;
         } else {
-            star_id.storm += time;
+            _star_id.storm += time;
             _evented = true;
             var _col = own == 1 ? "red" : "green";
-            scr_alert(_col, "Warp", $"Warp Storms rage across the {star_id.name} system.", star_id.x, star_id.y);
-            scr_event_log(_col, $"Warp Storms rage across the {star_id.name} system.");
+            scr_alert(_col, "Warp", $"Warp Storms rage across the {_star_id.name} system.", _star_id.x, _star_id.y);
+            scr_event_log(_col, $"Warp Storms rage across the {_star_id.name} system.");
         }
     } else if (chosen_event == eEVENT.ENEMY_FORCES) {
         LOGGER.info("RE: Enemy Forces");
@@ -588,72 +579,72 @@ function scr_random_event(execute_now) {
             own = choose(1, 1, 1, 2, 2, 3);
         }
 
-        var star_id = scr_random_find(own, true, "", "");
-        if (star_id == noone && own == 1) {
+        var _star_id = scr_random_find(own, true, "", "");
+        if (_star_id == noone && own == 1) {
             own = 2;
-            star_id = scr_random_find(own, true, "", "");
+            _star_id = scr_random_find(own, true, "", "");
         }
-        if (star_id == noone && own == 2) {
+        if (_star_id == noone && own == 2) {
             own = 3;
-            star_id = scr_random_find(own, true, "", "");
+            _star_id = scr_random_find(own, true, "", "");
         }
 
-        if (star_id == noone) {
+        if (_star_id == noone) {
             LOGGER.error("RE: Enemy Forces, couldn't find a star for the enemy");
             exit;
         } else {
             var eligible_planets = [];
-            for (var i = 1; i <= star_id.planets; i++) {
-                if (star_id.p_type[i] != "Dead") {
+            for (var i = 1; i <= _star_id.planets; i++) {
+                if (_star_id.p_type[i] != "Dead") {
                     array_push(eligible_planets, i);
                 }
             }
             if (array_length(eligible_planets) == 0) {
-                LOGGER.error("RE: Enemy Forces, couldn't find a planet in the " + star_id.name + " system for the enemy");
+                LOGGER.error("RE: Enemy Forces, couldn't find a planet in the " + _star_id.name + " system for the enemy");
                 exit;
             }
             var planet = eligible_planets[irandom(array_length(eligible_planets) - 1)];
             //var enemy = choose(7,8,9,10,13);
             var enemy = choose(7, 8, 9);
             var text;
-            var max_enemies_on_planet = 5; // I don't know the actual value, i need to change it;
+            var max_enemies_on_planet = 6; // I don't know the actual value, i need to change it;
             switch (enemy) {
                 case 7:
                     text = "Orks";
-                    star_id.p_orks[planet] += 4;
-                    star_id.p_orks[planet] = min(star_id.p_orks[planet], max_enemies_on_planet);
+                    _star_id.p_orks[planet] += 4;
+                    _star_id.p_orks[planet] = min(_star_id.p_orks[planet], max_enemies_on_planet);
                     break;
                 case 8:
                     text = "Tau";
-                    star_id.p_tau[planet] += 4;
-                    star_id.p_tau[planet] = min(star_id.p_tau[planet], max_enemies_on_planet);
+                    _star_id.p_tau[planet] += 4;
+                    _star_id.p_tau[planet] = min(_star_id.p_tau[planet], max_enemies_on_planet);
                     break;
                 case 9:
                     text = "Tyranids";
-                    star_id.p_tyranids[planet] += 5;
-                    star_id.p_tyranids[planet] = min(star_id.p_tyranids[planet], max_enemies_on_planet);
+                    _star_id.p_tyranids[planet] += 5;
+                    _star_id.p_tyranids[planet] = min(_star_id.p_tyranids[planet], max_enemies_on_planet);
                     break;
                 //case 10: this doesn't work
                 //	text = "Heretics";
-                //	star_id.p_heretics[planet] = 4;
-                //	star_id.p_heretics[planet] = min(star_id.p_heretics[planet], max_enemies_on_planet);
+                //	_star_id.p_heretics[planet] = 4;
+                //	_star_id.p_heretics[planet] = min(_star_id.p_heretics[planet], max_enemies_on_planet);
                 //	break;
                 //case 13:
                 //	text = "Necron"; // I don't know if its a good idea to spawn necrons from this event, leaving it in for now
-                //	star_id.p_necron[planet] = 4;
-                //	star_id.p_necron[planet] = min(star_id.p_necron[planet], max_enemies_on_planet);
+                //	_star_id.p_necron[planet] = 4;
+                //	_star_id.p_necron[planet] = min(_star_id.p_necron[planet], max_enemies_on_planet);
                 //	break;
                 default:
                     LOGGER.error("RE: Enemy Forces, couldn't pick an enemy faction");
                     exit;
             }
-            scr_alert("red", "enemy", $"{text} forces suddenly appear at {star_id.name} {planet}!", star_id.x, star_id.y);
-            scr_event_log("red", $"{text} forces suddenly appear at {star_id.name} {planet}!");
+            scr_alert("red", "enemy", $"{text} forces suddenly appear at {_star_id.name} {planet}!", _star_id.x, _star_id.y);
+            scr_event_log("red", $"{text} forces suddenly appear at {_star_id.name} {planet}!");
             _evented = true;
         }
     } else if (chosen_event == eEVENT.CRUSADE) {
-        //i think all events should be hanlded like this then we have far more options on when to call them and how they work
-        _evented = launch_crusade();
+        var _crusade = new SystemProblem("great_crusade", noone);
+        _evented = _crusade.delete_mission != true;
     } else if (chosen_event == eEVENT.ENEMY) {
         _evented = make_faction_enemy_event();
     } else if (chosen_event == eEVENT.MUTATION) {
@@ -699,6 +690,7 @@ function scr_random_event(execute_now) {
         scr_event_log("red", "The Chapter Gene-Seed has mutated.");
     } else if (chosen_event == eEVENT.SHIP_LOST) {
         loose_ship_to_warp_event();
+        _evented = true;
     } else if (chosen_event == eEVENT.CHAOS_INVASION) {
         LOGGER.info("RE: Chaos Invasion");
 
@@ -716,10 +708,28 @@ function scr_random_event(execute_now) {
         } else if ((psyker_intolerant || !_has_chief_psyker) && _cm_is_psyker) {
             scr_popup("The Maw of the Warp Yawns Wide", "The barrier between the realm of man and the Immaterium feels thin and tested to you.  Dark forces are afoot.", "Warp", "");
         }
+        _evented = true;
     } else if (chosen_event == eEVENT.NECRON_AWAKEN) {
         _evented = awaken_tomb_event();
     } else if (chosen_event == eEVENT.FALLEN) {
-        event_fallen();
+        LOGGER.info("RE: Hunt the Fallen");
+        var stars = scr_get_stars();
+        var valid_stars = scr_get_stars(false, [eFACTION.IMPERIUM]);
+
+        if (array_length(valid_stars) == 0) {
+            LOGGER.error("RE: Hunt the Fallen, coulnd't find a star");
+            exit;
+        }
+        LOGGER.info($"Fallen: valid_stars {valid_stars}");
+
+        var star = array_random_element(stars);
+        var planet = scr_get_planet_with_owner(star, eFACTION.IMPERIUM);
+
+        if (planet > 0 && instance_exists(star)) {
+            var _p_data = star.get_planet_data(planet);
+            var _eta = scr_mission_eta(star.x, star.y, 1);
+            _p_data.new_problem("hunt_fallen",_eta);
+        }
         _evented = true;
     }
 
@@ -739,24 +749,4 @@ function scr_random_event(execute_now) {
     //with(obj_p_fleet){if (x<-10000){x+=20000;y+=20000;}}
     //with(obj_en_fleet){if (x<-10000){x+=20000;y+=20000;}}
     //with(obj_star){if (x<-10000){x+=20000;y+=20000;}}
-}
-
-function event_fallen() {
-    LOGGER.info("RE: Hunt the Fallen");
-    var stars = scr_get_stars();
-    var valid_stars = scr_get_stars(false, [eFACTION.IMPERIUM]);
-
-    if (array_length(valid_stars) == 0) {
-        LOGGER.error("RE: Hunt the Fallen, coulnd't find a star");
-        exit;
-    }
-    LOGGER.info($"Fallen: valid_stars {valid_stars}");
-
-    var star = choose_array(stars);
-    var planet = scr_get_planet_with_owner(star, eFACTION.IMPERIUM);
-
-    if (planet > 0 && instance_exists(star)) {
-        var _p_data = star.get_planet_data(planet);
-        _p_data.init_fallen_marines();
-    }
 }

@@ -82,7 +82,7 @@ if ((menu == eMENU.RECLUSIAM) && (cooldown <= 0) && (penitorium > 0)) {
         if ((mouse_y >= yy + 455) && (mouse_y < yy + 473) && (training_techmarine < 6)) {
             cooldown = 8000;
             if (faction_status[eFACTION.MECHANICUS] != "War") {
-                var _chapter_tech_count = scr_role_count("Techmarine", "");
+                var _chapter_tech_count = collect_role_group(SPECIALISTS_TECHMARINES, "",false,{},true).number();
                 if (_chapter_tech_count >= ((disposition[3] / 2) + 5)) {
                     training_techmarine = 0;
                 }

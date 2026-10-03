@@ -59,6 +59,7 @@ function scr_menu_clear_up(specific_area_function) {
 /// @description handles in game area and menu changes
 /// @returns {bool}
 function scr_change_menu(wanted_menu, specific_area_function = undefined) {
+    instance_activate_all();
     var continue_sequence = false;
     if (obj_controller.menu_lock) {
         return false;
@@ -470,27 +471,27 @@ function scr_end_turn() {
 
                     turn += 1;
                     with (obj_star) {
-                        present_fleet[20] = 0;
+                        navy_enemy_fleet_enroute = false;
                     }
                     with (obj_p_fleet) {
                         if ((action == "move") && (obj_controller.faction_status[eFACTION.IMPERIUM] == "War")) {
-                            var him = instance_nearest(action_x, action_y, obj_star);
-                            if (point_distance(action_x, action_y, him.x, him.y) < 10) {
-                                him.present_fleet[20] = 1;
-                            }
+                            var _him = instance_nearest(action_x, action_y, obj_star);
+                            _him.navy_enemy_fleet_enroute =  (point_distance(action_x, action_y, _him.x, _him.y) == 0);
                         }
                     }
                     with (obj_en_fleet) {
                         if ((action == "move") && (owner > 5)) {
-                            var him = instance_nearest(action_x, action_y, obj_star);
-                            if (point_distance(action_x, action_y, him.x, him.y) < 10) {
-                                him.present_fleet[20] = 1;
-                            }
+                            var _him = instance_nearest(action_x, action_y, obj_star);
+                            _him.navy_enemy_fleet_enroute =  (point_distance(action_x, action_y, _him.x, _him.y) == 0);
                         }
                     }
 
                     if (instance_exists(obj_p_fleet)) {
-                        obj_p_fleet.alarm[1] = 1;
+                        wait_and_execute(1, function(){
+                            with(obj_p_fleet){
+                                player_fleet_end_turn();
+                            }
+                        });
                     }
                     if (instance_exists(obj_en_fleet)) {
                         obj_en_fleet.alarm[1] = 1;

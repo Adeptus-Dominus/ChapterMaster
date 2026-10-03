@@ -89,13 +89,13 @@ function event_end_turn_action() {
             // Starts chaos invasion
             if (_event.e_id == "chaos_invasion") {
                 var xx = 0, yy = 0, flee = 0, dirr = 0;
-                var star_id = scr_random_find(1, true, "", "");
-                if (star_id != noone) {
-                    scr_event_log("purple", $"Chaos Fleets exit the warp near the {star_id.name} system.", star_id.name);
+                var _star_id = scr_random_find(1, true, "", "");
+                if (_star_id != noone) {
+                    scr_event_log("purple", $"Chaos Fleets exit the warp near the {_star_id.name} system.", _star_id.name);
                     for (var j = 0; j < 4; j++) {
                         dirr += irandom_range(50, 100);
-                        xx = star_id.x + lengthdir_x(72, dirr);
-                        yy = star_id.y + lengthdir_y(72, dirr);
+                        xx = _star_id.x + lengthdir_x(72, dirr);
+                        yy = _star_id.y + lengthdir_y(72, dirr);
                         flee = create_enemy_fleet(xx, yy, eFACTION.CHAOS);
                         flee.sprite_index = spr_fleet_chaos;
                         flee.image_index = 4;
@@ -104,8 +104,8 @@ function event_end_turn_action() {
                         flee.escort_number = choose(4, 5, 6);
                         flee.cargo_data.chaos = true;
                         obj_controller.chaos_fleets += 1;
-                        flee.action_x = star_id.x;
-                        flee.action_y = star_id.y;
+                        flee.action_x = _star_id.x;
+                        flee.action_y = _star_id.y;
                         with (flee) {
                             set_fleet_movement();
                         }

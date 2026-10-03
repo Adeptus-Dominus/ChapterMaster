@@ -158,11 +158,9 @@ try {
                     }
 
                     if (torpedo > 0) {
-                        var pfleet = instance_nearest(x, y, obj_p_fleet);
-                        if (instance_exists(pfleet) && (point_distance(pfleet.x, pfleet.y, target.x, target.y) <= 40) && (pfleet.action == "")) {
-                            if (pfleet.capital_number + pfleet.frigate_number > 0) {
-                                array_push(buttons, "Cyclonic Torpedo");
-                            }
+                        var _pfleet = target.get_orbiting_player_fleet();
+                        if (_pfleet != noone && calculate_fleet_bombard_score(_pfleet.full_ship_array()) > 0) {
+                            array_push(buttons, "Cyclonic Torpedo");
                         }
                     }
                 } else if (p_data.player_forces > 0) {
@@ -292,6 +290,7 @@ try {
                 }
             }
         }
+        var _p_fleet = target.get_orbiting_player_fleet()
         if (current_button != "") {
             if (array_contains(["Build", "Base", "Arsenal", "Gene-Vault"], current_button)) {
                 /// @type {Id.Instance.obj_temp_build}
@@ -312,12 +311,12 @@ try {
                 with (obj_star_select) {
                     instance_destroy();
                 }
-            } else if (current_button == "Raid" && instance_nearest(x, y, obj_p_fleet).acted <= 1) {
+            } else if (current_button == "Raid" && _p_fleet.acted <= 1) {
                 // feather ignore once GM2064
-                instance_create_layer(x, y, layer_get_all()[0], obj_drop_select, {p_target: target, planet_number: obj_controller.selecting_planet, sh_target: instance_nearest(x, y, obj_p_fleet), purge: 0});
+                instance_create_layer(x, y, layer_get_all()[0], obj_drop_select, {p_target: target, planet_number: obj_controller.selecting_planet, sh_target: _p_fleet, purge: 0});
             } else if (current_button == "Attack") {
                 var _allow_attack = true;
-                var _targ = !target.present_fleet[1] ? noone : instance_nearest(x, y, obj_p_fleet);
+                var _targ = !target.present_fleet[1] ? noone : _p_fleet;
                 if (instance_exists(_targ)) {
                     if (_targ.acted >= 2) {
                         _allow_attack = false;
@@ -329,7 +328,7 @@ try {
                 }
             } else if (current_button == "Purge") {
                 var _allow_attack = true;
-                var _targ = !target.present_fleet[1] ? noone : instance_nearest(x, y, obj_p_fleet);
+                var _targ = !target.present_fleet[1] ? noone : _p_fleet;
                 if (instance_exists(_targ)) {
                     if (_targ.acted >= 2) {
                         _allow_attack = false;
@@ -343,9 +342,9 @@ try {
                 instance_create(x, y, obj_bomb_select);
                 if (instance_exists(obj_bomb_select)) {
                     obj_bomb_select.p_target = target;
-                    obj_bomb_select.sh_target = instance_nearest(x, y, obj_p_fleet);
+                    obj_bomb_select.sh_target = _p_fleet;
                     obj_bomb_select.p_data = p_data;
-                    if (instance_nearest(x, y, obj_p_fleet).acted > 0) {
+                    if (_p_fleet.acted > 0) {
                         with (obj_bomb_select) {
                             instance_destroy();
                         }
@@ -375,6 +374,8 @@ try {
                 scr_destroy_planet(2);
             }
         }
+    } else if (global.cheat_debug ){
+        draw_system_debug();
     }
 
     if (target != 0) {

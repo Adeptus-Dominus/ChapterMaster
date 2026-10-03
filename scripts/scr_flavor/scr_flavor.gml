@@ -517,9 +517,6 @@ function scr_flavor(id_of_attacking_weapons, target, target_type, number_of_shot
         }
     } else if (weapon_name == "Webber") {
         flavoured = true;
-        if (((target_name == "Termagaunt") || (target_name == "Hormagaunt")) && (casulties > 0)) {
-            obj_ncombat.captured_gaunt += casulties;
-        }
         if ((target.dudes_num[targeh] == 1) && (casulties == 0)) {
             attack_message = $"{number_of_shots} {weapon_name} spray ooze on the {target_name} but fail to immobilize it.";
         }

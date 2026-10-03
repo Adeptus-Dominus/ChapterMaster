@@ -282,13 +282,6 @@ if (slime > 0) {
 
 instance_activate_object(obj_star);
 
-var reduce_fortification = true;
-if (battle_special == "tyranid_org") {
-    reduce_fortification = false;
-}
-if (string_count("_attack", battle_special) > 0) {
-    reduce_fortification = false;
-}
 if (battle_special == "ship_demon") {
     reduce_fortification = false;
 }
@@ -299,18 +292,6 @@ if (battle_special == "ruins") {
     reduce_fortification = false;
 }
 if (battle_special == "ruins_eldar") {
-    reduce_fortification = false;
-}
-if (battle_special == "fallen1") {
-    reduce_fortification = false;
-}
-if (battle_special == "fallen2") {
-    reduce_fortification = false;
-}
-if (battle_special == "study2a") {
-    reduce_fortification = false;
-}
-if (battle_special == "study2b") {
     reduce_fortification = false;
 }
 
@@ -361,30 +342,21 @@ if (string_count("ruins", battle_special) > 0) {
     combat_log.push(_newline, eMSG_COLOR.YELLOW);
 }
 
-var _reduce_power = true;
-
 // Events that should *not* reduce power
 var _non_power_reduce_events = [
-    "tyranid_org",
     "ship_demon",
     "space_hulk",
-    "fallen1",
-    "fallen2",
-    "study2a",
-    "study2b",
-    "protect_raiders",
 ];
 
 // Disable power reduction for matching events
 if (array_contains(_non_power_reduce_events, battle_special)) {
-    _reduce_power = false;
-} else if (string_count("_attack", battle_special) > 0) {
-    _reduce_power = false;
-} else if (string_count("ruins", battle_special) > 0) {
-    _reduce_power = false;
+    reduce_power = false;
+}
+else if (string_count("ruins", battle_special) > 0) {
+    reduce_power = false;
 }
 
-if (defeat == 0 && _reduce_power) {
+if (defeat == 0 && reduce_power) {
     var enemy_power = 0, new_power = 0, power_reduction = 0, requisition_reward = 0;
 
     if (enemy == eFACTION.IMPERIUM) {
@@ -569,31 +541,10 @@ if (defeat == 0 && _reduce_power) {
     }
 }
 
-if ((defeat == 0) && (enemy == eFACTION.TYRANIDS) && (battle_special == "tyranid_org")) {
-    _newline = $"{string_plural_count("Gaunt organism", captured_gaunt)} have been captured.";
-    combat_log.push(_newline, eMSG_COLOR.YELLOW);
-
-    if (captured_gaunt > 0) {
-        var why = 0, thatta = 0;
-        instance_activate_object(obj_star);
-        with (obj_star) {
-            remove_star_problem("tyranid_org");
-        }
+if (battle_special != ""){
+    if (is_struct(special_feature) && is_instanceof(special_feature, PlanetProblem)){
+        special_feature.battle_final_message();
     }
-
-    scr_event_log("", "Inquisition Mission Completed: A Gaunt organism has been captured for the Inquisition.");
-
-    if (captured_gaunt > 1) {
-        if (instance_exists(obj_turn_end)) {
-            scr_popup("Inquisition Mission Completed", "You have captured several Gaunt organisms.  The Inquisitor is pleased with your work, though she notes that only one is needed- the rest are to be purged.  It will be stored until it may be retrieved.  The mission is a success.", "inquisition", "");
-        }
-    }
-    if (captured_gaunt == 1) {
-        if (instance_exists(obj_turn_end)) {
-            scr_popup("Inquisition Mission Completed", "You have captured a Gaunt organism- the Inquisitor is pleased with your work.  The Tyranid will be stored until it may be retrieved.  The mission is a success.", "inquisition", "");
-        }
-    }
-    instance_deactivate_object(obj_star);
 }
 
 _newline = line_break;

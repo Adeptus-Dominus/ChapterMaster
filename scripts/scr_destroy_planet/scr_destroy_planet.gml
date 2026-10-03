@@ -164,9 +164,7 @@ function scr_destroy_planet(destruction_method) {
         p_sisters[baid] = 0;
         p_necrons[baid] = 0;
         //
-        p_problem[baid] = array_create(8, "");
-        p_timer[baid] = array_create(8, 0);
-        p_problem_other_data[baid] = array_create(8, {});
+        p_problem[baid] = [];
     }
 
     pip.text += ", scouring all life across the planet.  It has been rendered a barren, lifeless chunk of rock.";

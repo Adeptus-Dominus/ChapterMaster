@@ -28,55 +28,54 @@ storm_image = 0;
 trader = 0;
 visited = 0;
 stored_owner = -1;
+navy_enemy_fleet_enroute = false;
 in_view = true;
 garrisoned = false;
 
 // sets up default planet variables
-var _planet_array_size = 9;
-planet = array_create(_planet_array_size, 0);
-dispo = array_create(_planet_array_size, -50);
-p_type = array_create(_planet_array_size, "");
-p_owner = array_create(_planet_array_size, 0);
-p_first = array_create(_planet_array_size, 0);
-p_population = array_create(_planet_array_size, 0);
-p_max_population = array_create(_planet_array_size, 0);
-p_large = array_create(_planet_array_size, 0);
-p_pop = array_create(_planet_array_size, "");
-p_guardsmen = array_create(_planet_array_size, 0);
-p_pdf = array_create(_planet_array_size, 0);
-p_fortified = array_create(_planet_array_size, 0);
-p_station = array_create(_planet_array_size, 0);
-p_player = array_create(_planet_array_size, 0);
-p_lasers = array_create(_planet_array_size, 0);
-p_silo = array_create(_planet_array_size, 0);
-p_defenses = array_create(_planet_array_size, 0);
-p_orks = array_create(_planet_array_size, 0);
-p_tau = array_create(_planet_array_size, 0);
-p_eldar = array_create(_planet_array_size, 0);
-p_tyranids = array_create(_planet_array_size, 0);
-p_traitors = array_create(_planet_array_size, 0);
-p_chaos = array_create(_planet_array_size, 0);
-p_demons = array_create(_planet_array_size, 0);
-p_sisters = array_create(_planet_array_size, 0);
-p_necrons = array_create(_planet_array_size, 0);
-p_halp = array_create(_planet_array_size, 0);
-p_heresy = array_create(_planet_array_size, 0);
-p_hurssy = array_create(_planet_array_size, 0);
-p_hurssy_time = array_create(_planet_array_size, 0);
-p_heresy_secret = array_create(_planet_array_size, 0);
-p_raided = array_create(_planet_array_size, false);
-p_governor = array_create(_planet_array_size, false);
-p_operatives = array_create_advanced(_planet_array_size, []);
-p_feature = array_create_advanced(_planet_array_size, []);
-p_upgrades = array_create_advanced(_planet_array_size, []);
-p_influence = array_create_advanced(_planet_array_size, array_create(15, 0));
-p_problem = array_create_advanced(_planet_array_size, array_create(8, ""));
-p_problem_other_data = array_create_advanced(_planet_array_size, array_create_advanced(8, {}));
-p_timer = array_create_advanced(_planet_array_size, array_create(8, -1));
+planet = array_create(PLANET_ARRAY_SIZE, 0);
+dispo = array_create(PLANET_ARRAY_SIZE, -50);
+p_type = array_create(PLANET_ARRAY_SIZE, "");
+p_owner = array_create(PLANET_ARRAY_SIZE, 0);
+p_first = array_create(PLANET_ARRAY_SIZE, 0);
+p_population = array_create(PLANET_ARRAY_SIZE, 0);
+p_max_population = array_create(PLANET_ARRAY_SIZE, 0);
+p_large = array_create(PLANET_ARRAY_SIZE, 0);
+p_pop = array_create(PLANET_ARRAY_SIZE, "");
+p_guardsmen = array_create(PLANET_ARRAY_SIZE, 0);
+p_pdf = array_create(PLANET_ARRAY_SIZE, 0);
+p_fortified = array_create(PLANET_ARRAY_SIZE, 0);
+p_station = array_create(PLANET_ARRAY_SIZE, 0);
+p_player = array_create(PLANET_ARRAY_SIZE, 0);
+p_lasers = array_create(PLANET_ARRAY_SIZE, 0);
+p_silo = array_create(PLANET_ARRAY_SIZE, 0);
+p_defenses = array_create(PLANET_ARRAY_SIZE, 0);
+p_orks = array_create(PLANET_ARRAY_SIZE, 0);
+p_tau = array_create(PLANET_ARRAY_SIZE, 0);
+p_eldar = array_create(PLANET_ARRAY_SIZE, 0);
+p_tyranids = array_create(PLANET_ARRAY_SIZE, 0);
+p_traitors = array_create(PLANET_ARRAY_SIZE, 0);
+p_chaos = array_create(PLANET_ARRAY_SIZE, 0);
+p_demons = array_create(PLANET_ARRAY_SIZE, 0);
+p_sisters = array_create(PLANET_ARRAY_SIZE, 0);
+p_necrons = array_create(PLANET_ARRAY_SIZE, 0);
+p_halp = array_create(PLANET_ARRAY_SIZE, 0);
+p_heresy = array_create(PLANET_ARRAY_SIZE, 0);
+p_hurssy = array_create(PLANET_ARRAY_SIZE, 0);
+p_hurssy_time = array_create(PLANET_ARRAY_SIZE, 0);
+p_heresy_secret = array_create(PLANET_ARRAY_SIZE, 0);
+p_raided = array_create(PLANET_ARRAY_SIZE, false);
+p_governor = array_create(PLANET_ARRAY_SIZE, false);
+p_operatives = array_create_advanced(PLANET_ARRAY_SIZE, []);
+p_feature = array_create_advanced(PLANET_ARRAY_SIZE, []);
+p_upgrades = array_create_advanced(PLANET_ARRAY_SIZE, []);
+p_influence = array_create_advanced(PLANET_ARRAY_SIZE, array_create(15, 0));
+p_problem = array_create_advanced(PLANET_ARRAY_SIZE, []);
 p_psionic = [];
-for (var i = 0; i < _planet_array_size; i++) {
+for (var i = 0; i < PLANET_ARRAY_SIZE; i++) {
     p_psionic[i] = irandom(5);
 }
+
 system_datas = array_create(8, undefined);
 system_garrison = array_create(8, undefined);
 system_sabatours = array_create(8, undefined);
@@ -123,6 +122,59 @@ add_feature = function(planet, feature) {
     array_push(p_feature[planet], feature);
 };
 
+problems = [];
+
+add_problem = function(p_id, data = {}, timer = -1){
+    var _prob = new SystemProblem(p_id, self, data, timer);
+    array_push(problems, _prob);
+    return _prob;
+}
+
+problems_to_mission_log = function(){
+    var _temp_log = [];
+    for (var i = 1; i <= planets; i++) {
+        var _p_data = get_planet_data(i);
+        _temp_log = array_concat(_temp_log, _p_data.problems_to_mission_log());
+    }
+    _temp_log = array_concat(_temp_log, generic_problems_to_mission_log());
+    return _temp_log;
+}
+
+/// @self Asset.GMObject.obj_star
+has_orbiting_player_fleet = function () {
+    if (instance_exists(obj_p_fleet)) {
+        var _nearest = instance_nearest(x, y, obj_p_fleet);
+        if (_nearest.action != "move" && point_distance(_nearest.x, _nearest.y, x, y) == 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/// @function get_orbiting_player_fleet()
+/// @description Returns the ID of the nearest player fleet orbiting the given system or star.
+/// The system instance or identifier to check. If `noone`, the function checks the calling star instance.
+/// @returns {Id.Instance.obj_p_fleet} The instance ID of the orbiting player fleet, or -1 if none is found.
+///
+/// @example
+/// ```gml
+/// var fleet_id = get_orbiting_player_fleet();
+/// if (fleet_id != noone) {
+///     LOGGER.debug("Fleet orbiting star: " + string(fleet_id));
+/// }
+/// ```
+get_orbiting_player_fleet = function() {
+    var _fleet = instance_nearest(x, y, obj_p_fleet);
+    if (!instance_exists(_fleet)){
+        return noone;
+    }
+    if (object_distance(self, _fleet) > 0 || _fleet.action == "move") {
+        return noone;
+    } else {
+        return _fleet.id;
+    }
+}
+
 system_player_ground_forces = 0;
 
 /// @desc Reports whether any planet in this system holds a garrison squad that still has members.
@@ -138,7 +190,7 @@ function has_garrison() {
             if (_operative.job != "garrison") {
                 continue;
             }
-            if (array_length(fetch_squad(_operative.reference).members) > 0) {
+            if (array_length(fetch_squad(_operative.reference).get_members()) > 0) {
                 return true;
             }
         }
@@ -166,18 +218,7 @@ serialize = function() {
     var planet_data = [];
 
     for (var p = 1; p <= object_star.planets; p++) {
-        planet_data[p] = {
-            dispo: object_star.dispo[p],
-            planet: object_star.planet[p],
-        };
-        var var_names = variable_instance_get_names(object_star);
-        for (var n = 0; n < array_length(var_names); n++) {
-            var var_name = var_names[n];
-            if (string_starts_with(var_name, "p_")) {
-                var val = object_star[$ var_name][p];
-                variable_struct_set(planet_data[p], var_name, val);
-            }
-        }
+        planet_data[p] = get_planet_data(p).save();
     }
 
     var save_data = {
@@ -219,26 +260,26 @@ function deserialize(save_data) {
     ]; // skip automatic setting of certain vars, handle explicitly later
 
     // Automatic var setting
-    var all_names = struct_get_names(save_data);
-    for (var i = 0; i < array_length(all_names); i++) {
-        var var_name = all_names[i];
-        if (array_contains(exclusions, var_name)) {
+    var _all_names = struct_get_names(save_data);
+    for (var i = 0; i < array_length(_all_names); i++) {
+        var _var_name = _all_names[i];
+        if (array_contains(exclusions, _var_name)) {
             continue;
         }
-        var loaded_value = struct_get(save_data, var_name);
-        variable_instance_set(id, var_name, loaded_value);
+        var _loaded_value = struct_get(save_data, _var_name);
+        variable_instance_set(id, _var_name, _loaded_value);
     }
 
     if (struct_exists(save_data, "planet_data")) {
         var planet_arr = save_data.planet_data;
         for (var p = 1; p < array_length(planet_arr); p++) {
-            var planet = planet_arr[p];
-            var var_names = struct_get_names(planet);
-            for (var v = 0; v < array_length(var_names); v++) {
-                var var_name = var_names[v];
+            var _planet = planet_arr[p];
+            var _var_names = struct_get_names(_planet);
+            for (var v = 0; v < array_length(_var_names); v++) {
+                var _var_name = _var_names[v];
 
-                if (var_name == "p_feature") {
-                    var _planet_features = planet[$ var_name];
+                if (_var_name == "p_feature") {
+                    var _planet_features = _planet[$ _var_name];
                     for (var f = 0; f < array_length(_planet_features); f++) {
                         var _feat = _planet_features[f];
                         if (!is_struct(_feat) || !struct_exists(_feat, "f_type")) {
@@ -253,8 +294,23 @@ function deserialize(save_data) {
                     }
                     continue;
                 }
-                var val = planet[$ var_name];
-                self[$ var_name][p] = val;
+                if (_var_name == "p_problem") {
+                    var _planet_problems = _planet[$ _var_name];
+                    for (var f = 0; f < array_length(_planet_problems); f++) {
+                        if (!is_struct(_planet_problems[f])){
+                            continue;
+                        }
+                        var _new_prob = new PlanetProblem("", 0, {}, {planet:p,system:id});
+                        _new_prob.load(_planet_problems[f]);
+                        array_push(p_problem[p], _new_prob);
+                    }
+                    continue;
+                }
+                var _val = _planet[$ _var_name];
+                if (!is_array(self[$ _var_name])) {
+                    self[$ _var_name] = array_create(PLANET_ARRAY_SIZE, 0);
+                }
+                self[$ _var_name][p] = _val;
             }
         }
     }

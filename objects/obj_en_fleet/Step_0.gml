@@ -67,15 +67,9 @@ if (ii_check == 0) {
     }
 }
 
-if (owner == eFACTION.TYRANIDS) {
+if (owner == eFACTION.TYRANIDS && orbiting != noone) {
     image_alpha = 0;
-    if (instance_exists(obj_p_fleet)) {
-        var bundy = instance_nearest(x, y, obj_p_fleet);
-        if ((bundy.action == "") && (self.action == "") && (point_distance(bundy.x, bundy.y, x, y) < 90) && (bundy.x > x) && (bundy.y < y)) {
-            image_alpha = 1;
-        }
-    }
-    if ((instance_nearest(x, y - 32, obj_star).vision == 1) && (action == "")) {
+    if (orbiting.has_orbiting_player_fleet() || orbiting.vision == 1){
         image_alpha = 1;
     }
 }
@@ -146,30 +140,7 @@ if ((owner == eFACTION.TYRANIDS) && (trade_goods == "")) {
 }
 
 if (global.load >= 0) {
-    if (owner == eFACTION.IMPERIUM) {
-        sprite_index = spr_fleet_imperial;
-    }
-    if (owner == eFACTION.MECHANICUS) {
-        sprite_index = spr_fleet_mechanicus;
-    }
-    if (owner == eFACTION.INQUISITION) {
-        sprite_index = spr_fleet_inquisition;
-    }
-    if (owner == eFACTION.ELDAR) {
-        sprite_index = spr_fleet_eldar;
-    }
-    if (owner == eFACTION.ORK) {
-        sprite_index = spr_fleet_ork;
-    }
-    if (owner == eFACTION.TAU) {
-        sprite_index = spr_fleet_tau;
-    }
-    if (owner == eFACTION.TYRANIDS) {
-        sprite_index = spr_fleet_tyranid;
-    }
-    if (owner == eFACTION.CHAOS) {
-        sprite_index = spr_fleet_chaos;
-    }
+    choose_fleet_sprite_image();
 }
 if (image_index == 0) {
     image_index = 1;

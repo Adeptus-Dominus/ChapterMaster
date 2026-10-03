@@ -513,6 +513,7 @@ function scr_enemy_ai_e() {
     var chaos_meeting = 0;
 
     for (var run = 1; run <= planets; run++) {
+        var _p_data = get_planet_data(run);
         var forces_list = [];
         var force_count = 0;
         if (p_player[run] > 0 && struct_exists(obj_controller.location_viewer.garrison_log, name)) {
@@ -522,51 +523,12 @@ function scr_enemy_ai_e() {
 
         if (p_player[run] > 0 && force_count > 0) {
             if (p_player[run] > 0) {
-                if (has_problem_planet(run, "meeting")) {
+                if (_p_data.has_problem( "meeting")) {
                     chaos_meeting = run;
-                } else if (has_problem_planet(run, "meeting_trap")) {
+                } else if (_p_data.has_problem( "meeting_trap")) {
                     chaos_meeting = run + 0.1;
                 }
             }
-            if (has_problem_planet(run, "spyrer")) {
-                if (p_player[run] > 20) {
-                    var tixt = "The Spyrer on " + planet_numeral_name(run, id) + " seems to have vanished, presumably gone into hiding.";
-                    scr_popup("Spyrer Rampage", tixt, "spyrer", "");
-                } else if (p_player[run] <= 20) {
-                    obj_turn_end.battles += 1;
-                    obj_turn_end.battle[obj_turn_end.battles] = 1;
-                    obj_turn_end.battle_world[obj_turn_end.battles] = run;
-                    obj_turn_end.battle_opponent[obj_turn_end.battles] = 30;
-                    obj_turn_end.battle_location[obj_turn_end.battles] = name;
-                    obj_turn_end.battle_object[obj_turn_end.battles] = id;
-                    obj_turn_end.battle_special[obj_turn_end.battles] = "spyrer";
-                }
-            }
-
-            if ((p_player[run] > 0) && has_problem_planet(run, "fallen")) {
-                if (choose(true, false)) {
-                    obj_turn_end.battles += 1;
-                    obj_turn_end.battle[obj_turn_end.battles] = 1;
-                    obj_turn_end.battle_world[obj_turn_end.battles] = run;
-                    obj_turn_end.battle_opponent[obj_turn_end.battles] = 10;
-                    obj_turn_end.battle_location[obj_turn_end.battles] = name;
-                    obj_turn_end.battle_object[obj_turn_end.battles] = id;
-                    if (choose(true, false)) {
-                        obj_turn_end.battle_special[obj_turn_end.battles] = "fallen1";
-                    } else {
-                        obj_turn_end.battle_special[obj_turn_end.battles] = "fallen2";
-                    }
-                } else {
-                    if (remove_planet_problem(run, "fallen")) {
-                        var tixt = "Your marines have scoured " + planet_numeral_name(run, id) + " in search of the Fallen.  Despite their best efforts, and meticulous searching, none have been found.  It appears as though the information was faulty or out of date.";
-                        scr_popup("Hunt the Fallen", tixt, "fallen", "");
-                        scr_event_log("", $"Mission Successful: No Fallen located upon {planet_numeral_name(run, id)}");
-                    }
-                }
-            }
-        }
-        if (p_player[run] > 0 && has_problem_planet(run, "necron")) {
-            setup_necron_tomb_raid(run);
         }
         if ((p_player[run] > 0) && (force_count > 0)) {
             for (var force = 2; force < 14; force++) {
@@ -612,13 +574,13 @@ function scr_enemy_ai_e() {
                         }
                         break;
                     case 10:
-                        pause = has_problem_planet(run, "meeting") || has_problem_planet(run, "meeting_trap");
+                        pause = _p_data.has_problem( "meeting") || _p_data.has_problem( "meeting_trap");
                         if (p_guardsmen[run] + p_pdf[run] == 0 && p_player[run] > 0 && p_chaos[run] > 0 && !pause && obj_controller.faction_status[10] == "War") {
                             battle_opponent = 10;
                         }
                         break;
                     case 11:
-                        pause = has_problem_planet(run, "meeting") || has_problem_planet(run, "meeting_trap");
+                        pause = _p_data.has_problem( "meeting") || _p_data.has_problem( "meeting_trap");
                         if (p_guardsmen[run] + p_pdf[run] == 0 && p_player[run] > 0 && p_traitors[run] > 0 && !pause && obj_controller.faction_status[10] == "War") {
                             battle_opponent = 11;
                         }
@@ -786,7 +748,7 @@ function scr_enemy_ai_e() {
     }
 
     for (var i = 1; i <= planets; i++) {
-        var existing_problem = has_any_problem_planet(i);
+        var existing_problem = bool(array_length(p_problem[i]));
         if (!existing_problem) {
             if (!irandom(50) && p_owner[i] == eFACTION.IMPERIUM) {
                 if (p_owner[i] == eFACTION.IMPERIUM) {

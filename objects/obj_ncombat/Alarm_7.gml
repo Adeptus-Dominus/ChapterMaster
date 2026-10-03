@@ -190,28 +190,6 @@ try {
         }
     }
 
-    if ((battle_special == "study2a") || (battle_special == "study2b")) {
-        if (defeat == 1) {
-            if (remove_planet_problem(battle_id, "mech_tomb", battle_object)) {
-                obj_controller.disposition[3] -= 10;
-
-                if (battle_special == "study2a") {
-                    scr_popup("Mechanicus Mission Failed", "All of your Astartes and the Mechanicus Research party have been killed down to the last man.  The research is a bust, and the Adeptus Mechanicus is furious with your chapter for not providing enough security.  Relations with them are worse than before.", "", "");
-                }
-                if (battle_special == "study2b") {
-                    battle_object.p_necrons[battle_id] = 5;
-                    awaken_tomb_world(battle_object.p_feature[battle_id]);
-                    alter_dispositions([[eFACTION.MECHANICUS, -15], [eFACTION.INQUISITION, -5]]);
-                    scr_popup("Mechanicus Mission Failed", "All of your Astartes and the Mechanicus Research party have been killed down to the last man.  The research is a bust.  To make matters worse the Necron Tomb has fully awakened- countless numbers of the souless machines are now pouring out of the tomb.  The Adeptus Mechanicus are furious with your chapter.", "necron_army", "");
-                    scr_alert("", "inqi", "The Inquisition is displeased with your Chapter for tampering with and awakening a Necron Tomb", 0, 0);
-                    scr_event_log("", "The Inquisition is displeased with your Chapter for tampering with and awakening a Necron Tomb");
-                }
-
-                scr_event_log("", "Mechanicus Mission Failed: Necron Tomb Research Party and present astartes have been killed.");
-            }
-        }
-    }
-
     if ((enemy == eFACTION.ECCLESIARCHY) && (obj_controller.faction_status[eFACTION.ECCLESIARCHY] != "War")) {
         obj_controller.loyalty -= 50;
         obj_controller.loyalty_hidden -= 50;
@@ -222,7 +200,7 @@ try {
         scr_destroy_planet(1);
     }
 
-    if ((string_count("mech", battle_special) > 0) && (defeat == 0)) {
+    if ((string_count("mech", battle_special) > 0) && (!defeat)) {
         with (obj_ground_mission) {
             scr_return_ship(obj_ground_mission.loc, obj_ground_mission, obj_ground_mission.num);
             with (obj_ground_mission) {
@@ -247,11 +225,11 @@ try {
     instance_activate_all();
 
     if (turn_count < 20) {
-        if ((defeat == 0) && (threat >= 4)) {
+        if ((!defeat) && (threat >= 4)) {
             scr_recent("battle_victory", $"{battle_loc} {scr_roman(battle_id)}", enemy);
         }
 
-        if ((defeat == 1) && (final_marine_deaths + final_command_deaths >= 10)) {
+        if ((defeat) && (final_marine_deaths + final_command_deaths >= 10)) {
             scr_recent("battle_defeat", $"{enemy}, {final_marine_deaths + final_command_deaths}");
         }
     } else {
@@ -292,52 +270,10 @@ try {
         }
     }
 
-    if (battle_mission == "necron_tomb_excursion") {
-        necron_tomb_raid_post_battle_sequence();
+    if (is_struct(special_feature) && is_instanceof(special_feature, PlanetProblem)){
+        special_feature.after_battle_effects();
     }
-
-    if ((string_count("spyrer", battle_special) > 0) && (defeat == 0)) {
-        instance_activate_object(obj_star);
-        // title / text / image / speshul
-        var cur_star = obj_turn_end.battle_object[obj_turn_end.current_battle];
-        var planet = obj_turn_end.battle_world[obj_turn_end.current_battle];
-        var _planet_string = scr_roman_numerals()[planet - 1];
-
-        remove_planet_problem(planet, "spyrer", cur_star);
-
-        var tixt = $"The Spyrer on {cur_star.name} {_planet_string} has been removed.  The citizens and craftsman may sleep more soundly, the Inquisition likely pleased.";
-
-        scr_popup("Inquisition Mission Completed", tixt, "spyrer", "");
-
-        if (obj_controller.demanding == 0) {
-            obj_controller.disposition[4] += 2;
-        }
-        if (obj_controller.demanding == 1) {
-            obj_controller.disposition[4] += choose(0, 0, 1);
-        }
-
-        scr_event_log("", $"Inquisition Mission Completed: The Spyrer on {cur_star.name} {planet} has been removed.", cur_star.name);
-        scr_gov_disp(cur_star.name, planet, choose(1, 2, 3, 4));
-
-        instance_deactivate_object(obj_star);
-    } else if (battle_special == "protect_raiders") {
-        protect_raiders_battle_aftermath();
-    } else if (string_count("fallen", battle_special) > 0) {
-        hunt_fallen_battle_aftermath();
-    } else if ((defeat == 0) && (enemy == eFACTION.TYRANIDS) && (battle_special == "tyranid_org")) {
-        if (captured_gaunt > 1) {
-            var _pop = instance_create(0, 0, obj_popup);
-            _pop.image = "inquisition";
-            _pop.title = "Inquisition Mission Completed";
-            _pop.text = "You have captured several Gaunt organisms.  The Inquisitor is pleased with your work, though she notes that only one is needed- the rest are to be purged.  It will be stored until it may be retrieved.  The mission is a success.";
-        }
-        if (captured_gaunt == 1) {
-            var _pop = instance_create(0, 0, obj_popup);
-            _pop.image = "inquisition";
-            _pop.title = "Inquisition Mission Completed";
-            _pop.text = "You have captured a Gaunt organism- the Inquisitor is pleased with your work.  The Tyranid will be stored until it may be retrieved.  The mission is a success.";
-        }
-    } else if ((enemy == eFACTION.PLAYER) && (on_ship == true) && (defeat == 0)) {
+    if ((enemy == eFACTION.PLAYER && on_ship == true) && (!defeat)) {
         var diceh = roll_dice_chapter(1, 100, "high");
 
         if (diceh <= 15) {

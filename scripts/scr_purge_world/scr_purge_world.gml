@@ -132,13 +132,43 @@ function PlayerPurge(action_type, action_score, planet_data) constructor {
     };
 }
 
+function log_ship_effort_purge(){
+    if (instance_exists(obj_drop_select)) {
+        with (obj_drop_select) {
+            if (instance_exists(sh_target)) {
+                sh_target.acted = 5;
+            }
+            instance_destroy();
+        }
+    }
+}
+
 /// @self Struct.PlanetData
 function scr_purge_world(action_type, action_score) {
-    var _purge = new PlayerPurge(action_type, action_score, self);
 
-    var _isquest = 0;
-    var _thequest = "";
-    var _questnum = 0;
+    var _mission_override = false;
+    for (var i = 0; i < array_length(problems); i++){
+        var _prob = problems[i];
+        if (!_prob.has_func("on_purge")){
+            continue;
+        }
+        if (!_prob.has_data("purge_type")){
+            continue;
+        }
+        if (_prob.data.purge_type == action_type){
+            _prob.purge_data = {
+                action_type,
+                action_score,
+            }
+            _mission_override = true;
+            _prob.on_purge();
+        }
+    }
+    if (_mission_override){
+        log_ship_effort_purge();
+        exit;
+    }
+    var _purge = new PlayerPurge(action_type, action_score, self);
     var _popup_text = "";
 
     _purge.pop_before = population_as_small();
@@ -215,109 +245,59 @@ function scr_purge_world(action_type, action_score) {
 
     if (action_type == eDROP_TYPE.PURGEFIRE) {
         // Burn baby burn
-        var i = 0;
-        if (has_problem("cleanse")) {
-            _isquest = true;
-            _thequest = "cleanse";
-            _questnum = i;
-        }
+        // TODO add more variation, with planets, features, marine equipment perhaps?
+        _popup_text = choose($"Timing their visits right, Your forces scour {name()} burning down whatever the local heretic communities call their homes. Their screams were quickly extinguished by fire, turning whatever it was before, into ash.", $"Your forces scour {name()}, burning homes and towns that reek of heresy. The screams and wails of the damned carry through the air.");
 
-        if (_isquest) {
-            if (_thequest == "cleanse" && action_score >= 20) {
-                remove_problem(_thequest);
-
-                alter_disposition(eFACTION.INQUISITION, obj_controller.demanding ? choose(0, 0, 1) : 1);
-
-                _popup_text = $"Your marines scour the underhive of {name()}, spraying mutants down with promethium as they go.  It takes several days but a sizeable dent is put in their numbers.";
-                scr_event_log("", $"Inquisition Mission Completed: The mutants of {name()} have been cleansed by promethium.");
-                add_disposition(choose(1, 2, 3));
-            }
+        var _nid_influence = population_influences[eFACTION.TYRANIDS];
+        if (has_feature(eP_FEATURES.GENE_STEALER_CULT)) {
+            var cult = get_features(eP_FEATURES.GENE_STEALER_CULT)[0];
+            if (cult.hiding) {}
         } else {
-            // TODO add more variation, with planets, features, marine equipment perhaps?
-            _popup_text = choose($"Timing their visits right, Your forces scour {name()} burning down whatever the local heretic communities call their homes. Their screams were quickly extinguished by fire, turning whatever it was before, into ash.", $"Your forces scour {name()}, burning homes and towns that reek of heresy. The screams and wails of the damned carry through the air.");
-
-            var nid_influence = population_influences[eFACTION.TYRANIDS];
-            if (has_feature(eP_FEATURES.GENE_STEALER_CULT)) {
-                var cult = get_features(eP_FEATURES.GENE_STEALER_CULT)[0];
-                if (cult.hiding) {}
-            } else {
-                if (nid_influence > 25) {
-                    _popup_text += " Scores of mutant offspring from a genestealer infestation are burnt, while we have damaged their influence over this world, the mutants appear to lack the organisation of a true cult";
-                    adjust_influence(eFACTION.TYRANIDS, -10, planet, system);
-                } else if (nid_influence > 0) {
-                    _popup_text += " There are signs of a genestealer infestation but the cultists are too unorganized to do any real damage to their influence on this world";
-                }
+            if (_nid_influence > 25) {
+                _popup_text += " Scores of mutant offspring from a genestealer infestation are burnt, while we have damaged their influence over this world, the mutants appear to lack the organisation of a true cult";
+                adjust_influence(eFACTION.TYRANIDS, -10, planet, system);
+            } else if (_nid_influence > 0) {
+                _popup_text += " There are signs of a genestealer infestation but the cultists are too unorganized to do any real damage to their influence on this world";
             }
-
-            _popup_text += _purge.population_death_string();
         }
+
+        _popup_text += _purge.population_death_string();
+
     }
 
     if (action_type == eDROP_TYPE.PURGESELECTIVE) {
-        // Blam!
-        var i = 0;
-        if (has_problem("purge")) {
-            _isquest = 1;
-            _thequest = "purge";
-            _questnum = i;
-        }
+        // TODO add more variation, with planets, features, possibly marine equipment
+        _popup_text = $"Your marines move across {name()},";
+        _popup_text += choose($"searching for high profile targets. Once found, they are dragged outside from their lairs. Their execution would soon follow.", $"rooting out sources of corruption. Heretics are dragged from their lairs and executed in the streets.");
 
-        if (_isquest == 1) {
-            if (_thequest == "purge" && action_score >= 10) {
-                remove_problem("purge");
+        _popup_text += _purge.population_death_string();
 
-                alter_disposition(eFACTION.INQUISITION, obj_controller.demanding ? choose(0, 0, 1) : 1);
-
-                _popup_text = "Your marines drop fast and hard, blowing through guards and mercenaries with minimal resistance.  Before ten minutes have passed all your targets are executed.";
-                scr_event_log("", $"Inquisition Mission Completed: The unruly Nobles of {name()} have been purged.");
-                add_disposition(choose(1, 2, 3));
-            }
-        } else if (_isquest == 0) {
-            // TODO add more variation, with planets, features, possibly marine equipment
-            _popup_text = $"Your marines move across {name()},";
-            _popup_text += choose($"searching for high profile targets. Once found, they are dragged outside from their lairs. Their execution would soon follow.", $"rooting out sources of corruption. Heretics are dragged from their lairs and executed in the streets.");
-
-            _popup_text += _purge.population_death_string();
-        }
     }
 
     if (action_type == eDROP_TYPE.PURGEASSASSINATE) {
         assasinate_governor_setup(action_score);
     } else if (action_type != eDROP_TYPE.PURGEASSASSINATE) {
-        if (_isquest == 0) {
-            // DO EET
-            var _txt2 = _popup_text;
-            switch (_purge.heres_target) {
-                case "corruption":
-                    alter_corruption(-_purge.influence_reduction);
-                    break;
-                case "tau":
-                    alter_influence(eFACTION.TAU, -_purge.influence_reduction);
-                    break;
-                case "genestealers":
-                    alter_influence(eFACTION.TYRANIDS, -_purge.influence_reduction);
-                    break;
-            }
 
-            set_population(population_large_conversion(_purge.pop_after));
+        // DO EET
+        var _txt2 = _popup_text;
+        switch (_purge.heres_target) {
+            case "corruption":
+                alter_corruption(-_purge.influence_reduction);
+                break;
+            case "tau":
+                alter_influence(eFACTION.TAU, -_purge.influence_reduction);
+                break;
+            case "genestealers":
+                alter_influence(eFACTION.TYRANIDS, -_purge.influence_reduction);
+                break;
+        }
 
-            var pip = instance_create(0, 0, obj_popup);
-            pip.title = "Purge Results";
-            pip.text = _txt2;
-        }
-        if (_isquest) {
-            // DO EET
-            var pip = instance_create(0, 0, obj_popup);
-            scr_popup("Inquisition Mission Completed", _popup_text, "inquisition");
-        }
+        set_population(population_large_conversion(_purge.pop_after));
+
+        var _pip = instance_create(0, 0, obj_popup);
+        _pip.title = "Purge Results";
+        _pip.text = _txt2;
+
     }
-
-    if (instance_exists(obj_drop_select)) {
-        with (obj_drop_select) {
-            if (instance_exists(sh_target)) {
-                sh_target.acted = 5;
-            }
-            instance_destroy();
-        }
-    }
+    log_ship_effort_purge();
 }
