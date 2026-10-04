@@ -1,44 +1,48 @@
 /// @self Asset.GMObject.obj_pnunit
 function add_marines_to_recovery() {
-    var _roles = active_roles();
     
-    var _role_priority_bonuses = {};
+	static _role_priority_bonuses = undefined;
     
+    if (is_undefined(_role_priority_bonuses)) {
+        var _roles = active_roles();
+        _role_priority_bonuses = {};
+        
+        _role_priority_bonuses[$ _roles[eROLE.CHAPTERMASTER]]      = 720;
+        
+        _role_priority_bonuses[$ _roles[eROLE.FORGEMASTER]]        = 360;
+        _role_priority_bonuses[$ _roles[eROLE.MASTERAPOTHECARY]]  = 360;
+        _role_priority_bonuses[$ _roles[eROLE.CHIEFLIBRARIAN]]   = 360;
+        _role_priority_bonuses[$ _roles[eROLE.MASTERCHAPLAIN]]   = 360;
+        
+        _role_priority_bonuses[$ _roles[eROLE.CAPTAIN]]          = 160;
+        _role_priority_bonuses[$ _roles[eROLE.HONOURGUARD]]      = 160;
+        _role_priority_bonuses[$ _roles[eROLE.ANCIENT]]          = 160;
+        
+        _role_priority_bonuses[$ _roles[eROLE.VETERANSERGEANT]]  = 80;
+        _role_priority_bonuses[$ _roles[eROLE.TERMINATOR]]       = 80;
+        
+        _role_priority_bonuses[$ _roles[eROLE.VETERAN]]          = 40;
+        _role_priority_bonuses[$ _roles[eROLE.SERGEANT]]         = 40;
+        _role_priority_bonuses[$ _roles[eROLE.CHAMPION]]         = 40;
+        _role_priority_bonuses[$ _roles[eROLE.CHAPLAIN]]         = 40;
+        _role_priority_bonuses[$ _roles[eROLE.APOTHECARY]]        = 40;
+        _role_priority_bonuses[$ _roles[eROLE.TECHMARINE]]       = 40;
+        _role_priority_bonuses[$ _roles[eROLE.LIBRARIAN]]        = 40;
+        _role_priority_bonuses[$ _roles[eROLE.CODICIERY]]        = 40;
+        _role_priority_bonuses[$ _roles[eROLE.LEXICANUM]]        = 40;
+        
+        _role_priority_bonuses[$ _roles[eROLE.TACTICAL]]         = 20;
+        _role_priority_bonuses[$ _roles[eROLE.ASSAULT]]          = 20;
+        _role_priority_bonuses[$ _roles[eROLE.DEVASTATOR]]       = 20;
+        
+        _role_priority_bonuses[$ _roles[eROLE.APOTHECARYASPIRANT]] = 0;
+        _role_priority_bonuses[$ _roles[eROLE.LIBRARIANASPIRANT]]  = 0;
+        _role_priority_bonuses[$ _roles[eROLE.TECHMARINEASPIRANT]] = 0;
+        _role_priority_bonuses[$ _roles[eROLE.CHAPLAINASPIRANT]]   = 0;
+        _role_priority_bonuses[$ _roles[eROLE.SCOUT]]              = 0;
+    }
 	
-    _role_priority_bonuses[$ _roles[eROLE.CHAPTERMASTER]]         = 720;
-    
-    _role_priority_bonuses[$ _roles[eROLE.FORGEMASTER]]           = 360;
-    _role_priority_bonuses[$ _roles[eROLE.MASTERAPOTHECARY]]      = 360;
-    _role_priority_bonuses[$ _roles[eROLE.CHIEFLIBRARIAN]]        = 360;
-    _role_priority_bonuses[$ _roles[eROLE.MASTERCHAPLAIN]]        = 360;
-    
-    _role_priority_bonuses[$ _roles[eROLE.CAPTAIN]]               = 160;
-    _role_priority_bonuses[$ _roles[eROLE.HONOURGUARD]]           = 160;
-    _role_priority_bonuses[$ _roles[eROLE.ANCIENT]]               = 160;
-    
-    _role_priority_bonuses[$ _roles[eROLE.VETERANSERGEANT]]       = 80;
-    _role_priority_bonuses[$ _roles[eROLE.TERMINATOR]]            = 80;
-    
-    _role_priority_bonuses[$ _roles[eROLE.VETERAN]]               = 40;
-    _role_priority_bonuses[$ _roles[eROLE.SERGEANT]]              = 40;
-    _role_priority_bonuses[$ _roles[eROLE.CHAMPION]]              = 40;
-    _role_priority_bonuses[$ _roles[eROLE.CHAPLAIN]]              = 40;
-    _role_priority_bonuses[$ _roles[eROLE.APOTHECARY]]            = 40;
-    _role_priority_bonuses[$ _roles[eROLE.TECHMARINE]]            = 40;
-    _role_priority_bonuses[$ _roles[eROLE.LIBRARIAN]]             = 40;
-    _role_priority_bonuses[$ _roles[eROLE.CODICIERY]]             = 40;
-    _role_priority_bonuses[$ _roles[eROLE.LEXICANUM]]             = 40;
-    
-    _role_priority_bonuses[$ _roles[eROLE.TACTICAL]]              = 20;
-    _role_priority_bonuses[$ _roles[eROLE.ASSAULT]]               = 20;
-    _role_priority_bonuses[$ _roles[eROLE.DEVASTATOR]]            = 20;
-	_role_priority_bonuses[$ _roles[eROLE.APOTHECARYASPIRANT]]    = 20;
-	_role_priority_bonuses[$ _roles[eROLE.LIBRARIANASPIRANT]]     = 20;
-	_role_priority_bonuses[$ _roles[eROLE.TECHMARINEASPIRANT]]    = 20;
-	_role_priority_bonuses[$ _roles[eROLE.CHAPLAINASPIRANT]]      = 20;
-	
-	_role_priority_bonuses[$ _roles[eROLE.SCOUT]]                 = 0
-    
+   
     for (var i = 0; i < array_length(unit_struct); i++) {
         var _unit = unit_struct[i];
 
@@ -49,18 +53,15 @@ function add_marines_to_recovery() {
         if (marine_dead[i] != 1 || marine_type[i] == "") {
             continue;
         }
-        
-		if _role_priority_bonuses[$ _unit.role()]
+
+		
 		
         var _specific_bonus = _role_priority_bonuses[$ _unit.role()];
         
-        // Explicitly set undefined lookup results to 0
-        if (_specific_bonus == undefined) {
+        if (is_undefined(_specific_bonus)) {
             _specific_bonus = 0;
         }
 		
-		//var _specific_bonus = _role_priority_bonuses[$ _unit.role()];
-
 		
         var _priority = _unit.experience + _specific_bonus;
         
