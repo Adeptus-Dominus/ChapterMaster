@@ -11,9 +11,9 @@ bat_for = undefined;
 
 size = 0;
 col_parent = 0;
-col_target = 0;
-above_neighbor = 0;
-nearest_col = 0;
+col_target = noone;
+above_neighbor = noone;
+nearest_col = noone;
 nobar = false;
 
 height = 0;
@@ -110,9 +110,9 @@ drag_logic = function() {
         rel_mousey = 0;
         old_x = 0;
         old_y = 0;
-        col_target = 0;
-        above_neighbor = 0;
-        nearest_col = 0;
+        col_target = noone;
+        above_neighbor = noone;
+        nearest_col = noone;
     }
 };
 
@@ -122,7 +122,7 @@ mouse_release = function() {
     }
 
     var mah_target;
-    mah_target = 0;
+    mah_target = noone;
     /*if (dragging=true) and (nobar=true) then mah_target=col_target;
 	if (dragging=true) and (nobar=false) then mah_target=nearest_col;*/
 
@@ -137,8 +137,8 @@ mouse_release = function() {
             rel_mousey = 0;
             old_x = 0;
             old_y = 0;
-            col_target = 0;
-            nearest_col = 0;
+            col_target = noone;
+            nearest_col = noone;
             nobar = false;
             obj_cursor.dragging = 0;
             obj_cursor.image_index = 0;
@@ -158,8 +158,8 @@ mouse_release = function() {
             obj_cursor.dragging = 0;
             obj_cursor.image_index = 0;
             dragging = false;
-            col_target = 0;
-            nearest_col = 0;
+            col_target = noone;
+            nearest_col = noone;
             nobar = false;
 
             with (obj_temp8) {
