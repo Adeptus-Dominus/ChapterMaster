@@ -63,8 +63,18 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENCODE_PERMISSION: '{ "external_directory": { "/home/runner/work/**": "allow", "/tmp/*": "allow" } }'
+          OPENCODE_MAIN_MODEL: ${{ vars.OPENCODE_MAIN_MODEL }}
         run: |
           rm -f /tmp/triage_plan.json
+
+          if [ "$GITHUB_EVENT_NAME" = "issue_comment" ]; then
+            ALREADY_TRIAGED=$(gh issue view "$ISSUE_NUMBER" --json issueType --jq '.issueType.name // empty')
+            if [ -n "$ALREADY_TRIAGED" ]; then
+              echo "Issue #$ISSUE_NUMBER already triaged; re-running investigation only."
+              echo '{"skip": true}' > /tmp/triage_plan.json
+              exit 0
+            fi
+          fi
 
           ISSUE_TITLE=$(jq -r '.title // "No title"' /tmp/issue_context.json)
           ISSUE_BODY=$(jq -r '.body // "No description provided."' /tmp/issue_context.json)
@@ -79,7 +89,7 @@ jobs:
           ---
 
           You are a read-only triage agent. Analyze the issue details above and prepare a triage plan.
-          Do NOT execute any modifying commands.
+          Do NOT execute any modifying GitHub commands.
 
           Perform the following triage analysis:
           1. Classify the issue type:
@@ -137,6 +147,11 @@ jobs:
             echo "::error::Triage plan is not valid JSON:"
             cat /tmp/triage_plan.json
             exit 1
+          fi
+
+          if [ "$(jq -r '.skip // false' /tmp/triage_plan.json)" = "true" ]; then
+            echo "Triage skipped (comment re-run); nothing to apply."
+            exit 0
           fi
 
           echo "=== Proposed Triage Plan ==="
@@ -207,6 +222,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENCODE_PERMISSION: '{ "external_directory": { "/home/runner/work/**": "allow", "/tmp/*": "allow" } }'
           OPENCODE_MAIN_MODEL: ${{ vars.OPENCODE_MAIN_MODEL }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
         run: |
           rm -f /tmp/investigation.md
 
@@ -224,6 +240,26 @@ jobs:
             exit 0
           fi
 
+          # Extract optional steering hint: everything after '/triage' in the
+          # triggering comment. Empty for 'issues' (new issue) runs.
+          HINT=""
+          if [ -n "$COMMENT_BODY" ]; then
+            HINT=$(printf '%s' "$COMMENT_BODY" | sed -e '1s|^/triage||' -e '1s|^[[:space:]]*||' -e '/./,$!d')
+          fi
+
+          HINT_BLOCK=""
+          if [ -n "$HINT" ]; then
+            echo "Maintainer hint provided (${#HINT} chars)."
+            HINT_BLOCK="
+
+          Maintainer Hint (trusted steering for this investigation):
+          ---
+          ${HINT}
+          ---
+
+          If a Maintainer Hint is present above, follow it and prioritize it over your own initial assumptions about where to look."
+          fi
+
           ISSUE_TITLE=$(jq -r '.title // "No title"' /tmp/issue_context.json)
           ISSUE_BODY=$(jq -r '.body // "No description provided."' /tmp/issue_context.json)
 
@@ -235,16 +271,17 @@ jobs:
           ---
           ${ISSUE_BODY}
           ---
+          ${HINT_BLOCK}
 
           Tasks:
           1. Inspect and read the repository codebase to locate the root cause.
-          2. Propose 1-3 solutions/fixes.
+          2. Propose solution(s)/fix(es).
           3. Write your full markdown investigation report and proposed fixes to /tmp/investigation.md.
 
           Rules:
           - Reference files like so: https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/scripts/DebugView/DebugView.gml.
           - Reference specific code lines (or ranges) like so: https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/scripts/DebugView/DebugView.gml#L24 (or #L24-L28 for a range).
-          - Do NOT execute any write commands (do NOT run 'gh issue comment'). Only write the file /tmp/investigation.md."
+          - Do NOT execute any modifying GitHub commands. Only write the file /tmp/investigation.md."
 
           opencode run -m ${OPENCODE_MAIN_MODEL} "$PROMPT"
 
