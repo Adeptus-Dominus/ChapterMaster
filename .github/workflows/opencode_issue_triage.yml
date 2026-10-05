@@ -276,7 +276,7 @@ jobs:
           Tasks:
           1. Inspect and read the repository codebase to locate the root cause.
           2. Propose solution(s)/fix(es).
-          3. Write your full markdown investigation report and proposed fixes to /tmp/investigation.md.
+          3. Write your full markdown investigation report and proposed fix(es) to /tmp/investigation.md.
 
           Rules:
           - Reference files like so: https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/scripts/DebugView/DebugView.gml.
