@@ -57,16 +57,6 @@ function exit_diplomacy_dialogue() {
     }
 
     var _close_diplomacy = true;
-    if (complex_event && instance_exists(obj_temp_meeting)) {
-        complex_event = false;
-        with (obj_temp_meeting) {
-            instance_destroy();
-        }
-        if (instance_exists(obj_turn_end)) {
-            obj_turn_end.alarm[1] = 1;
-        }
-    }
-
     if (trading_artifact != 0) {
         clear_diplo_choices();
         cooldown = 8;

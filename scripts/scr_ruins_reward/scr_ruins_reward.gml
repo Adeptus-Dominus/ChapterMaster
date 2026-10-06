@@ -112,10 +112,10 @@ function scr_ruins_reward(_star_system, _pid_idx, _ruins) {
     /// @param {Id.Instance.obj_popup} _popup
     static _process_artifact_reward = function(_star, _pidx, _popup) {
         var _chosen_ship = -1;
-        var _fleet = scr_orbiting_player_fleet(_star);
+        var _fleet = _star.get_orbiting_player_fleet();
 
         if (instance_exists(_fleet)) {
-            var _ships = fleet_full_ship_array(_fleet);
+            var _ships = _fleet.full_ship_array();
             if (array_length(_ships) > 0) {
                 _chosen_ship = _ships[0];
             }

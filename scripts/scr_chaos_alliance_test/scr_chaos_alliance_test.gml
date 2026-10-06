@@ -1,119 +1,79 @@
 function scr_chaos_alliance_test() {
-    var accept_chance, o, result, jroll, shittah;
-    accept_chance = 0;
-    o = 0;
-    result = "";
-    jroll = roll_dice_chapter(1, 100, "high");
+    var _accept_chance = 0;
+    var o = 0;
+    var _result = "";
+    var _jroll = roll_dice_chapter(1, 100, "high");
 
-    accept_chance += obj_controller.marines * 0.00375;
-    accept_chance += obj_controller.command * 0.00375;
+    _accept_chance += obj_controller.marines * 0.00375;
+    _accept_chance += obj_controller.command * 0.00375;
 
     if (scr_has_disadv("Warp Tainted")) {
-        accept_chance += 2;
+        _accept_chance += 2;
     }
     if (scr_has_disadv("Suspicious")) {
-        accept_chance += 1;
+        _accept_chance += 1;
     }
     if (scr_has_adv("Warp Touched")) {
-        accept_chance += 1;
+        _accept_chance += 1;
     }
 
     if (scr_has_adv("Reverent Guardians")) {
-        accept_chance -= 2;
+        _accept_chance -= 2;
     }
     if (scr_has_disadv("Never Forgive")) {
-        accept_chance -= 2;
+        _accept_chance -= 2;
     }
     if (scr_has_adv("Enemy: Fallen")) {
-        accept_chance -= 999;
-        result = "fail_fallen";
+        _accept_chance -= 999;
+        _result = "fail_fallen";
     }
     if (string_count("|CPF|", obj_controller.useful_info) > 0) {
-        result = "fail_angry";
+        _result = "fail_angry";
     }
     if (string_count("CHTRP2|", obj_controller.useful_info) > 0) {
-        result = "fail";
+        _result = "fail";
     }
 
-    if ((accept_chance < 3) && (result == "")) {
-        result = "fail";
+    if ((_accept_chance < 3) && (_result == "")) {
+        _result = "fail";
     }
-    if ((accept_chance >= 3) && (result == "")) {
-        accept_chance = round(accept_chance * 15);
-
-        if (jroll <= accept_chance) {
-            result = "success";
-        }
-        if (jroll > accept_chance) {
-            result = "success_trap";
-        }
+    var _success = false;
+    var _trap = false;
+    if ((_accept_chance >= 3) && (_result == "")) {
+        _success = true;
+        _accept_chance = round(_accept_chance * 15);
+        _trap = _jroll > _accept_chance;
     }
 
-    if ((result == "success") || (result == "success_trap")) {
+    if (_success) {
         // Determine star, planet, and p_problem number here
-        var that_star, that_planet, that_title;
-        that_star = 0;
-        that_planet = 0;
-        that_title = "";
+        var _that_title = "";
 
-        with (obj_temp8) {
-            instance_destroy();
-        }
+        var _planet = 0;
+        var _star = noone;
         with (obj_star) {
-            var yeah, ii;
-            yeah = 0;
-            ii = 0;
-            repeat (4) {
-                ii += 1;
-                if (array_length(p_feature[ii]) > 0) {
-                    if (planet_feature_bool(p_feature[ii], eP_FEATURES.WARLORD10) > 0) {
-                        yeah = ii;
-                    }
+            for (var i = 1; i <= planets; i++){
+                if (planet_feature_bool(p_feature[i], eP_FEATURES.WARLORD10) > 0) {
+                    _planet = i;
+                    _star = id;
+                    break;
                 }
             }
-            if (yeah > 0) {
-                repeat (yeah) {
-                    instance_create(x, y, obj_temp8);
-                }
+            if (_star != noone){
+                break;
             }
         }
-        if (instance_exists(obj_temp8)) {
-            that_star = instance_nearest(obj_temp8.x, obj_temp8.y, obj_star);
-            that_planet = instance_number(obj_temp8);
-            that_title = string(that_star.name) + " " + scr_roman(that_planet);
-            with (obj_temp8) {
-                instance_destroy();
-            }
-        }
-        with (obj_temp8) {
-            instance_destroy();
-        }
-
-        if (!instance_exists(that_star)) {
+        if (_star == noone){
             diplo_text = "[Error: No WL10 planet feature found.]";
+            exit;
         }
-        if (instance_exists(that_star)) {
-            var meeeting_arranged = false;
-            if (result == "success_trap") {
-                meeeting_arranged = add_new_problem(that_planet, "meeting_trap", 36, that_star);
-            } else {
-                meeeting_arranged = add_new_problem(that_planet, "meeting", 36, that_star);
-            }
-            if (meeeting_arranged) {
-                var rando, new_event;
-                rando = choose(1, 2);
-                if (rando == 1) {
-                    diplo_text += "A proposal that needs further consideration and some negotiation.  Meet me at " + string(that_title) + " and we shall resolve this.";
-                }
-                if (rando == 2) {
-                    diplo_text += "Interesting. I shall be at " + string(that_title) + " and, if you are sincere, you will come to me and we can take this proposal to its logical conclusion.";
-                }
-                scr_event_log("", "Chaos Lord " + string(obj_controller.faction_leader[eFACTION.CHAOS]) + " agrees to meet with you on " + string(that_title) + " to discuss an alliance.");
-                new_star_event_marker("purple");
-            }
-        }
+        var _p_data = _star.get_planet_data(_planet);
+        _that_title = _p_data.name();
+
+        var _meeting_arranged = false;
+        _p_data.new_problem("meeting", 36, {is_trap : _trap});
     }
-    if (result == "fail") {
+    if (_result == "fail") {
         var rando;
         rando = choose(1, 2);
         if (rando == 1) {
@@ -123,7 +83,7 @@ function scr_chaos_alliance_test() {
             diplo_text += "A mouse does not invite himself to the table of a dragon. You should learn from it and, if you work hard, perhaps one day you will be almost as insignificant.";
         }
     }
-    if (result == "fail_fallen") {
+    if (_result == "fail_fallen") {
         var rando;
         rando = choose(1, 2);
         if (rando == 1) {
@@ -133,7 +93,7 @@ function scr_chaos_alliance_test() {
             diplo_text += "You may be unclear on how warfare works; You are my foe, however pathetic you might be, and foes do not enter into alliances.";
         }
     }
-    if (result == "fail_angry") {
+    if (_result == "fail_angry") {
         var rando;
         rando = choose(1, 2);
         if (rando == 1) {

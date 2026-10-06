@@ -231,6 +231,7 @@ function drop_select_unit_selection() {
     btn_attack.draw();
     if (btn_attack.clicked()) {
         if (purge == 0) {
+            var _p_data = p_target.get_planet_data(planet_number);
             if (formation_current < 0 || formation_current >= array_length(formation_possible)) {
                 exit;
             }
@@ -252,8 +253,7 @@ function drop_select_unit_selection() {
             }
 
             if ((attacking == 10) || (attacking == 11)) {
-                remove_planet_problem(planet_number, "meeting", p_target);
-                remove_planet_problem(planet_number, "meeting_trap", p_target);
+                remove_planet_problem(planet_number, "chaos_lord_meeting", p_target);
             }
 
             instance_create(0, 0, obj_ncombat);
@@ -271,22 +271,20 @@ function drop_select_unit_selection() {
             if (obj_ncombat.battle_object.space_hulk == 1) {
                 obj_ncombat.battle_special = "space_hulk";
             }
-            if ((planet_feature_bool(_planet, eP_FEATURES.WARLORD6) == 1) && (obj_ncombat.enemy == eFACTION.ELDAR) && (obj_controller.faction_defeated[6] == 0)) {
+            if ((_p_data.has_feature(eP_FEATURES.WARLORD6)) && (obj_ncombat.enemy == eFACTION.ELDAR) && (obj_controller.faction_defeated[6] == 0)) {
                 obj_ncombat.leader = 1;
             }
-            if (obj_ncombat.enemy == eFACTION.ORK && planet_feature_bool(_planet, eP_FEATURES.ORKWARBOSS)) {
+            if (obj_ncombat.enemy == eFACTION.ORK && _p_data.has_feature(eP_FEATURES.ORKWARBOSS)) {
                 obj_ncombat.leader = 1;
                 obj_ncombat.ork_warboss = _planet[search_planet_features(_planet, eP_FEATURES.ORKWARBOSS)[0]];
             }
 
-            if ((obj_ncombat.enemy == eFACTION.TYRANIDS) && (obj_ncombat.battle_object.space_hulk == 0)) {
-                if (has_problem_planet(planet_number, "tyranid_org", p_target)) {
-                    obj_ncombat.battle_special = "tyranid_org";
-                }
+            for (var i=0; i<array_length(_p_data.problems);i++){
+                _p_data.problems[i].before_battle_effects();
             }
 
             if (obj_ncombat.enemy == eFACTION.HERETICS) {
-                if (planet_feature_bool(obj_ncombat.battle_object.p_feature[obj_ncombat.battle_id], eP_FEATURES.CHAOSWARBAND) == 1) {
+                if (_p_data.has_feature(eP_FEATURES.CHAOSWARBAND)) {
                     obj_ncombat.battle_special = "ChaosWarband";
                     obj_ncombat.leader = 1;
                 }
@@ -356,15 +354,7 @@ function drop_select_unit_selection() {
             if (_chaos_lord_jump_possible && _no_know_chaos) {
                 if (_chaos_popup_turn_reached && _chaos_warlord_present) {
                     if (_chaos_unknown) {
-                        var pop;
-                        pop = instance_create(0, 0, obj_popup);
-                        pop.image = "chaos_symbol";
-                        pop.title = "Concealed Heresy";
-                        pop.text = $"Your astartes set out and begin to cleanse {planet_numeral_name(_battle_sub_loc, _battle_place)} of possible heresy.  The general populace appears to be devout in their faith, but a disturbing trend appears- the odd citizen cursing your forces, frothing at the mouth, and screaming out heresy most foul.  One week into the cleansing a large hostile force is detected approaching and encircling your forces.";
-                        cancel_combat();
-                        combating = 0;
-                        instance_activate_all();
-                        exit;
+                        chaos_fuck_up_purge();
                     }
                     if (obj_controller.known[eFACTION.CHAOS] >= 2 && obj_controller.faction_gender[10] == 1) {
                         with (obj_drop_select) {
@@ -396,13 +386,51 @@ function drop_select_unit_selection() {
                 _purge_score = roster.selected_count();
             }
 
-            var _p_data = p_target.system_datas[planet_number];
-
-            _p_data.refresh_data();
+            var _p_data = p_target.get_planet_data(planet_number);
 
             _p_data.purge(purge, _purge_score);
         }
     }
+}
+
+function chaos_fuck_up_purge(){
+    var pop;
+    pop = instance_create(0, 0, obj_popup);
+    pop.image = "chaos_symbol";
+    pop.title = "Concealed Heresy";
+    pop.text = $"Your astartes set out and begin to cleanse {planet_numeral_name(_battle_sub_loc, _battle_place)} of possible heresy.  The general populace appears to be devout in their faith, but a disturbing trend appears- the odd citizen cursing your forces, frothing at the mouth, and screaming out heresy most foul.  One week into the cleansing a large hostile force is detected approaching and encircling your forces.";
+    pop.add_option([{
+        str1 : "For the Emperor"
+        choice_func : function(){
+            with (obj_drop_select) {
+                obj_controller.cooldown = 30;
+                // ** Starts the battle **
+                is_in_combat = true;
+
+                instance_deactivate_all_safe();
+                instance_activate_object(obj_drop_select);
+
+                instance_create(0, 0, obj_ncombat);
+                obj_ncombat.battle_object = p_target;
+                obj_ncombat.battle_loc = p_target.name;
+                obj_ncombat.battle_id = obj_controller.selecting_planet;
+                obj_ncombat.dropping = 0;
+                obj_ncombat.attacking = 10;
+                obj_ncombat.enemy = eFACTION.CHAOS;
+                obj_ncombat.formation_set = 2;
+                obj_ncombat.leader = 1;
+                obj_ncombat.threat = 5;
+                obj_ncombat.battle_special = "WL10_reveal";
+                scr_battle_allies();
+                setup_battle_formations();
+                roster.add_to_battle();
+            }                                
+        }
+    }])
+    cancel_combat();
+    combating = 0;
+    instance_activate_all();
+    exit;
 }
 
 function drop_select_draw() {
@@ -415,6 +443,7 @@ function drop_select_draw() {
         // God, save us;
         if (menu == eMENU.DEFAULT) {
             if (purge == 1) {} else if (purge >= 2) {
+                var _p_data = p_target.get_planet_data(planet_number);
                 draw_set_halign(fa_center);
                 draw_set_font(fnt_40k_30b);
 
@@ -431,13 +460,13 @@ function drop_select_draw() {
                     "Selective Purging {0}",
                     "Assassinate Governor ({0})",
                 ];
-                var _planet_string = planet_numeral_name(planet_number, p_target);
+                var _planet_string = _p_data.name();
                 draw_text_transformed(x2 + 14, y2 + 12, string(_purge_strings[purge - 2], _planet_string), 0.6, 0.6, 0);
 
                 // Disposition here
                 var pp = planet_number;
 
-                var succession = has_problem_planet(pp, "succession", p_target);
+                var succession = _p_data.has_problem("succession");
 
                 if (((p_target.dispo[pp] >= 0) && (p_target.p_owner[pp] <= eFACTION.ECCLESIARCHY) && (p_target.p_population[pp] > 0)) && (!succession)) {
                     var wack = 0;
@@ -501,6 +530,7 @@ function collect_local_units() {
     purge_d = ship_max[500];
 
     if (purge == 1) {
+        var _p_data = p_target.get_planet_data(planet_number);
         if (sh_target != noone) {
             max_ships = sh_target.capital_number + sh_target.frigate_number + sh_target.escort_number;
 
@@ -581,7 +611,7 @@ function collect_local_units() {
         var pp = planet_number;
         purge_d = p_target.p_type[pp] != "Dead";
 
-        if (has_problem_planet(pp, "succession", p_target)) {
+        if (_p_data.has_problem("succession")) {
             purge_d = 0;
         }
 

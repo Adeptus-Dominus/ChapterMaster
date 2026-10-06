@@ -18,9 +18,12 @@ function UnitGroup(units = []) constructor {
         array_push(units, unit);
     };
 
-    static has_role = function(role) {
+    static has_role = function(_role) {
+        if (is_real(_role)){
+            _role = obj_ini.player_role_data[_role].role;
+        }
         for (var i = 0; i < array_length(units); i++) {
-            if (units[i].role() == role) {
+            if (units[i].has_role(_role)) {
                 return true;
             }
         }
@@ -107,7 +110,7 @@ function UnitGroup(units = []) constructor {
                 var _squad = fetch_squad(_squads[s]);
                 var _squad_units = _replica.get_from({squad: _squads[s]}, true, true);
 
-                if (_squad_units.number() < array_length(_squad.members)) {
+                if (_squad_units.number() < array_length(_squad.get_members())) {
                     _squad_units.move_to_company(company, false, false);
                     continue;
                 } else {
@@ -503,7 +506,7 @@ function UnitGroup(units = []) constructor {
                     continue;
                 }
                 var _squad = fetch_squad(_unit.squad);
-                var _members_count = array_length(_squad.members);
+                var _members_count = array_length(_squad.get_members());
                 var _conditions = {
                     squad: _unit.squad,
                     max_wanted: _members_count,
@@ -757,6 +760,9 @@ function SearchConditions(data) constructor {
             array_push(checks_order, squadless_valuate);
         }
         if (role != "") {
+            if (!is_string(role)){
+                role = obj_ini.player_role_data[role].role;
+            }
             array_push(checks_order, role_valuate);
         }
         if (bool(array_length(roles))) {
@@ -967,6 +973,11 @@ enum eMISSION_SELECT_TYPE {
 }
 
 function group_selection(group, selection_data = {}) {
+    if (instance_exists(obj_star_select)){
+        if (is_struct(obj_star_select.feature)){
+            obj_star_select.feature.destroy = true;
+        }
+    }
     try {
         var _unit, s, unit_location;
         obj_controller.selection_data = selection_data;

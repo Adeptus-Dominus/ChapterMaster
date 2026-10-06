@@ -13,6 +13,40 @@ function distribute_strength_to_fleet(strength, fleet) {
         }
     }
 }
+/// @{Id.Instance.obj_p_fleet}
+function fleet_is_orbiting(){
+    orbiting = noone;
+    if (action == "move"){
+        return orbiting;
+    }
+    var _star = instance_nearest(x, y, obj_star);
+    if (_star.x == x  && _star.y == y){
+        orbiting = _star.id
+        return orbiting;
+    }
+    return noone;
+}
+
+/// @param {Id.Instance.obj_en_fleet|Id.Instance.obj_p_fleet} _fleet
+function fleet_location_description(_fleet){
+    var _loc = "";
+    var _zoomable = true;
+    if (!point_in_rectangle(_fleet.x, _fleet.y, 0, 0, room_width, room_height)){
+        _loc = "Out of Sector"
+        _zoomable = false;
+    }
+    else if (_fleet.action == "Lost") {
+        _loc = localize("Lost");
+        _zoomable = false;
+    } else if (_fleet.action == "move") {
+        _loc = localize("Warp Travel");
+    }  else {
+        var _near_star = instance_nearest(_fleet.x, _fleet.y, obj_star);
+        _loc = _near_star.name;
+    }
+    return {loc: _loc , zoomable : _zoomable};
+}
+
 
 /// @self Id.Instance.obj_en_fleet|Id.Instance.obj_p_fleet
 /// @param {Id.Instance.obj_en_fleet|Id.Instance.obj_p_fleet} fleet
@@ -231,7 +265,7 @@ function set_fleet_movement(_fastest_route = true, _new_action = "move", _minimu
 /// @param {Struct} unit
 function load_unit_to_fleet(fleet, unit) {
     var loaded = false;
-    var all_ships = fleet_full_ship_array(fleet);
+    var all_ships = fleet.full_ship_array();
 
     for (var i = 0; i < array_length(all_ships); i++) {
         var ship_ident = all_ships[i];
@@ -526,39 +560,7 @@ function object_distance(obj_1, obj_2) {
     return point_distance(obj_1.x, obj_1.y, obj_2.x, obj_2.y);
 }
 
-/// @function scr_orbiting_player_fleet(system)
-/// @description Returns the ID of the nearest player fleet orbiting the given system or star.
-/// @param {Id.Instance.obj_star} system
-/// The system instance or identifier to check. If `noone`, the function checks the calling star instance.
-/// @returns {Id.Instance.obj_p_fleet} The instance ID of the orbiting player fleet, or -1 if none is found.
-///
-/// @example
-/// ```gml
-/// var fleet_id = scr_orbiting_player_fleet();
-/// if (fleet_id != -1) {
-///     LOGGER.debug("Fleet orbiting star: " + string(fleet_id));
-/// }
-/// ```
-function scr_orbiting_player_fleet(system = noone) {
-    if (system == noone && !is_struct(self) && object_index == obj_star) {
-        var _fleet = instance_nearest(x, y, obj_p_fleet);
-        if (object_distance(self, _fleet) > 0) {
-            return -1;
-        } else {
-            return _fleet.id;
-        }
-    } else if (system != noone) {
-        try {
-            with (system) {
-                return scr_orbiting_player_fleet();
-            }
-        } catch (_exception) {
-            ERROR_HANDLER.handle_exception(_exception);
-        }
-    }
 
-    return -1;
-}
 
 function get_orbiting_fleets(faction, system = noone) {
     var _fleets = [];
@@ -677,7 +679,7 @@ function fleet_star_draw_offsets() {
 }
 
 //TODO further split this shite up
-/// @self Asset.GMObject.obj_en_fleet|Asset.GMObject.obj_p_fleet
+/// @self Asset.GMObject.obj_en_fleet
 function fleet_arrival_logic() {
     var _dest_star = instance_nearest(action_x, action_y, obj_star);
     x = _dest_star.x;
@@ -686,21 +688,9 @@ function fleet_arrival_logic() {
     action = "";
     fleet_register_at_star(id, _dest_star);
 
-    if (owner == eFACTION.MECHANICUS) {
-        if (trade_goods == "mars_spelunk1") {
-            trade_goods = "mars_spelunk2";
-            action_x = home_x;
-            action_y = home_y;
-            action_eta = 52;
-            action = "move";
-            exit;
-        } else if (trade_goods == "mars_spelunk2") {
-            // Unload techmarines nao plz
-            scr_mission_reward("mars_spelunk", instance_nearest(home_x, home_y, obj_star), 1);
-            instance_destroy();
-        }
+    for (var i=0; i<array_length(problems);i++){
+        problems[i].on_arrival();
     }
-
     //TODO create oppertunity to purge new colonisers if they have taint and the player has garrisons or control of the planet
     if (fleet_has_cargo("colonize")) {
         deploy_colonisers(_dest_star);
@@ -761,9 +751,6 @@ function fleet_arrival_logic() {
             cancel = true;
         }
         if (string_count("investigate_dead", trade_goods) > 0) {
-            cancel = true;
-        }
-        if (string_count("spelunk", trade_goods) > 0) {
             cancel = true;
         }
         if (fleet_has_cargo("warband")) {
@@ -1047,7 +1034,7 @@ function fleet_arrival_logic() {
             }
         }
 
-        var kay = 0, temp5 = 0, temp6 = 0, temp7 = 0;
+        var kay = 0, temp5 = 0, temp6 = 0, _final_star = 0;
 
         var _nearest_star = instance_nearest(x, y, obj_star);
 
@@ -1076,23 +1063,23 @@ function fleet_arrival_logic() {
                 if (kay == 50) {
                     temp5 = x + choose(random(300), random(300) * -1);
                     temp6 = y + choose(random(300), random(300) * -1);
-                    temp7 = instance_nearest(temp5, temp6, obj_star);
+                    _final_star = instance_nearest(temp5, temp6, obj_star);
 
-                    if ((owner == eFACTION.ORK) && (temp7.owner != eFACTION.ORK) && (temp7.planets > 0) && (temp7.image_alpha >= 1)) {
+                    if ((owner == eFACTION.ORK) && (_final_star.owner != eFACTION.ORK) && (_final_star.planets > 0) && (_final_star.image_alpha >= 1)) {
                         kay = 55;
                     }
-                    if ((owner == eFACTION.TAU) && (temp7.owner != eFACTION.TAU) && (temp7.planets > 0) && (temp7.image_alpha >= 1)) {
+                    if ((owner == eFACTION.TAU) && (_final_star.owner != eFACTION.TAU) && (_final_star.planets > 0) && (_final_star.image_alpha >= 1)) {
                         kay = 55;
                     }
-                    if ((owner == eFACTION.CHAOS) && (temp7.owner != eFACTION.CHAOS) && (temp7.planets > 0) && (temp7.image_alpha >= 1)) {
+                    if ((owner == eFACTION.CHAOS) && (_final_star.owner != eFACTION.CHAOS) && (_final_star.planets > 0) && (_final_star.image_alpha >= 1)) {
                         kay = 55;
                     }
                 }
             }
 
-            if ((kay == 55) && instance_exists(temp7)) {
-                action_x = temp7.x;
-                action_y = temp7.y;
+            if ((kay == 55) && instance_exists(_final_star)) {
+                action_x = _final_star.x;
+                action_y = _final_star.y;
                 set_fleet_movement();
             }
 
@@ -1341,6 +1328,15 @@ function fleet_register_at_star(_fleet, _star) {
     if (_faction == eFACTION.PLAYER && _star.vision == 0) {
         _star.vision = 1;
     }
+
+    if (_faction != eFACTION.PLAYER){
+        if (obj_controller.known[_faction] == 0){
+            var _p_fleet = _star.get_orbiting_player_fleet();
+            if (_p_fleet != noone){
+                obj_controller.known[_faction] = 1;
+            }
+        }
+    }
 }
 
 /// @desc Unregisters a fleet from its orbiting star (if there is one), clears orbiting and decrements present_fleet.
@@ -1396,22 +1392,6 @@ function fleet_register_at_nearest_star(_fleet, _max_distance = undefined) {
     return noone;
 }
 
-/// @desc Creates a new player fleet, registering at the nearest star if within 50px.
-/// @param {Real} _x
-/// @param {Real} _y
-/// @param {Array} _ships  Optional array of ship IDs to add to the fleet
-/// @returns {Id.Instance.obj_p_fleet}
-function create_player_fleet(_x, _y, _ships = []) {
-    var _fleet = instance_create(_x, _y, obj_p_fleet);
-    _fleet.owner = eFACTION.PLAYER;
-    fleet_register_at_nearest_star(_fleet);
-
-    for (var _i = 0; _i < array_length(_ships); _i++) {
-        add_ship_to_fleet(_ships[_i], _fleet);
-    }
-
-    return _fleet;
-}
 
 /// @desc Creates a new enemy fleet, registering at the nearest star if within 50px.
 /// @param {Real} _x

@@ -345,8 +345,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             faction_status[eFACTION.CHAOS] = "Antagonism";
 
             with (obj_star) {
-                remove_star_problem("meeting");
-                remove_star_problem("meeting_trap");
+                remove_star_problem("chaos_lord_meeting");
             }
 
             var born = false;
@@ -381,10 +380,10 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             var _star = noone;
             var _planet = noone;
             with (obj_star) {
-                if (has_problem_star("meeting") > 0 && has_problem_star("meeting") > 0) {
+                if (has_problem_star("chaos_lord_meeting") > 0 && has_problem_star("chaos_lord_meeting") > 0) {
                     _found = true;
                     _star = id;
-                    _planet = has_problem_star("meeting") > 0 ? has_problem_star("meeting") : has_problem_star("meeting_trap");
+                    _planet = has_problem_star("chaos_lord_meeting");
                     break;
                 }
             }
@@ -440,8 +439,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                     obj_ncombat.leader = 1;
 
                     with (obj_star) {
-                        remove_star_problem("meeting");
-                        remove_star_problem("meeting_trap");
+                        remove_star_problem("chaos_lord_meeting");
                     }
                 }
 
@@ -450,10 +448,9 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                         obj_ncombat.fighting[obj_temp_meeting.co[v]][obj_temp_meeting.ide[v]] = 1;
                     }
                 }
-                scr_civil_roster(obj_ncombat.battle_loc, obj_ncombat.battle_id, true);
+                //scr_civil_roster(obj_ncombat.battle_loc, obj_ncombat.battle_id, true);
 
                 instance_deactivate_all_safe();
-                instance_activate_object(obj_temp_meeting);
                 instance_activate_object(obj_ncombat);
                 instance_activate_object(obj_centerline);
                 instance_activate_object(obj_pnunit);
@@ -973,7 +970,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                 with (obj_star) {
                     for (var i = 1; i <= 4;) {
                         for (var r = 1; r <= 4; r++) {
-                            if ((p_problem[i][r] == "meeting") || (p_problem[i][r] == "meeting_trap")) {
+                            if (p_problem[i][r].p_id == "chaos_lord_meeting") {
                                 _found = true;
                                 _star = id;
                                 _planet = r;

@@ -40,7 +40,7 @@ function scr_kill_ship(index) {
             }
             if (_ship_fleet != noone) {
                 delete_ship_from_fleet(index, _ship_fleet);
-                _available_ships = fleet_full_ship_array(_ship_fleet);
+                _available_ships = _ship_fleet.full_ship_array();
             }
             _units_on_ship = array_shuffle(_units_on_ship);
             for (var i = 0; i < array_length(_available_ships); i++) {

@@ -241,21 +241,21 @@ deserialize = function(save_data) {
     ]; // skip automatic setting of certain vars, handle explicitly later
 
     // Automatic var setting
-    var all_names = struct_get_names(save_data);
+    var _all_names = struct_get_names(save_data);
 
-    if (!array_contains(all_names, "chapter_squad_arrangement")) {
+    if (!array_contains(_all_names, "chapter_squad_arrangement")) {
         chapter_squad_arrangement = json_to_gamemaker(working_directory + $"main/squads/company_squad_builds.json", json_parse);
     }
 
-    for (var i = 0; i < array_length(all_names); i++) {
-        var var_name = all_names[i];
-        if (array_contains(exclusions, var_name)) {
+    for (var i = 0; i < array_length(_all_names); i++) {
+        var _var_name = _all_names[i];
+        if (array_contains(exclusions, _var_name)) {
             continue;
         }
 
-        var loaded_value = struct_get(save_data, var_name);
+        var loaded_value = struct_get(save_data, _var_name);
         try {
-            variable_instance_set(id, var_name, loaded_value);
+            variable_instance_set(id, _var_name, loaded_value);
         } catch (e) {
             LOGGER.exception("Deserialization failed", e);
         }

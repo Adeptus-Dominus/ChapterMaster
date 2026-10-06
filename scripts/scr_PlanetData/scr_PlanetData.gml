@@ -9,6 +9,34 @@ function PlanetData(_planet, _system) constructor {
     planet = _planet;
     system = _system;
 
+    static save_problems = function(){
+        var _probs = [];
+        for (var i = 0; i < array_length(problems); i++){
+            array_push(_probs, problems[i].save());
+        }
+        return _probs;
+    }
+    static save = function(){
+        var _planet_data = {
+            dispo: system.dispo[planet],
+            planet: system.planet[planet],
+        };
+        var __var_names = variable_instance_get_names(system);
+        for (var n = 0; n < array_length(__var_names); n++) {
+            var _var_name = __var_names[n];
+            if (!string_starts_with(_var_name, "p_")) {
+                continue;
+            }
+            var _val = system[$ _var_name][planet];
+            if (_var_name == "p_problem"){
+                _val = save_problems();
+            }
+            variable_struct_set(_planet_data, _var_name, _val);
+        } 
+
+        return _planet_data;       
+    }
+
     static refresh_data = function() {
         features = system.p_feature[planet];
         current_owner = system.p_owner[planet];
@@ -72,8 +100,6 @@ function PlanetData(_planet, _system) constructor {
         governor = system.p_governor[planet];
 
         problems = system.p_problem[planet];
-        problems_data = system.p_problem_other_data[planet];
-        problem_timers = system.p_timer[planet];
 
         deamons = system.p_demons[planet];
         chaos_forces = system.p_chaos[planet];
@@ -615,15 +641,12 @@ function PlanetData(_planet, _system) constructor {
             } // Empire bonus, was 15 before
 
             // Check for industrial facilities
-            var fleet_buildable = (planet_type != "Dead" && planet_type != "Lava") || _has_warboss || _has_stronghold;
-            if (fleet_buildable && planet_forces[eFACTION.ORK] >= 4) {
+            var _fleet_buildable = (planet_type != "Dead" && planet_type != "Lava") || _has_warboss || _has_stronghold;
+            if (_fleet_buildable && planet_forces[eFACTION.ORK] >= 4) {
                 // Used to not have Ice either
 
-                if (instance_exists(obj_p_fleet)) {
-                    var ppp = instance_nearest(x, y, obj_p_fleet);
-                    if ((point_distance(x, y, ppp.x, ppp.y) < 50) && (ppp.action == "")) {
-                        exit;
-                    }
+                if (system.has_orbiting_player_fleet()) {
+                    exit;
                 }
                 if (planet_type == "Forge") {
                     _rando -= 80;
@@ -730,13 +753,6 @@ function PlanetData(_planet, _system) constructor {
         }
     };
 
-    deamons = system.p_demons[planet];
-    chaos_forces = system.p_chaos[planet];
-
-    requests_help = system.p_halp[planet];
-
-    corruption = system.p_heresy[planet];
-
     static alter_corruption = function(value) {
         alter_planet_corruption(value, planet, system);
         corruption = system.p_heresy[planet];
@@ -747,24 +763,13 @@ function PlanetData(_planet, _system) constructor {
         corruption = system.p_heresy[planet];
     };
 
-    is_heretic = system.p_hurssy[planet];
-
-    heretic_timer = system.p_hurssy_time[planet];
-
-    secret_corruption = system.p_heresy_secret[planet];
-
-    population_influences = system.p_influence[planet];
-
-    raided_this_turn = system.p_raided[planet];
-
-    governor = system.p_governor[planet];
-
-    problems = system.p_problem[planet];
-    problems_data = system.p_problem_other_data[planet];
-    problem_timers = system.p_timer[planet];
-
     static has_problem = function(problem) {
-        return has_problem_planet(planet, problem, system);
+        for (var i = 0; i < array_length(problems); i++){
+            if (problems[i].p_id == problem){
+                return true;
+            }
+        }
+        return false;
     };
 
     static remove_problem = function(problem) {
@@ -772,12 +777,36 @@ function PlanetData(_planet, _system) constructor {
     };
 
     static find_problem = function(problem) {
-        return find_problem_planet(planet, problem, system);
+        for (var i = 0; i < array_length(problems); i++){
+            if (problems[i].p_id == problem){
+                return problems[i];
+            }
+        }
+        return noone;
     };
 
-    static add_problem = function(problem, timer, other_data = {}) {
-        return add_new_problem(planet, problem, timer, system, other_data);
-    };
+    static new_problem = function(p_id, timer = -1, data = {}, register = true){
+        var _prob = new PlanetProblem(p_id, timer, data,  self);
+        if (register){
+            register_problem(_prob)
+        }
+        return _prob;
+    }
+
+    static register_problem = function(problem){
+        array_push(system.p_problem[planet], problem);
+        problems = system.p_problem[planet];        
+    }
+
+
+    static problem_count_down = function (count_change = 1) {
+        for (var i = array_length(problems) -1; i >= 0; i--) {
+            var _problem = problems[i];
+            _problem.basic_turn_end();
+        }
+    }
+
+    static problems_to_mission_log = method(self, generic_problems_to_mission_log);
 
     static name = function() {
         return planet_numeral_name(planet, system);
@@ -1353,29 +1382,29 @@ function PlanetData(_planet, _system) constructor {
 
         draw_text(xx + 349, yy + 346, string_hash_to_newline(string(presence_text)));
 
-        var planet_displays = [];
-        var feat_count = array_length(features);
-        var upgrade_count = array_length(upgrades);
+        var _planet_displays = [];
+        var _feat_count = array_length(features);
+        var _upgrade_count = array_length(upgrades);
         var size = global.planet_size;
-        if (feat_count > 0) {
-            for (var i = 0; i < feat_count; i++) {
+        if (_feat_count > 0) {
+            for (var i = 0; i < _feat_count; i++) {
                 var cur_feature = features[i];
                 try {
                     if (cur_feature.planet_display != 0) {
                         if (cur_feature.f_type == eP_FEATURES.GENE_STEALER_CULT) {
                             if (!cur_feature.hiding) {
-                                array_push(planet_displays, [cur_feature.planet_display, cur_feature]);
+                                array_push(_planet_displays, [cur_feature.planet_display, cur_feature]);
                             }
                         } else if (cur_feature.player_hidden == 1) {
-                            array_push(planet_displays, ["????", ""]);
+                            array_push(_planet_displays, ["????", ""]);
                         } else {
-                            array_push(planet_displays, [cur_feature.planet_display, cur_feature]);
+                            array_push(_planet_displays, [cur_feature.planet_display, cur_feature]);
                         }
                         if (cur_feature.f_type == eP_FEATURES.MONASTERY) {
                             if (cur_feature.forge > 0) {
-                                var forge = cur_feature.forge_data;
-                                var size_string = localize("{0} Chapter Forge", [size[forge.size]]);
-                                array_push(planet_displays, [size_string, forge]);
+                                var _forge = cur_feature.forge_data;
+                                var _size_string = localize("{0} Chapter Forge", [size[_forge.size]]);
+                                array_push(_planet_displays, [_size_string, _forge]);
                             }
                         }
                     }
@@ -1385,49 +1414,40 @@ function PlanetData(_planet, _system) constructor {
                 }
             }
         }
-        if (upgrade_count > 0) {
-            for (var i = 0; i < upgrade_count; i++) {
+        if (_upgrade_count > 0) {
+            for (var i = 0; i < _upgrade_count; i++) {
                 var _upgrade = upgrades[i];
                 if (_upgrade.f_type == eP_FEATURES.SECRET_BASE) {
                     if (_upgrade.forge > 0) {
-                        var forge = _upgrade.forge_data;
-                        var size_string = localize("{0} Chapter Forge", [size[forge.size]]);
-                        array_push(planet_displays, [size_string, forge]);
+                        var _forge = _upgrade.forge_data;
+                        var _size_string = localize("{0} Chapter Forge", [size[_forge.size]]);
+                        array_push(_planet_displays, [_size_string, _forge]);
                     }
                 }
             }
         }
 
         for (var i = 0; i < array_length(problems); i++) {
-            if (problems[i] == "") {
-                continue;
-            }
-            var problem_data = problems_data[i];
-            if (struct_exists(problem_data, "stage")) {
-                if (problem_data.stage == "preliminary") {
-                    var mission_string = localize("{0} Audience", [problem_data.applicant]);
-                    problem_data.f_type = eP_FEATURES.MISSION;
-                    problem_data.time = problem_timers[i];
-                    problem_data.problem = problems[i];
-                    problem_data.array_position = i;
-                    array_push(planet_displays, [mission_string, problem_data]);
-                }
+            var _problem = problems[i];
+            if (_problem.view_on_planet_screen()) {
+                var _mission_string = localize("{0} Audience", [_problem.data.applicant]);
+                array_push(_planet_displays, [_mission_string, _problem]);
             }
         }
 
-        var button_size;
-        var y_move = 0;
-        var button_colour;
-        for (var i = 0; i < array_length(planet_displays); i++) {
-            button_colour = c_green;
-            if (planet_displays[i][0] == "????") {
-                button_colour = c_red;
+        var _button_size;
+        var _y_move = 0;
+        var _button_colour;
+        for (var i = 0; i < array_length(_planet_displays); i++) {
+            _button_colour = c_green;
+            if (_planet_displays[i][0] == "????") {
+                _button_colour = c_red;
             }
-            button_size = draw_unit_buttons([xx + 535, yy + 346 + y_move], planet_displays[i][0], [1, 1], button_colour,, fnt_40k_14b, 1);
-            y_move += button_size[3] - button_size[1];
-            if (point_and_click(button_size)) {
-                if (planet_displays[i][0] != "????") {
-                    obj_star_select.feature = new FeatureSelected(planet_displays[i][1], system, current_planet);
+            _button_size = draw_unit_buttons([xx + 535, yy + 346 + _y_move], _planet_displays[i][0], [1, 1], _button_colour,, fnt_40k_14b, 1);
+            _y_move += _button_size[3] - _button_size[1];
+            if (point_and_click(_button_size)) {
+                if (_planet_displays[i][0] != "????") {
+                    obj_star_select.feature = new FeatureSelected(_planet_displays[i][1], system, current_planet);
                 } else {
                     obj_star_select.feature = "";
                 }
@@ -1524,9 +1544,9 @@ function PlanetData(_planet, _system) constructor {
         add_operatives(operation_data);
 
         //if there was an outstanding mission to provide the given garrison
-        var garrison_request = find_problem("provide_garrison");
-        if (garrison_request > -1) {
-            init_garrison_mission(planet, system, garrison_request);
+        var _garrison_request = find_problem("provide_garrison");
+        if (is_struct(_garrison_request)) {
+            _garrison_request.provide_garrison_on_garrison();
         }
         instance_destroy(obj_star_select);
     };
@@ -1539,7 +1559,7 @@ function PlanetData(_planet, _system) constructor {
         if (garrisons.garrison_force) {
             garrisons.find_leader();
             garrisons.garrison_disposition_change(true);
-        }
+        }        
     };
 
     static planet_selection_logic = function() {
@@ -1576,20 +1596,6 @@ function PlanetData(_planet, _system) constructor {
             // 135 ; SPECIAL PLANET CRAP HERE
 
             // Recon Stuff
-
-            if (has_problem("recon")) {
-                var arti = instance_create(system.x, system.y, obj_temp7); // Unloading / artifact crap
-
-                arti.num = planet;
-                arti.alarm[0] = 1;
-                arti.loc = obj_controller.selecting_location;
-                arti.managing = obj_controller.managing;
-                arti.type = "recon";
-
-                with (arti) {
-                    setup_planet_mission_group();
-                }
-            }
             if (!instance_exists(obj_ground_mission)) {
                 check_for_artifact_grab_mission();
             }
@@ -2059,7 +2065,7 @@ function PlanetData(_planet, _system) constructor {
 
     static init_war_of_succession = function() {
         add_feature(eP_FEATURES.SUCCESSION_WAR);
-        add_problem("succession", irandom(6) + 4);
+        new_problem("succession", irandom(6) + 4);
         set_player_disposition(-5000);
 
         scr_popup(localize("War of Succession"), localize("The planetary governor of {0} has died.  Several subordinates and other parties each claim to be the true heir and successor- war has erupted across the planet as a result.  Heresy thrives in chaos.", [name()]), "succession", "");
@@ -2068,24 +2074,5 @@ function PlanetData(_planet, _system) constructor {
         _star_alert.image_speed = 1;
         _star_alert.col = "red";
         scr_event_log("red", localize("War of Succession on {0}", [name()]));
-    };
-
-    static init_fallen_marines = function() {
-        var _eta = scr_mission_eta(system.x, system.y, 1);
-
-        var assigned_problem = add_problem("fallen", _eta);
-
-        if (!assigned_problem) {
-            LOGGER.error("RE: Hunt the Fallen, coulnd't assign a problem to the planet");
-            return;
-        }
-
-        var _text = localize("Sources indicate one of the Fallen may be upon {0}.  We have {1} months to send out a strike team and scour the planet.  Any longer and any Fallen that might be there will have escaped.", [name(), _eta]);
-        scr_popup(localize("Hunt the Fallen"), _text, "fallen", "");
-        scr_event_log("", localize("Sources indicate one of the Fallen may be upon {0}.  We have {1} months to investigate.", [name(), _eta]));
-        var star_alert = create_alert();
-        star_alert.image_alpha = 1;
-        star_alert.image_speed = 1;
-        star_alert.col = "purple";
     };
 }

@@ -1,37 +1,5 @@
-if ((image == "chaos_symbol") && (title == "Concealed Heresy") && instance_exists(obj_drop_select)) {
-    with (obj_drop_select) {
-        obj_controller.cooldown = 30;
-        // ** Starts the battle **
-        is_in_combat = true;
-
-        instance_deactivate_all_safe();
-        instance_activate_object(obj_drop_select);
-
-        instance_create(0, 0, obj_ncombat);
-        obj_ncombat.battle_object = p_target;
-        obj_ncombat.battle_loc = p_target.name;
-        obj_ncombat.battle_id = obj_controller.selecting_planet;
-        obj_ncombat.dropping = 0;
-        obj_ncombat.attacking = 10;
-        obj_ncombat.enemy = eFACTION.CHAOS;
-        obj_ncombat.formation_set = 2;
-        obj_ncombat.leader = 1;
-        obj_ncombat.threat = 5;
-        obj_ncombat.battle_special = "WL10_reveal";
-        scr_battle_allies();
-        setup_battle_formations();
-        roster.add_to_battle();
-    }
-}
-
 if (instance_exists(obj_controller)) {
     if (obj_controller.current_eventing == "chaos_meeting_1") {
-        scr_toggle_diplomacy();
-        obj_controller.diplomacy = 10;
-        obj_controller.cooldown = 5000;
-        with (obj_controller) {
-            scr_dialogue("cs_meeting1");
-        }
     }
 
     if (obj_controller.current_eventing == "chaos_trap") {
@@ -76,7 +44,6 @@ if (instance_exists(obj_controller)) {
 
         with (obj_star) {
             remove_star_problem("meeting");
-            remove_star_problem("meeting_trap");
         }
 
         obj_controller.useful_info += "CHTRP|";

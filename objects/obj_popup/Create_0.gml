@@ -40,7 +40,6 @@ giveto = 0;
 inq_hide = 0;
 ma_co = 0;
 ma_id = 0;
-ma_name = "";
 manag = 0;
 fallen = 0;
 ship_lost = 0;
@@ -112,12 +111,14 @@ company_promote_data = [
     }, //10th company
 ];
 
+// TODO: swap out for dynaic array lengths
 role_name = array_create(12, "");
 role_exp = array_create(12, 0);
 
 // TODO: connect this logic with the other_manage_data() to reduce verboseness;
 get_unit_promotion_options = function() {
     var _role_data = obj_ini.player_role_data;
+    var _company_units = collect_company(target_comp);
     var spec = 0;
     array_set_value(role_name, "");
     array_set_value(role_exp, 0);
@@ -144,30 +145,22 @@ get_unit_promotion_options = function() {
         spec = 1;
         role_name[2] = _role_data[eROLE.CODICIERY].role;
         role_exp[2] = 80;
-    } else if (unit_role == _role_data[eROLE.CODICIERY].role  && target_comp == 0) {
+    } else if (unit_role == _role_data[eROLE.CODICIERY].role) {
         role_name[1] = _role_data[eROLE.LIBRARIAN].role;
         role_exp[1] = 125;
         spec = 1;
     }
     if (target_comp > 0 && target_comp <= 10 && spec == 0) {
         if (units == 1) {
-            if (scr_role_count(_role_data[eROLE.CAPTAIN].role, "1") == 0) {
-                //captain
-                i += 1;
-                role_name[i] = _role_data[eROLE.CAPTAIN].role;
-                role_exp[i] = 80; //all captains are equalish
-            }
-            if (scr_role_count(_role_data[eROLE.ANCIENT].role, "1") == 0) {
-                //company ancient
-                i += 1;
-                role_name[i] = _role_data[eROLE.ANCIENT].role;
-                role_exp[i] = company_promote_data[target_comp].exp + 10;
-            }
-            if (scr_role_count(_role_data[eROLE.CHAMPION].role, "1") == 0) {
-                //company champ
-                i += 1;
-                role_name[i] = _role_data[eROLE.CHAMPION].role;
-                role_exp[i] = company_promote_data[target_comp].exp + 10; //may as well have this liniked to weapon skill
+            //all captains are equalish   
+            var _singles = [{role:eROLE.CAPTAIN, exp : 80}, {role:eROLE.ANCIENT, exp : company_promote_data[target_comp].exp + 10}, {role:eROLE.CHAMPION, exp : company_promote_data[target_comp].exp + 10}];
+            for (var s=0;s<array_length(_singles);s++){
+                var _r_data = _singles[s];
+                if (!_company_units.has_role(_r_data.role)){
+                    i++;
+                    role_name[i] = _role_data[_r_data.role].role;
+                    role_exp[i] = _r_data.exp;                  
+                }
             }
             i += 1;
             role_name[i] = _role_data[eROLE.DREADNOUGHT].role; //dreadnought

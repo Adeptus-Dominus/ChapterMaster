@@ -50,30 +50,12 @@ if (current_popup <= popups) {
             pip.add_option(pip.pop_data.options);
         }
     } else {
-        if ((popup_special[current_popup] != "") && (pip.image == "inquisition") && (popup_special[current_popup] != "1") && (popup_special[current_popup] != "2") && (pip.image != "tech_build") && (popup_special[current_popup] != "contraband") && (string_count("mech_", popup_special[current_popup]) == 0) && (string_count("meeting", popup_special[current_popup]) == 0)) {
+        if ((popup_special[current_popup] != "") && (popup_special[current_popup] != "1") && (popup_special[current_popup] != "2")) {
             explode_script(popup_special[current_popup], "|");
             pip.mission = string(explode[0]);
             pip.loc = string(explode[1]);
             pip.planet = real(explode[2]);
             pip.estimate = real(explode[3]);
-        }
-        if (string_count("target_marine", popup_special[current_popup]) > 0) {
-            explode_script(popup_special[current_popup], "|");
-            var aa = string(explode[0]);
-            pip.ma_name = string(explode[1]);
-            pip.ma_co = real(explode[2]);
-            pip.ma_id = real(explode[3]);
-        }
-        if (string_count("mech_", popup_special[current_popup]) > 0) {
-            explode_script(popup_special[current_popup], "|");
-            pip.mission = string(explode[0]);
-            pip.loc = string(explode[1]);
-        }
-        if (string_count("meeting_", popup_special[current_popup]) > 0) {
-            pip.mission = popup_special[current_popup];
-        }
-        if (popup_special[current_popup] == "contraband") {
-            pip.loc = "contraband";
         }
         if (popup_special[current_popup] == "1") {
             pip.planet = 1;

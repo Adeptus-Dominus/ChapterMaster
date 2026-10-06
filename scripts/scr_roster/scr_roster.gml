@@ -376,14 +376,6 @@ function Roster() constructor {
 
     static add_to_battle = function() {
         var meeting = false;
-        if (instance_exists(obj_temp_meeting)) {
-            meeting = true;
-            if ((company == 0) && (v <= obj_temp_meeting.dudes) && (obj_temp_meeting.present[v] == 1)) {
-                okay = 1;
-            } else if ((company > 0) || (v > obj_temp_meeting.dudes)) {
-                okay = 0;
-            }
-        }
         var size_count = 0;
         var _limit = obj_ncombat.man_size_limit;
         var _has_limit = _limit > 0;
@@ -403,7 +395,7 @@ function Roster() constructor {
                     }
                 }
                 if (_add) {
-                    add_unit_to_battle(_unit, meeting, true);
+                    add_unit_to_battle(_unit, true);
                 }
             } else {
                 var _vehic = selected_units[i];
@@ -515,7 +507,7 @@ function setup_battle_formations() {
     obj_controller.bat_scout_column = obj_controller.bat_scou_for[new_combat.formation_set];
 }
 
-function add_unit_to_battle(unit, meeting, is_local) {
+function add_unit_to_battle(unit, is_local) {
     var new_combat = obj_ncombat;
     var man_size = 1;
 
@@ -525,15 +517,8 @@ function add_unit_to_battle(unit, meeting, is_local) {
     var va = 0;
     var v = unit.marine_number;
     var company = unit.company;
-    if (!meeting) {
-        cooh = company;
-        va = v;
-    } else {
-        if (v <= obj_temp_meeting.dudes) {
-            cooh = obj_temp_meeting.company[v];
-            va = obj_temp_meeting.ide[v];
-        }
-    }
+    cooh = company;
+    va = v;
     var _armour_data = unit.get_armour_data();
     var _wearing_armour = is_struct(_armour_data);
 

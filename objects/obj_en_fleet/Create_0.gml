@@ -76,14 +76,22 @@ trade_goods = "";
 capital_health = 100;
 frigate_health = 100;
 escort_health = 100;
+problems = [];
+/// @param {string} _name
+/// @param {Real} _timer
+/// @param {struct} _data
+/// @returns {Struct.AiFleetProblem}
+add_problem = method(self, add_fleet_problem);
+move = method(self, set_fleet_movement);
+problems_to_mission_log = method(self, fleet_problems_to_mission_log);
 
 #region save/load serialization
 
 /// Called from save function to take all object variables and convert them to a json savable format and return it
 serialize = function() {
-    var object_fleet = self;
+    var _object_fleet = self;
 
-    var save_data = {
+    var _save_data = {
         obj: object_get_name(object_index),
         x,
         y,
@@ -98,11 +106,11 @@ serialize = function() {
         "in_view",
     ];
 
-    copy_serializable_fields(object_fleet, save_data, excluded_from_save);
+    copy_serializable_fields(_object_fleet, _save_data, excluded_from_save);
 
-    return save_data;
+    return _save_data;
 };
-deserialize = function(save_data) {
+deserialize = function(_save_data) {
     var exclusions = [
         "id",
         "cargo_data",
@@ -110,28 +118,29 @@ deserialize = function(save_data) {
     ]; // skip automatic setting of certain vars, handle explicitly later
 
     // Automatic var setting
-    var all_names = struct_get_names(save_data);
-    var _len = array_length(all_names);
+    var _all_names = struct_get_names(_save_data);
+    var _len = array_length(_all_names);
     for (var i = 0; i < _len; i++) {
-        var var_name = all_names[i];
-        if (array_contains(exclusions, var_name)) {
+        var _var_name = _all_names[i];
+        if (array_contains(exclusions, _var_name)) {
             continue;
         }
-        var loaded_value = struct_get(save_data, var_name);
+        var _loaded_value = struct_get(_save_data, _var_name);
         try {
-            variable_instance_set(self, var_name, loaded_value);
+            variable_instance_set(self, _var_name, _loaded_value);
         } catch (e) {
             LOGGER.exception("Deserialization failed", e);
         }
     }
-    if (struct_exists(save_data, "cargo_data")) {
-        variable_instance_set(self, "cargo_data", save_data.cargo_data);
+    if (struct_exists(_save_data, "cargo_data")) {
+        variable_instance_set(self, "cargo_data", _save_data.cargo_data);
         if (fleet_has_cargo("ork_warboss")) {
             var _boss = new NewPlanetFeature(eP_FEATURES.ORKWARBOSS);
             _boss.load_json_data(cargo_data.ork_warboss);
             cargo_data.ork_warboss = _boss;
         }
     }
+    load_fleet_problems(AiFleetProblem, _save_data);
 };
 
 #endregion

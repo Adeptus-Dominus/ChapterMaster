@@ -144,54 +144,53 @@ function after_battle_slime_and_equipment_maintenance(unit) {
     }
 }
 
+
+/// @self Asset.GMObject.obj_pnunit
 function check_for_plasma_bomb_and_tomb(unit) {
-    if (obj_ncombat.plasma_bomb || obj_ncombat.defeat) {
-        return;
-    }
     var _star = obj_ncombat.battle_object;
     var _planet = obj_ncombat.battle_id;
     var _necron_strength = _star.p_necrons[_planet];
-    if (unit.gear() == "Plasma Bomb" && !string_count("mech_tomb2", obj_ncombat.battle_special)) {
+    if (unit.gear() == "Plasma Bomb") {
         if (obj_ncombat.enemy == eFACTION.NECRONS && awake_tomb_world(_star.p_feature[_planet])) {
             if (((_necron_strength - 2) < 3 && obj_ncombat.dropping) || (_necron_strength - 1) < 3) {
                 obj_ncombat.plasma_bomb += 1;
                 unit.update_gear("", false, false);
+                return false;
             }
         }
     }
+    return true;
 }
 
 /// @self Asset.GMObject.obj_pnunit
 function after_battle_part2() {
     var _unit;
-
+    var _destroy_tomb = (!obj_ncombat.plasma_bomb && !obj_ncombat.defeat &&  obj_ncombat.battle_special != "mech_tomb");
+    var _check_exterminatus = (obj_ncombat.dropping && !obj_ncombat.defeat);
     for (var i = 0; i < array_length(unit_struct); i++) {
         _unit = unit_struct[i];
-        if (!marine_dead[i] && marine_type[i] == "Death Company") {
+
+        if ((marine_dead[i] || obj_ncombat.defeat != 0) && !ally[i]) {
+            after_combat_recover_marine_gene_seed(_unit);
+            after_combat_dead_marine_equipment_recovered(_unit);
+        }
+
+        if (marine_dead[i] || ally[i]) {
+            continue;
+        }
+        after_battle_slime_and_equipment_maintenance(_unit);
+        if (_destroy_tomb){
+            _destroy_tomb = check_for_plasma_bomb_and_tomb(_unit);
+        }
+        if (marine_type[i] == "Death Company") {
             if (_unit.role() != "Death Company") {
                 _unit.update_role("Death Company");
             }
         }
-
-        if (!marine_dead[i] && !ally[i]) {
-            after_battle_slime_and_equipment_maintenance(_unit);
-
-            check_for_plasma_bomb_and_tomb(_unit);
-
-            if ((_unit.gear() == "Exterminatus") && (obj_ncombat.dropping != 0) && (obj_ncombat.defeat == 0)) {
-                if (obj_ncombat.exterminatus == 0) {
-                    obj_ncombat.exterminatus += 1;
-                    _unit.update_gear("", false, false);
-                }
-                // obj_ncombat.exterminatus+=1;scr_add_item("Exterminatus",1);
-                // _unit.gear()="";
-            }
-        }
-
-        var destroy = 0;
-        if ((marine_dead[i] || obj_ncombat.defeat != 0) && !ally[i]) {
-            after_combat_recover_marine_gene_seed(_unit);
-            after_combat_dead_marine_equipment_recovered(_unit);
+        if (_check_exterminatus && (_unit.gear() == "Exterminatus")) {
+            _check_exterminatus = false;
+            obj_ncombat.exterminatus += 1;
+            _unit.update_gear("", false, false);
         }
     }
 

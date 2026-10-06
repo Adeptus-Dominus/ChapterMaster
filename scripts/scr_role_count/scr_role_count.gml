@@ -1,94 +1,33 @@
-function scr_role_count(target_role, search_location = "", return_type = "count") {
-    // Take a guess
-    var units = [];
-    var count = 0;
-    var coom = -999;
-
-    if (is_string(search_location)) {
-        if (search_location == "0") {
-            coom = 0;
-        } else if (search_location == "1") {
-            coom = 1;
-        } else if (search_location == "2") {
-            coom = 2;
-        } else if (search_location == "3") {
-            coom = 3;
-        } else if (search_location == "4") {
-            coom = 4;
-        } else if (search_location == "5") {
-            coom = 5;
-        } else if (search_location == "6") {
-            coom = 6;
-        } else if (search_location == "7") {
-            coom = 7;
-        } else if (search_location == "8") {
-            coom = 8;
-        } else if (search_location == "9") {
-            coom = 9;
-        } else if (search_location == "10") {
-            coom = 10;
-        }
-    } else {
-        coom = search_location;
+function scr_role_count(_target_role, _search_location = "", _return_type = "count") {
+    var _search = {role:_target_role};
+    if (is_real(_search_location)){
+        _search.company = _search_location;
+        _search_location  = "";
     }
+    var _units = collect_role_group("all", _search_location, false,  _search, true);
 
-    if (coom >= 0) {
-        for (var i = 0; i < array_length(obj_ini.TTRPG[coom]); i++) {
-            var unit = fetch_unit([coom, i]);
-            if (!is_struct(unit) || unit.name() == "") {
-                continue;
-            }
-            if ((unit.role() == target_role) && (obj_ini.TTRPG[coom][i].god_status < 10)) {
-                count += 1;
-                if (return_type == "units") {
-                    var _u = fetch_unit([coom, i]);
-                    if (is_struct(_u)) {
-                        array_push(units, _u);
-                    }
-                }
-            }
-        }
+    if (_return_type == "units"){
+        return _units.units;
+    } else if _return_type == "count"{
+        return _units.number();
+    }else if _return_type == "group"{
+        return _units;
     }
+}
 
-    if (coom < 0) {
-        for (var com = 0; com <= obj_ini.companies; com++) {
-            for (var i = 0; i < array_length(obj_ini.TTRPG[com]); i++) {
-                var match = false;
-                var unit = fetch_unit([com, i]);
-                if (!is_struct(unit) || unit.name() == "") {
-                    continue;
-                }
-                if ((unit.role() == target_role) && (search_location == "")) {
-                    match = true;
-                }
-                if ((unit.role() == target_role) && (unit.location_string == obj_ini.home_name) && (search_location == "home")) {
-                    match = true;
-                }
-                if ((unit.role() == target_role) && (search_location == "field") && ((unit.location_string != obj_ini.home_name) || (unit.ship_location > -1))) {
-                    match = true;
-                }
-
-                if ((search_location != "home") && (search_location != "field")) {
-                    if (unit.role() == target_role) {
-                        var t1 = unit.location_string + "|" + string(unit.planet_location) + "|";
-                        if (search_location == t1) {
-                            match = true;
-                        }
-                    }
-                }
-                if (match) {
-                    count++;
-                    if (return_type == "units") {
-                        array_push(units, unit);
-                    }
-                }
-            }
-        }
+function scr_group_count(_role_group,_search_location = "", _return_type = "count"){
+     var _search = {};
+    if (is_real(_search_location)){
+        _search.company = _search_location;
+        _search_location  = "";
     }
+    var _units = collect_role_group(_role_group, _search_location, false,  _search, true); 
 
-    if (return_type == "units") {
-        return units;
+    if (_return_type == "units"){
+        return _units.units;
+    } else if _return_type == "count"{
+        return _units.number();
+    }else if _return_type == "group"{
+        return _units;
     }
-
-    return count;
 }

@@ -3,7 +3,7 @@
 function add_fleet_ships_to_combat(fleet, combat) {
     var capital_count = array_length(fleet.capital);
     var _ship_id;
-    var _ships = fleet_full_ship_array(fleet);
+    var _ships = fleet.full_ship_array();
     var _ship_array_length = array_length(_ships);
     for (var i = 0; i < _ship_array_length; i++) {
         try {
