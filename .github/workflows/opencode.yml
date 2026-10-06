@@ -118,7 +118,7 @@ jobs:
             gh pr checkout "$ISSUE_OR_PR_NUM"
             BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
           elif [ -n "$ISSUE_OR_PR_NUM" ]; then
-            BRANCH_NAME="lyra/issue-${ISSUE_OR_PR_NUM}"
+            BRANCH_NAME="automation/issue-${ISSUE_OR_PR_NUM}"
             git fetch origin "$BRANCH_NAME" 2>/dev/null || true
             if git show-ref --verify --quiet "refs/heads/$BRANCH_NAME"; then
               git checkout "$BRANCH_NAME"
@@ -128,7 +128,7 @@ jobs:
               git checkout -b "$BRANCH_NAME"
             fi
           else
-            BRANCH_NAME="lyra/dispatch-$(date +%s)"
+            BRANCH_NAME="automation/dispatch-$(date +%s)"
             git checkout -b "$BRANCH_NAME"
           fi
           echo "branch=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
@@ -232,7 +232,7 @@ jobs:
         id: opencode
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
-          OPENCODE_PERMISSION: '{ "external_directory": { "*": "deny", "/home/runner/work/**": "allow", "/tmp/*": "allow" }, "doom_loop": deny }'
+          OPENCODE_PERMISSION: '{ "external_directory": { "*": "deny", "/home/runner/work/**": "allow", "/tmp/*": "allow" }, "doom_loop": "deny" }'
           OPENCODE_MAIN_MODEL: ${{ vars.OPENCODE_MAIN_MODEL }}
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -298,7 +298,7 @@ jobs:
               RESPONSE="Task processed. No file changes required."
             fi
             if [ "$HAS_CHANGES" = "true" ] && [ "$IS_PR" = "true" ] && [ "$FORK" = "true" ]; then
-              FORK_BRANCH="lyra/pr-${TARGET_NUM}"
+              FORK_BRANCH="automation/pr-${TARGET_NUM}"
               git checkout -B "$FORK_BRANCH"
               git add -A
               git commit -m "chore: automated changes for fork PR #$TARGET_NUM (not pushed to fork)"
