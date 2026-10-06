@@ -175,12 +175,13 @@ function WarpLane(_star_1, _star_2, _grade) constructor {
 
 function WarpLaneHandler() constructor{
     routes = [];
-    static current_seed = global.game_seed;
-    static warp_image = -1;
-    static warp_width = sprite_get_width(spr_warp_storm) * 0.75;
-    static warp_height = sprite_get_height(spr_warp_storm) * 0.75;
-    static line_width = 0;
-    static line_alpha = 0.4;
+    // Keep as instance vars, not static. YYC miscompiles compound assignment on static-chain lookup.
+    current_seed = global.game_seed;
+    warp_image = -1;
+    warp_width = sprite_get_width(spr_warp_storm) * 0.75;
+    warp_height = sprite_get_height(spr_warp_storm) * 0.75;
+    line_width = 0;
+    line_alpha = 0.4;
 
     allow_tooltips = true;
 
