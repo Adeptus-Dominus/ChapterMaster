@@ -50,9 +50,9 @@ if (dragging == false) {
     rel_mousey = 0;
     old_x = 0;
     old_y = 0;
-    col_target = 0;
-    above_neighbor = 0;
-    nearest_col = 0;
+    col_target = noone;
+    above_neighbor = noone;
+    nearest_col = noone;
 }
 
 pop_draw_return_values();

@@ -11,9 +11,9 @@ bat_for = undefined;
 
 size = 0;
 col_parent = 0;
-col_target = 0;
-above_neighbor = 0;
-nearest_col = 0;
+col_target = noone;
+above_neighbor = noone;
+nearest_col = noone;
 nobar = false;
 
 height = 0;
@@ -110,76 +110,72 @@ drag_logic = function() {
         rel_mousey = 0;
         old_x = 0;
         old_y = 0;
-        col_target = 0;
-        above_neighbor = 0;
-        nearest_col = 0;
+        col_target = noone;
+        above_neighbor = noone;
+        nearest_col = noone;
     }
+};
+
+finish_drag = function() {
+    col_target = noone;
+    nearest_col = noone;
+    nobar = false;
+    obj_cursor.dragging = 0;
+    obj_cursor.image_index = 0;
+    dragging = false;
+};
+
+snap_back = function() {
+    x = old_x;
+    y = old_y;
+    finish_drag();
 };
 
 mouse_release = function() {
     if (!mouse_check_button_released(mb_left)) {
         return;
     }
-
-    var mah_target;
-    mah_target = 0;
-    /*if (dragging=true) and (nobar=true) then mah_target=col_target;
-	if (dragging=true) and (nobar=false) then mah_target=nearest_col;*/
-
-    mah_target = col_target;
-
-    if ((dragging == true) && instance_exists(mah_target)) {
-        if (mah_target.col_parent == col_parent) {
-            obj_controller.click = 1;
-            x = old_x;
-            y = old_y;
-            rel_mousex = 0;
-            rel_mousey = 0;
-            old_x = 0;
-            old_y = 0;
-            col_target = 0;
-            nearest_col = 0;
-            nobar = false;
-            obj_cursor.dragging = 0;
-            obj_cursor.image_index = 0;
-            dragging = false;
-            exit;
-        }
+    if (dragging != true) {
+        return;
     }
 
-    if ((dragging == true) && instance_exists(mah_target)) {
-        var _in_drop_zone = (x >= mah_target.x - 5) && (x <= mah_target.x + 42) && (mouse_consts[1] >= 222) && (mouse_consts[1] <= 688);
-        var te = 4800 + mah_target.col_parent;
+    var mah_target = col_target;
 
-        if (_in_drop_zone && (obj_controller.temp[te] + size <= 10)) {
-            obj_controller.temp[4800 + col_parent] -= size;
-            obj_controller.click = 1;
-            bat_for[@ obj_controller.formating] = mah_target.col_parent;
-            obj_cursor.dragging = 0;
-            obj_cursor.image_index = 0;
-            dragging = false;
-            col_target = 0;
-            nearest_col = 0;
-            nobar = false;
+    if (!instance_exists(mah_target)) {
+        snap_back();
+        return;
+    }
 
-            with (obj_temp8) {
-                instance_destroy();
-            }
-            with (obj_controller) {
-                bar_fix = true;
-            }
-            exit;
+    if (mah_target.col_parent == col_parent) {
+        obj_controller.click = 1;
+        snap_back();
+        return;
+    }
+
+    var _in_drop_zone = (x >= mah_target.x - 5) && (x <= mah_target.x + 42) && (mouse_consts[1] >= 222) && (mouse_consts[1] <= 688);
+    var te = 4800 + mah_target.col_parent;
+
+    if (_in_drop_zone && (obj_controller.temp[te] + size <= 10)) {
+        obj_controller.temp[4800 + col_parent] -= size;
+        obj_controller.click = 1;
+        bat_for[@ obj_controller.formating] = mah_target.col_parent;
+
+        finish_drag();
+
+        with (obj_temp8) {
+            instance_destroy();
         }
-
-        // Column full, or dropped outside the drop zone: snap back
-        dragging = false;
-        x = old_x;
-        y = old_y;
-        obj_cursor.dragging = 0;
-        obj_cursor.image_index = 0;
-        if ((global.settings.master_volume > 0) && (global.settings.sfx_volume > 0)) {
-            global.audio_manager.play_sfx(SFX_ERROR);
+        with (obj_controller) {
+            bar_fix = true;
         }
+        return;
+    }
+
+    // Column full, or dropped outside the drop zone: snap back
+    snap_back();
+
+    if ((global.settings.master_volume > 0) && (global.settings.sfx_volume > 0)) {
+        global.audio_manager.play_sfx(SFX_ERROR);
     }
 
     /* */
