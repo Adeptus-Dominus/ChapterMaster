@@ -38,7 +38,7 @@ jobs:
           fi
 
           CAN_WRITE=$(gh api "repos/${{ github.repository }}/collaborators/${ACTOR}/permission" \
-            --jq '.permission == "admin" or .permission == "write" or (.user.permissions.push // false)' 2>/dev/null || echo "false")
+            --jq '.permission == "admin" or .permission == "write"' 2>/dev/null || echo "false")
 
           if [ "$CAN_WRITE" = "true" ]; then
             echo "authorized=true" >> "$GITHUB_OUTPUT"
@@ -69,7 +69,7 @@ jobs:
           gh api "$ENDPOINT" -f content='eyes'
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -300,8 +300,6 @@ jobs:
             if [ "$HAS_CHANGES" = "true" ] && [ "$IS_PR" = "true" ] && [ "$FORK" = "true" ]; then
               FORK_BRANCH="automation/pr-${TARGET_NUM}"
               git checkout -B "$FORK_BRANCH"
-              git add -A
-              git commit -m "chore: automated changes for fork PR #$TARGET_NUM (not pushed to fork)"
               git push --force origin "$FORK_BRANCH"
               RESPONSE="$RESPONSE Note: fork PR #$TARGET_NUM not updated directly. Changes preserved in branch \`$FORK_BRANCH\`."
             fi
