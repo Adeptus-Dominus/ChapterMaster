@@ -235,7 +235,7 @@ function UnitQuickFindPanel() constructor {
             update_fleet_table();
         }
 
-        if (fleet_table.last_drawn_sequence != hide_sequence){
+        if (fleet_table.last_drawn_sequence != hide_sequence) {
             fleet_table.last_drawn_sequence = hide_sequence;
             fleet_table.update({x1: xx + 40, y1: yy + 50, y2: yy + 50 + main_panel.height, colour: c_white, font: fnt_40k_14});
         }
@@ -366,7 +366,7 @@ function UnitQuickFindPanel() constructor {
         mission_table = new Table(_data);
     };
 
-    static main_panel_content = function(){
+    static main_panel_content = function() {
         var xx = main_panel.XX;
         var yy = main_panel.YY;
         is_entered = scr_hit(xx, yy, xx + main_panel.width, yy + main_panel.height);
@@ -476,14 +476,14 @@ function UnitQuickFindPanel() constructor {
 
     main_panel.inside_method = method(self, main_panel_content);
 
-    static hide_reveal_sequence = function(){
+    static hide_reveal_sequence = function() {
         var _x_draw = 0;
         var _lower_draw = main_panel.height + 110;
         if (hide_sequence == 30) {
             hide_sequence = 0;
         }
         if ((hide_sequence > 0 && hide_sequence < 15) || (hide_sequence > 15 && hide_sequence < 30)) {
-            var _increment = (main_panel.width / 15);
+            var _increment = main_panel.width / 15;
             if (hide_sequence > 15) {
                 _x_draw = (_increment * (hide_sequence - 15)) - main_panel.width;
             } else {
@@ -520,9 +520,9 @@ function UnitQuickFindPanel() constructor {
         /*if (tab_buttons.troops.draw(345,79, "Troops")){
             view_area="troops";
         }*/
-    }
+    };
 
-    static travel_camera_to_target = function(){
+    static travel_camera_to_target = function() {
         if (array_length(travel_target) != 2) {
             exit;
         }
@@ -539,7 +539,7 @@ function UnitQuickFindPanel() constructor {
             obj_controller.y = travel_target[1];
             travel_target = [];
         }
-    }
+    };
 
     static draw = function() {
         try {

@@ -74,14 +74,45 @@ global.techmarine_training_tiers = [
     14,
 ];
 
-global.apothecary_training_costs = [0, 1, 2, 3, 4, 6, 12];
+global.apothecary_training_costs = [
+    0,
+    1,
+    2,
+    3,
+    4,
+    6,
+    12,
+];
 
-global.chaplain_training_costs = [0, 1, 2, 3, 4, 6, 12];
+global.chaplain_training_costs = [
+    0,
+    1,
+    2,
+    3,
+    4,
+    6,
+    12,
+];
 
-global.techmarine_training_costs = [0, 1, 2, 3, 4, 6, 12];
+global.techmarine_training_costs = [
+    0,
+    1,
+    2,
+    3,
+    4,
+    6,
+    12,
+];
 
-global.psyker_training_costs = [0, 1, 2, 3, 4, 6, 12];
-
+global.psyker_training_costs = [
+    0,
+    1,
+    2,
+    3,
+    4,
+    6,
+    12,
+];
 
 function find_recruit_success_chance(local_apothecary_points, system, planet, ui = 0) {
     var p_data = system.get_planet_data(planet);
@@ -353,10 +384,10 @@ function planet_training_sequence(local_apothecary_points) {
             // as well as planet type buffs or nerfs
             if (aspirant) {
                 // Psyker Intolerant chapters have recruitment slow down on pysker heavy planets
-                if (scr_has_disadv("Psyker Intolerant")){
-                    if (population_psionic > irandom(7)){
+                if (scr_has_disadv("Psyker Intolerant")) {
+                    if (population_psionic > irandom(7)) {
                         scr_alert("red", "owner", localize("The saturation of Psionically gifted individuals on {0} is slowing recruitment due to your chapters Psyker Intolerence.", [name()]), 0, 0);
-                        return
+                        return;
                     }
                 }
                 var new_recruit = 0;
@@ -374,7 +405,7 @@ function planet_training_sequence(local_apothecary_points) {
                         array_insert(obj_controller.recruit_training, i, months_to_neo);
                         array_insert(obj_controller.recruit_exp, i, new_recruit_exp);
                         array_insert(obj_controller.recruit_name, i, global.name_generator.GenerateFromSet("space_marine"));
-                        array_insert(obj_controller.recruit_data, i, {"recruit_data": {planet, system : system.name, recruit_world: planet_type, aspirant_trial: obj_controller.recruit_trial}});
+                        array_insert(obj_controller.recruit_data, i, {"recruit_data": {planet, system: system.name, recruit_world: planet_type, aspirant_trial: obj_controller.recruit_trial}});
                         break;
                     }
                 }

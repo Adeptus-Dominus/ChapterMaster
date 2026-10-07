@@ -201,7 +201,7 @@ serialize = function() {
         "system_sabatours",
         "system_datas",
         "present_fleet",
-        "garrisoned"
+        "garrisoned",
     ];
     var excluded_from_save_start = ["p_"];
 

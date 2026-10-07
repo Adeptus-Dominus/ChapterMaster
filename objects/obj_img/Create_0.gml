@@ -112,13 +112,12 @@ image_cache = {
     title_splash: "title_splash",
     symbol: "symbol",
     defeat: "defeat",
-    slate: "slate"
+    slate: "slate",
 };
 
 image_cache_index = {
     creation: 1,
     diplomacy_icon: 1,
     menu: 1,
-    title_splash: 1
+    title_splash: 1,
 };
-
