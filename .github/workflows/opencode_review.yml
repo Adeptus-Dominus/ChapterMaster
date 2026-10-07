@@ -73,6 +73,7 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.issues-token.outputs.token }}
           PR_NUM: ${{ steps.pr-number.outputs.number }}
+          LYRA_SLUG: ${{ vars.LYRA_SLUG }}
         run: |
           # 1. Fetch PR details
           gh api "/repos/${{ github.repository }}/pulls/$PR_NUM" > pr_data.json
@@ -81,8 +82,9 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
           echo "base=$(jq -r .base.ref pr_data.json)" >> $GITHUB_OUTPUT
 
-          # 2. Identify the bot's username dynamically
-          BOT_USER=$(gh api user --jq .login)
+          # 2. Identify the bot's username
+
+          BOT_USER="${LYRA_SLUG}[bot]"
           echo "Bot user identified as: $BOT_USER"
 
           # 3. Fetch previous reviews by the bot
