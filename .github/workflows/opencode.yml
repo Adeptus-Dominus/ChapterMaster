@@ -26,10 +26,18 @@ jobs:
       authorized: ${{ steps.check.outputs.authorized }}
 
     steps:
+      - name: Mint Token
+        id: auth-token
+        uses: actions/create-github-app-token@v3.2.0
+        with:
+          client-id: ${{ vars.LYRA_CLIENT_ID }}
+          private-key: ${{ secrets.LYRA_PRIVATE_KEY }}
+          permission-administration: read
+    
       - name: Check Write Permission
         id: check
         env:
-          GH_TOKEN: ${{ secrets.PAT_ADMIN_READ }}
+          GH_TOKEN: ${{ steps.auth-token.outputs.token }}
           ACTOR: ${{ github.actor }}
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
@@ -57,10 +65,20 @@ jobs:
     timeout-minutes: 30
 
     steps:
+      - name: Mint Issues Token
+        id: issues-token
+        uses: actions/create-github-app-token@v3.2.0
+        with:
+          client-id: ${{ vars.LYRA_CLIENT_ID }}
+          private-key: ${{ secrets.LYRA_PRIVATE_KEY }}
+          permission-issues: write
+          permission-pull-requests: write
+          permission-contents: read
+
       - name: Acknowledge Command
         if: github.event_name != 'workflow_dispatch'
         env:
-          GH_TOKEN: ${{ secrets.LYRA_CONTENTS_PRS_ISSUES_PAT }}
+          GH_TOKEN: ${{ steps.issues-token.outputs.token }}
           COMMENT_ID: ${{ github.event.comment.id }}
           EVENT_NAME: ${{ github.event_name }}
         run: |
@@ -77,9 +95,10 @@ jobs:
       - name: Prepare Workspace & Context
         id: context
         env:
-          GH_TOKEN: ${{ secrets.LYRA_CONTENTS_PRS_ISSUES_PAT }}
+          GH_TOKEN: ${{ steps.issues-token.outputs.token }}
           EVENT_NAME: ${{ github.event_name }}
           INPUT_PROMPT: ${{ inputs.prompt }}
+          SLUG: ${{ steps.issues-token.outputs.app-slug }}
         run: |
           IS_PR="false"
           if jq -e '.issue.pull_request // .pull_request' "$GITHUB_EVENT_PATH" > /dev/null; then
@@ -133,8 +152,12 @@ jobs:
           fi
           echo "branch=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
 
-          git config user.name "lyra-the-bot"
-          git config user.email "lyra-the-bot@users.noreply.github.com"
+          BOT_NAME="${SLUG}[bot]"
+          BOT_USER_ID=$(gh api "users/${BOT_NAME}" --jq .id)
+
+          git config user.name "$BOT_NAME"
+          git config user.email "${BOT_USER_ID}+${BOT_NAME}@users.noreply.github.com"
+
           echo "base_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
           # Diff context for review comments
@@ -210,7 +233,7 @@ jobs:
       - name: Empty Prompt Hint
         if: steps.context.outputs.empty == 'true' && github.event_name != 'workflow_dispatch'
         env:
-          GH_TOKEN: ${{ secrets.LYRA_CONTENTS_PRS_ISSUES_PAT }}
+          GH_TOKEN: ${{ steps.issues-token.outputs.token }}
           TARGET_NUM: ${{ steps.context.outputs.num }}
         run: |
           if [ -n "$TARGET_NUM" ]; then
@@ -238,11 +261,20 @@ jobs:
         run: |
           opencode run -m "$OPENCODE_MAIN_MODEL" --variant xhigh < /tmp/prompt.txt > /tmp/opencode_output.txt
 
+      - name: Mint Contents Token
+        if: steps.context.outputs.empty != 'true' && steps.opencode.outcome == 'success'
+        id: contents-token
+        uses: actions/create-github-app-token@v3.2.0
+        with:
+          client-id: ${{ vars.LYRA_CLIENT_ID }}
+          private-key: ${{ secrets.LYRA_PRIVATE_KEY }}
+          permission-contents: write
+
       - name: Sync Results & Respond
         if: steps.context.outputs.empty != 'true' && steps.opencode.outcome == 'success'
         env:
-          GH_TOKEN: ${{ secrets.LYRA_CONTENTS_PRS_ISSUES_PAT }}
-          PUSH_TOKEN: ${{ secrets.PAT_CONTENTS_WRITE }}
+          GH_TOKEN: ${{ steps.issues-token.outputs.token }}
+          PUSH_TOKEN: ${{ steps.contents-token.outputs.token }}
           IS_PR: ${{ steps.context.outputs.is_pr }}
           TARGET_NUM: ${{ steps.context.outputs.num }}
           BRANCH_NAME: ${{ steps.context.outputs.branch }}
@@ -316,7 +348,7 @@ jobs:
       - name: Report Failure
         if: failure() && github.event_name != 'workflow_dispatch'
         env:
-          GH_TOKEN: ${{ secrets.LYRA_CONTENTS_PRS_ISSUES_PAT }}
+          GH_TOKEN: ${{ steps.issues-token.outputs.token }}
         run: |
           NUM=$(jq -r '.issue.number // .pull_request.number // empty' "$GITHUB_EVENT_PATH")
           if [ -n "$NUM" ]; then
@@ -326,7 +358,7 @@ jobs:
       - name: Remove Eyes Reaction
         if: always() && github.event_name != 'workflow_dispatch'
         env:
-          GH_TOKEN: ${{ secrets.LYRA_CONTENTS_PRS_ISSUES_PAT }}
+          GH_TOKEN: ${{ steps.issues-token.outputs.token }}
           COMMENT_ID: ${{ github.event.comment.id }}
           EVENT_NAME: ${{ github.event_name }}
         run: |
