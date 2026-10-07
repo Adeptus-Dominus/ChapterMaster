@@ -505,7 +505,7 @@ function company_manage_actions() {
     // Previous company
 
     var _back_check = keyboard_check_pressed(ord(string("N"))) && allow_shortcuts;
-    var _forward_check =  keyboard_check_pressed(ord(string("M"))) && allow_shortcuts;
+    var _forward_check = keyboard_check_pressed(ord(string("M"))) && allow_shortcuts;
     if (point_and_click([xx + 424, yy + 80, xx + 496, yy + 128]) || _back_check) {
         _change = true;
         _change_value = -1;
@@ -517,17 +517,17 @@ function company_manage_actions() {
         _change_value = 1;
     }
 
-    if (_change){
+    if (_change) {
         var _new_view = managing + _change_value;
-        if (scr_has_adv_any(["Spiritual Healers","Tech-Cult Religion"])){
-            if (_new_view == 14){
+        if (scr_has_adv_any(["Spiritual Healers", "Tech-Cult Religion"])) {
+            if (_new_view == 14) {
                 _new_view += _change_value;
             }
         }
-        if (_new_view > 15){
+        if (_new_view > 15) {
             _new_view = 1;
         }
-        if (_new_view == 0){
+        if (_new_view == 0) {
             _new_view = 15;
         }
         switch_view_company(_new_view);

@@ -20,7 +20,7 @@ jobs:
         contains(fromJson('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
       ) || (
         github.event_name == 'pull_request_target' &&
-        github.event.requested_reviewer.login == 'lyra-the-bot'
+        github.event.requested_reviewer.login == format('{0}[bot]', vars.LYRA_SLUG)
       )
 
     runs-on: ubuntu-latest
@@ -29,11 +29,21 @@ jobs:
       pull-requests: write
 
     steps:
+      - name: Mint Issues Token
+        id: issues-token
+        uses: actions/create-github-app-token@v3.2.0
+        with:
+          client-id: ${{ secrets.LYRA_CLIENT_ID }}
+          private-key: ${{ secrets.LYRA_PRIVATE_KEY }}
+          permission-issues: write
+          permission-pull-requests: write
+          permission-contents: read
+    
       - name: Acknowledge Command
         if: github.event_name == 'issue_comment'
         env:
-          GITHUB_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
-          GH_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
+          GITHUB_TOKEN: ${{ steps.issues-token.outputs.token }}
+          GH_TOKEN: ${{ steps.issues-token.outputs.token }}
           COMMENT_ID: ${{ github.event.comment.id }}
         run: |
           gh api repos/${{ github.repository }}/issues/comments/${COMMENT_ID}/reactions -f content='eyes'
@@ -56,13 +66,14 @@ jobs:
           gh pr checkout ${{ steps.pr-number.outputs.number }}
           echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
         env:
-          GH_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
+          GH_TOKEN: ${{ steps.issues-token.outputs.token }}
 
       - name: Get PR details
         id: pr-details
         env:
-          GH_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
+          GH_TOKEN: ${{ steps.issues-token.outputs.token }}
           PR_NUM: ${{ steps.pr-number.outputs.number }}
+          LYRA_SLUG: ${{ vars.LYRA_SLUG }}
         run: |
           # 1. Fetch PR details
           gh api "/repos/${{ github.repository }}/pulls/$PR_NUM" > pr_data.json
@@ -71,8 +82,9 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
           echo "base=$(jq -r .base.ref pr_data.json)" >> $GITHUB_OUTPUT
 
-          # 2. Identify the bot's username dynamically
-          BOT_USER=$(gh api user --jq .login)
+          # 2. Identify the bot's username
+
+          BOT_USER="${LYRA_SLUG}[bot]"
           echo "Bot user identified as: $BOT_USER"
 
           # 3. Fetch previous reviews by the bot
@@ -126,8 +138,8 @@ jobs:
         if: steps.pr-details.outputs.review_mode != 'NO_CHANGES'
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
-          GH_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
-          GITHUB_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
+          GH_TOKEN: ${{ steps.issues-token.outputs.token }}
+          GITHUB_TOKEN: ${{ steps.issues-token.outputs.token }}
           OPENCODE_PERMISSION: '{ "external_directory": { "/home/runner/work/**": "allow", "/tmp/*": "allow" } }'
           PR_TITLE: ${{ steps.pr-details.outputs.title }}
           PR_SHA: ${{ steps.pr-git.outputs.sha }}

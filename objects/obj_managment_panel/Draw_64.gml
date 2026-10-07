@@ -30,7 +30,7 @@ slate_panel.inside_method = function() {
         draw_set_alpha(1);
     }
 
-    var _mid_point = x + (panel_width /  2);
+    var _mid_point = x + (panel_width / 2);
     if (header == 3) {
         slate_panel.draw_top_piece = false;
         draw_sprite_stretched(spr_master_title, 0, x, y - 2, panel_width + 2, 4);

@@ -8,7 +8,6 @@
 /// @param {Real} width the width of the image
 /// @param {Real} height the height of the image
 function scr_image(path, image_id, x1, y1, width, height) {
-
     if (!instance_exists(obj_img)) {
         return;
     }
@@ -17,7 +16,6 @@ function scr_image(path, image_id, x1, y1, width, height) {
 
     // Hot path: normal drawing
     if ((image_id >= 0) && (image_id != 666)) {
-
         if (!is_undefined(_entry)) {
             var _sprites = _entry.sprites;
             var _index = (_entry.fixed_index >= 0) ? _entry.fixed_index : image_id;
@@ -59,9 +57,7 @@ function scr_image(path, image_id, x1, y1, width, height) {
     }
 }
 
-
 function scr_image_draw_missing(x1, y1, width, height) {
-
     var _old_alpha = draw_get_alpha();
     var _old_color = draw_get_color();
 
@@ -81,9 +77,7 @@ function scr_image_draw_missing(x1, y1, width, height) {
     draw_set_color(_old_color);
 }
 
-
 function scr_image_draw_file(path, image_id, x1, y1, width, height) {
-
     var _sprite = scr_image_cache(path, image_id);
 
     if (is_undefined(_sprite) || !sprite_exists(_sprite)) {
@@ -94,14 +88,11 @@ function scr_image_draw_file(path, image_id, x1, y1, width, height) {
     draw_sprite_stretched(_sprite, 1, x1, y1, width, height);
 }
 
-
 function scr_image_unload_entry(_entry, _reset_flag = true) {
     var _count = min(80, array_length(_entry.sprites));
 
     for (var _i = 0; _i < _count; _i++) {
-
         if (_entry.exists[_i] > 0) {
-
             if (sprite_exists(_entry.sprites[_i])) {
                 sprite_delete(_entry.sprites[_i]);
             }
@@ -116,13 +107,10 @@ function scr_image_unload_entry(_entry, _reset_flag = true) {
     }
 }
 
-
 function scr_image_unload(path) {
-
     var _registry = obj_img.image_registry;
 
     if ((path == "all") || (path == "")) {
-
         var _keys = variable_struct_get_names(_registry);
 
         for (var _k = 0; _k < array_length(_keys); _k++) {
@@ -139,9 +127,7 @@ function scr_image_unload(path) {
     }
 }
 
-
 function scr_image_load(path) {
-
     var _registry = obj_img.image_registry;
 
     // Legacy "splash" path only ever cleared the three splash groups
@@ -163,7 +149,6 @@ function scr_image_load(path) {
 
     // Single sprite sheets, always stored at index 1
     if (_entry.sheet_path != "") {
-
         if (file_exists(_entry.sheet_path)) {
             _entry.sprites[1] = sprite_add(_entry.sheet_path, _entry.sheet_frames, false, false, 0, 0);
             _entry.exists[1] = true;
@@ -177,7 +162,6 @@ function scr_image_load(path) {
     var _found = 0;
 
     for (var _i = 1; _i <= 40; _i++) {
-
         var _file = $"{_entry.file_prefix}{_i}.png";
 
         if (file_exists(_file)) {
@@ -192,40 +176,157 @@ function scr_image_load(path) {
     }
 }
 
-
 /// @description Builds the lookup table used by scr_image. Call once from obj_img Create,
 /// after the sprite/exists arrays have been created.
 function scr_image_registry_build(_img) {
-
     var _registry = {};
     var _dir = working_directory + "/images/";
 
     // [key, sprite array var, folder, file prefix, good flag var]
     var _groups = [
-        ["main_splash",      "main",             "creation",  "main",     "splash_good"],
-        ["existing_splash",  "existing",         "creation",  "existing", "splash_good"],
-        ["other_splash",     "others",           "creation",  "other",    "splash_good"],
-        ["advisor",          "advisor",          "diplomacy", "advisor",  "advisor_good"],
-        ["diplomacy_splash", "diplomacy_splash", "diplomacy", "diplomacy","diplomacy_splash_good"],
-        ["diplomacy_daemon", "diplomacy_daemon", "diplomacy", "daemon",   "diplomacy_daemon_good"],
-        ["loading",          "loading",          "loading",   "loading",  "loading_good"],
-        ["postbattle",       "postbattle",       "ui",        "postbattle","postbattle_good"],
-        ["postspace",        "postspace",        "ui",        "postspace","postspace_good"],
-        ["formation",        "formation",        "ui",        "formation","formation_good"],
-        ["popup",            "popup",            "popup",     "popup",    "popup_good"],
-        ["commander",        "commander",        "ui",        "commander","commander_good"],
-        ["planet",           "planet",           "ui",        "planet",   "planet_good"],
-        ["attacked",         "attacked",         "ui",        "attacked", "attacked_good"],
-        ["force",            "force",            "ui",        "force",    "force_good"],
-        ["purge",            "purge",            "ui",        "purge",    "purge_good"],
-        ["event",            "event",            "ui",        "event",    "event_good"],
-        ["symbol",           "symbol",           "diplomacy", "symbol",   "symbol_good"],
-        ["defeat",           "defeat",           "ui",        "defeat",   "defeat_good"],
-        ["slate",            "slate",            "creation",  "slate",    "slate_good"]
+        [
+            "main_splash",
+            "main",
+            "creation",
+            "main",
+            "splash_good",
+        ],
+        [
+            "existing_splash",
+            "existing",
+            "creation",
+            "existing",
+            "splash_good",
+        ],
+        [
+            "other_splash",
+            "others",
+            "creation",
+            "other",
+            "splash_good",
+        ],
+        [
+            "advisor",
+            "advisor",
+            "diplomacy",
+            "advisor",
+            "advisor_good",
+        ],
+        [
+            "diplomacy_splash",
+            "diplomacy_splash",
+            "diplomacy",
+            "diplomacy",
+            "diplomacy_splash_good",
+        ],
+        [
+            "diplomacy_daemon",
+            "diplomacy_daemon",
+            "diplomacy",
+            "daemon",
+            "diplomacy_daemon_good",
+        ],
+        [
+            "loading",
+            "loading",
+            "loading",
+            "loading",
+            "loading_good",
+        ],
+        [
+            "postbattle",
+            "postbattle",
+            "ui",
+            "postbattle",
+            "postbattle_good",
+        ],
+        [
+            "postspace",
+            "postspace",
+            "ui",
+            "postspace",
+            "postspace_good",
+        ],
+        [
+            "formation",
+            "formation",
+            "ui",
+            "formation",
+            "formation_good",
+        ],
+        [
+            "popup",
+            "popup",
+            "popup",
+            "popup",
+            "popup_good",
+        ],
+        [
+            "commander",
+            "commander",
+            "ui",
+            "commander",
+            "commander_good",
+        ],
+        [
+            "planet",
+            "planet",
+            "ui",
+            "planet",
+            "planet_good",
+        ],
+        [
+            "attacked",
+            "attacked",
+            "ui",
+            "attacked",
+            "attacked_good",
+        ],
+        [
+            "force",
+            "force",
+            "ui",
+            "force",
+            "force_good",
+        ],
+        [
+            "purge",
+            "purge",
+            "ui",
+            "purge",
+            "purge_good",
+        ],
+        [
+            "event",
+            "event",
+            "ui",
+            "event",
+            "event_good",
+        ],
+        [
+            "symbol",
+            "symbol",
+            "diplomacy",
+            "symbol",
+            "symbol_good",
+        ],
+        [
+            "defeat",
+            "defeat",
+            "ui",
+            "defeat",
+            "defeat_good",
+        ],
+        [
+            "slate",
+            "slate",
+            "creation",
+            "slate",
+            "slate_good",
+        ],
     ];
 
     for (var _i = 0; _i < array_length(_groups); _i++) {
-
         var _g = _groups[_i];
 
         if (!variable_instance_exists(_img, _g[1]) || !variable_instance_exists(_img, _g[1] + "_exists")) {
@@ -239,20 +340,43 @@ function scr_image_registry_build(_img) {
             file_prefix: _dir + _g[2] + "/" + _g[3],
             sheet_path: "",
             sheet_frames: 1,
-            fixed_index: -1
+            fixed_index: -1,
         };
     }
 
     // [key, sprite array var, sheet file, subimages, good flag var]
     var _sheets = [
-        ["creation",       "creation",       "creation/creation_icons.png",     24, "creation_good"],
-        ["diplomacy_icon", "diplomacy_icon", "diplomacy/diplomacy_icons.png",   28, "diplomacy_icon_good"],
-        ["menu",           "menu",           "ui/ingame_menu.png",               2, "menu_good"],
-        ["title_splash",   "title_splash",   "title_splash.png",                 1, "title_splash_good"]
+        [
+            "creation",
+            "creation",
+            "creation/creation_icons.png",
+            24,
+            "creation_good",
+        ],
+        [
+            "diplomacy_icon",
+            "diplomacy_icon",
+            "diplomacy/diplomacy_icons.png",
+            28,
+            "diplomacy_icon_good",
+        ],
+        [
+            "menu",
+            "menu",
+            "ui/ingame_menu.png",
+            2,
+            "menu_good",
+        ],
+        [
+            "title_splash",
+            "title_splash",
+            "title_splash.png",
+            1,
+            "title_splash_good",
+        ],
     ];
 
     for (var _i = 0; _i < array_length(_sheets); _i++) {
-
         var _s = _sheets[_i];
 
         _registry[$ _s[0]] = {
@@ -262,12 +386,13 @@ function scr_image_registry_build(_img) {
             file_prefix: "",
             sheet_path: _dir + _s[2],
             sheet_frames: _s[3],
-            fixed_index: 1
+            fixed_index: 1,
         };
     }
 
     return _registry;
 }
+
 /// @description Use this to load the image at given path and id into the image cache so it can be
 /// referenced in a different function to scr_image. Obtain the image later with `obj_img.image_cache[$path][image_id]`
 /// returns the sprite id if it exists or -1 if it doesnt

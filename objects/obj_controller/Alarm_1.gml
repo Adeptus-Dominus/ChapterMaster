@@ -324,14 +324,14 @@ with (obj_creation) {
 
 create_complex_star_routes(_player_star);
 
-// For tau fleets, if it is stationed on a system it owns, 
+// For tau fleets, if it is stationed on a system it owns,
 var _chosen = undefined;
 var _distance = 0;
 var _w = room_width / 2;
 var _h = room_height / 2;
 with (obj_en_fleet) {
     if ((owner == eFACTION.TAU) && (instance_nearest(x, y, obj_star).owner == eFACTION.TAU)) {
-        if (is_undefined(_chosen)){
+        if (is_undefined(_chosen)) {
             _chosen = self;
             _distance = point_distance(_w, _h, x, y);
         } else {
