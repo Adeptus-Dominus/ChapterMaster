@@ -273,13 +273,11 @@ function scr_draw_formation_settings() {
     draw_set_font(fnt_40k_14);
     draw_set_halign(fa_left);
 
-    var _formation_type = bat_formation_type[formating] == 1;
-
     var _formation_radio = settings_buttons_ui_components.formation_radio;
 
-    if (formating <= 3) {
-        _formation_radio.allow_changes = false;
-    }
+    // formation_radio option order is [raid, attack]
+    _formation_radio.current_selection = bat_formation_type[formating] == 1 ? 1 : 0;
+    _formation_radio.allow_changes = formating > 3;
     _formation_radio.draw();
 
     if (_formation_radio.changed) {
