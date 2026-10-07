@@ -98,6 +98,7 @@ jobs:
           GH_TOKEN: ${{ steps.issues-token.outputs.token }}
           EVENT_NAME: ${{ github.event_name }}
           INPUT_PROMPT: ${{ inputs.prompt }}
+          SLUG: ${{ steps.issues-token.outputs.app-slug }}
         run: |
           IS_PR="false"
           if jq -e '.issue.pull_request // .pull_request' "$GITHUB_EVENT_PATH" > /dev/null; then
@@ -151,8 +152,12 @@ jobs:
           fi
           echo "branch=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
 
-          git config user.name "lyra-the-bot"
-          git config user.email "lyra-the-bot@users.noreply.github.com"
+          BOT_NAME="${SLUG}[bot]"
+          BOT_USER_ID=$(gh api "users/${BOT_NAME}" --jq .id)
+
+          git config user.name "$BOT_NAME"
+          git config user.email "${BOT_USER_ID}+${BOT_NAME}@users.noreply.github.com"
+
           echo "base_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
           # Diff context for review comments
