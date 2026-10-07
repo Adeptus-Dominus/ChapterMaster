@@ -69,7 +69,6 @@ function WarpLane(_star_1, _star_2, _grade) constructor {
     in_view = true;
     grade = _grade;
     handler = obj_ini.sector_handler.warp_lanes;
-    line_alpha = 0.4;
     static count = 0;
     count++;
     index = count;
@@ -82,7 +81,7 @@ function WarpLane(_star_1, _star_2, _grade) constructor {
     }
 
     static draw_basic_lane = function(){
-        draw_set_alpha(line_alpha);
+        draw_set_alpha(handler.LINE_ALPHA);
         draw_line_width(x1, y1, x2, y2, handler.line_width);
         draw_set_alpha(1);       
     }
@@ -98,7 +97,7 @@ function WarpLane(_star_1, _star_2, _grade) constructor {
         }
 
         for (var s = 0; s < grade; s++) {
-            draw_set_alpha(line_alpha);
+            draw_set_alpha(handler.LINE_ALPHA);
             draw_line_width(_hover_star.x, _hover_star.y, _warp_center.x1, _warp_center.y1, handler.line_width);
             draw_set_alpha(1);
         }
@@ -108,10 +107,10 @@ function WarpLane(_star_1, _star_2, _grade) constructor {
         draw_sprite_centered(spr_warp_storm, handler.warp_image + index, _warp_center.x1, _warp_center.y1, 0.75, 0.75, 0, c_white, 1);
 
         var _hit_box = [
-            _warp_center.x1 - (handler.warp_width / 2),
-            _warp_center.y1 - (handler.warp_height / 2),
-            _warp_center.x1 + (handler.warp_width / 2),
-            _warp_center.y1 + (handler.warp_height / 2),
+            _warp_center.x1 - (handler.WARP_WIDTH / 2),
+            _warp_center.y1 - (handler.WARP_HEIGHT / 2),
+            _warp_center.x1 + (handler.WARP_WIDTH / 2),
+            _warp_center.y1 + (handler.WARP_HEIGHT / 2),
         ];
 
         
@@ -178,10 +177,11 @@ function WarpLaneHandler() constructor{
     // Keep as instance vars, not static. YYC miscompiles compound assignment on static-chain lookup.
     current_seed = global.game_seed;
     warp_image = -1;
-    warp_width = sprite_get_width(spr_warp_storm) * 0.75;
-    warp_height = sprite_get_height(spr_warp_storm) * 0.75;
     line_width = 0;
-    line_alpha = 0.4;
+
+    static WARP_WIDTH = sprite_get_width(spr_warp_storm) * 0.75;
+    static WARP_HEIGHT = sprite_get_height(spr_warp_storm) * 0.75;
+    static LINE_ALPHA = 0.4;
 
     allow_tooltips = true;
 
