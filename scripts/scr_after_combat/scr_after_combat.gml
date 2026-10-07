@@ -1,4 +1,6 @@
+/// @desc Queues this column's dead player marines in obj_ncombat.marines_to_recover, ranked by experience plus a role bonus.
 /// @self Asset.GMObject.obj_pnunit
+/// @returns {Undefined}
 function add_marines_to_recovery() {
     var _roles = active_roles();
     var _role_priority_bonuses = {};
