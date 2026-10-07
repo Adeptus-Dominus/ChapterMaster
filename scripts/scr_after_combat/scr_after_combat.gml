@@ -48,16 +48,8 @@ function add_marines_to_recovery() {
             continue;
         }
 
-		
-		
-        var _specific_bonus = _role_priority_bonuses[$ _unit.role()];
-        
-        if (is_undefined(_specific_bonus)) {
-            _specific_bonus = 0;
-        }
-		
-		
-        var _priority = _unit.experience + _specific_bonus;
+        var _role_priority_bonus = _role_priority_bonuses[$ _unit.role()] ?? 0;
+        var _priority = _unit.experience + _role_priority_bonus;
         
         var _recovery_candidate = {
             "id": i,
