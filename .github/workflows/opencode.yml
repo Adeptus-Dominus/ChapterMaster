@@ -242,14 +242,13 @@ jobs:
         if: steps.context.outputs.empty != 'true' && steps.opencode.outcome == 'success'
         env:
           GH_TOKEN: ${{ secrets.LYRA_CONTENTS_PRS_ISSUES_PAT }}
+          PUSH_TOKEN: ${{ secrets.PAT_CONTENTS_WRITE }}
           IS_PR: ${{ steps.context.outputs.is_pr }}
           TARGET_NUM: ${{ steps.context.outputs.num }}
           BRANCH_NAME: ${{ steps.context.outputs.branch }}
           FORK: ${{ steps.context.outputs.fork }}
           BASE_SHA: ${{ steps.context.outputs.base_sha }}
         run: |
-          gh auth setup-git
-
           if [ -n "$(git status --porcelain)" ]; then
             git add -A
             git commit -m "chore: automated changes requested via /oc"
@@ -261,7 +260,9 @@ jobs:
           fi
 
           if [ "$HAS_CHANGES" = "true" ] && { [ "$IS_PR" != "true" ] || [ "$FORK" != "true" ]; }; then
-            git push origin "$BRANCH_NAME"
+            git -c credential.helper= \
+            -c credential.helper='!f() { echo "username=x-access-token"; echo "password=$PUSH_TOKEN"; }; f' \
+            push origin "$BRANCH_NAME"
 
             if [ "$IS_PR" = "true" ]; then
               gh pr comment "$TARGET_NUM" --body "Changes pushed to branch \`$BRANCH_NAME\`."
@@ -300,7 +301,9 @@ jobs:
             if [ "$HAS_CHANGES" = "true" ] && [ "$IS_PR" = "true" ] && [ "$FORK" = "true" ]; then
               FORK_BRANCH="automation/pr-${TARGET_NUM}"
               git checkout -B "$FORK_BRANCH"
-              git push --force origin "$FORK_BRANCH"
+              git -c credential.helper= \
+              -c credential.helper='!f() { echo "username=x-access-token"; echo "password=$PUSH_TOKEN"; }; f' \
+              push --force origin "$FORK_BRANCH"
               RESPONSE="$RESPONSE Note: fork PR #$TARGET_NUM not updated directly. Changes preserved in branch \`$FORK_BRANCH\`."
             fi
             if [ -n "$TARGET_NUM" ]; then
