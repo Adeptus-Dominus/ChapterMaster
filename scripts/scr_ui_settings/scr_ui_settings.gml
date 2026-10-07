@@ -548,7 +548,6 @@ function scr_ui_settings() {
                         formating = i;
                         menu = 24;
 
-                        scr_ui_formation_bars();
                         if (bat_formation[formating] == "") {
                             bat_formation[formating] = "Custom" + string(formating - 3);
                             bat_formation_type[formating] = 1;
@@ -570,6 +569,7 @@ function scr_ui_settings() {
                             bat_whirl_for[formating] = 1;
                             bat_scou_for[formating] = 3;
                         }
+                        scr_ui_formation_bars();
                     }
                 }
             }
