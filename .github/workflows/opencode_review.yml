@@ -33,7 +33,7 @@ jobs:
         id: issues-token
         uses: actions/create-github-app-token@v3.2.0
         with:
-          client-id: ${{ vars.LYRA_CLIENT_ID }}
+          client-id: ${{ secrets.LYRA_CLIENT_ID }}
           private-key: ${{ secrets.LYRA_PRIVATE_KEY }}
           permission-issues: write
           permission-pull-requests: write
