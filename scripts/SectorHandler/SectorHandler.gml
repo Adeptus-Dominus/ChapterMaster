@@ -43,12 +43,11 @@ function SectorHandler() constructor {
         return game_year() - age;
     };
 
-    
-
-    static save = function(){
+    static save = function() {
         var _copy = variable_clone(self);
         struct_remove(_copy, "warp_lanes");
         return _copy;
-    }
+    };
+
     LOGGER.info("SectorHandler successfully initialised");
 }

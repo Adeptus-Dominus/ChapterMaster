@@ -1,11 +1,10 @@
 // Draws the system name and color codes it based on ownership
 
-
-if (obj_controller.camera_moved_this_turn){
+if (obj_controller.camera_moved_this_turn) {
     in_view = in_camera_view(star_box_shape());
     garrisoned = has_garrison();
 }
-if (!in_view){
+if (!in_view) {
     exit;
 }
 if ((p_type[1] == "Craftworld") && (obj_controller.known[eFACTION.ELDAR] == 0)) {

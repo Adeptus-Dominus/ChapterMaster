@@ -182,7 +182,7 @@ serialize = function() {
         chapter_data,
         chapter_squad_arrangement,
         player_role_data,
-        sector_handler : sector_handler.save()
+        sector_handler: sector_handler.save(),
     };
 
     if (variable_instance_exists(self, "last_ship")) {
@@ -203,7 +203,7 @@ serialize = function() {
         "chapter_data",
         "chapter_squad_arrangement",
         "artifact_map",
-        "sector_handler"
+        "sector_handler",
     ];
 
     copy_serializable_fields(id, save_data, excluded_from_save);

@@ -21,7 +21,7 @@ function company_length(company) {
 }
 
 function normalise_marine_numbers(company, start_index, length = -1) {
-    if (length == -1){
+    if (length == -1) {
         length = company_length(company);
     }
     for (var l = start_index; l < length; l++) {

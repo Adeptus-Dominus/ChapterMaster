@@ -45,7 +45,7 @@ function alter_disposition(faction, alter_value, return_string = false) {
 
     obj_controller.disposition[faction] += alter_value;
 
-    if (return_string){
+    if (return_string) {
         return $"{global.faction_names[faction]} : {string_plus_minus(alter_value)}{alter_value}";
     }
 }
@@ -55,12 +55,12 @@ function alter_dispositions(alterations, return_strings = false) {
     var _strings = [];
     for (var i = 0; i < array_length(alterations); i++) {
         _string = alter_disposition(alterations[i][0], alterations[i][1], return_strings);
-        if (return_strings){
+        if (return_strings) {
             array_push(_strings, _string);
         }
     }
 
-    if (return_strings){
+    if (return_strings) {
         return _strings;
     }
 }

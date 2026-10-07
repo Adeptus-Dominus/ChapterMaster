@@ -1107,7 +1107,7 @@ serialize = function() {
         "reclusiam_vars",
         "management_buttons",
         "settings_buttons_ui_components",
-        "camera_moved_this_turn"
+        "camera_moved_this_turn",
     ];
     var _excluded_from_save_start = ["restart_"];
 
