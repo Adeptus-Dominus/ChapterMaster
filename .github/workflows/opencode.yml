@@ -257,13 +257,12 @@ jobs:
           opencode run -m "$OPENCODE_MAIN_MODEL" --variant xhigh < /tmp/prompt.txt > /tmp/opencode_output.txt
 
       - name: Mint Contents Token
+        if: steps.context.outputs.empty != 'true' && steps.opencode.outcome == 'success'
         id: contents-token
         uses: actions/create-github-app-token@v3.2.0
         with:
           client-id: ${{ vars.LYRA_CLIENT_ID }}
           private-key: ${{ secrets.LYRA_PRIVATE_KEY }}
-          permission-issues: write
-          permission-pull-requests: write
           permission-contents: write
 
       - name: Sync Results & Respond
