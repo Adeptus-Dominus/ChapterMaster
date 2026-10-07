@@ -284,7 +284,6 @@ jobs:
         with:
           name: ${{ needs.prepare_release.outputs.release_name }}
           body: ${{ steps.build_changelog.outputs.changelog }}
-          token: ${{ secrets.RELEASE_TOKEN_SECRET }}
           tag_name: ${{ needs.prepare_release.outputs.tag_name }}
           prerelease: ${{ github.event.inputs.prerelease || 'false' }}
           make_latest: ${{ github.event.inputs.make_latest || 'true' }}
