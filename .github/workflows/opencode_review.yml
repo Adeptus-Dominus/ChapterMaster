@@ -20,7 +20,7 @@ jobs:
         contains(fromJson('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
       ) || (
         github.event_name == 'pull_request_target' &&
-        github.event.requested_reviewer.login == 'lyra-the-bot'
+        github.event.requested_reviewer.login == format('{0}[bot]', vars.LYRA_SLUG)
       )
 
     runs-on: ubuntu-latest
