@@ -31,11 +31,21 @@ jobs:
       issues: read
 
     steps:
+      - name: Mint Issues Token
+        id: issues-token
+        uses: actions/create-github-app-token@v3.2.0
+        with:
+          client-id: ${{ vars.LYRA_CLIENT_ID }}
+          private-key: ${{ secrets.LYRA_PRIVATE_KEY }}
+          permission-issues: write
+          permission-pull-requests: write
+          permission-contents: read
+
       - name: Acknowledge Command
         if: github.event_name == 'issue_comment'
         env:
-          GITHUB_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
-          GH_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
+          GITHUB_TOKEN: ${{ steps.issues-token.outputs.token }}
+          GH_TOKEN: ${{ steps.issues-token.outputs.token }}
           COMMENT_ID: ${{ github.event.comment.id }}
         run: |
           gh api repos/${{ github.repository }}/issues/comments/${COMMENT_ID}/reactions -f content='eyes'
@@ -132,8 +142,8 @@ jobs:
       - name: Apply Triage Plan
         env:
           ISSUE_NUMBER: ${{ github.event.issue.number }}
-          GITHUB_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
-          GH_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
+          GITHUB_TOKEN: ${{ steps.issues-token.outputs.token }}
+          GH_TOKEN: ${{ steps.issues-token.outputs.token }}
         run: |
           if [ ! -f /tmp/triage_plan.json ]; then
             echo "::error::Triage plan /tmp/triage_plan.json was not generated."
@@ -288,8 +298,8 @@ jobs:
       - name: Post Investigation Comment
         env:
           ISSUE_NUMBER: ${{ github.event.issue.number }}
-          GITHUB_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
-          GH_TOKEN: ${{ secrets.LYRA_PRS_ISSUES_PAT }}
+          GITHUB_TOKEN: ${{ steps.issues-token.outputs.token }}
+          GH_TOKEN: ${{ steps.issues-token.outputs.token }}
         run: |
           if [ -s /tmp/investigation.md ]; then
             echo "Posting investigation findings to issue #${ISSUE_NUMBER}..."
