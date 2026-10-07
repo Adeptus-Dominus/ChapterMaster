@@ -1,47 +1,41 @@
 /// @self Asset.GMObject.obj_pnunit
 function add_marines_to_recovery() {
-    
-	static _role_priority_bonuses = undefined;
-    
-    if (is_undefined(_role_priority_bonuses)) {
-        var _roles = active_roles();
-        _role_priority_bonuses = {};
-        
-        _role_priority_bonuses[$ _roles[eROLE.CHAPTERMASTER]]      = 720;
-        
-        _role_priority_bonuses[$ _roles[eROLE.FORGEMASTER]]        = 360;
-        _role_priority_bonuses[$ _roles[eROLE.MASTERAPOTHECARY]]  = 360;
-        _role_priority_bonuses[$ _roles[eROLE.CHIEFLIBRARIAN]]   = 360;
-        _role_priority_bonuses[$ _roles[eROLE.MASTERCHAPLAIN]]   = 360;
-        
-        _role_priority_bonuses[$ _roles[eROLE.CAPTAIN]]          = 160;
-        _role_priority_bonuses[$ _roles[eROLE.HONOURGUARD]]      = 160;
-        _role_priority_bonuses[$ _roles[eROLE.ANCIENT]]          = 160;
-        
-        _role_priority_bonuses[$ _roles[eROLE.VETERANSERGEANT]]  = 80;
-        _role_priority_bonuses[$ _roles[eROLE.TERMINATOR]]       = 80;
-        
-        _role_priority_bonuses[$ _roles[eROLE.VETERAN]]          = 40;
-        _role_priority_bonuses[$ _roles[eROLE.SERGEANT]]         = 40;
-        _role_priority_bonuses[$ _roles[eROLE.CHAMPION]]         = 40;
-        _role_priority_bonuses[$ _roles[eROLE.CHAPLAIN]]         = 40;
-        _role_priority_bonuses[$ _roles[eROLE.APOTHECARY]]        = 40;
-        _role_priority_bonuses[$ _roles[eROLE.TECHMARINE]]       = 40;
-        _role_priority_bonuses[$ _roles[eROLE.LIBRARIAN]]        = 40;
-        _role_priority_bonuses[$ _roles[eROLE.CODICIERY]]        = 40;
-        _role_priority_bonuses[$ _roles[eROLE.LEXICANUM]]        = 40;
-        
-        _role_priority_bonuses[$ _roles[eROLE.TACTICAL]]         = 20;
-        _role_priority_bonuses[$ _roles[eROLE.ASSAULT]]          = 20;
-        _role_priority_bonuses[$ _roles[eROLE.DEVASTATOR]]       = 20;
-        
-        _role_priority_bonuses[$ _roles[eROLE.APOTHECARYASPIRANT]] = 0;
-        _role_priority_bonuses[$ _roles[eROLE.LIBRARIANASPIRANT]]  = 0;
-        _role_priority_bonuses[$ _roles[eROLE.TECHMARINEASPIRANT]] = 0;
-        _role_priority_bonuses[$ _roles[eROLE.CHAPLAINASPIRANT]]   = 0;
-        _role_priority_bonuses[$ _roles[eROLE.SCOUT]]              = 0;
-    }
-	
+    var _roles = active_roles();
+    var _role_priority_bonuses = {};
+
+    _role_priority_bonuses[$ _roles[eROLE.SCOUT]] = 0;
+    _role_priority_bonuses[$ _roles[eROLE.APOTHECARYASPIRANT]] = 0;
+    _role_priority_bonuses[$ _roles[eROLE.LIBRARIANASPIRANT]] = 0;
+    _role_priority_bonuses[$ _roles[eROLE.TECHMARINEASPIRANT]] = 0;
+    _role_priority_bonuses[$ _roles[eROLE.CHAPLAINASPIRANT]] = 0;
+
+    _role_priority_bonuses[$ _roles[eROLE.TACTICAL]] = 20;
+    _role_priority_bonuses[$ _roles[eROLE.ASSAULT]] = 20;
+    _role_priority_bonuses[$ _roles[eROLE.DEVASTATOR]] = 20;
+
+    _role_priority_bonuses[$ _roles[eROLE.VETERAN]] = 40;
+    _role_priority_bonuses[$ _roles[eROLE.SERGEANT]] = 40;
+    _role_priority_bonuses[$ _roles[eROLE.CHAMPION]] = 40;
+    _role_priority_bonuses[$ _roles[eROLE.CHAPLAIN]] = 40;
+    _role_priority_bonuses[$ _roles[eROLE.APOTHECARY]] = 40;
+    _role_priority_bonuses[$ _roles[eROLE.TECHMARINE]] = 40;
+    _role_priority_bonuses[$ _roles[eROLE.LIBRARIAN]] = 40;
+    _role_priority_bonuses[$ _roles[eROLE.CODICIERY]] = 40;
+    _role_priority_bonuses[$ _roles[eROLE.LEXICANUM]] = 40;
+
+    _role_priority_bonuses[$ _roles[eROLE.VETERANSERGEANT]] = 80;
+    _role_priority_bonuses[$ _roles[eROLE.TERMINATOR]] = 80;
+
+    _role_priority_bonuses[$ _roles[eROLE.CAPTAIN]] = 160;
+    _role_priority_bonuses[$ _roles[eROLE.HONOURGUARD]] = 160;
+    _role_priority_bonuses[$ _roles[eROLE.ANCIENT]] = 160;
+
+    _role_priority_bonuses[$ _roles[eROLE.FORGEMASTER]] = 360;
+    _role_priority_bonuses[$ _roles[eROLE.MASTERAPOTHECARY]] = 360;
+    _role_priority_bonuses[$ _roles[eROLE.CHIEFLIBRARIAN]] = 360;
+    _role_priority_bonuses[$ _roles[eROLE.MASTERCHAPLAIN]] = 360;
+
+    _role_priority_bonuses[$ _roles[eROLE.CHAPTERMASTER]] = 720;
    
     for (var i = 0; i < array_length(unit_struct); i++) {
         var _unit = unit_struct[i];
