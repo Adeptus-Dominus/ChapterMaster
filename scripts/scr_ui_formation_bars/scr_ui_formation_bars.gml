@@ -205,27 +205,27 @@ function scr_ui_formation_bars() {
             if (instance_exists(ui_formations_data.nbar)) {
                 ui_formations_data.nbar.width = 39;
             }
+        }
 
-            if (temp[4800 + bar] > 10) {
-                bat_deva_for[bar] = 3;
-                bat_assa_for[bar] = 5;
-                bat_tact_for[bar] = 4;
-                bat_vete_for[bar] = 3;
-                bat_hire_for[bar] = 3;
-                bat_libr_for[bar] = 2;
-                bat_comm_for[bar] = 2;
-                bat_tech_for[bar] = 2;
-                bat_term_for[bar] = 5;
-                bat_hono_for[bar] = 2;
-                bat_drea_for[bar] = 6;
-                bat_rhin_for[bar] = 6;
-                bat_pred_for[bar] = 6;
-                bat_landraid_for[bar] = 6;
-                bat_landspee_for[bar] = 5;
-                bat_whirl_for[bar] = 1;
-                bat_scou_for[bar] = 3;
-                bar_fix = true;
-            }
+        if (temp[4800 + bar] > 10) {
+            bat_deva_for[_formatting] = 3;
+            bat_assa_for[_formatting] = 5;
+            bat_tact_for[_formatting] = 4;
+            bat_vete_for[_formatting] = 3;
+            bat_hire_for[_formatting] = 3;
+            bat_libr_for[_formatting] = 2;
+            bat_comm_for[_formatting] = 2;
+            bat_tech_for[_formatting] = 2;
+            bat_term_for[_formatting] = 5;
+            bat_hono_for[_formatting] = 2;
+            bat_drea_for[_formatting] = 6;
+            bat_rhin_for[_formatting] = 6;
+            bat_pred_for[_formatting] = 6;
+            bat_landraid_for[_formatting] = 6;
+            bat_landspee_for[_formatting] = 5;
+            bat_whirl_for[_formatting] = 1;
+            bat_scou_for[_formatting] = 3;
+            bar_fix = true;
         }
 
         ui_formations_data.y9 = 224;
