@@ -10,7 +10,9 @@ enum eCREATION_SLIDES {
 
 /// @self Asset.GMObject.obj_creation
 function draw_chapter_select() {
+    static DISABLED_ALPHA = 0.5;
     var _base_alpha = slate4 / 30;
+
     draw_set_color(CM_GREEN_COLOR);
     draw_set_font(cjk_font(fnt_40k_30b));
     draw_set_halign(fa_center);
@@ -75,7 +77,7 @@ function draw_chapter_select() {
     var tool = 0;
     for (var c = 0; c < array_length(founding_chapters); c++) {
         var chap = founding_chapters[c];
-        var _disabled_alpha = chap.disabled ? 0.5 : 1;
+        var _disabled_alpha = chap.disabled ? DISABLED_ALPHA : 1;
         i = chap.id;
 
         grid.new_cell();
@@ -119,7 +121,7 @@ function draw_chapter_select() {
 
     for (var c = 0; c < array_length(successor_chapters); c++) {
         var chap = successor_chapters[c];
-        var _disabled_alpha = chap.disabled ? 0.5 : 1;
+        var _disabled_alpha = chap.disabled ? DISABLED_ALPHA : 1;
         i = chap.id;
 
         grid.new_cell();
@@ -162,7 +164,7 @@ function draw_chapter_select() {
     grid.new_section(custom_y);
     for (var c = 0; c < array_length(custom_chapters); c++) {
         var chap = custom_chapters[c];
-        var _disabled_alpha = chap.disabled ? 0.5 : 1;
+        var _disabled_alpha = chap.disabled ? DISABLED_ALPHA : 1;
         i = chap.id;
 
         grid.new_cell();
@@ -222,7 +224,7 @@ function draw_chapter_select() {
 
     for (var c = 0; c < array_length(other_chapters); c++) {
         var chap = other_chapters[c];
-        var _disabled_alpha = chap.disabled ? 0.5 : 1;
+        var _disabled_alpha = chap.disabled ? DISABLED_ALPHA : 1;
         i = chap.id;
 
         grid.new_cell();
