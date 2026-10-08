@@ -371,7 +371,7 @@ function draw_chapter_select() {
             if (chap.progenitor != 0 && chap.progenitor < 10) {
                 tooltip += "  - " + localize("Progenitor: {0}", [localize(all_chapters[chap.progenitor].name)]);
             }
-            tooltip2 = chap.disabled ? "DISABLED" : localize(chap.tooltip);
+            tooltip2 = chap.disabled ? localize("DISABLED") : localize(chap.tooltip);
         }
         if (highlight == 1001) {
             tooltip = localize("Custom");
