@@ -78,8 +78,10 @@ function draw_chapter_select() {
 
         grid.new_cell();
 
+        draw_set_alpha((slate4 / 30) * (chap.disabled ? 0.5 : 1));
         draw_sprite(spr_creation_icon, 0, grid.x1, grid.y1);
         draw_sprite_stretched(global.chapter_icons_map[? chap.icon_name], 0, grid.x1, grid.y1, grid.w, grid.h);
+        draw_set_alpha(slate4 / 30);
 
         // Hover
         if (grid.hover() && slate4 >= 30) {
@@ -119,8 +121,10 @@ function draw_chapter_select() {
 
         grid.new_cell();
 
+        draw_set_alpha((slate4 / 30) * (chap.disabled ? 0.5 : 1));
         draw_sprite(spr_creation_icon, 0, grid.x1, grid.y1);
         draw_sprite_stretched(global.chapter_icons_map[? chap.icon_name], 0, grid.x1, grid.y1, grid.w, grid.h);
+        draw_set_alpha(slate4 / 30);
 
         // Hover
         if (grid.hover() && slate4 >= 30) {
@@ -159,6 +163,7 @@ function draw_chapter_select() {
 
         grid.new_cell();
 
+        draw_set_alpha((slate4 / 30) * (chap.disabled ? 0.5 : 1));
         draw_sprite(spr_creation_icon, 0, grid.x1, grid.y1);
         if (chap.loaded == false) {
             draw_sprite_stretched(global.chapter_icons_map[? "custom_white"], 0, grid.x1, grid.y1, grid.w, grid.h);
@@ -170,6 +175,7 @@ function draw_chapter_select() {
                 draw_sprite_stretched(spr, 0, grid.x1, grid.y1, grid.w, grid.h);
             }
         }
+        draw_set_alpha(slate4 / 30);
 
         // Hover
         if (grid.hover() && slate4 >= 30) {
@@ -215,8 +221,10 @@ function draw_chapter_select() {
         i = chap.id;
 
         grid.new_cell();
+        draw_set_alpha((slate4 / 30) * (chap.disabled ? 0.5 : 1));
         draw_sprite(spr_creation_icon, 0, grid.x1, grid.y1);
         draw_sprite_stretched(global.chapter_icons_map[? chap.icon_name], 0, grid.x1, grid.y1, grid.w, grid.h);
+        draw_set_alpha(slate4 / 30);
 
         // Hover
         if (grid.hover() && slate4 >= 30) {
@@ -356,7 +364,7 @@ function draw_chapter_select() {
             if (chap.progenitor != 0 && chap.progenitor < 10) {
                 tooltip += "  - " + localize("Progenitor: {0}", [localize(all_chapters[chap.progenitor].name)]);
             }
-            tooltip2 = localize(chap.tooltip);
+            tooltip2 = chap.disabled ? "DISABLED" : localize(chap.tooltip);
         }
         if (highlight == 1001) {
             tooltip = localize("Custom");
