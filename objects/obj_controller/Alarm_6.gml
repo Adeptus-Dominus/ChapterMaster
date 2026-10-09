@@ -337,4 +337,6 @@ if ((menu == eMENU.MANAGE) && (managing > 0)) {
         sel_promoting = 0;
     }
     alarm[6] = 7;
+} else {
+    sel_promoting = 0;
 }

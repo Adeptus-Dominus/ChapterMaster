@@ -49,6 +49,13 @@ function setup_promotion_popup() {
                     }
                 }
 
+                var _affected = {};
+                for (var i = 0; i < units_to_move.number(); i++) {
+                    _affected[$ string(units_to_move.units[i].company)] = true;
+                }
+
+                _affected[$ string(target_comp)] = true;
+
                 units_to_move.move_to_company(target_comp);
 
                 var _target_role = role_name[target_role];
@@ -65,8 +72,10 @@ function setup_promotion_popup() {
                 }
 
                 with (obj_ini) {
-                    scr_company_order(obj_popup.manag);
-                    scr_company_order(obj_popup.target_comp);
+                    var _keys = struct_get_names(_affected);
+                    for (var i = 0; i < array_length(_keys); i++) {
+                        scr_company_order(real(_keys[i]));
+                    }
                 }
 
                 with (obj_controller) {

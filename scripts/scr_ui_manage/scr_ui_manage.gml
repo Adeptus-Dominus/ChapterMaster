@@ -1285,7 +1285,7 @@ function draw_manage_selection_buttons() {
     button.label = localize("Promote");
     button.keystroke = keyboard_check(vk_shift) && keyboard_check_pressed(ord("P"));
     button.tooltip = localize("Press Shift P");
-    var promote_possible = sel_promoting > 0 && !_non_control_loc && man_size > 0;
+    var promote_possible = sel_promoting > 0 && managing > 0 && !_non_control_loc && man_size > 0;
     button.alpha = promote_possible ? 1 : 0.5;
     if (button.draw()) {
         if (promote_possible) {
