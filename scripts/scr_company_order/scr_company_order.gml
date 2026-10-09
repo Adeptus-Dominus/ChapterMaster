@@ -55,6 +55,10 @@ function tally_marines() {
 }
 
 function scr_company_order(company) {
+    if (company < 0 || company > obj_ini.companies) {
+        return;
+    }
+
     try {
         // company : company number
         // This sorts and crunches the marine variables for the company

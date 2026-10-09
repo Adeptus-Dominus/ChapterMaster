@@ -1028,6 +1028,7 @@ function group_selection(group, selection_data = {}) {
                 company_data.squad_search();
                 managing = -1;
             }
+            sel_promoting = 0;
         }
         LOGGER.debug($"manage_success {obj_controller.menu}");
     } catch (_exception) {
