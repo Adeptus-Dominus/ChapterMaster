@@ -68,6 +68,7 @@ function scr_turn_first() {
                 }
             }
         }
+        obj_controller.camera_moved_this_turn = true;
     } catch (_exception) {
         ERROR_HANDLER.handle_exception(_exception);
     }
