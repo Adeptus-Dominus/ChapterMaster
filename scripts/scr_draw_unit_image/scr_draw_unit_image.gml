@@ -223,8 +223,6 @@ function scr_draw_unit_image(_background = false) {
             var pauldron_trim = false;
             var armour_bypass = false;
             var hide_bionics = false;
-            var robes_bypass = false;
-            var robes_hood_bypass = false;
             var halo_bypass = false;
             var arm_bypass = false;
             var armour_draw = [];
@@ -347,12 +345,8 @@ function scr_draw_unit_image(_background = false) {
                     complex_set = new ComplexSet(self);
                     complex_livery = true;
                 }
-
-                if (armour_type == eARMOUR_TYPE.NORMAL && complex_livery && unit_role == _role[2]) {
-                    complex_set.add_group({right_leg: spr_artificer_right_leg, left_leg: spr_artificer_left_leg});
-                }
-
                 // Draw the Iron Halo
+                //TODO move these over to the cultural visuals data driven area
                 if (halo == 1 && !halo_bypass) {
                     var halo_offset_x = 0;
                     var halo_offset_y = 0;
@@ -371,33 +365,6 @@ function scr_draw_unit_image(_background = false) {
                         halo_offset_y -= 20;
                     }
                     draw_sprite(spr_gear_halo, halo_type + halo_color, x_surface_offset + halo_offset_x, y_surface_offset + halo_offset_y);
-                }
-                if (armour_type == eARMOUR_TYPE.NORMAL && (!robes_bypass || !robes_hood_bypass)) {
-                    var robe_offset_x = 0;
-                    var robe_offset_y = 0;
-                    var hood_offset_x = 0;
-                    var hood_offset_y = 0;
-                    if (armour_type == eARMOUR_TYPE.SCOUT) {
-                        robe_offset_x = 1;
-                        robe_offset_y = 10;
-                        hood_offset_x = 1;
-                        hood_offset_y = 10;
-                    }
-                    if (struct_exists(body[$ "head"], "hood") && !robes_hood_bypass) {
-                        draw_sprite(spr_marine_cloth_hood, 0, x_surface_offset + hood_offset_x, y_surface_offset + hood_offset_y);
-                    }
-                    if (struct_exists(body[$ "torso"], "robes") && !robes_bypass) {
-                        if (body.torso.robes == 0) {
-                            complex_set.add_to_area("robe", spr_marine_robes);
-                        } else if (body.torso.robes == 1) {
-                            if (scr_has_disadv("Warp Tainted")) {
-                                complex_set.add_to_area("robes", spr_binders_robes);
-                            }
-                            complex_set.add_to_area("robes", spr_marine_robes);
-                        } else {
-                            complex_set.add_to_area("tabbard", spr_cloth_tabbard);
-                        }
-                    }
                 }
                 // Draw torso
                 if (!armour_bypass) {
