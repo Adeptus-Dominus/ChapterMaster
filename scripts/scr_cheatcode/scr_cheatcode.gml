@@ -128,7 +128,7 @@ function scr_cheatcode(argument0) {
                     }
                     with (obj_star) {
                         for (var i = 1; i <= planets; i++) {
-                            var existing_problem = false; //has_any_problem_planet(i);
+                            var existing_problem = false;
                             if (!existing_problem) {
                                 if (p_owner[i] == eFACTION.IMPERIUM) {
                                     LOGGER.debug("mission");
@@ -159,23 +159,8 @@ function scr_cheatcode(argument0) {
                         case "planet":
                             scr_inquisition_mission(eEVENT.INQUISITION_PLANET);
                             break;
-                        case "spyrer":
-                            scr_inquisition_mission(eEVENT.INQUISITION_MISSION, eINQUISITION_MISSION.SPYRER);
-                            break;
                         case "artifact":
                             scr_inquisition_mission(eEVENT.INQUISITION_MISSION, eINQUISITION_MISSION.ARTIFACT);
-                            break;
-                        case "inquisitor":
-                            scr_inquisition_mission(eEVENT.INQUISITION_MISSION, eINQUISITION_MISSION.INQUISITOR);
-                            break;
-                        case "purge":
-                            scr_inquisition_mission(eEVENT.INQUISITION_MISSION, eINQUISITION_MISSION.PURGE);
-                            break;
-                        case "tomb_world":
-                            scr_inquisition_mission(eEVENT.INQUISITION_MISSION, eINQUISITION_MISSION.TOMB_WORLD);
-                            break;
-                        case "tyranid_organism":
-                            scr_inquisition_mission(eEVENT.INQUISITION_MISSION, eINQUISITION_MISSION.TYRANID_ORGANISM);
                             break;
                         case "demon":
                             scr_inquisition_mission(eEVENT.INQUISITION_MISSION, eINQUISITION_MISSION.DEMON_WORLD);
@@ -187,34 +172,8 @@ function scr_cheatcode(argument0) {
                     LOGGER.debug("inquisitor mission initiated");
                     obj_controller.location_viewer.update_mission_log();
                     break;
-                case "artifactpopulate":
-                    with (obj_star) {
-                        for (var i = 1; i <= planets; i++) {
-                            array_push(p_feature[i], new NewPlanetFeature(eP_FEATURES.ARTIFACT));
-                        }
-                    }
-                    break;
-                case "ruinspopulate":
-                    with (obj_star) {
-                        for (var i = 1; i <= planets; i++) {
-                            array_push(p_feature[i], new NewPlanetFeature(eP_FEATURES.ANCIENT_RUINS));
-                        }
-                    }
-                    break;
-                case "stcpopulate":
-                    with (obj_star) {
-                        for (var i = 1; i <= planets; i++) {
-                            array_push(p_feature[i], new NewPlanetFeature(eP_FEATURES.STC_FRAGMENT));
-                        }
-                    }
-                    break;
                 case "event":
-                    if (cheat_arguments[0] == "crusade") {
-                        LOGGER.debug("crusading");
-                        with (obj_controller) {
-                            launch_crusade();
-                        }
-                    } else if (cheat_arguments[0] == "tomb") {
+                    if (cheat_arguments[0] == "tomb") {
                         LOGGER.debug("necron_tomb_awaken");
                         with (obj_controller) {
                             awaken_tomb_event();
@@ -225,8 +184,6 @@ function scr_cheatcode(argument0) {
                         new_inquisitor_inspection();
                     } else if (cheat_arguments[0] == "slaughtersong") {
                         create_starship_event();
-                    } else if (cheat_arguments[0] == "fallen") {
-                        event_fallen();
                     } else if (cheat_arguments[0] == "surfremove") {
                         var _star_id = scr_random_find(0, true, "", "");
                         add_event({duration: 2, e_id: "governor_assassination", variant: 2, system: _star_id.name, planet: irandom_range(1, _star_id.planets)});
@@ -397,6 +354,39 @@ function scr_cheatcode(argument0) {
 }
 
 /// @self Asset.GMObject.obj_star_select
+function draw_system_debug(){
+    add_draw_return_values();
+    debug_slate.inside_method = function() {
+        debug_slate.title = localize("DEBUG");
+        draw_set_color(c_gray);
+        var xx = debug_slate.XX;
+        var yy = debug_slate.YY;
+        var _base_y = yy + 50;
+        var _base_x = xx + 75;
+        var _keys = global.planet_problem_keys;
+        var _star_missions = [
+            "great_crusade",
+            "hunt_inquisitor"
+        ]
+        _base_y += 2;
+        draw_set_font(fnt_40k_12);
+        for (var i = 0; i < array_length(_star_missions); i++) {
+            var _y = _base_y + i * 20;
+            var _c = draw_unit_buttons([_base_x, _base_y], _star_missions[i]);
+            if (scr_hit(_c[0], _c[1],_c[2],_c[3])) {
+                tooltip_draw(mission_name_key(_star_missions[i]));
+                if (mouse_button_clicked()) {
+                    target.add_problem(_star_missions[i], {}, 3).timer = 3;
+                }
+            }
+            _base_y += _c[3] - _c[1];
+        }
+    };
+    debug_slate.draw(350 + main_data_slate.width, 160, 0.6, 0.6); 
+    pop_draw_return_values();    
+}
+
+/// @self Asset.GMObject.obj_star_select
 function draw_planet_debug_options() {
     try {
         add_draw_return_values();
@@ -418,7 +408,7 @@ function draw_planet_debug_options() {
                         break;
                 }
             };
-            debug_slate.draw();
+            debug_slate.draw(36, 160, 0.6, 0.6);
         }
         if (debug_button.draw()) {
             debug = !debug;
@@ -471,11 +461,11 @@ function draw_planet_debug_features() {
         },
     ];
 
-    var base_y = 220;
-    base_y += 2;
+    var _base_y = 220;
+    _base_y += 2;
 
     for (var i = 0; i < array_length(_addable_features); i++) {
-        var _y = base_y + i * 20;
+        var _y = _base_y + i * 20;
         var _feat = _addable_features[i];
         draw_text(38, _y, _feat.name);
         if (point_and_click([38, _y, 337, _y + 20])) {
@@ -487,42 +477,30 @@ function draw_planet_debug_features() {
 
 /// @self Asset.GMObject.obj_star_select
 function draw_planet_debug_problems() {
-    var base_y = 220;
+    var _base_y = 220;
     var _keys = global.planet_problem_keys;
-    base_y += 2;
+    _base_y += 2;
     for (var i = 0; i < array_length(_keys); i++) {
-        var _y = base_y + i * 20;
+        var _y = _base_y + i * 20;
         draw_text(38, _y, _keys[i]);
         if (scr_hit(38, _y, 337, _y + 20)) {
             tooltip_draw(mission_name_key(_keys[i]));
             if (mouse_button_clicked()) {
                 var _p_data = obj_star_select.p_data;
+                _p_data.new_problem(_keys[i], 3);
+                /*
                 switch (_keys[i]) {
                     case "inquisitor":
                         mission_inquistion_hunt_inquisitor(target.id);
                         break;
-                    case "necron":
-                        mission_inquisition_tomb_world(target.id);
-                        break;
-                    case "mech_raider":
-                        spawn_mechanicus_mission("mech_raider");
-                        break;
-                    case "mech_mars":
-                        spawn_mechanicus_mission("mech_mars");
-                        break;
-                    case "mech_bionics":
-                        spawn_mechanicus_mission("mech_bionics");
-                        break;
                     case "succession":
                         _p_data.init_war_of_succession();
-                        break;
-                    case "fallen":
-                        _p_data.init_fallen_marines();
                         break;
                     default:
                         scr_popup("error", "no specific debug action created please consider helping to make one", "");
                         break;
                 }
+                */
             }
         }
     }
@@ -532,9 +510,9 @@ function draw_planet_debug_problems() {
 function draw_planet_debug_forces() {
     add_draw_return_values();
     var current_planet = obj_controller.selecting_planet;
-    var base_y = 220;
+    var _base_y = 220;
     // Close window if clicked outside
-    if (!scr_hit([36, base_y, 337, base_y + 281]) && mouse_button_clicked()) {
+    if (!scr_hit([36, _base_y, 337, _base_y + 281]) && mouse_button_clicked()) {
         debug = 0;
         exit;
     }
@@ -562,9 +540,9 @@ function draw_planet_debug_forces() {
     ];
 
     // Loop through each faction row
-    base_y += 2;
+    _base_y += 2;
     for (var i = 0; i < array_length(faction_names); i++) {
-        var _y = base_y + i * 20;
+        var _y = _base_y + i * 20;
         var key = faction_keys[i];
 
         // Draw faction name and value
@@ -768,7 +746,7 @@ function system_debug_remove_fleet() {
     }
     array_push(_opts, {"str1": "exit", choice_func: popup_default_close});
 
-    replace_options(_opts, false, false);
+    replace_options(_opts, false);
 
     text = "Which fleet would you like to delete?";
 }

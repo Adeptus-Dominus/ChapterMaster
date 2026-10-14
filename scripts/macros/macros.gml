@@ -10,6 +10,7 @@
 #macro CM_RED_COLOR #bf4040
 #macro COL_REQUISITION #2398F8
 #macro COL_FORGE_POINTS #af5a00
+#macro PLANET_ARRAY_SIZE 9
 
 // First candidate TTF used when a language needs CJK glyphs that the latin fonts lack.
 #macro STR_CJK_FALLBACK_FONT "fonts/simhei.ttf"

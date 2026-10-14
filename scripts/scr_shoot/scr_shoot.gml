@@ -495,6 +495,13 @@ function scr_shoot(weapon_index_position, target_object, target_type, damage_dat
                         target_object.dudes_num[target_type] -= casualties;
                         obj_ncombat.enemy_forces -= casualties;
                     }
+
+                    obj_ncombat.register_kills_to_missions({
+                        number : casualties,
+                        target : target_object,
+                        target_type,
+                        weapon : weapon_index_position < 0 ? "defences" : wep_title[weapon_index_position],
+                    });
                 }
             }
 

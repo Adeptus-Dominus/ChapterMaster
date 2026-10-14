@@ -108,7 +108,7 @@ function scr_start_load(fleet, load_from_star, load_options) {
             var company_squad_dist = total_distribute_squads[_comp - 2];
             for (var squad = 0; squad < array_length(company_squad_dist); squad++) {
                 var _squad = company_squad_dist[squad];
-                var _members = _squad.members;
+                var _members = _squad.get_members();
                 for (var squad_member = 0; squad_member < array_length(_members); squad_member++) {
                     var _marine = _members[squad_member];
                     var marine_size = _marine.get_unit_size();

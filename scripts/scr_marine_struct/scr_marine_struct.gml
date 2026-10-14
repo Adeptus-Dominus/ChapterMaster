@@ -1841,7 +1841,8 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
         if (squad != "none") {
             var _squad = get_squad();
 
-            for (var r = 0; r < array_length(_squad.members); r++) {
+            var _member_count = array_length(_squad.get_members());
+            for (var r = 0; r < _member_count; r++) {
                 squad_member = _squad.members[r];
                 if (squad_member.uid == uid) {
                     array_delete(_squad.members, r, 1);
@@ -2438,6 +2439,26 @@ function fetch_unit_uid(uuid) {
     }
 
     return undefined;
+}
+
+function clean_unit_array(array){
+    for (var i = array_length(array) - 1; i >= 0; i--){
+        var _unit = array[i];
+        if (!is_struct(_unit)){
+            array_delete(array, i, 1);
+            continue;
+        }
+        if (_unit.marine_number > (company_length(_unit.company) -  1)){
+            array_delete(array, i, 1);
+            continue;
+        }
+        var _current_unit = fetch_unit([_unit.company, _unit.marine_number]);
+        if (!is_struct(_current_unit) || _current_unit.uid != _unit.uid){
+            array_delete(array, i, 1);
+            continue;            
+        }
+    }
+    return array;
 }
 
 /// @desc Localizes a unit's role and appends its name and first epithet, mirroring

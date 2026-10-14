@@ -86,7 +86,6 @@ double_click = 0;
 double_was = 0;
 last_weapons_tab = 1;
 complex_event = false;
-current_eventing = "";
 chaos_rating = 0;
 chapter_made = 0;
 // obj_cuicons.alarm[1]=1; // Clean up custom icons

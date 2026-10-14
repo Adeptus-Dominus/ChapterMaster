@@ -1,5 +1,5 @@
 function fleet_has_roles(fleet, roles = []) {
-    var all_ships = fleet_full_ship_array(fleet);
+    var all_ships = fleet.full_ship_array();
     for (var i = 0; i <= 10; i++) {
         for (var s = 0; s < array_length(obj_ini.TTRPG[i]); s++) {
             var unit = fetch_unit([i, s]);
@@ -17,17 +17,21 @@ function fleet_has_roles(fleet, roles = []) {
     }
 }
 
-function fleet_engaged(fleet) {
-    var _engaged = false;
-    var _fleet_action = fleet.action;
-    if (_fleet_action != "" && _fleet_action != "move") {
-        //don't inspect if engaged in non negotiable actions
-        if (array_contains(global.fleet_move_options, _fleet_action)) {
-            _engaged = true;
-        }
+
+/// @desc Creates a new player fleet, registering at the nearest star if within 50px.
+/// @param {Real} _x
+/// @param {Real} _y
+/// @param {Array} _ships  Optional array of ship IDs to add to the fleet
+/// @returns {Id.Instance.obj_p_fleet}
+function create_player_fleet(_x, _y, _ships = []) {
+    var _fleet = instance_create(_x, _y, obj_p_fleet);
+    _fleet.owner = eFACTION.PLAYER;
+    fleet_register_at_nearest_star(_fleet);
+    for (var _i = 0; _i < array_length(_ships); _i++) {
+        add_ship_to_fleet(_ships[_i], _fleet);
     }
 
-    return _engaged;
+    return _fleet;
 }
 
 function split_selected_into_new_fleet(start_fleet) {
@@ -137,7 +141,7 @@ function find_and_move_ship_between_fleets(out_fleet, in_fleet, index) {
 }
 
 function merge_player_fleets(main_fleet, merge_fleet) {
-    var _merge_ships = fleet_full_ship_array(merge_fleet);
+    var _merge_ships = merge_fleet.full_ship_array();
 
     for (var i = 0; i < array_length(_merge_ships); i++) {
         if (_merge_ships[i] < array_length(obj_ini.ship)) {
@@ -451,41 +455,8 @@ function player_retreat_from_fleet_combat(destination_star = noone) {
     }
 }
 
-function fleet_full_ship_array(fleet = noone, exclude_capitals = false, exclude_frigates = false, exclude_escorts = false) {
-    var all_ships = [];
-    var _ship_count = array_length(obj_ini.ship);
-    if (fleet == noone) {
-        if (!exclude_capitals) {
-            for (var i = 0; i < array_length(capital_num); i++) {
-                if (capital_num[i] < _ship_count) {
-                    array_push(all_ships, capital_num[i]);
-                }
-            }
-        }
-        if (!exclude_frigates) {
-            for (var i = 0; i < array_length(frigate_num); i++) {
-                if (frigate_num[i] < _ship_count) {
-                    array_push(all_ships, frigate_num[i]);
-                }
-            }
-        }
-        if (!exclude_escorts) {
-            for (var i = 0; i < array_length(escort_num); i++) {
-                if (escort_num[i] < _ship_count) {
-                    array_push(all_ships, escort_num[i]);
-                }
-            }
-        }
-    } else {
-        with (fleet) {
-            all_ships = fleet_full_ship_array();
-        }
-    }
-    return all_ships;
-}
-
 function set_fleet_location(location) {
-    var fleet_ships = fleet_full_ship_array();
+    var fleet_ships = full_ship_array();
     for (var i = 0; i < array_length(fleet_ships); i++) {
         var temp = fleet_ships[i];
         if (temp >= 0 && temp < array_length(obj_ini.ship_location)) {
@@ -605,9 +576,7 @@ function get_nearest_player_fleet(nearest_x, nearest_y, is_static = false, is_mo
                 }
             }
             if (stop_complex_actions) {
-                if (string_count("crusade", action) || action == "Lost") {
-                    viable = false;
-                }
+                viable = !beyond_engagement;
             }
             if (!viable) {
                 continue;
@@ -623,17 +592,6 @@ function get_nearest_player_fleet(nearest_x, nearest_y, is_static = false, is_mo
         }
     }
     return chosen_fleet;
-}
-
-/// @self Asset.GMObject.obj_star
-function has_orbiting_player_fleet() {
-    if (instance_exists(obj_p_fleet)) {
-        var _nearest = instance_nearest(x, y, obj_p_fleet);
-        if (point_distance(_nearest.x, _nearest.y, x, y) == 0) {
-            return true;
-        }
-    }
-    return false;
 }
 
 function calculate_fleet_content_size(ship_array) {
@@ -656,4 +614,74 @@ function calculate_fleet_bombard_score(ship_array) {
         }
     }
     return bomb_score;
+}
+
+function player_fleet_end_turn(){
+try {
+
+    for (var i = 0; i < array_length(problems); i++){
+        problems[i].basic_turn_end();
+    }
+    acted = 0;
+    if (action == "Lost") {
+        set_fleet_location("Lost");
+        exit;
+    } else if (action == "") {
+        var spid = instance_nearest(x, y, obj_star);
+        fleet_register_at_star(self, spid);
+
+        if (instance_exists(orbiting)) {
+            if (orbiting.visited == 0) {
+                for (var planet_num = 1; planet_num <= orbiting.planets; planet_num += 1) {
+                    if (array_length(orbiting.p_feature[planet_num]) != 0) {
+                        with (orbiting) {
+                            scr_planetary_feature(planet_num);
+                        }
+                    }
+                }
+                orbiting.visited = 1;
+            }
+
+            meet_system_governors(orbiting);
+        }
+    } else if (action == "move") {
+        set_fleet_location("Warp");
+
+        if (instance_nearest(action_x, action_y, obj_star).storm > 0) {
+            exit;
+        }
+
+        var spid = point_distance(x, y, action_x, action_y);
+        spid = spid / action_eta;
+        var dir = point_direction(x, y, action_x, action_y);
+
+        x = x + lengthdir_x(spid, dir);
+        y = y + lengthdir_y(spid, dir);
+
+        action_eta -= 1;
+        just_left = false;
+
+        if (action_eta == 0){
+            action = "";
+            x = action_x;
+            y = action_y;
+            fleet_is_orbiting();
+            if (orbiting != noone){
+                arrived_at_star();
+            } else {
+                set_fleet_location("Near " + instance_nearest(x, y,obj_star).name);
+            }
+
+            if (array_length(complex_route) > 0) {
+                arrive_at_waypoint();
+            } else {
+                for (var i = 0; i < array_length(problems); i++){
+                    problems[i].on_arrival();
+                }                
+            }
+        }
+    }
+} catch (_exception) {
+    ERROR_HANDLER.handle_exception(_exception);
+}
 }

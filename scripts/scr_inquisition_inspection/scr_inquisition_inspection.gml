@@ -26,7 +26,7 @@ function check_for_next_inquisitor_inspection() {
         if (_player_fleets == 1) {
             //can't inspect if fleet not in room
             //can't innspect if on other non negotiable action e.g crusading
-            _inspec = in_room(_player_fleet) && !fleet_engaged(_player_fleet);
+            _inspec = in_room(_player_fleet) && !_player_fleet.beyond_engagement;
         } else if (_player_fleets == 0) {
             _inspec = false;
         }
@@ -551,7 +551,7 @@ function inquisition_inspection_loyalty(inspection_type) {
                 var player_inspection_fleet = instance_nearest(obj_en_fleet.x, obj_en_fleet.y, obj_p_fleet);
                 _inspect_results.star = instance_nearest(player_inspection_fleet.x, player_inspection_fleet.y, obj_star);
 
-                _inspect_results.ships = fleet_full_ship_array(player_inspection_fleet);
+                _inspect_results.ships = player_inspection_fleet.full_ship_array();
 
                 _inspect_results.collect_inspection_units();
 
@@ -569,7 +569,7 @@ function inquisition_inspection_loyalty(inspection_type) {
                 }
                 var ca, ia;
 
-                var player_ships = fleet_full_ship_array(player_inspection_fleet);
+                var player_ships = player_inspection_fleet.full_ship_array();
                 var _search_units = collect_role_group("all", ["", 0, player_ships]);
 
                 _inspect_results.inquisitor_inspect_units(_search_units);

@@ -665,8 +665,13 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         return data_pack;
     };
 
+    static clean_members = function(){
+        members = clean_unit_array(members);
+    };
+
     static get_members = function(as_UnitGroup = false) {
         var mems = [];
+        clean_members();
         for (var i = 0; i < array_length(members); i++) {
             array_push(mems, fetch_member(i));
         }

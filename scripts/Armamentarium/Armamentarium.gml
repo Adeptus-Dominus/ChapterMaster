@@ -112,15 +112,15 @@ function ShopItem(_name) constructor {
             return "";
         }
 
-        return $"{localize("Missing Requirements:\n{0}", [string_join_ext("\n", missing_technologies)])}";
+        return localize("Missing Requirements:\n{0}", [string_join_ext("\n", missing_technologies)]);
     };
 
     static get_buy_cost_tooltip = function() {
-        var _text = $"{localize("Base Value: {0}\n\n", [value])}";
+        var _text = localize("Base Value: {0}\n\n", [value]);
         var _seller = (best_seller == "rogue_trader") ? localize("Rogue Trader") : string_upper_first(best_seller);
 
-        _text += $"{localize("Best Seller: {0}\n", [_seller])}";
-        _text += $"{localize("Disposition Modifier: x{0}", [buy_cost_mod])}";
+        _text += localize("Best Seller: {0}\n", [_seller]);
+        _text += localize("Disposition Modifier: x{0}", [buy_cost_mod]);
 
         return _text;
     };
@@ -744,9 +744,8 @@ function Armamentarium(_controller) constructor {
 
     /// @desc Updates the counts of tech-capable personnel.
     static _refresh_personnel_counts = function() {
-        var _role_name = obj_ini.player_role_data[eROLE.TECHMARINE].role;
-        count_techmarines = scr_role_count(_role_name, "");
-        count_aspirants = scr_role_count(obj_ini.player_role_data[eROLE.TECHMARINEASPIRANT].role);
+        count_techmarines = scr_group_count([SPECIALISTS_TECHMARINES, false, true]);
+        count_aspirants = scr_role_count(eROLE.TECHMARINEASPIRANT);
         count_total = count_techmarines + count_aspirants;
     };
 

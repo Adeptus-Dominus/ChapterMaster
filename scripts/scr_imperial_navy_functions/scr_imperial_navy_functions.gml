@@ -7,7 +7,7 @@ function navy_orbiting_planet_end_turn_action() {
         if (trade_goods == "") {
             ///basicically if there is a player fleet enroute for this star and the player is at war with the navy it will trigger
             ///meaning the navy fleet is going to sit and wait fot the player to arrive
-            if (orbiting.present_fleet[20] > 0) {
+            if (orbiting.navy_enemy_fleet_enroute) {
                 end_sequence_finished = true;
             }
         }

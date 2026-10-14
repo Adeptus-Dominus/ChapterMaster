@@ -236,7 +236,7 @@ function scr_fleet_advisor() {
                     tooltip_draw(localize("Carrying ({0}): {1}", [cn.temp[118], cn.temp[119]]));
                     if (_goto_button.click()) {
                         with (obj_p_fleet) {
-                            var _fleet_ships = fleet_full_ship_array();
+                            var _fleet_ships = full_ship_array();
                             if (array_contains(_fleet_ships, i)) {
                                 cn.x = x;
                                 cn.y = y;
