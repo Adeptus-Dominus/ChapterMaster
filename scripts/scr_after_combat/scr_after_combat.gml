@@ -38,7 +38,7 @@ function add_marines_to_recovery() {
     _role_priority_bonuses[$ _roles[eROLE.MASTERCHAPLAIN]] = 360;
 
     _role_priority_bonuses[$ _roles[eROLE.CHAPTERMASTER]] = 720;
-   
+
     for (var i = 0; i < array_length(unit_struct); i++) {
         var _unit = unit_struct[i];
 
@@ -52,7 +52,7 @@ function add_marines_to_recovery() {
 
         var _role_priority_bonus = _role_priority_bonuses[$ _unit.role()] ?? 0;
         var _priority = _unit.experience + _role_priority_bonus;
-        
+
         var _recovery_candidate = {
             "id": i,
             "unit": _unit,
@@ -63,7 +63,6 @@ function add_marines_to_recovery() {
         ds_priority_add(obj_ncombat.marines_to_recover, _recovery_candidate, _recovery_candidate.priority);
     }
 }
-
 
 /// @self Asset.GMObject.obj_pnunit
 function add_vehicles_to_recovery() {
