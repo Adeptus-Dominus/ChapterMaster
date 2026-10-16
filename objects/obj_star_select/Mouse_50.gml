@@ -44,7 +44,8 @@ if (!instance_exists(obj_saveload) && !instance_exists(obj_drop_select)) {
                         for (var i = 0; i < array_length(target.p_operatives[planet]); i++) {
                             operation = target.p_operatives[planet][i];
                             if (operation.type == "squad" && operation.reference == _current_squad.uid) {
-                                array_delete(target.p_operatives[planet], i, 1);
+                                target.remove_operative(planet, i);
+                                break;
                             }
                         }
                     }

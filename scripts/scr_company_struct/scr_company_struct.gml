@@ -313,6 +313,7 @@ function CompanyStruct(comp) constructor {
         pop_draw_return_values();
     };
 
+    /// @returns {Undefined}
     static draw_squad_assignment_options = function() {
         var _squad_sys = squad_loc.system;
         var _cur_squad = grab_current_squad();
@@ -359,7 +360,7 @@ function CompanyStruct(comp) constructor {
                     for (var i = 0; i < array_length(cancel_system.p_operatives[planet]); i++) {
                         operation = cancel_system.p_operatives[planet][i];
                         if (operation.type == "squad" && operation.reference == _cur_squad.uid) {
-                            array_delete(cancel_system.p_operatives[planet], i, 1);
+                            cancel_system.remove_operative(planet, i);
                             break;
                         }
                     }

@@ -2,7 +2,6 @@
 
 if (obj_controller.camera_moved_this_turn) {
     in_view = in_camera_view(star_box_shape());
-    garrisoned = has_garrison();
 }
 if (!in_view) {
     exit;
@@ -44,7 +43,7 @@ draw_set_font(cjk_font(fnt_cul_14));
 draw_set_alpha(1);
 
 if (global.load == -1 && (obj_controller.zoomed || in_view)) {
-    if (garrisoned) {
+    if (shows_garrison_icon()) {
         draw_sprite(spr_new_resource, 3, x - 30, y + 15);
         if (scr_hit(x - 40, y + 10, x - 10, y + 35)) {
             tooltip_draw(localize("Marine Garrison in system"));

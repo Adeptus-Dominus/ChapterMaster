@@ -120,9 +120,12 @@ function PlanetData(_planet, _system) constructor {
         return secret_corruption + corruption;
     };
 
-    function add_operatives(new_ops) {
-        array_push(system.p_operatives[planet], new_ops);
-        operatives = system.p_operatives[planet];
+    /// @desc Adds an operative to this planet. Add operatives only through this so the star's cached garrison scan stays accurate.
+    /// @param {Struct} _operative Operative entry to add, with type, reference, job and task_time fields.
+    /// @returns {Undefined}
+    function add_operatives(_operative) {
+        array_push(system.p_operatives[planet], _operative);
+        system.invalidate_garrison_cache();
     }
 
     static set_player_disposition = function(new_dispo) {
