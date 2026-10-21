@@ -112,5 +112,14 @@
             "cognomen"
         ],
         "preffered_method": "complex"
+    },
+    {
+      "load_as": "Mechanical Cult",
+      "load_set": "mechanical_cult",
+      "composites": [
+        "first_name",
+        "second_name"
+      ],
+      "preffered_method": "complex"
     }
 ]
