@@ -178,7 +178,7 @@ function remove_operative(_planet, _index) {
 }
 
 /// @self Asset.GMObject.obj_star
-has_orbiting_player_fleet = function () {
+has_orbiting_player_fleet = function() {
     if (instance_exists(obj_p_fleet)) {
         var _nearest = instance_nearest(x, y, obj_p_fleet);
         if (_nearest.action != "move" && point_distance(_nearest.x, _nearest.y, x, y) == 0) {
@@ -186,8 +186,7 @@ has_orbiting_player_fleet = function () {
         }
     }
     return false;
-
-}
+};
 
 var _array_size = 23;
 present_fleet = array_create(_array_size, 0);
@@ -243,7 +242,7 @@ serialize = function() {
         "system_sabatours",
         "system_datas",
         "present_fleet",
-        "__garrison_operative_present"
+        "__garrison_operative_present",
     ];
     var excluded_from_save_start = ["p_"];
 

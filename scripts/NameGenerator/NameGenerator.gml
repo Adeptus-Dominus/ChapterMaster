@@ -292,8 +292,8 @@ function NameGenerator() constructor {
             } else {
                 _styles = array_join(obj_ini.culture_styles, _styles);
             }
-            if (array_length(_styles) == 0){
-                _styles = ["space_marine"]
+            if (array_length(_styles) == 0) {
+                _styles = ["space_marine"];
             }
 
             _styles = array_shuffle(_styles);

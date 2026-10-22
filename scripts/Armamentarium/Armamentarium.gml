@@ -872,8 +872,8 @@ function Armamentarium(_controller) constructor {
         var _sell_price = _item.sell_cost * _sold_count;
 
         var _quality = "any";
-        for (var i=0;i<array_length(global.equipment_qualities);i++){
-            if (scr_item_count(_item.name, global.equipment_qualities[i]) > 0){
+        for (var i = 0; i < array_length(global.equipment_qualities); i++) {
+            if (scr_item_count(_item.name, global.equipment_qualities[i]) > 0) {
                 _quality = global.equipment_qualities[i];
                 break;
             }
