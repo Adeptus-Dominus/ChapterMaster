@@ -86,10 +86,6 @@ try {
     } else if (cheatcode == "debug" && global.cheat_debug) {
         global.cheat_debug = false;
     }
-    if (cheatcode == "test") {
-        diplomacy = 10.5;
-        scr_dialogue("test");
-    }
     if (global.cheat_req && requisition != 51234) {
         requisition = 51234;
     }
@@ -363,30 +359,9 @@ try {
         scr_quest(0, "artifact_return", 4, turn == 1);
     }
     // Diplomacy options
-    if (diplomacy == 0) {
-        if (trading_artifact != 0) {
-            with (obj_ground_mission) {
-                instance_destroy();
-            }
-            trading_artifact = 0;
-        }
-    }
-
-    if ((trading_artifact == 0) && (trading == 0) && (trading_artifact == 0) && (faction_justmet == 1) && (questing == 0) && (trading_demand == 0) && (complex_event == false)) {
-        clear_diplo_choices();
-    }
 
     income = income_base + income_home + income_forge + income_agri + income_training + income_fleet + income_trade + income_tribute;
 
-    if ((menu == eMENU.DIPLOMACY) && ((diplomacy > 0) || ((diplomacy < -5) && (diplomacy > -6)))) {
-        if (string_length(diplo_txt) < string_length(diplo_text)) {
-            diplo_char += 2;
-            diplo_txt = string_copy(diplo_text, 0, diplo_char);
-        }
-        if (diplo_alpha < 1) {
-            diplo_alpha += 0.05;
-        }
-    }
     // Check if fleet is minimized or not
     if (instance_exists(obj_popup)) {
         allow_shortcuts = false;

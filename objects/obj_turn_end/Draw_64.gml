@@ -23,7 +23,7 @@ if (obj_controller.force_scroll == 1) {
 if (combating > 0) {
     exit;
 }
-if (obj_controller.audience > 0) {
+if (audience > 0) {
     exit;
 }
 

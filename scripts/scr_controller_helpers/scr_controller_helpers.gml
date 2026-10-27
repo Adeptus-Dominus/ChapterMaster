@@ -23,7 +23,7 @@ function scr_menu_clear_up(specific_area_function) {
             }
 
             if (instance_exists(obj_turn_end) && !obj_controller.complex_event && (!instance_exists(obj_temp_meeting)) && array_length(obj_turn_end.audience_stack) == 0) {
-                if ((obj_turn_end.popups_end == 1) && (audience == 0) && (cooldown <= 0)) {
+                if ((obj_turn_end.popups_end == 1) && (obj_turn_end.audience == 0) && (cooldown <= 0)) {
                     with (obj_turn_end) {
                         instance_destroy();
                     }
@@ -101,10 +101,7 @@ function main_map_defaults() {
         menu_adept = 0;
         view_squad = false;
         unit_profile = false;
-        force_goodbye = 0;
         hide_banner = 0;
-        diplomacy = 0;
-        audience = 0;
         clear_diplo_choices();
         zoomed = 0;
         camera_moved_this_turn = true;
@@ -410,10 +407,8 @@ function scr_toggle_diplomacy() {
         with (obj_controller) {
             if (menu != eMENU.DIPLOMACY) {
                 set_zoom_to_default();
-                set_up_diplomacy_buttons();
                 menu = eMENU.DIPLOMACY;
-                audience = 0;
-                diplomacy = 0;
+                diplo_handler = new DiplomacyHandler();
                 hide_banner = 1;
                 character_diplomacy = false;
                 LOGGER.debug("set_diplo");

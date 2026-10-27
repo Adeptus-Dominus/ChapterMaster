@@ -100,7 +100,6 @@ display_unit = undefined;
 camera_moved_this_turn = true;
 
 diplo_buttons = {};
-diplomacy_pathway = "";
 option_selections = [];
 ready = false;
 
@@ -577,7 +576,6 @@ imp_ships = 0;
 cooldown = 8;
 exit_all = 0;
 // ** Sets diplomacy and trading **
-diplomacy = 0;
 trading = 0;
 trading_artifact = 0;
 trading_enemy_demand = 0;
@@ -585,7 +583,6 @@ trading_demand = 0;
 trade_likely = "";
 questing = 0;
 liscensing = 0;
-audience = 0;
 force_goodbye = 0;
 trade_req = 0;
 trade_gene = 0;
@@ -632,15 +629,6 @@ for (var i = 0; i < array_length(inquisitor_gender); i++) {
     var _gender = inquisitor_gender[i];
     inquisitor[i] = _name_gen.GenerateFromSet($"imperial_{string_gender(_gender)}");
 }
-
-// ** Sets diplomacy variables **
-diplo_last = "";
-diplo_text = "";
-diplo_txt = "";
-diplo_char = 0;
-diplo_option = [];
-
-diplo_alpha = 0;
 // ** Sets combat to not true **
 combat = 0;
 random_event_next = eEVENT.NONE;
@@ -729,7 +717,6 @@ for (var i = 0; i < array_length(loyalReasons); i++) {
 inqis_flag_lair = 0;
 inqis_flag_gene = 0;
 
-faction_justmet = 0;
 // ** Sets up starting requisition **
 requisition = 500;
 if (instance_exists(obj_ini)) {
@@ -740,7 +727,6 @@ if (instance_exists(obj_ini)) {
 
 chapter_master = new ChapterMaster();
 
-trade_attempt = false;
 // ** Sets income **
 income = 0;
 income_last = 0;

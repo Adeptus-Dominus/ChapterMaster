@@ -48,14 +48,11 @@ function gift_artifact(give_to, known = true) {
     if (!known) {
         obj_controller.menu_artifact = scr_add_artifact("random", "minor");
     }
+    var _diag_path = "artifact";
 
     var arti_index = obj_controller.menu_artifact;
     var artifact_struct = fetch_artifact(arti_index);
-
-    obj_controller.cooldown = 10;
-    scr_toggle_diplomacy();
-    obj_controller.diplomacy = give_to;
-    obj_controller.force_goodbye = -1;
+    meet_faction_head(give_to, "artifact",{},{force_goodbye : -1});
     var the = "";
 
     if ((give_to != 7) && (give_to != 10)) {
@@ -79,19 +76,19 @@ function gift_artifact(give_to, known = true) {
     if (inq_hide != 2) {
         with (obj_controller) {
             if ((!is_daemon) || ((diplomacy != 4) && (diplomacy != 5) && (diplomacy != 2))) {
-                scr_dialogue("artifact_thanks");
+                _diag_path = "artifact_thanks";
             }
             if (is_daemon && ((diplomacy == 4) || (diplomacy == 5) || (diplomacy == 2))) {
-                scr_dialogue("artifact_daemon");
+                _diag_path = "artifact_daemon";
             }
         }
     }
     if ((inq_hide == 2) && (obj_controller.diplomacy == 4)) {
         with (obj_controller) {
-            scr_dialogue("artifact_returned");
+            _diag_path = "artifact_returned";
         }
     }
-
+    meet_faction_head(give_to, _diag_path,{},{force_goodbye : -1});
     if (artifact_struct.has_tag("MINOR")) {
         obj_controller.disposition[give_to] = clamp(obj_controller.disposition[give_to] + 1, -100, 100);
     } else {
@@ -299,9 +296,8 @@ function gift_stc_fragment() {
     } // 137 ; chance for mechanicus to get very pissed
     // End disposition
     obj_controller.cooldown = 7000;
-    scr_toggle_diplomacy();
-    obj_controller.diplomacy = giveto;
-    obj_controller.force_goodbye = -1;
+    meet_faction_head(giveto, "stc_thanks", {}, {force_goodbye : -1})
+
     var the = "";
     if ((giveto != eFACTION.ORK) && (giveto != eFACTION.CHAOS)) {
         the = "the ";
@@ -309,9 +305,6 @@ function gift_stc_fragment() {
 
     scr_event_log("", $"STC Fragment gifted to {the}{obj_controller.faction[giveto]}.");
 
-    with (obj_controller) {
-        scr_dialogue("stc_thanks");
-    }
     instance_destroy();
     exit;
 }

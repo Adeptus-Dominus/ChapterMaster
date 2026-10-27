@@ -381,10 +381,8 @@ function scr_cheatcode(argument0) {
                         LOGGER.debug("meet forge master");
                         obj_controller.menu_lock = false;
                         instance_destroy(obj_popup_dialogue);
-                        scr_toggle_diplomacy();
-                        obj_controller.diplomacy = -1;
-                        obj_controller.character_diplomacy = _forge_master[0];
-                        diplo_txt = "Greetings chapter master";
+                        meet_character(_forge_master[0])
+                        obj_controller.diplo_helper.diplo_text_displayed = "Greetings chapter master";
                     } else {
                         LOGGER.debug("no forge master");
                     }

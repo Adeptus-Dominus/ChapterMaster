@@ -29,34 +29,7 @@ draw_set_valign(fa_top);
 draw_set_halign(fa_left);
 
 if (menu == eMENU.DIPLOMACY) {
-    add_draw_return_values();
-    try {
-        if (diplomacy > 0) {
-            draw_diplomacy_diplo_text();
-            if (trading) {
-                if ((diplomacy > 1) && is_struct(trade_attempt)) {
-                    try {
-                        trade_attempt.draw_trade_screen();
-                    } catch (_exception) {
-                        ERROR_HANDLER.handle_exception(_exception);
-                        delete trade_attempt;
-                        trading = false;
-                    }
-                }
-            } else if (diplomacy != 10.1) {
-                draw_character_diplomacy_base_page();
-            }
-        } else if (diplomacy == -1) {
-            if (is_struct(character_diplomacy)) {
-                draw_character_diplomacy();
-            }
-        }
-    } catch (_exception) {
-        ERROR_HANDLER.handle_exception(_exception);
-        menu = eMENU.DEFAULT;
-        menu_lock = false;
-    }
-    pop_draw_return_values();
+    diplomacy_handler.draw_gui();
 }
 
 // Main UI

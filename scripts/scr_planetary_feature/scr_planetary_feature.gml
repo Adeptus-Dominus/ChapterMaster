@@ -796,12 +796,7 @@ function governor_negotiate_artifact() {
             instance_destroy();
         } else {
             scr_toggle_diplomacy();
-            obj_controller.cooldown = 10;
-            obj_controller.diplomacy = pdata.current_owner;
-            obj_controller.trading_artifact = 1;
-            with (obj_controller) {
-                scr_dialogue("artifact");
-            }
+            meet_faction_head(pdata.current_owner, "artifact", {}, {trading_artifact : true});
             instance_destroy(obj_popup);
         }
     }
@@ -987,10 +982,6 @@ function send_stc_to_adeptus_mech() {
             instance_destroy();
         }
 
-        scr_toggle_diplomacy();
-        obj_controller.diplomacy = 3;
-        obj_controller.force_goodbye = 5;
-
         var _current = obj_controller.disposition[eFACTION.MECHANICUS];
         var _increment = 0;
 
@@ -1007,9 +998,7 @@ function send_stc_to_adeptus_mech() {
         if (_increment > 0) {
             alter_disposition(eFACTION.MECHANICUS, _increment);
         }
-        with (obj_controller) {
-            scr_dialogue("stc_thanks");
-        }
+        meet_faction_head(eFACTION.MECHANICUS, "stc_thanks",{},{force_goodbye : 5});
         instance_destroy();
     }
 }

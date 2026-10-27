@@ -163,13 +163,7 @@ try {
         }
 
         if ((defeat == 1) && (battle_special == "WL10_reveal")) {
-            obj_controller.audience = 10;
-            scr_toggle_diplomacy();
-            obj_controller.diplomacy = 10;
-            obj_controller.known[eFACTION.CHAOS] = 2;
-            with (obj_controller) {
-                scr_dialogue("intro2");
-            }
+            meet_faction_head(10, "intro2");
         }
         if (defeat == 0) {
             obj_controller.known[eFACTION.CHAOS] = 2;
@@ -363,11 +357,7 @@ try {
 
     if (enemy == eFACTION.PLAYER) {
         if ((battle_special == "cs_meeting_battle1") || (battle_special == "cs_meeting_battle2")) {
-            obj_controller.diplomacy = 10;
-            scr_toggle_diplomacy();
-            with (obj_controller) {
-                scr_dialogue("cs_meeting21");
-            }
+            meet_faction_head(10,"cs_meeting21" )
         }
 
         // Chapter Master just murdered absolutely everyone
@@ -375,10 +365,7 @@ try {
             if (obj_controller.chaos_rating < 1) {
                 obj_controller.chaos_rating += 1;
             }
-            obj_controller.complex_event = false;
-            obj_controller.diplomacy = 0;
-            obj_controller.menu = 0;
-            obj_controller.force_goodbye = 0;
+            obj_controller.menu = eMENU.DEFAULT;
             obj_controller.cooldown = 20;
             obj_controller.current_eventing = "chaos_meeting_end";
             with (obj_temp_meeting) {
@@ -400,9 +387,7 @@ try {
     if (enemy == eFACTION.CHAOS) {
         if ((battle_special == "cs_meeting_battle10") && (defeat == 0)) {
             obj_controller.complex_event = false;
-            obj_controller.diplomacy = 0;
             obj_controller.menu = 0;
-            obj_controller.force_goodbye = 0;
             obj_controller.cooldown = 20;
             obj_controller.current_eventing = "chaos_meeting_end";
             with (obj_temp_meeting) {
@@ -436,10 +421,7 @@ try {
             }
             // Master of Sanctity present, wishes to take in the player
             if (instance_exists(obj_ground_mission) && (string_count("CRMOS|", obj_controller.useful_info) == 0)) {
-                scr_toggle_diplomacy();
-                with (obj_controller) {
-                    scr_dialogue("cs_meeting_m5");
-                }
+                meet_faction_head(10, "cs_meeting_m5")
             }
 
             // Master of Sanctity not present, just get told that you have defeated the Chaos Lord
@@ -447,9 +429,7 @@ try {
                 // Some kind of popup based on what you were going after
 
                 obj_controller.complex_event = false;
-                obj_controller.diplomacy = 0;
                 obj_controller.menu = 0;
-                obj_controller.force_goodbye = 0;
                 obj_controller.cooldown = 20;
                 obj_controller.current_eventing = "chaos_meeting_end";
                 with (obj_temp_meeting) {

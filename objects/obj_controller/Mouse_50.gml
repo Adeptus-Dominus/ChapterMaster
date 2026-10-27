@@ -144,49 +144,6 @@ if ((menu == eMENU.RECLUSIAM) && (cooldown <= 0) && (penitorium > 0)) {
     }
 }
 
-// ** Diplomacy **
-if ((menu == eMENU.DIPLOMACY) && (diplomacy > 0) || ((diplomacy < -5) && (diplomacy > -6)) && (cooldown <= 0) && (diplomacy < 10)) {
-    if ((trading == 0) && valid_diplomacy_options()) {
-        if ((force_goodbye == 0) && (cooldown <= 0)) {}
-        if ((force_goodbye != 0) && (cooldown <= 0)) {
-            // Want to check to see if the deal went fine here
-            if (trading_artifact != 0) {
-                click2 = 1;
-                clear_diplo_choices();
-                diplomacy = 0;
-                menu = eMENU.DEFAULT;
-                force_goodbye = 0;
-                with (obj_popup) {
-                    instance_destroy();
-                }
-                if (trading_artifact != 2) {
-                    with (obj_ground_mission) {
-                        instance_destroy();
-                    }
-                }
-                if (trading_artifact == 2 && instance_exists(obj_ground_mission)) {
-                    with (obj_ground_mission) {
-                        receive_artifact_in_discussion();
-                    }
-                }
-                exit;
-            }
-        }
-    }
-}
-// Diplomacy
-if (CHAOS_EMISSARY_ENABLED && (zoomed == 0) && (cooldown <= 0) && (menu == eMENU.DIPLOMACY) && (diplomacy == 0)) {
-    xx += 55;
-    yy -= 20;
-    // Daemon emmissary
-    if (point_in_rectangle(mouse_x, mouse_y, xx + 688, yy + 181, xx + 1028, yy + 281)) {
-        diplomacy = 10.1;
-        diplomacy_pathway = "intro";
-        scr_dialogue(diplomacy_pathway);
-        cooldown = 1;
-    }
-}
-
 // End Turn
 scr_menu_clear_up(function() {
     var xx = camera_get_view_x(view_camera[0]);

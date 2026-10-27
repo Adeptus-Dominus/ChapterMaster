@@ -12,27 +12,9 @@ if (array_length(audience_stack) > 0) {
     if (obj_controller.menu != eMENU.DIPLOMACY) {
         scr_toggle_diplomacy();
     }
-    obj_controller.audience = current_audience.faction;
-    obj_controller.diplomacy = current_audience.faction;
-    obj_controller.audience_data = current_audience.audience_data;
+    obj_controller.diplo_handler.setup_faction_head_meeting(current_audience.faction, current_audience.topic, current_audience.audience_data)
+    audience = true;
 
-    if ((obj_controller.diplomacy == 10) && (obj_controller.faction_gender[10] == 2)) {
-        global.audio_manager.play_playlist(CONTEXT_DIPLOMACY, 60);
-    }
-
-    if (string_count("intro", current_audience.topic) > 0) {
-        obj_controller.known[obj_controller.diplomacy] = 2;
-        obj_controller.faction_justmet = 1;
-        if (obj_controller.diplomacy == 6) {
-            scr_dialogue("intro1");
-        }
-        if (obj_controller.diplomacy != 6) {
-            //LOGGER.debug("new_intro");
-            scr_dialogue("intro");
-        }
-    } else {
-        scr_dialogue(current_audience.topic);
-    }
     array_delete(audience_stack, 0, 1);
     exit;
 }

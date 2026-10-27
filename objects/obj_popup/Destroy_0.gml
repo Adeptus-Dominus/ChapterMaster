@@ -26,12 +26,7 @@ if ((image == "chaos_symbol") && (title == "Concealed Heresy") && instance_exist
 
 if (instance_exists(obj_controller)) {
     if (obj_controller.current_eventing == "chaos_meeting_1") {
-        scr_toggle_diplomacy();
-        obj_controller.diplomacy = 10;
-        obj_controller.cooldown = 5000;
-        with (obj_controller) {
-            scr_dialogue("cs_meeting1");
-        }
+        meet_faction_head(eFACTION.CHAOS, "cs_meeting1")
     }
 
     if (obj_controller.current_eventing == "chaos_trap") {
