@@ -1,9 +1,9 @@
-if (action_eta > obj_controller.temp[90]) {
-    obj_controller.temp[90] = action_eta;
+if (action_eta > obj_controller.fleet_eta_board) {
+    obj_controller.fleet_eta_board = action_eta;
+} else {
+    action_eta = obj_controller.fleet_eta_board;
 }
-if (action_eta < obj_controller.temp[90]) {
-    action_eta = obj_controller.temp[90];
-}
+
 rep -= 1;
 
 if (rep > 0) {
@@ -11,7 +11,7 @@ if (rep > 0) {
 }
 
 if (rep == 0) {
-    action_eta = obj_controller.temp[90] - choose(0, 1);
+    action_eta = obj_controller.fleet_eta_board - choose(0, 1);
 
     rep = 3;
     alarm[5] = -1;
