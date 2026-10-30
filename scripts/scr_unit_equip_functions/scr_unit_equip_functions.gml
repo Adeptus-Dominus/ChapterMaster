@@ -897,12 +897,12 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
         if (_item.has_tag("terminator_only")) {
             if (!get_item("armour").has_tag("terminator")) {
                 equipment_found_and_valid[slot] = false;
-                warning = localize("Cannot use {0} without Terminator/Dreadnought Armour.", [localize(_wanted_item)]);
+                warning += localize("Cannot use {0} without Terminator Armour.", [localize(_wanted_item)]);
             }
         } else if (_item.has_tag("dreadnought_only")) {
             if (!get_item("armour").has_tag("dreadnought")) {
                 equipment_found_and_valid[slot] = false;
-                warning = localize("Cannot use {0} without Dreadnought Armour.", [localize(_wanted_item)]);
+                warning += localize("Cannot use {0} without Dreadnought Armour.", [localize(_wanted_item)]);
             }
         }
     };
