@@ -1,15 +1,76 @@
+/// @desc Returns the nth power of two in 1-indexed sequence 1, 2, 4, 8, ... Equal to 2^(_index - 1).
+/// @param {Real} _index
+/// @returns {Real} Returns 0 for _index <= 0. Inverse is bit_length for exact powers of two.
+function nth_power_of_two(_index) {
+    _index = floor(_index);
+    if (_index <= 0) {
+        return 0;
+    }
+    var _result = 1;
+    for (var i = 1; i < _index; i++) {
+        _result *= 2;
+    }
+    return _result;
+}
+
+/// @desc Returns the number of bits needed to represent a non-negative integer. Inverse of nth_power_of_two for exact powers of two; floors non-powers.
+/// @param {Real} _value
+/// @returns {Real} Returns 0 for _value <= 0
+function bit_length(_value) {
+    _value = floor(_value);
+    if (_value <= 0) {
+        return 0;
+    }
+    var _bits = 0;
+    while (_value > 0) {
+        _value = floor(_value / 2);
+        _bits++;
+    }
+    return _bits;
+}
+
+function fleet_power_value(_fleet) {
+    if (_fleet == noone || !instance_exists(_fleet)) {
+        return 0;
+    }
+
+    return _fleet.capital_number * 16 + _fleet.frigate_number * 8 + _fleet.escort_number * 4;
+}
+
+
 function new_ork_fleet(xx, yy) {
     fleet = create_enemy_fleet(xx, yy, eFACTION.ORK);
     fleet.sprite_index = spr_fleet_ork;
     fleet.image_index = 1;
-    fleet.capital_number = 1;
-    fleet.frigate_number = 1;
     return fleet;
 }
 
 /// @self Asset.GMObject.obj_star
+function ork_fleet_cap_reached() {
+    var _bonus = 4;
+    var _ork_stars = 0;
+    with (obj_star) {
+        if (owner == eFACTION.ORK) {
+            _ork_stars++;
+        }
+    }
+
+    var _ork_fleets = 0;
+    with (obj_en_fleet) {
+        if (owner == eFACTION.ORK) {
+            _ork_fleets++;
+            if (_ork_fleets >= _ork_stars + _bonus) {
+                return true;
+            }
+        }
+    }
+
+    return _ork_fleets >= _ork_stars + _bonus;
+}
+
+/// @self Asset.GMObject.obj_star
 function orks_end_turn_growth() {
-    for (i = 1; i <= planets; i++) {
+    for (var i = 1; i <= planets; i++) {
         var _pdata = get_planet_data(i);
         if (!p_orks[i]) {
             var _strongholds = _pdata.get_features(eP_FEATURES.ORKSTRONGHOLD);
@@ -21,7 +82,7 @@ function orks_end_turn_growth() {
                 }
             }
         }
-        _pdata.grow_ork_forces();
+        _pdata.ork_planet_turn();
     }
 }
 
@@ -89,28 +150,45 @@ function ork_fleet_arrive_target() {
         }
 
         var _allow_landing = !is_dead_star();
-        var _fleet_persists = false;
         var _alert_triggered = false;
         if (_allow_landing) {
             for (var i = 0; i < planets; i++) {
                 var _planet = _planets[i];
                 if ((p_guardsmen[_planet] + p_pdf[_planet] + p_player[_planet] + p_traitors[_planet] + p_tau[_planet] > 0) || ((p_owner[_planet] != eFACTION.ORK) && (p_orks[_planet] <= 0))) {
-                    if ((p_type[_planet] != "Dead") && (p_orks[_planet] < 4) && (i <= planets)) {
-                        p_orks[_planet] += max(2, floor(_ork_fleet.image_index * 0.8));
+                    if ((p_type[_planet] != "Dead") && (p_orks[_planet] < 6) && (i <= planets)) {
+                        var _dest_men = nth_power_of_two(p_orks[_planet]);
+                        var _fleet_men = fleet_power_value(_ork_fleet);
+                        var _capacity = max(0, nth_power_of_two(6) - _dest_men);
+                        var _landed_men = min(_fleet_men, _capacity);
+                        var _remaining_men = _fleet_men - _landed_men;
+        
+                        if (_remaining_men > 0 && _remaining_men < 4) {
+                            _landed_men += _remaining_men;
+                            _remaining_men = 0;
+                        }
+
+                        if (_landed_men > 0) {
+                            get_planet_data(_planet).edit_forces(eFACTION.ORK, min(6, bit_length(_dest_men + _landed_men)));
+                        }
 
                         if (fleet_has_cargo("ork_warboss", _ork_fleet)) {
                             array_push(p_feature[_planet], _ork_fleet.cargo_data.ork_warboss);
-                            p_orks[_planet] = 6;
+                            get_planet_data(_planet).edit_forces(eFACTION.ORK, 6);
                             struct_remove(_ork_fleet.cargo_data, "ork_warboss");
-                            _fleet_persists = true;
                         }
 
-                        if (p_orks[_planet] > 6) {
-                            p_orks[_planet] = 6;
-                        }
-                        if (!_fleet_persists) {
+                        if (_remaining_men <= 0 && !fleet_has_cargo("ork_warboss", _ork_fleet)) {
                             with (_ork_fleet) {
                                 instance_destroy();
+                            }
+                        } else {
+                            _ork_fleet.capital_number = floor(_remaining_men / 16);
+                            _remaining_men -= _ork_fleet.capital_number * 16;
+                            _ork_fleet.frigate_number = floor(_remaining_men / 8);
+                            _remaining_men -= _ork_fleet.frigate_number * 8;
+                            _ork_fleet.escort_number = floor(_remaining_men / 4);
+                            with (_ork_fleet) {
+                                image_index = max(round(standard_fleet_strength_calc()), 1);
                             }
                         }
                         _alert_triggered = true;
@@ -121,7 +199,7 @@ function ork_fleet_arrive_target() {
         }
 
         if (_alert_triggered) {
-            if (!_fleet_persists) {
+            if (!instance_exists(_ork_fleet)) {
                 scr_alert("green", "owner", $"Ork ships have crashed across the {name} system.", x, y);
             } else {
                 scr_alert("green", "owner", $"Ork ships Spill their ravenouss hordes accross {name} system and the green skin captains turn their guns towards the surface.", x, y);

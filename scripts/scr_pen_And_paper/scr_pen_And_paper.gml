@@ -171,21 +171,23 @@ function roll_dice(dices = 1, faces = 6) {
 function roll_dice_chapter(dices = 1, faces = 6, player_benefit_at = "high") {
     var _total_roll = 0;
     var _roll = 0;
+    var _second_roll = 0;
 
     repeat (dices) {
         _roll = roll_dice(1, faces);
+        _second_roll = roll_dice(1, faces);
 
         if (scr_has_disadv("Shitty Luck")) {
-            if (player_benefit_at == "high" && _roll > (faces / 2)) {
-                _roll = roll_dice(1, faces);
-            } else if (player_benefit_at == "low" && _roll < (faces / 2 + 1)) {
-                _roll = roll_dice(1, faces);
+            if (player_benefit_at == "high") {
+                _roll = min(_roll, _second_roll);
+            } else if (player_benefit_at == "low") {
+                _roll = max(_roll, _second_roll);
             }
         } else if (scr_has_adv("Great Luck")) {
-            if (player_benefit_at == "high" && _roll < (faces / 2 + 1)) {
-                _roll = roll_dice(1, faces);
-            } else if (player_benefit_at == "low" && _roll > (faces / 2)) {
-                _roll = roll_dice(1, faces);
+            if (player_benefit_at == "high") {
+                _roll = max(_roll, _second_roll);
+            } else if (player_benefit_at == "low") {
+                _roll = min(_roll, _second_roll);
             }
         }
 
@@ -213,10 +215,11 @@ function roll_dice_unit(unit, dices = 1, faces = 6, player_benefit_at = "none") 
             var luck_chance = roll_dice(1, 100);
 
             if (luck_chance <= unit.luck) {
-                if (player_benefit_at == "high" && _roll > (faces / 2)) {
-                    _roll = roll_dice(1, faces);
-                } else if (player_benefit_at == "low" && _roll < (faces / 2 + 1)) {
-                    _roll = roll_dice(1, faces);
+                var _second_roll = roll_dice(1, faces);
+                if (player_benefit_at == "high") {
+                    _roll = max(_roll, _second_roll);
+                } else if (player_benefit_at == "low") {
+                    _roll = min(_roll, _second_roll);
                 }
             }
         }

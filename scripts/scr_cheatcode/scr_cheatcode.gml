@@ -112,7 +112,10 @@ function scr_cheatcode(argument0) {
                 case "neworkfleet":
                     var p_fleet = get_largest_player_fleet();
                     with (instance_nearest(p_fleet.x, p_fleet.y, obj_star)) {
-                        new_ork_fleet(x, y);
+                        var _ork_fleet = new_ork_fleet(x, y);
+                        _ork_fleet.escort_number = 4;
+                        _ork_fleet.frigate_number = 2;
+                        _ork_fleet.capital_number = 1;
                     }
                     break;
                 case "inquisarti":
