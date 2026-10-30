@@ -121,7 +121,7 @@ function scr_update_unit_armour(new_armour, from_armoury = true, to_armoury = tr
             update_role(obj_ini.player_role_data[eROLE.DREADNOUGHT].role);
             update_gear("");
             update_mobility_item("");
-            if (!is_struct(_old_armour_data) || !_old_armour_data.has_tag("dreadnought")){
+            if (!is_struct(_old_armour_data) || !_old_armour_data.has_tag("dreadnought")) {
                 update_health(max_health());
             }
         }
@@ -382,7 +382,7 @@ function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, t
                 return "no change";
             }
         } else {
-            if (_mobility_data.has_tag("terminator") || _mobility_data.has_tag("terminator_only")) {
+            if (_mobility_data.has_tag("terminator_only")) {
                 LOGGER.error($"Failed to equip {new_mobility_item} for {name()} - requires terminator armour!");
                 return "no change";
             }
@@ -443,19 +443,20 @@ function alter_unit_equipment(update_equipment, from_armoury = true, to_armoury 
     if (is_array(update_equipment)) {
         update_equipment = convert_equipment_array_into_struct(update_equipment);
     }
-    var equip_areas = struct_get_names(update_equipment);
-    for (var i = 0; i < array_length(equip_areas); i++) {
-        var _item = update_equipment[$ equip_areas[i]];
+    // Slot order is fixed: armour must be applied before mobi so its validation sees the final armour.
+    for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
+        var _slot_key = global.unit_equip_slots[i];
+        if (!struct_exists(update_equipment, _slot_key)) {
+            continue;
+        }
+        var _item = update_equipment[$ _slot_key];
         var _outcome = "";
-        switch (equip_areas[i]) {
+        switch (_slot_key) {
             case "wep1":
                 _outcome = update_weapon_one(_item, from_armoury, to_armoury, quality);
                 break;
             case "wep2":
                 _outcome = update_weapon_two(_item, from_armoury, to_armoury, quality);
-                break;
-            case "mobi":
-                _outcome = update_mobility_item(_item, from_armoury, to_armoury, quality);
                 break;
             case "armour":
                 _outcome = update_armour(_item, from_armoury, to_armoury, quality);
@@ -463,8 +464,8 @@ function alter_unit_equipment(update_equipment, from_armoury = true, to_armoury 
             case "gear":
                 _outcome = update_gear(_item, from_armoury, to_armoury, quality);
                 break;
-            default:
-                continue;
+            case "mobi":
+                _outcome = update_mobility_item(_item, from_armoury, to_armoury, quality);
                 break;
         }
         if (_outcome == "no_items") {
@@ -805,10 +806,10 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
                 _result.warning = localize("Cannot use this without Dreadnought Armour.");
             }
         } else if (!is_present("armour") && is_present("mobi")) {
-            if (_mobility_data.has_tag("terminator") || _mobility_data.has_tag("terminator_only")) {
+            if (_mobility_data.has_tag("terminator_only")) {
                 _result.valid = false;
                 _result.warning = localize("Cannot use this without Terminator Armour.");
-            } else if (_mobility_data.has_tag("dreadnought") || _mobility_data.has_tag("dreadnought_only")) {
+            } else if (_mobility_data.has_tag("dreadnought_only")) {
                 _result.valid = false;
                 _result.warning = localize("Cannot use this without Dreadnought Armour.");
             }
@@ -898,21 +899,11 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
                 equipment_found_and_valid[slot] = false;
                 warning = localize("Cannot use {0} without Terminator/Dreadnought Armour.", [localize(_wanted_item)]);
             }
-        }
-
-        var _class_locks = [
-            "terminator",
-            "dreadnought",
-        ];
-        if (_item.has_tags(_class_locks) && !get_item("armour").has_tags(_class_locks)) {
-            var _armour_required = "";
-            for (var r = 0; r < array_length(_class_locks); r++) {
-                if (_item.has_tag(_class_locks[r])) {
-                    _armour_required += _armour_required == "" ? localize(_class_locks[r]) : ", " + localize(_class_locks[r]);
-                }
+        } else if (_item.has_tag("dreadnought_only")) {
+            if (!get_item("armour").has_tag("dreadnought")) {
+                equipment_found_and_valid[slot] = false;
+                warning = localize("Cannot use {0} without Dreadnought Armour.", [localize(_wanted_item)]);
             }
-            equipment_found_and_valid[slot] = false;
-            warning += localize("Cannot use {0} without {1} Armour.", [localize(_wanted_item), _armour_required]);
         }
     };
 
@@ -982,6 +973,10 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
             }
         } else if (_item == "Heavy Weapons Pack" && role_id == eROLE.DEVASTATOR) {
             _allow = true;
+        } else if (_item == "Servo-arm" || _item == "Servo-harness") {
+            if (array_contains([eROLE.TECHMARINE, eROLE.FORGEMASTER], role_id)) {
+                _allow = true;
+            }
         }
 
         final_gear.mobi = _allow ? _item : default_options.mobi;
@@ -993,10 +988,6 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
         if (veteran_level == 5) {
             if (role_id == eROLE.CHAPLAIN && _item == "Rosarius") {
                 _allow = true;
-            } else if (role_id == eROLE.TECHMARINE) {
-                if (array_contains(["Servo-arm", "Servo-harness"], _item)) {
-                    _allow = true;
-                }
             } else if (role_id == eROLE.LIBRARIAN && _item == "Psychic Hood") {
                 _allow = true;
             } else if (role_id == eROLE.APOTHECARY && _item == "Narthecium") {
