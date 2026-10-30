@@ -974,7 +974,7 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
         } else if (_item == "Heavy Weapons Pack" && role_id == eROLE.DEVASTATOR) {
             _allow = true;
         } else if (_item == "Servo-arm" || _item == "Servo-harness") {
-            if (is_specialist(role_id, SPECIALIST_TECHS)) {
+            if (is_specialist(role_id, SPECIALISTS_TECHS)) {
                 _allow = true;
             }
         }
