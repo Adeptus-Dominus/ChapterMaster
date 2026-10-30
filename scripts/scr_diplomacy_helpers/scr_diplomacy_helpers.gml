@@ -328,7 +328,7 @@ function scr_emmisary_diplomacy_routes() {
             var _squad_ids = get_squad_ids();
             for (var i = 0; i < array_length(_squad_ids); i++) {
                 kill_squad = fetch_squad(_squad_ids[i]);
-                if (kill_squad.type == "tactical_squad" && array_length(kill_squad.members) > 4) {
+                if (kill_squad.type == "tactical_squad" && array_length(kill_squad.get_members()) > 4) {
                     var chapter_master = fetch_unit([0, 1]);
                     chapter_master.add_trait("blood_for_blood");
                     chapter_master.edit_corruption(20);

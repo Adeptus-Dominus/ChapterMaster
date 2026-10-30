@@ -180,7 +180,7 @@ function loose_ship_to_warp_event() {
     }
 
     var _fleet = array_random_element(eligible_fleets);
-    var _ships = fleet_full_ship_array(_fleet);
+    var _ships = _fleet.full_ship_array();
     var _ship_index = array_random_element(_ships);
 
     var text = "The ";
@@ -226,6 +226,7 @@ function loose_ship_to_warp_event() {
     }
 
     _lost_ship_fleet.action = "Lost";
+    _lost_ship_fleet.beyond_engagement = false;
     fleet_unregister_from_star(_lost_ship_fleet);
     _lost_ship_fleet.alarm[1] = 2;
 

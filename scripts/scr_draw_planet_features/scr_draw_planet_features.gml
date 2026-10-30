@@ -72,7 +72,6 @@ function FeatureSelected(_feature, _system, _planet) constructor {
                     obj_controller.unit_profile = false;
                     obj_controller.view_squad = false;
                     group_selection(techs, {purpose: "Forge Assignment", purpose_code: "forge_assignment", number: worker_capacity, system: planet_data.system, feature: feature, planet: planet_data.planet, selections: []});
-                    destroy = true;
                 }
                 //TODO move over to using the draw button object ot streamline this
                 var next_position = [
@@ -216,81 +215,12 @@ function FeatureSelected(_feature, _system, _planet) constructor {
                 }
                 break;
             case eP_FEATURES.MISSION:
-                var mission_description = $"";
-                var planet_name = planet_numeral_name(planet_data.planet, obj_star_select.target);
-                var button_text = "none";
-                var button_function = "none";
-                var help = "none";
-                switch (feature.problem) {
-                    case "provide_garrison":
-                        var reason;
-                        if (feature.reason == "importance") {}
-                        mission_description = $"The governor of {planet_name} has requested a force of marines might stay behind following your departure.\n\n\n assign a squad to garrison to initiate mission, The garrison leeader will need to be capable of conducting himself in a diplomatic manner in order for the garrison duration to be a success";
-
-                        break;
-                    case "join_communion":
-                        mission_description = $"The governor of {planet_name} has Invited a delegate of your forces to take part in ceremony.";
-                        break;
-                    case "hunt_beast":
-                        mission_description = $"The governor of {planet_name} has bemoaned the raiding of huge beasts on the fringes of the planets largest city, the numbers have swelled recently and are causing huge damage to the planets small economy. You could send a force to intervene, it would provide a fine test of metal for any that partake.";
-                        help = "This is a good opportunity to provide experience and training, having at least one marine with experience in such matters would be advisable";
-                        button_text = "Send Hunters";
-                        button_function = function() {
-                            var dudes = collect_role_group("all", obj_star_select.target.name);
-                            group_selection(dudes, {purpose: "Beast Hunt", purpose_code: feature.problem, number: 3, system: planet_data.system, feature: obj_star_select.feature, planet: planet_data.planet, array_slot: feature.array_position, selections: []});
-                            destroy = true;
-                        };
-                        break;
-                    case "protect_raiders":
-                        mission_description = $"The governor of {planet_name} has sent many requests to the sector commander for help with defending against xenos raids on the populace of the planet, the reports seem to suggest the xenos in question are in fact dark eldar.";
-                        help = "Set a squad to ambush";
-                        button_text = "Send Squad";
-                        _button_tooltip = "milage may vary on playability of this mission progress at your own risk";
-                        button_function = function() {
-                            var dudes = collect_role_group("all", obj_star_select.target.name);
-                            group_selection(dudes, {purpose: "Select Squad for Ambush", purpose_code: feature.problem, number: 1, system: planet_data.system, feature: obj_star_select.feature, planet: planet_data.planet, array_slot: feature.array_position, select_type: eMISSION_SELECT_TYPE.SQUADS, selections: []});
-                            destroy = true;
-                        };
-                        break;
-                    case "train_forces":
-                        mission_description = $"The governor of {planet_name} fears the planet will not hold in the case of major incursion, it has not seen war in some time and he fears the ineptitude of the commanders available, he asks for aid in planning a thorough plan for defense and schedule of works for a period of at least 6 months.";
-                        help = $"A task best suited to the more knowledgable or wise of your Commanders";
-                        button_text = "Assign Officer";
-                        button_function = function() {
-                            var dudes = collect_role_group(SPECIALISTS_CAPTAIN_CANDIDATES, obj_star_select.target.name);
-                            group_selection(dudes, {purpose: "Select Officer", purpose_code: feature.problem, number: 1, system: planet_data.system, feature: obj_star_select.feature, planet: planet_data.planet, array_slot: feature.array_position, selections: []});
-                            destroy = true;
-                        };
-                        break;
-                    case "Purge_enemies":
-                        mission_description = $"The governor of {planet_name} has expressed his distaste of the neighboring governance of {target.name} {feature.target} he has expressed his views that they engage in heretical ways and harbor xenos enemies though in truth it is more likely that he simply wishes his political enemies disposed of, whatever the case his planet has great economic means and he has made bare his plans to compensate the emperors angels for their aid";
-                        break;
+                feature.draw_data = {
+                    x1 :xx,
+                    y1 : yy,
+                    w : area_width,
                 }
-                draw_text_transformed(xx + (area_width / 2), yy + 5, mission_name_key(feature.problem), 2, 2, 0);
-                draw_set_halign(fa_left);
-                draw_set_color(c_gray);
-                draw_text_ext(xx + 10, yy + 40, mission_description, -1, area_width - 20);
-                var text_body_height = string_height_ext(string_hash_to_newline(mission_description), -1, area_width - 20);
-                if (help != "none") {
-                    draw_text_ext(xx + 10, yy + 40 + text_body_height + 10, help, -1, area_width - 20);
-                    text_body_height += string_height_ext(string_hash_to_newline(mission_description), -1, area_width - 20) + 10;
-                }
-
-                if (button_text != "none") {
-                    var _button = draw_unit_buttons([xx + ((area_width / 2) - (string_width(button_text) / 2)), yy + 40 + text_body_height + 10], button_text);
-                    if (_button_tooltip != "" && scr_hit(_button)) {
-                        tooltip_draw(_button_tooltip);
-                    }
-                    if (point_and_click(_button)) {
-                        if (is_callable(button_function)) {
-                            button_function();
-                            destroy = true;
-                        } else {
-                            tooltip_draw("no implemented function");
-                        }
-                    }
-                }
-                break;
+                feature.planet_draw_feature_selected();
         }
         if (generic) {
             draw_text_ext_transformed(xx + (area_width / 2), yy + 5, title, -1, area_width - 20, 2, 2, 0);

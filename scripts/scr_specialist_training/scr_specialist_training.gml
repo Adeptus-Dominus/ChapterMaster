@@ -193,7 +193,7 @@ function chaplain_training() {
     var _novice_type = obj_ini.player_role_data[eROLE.CHAPLAINASPIRANT].role;
 
     if (training_chaplain > 0) {
-        recruit_count = scr_role_count(_novice_type, "");
+        recruit_count = scr_role_count(_novice_type);
         if (chaplain_points >= 48) {
             if (recruit_count > 0) {
                 var random_marine = scr_random_marine(_novice_type, 0);
@@ -260,7 +260,7 @@ function librarian_training() {
     var _novice_type = obj_ini.player_role_data[eROLE.LIBRARIANASPIRANT].role;
 
     if (training_psyker > 0) {
-        recruit_count = scr_role_count(_novice_type, "");
+        recruit_count = scr_role_count(_novice_type);
         if (psyker_points >= goal) {
             if (recruit_count > 0) {
                 var random_marine = scr_random_marine(_novice_type, 0, {"stat": [["psionic", 2, "more"]]});
@@ -324,7 +324,7 @@ function techmarine_training() {
     tech_points += training_points_values[training_techmarine];
     var _novice_type = obj_ini.player_role_data[eROLE.TECHMARINEASPIRANT].role;
     if (training_techmarine > 0) {
-        recruit_count = scr_role_count(_novice_type, "");
+        recruit_count = scr_role_count(_novice_type);
         var _threshold = 252;
 
         if (obj_controller.faction_status[eFACTION.MECHANICUS] != "War") {

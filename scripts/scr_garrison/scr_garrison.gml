@@ -47,7 +47,7 @@ function GarrisonForce(system, planet, type = "garrison") constructor {
     static evaluate_operative_squad = function(operative_squad) {
         //marine garrison on planet
         var _squad = fetch_squad(operative_squad.reference);
-        if (array_length(_squad.members) > 0) {
+        if (array_length(_squad.get_members()) > 0) {
             array_push(garrison_squads, _squad);
             total_garrison += array_length(_squad.members);
             garrison_force = true;

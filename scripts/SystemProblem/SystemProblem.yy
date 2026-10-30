@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_mission_reward",
+  "%Name":"SystemProblem",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_mission_reward",
+  "name":"SystemProblem",
   "parent":{
-    "name":"Turn",
-    "path":"folders/Scripts/Turn.yy",
+    "name":"Constructors",
+    "path":"folders/Scripts/Constructors.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

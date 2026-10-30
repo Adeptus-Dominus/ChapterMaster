@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_crusade",
+  "%Name":"PlanetProblem",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_crusade",
+  "name":"PlanetProblem",
   "parent":{
-    "name":"Combat",
-    "path":"folders/Scripts/Combat.yy",
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
