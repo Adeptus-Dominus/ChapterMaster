@@ -3101,27 +3101,26 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                                         instance_deactivate_object(id);
                                     }
                                 }
-                                var that, good = 0;
-                                that = instance_nearest(random(room_width), random(room_height), obj_star);
+                                var _gate_planet_name = "";
+                                var that = instance_nearest(random(room_width), random(room_height), obj_star);
                                 for (var index = 0; index < 5; index++) {
-                                    if (good == 0) {
-                                        with (that) {
-                                            var j = 0, onceh = 0;
-                                            for (var k = 0; k < 10; k++) {
-                                                j = floor(random(planets)) + 1;
-                                                if ((array_length(p_feature[j]) == 0) && (onceh == 0)) {
-                                                    onceh = j;
-                                                }
+                                    with (that) {
+                                        var j = 0, onceh = 0;
+                                        for (var k = 0; k < 10; k++) {
+                                            j = floor(random(planets)) + 1;
+                                            if ((array_length(p_feature[j]) == 0) && (onceh == 0)) {
+                                                onceh = j;
                                             }
-                                            if (onceh != 0) {
-                                                array_push(p_feature[onceh], new NewPlanetFeature(eP_FEATURES.WEBWAY));
-                                                obj_controller.temp[90] = planet_numeral_name(onceh, that);
-                                            }
+                                        }
+                                        if (onceh != 0) {
+                                            array_push(p_feature[onceh], new NewPlanetFeature(eP_FEATURES.WEBWAY));
+                                            _gate_planet_name = planet_numeral_name(onceh, that);
+                                            break;
                                         }
                                     }
                                 }
-                                if (good == 1) {
-                                    diplo_text = "A series of labyrinthian corridors and veins connect the galaxy.  The planet you know as " + string(obj_controller.temp[90]) + " contains a dormant entrance to this realm.";
+                                if (_gate_planet_name != "") {
+                                    diplo_text = $"A series of labyrinthian corridors and veins connect the galaxy.  The planet you know as {_gate_planet_name} contains a dormant entrance to this realm.";
                                     found = 1;
                                 }
                             }
@@ -3162,27 +3161,26 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                                         instance_deactivate_object(id);
                                     }
                                 }
-                                var that, good = 0;
-                                that = instance_nearest(random(room_width), random(room_height), obj_star);
+                                var _gate_planet_name = "";
+                                var that = instance_nearest(random(room_width), random(room_height), obj_star);
                                 for (var j = 0; j < 5; j++) {
-                                    if (good == 0) {
-                                        with (that) {
-                                            var onceh = 0;
-                                            for (var k = 0; k < 10; k++) {
-                                                var l = floor(random(planets)) + 1;
-                                                if ((array_length(p_feature[l]) == 0) && (onceh == 0)) {
-                                                    onceh = l;
-                                                }
+                                    with (that) {
+                                        var onceh = 0;
+                                        for (var k = 0; k < 10; k++) {
+                                            var l = floor(random(planets)) + 1;
+                                            if ((array_length(p_feature[l]) == 0) && (onceh == 0)) {
+                                                onceh = l;
                                             }
-                                            if (onceh != 0) {
-                                                array_push(p_feature[onceh], new NewPlanetFeature(eP_FEATURES.WEBWAY));
-                                                obj_controller.temp[90] = planet_numeral_name(onceh, that);
-                                            }
+                                        }
+                                        if (onceh != 0) {
+                                            array_push(p_feature[onceh], new NewPlanetFeature(eP_FEATURES.WEBWAY));
+                                            _gate_planet_name = planet_numeral_name(onceh, that);
+                                            break;
                                         }
                                     }
                                 }
-                                if (good == 1) {
-                                    diplo_text = "The second dormant webway gate lays upon " + string(obj_controller.temp[90]) + ".";
+                                if (_gate_planet_name != "") {
+                                    diplo_text = $"The second dormant webway gate lays upon {_gate_planet_name}.";
                                     found = 1;
                                 }
                             }
