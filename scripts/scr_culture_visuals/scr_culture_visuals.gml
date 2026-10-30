@@ -1280,6 +1280,51 @@ global.modular_drawing_items = [
         chapter_disadv: ["Warp Tainted"],
     },
     {
+        body_types: [0, 1],
+        body_parts : {
+            "head" : "hood"
+        },
+        position : "crown",
+        sprite: spr_marine_cloth_hood,
+        offsets : {
+            "Scout Armour" : {
+                x : 1,
+                y : 10
+            }
+        }
+    },
+    {
+        body_types: [0, 1],
+        body_parts : {
+            "torso" : "robes"
+        },
+        position : "robes",
+        sprite: spr_marine_robes,
+        offsets : {
+            "Scout" : {
+                x : 1,
+                y : 10
+            }
+        },
+        ban: [
+            "tabbard"
+        ]
+    },
+    {
+        body_types: [0, 1],
+        body_parts : {
+            "torso" : "robes"
+        },
+        position : "tabbard",
+        sprite: spr_cloth_tabbard,
+        offsets : {
+            "Scout" : {
+                x : 1,
+                y : 10
+            }
+        },
+    },
+    {
         sprite: spr_mk4_chest_fastenings,
         body_types: [0],
         position: "chest_fastening",
@@ -1554,6 +1599,19 @@ global.modular_drawing_items = [
             "knees",
         ],
         flip: true,
+    },
+    {
+        position: "right_leg",
+        sprite: spr_artificer_right_leg,
+        body_types: [1],
+        ban: [
+            "right_knee",
+            "knees",
+        ],
+        flip: true,
+        roles : [
+            eROLE.HONOURGUARD
+        ]
     },
     {
         position: "right_leg",
