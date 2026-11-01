@@ -71,7 +71,7 @@ function scr_chaos_alliance_test() {
         _that_title = _p_data.name();
 
         var _meeting_arranged = false;
-        _p_data.new_problem("chaos_lord_meeting", 36, {is_trap : _trap});
+        _p_data.new_problem("chaos_lord_meeting", 36, {trap : _trap});
     }
     if (_result == "fail") {
         var rando;

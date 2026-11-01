@@ -1998,6 +1998,7 @@ static __chaos_lord_meeting_per_turn = function(){
             __create_popup_option("Very well.  Lead the way.", "attend_meeting"),
             "I must take care of an urgent matter first.  (Exit)",
         ]
+        _pop_data.options = _options
     }
     if (_master_present && (_force_size > 21)) {
         _popup_text += $"He is to bring you to their master, but before the meeting proceeds, you must bring fewer forces.  Only yourself and up to two squads will be allowed in the presence of {obj_controller.faction_title[10]} {obj_controller.faction_leader[10]}."
@@ -2026,7 +2027,7 @@ static __chaos_lord_meeting_attend_meeting = function(){
      if (!data.trap) {
         obj_controller.complex_event = true;
         obj_controller.current_eventing = "chaos_meeting_1";
-        obj_popup.text = $" are several dozen Chaos Terminators, a Greater Daemon of Tzeentch and Slaanesh, and Chaos Lord {obj_controller.faction_leader[eFACTION.CHAOS]}.";
+        obj_popup.text += $" are several dozen Chaos Terminators, a Greater Daemon of Tzeentch and Slaanesh, and Chaos Lord {obj_controller.faction_leader[eFACTION.CHAOS]}.";
         scr_toggle_diplomacy();
         obj_controller.diplomacy = 10;
         obj_controller.cooldown = 5000;
@@ -2039,7 +2040,7 @@ static __chaos_lord_meeting_attend_meeting = function(){
         delete_mission = true;
         obj_controller.complex_event = true;
         obj_controller.current_eventing = "chaos_trap";
-        obj_popup.text = $" are several dozen Chaos Terminators, a handful of Helbrute, and many more Chaos Space Marines.  The Chaos Lord is nowhere to be seen.  It is a trap.";
+        obj_popup.text += $" are several dozen Chaos Terminators, a handful of Helbrute, and many more Chaos Space Marines.  The Chaos Lord is nowhere to be seen.  It is a trap.";
         reset_popup_options();
 
         var _battle = new_battle(eFACTION.CHAOS , "cs_meeting_battle10");
