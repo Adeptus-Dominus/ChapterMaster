@@ -30,7 +30,7 @@ function scr_ruins_suprise_attack_player() {
 
         obj_ncombat.man_size_limit = man_size_limit;
 
-        _roster = new Roster();
+        var _roster = new Roster();
         with (_roster) {
             roster_location = obj_ground_mission.loc;
             roster_planet = _planet;

@@ -1372,7 +1372,7 @@ static __protect_raiders_squad_selected = function() {
     } else {
         var _battle = new_battle(eFACTION.ELDAR);
 		
-        _roster = new Roster();
+        var _roster = new Roster();
         with (_roster) {
             selected_units = _squad_units;
             setup_battle_formations();
@@ -1618,7 +1618,7 @@ static inquisition_tomb_mission_sequence = function() {
             eFACTION.NECRONS,
         )
 		_battle.battle_enemy_data = _battle_data;
-        _roster = new Roster();
+        var _roster = new Roster();
         with (_roster) {
             roster_location = system.name;
             roster_planet = planet;
@@ -2083,7 +2083,7 @@ static __chaos_lord_meeting_attend_meeting = function(){
                 }
             ]
         };
-        _roster = new Roster();
+        var _roster = new Roster();
         _roster.selected_units = members;
         _roster.setup_battle_formations();
         _roster.add_to_battle();
