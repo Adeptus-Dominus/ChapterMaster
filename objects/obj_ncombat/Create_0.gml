@@ -138,6 +138,17 @@ hulk_forces = 0;
 
 dead_enemies = 0;
 
+enemies = {};
+
+add_to_enemies = function(_data){
+    if (struct_exists(enemies, _data.name)){
+        enemies[$ _data.name] += _data.number;
+    } else {
+        enemies[$ _data.name] = _data.number;
+    }
+    obj_combat.enemy_dudes += _data.number;
+}
+
 units_lost_counts = {};
 vehicles_lost_counts = {};
 
@@ -213,7 +224,7 @@ land_raiders = 0;
 land_speeders = 0;
 whirlwinds = 0;
 
-enemy_dudes = "";
+enemy_dudes = 0;
 
 en_scouts = 0;
 en_tacticals = 0;

@@ -1,0 +1,20 @@
+{
+	"mech" : {
+	    "fortified" : false,
+	    "cols" : [
+	        {
+	            "distance" : 10,
+	            "enemies" : [
+	                {
+	                    "name" : "Thallax",
+	                    "number" : 4
+	                },
+	                {
+	                    "name" : "Praetorian Servitor",
+	                    "number" : 6
+	                }
+	            ]
+	        }
+	    ]
+}
+}
