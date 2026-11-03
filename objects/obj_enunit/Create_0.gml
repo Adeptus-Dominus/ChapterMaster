@@ -75,17 +75,19 @@ dudes_wep2 = array_create(_array_size, "");
 dudes_gear = array_create(_array_size, "");
 dudges_mobi = array_create(_array_size, "");
 
-add_enemies = function(enemy_data){
+add_enemies = function(_enemy_data){
+    LOGGER.info(_enemy_data);
+    static __array_size = 1002
     var _start_index =  1;
-    for (var i = 1; i < _array_size; i++)
+    for (var i = 1; i < __array_size; i++)
         if (dudes[i] == ""){
             _start_index = i;
         }
     {
         
     }
-    for (var i = 0; i < array_length(enemy_data); i++){
-        var _data = enemy_data[i];
+    for (var i = 0; i < array_length(_enemy_data); i++){
+        var _data = _enemy_data[i];
         dudes[_start_index] = _data.name;
         dudes_num[_start_index] = _data.number;
         if (struct_exists(_data, "special")){
