@@ -75,7 +75,6 @@ dudes_gear = array_create(_array_size, "");
 dudges_mobi = array_create(_array_size, "");
 
 add_enemies = function(_enemy_data){
-    LOGGER.info(_enemy_data);
     static __array_size = 1002
     var _start_index =  1;
     for (var i = 1; i < __array_size; i++)
@@ -86,7 +85,8 @@ add_enemies = function(_enemy_data){
     }
     for (var i = 0; i < array_length(_enemy_data); i++){
         var _data = _enemy_data[i];
-        dudes[_start_index] = _data.name;
+        var _name = is_array(_data.name) ? array_random_element(_data.name) : _data.name;
+        dudes[_start_index] = _name;
         dudes_num[_start_index] = _data.number;
         if (struct_exists(_data, "special")){
             dudes_special[_start_index] = _data.special;

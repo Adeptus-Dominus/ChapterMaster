@@ -135,30 +135,63 @@ try {
     }
     LOGGER.info($"default Distance : {xxx}");
     var _enemies_assigned = false;
+
+    if (is_undefined(battle_enemy_data)){
+        enemy_organisations = json_to_gamemaker(working_directory + "/data/technologies.json", json_parse);
+        if (battle_special != ""){
+            if (struct_exists(enemy_organisations, battle_special)){
+                battle_enemy_data = enemy_organisations[$ battle_special]
+            }
+        } else {
+            var _battle_string = $"{global.faction_names[enemy]}_force{force}";
+            if (leader == true){
+                _battle_string = "leader_" + _battle_string;
+            }
+            if (struct_exists(enemy_organisations, _battle_string)){
+                battle_enemy_data = enemy_organisations[$_battle_string]
+            }
+        }
+    } 
     if (!is_undefined(battle_enemy_data)){
         move_data_to_current_scope(battle_enemy_data);
-        if (struct_exists(battle_enemy_data , "cols")){
-            var _cols = battle_enemy_data.cols;
-            for (var i = 0; i < array_length(_cols); i++){
-                var _col = _cols[i];
-                if (struct_exists(_col , "engaged") && (_col.engaged)){
-                    var _nearest_player = instance_nearest(x + 1000, 240, obj_pnunit);
-                    u = instance_create(_nearest_player.x + 10, 240, obj_enunit);
-                    u.engaged = true;
-                    _nearest_player.engaged = true
-                } else {
-                    u = instance_create(_xxx + _col.distance, 240, obj_enunit);
-                }
-                u.flank = struct_exists(_col, "flank") && _col.flank;
-                u.add_enemies(_col.enemies);
-            }
-            _enemies_assigned = true;
-        }
         if (struct_exists(battle_enemy_data , "fortified")){
             fortified = battle_enemy_data.fortified;
         }
         if (struct_exists(battle_enemy_data , "threat")){
             threat = battle_enemy_data.threat;
+        }
+        if (struct_exists(battle_enemy_data , "leader")){
+            leader = battle_enemy_data.leader;
+        }
+        if (struct_exists(battle_enemy_data , "cols")){
+            var _cols = battle_enemy_data.cols;
+            for (var i = 0; i < array_length(_cols); i++){
+                var _col = _cols[i];
+                _u = instance_create(0, 240, obj_enunit);
+                _u.flank = struct_exists(_col, "flank") && _col.flank;
+                _u.add_enemies(_col.enemies);
+                _u.engaged = struct_exists(_col , "engaged") && (_col.engaged);
+                if (_u.flank)
+                    if (_col.distance > 0){
+                        _u.x = instance_nearest(0,240, obj_pnunit).x - _col.distance;
+                    } else {
+                        u.x = instance_nearest(0,240, obj_pnunit).x - 30;
+                    }
+                } else {
+                    _u.x =  _xxx + _col.distance
+                }
+                if (_u.engaged){
+                    var _nearest_player = instance_nearest(_u.flank ? 0 : _xxx, 240, obj_pnunit);
+                    if (!_u.flank){
+                        _u.x = _nearest_player.x + 10;
+                    } else {
+                        u.x = _nearest_player.x - 10;
+                    }
+                    _u.engaged = true;
+                    _nearest_player.engaged = true
+                }
+            }
+            _enemies_assigned = true;
         }
     }
     if (!_enemies_assigned){
@@ -2398,164 +2431,6 @@ try {
 
         // ** Chaos Space Marines Forces **
         if ((enemy == eFACTION.HERETICS) && (battle_special != "ChaosWarband") && (string_count("cs_meeting_battle", battle_special) == 0)) {
-            // Small CSM Group
-            if (threat == 1) {
-                u = instance_nearest(_xxx, 240, obj_enunit);
-                enemy_dudes = "5";
-
-                u.dudes[1] = "Chaos Space Marine";
-                u.dudes_num[1] = 5;
-                enemies[1] = u.dudes[1];
-                u.dudes[2] = "Cultist";
-                u.dudes_num[2] = 30;
-                enemies[2] = u.dudes[2];
-            }
-            // Medium CSM Group
-            if (threat == 2) {
-                u = instance_nearest(_xxx, 240, obj_enunit);
-                enemy_dudes = "41";
-
-                u.dudes[1] = "Chaos Chosen";
-                u.dudes_num[1] = 1;
-                u.dudes[2] = "Chaos Space Marine";
-                u.dudes_num[2] = 35;
-                u.dudes[3] = "Havoc";
-                u.dudes_num[3] = 5;
-
-                instance_deactivate_object(u);
-                u = instance_nearest(_xxx + 10, 240, obj_enunit);
-                u.dudes[1] = "Cultist";
-                u.dudes_num[1] = 100;
-                u.dudes[2] = "Rhino";
-                u.dudes_num[2] = 2;
-                u.dudes[3] = "Predator";
-                u.dudes_num[3] = 4;
-            }
-            // Large CSM Group
-            if (threat == 3) {
-                u = instance_nearest(_xxx, 240, obj_enunit);
-                enemy_dudes = "over 100";
-
-                u.dudes[1] = "Chaos Lord";
-                u.dudes_num[1] = 1;
-                u.dudes[2] = "Chaos Sorcerer";
-                u.dudes_num[2] = 1;
-                u.dudes[3] = "Chaos Chosen";
-                u.dudes_num[3] = 10;
-                u.dudes[4] = "Chaos Space Marine";
-                u.dudes_num[4] = 100;
-
-                instance_deactivate_object(u);
-                u = instance_nearest(_xxx + 10, 240, obj_enunit);
-                u.dudes[1] = "Rhino";
-                u.dudes_num[1] = 6;
-                u.dudes[2] = "Defiler";
-                u.dudes_num[2] = 2;
-
-                instance_deactivate_object(u);
-                u = instance_nearest(_xxx + 20, 240, obj_enunit);
-                u.dudes[1] = "Cultist";
-                u.dudes_num[1] = 300;
-                u.dudes[2] = "Helbrute";
-                u.dudes_num[2] = 3;
-                u.dudes[3] = "Predator";
-                u.dudes_num[3] = 6;
-                u.dudes[4] = "Land Raider";
-                u.dudes_num[4] = 2;
-            }
-            // Small CSM Army
-            if (threat == 4) {
-                u = instance_nearest(_xxx, 240, obj_enunit);
-                enemy_dudes = "over 700";
-
-                u.dudes[1] = "Chaos Lord";
-                u.dudes_num[1] = 1;
-                u.dudes[2] = "Chaos Sorcerer";
-                u.dudes_num[2] = 2;
-                u.dudes[3] = "Chaos Chosen";
-                u.dudes_num[3] = 10;
-
-                instance_deactivate_object(u);
-                u = instance_nearest(_xxx + 10, 240, obj_enunit);
-                u.dudes[1] = "Chaos Space Marine";
-                u.dudes_num[1] = 250;
-                u.dudes[2] = "Havoc";
-                u.dudes_num[2] = 20;
-
-                instance_deactivate_object(u);
-                u = instance_nearest(_xxx + 20, 240, obj_enunit);
-                u.dudes[1] = "Rhino";
-                u.dudes_num[1] = 15;
-                u.dudes[2] = "Defiler";
-                u.dudes_num[2] = 4;
-                u.dudes[3] = "Heldrake";
-                u.dudes_num[3] = 1;
-
-                instance_deactivate_object(u);
-                u = instance_nearest(_xxx + 30, 240, obj_enunit);
-                u.dudes[1] = "Cultist";
-                u.dudes_num[1] = 600;
-                u.dudes[2] = "Helbrute";
-                u.dudes_num[2] = 3;
-                u.dudes[3] = "Predator";
-                u.dudes_num[3] = 6;
-                u.dudes[4] = "Vindicator";
-                u.dudes_num[4] = 3;
-                u.dudes[5] = "Land Raider";
-                u.dudes_num[5] = 2;
-            }
-            // Medium CSM Army
-            if (threat == 5) {
-                u = instance_nearest(_xxx, 240, obj_enunit);
-                enemy_dudes = "over 1200";
-
-                u.dudes[1] = "Chaos Lord";
-                u.dudes_num[1] = 1;
-                u.dudes[2] = "Chaos Sorcerer";
-                u.dudes_num[2] = 3;
-                u.dudes[3] = "Chaos Chosen";
-                u.dudes_num[3] = 20;
-                u.dudes[4] = "Obliterator";
-                u.dudes_num[4] = 6;
-
-                instance_deactivate_object(u);
-                u = instance_nearest(_xxx + 10, 240, obj_enunit);
-                u.dudes[1] = "Chaos Space Marine";
-                u.dudes_num[1] = 600;
-                u.dudes[2] = "Havoc";
-                u.dudes_num[2] = 40;
-                u.dudes[3] = "Raptor";
-                u.dudes_num[3] = 40;
-
-                instance_deactivate_object(u);
-                u = instance_nearest(_xxx + 20, 240, obj_enunit);
-                u.dudes[1] = "Rhino";
-                u.dudes_num[1] = 25;
-                u.dudes[2] = "Defiler";
-                u.dudes_num[2] = 8;
-                u.dudes[3] = "Heldrake";
-                u.dudes_num[3] = 3;
-
-                instance_deactivate_object(u);
-                u = instance_nearest(_xxx + 30, 240, obj_enunit);
-                u.dudes[1] = "Cultist";
-                u.dudes_num[1] = 600;
-                u.dudes[2] = "Helbrute";
-                u.dudes_num[2] = 5;
-                u.dudes[3] = "Predator";
-                u.dudes_num[3] = 10;
-                u.dudes[4] = "Vindicator";
-                u.dudes_num[4] = 6;
-                u.dudes[5] = "Land Raider";
-                u.dudes_num[5] = 3;
-                u.dudes[6] = "Possessed";
-                u.dudes_num[6] = 30;
-
-                u = instance_create(0, 240, obj_enunit);
-                u.dudes[1] = "Chaos Terminator";
-                u.dudes_num[1] = 10;
-                u.flank = 1;
-            }
             // Large CSM Army
             if (threat == 6) {
                 u = instance_nearest(_xxx, 240, obj_enunit);
@@ -2861,194 +2736,7 @@ try {
                 u.dudes_num[1] = 20;
                 u.flank = 1;
             }
-        }
-
-        // ** Necron Forces **
-        if (enemy == eFACTION.NECRONS) {
-            // Small Necron Group
-            if (threat == 1) {
-                u = instance_nearest(_xxx, 240, obj_enunit);
-                enemy_dudes = "11";
-
-                u.dudes[1] = "Necron Destroyer";
-                u.dudes_num[1] = 1;
-                enemies[1] = u.dudes[1];
-                u.dudes[2] = "Necron Warrior";
-                u.dudes_num[2] = 10;
-                enemies[2] = u.dudes[2];
-            }
-            // Medium Necron Group
-            if (threat == 2) {
-                u = instance_nearest(_xxx, 240, obj_enunit);
-                enemy_dudes = "54";
-
-                u.dudes[1] = "Necron Destroyer";
-                u.dudes_num[1] = 1;
-                u.dudes[2] = "Necron Warrior";
-                u.dudes_num[2] = 20;
-                u.dudes[3] = "Necron Immortal";
-                u.dudes_num[3] = 10;
-
-                instance_deactivate_object(u);
-                u = instance_nearest(_xxx + 10, 240, obj_enunit);
-                u.dudes[1] = "Necron Warrior";
-                u.dudes_num[1] = 20;
-                u.dudes[2] = "Canoptek Spyder";
-                u.dudes_num[2] = 3;
-            }
-            // Large Necron Group
-            if (threat == 3) {
-                u = instance_nearest(_xxx, 240, obj_enunit);
-                enemy_dudes = "110";
-
-                u.dudes[1] = "Necron Overlord";
-                u.dudes_num[1] = 1;
-                u.dudes[2] = "Necron Destroyer";
-                u.dudes_num[2] = 3;
-                u.dudes[3] = "Lychguard";
-                u.dudes_num[3] = 5;
-                u.dudes[4] = "Necron Warrior";
-                u.dudes_num[4] = 100;
-
-                instance_deactivate_object(u);
-                u = instance_nearest(_xxx + 10, 240, obj_enunit);
-                u.dudes[1] = "Canoptek Spyder";
-                u.dudes_num[1] = 6;
-                u.dudes[2] = "Canoptek Scarab";
-                u.dudes_num[2] = 120;
-
-                instance_deactivate_object(u);
-                u = instance_nearest(_xxx + 20, 240, obj_enunit);
-                u.dudes[1] = "Doomsday Arc";
-                u.dudes_num[1] = 2;
-                u.dudes[2] = "Monolith";
-                u.dudes_num[2] = 1;
-            }
-            // Small Necron Army
-            if (threat == 4) {
-                u = instance_nearest(_xxx, 240, obj_enunit);
-                enemy_dudes = "290";
-
-                u.dudes[1] = "Necron Overlord";
-                u.dudes_num[1] = 1;
-                u.dudes[2] = "Necron Destroyer";
-                u.dudes_num[2] = 6;
-                u.dudes[3] = "Lychguard";
-                u.dudes_num[3] = 10;
-
-                instance_deactivate_object(u);
-                u = instance_nearest(_xxx + 10, 240, obj_enunit);
-                u.dudes[1] = "Necron Warrior";
-                u.dudes_num[1] = 250;
-                u.dudes[2] = "Necron Immortal";
-                u.dudes_num[2] = 20;
-
-                instance_deactivate_object(u);
-                u = instance_nearest(_xxx + 20, 240, obj_enunit);
-                u.dudes[1] = "Canoptek Spyder";
-                u.dudes_num[1] = 6;
-                u.dudes[2] = "Canoptek Scarab";
-                u.dudes_num[2] = 120;
-                u.dudes[3] = "Tomb Stalker";
-                u.dudes_num[3] = 1;
-
-                instance_deactivate_object(u);
-                u = instance_nearest(_xxx + 30, 240, obj_enunit);
-                u.dudes[1] = "Doomsday Arc";
-                u.dudes_num[1] = 2;
-                u.dudes[2] = "Monolith";
-                u.dudes_num[2] = 1;
-
-                u = instance_create(0, 240, obj_enunit);
-                u.dudes[1] = "Necron Wraith";
-                u.dudes_num[1] = 6;
-                u.flank = 1;
-            }
-            // Medium Necron Army
-            if (threat == 5) {
-                u = instance_nearest(_xxx, 240, obj_enunit);
-                enemy_dudes = "700";
-
-                u.dudes[1] = "Necron Overlord";
-                u.dudes_num[1] = 1;
-                u.dudes[2] = "Necron Destroyer";
-                u.dudes_num[2] = 12;
-                u.dudes[3] = "Lychguard";
-                u.dudes_num[3] = 20;
-
-                instance_deactivate_object(u);
-                u = instance_nearest(_xxx + 10, 240, obj_enunit);
-                u.dudes[1] = "Necron Warrior";
-                u.dudes_num[1] = 600;
-                u.dudes[2] = "Necron Immortal";
-                u.dudes_num[2] = 40;
-
-                instance_deactivate_object(u);
-                u = instance_nearest(_xxx + 20, 240, obj_enunit);
-                u.dudes[1] = "Canoptek Spyder";
-                u.dudes_num[1] = 12;
-                u.dudes[2] = "Canoptek Scarab";
-                u.dudes_num[2] = 240;
-                u.dudes[3] = "Tomb Stalker";
-                u.dudes_num[3] = 2;
-
-                instance_deactivate_object(u);
-                u = instance_nearest(_xxx + 30, 240, obj_enunit);
-                u.dudes[1] = "Doomsday Arc";
-                u.dudes_num[1] = 4;
-                u.dudes[2] = "Monolith";
-                u.dudes_num[2] = 2;
-                u.dudes[3] = "Necron Destroyer";
-                u.dudes_num[3] = 12;
-
-                u = instance_create(0, 240, obj_enunit);
-                u.dudes[1] = "Necron Wraith";
-                u.dudes_num[1] = 12;
-                u.flank = 1;
-            }
-            // Large Necron Army
-            if (threat == 6) {
-                u = instance_nearest(_xxx, 240, obj_enunit);
-                enemy_dudes = "1000";
-
-                u.dudes[1] = "Necron Overlord";
-                u.dudes_num[1] = 2;
-                u.dudes[2] = "Necron Destroyer";
-                u.dudes_num[2] = 20;
-                u.dudes[3] = "Lychguard";
-                u.dudes_num[3] = 40;
-
-                instance_deactivate_object(u);
-                u = instance_nearest(_xxx + 10, 240, obj_enunit);
-                u.dudes[1] = "Necron Warrior";
-                u.dudes_num[1] = 800;
-                u.dudes[2] = "Necron Immortal";
-                u.dudes_num[2] = 50;
-
-                instance_deactivate_object(u);
-                u = instance_nearest(_xxx + 20, 240, obj_enunit);
-                u.dudes[1] = "Canoptek Spyder";
-                u.dudes_num[1] = 16;
-                u.dudes[2] = "Canoptek Scarab";
-                u.dudes_num[2] = 320;
-                u.dudes[3] = "Tomb Stalker";
-                u.dudes_num[3] = 3;
-
-                instance_deactivate_object(u);
-                u = instance_nearest(_xxx + 30, 240, obj_enunit);
-                u.dudes[1] = "Doomsday Arc";
-                u.dudes_num[1] = 6;
-                u.dudes[2] = "Monolith";
-                u.dudes_num[2] = 2;
-                u.dudes[3] = "Necron Destroyer";
-                u.dudes_num[3] = 20;
-
-                u = instance_create(0, 240, obj_enunit);
-                u.dudes[1] = "Necron Wraith";
-                u.dudes_num[1] = 24;
-                u.flank = 1;
-            }
-        }
+        }   
     }
 
     // ** Set up player defenses **

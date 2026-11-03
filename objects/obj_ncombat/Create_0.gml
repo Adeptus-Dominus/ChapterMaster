@@ -296,6 +296,3 @@ register_kills_to_missions = function(casulties){
     }
 }
 
-
-
-
