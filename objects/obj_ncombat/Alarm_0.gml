@@ -1,5 +1,7 @@
 /// @description Initial Setup Alarm, spawns units and sets combat bonuses
 try {
+    instance_activate_object(obj_star_select);
+    instance_destroy(obj_star_select);
     instance_activate_object(obj_enunit);
     instance_activate_object(obj_pnunit);
 
@@ -171,11 +173,11 @@ try {
                 _u.flank = struct_exists(_col, "flank") && _col.flank;
                 _u.add_enemies(_col.enemies);
                 _u.engaged = struct_exists(_col , "engaged") && (_col.engaged);
-                if (_u.flank)
+                if (_u.flank){
                     if (_col.distance > 0){
                         _u.x = instance_nearest(0,240, obj_pnunit).x - _col.distance;
                     } else {
-                        u.x = instance_nearest(0,240, obj_pnunit).x - 30;
+                        u.x = instance_nearest(0,240, obj_pnunit).x - 80;
                     }
                 } else {
                     _u.x =  _xxx + _col.distance
@@ -194,6 +196,8 @@ try {
             _enemies_assigned = true;
         }
     }
+    LOGGER.info(obj_enunit);
+    LOGGER.info(obj_pnunit);
     if (!_enemies_assigned){
         // * Praetorian Servitor Group *
         if (string_count("mech", battle_special) > 0) {

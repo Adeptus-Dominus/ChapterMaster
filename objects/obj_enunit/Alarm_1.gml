@@ -1,6 +1,7 @@
 men = 0;
 veh = 0;
 medi = 0;
+LOGGER.info($"{x}, {y}, {dudes}, {dudes_num}")
 for (var i = 1; i <= 20; i++) {
     att[i] = 0;
     apa[i] = 0;

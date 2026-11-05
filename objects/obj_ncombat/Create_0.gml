@@ -146,7 +146,7 @@ add_to_enemies = function(_data){
     } else {
         enemies[$ _data.name] = _data.number;
     }
-    obj_combat.enemy_dudes += _data.number;
+    enemy_dudes += _data.number;
 }
 
 units_lost_counts = {};

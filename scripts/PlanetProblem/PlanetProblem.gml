@@ -1269,12 +1269,12 @@ static __protect_raiders_battle_aftermath = function() {
         p_data.add_disposition(15);
         var _tixt = $"The Raiding forces on {_planet_string} have been removed.  The citizens and craftsman may sleep more soundly. ({_planet_string} disp +15)";
 
-        scr_popup("Planet Protected", _tixt, "protect_raiders", "");
+        scr_popup("Planet Protected", _tixt, "protect_raiders", {});
         scr_event_log("", $"Governor Request completed: Raiding forces on {_planet_string} have been eliminated.", system.name);
     } else {
         p_data.add_disposition(-15);
         var _tixt = $"The Raiding forces on {_planet_string} dispatched with your forces and will continue with their bloody practices.  The citizens remain unsafe and the governor is unimpressed. (planet disp -15)";
-        scr_popup("Planet Protected", _tixt, "protect_raiders", "");
+        scr_popup("Planet Protected", _tixt, "protect_raiders", {});
         scr_event_log("", $"Governor Request failed: Raiding forces on {_planet_string} continue to harrass population.", system.name);
     }
 }
@@ -1403,7 +1403,7 @@ static __protect_raiders_squad_selected = function() {
                         },
                         {
                             name : "Autarch",
-                            number : 1
+                            number : 5
                         },
                         {
                             name : "Farseer",
@@ -1412,7 +1412,7 @@ static __protect_raiders_squad_selected = function() {
                         },
                         {
                             name : "Night Spinner",
-                            number : 1
+                            number : 4
                         }
                     ]
                 }
