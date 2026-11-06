@@ -35,7 +35,7 @@ global.planet_problem_keys = [
     "inquisition_tomb",
     "ethereal",
     "demon_world",
-    "governor_purge_enemies"
+    "governor_purge_enemies",
     "inquisition_purge"
 ];
 

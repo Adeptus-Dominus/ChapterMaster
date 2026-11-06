@@ -232,28 +232,29 @@ function Problem(_name, _timer, _data) constructor {
     }
 
     static __inquisition_mission_options = function(){
-        var _mission = self;
         var _options = [
             {
                 str1: "Accept",
-                choice_func: method(_mission, function(){
-                    var _func_str = find_func_ref("accept");
-                    if (struct_exists(self, _func_str)){
-                        self[$ _func_str]();
+                choice_func: function(){
+                    var _mission = pop_data.mission;
+                    reset_popup_options();
+                    var _func_str = _mission.find_func_ref("accept");
+                    if (struct_exists(_mission, _func_str)){
+                        with(_mission){
+                            _mission[$ _func_str]();
+                        }
                     } 
                     obj_controller.demanding = 0;
-                })
+                }
             },
         ];
         if (!obj_controller.demanding){
             array_push(_options, {
                 str1: "Refuse",
-                choice_func: method(_mission,function(){
-                    delete_mission = true;
-                    with (obj_popup){
-                        popup_default_close();
-                    }
-                })
+                choice_func: function(){
+                    pop_data.mission.delete_mission = true;
+                    popup_default_close();
+                }
             })
         }
         return _options
