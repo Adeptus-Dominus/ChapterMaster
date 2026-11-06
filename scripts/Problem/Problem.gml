@@ -29,10 +29,15 @@ function Problem(_name, _timer, _data) constructor {
         return struct_exists(data, key);
     }
     static description = function(){
-        var _n = mission_name_key(p_id);
-        _n = _n == "" ? p_id : _n;
-        return _n;
+        if (!has_func("description")){
+            var _n = mission_name_key(p_id);
+            _n = _n == "" ? p_id : _n;
+            return _n;
+        } else {
+            return find_func("description")();
+        }
     }
+
     static __popup_delete = function(){
         with(obj_popup){
             popup_default_close();

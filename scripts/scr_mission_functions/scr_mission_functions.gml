@@ -38,6 +38,7 @@ global.planet_problem_keys = [
     "ethereal",
     "demon_world",
     "governor_purge_enemies"
+    "inquisition_purge"
 ];
 
 function mission_name_key(mission) {

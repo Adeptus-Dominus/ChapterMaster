@@ -1841,14 +1841,11 @@ static __hive_fleet_to_cult_per_turn = function(){
         scr_event_log("red", $"Chief {obj_ini.player_role_data[eROLE.LIBRARIAN].role} reports a disturbance in the warp.  He claims it is like a shadow.");
     }
     if ((obj_controller.known[eFACTION.TYRANIDS] == 0) && (_has_head_lib == 0)) {
-        for (var q = 0; q < array_length(obj_ini.TTRPG[0]); q++) {
-            var _unit = fetch_unit([0, q]);
-            if (_unit.has_role(eROLE.CHAPTERMASTER)) {
-                if (string_count("0", _unit.specials) > 0) {
-                    scr_popup("Shadow in the Warp", "You are distracted and bothered by a nagging sensation in the warp.  It feels as though a shadow descends upon your sector.", "shadow", "");
-                    scr_event_log("red", "You sense a disturbance in the warp.  It feels something like a massive shadow.");
-                }
-                break;
+        if (cm_obj().check_alive()){
+            var _cm = cm_obj().get_struct();
+            if (string_count("0", _cm.specials) > 0) {
+                scr_popup("Shadow in the Warp", "You are distracted and bothered by a nagging sensation in the warp.  It feels as though a shadow descends upon your sector.", "shadow", "");
+                scr_event_log("red", "You sense a disturbance in the warp.  It feels something like a massive shadow.");
             }
         }
     }
@@ -1856,6 +1853,20 @@ static __hive_fleet_to_cult_per_turn = function(){
     obj_controller.known[eFACTION.TYRANIDS] = 1;
 }
 
+static __inquition_purge_description = function(){
+    if (!struct_exists(data, "purge_type")){
+        return "Enact Purge for Inquisition";
+    }
+    switch data.purge_type{
+        case eDROP_TYPE.PURGEFIRE:
+            return "Cleanse Planet for Inquisitor";
+        case eDROP_TYPE.PURGESELECTIVE:
+            return "Purge Leadership for Inquisitor";
+        default:
+            return "Enact Purge for Inquisition";
+    }
+
+}
 static __inquisition_purge_init = function(){
     var _text = "The Inquisition is trusting you with a special mission.";
     if (data.mission_flavour == 1) {
