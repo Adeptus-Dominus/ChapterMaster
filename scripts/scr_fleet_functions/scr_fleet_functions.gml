@@ -29,9 +29,15 @@ function fleet_is_orbiting(){
 
 /// @param {Id.Instance.obj_en_fleet|Id.Instance.obj_p_fleet} _fleet
 function fleet_location_description(_fleet){
-    var _loc = "";
+    var _loc = noone;
+    for (var i = 0; i< array_length(_fleet.problems); i++){
+        var _loc = _fleet.problems[i].fleet_action_description();
+        if (_loc != noone){
+            return _loc;
+        }
+    }
     var _zoomable = true;
-    if (!point_in_rectangle(_fleet.x, _fleet.y, 0, 0, room_width, room_height)){
+    if (!in_room(_fleet)){
         _loc = "Out of Sector"
         _zoomable = false;
     }
@@ -44,7 +50,7 @@ function fleet_location_description(_fleet){
         var _near_star = instance_nearest(_fleet.x, _fleet.y, obj_star);
         _loc = _near_star.name;
     }
-    return {loc: _loc , zoomable : _zoomable};
+    return {loc: _loc != noone ? _loc : "" , zoomable : _zoomable};
 }
 
 
@@ -698,13 +704,6 @@ function fleet_arrival_logic() {
 
     if (trade_goods == "return") {
         instance_destroy();
-    }
-
-    if (owner == eFACTION.INQUISITION) {
-        if (fleet_has_cargo("radical_inquisitor")) {
-            radical_inquisitor_mission_ship_arrival();
-            exit;
-        }
     }
 
     if (!navy) {

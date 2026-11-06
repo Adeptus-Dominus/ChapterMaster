@@ -95,7 +95,7 @@ serialize = function() {
         obj: object_get_name(object_index),
         x,
         y,
-        cargo_data: cargo_data,
+        cargo_data: cargo_data, 
     };
 
     var excluded_from_save = [
@@ -104,10 +104,16 @@ serialize = function() {
         "deserialize",
         "orbiting",
         "in_view",
+        "problems"
     ];
 
     copy_serializable_fields(_object_fleet, _save_data, excluded_from_save);
 
+    save_data.problems = [];
+    for (var i = 0; i < array_length(problems); i++) {
+        array_push(save_data.problems, problems[i].save());
+    }
+    
     return _save_data;
 };
 deserialize = function(_save_data) {

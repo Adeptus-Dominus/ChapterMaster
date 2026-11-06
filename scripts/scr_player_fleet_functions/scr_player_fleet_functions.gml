@@ -618,10 +618,7 @@ function calculate_fleet_bombard_score(ship_array) {
 
 function player_fleet_end_turn(){
 try {
-
-    for (var i = 0; i < array_length(problems); i++){
-        problems[i].basic_turn_end();
-    }
+    run_problem_sequence("basic_turn_end");
     acted = 0;
     if (action == "Lost") {
         set_fleet_location("Lost");
@@ -675,9 +672,7 @@ try {
             if (array_length(complex_route) > 0) {
                 arrive_at_waypoint();
             } else {
-                for (var i = 0; i < array_length(problems); i++){
-                    problems[i].on_arrival();
-                }                
+                run_problem_sequence("on_arrival");
             }
         }
     }

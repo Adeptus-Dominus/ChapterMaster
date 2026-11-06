@@ -147,7 +147,7 @@ function log_ship_effort_purge(){
 function scr_purge_world(action_type, action_score) {
 
     var _mission_override = false;
-    for (var i = 0; i < array_length(problems); i++){
+    for (var i = array_length(problems) - 1; i >=  0; i--){
         var _prob = problems[i];
         if (!_prob.has_func("on_purge")){
             continue;

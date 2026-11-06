@@ -1,3 +1,12 @@
+/// @param {string} _sequence_func
+function run_problem_sequence(_sequence_func){
+    var _prob_length = array_length(problems);
+    for (var i = _prob_length - 1; i >= 0; i--){
+        problems[i][$ _sequence_func]();
+    }    
+}
+
+
 /// @param {string} _name
 /// @param {Real} _timer
 /// @param {struct} _data
@@ -170,6 +179,7 @@ function Problem(_name, _timer, _data) constructor {
     }
 
     static on_squad_selection = function(){
+        instance_activate_object(obj_star);
         var _func = find_func("squad_selected");
         __handle_triggered_mission_func(_func);       
         instance_deactivate_object(obj_star);
@@ -217,28 +227,28 @@ function Problem(_name, _timer, _data) constructor {
     }
 
     static __inquisition_mission_options = function(){
+        var _mission = self;
         var _options = [
             {
                 str1: "Accept",
-                choice_func: function(){
-                    var _mission = pop_data.mission
-                    var _func_str = _mission.find_func_ref("accept");
-                    if (struct_exists(_mission, _func_str)){
-                        with(_mission){
-                            _mission[$ _func_str]();
-                        }
+                choice_func: method(_mission, function(){
+                    var _func_str = find_func_ref("accept");
+                    if (struct_exists(self, _func_str)){
+                        self[$ _func_str]();
                     } 
                     obj_controller.demanding = 0;
-                }
+                })
             },
         ];
         if (!obj_controller.demanding){
             array_push(_options, {
                 str1: "Refuse",
-                choice_func: function(){
-                    pop_data.mission.delete_mission = true;
-                    popup_default_close();
-                }
+                choice_func: method(_mission,function(){
+                    delete_mission = true;
+                    with (obj_popup){
+                        popup_default_close();
+                    }
+                })
             })
         }
         return _options

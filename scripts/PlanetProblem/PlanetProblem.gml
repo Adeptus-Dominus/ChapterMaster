@@ -600,7 +600,7 @@ static __inquisition_recon_per_turn = function() {
     _pop_data.mission = self;
     scr_popup(
         "Investigation Completed", 
-        "Your marines have scouted out {p_data.name()} and satisfied the mission requirements.", 
+        $"Your marines have scouted out {p_data.name()} and satisfied the mission requirements.", 
         "inquisition", 
         _pop_data
     );
@@ -637,7 +637,7 @@ static __inquisition_spyrer_resolve = function() {
     var _planet_name = p_data.name();
     alter_disposition(eFACTION.INQUISITION, -3);
     var _alert_text = $"The Spyrer on {_planet_name} has been left unchecked.  In the ensuing carnage some high-ranking officials have been killed, along with several Nobles.  Panic is running amock in several parts of the hives and the Inquisition is less than pleased.";
-    var _text = "Inquisition Mission Failed: The Spyrer on {_planet_name} was not removed.";
+    var _text = $"Inquisition Mission Failed: The Spyrer on {_planet_name} was not removed.";
     scr_popup("Inquisition Mission Failed", _alert_text, p_id, "");
     scr_event_log("red", _text);
 }
@@ -1017,8 +1017,8 @@ static __mech_tomb_exploring = function() {
     var _battli = 0;
     var _roll1 = roll_dice_chapter(1, 100 + data.turns, "low");
 
-    if (_roll1 > 98) {
-        if ((_roll1 >= 90) && (_roll1 < 98)) {
+    if (_roll1 >= 90) {
+        if (_roll1 < 98) {
             _battli = 1;
         } // oops
         if (_roll1 >= 98) {
@@ -1030,11 +1030,11 @@ static __mech_tomb_exploring = function() {
             var _special = _battli == 1 ? "study2a" : "study2b";
             data.battle_key = _special;
             //currently inaccessible 
-            if (obj_turn_end.battle_opponent[obj_turn_end.battles] == 11) {
+            /*if (obj_turn_end.battle_opponent[obj_turn_end.battles] == 11) {
                 if (p_data.has_feature(eP_FEATURES.CHAOSWARBAND)) {
                     _special = "ChaosWarband";
                 }
-            }
+            }*/
             new_end_turn_battle(13, "mars_tomb",{threat : choose(2,3)});
         }
         if ((_battli > 0) && (p_data.player_forces <= 0)) {
@@ -1092,8 +1092,8 @@ static __mech_tomb_battle_aftermath = function() {
             scr_popup("Mechanicus Mission Failed", $"All of your Astartes and the Mechanicus Research party have been killed down to the last man.  The research is a bust, and the Adeptus Mechanicus is furious with your chapter for not providing enough security.  Relations with them are worse than before. {_disp_change}", "", "");
         }
         if (data.battle_key == "study2b") {
-            battle_object.p_necrons[battle_id] = 5;
-            awaken_tomb_world(battle_object.p_feature[battle_id]);
+            p_data.edit_forces(eFACTION.NECRONS , 5)
+            awaken_tomb_world(p_data.features);
             _disp_change = alter_dispositions([[eFACTION.MECHANICUS, -15], [eFACTION.INQUISITION, -5]], true);
             scr_popup("Mechanicus Mission Failed", $"All of your Astartes and the Mechanicus Research party have been killed down to the last man.  The research is a bust.  To make matters worse the Necron Tomb has fully awakened- countless numbers of the souless machines are now pouring out of the tomb.  The Adeptus Mechanicus are furious with your chapter. {_disp_change}", "necron_army", "");
             scr_alert("", "inquisition", "The Inquisition is displeased with your Chapter for tampering with and awakening a Necron Tomb", 0, 0);
@@ -1338,18 +1338,20 @@ static __protect_raiders_squad_selected = function() {
             _gar_pop.pdata = p_data;
             _gar_pop.text = $"Your Marines make planet fall and are directed to report to the governor for the duration of the operation after a period of reconnaissance dig in for their ambush. After a two weeks have passed A message from the governor reaches your astropaths that your marines have not been heard of for some time, The raiders also were not noted to have arrived onor left the planet";
             var _dead_marine = array_random_index(_squad_units);
-            for (var i = 0; i < array_length(_dead_marine); i++) {
+            var _dead_string = "";
+            for (var i = 0; i < array_length(_squad_units); i++) {
+                var _marine = _squad_units[i];
                 if (i == _dead_marine) {
+                    var _dead_string = "{_marine.name_role()}s body is eventually discovered some way off from the main battle his rent armour and body showing the extent of combat that must have occured";
+                    _dead_marine.kill();
                     continue;
                 }
-
-                var _marine = _dead_marine[i];
 
                 _marine.location_string = "Lost";
                 _marine.ship_location = -1;
                 _marine.planet_location = 0;
             }
-            _gar_pop.text += $"After eventual investigation it appears the eldar anticipated the would be ambushers and turned the tides. {_squad_units[_dead_marine].name_role()}s body is eventually discovered some way off from the main battle his rent armour and body showing the extent of combat that must have occured";
+            _gar_pop.text += $"After eventual investigation it appears the eldar anticipated the would be ambushers and turned the tides. {_dead_string}";
 
             _gar_pop.text += "\nThe total loss of a squad in what was meant to be a routine operation is bad for moral and your chapters reputation you must now decide how to proceed";
 
@@ -1429,6 +1431,7 @@ static __inquisition_tomb_init = function(){
 }
 
 static __inquisition_tomb_accept = function(){
+    data.mission_stage = 0;
     var _text = $"Inquisition Mission Accepted: A bomb must be planted within the Necron Tomb on {p_data.name()} within {timer} months.";
     scr_event_log("", _text, system.name);
 }
@@ -1437,7 +1440,7 @@ static __inquisition_tomb_per_turn = function() {
     if (p_data.player_forces <= 0){
         exit;
     }
-    LOGGER.info($"player on planet with necron mission {name} planet: {planet}");
+    LOGGER.info($"player on planet with necron mission {p_data.name()}");
     var _have_bomb = 0;
     _have_bomb = scr_check_equip("Plasma Bomb", system.name, planet, 0);
     LOGGER.info($"have bomb? {_have_bomb} ");
@@ -1476,28 +1479,10 @@ static __inquisition_tomb_mission_start = function() {
 /// @returns {Undefined}
 static inquisition_tomb_mission_sequence = function() {
     var _battle;
-    var player_forces = system.player_forces;
-    var _penalty = 0;
+    var _penalty = global.character_tester.small_forces_penalty_chart(p_data.player_forces);
     var _roll = roll_dice_chapter(1, 100, "low");
     _battle = 0;
     instance_activate_all();
-
-    // SMALL TEAM OF MARINES
-    if (player_forces > 6) {
-        _penalty = 10;
-    }
-    if (player_forces > 10) {
-        _penalty = 20;
-    }
-    if (player_forces >= 20) {
-        _penalty = 30;
-    }
-    if (player_forces >= 40) {
-        _penalty = 50;
-    }
-    if (player_forces >= 60) {
-        _penalty = 100;
-    }
     _roll += _penalty;
 
     // _roll=30;if (string_count("3",title)>0) then _roll=70;

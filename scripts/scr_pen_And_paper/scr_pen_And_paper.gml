@@ -120,6 +120,26 @@ function PenAndPaperSim() constructor {
             margin,
         ];
     };
+
+    static small_forces_penalty_chart(_forces){
+        var _penalty = 0;
+        // SMALL TEAM OF MARINES
+        if (_forces > 6) {
+            _penalty = 10;
+        }
+        if (_forces > 10) {
+            _penalty = 20;
+        }
+        if (_forces >= 20) {
+            _penalty = 30;
+        }
+        if (_forces >= 40) {
+            _penalty = 50;
+        }
+        if (_forces >= 60) {
+            _penalty = 100;
+        }
+    }
 }
 
 global.character_tester = new PenAndPaperSim();

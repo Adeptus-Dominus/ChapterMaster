@@ -6,9 +6,6 @@ function SystemProblem(_name, _system = noone, _data = {}, _timer = -1) : Proble
 system = _system;
 
 //base only assigns members when data.members exists; default it here without clobbering that
-if (!variable_struct_exists(self, "members")){
-    members = [];
-}
 
 zero_timer_checks = true;
 per_turn_checks = true;
@@ -53,14 +50,6 @@ static basic_turn_end = function(){
     }
 }
 
-
-static find_func = function(trigger_string){
-    var _func_string = find_func_ref(trigger_string);
-    if (struct_exists(self,_func_string)){
-        return self[$ _func_string]
-    }
-    return undefined;
-}
 
 static mark = function(colour){
     with (system){
@@ -136,7 +125,6 @@ static __hunt_inquisitor_init = function(){
 
         if (array_length(_stars) == 0) {
             delete_mission = true;
-            exit;
             LOGGER.error("RE: Inquisitor Hunt,couldn't find a _star");
             exit;
         }

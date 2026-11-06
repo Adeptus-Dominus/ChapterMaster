@@ -107,9 +107,7 @@ arrived_at_star = function(){
 }
 
 arrive_at_waypoint = function(){
-    for (var i = 0; i < array_length(problems); i++){
-        problems[i].on_waypoint_arrival();
-    }
+    run_problem_sequence("on_waypoint_arrival");
     set_new_player_fleet_course(complex_route);
 }
 

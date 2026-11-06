@@ -146,6 +146,15 @@ static __default_mission_log_entry = function(){
     return _data;
 }
 
+static fleet_action_description(){
+    var _func = find_func("action_description");
+    if (!is_undefined(_func)){
+        return _func();
+    }
+    return noone;
+}
+
+
 static __init = function(){
     if (p_id == ""){
         exit;

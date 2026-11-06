@@ -343,7 +343,7 @@ static __mech_mars_on_arrival = function(){
         } else {
             _tech.unload(_planet, fleet.orbiting);
             _tech.job = "none";
-            _tech.add_experience(irandom_range(3, 18));
+            _tech.add_exp(irandom_range(3, 18));
             var gain = irandom(2);
 
             _tech.technology += gain;

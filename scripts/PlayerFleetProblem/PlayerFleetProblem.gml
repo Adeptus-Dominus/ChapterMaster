@@ -65,6 +65,10 @@ static on_merge = function(merged_fleet){
 
 __init();
 
+static __great_crusade_action_description = function(){
+    return {loc : "Crusading", zoomable : in_room()};
+}
+
 static __great_crusade_init = function(){
     var _crusade_direction = point_direction(room_width / 2, room_height / 2, fleet.x, fleet.y);
     fleet.action_x = fleet.x + lengthdir_x(room_width / 2, _crusade_direction);
@@ -125,33 +129,33 @@ static __great_crusade_results = function(){
     //index 1: death_determine 1 //index 2: death_determine 2 /index 3: apoth_recovery
     //index 3 exp_gains irandom + static
     var death_sets = {
-        normal: [
-            80,
-            90,
-            40,
-            [
+        normal: {
+            death_rate: 80,
+            death_rate_exp_adjusted : 90,
+            max_gene_per_apoth : 40,
+            exp_gain_values : [
                 5,
                 10,
             ],
-        ],
-        hard: [
-            60,
-            80,
-            30,
-            [
+        },
+        hard: {
+            death_rate: 60,
+            death_rate_exp_adjusted : 80,
+            max_gene_per_apoth : 30,
+            exp_gain_values : [
                 20,
                 20,
             ],
-        ],
-        brutal: [
-            20,
-            65,
-            20,
-            [
+        },
+        brutal: {
+            death_rate: 20,
+            death_rate_exp_adjusted : 65,
+            max_gene_per_apoth : 20,
+            exp_gain_values : [
                 40,
                 20,
             ],
-        ],
+        },
     };
 
     _death_determination = floor(random(100)) + 1;
@@ -176,6 +180,7 @@ static __great_crusade_results = function(){
     var total_ship_id = array_concat(fleet.capital_num, fleet.frigate_num, fleet.escort_num);
 
     var _units = collect_role_group("all", ["", 0 , total_ship_id],false, {}, true);
+    var _pre_seed = obj_controller.gene_seed;
     for (var i = 0; i < _units.number(); i++){
     	var _unit = _units.units[i];
 
@@ -194,7 +199,7 @@ static __great_crusade_results = function(){
         }
 
         var _dead = false;
-        if (_death_determination > death_data[0] || _death_determination_2 > death_data[1]) {
+        if (_death_determination > death_data.death_rate || _death_determination_2 > death_data.death_rate_exp_adjusted) {
             _dead = true;
             if (_unit.has_role(eROLE.CAPTAIN)) {
                 if (irandom(20) < _unit.luck) {
@@ -222,14 +227,14 @@ static __great_crusade_results = function(){
                 obj_controller.marines--;
             }
 
-            _clean[co] = 1;
+            _clean[_unit.company] = 1;
             _marines_lost++;
             _unit.kill(false, true);
         } else {
             if (_unit.IsSpecialist(SPECIALISTS_APOTHECARIES) && (_unit.gear() == "Narthecium")) {
                 _apoth++;
             }
-            _unit.add_exp(irandom(death_data[3][0]) + death_data[3][1]);
+            _unit.add_exp(irandom(death_data.exp_gain_values[0]) + death_data.exp_gain_values[1]);
 
             if (irandom(99) == 1 && irandom(20) < _unit.luck) {
                 var _heroic_deed = choose("still_standing", "lone_survivor", "beast_slayer");
@@ -239,14 +244,15 @@ static __great_crusade_results = function(){
         }
     }
 
-    if (obj_ini.doomed == 0) {
+    _seed = obj_controller.gene_seed - _pre_seed;
+    if (!obj_ini.doomed) {
         if (_apoth > 0) {
-            _seed = min(_seed, _apoth * death_data[2]);
+            _seed = min(_seed, _apoth * death_data.max_gene_per_apoth);
         }
         if (_apoth == 0) {
             _seed = floor(_seed * 0.2);
         }
-        obj_controller.gene_seed += _seed;
+        obj_controller.gene_seed = _pre_seed + _seed;
     }
 
     with (obj_ini) {
