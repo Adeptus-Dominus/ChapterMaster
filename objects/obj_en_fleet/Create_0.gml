@@ -107,13 +107,12 @@ serialize = function() {
         "problems"
     ];
 
-    copy_serializable_fields(_object_fleet, _save_data, excluded_from_save);
-
-    save_data.problems = [];
+    _save_data.problems = [];
     for (var i = 0; i < array_length(problems); i++) {
-        array_push(save_data.problems, problems[i].save());
+        array_push(_save_data.problems, problems[i].save());
     }
     
+    copy_serializable_fields(_object_fleet, _save_data, excluded_from_save);
     return _save_data;
 };
 deserialize = function(_save_data) {
