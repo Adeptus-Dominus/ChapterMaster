@@ -30,8 +30,6 @@ global.planet_problem_keys = [
     "inquisition_spyrer",
     "inquisitor",
     "inquisition_recon",
-    "cleanse",
-    "purge",
     "inquisition_tyranid_org",
     "artifact_loan",
     "inquisition_tomb",

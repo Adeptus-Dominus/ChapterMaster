@@ -138,8 +138,8 @@ function scr_inquisition_mission(event, forced_mission = eINQUISITION_MISSION.RA
 
 function mission_inquisition_ethereal() {
     LOGGER.info("RE: Ethereal Capture");
-    var stars = scr_get_stars();
-    var _valid_stars = array_filter_ext(stars, function(_star, index) {
+    var _stars = scr_get_stars();
+    var _valid_stars = array_filter_ext(_stars, function(_star, index) {
         for (var i = 1; i <= _star.planets; i++) {
             if (_star.p_owner[i] == eFACTION.TAU && _star.p_tau[i] >= 4) {
                 return true;
@@ -309,8 +309,8 @@ function hunt_inquisition_spared_inquisitor_consequence(event) {
 
 function mission_inquistion_spyrer() {
     LOGGER.info("RE: Spyrer");
-    var stars = scr_get_stars();
-    var _valid_stars = array_filter_ext(stars, function(_star, index) {
+    var _stars = scr_get_stars();
+    var _valid_stars = array_filter_ext(_stars, function(_star, index) {
         return scr_star_has_planet_with_type(_star, "Hive");
     });
 
@@ -319,36 +319,36 @@ function mission_inquistion_spyrer() {
         exit;
     }
     var _star = array_random_element(_valid_stars);
-    var planet = scr_get_planet_with_type(_star, "Hive");
+    var _planet = scr_get_planet_with_type(_star, "Hive");
     var _eta = scr_mission_eta(_star.x, _star.y, 1);
     _eta = min(max(_eta, 6), 50);
 
-    var _p_data = _star.get_planet_data(planet);
+    var _p_data = _star.get_planet_data(_planet);
     _p_data.new_problem("inquisition_spyrer", _eta, {});
 }
 
 function mission_inquistion_purge() {
     LOGGER.info("RE: Purge");
-    var mission_flavour = choose(1, 1, 1, 2, 2, 3);
+    var _mission_flavour = choose(1, 1, 1, 2, 2, 3);
 
-    var stars = scr_get_stars();
+    var _stars = scr_get_stars();
     var _valid_stars = [];
 
-    if (mission_flavour == 3) {
-        _valid_stars = array_filter_ext(stars, function(_star, index) {
-            var hive_idx = scr_get_planet_with_type(_star, "Hive");
-            return scr_is_planet_owned_by_allies(_star, hive_idx);
+    if (_mission_flavour == 3) {
+        _valid_stars = array_filter_ext(_stars, function(_star, index) {
+            var _hive_idx = scr_get_planet_with_type(_star, "Hive");
+            return scr_is_planet_owned_by_allies(_star, _hive_idx);
         });
     } else {
-        _valid_stars = array_filter_ext(stars, function(_star, index) {
-            var hive_idx = scr_get_planet_with_type(_star, "Hive");
-            var desert_idx = scr_get_planet_with_type(_star, "Desert");
-            var temperate_idx = scr_get_planet_with_type(_star, "Temperate");
-            var allied_hive = scr_is_planet_owned_by_allies(_star, hive_idx);
-            var allied_desert = scr_is_planet_owned_by_allies(_star, desert_idx);
-            var allied_temperate = scr_is_planet_owned_by_allies(_star, temperate_idx);
+        _valid_stars = array_filter_ext(_stars, function(_star, index) {
+            var _hive_idx = scr_get_planet_with_type(_star, "Hive");
+            var _desert_idx = scr_get_planet_with_type(_star, "Desert");
+            var _temperate_idx = scr_get_planet_with_type(_star, "Temperate");
+            var _allied_hive = scr_is_planet_owned_by_allies(_star, _hive_idx);
+            var _allied_desert = scr_is_planet_owned_by_allies(_star, _desert_idx);
+            var _allied_temperate = scr_is_planet_owned_by_allies(_star, _temperate_idx);
 
-            return allied_hive || allied_desert || allied_temperate;
+            return _allied_hive || _allied_desert || _allied_temperate;
         });
     }
 
@@ -359,50 +359,35 @@ function mission_inquistion_purge() {
 
     var _star = array_random_element(_valid_stars);
 
-    var planet = -1;
-    if (mission_flavour == 3) {
-        planet = scr_get_planet_with_type(_star, "Hive");
+    var _planet = -1;
+    if (_mission_flavour == 3) {
+        _planet = scr_get_planet_with_type(_star, "Hive");
     } else {
-        var hive_planet = scr_get_planet_with_type(_star, "Hive");
-        var desert_planet = scr_get_planet_with_type(_star, "Desert");
-        var temperate_planet = scr_get_planet_with_type(_star, "Temperate");
-        if (scr_is_planet_owned_by_allies(_star, hive_planet)) {
-            planet = hive_planet;
-        } else if (scr_is_planet_owned_by_allies(_star, temperate_planet)) {
-            planet = temperate_planet;
-        } else if (scr_is_planet_owned_by_allies(_star, desert_planet)) {
-            planet = desert_planet;
+        var _hive_planet = scr_get_planet_with_type(_star, "Hive");
+        var _desert_planet = scr_get_planet_with_type(_star, "Desert");
+        var _temperate_planet = scr_get_planet_with_type(_star, "Temperate");
+        if (scr_is_planet_owned_by_allies(_star, _hive_planet)) {
+            _planet = _hive_planet;
+        } else if (scr_is_planet_owned_by_allies(_star, _temperate_planet)) {
+            _planet = _temperate_planet;
+        } else if (scr_is_planet_owned_by_allies(_star, _desert_planet)) {
+            _planet = _desert_planet;
         }
     }
 
-    if (planet == -1) {
+    if (_planet == -1) {
         LOGGER.error("RE: Purge, couldn't find planet");
         exit;
     }
 
-    var _eta = infinity;
-    with (obj_p_fleet) {
-        if (capital_number + frigate_number == 0) {
-            _eta = min(scr_mission_eta(_star.x, _star.y, 1), _eta); // this is wrong
-        }
-    }
-    _eta += 10;
-    _eta = min(max(_eta, 12), 100);
-
-    var text = "The Inquisition is trusting you with a special mission.";
-    var _purge_type = eDROP_TYPE.PURGEFIRE;
-    if (mission_flavour < 3){
-        _purge_type = eDROP_TYPE.PURGESELECTIVE;
-    } 
-
     var _p_data = _star.get_planet_data(planet);
-    _p_data.new_problem("inquisition_purge", _eta, {mission_flavour, purge_type:_purge_type});
+    _p_data.new_problem("inquisition_purge", 1, {mission_flavour : _mission_flavour});
 
 }
 
 function mission_investigate_planet() {
-    var stars = scr_get_stars();
-    var _valid_stars = array_filter_ext(stars, function(_star, index) {
+    var _stars = scr_get_stars();
+    var _valid_stars = array_filter_ext(_stars, function(_star, index) {
         if (scr_star_has_planet_with_feature(_star, eP_FEATURES.ANCIENT_RUINS)) {
             var fleet = instance_nearest(_star.x, _star.y, obj_p_fleet);
             if (fleet == undefined || point_distance(_star.x, _star.y, fleet.x, fleet.y) >= 160) {

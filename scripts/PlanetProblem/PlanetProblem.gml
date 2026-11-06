@@ -1853,7 +1853,7 @@ static __hive_fleet_to_cult_per_turn = function(){
     obj_controller.known[eFACTION.TYRANIDS] = 1;
 }
 
-static __inquition_purge_description = function(){
+static __inquisition_purge_description = function(){
     if (!struct_exists(data, "purge_type")){
         return "Enact Purge for Inquisition";
     }
@@ -1868,6 +1868,24 @@ static __inquition_purge_description = function(){
 
 }
 static __inquisition_purge_init = function(){
+    if (!struct_exists(data, "mission_flavour")){
+        data.mission_flavour = choose(1, 1, 1, 2, 2, 3);
+    }
+    var _purge_type = eDROP_TYPE.PURGEFIRE;
+    if (data.mission_flavour < 3){
+        _purge_type = eDROP_TYPE.PURGESELECTIVE;
+    }
+    data.purge_type = _purge_type;
+    var _eta = infinity;
+    with (obj_p_fleet) {
+        if (capital_number + frigate_number == 0) {
+            _eta = min(scr_mission_eta(_star.x, _star.y, 1), _eta); // this is wrong
+        }
+    }
+    _eta += 10;
+    _eta = min(max(_eta, 12), 100);
+
+    timer = _eta;
     var _text = "The Inquisition is trusting you with a special mission.";
     if (data.mission_flavour == 1) {
         _text += $"  A number of high-ranking nobility on the {p_data.name()} are being difficult and harboring heretical thoughts.  They are to be selectively purged within {timer} months.  Can your chapter handle this mission?";
