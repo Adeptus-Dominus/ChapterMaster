@@ -76,7 +76,7 @@ selection_window.inside_method = function() {
 
         var math_string = (string_width("Manage Units") / 2) + 6;
         if (point_and_click(draw_unit_buttons([center_draw - math_string, yy + height - 50], "Manage Units", [1, 1], c_blue))) {
-            var _fleet_array = fleet_full_ship_array(current_fleet);
+            var _fleet_array = current_fleet.full_ship_array();
             var _fleet_marines = collect_role_group("all", ["", 0, _fleet_array]);
 
             group_selection(_fleet_marines, {purpose: "Ship Management", purpose_code: "manage", number: 0, system: 0, ships: _fleet_array, feature: "none", planet: 0, selections: []});

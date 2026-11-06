@@ -10,44 +10,6 @@ for (var i = 1; i <= 20; i++) {
     // if (wep_owner[i]!="") and (wep_num[i]>1) then wep_owner[i]="";// What if they are using two ranged weapons?  Hmmmmm?
 }
 
-for (var j = 1; j <= 700; j++) {
-    if (dudes_num[j] <= 0) {
-        dudes[j] = "";
-        dudes_special[j] = "";
-        dudes_num[j] = 0;
-        dudes_ac[j] = 0;
-        dudes_hp[j] = 0;
-        dudes_vehicle[j] = 0;
-        dudes_damage[j] = 0;
-        dudes_attack[j] = 1;
-        dudes_ranged[j] = 1;
-        dudes_defense[j] = 1;
-    }
-    if ((dudes[j] == "") && (dudes[j + 1] != "")) {
-        dudes[j] = dudes[j + 1];
-        dudes_special[j] = dudes_special[j + 1];
-        dudes_num[j] = dudes_num[j + 1];
-        dudes_ac[j] = dudes_ac[j + 1];
-        dudes_hp[j] = dudes_hp[j + 1];
-        dudes_vehicle[j] = dudes_vehicle[j + 1];
-        dudes_damage[j] = dudes_damage[j + 1];
-        dudes_attack[j] = dudes_attack[j + 1];
-        dudes_ranged[j] = dudes_ranged[j + 1];
-        dudes_defense[j] = dudes_defense[j + 1];
-
-        dudes[j + 1] = "";
-        dudes_special[j + 1] = "";
-        dudes_num[j + 1] = 0;
-        dudes_ac[j + 1] = 0;
-        dudes_hp[j + 1] = 0;
-        dudes_vehicle[j + 1] = 0;
-        dudes_damage[j + 1] = 0;
-        dudes_ranged[j + 1] = 1;
-        dudes_defense[j + 1] = 1;
-        dudes_attack[j + 1] = 1;
-    }
-}
-
 for (var j = 1; j <= 20; j++) {
     if (obj_ncombat.started == 0) {
         if (dudes[j] == "Malcadon Spyrer") {

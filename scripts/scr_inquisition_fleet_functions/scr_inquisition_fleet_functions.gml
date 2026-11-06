@@ -17,46 +17,6 @@ function hunt_player_serfs(planet, system) {
     add_event({planet: planet, system: system, e_id: "remove_surf", duration: irandom_range(1, 4)});
 }
 
-function radical_inquisitor_mission_ship_arrival() {
-    //TODO make a centralised player_fleet present method
-    var _p_fleet = instance_nearest(x, y, obj_p_fleet);
-    var _intercept_fleet = noone;
-    if (instance_exists(_p_fleet) && point_distance(x, y, _p_fleet.x, _p_fleet.y) < 10 && instance_exists(_p_fleet.orbiting)) {
-        _intercept_fleet = _p_fleet;
-    }
-
-    var _radical_inquisitor = cargo_data.radical_inquisitor;
-    if (!instance_exists(_intercept_fleet)) {
-        random_sector_exit_point();
-        action_spd = 256;
-        action = "";
-        set_fleet_movement();
-        instance_destroy();
-        alter_disposition(eFACTION.INQUISITION, -15);
-        scr_popup("Inquisitor Mission Failed", "The radical Inquisitor has departed from the planned intercept coordinates.  They will now be nearly impossible to track- the mission is a failure.", "inquisition", "");
-        scr_event_log("red", "Inquisition Mission Failed: The radical Inquisitor has departed from the planned intercept coordinates.");
-        resolve_radical_inquisitor_mission(_radical_inquisitor);
-    } else {
-        action = "";
-        var _gender = string_gender_third_person(_radical_inquisitor.inquisitor_gender);
-
-        var _tixt = $"You have located the radical Inquisitor.  As you prepare to destroy their ship, and complete the mission, you recieve a hail- it appears as though {_gender} wishes to speak.";
-        _radical_inquisitor.options = [
-            {
-                str1: "Destroy their vessel",
-                choice_func: mission_hunt_inquisitor_destroy_inquisitor_ship,
-            },
-            {
-                str1: "Hear them out",
-                choice_func: mission_hunt_inquisitor_hear_out_radical_inquisitor,
-            },
-        ];
-        _radical_inquisitor.inquisitor_ship = self.id;
-        scr_popup("Inquisitor Located", _tixt, "inquisition", _radical_inquisitor);
-    }
-    exit;
-}
-
 function inquisition_fleet_inspection_chase() {
     var good = 0, acty = "";
     var reset = !instance_exists(target);

@@ -1,6 +1,4 @@
 try {
-    var orb = orbiting;
-
     if ((round(owner) != eFACTION.IMPERIUM) && (navy == 1)) {
         owner = 0;
     }
@@ -202,15 +200,6 @@ try {
                 set_fleet_movement();
                 trade_goods = "|DELETE|";
                 exit;
-            }
-        }
-
-        if (owner == eFACTION.TAU) {
-            if (instance_exists(obj_p_fleet) && (obj_controller.known[eFACTION.TAU] == 0)) {
-                var p_ship = instance_nearest(x, y, obj_p_fleet);
-                if ((p_ship.action == "") && (point_distance(x, y, p_ship.x, p_ship.y) <= 80)) {
-                    obj_controller.known[eFACTION.TAU] = 1;
-                }
             }
         }
 

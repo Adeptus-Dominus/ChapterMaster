@@ -6,7 +6,7 @@ if (capital_number == 0) {
 var c = 0;
 var good = 0;
 var capital_id;
-var capital_list = fleet_full_ship_array(,, true, true);
+var capital_list = full_ship_array(false, true, true);
 for (var i = 0; i < array_length(capital_list); i++) {
     // Find the healthiest capital ship
     capital_id = capital_list[i];
@@ -20,7 +20,7 @@ for (var i = 0; i < array_length(capital_list); i++) {
 }
 
 if (good > 0) {
-    var ships_list = fleet_full_ship_array(, true);
+    var ships_list = full_ship_array(, true);
     var _art_keys = struct_get_names(obj_ini.artifact_map);
     for (var _i = 0; _i < array_length(_art_keys); _i++) {
         var arti = obj_ini.artifact_map[$ _art_keys[_i]];

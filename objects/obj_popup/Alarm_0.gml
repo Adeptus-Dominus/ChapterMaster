@@ -25,7 +25,7 @@ if (battle_special == 3.1) {
     instance_activate_object(obj_ncombat);
     instance_activate_object(obj_pnunit);
 
-    _roster = new Roster();
+    var _roster = new Roster();
     with (_roster) {
         roster_location = obj_ncombat.battle_loc;
         roster_planet = obj_ncombat.battle_id;

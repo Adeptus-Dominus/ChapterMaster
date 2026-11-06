@@ -53,7 +53,7 @@ function CompanyStruct(comp) constructor {
                     continue;
                 }
                 _search_squad.update_fulfilment();
-                if (bool(array_length(_search_squad.members))) {
+                if (bool(array_length(_search_squad.get_members()))) {
                     array_push(company_squads, _search_squad);
                 }
             }
@@ -81,7 +81,7 @@ function CompanyStruct(comp) constructor {
                 var _search_squad = _unit.get_squad();
                 _search_squad.update_fulfilment();
 
-                if (array_length(_search_squad.members) > 0) {
+                if (array_length(_search_squad.get_members()) > 0) {
                     array_push(company_squads, _search_squad);
                     array_push(_squad_ids, _unit.squad);
                 }
@@ -222,7 +222,7 @@ function CompanyStruct(comp) constructor {
         if (!is_struct(_cur_squad)) {
             return;
         }
-        var _member_count = array_length(_cur_squad.members);
+        var _member_count = array_length(_cur_squad.get_members());
         var _reset_surface = false;
         var _member = _member_count > 0 ? _cur_squad.fetch_member(0) : undefined;
         var _first_uid = is_struct(_member) ? _member.uid : undefined;
@@ -235,11 +235,7 @@ function CompanyStruct(comp) constructor {
         for (var i = 0; i < _member_count; i++) {
             _member = _cur_squad.fetch_member(i);
             if (_reset_surface || i >= array_length(squad_draw_surfaces)) {
-                if (is_struct(_member)) {
-                    array_push(squad_draw_surfaces, [_member.uid, _member.draw_unit_image()]);
-                } else {
-                    array_push(squad_draw_surfaces, [undefined, undefined]);
-                }
+                array_push(squad_draw_surfaces, [_member.uid, _member.draw_unit_image()]);
             }
             var _mem_draw_data = squad_draw_surfaces[i];
             if (!is_array(_mem_draw_data) || !is_struct(_member)) {

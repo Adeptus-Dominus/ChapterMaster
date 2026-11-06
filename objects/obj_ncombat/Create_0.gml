@@ -29,6 +29,9 @@ vehicles_to_recover = 0;
 end_alive_units = [];
 average_battle_exp_gain = 0;
 upgraded_librarians = [];
+special_feature = undefined;
+reduce_fortification = true;
+reduce_power = true;
 
 view_x = obj_controller.x;
 view_y = obj_controller.y;
@@ -63,9 +66,7 @@ if (instance_exists(obj_star)) {
     LOGGER.error("No obj_star instance found for combat; battle_object defaulted to noone");
 }
 battle_id = 0;
-battle_mission = "";
 battle_special = "";
-battle_data = {};
 defeat = 0;
 defeat_message = 0;
 fugg = 0;
@@ -77,7 +78,6 @@ stage_elapsed2 = 0;
 battle_over = 0;
 done = 0;
 
-captured_gaunt = 0;
 ethereal = 0;
 hulk_treasure = 0;
 four_show = 0;
@@ -118,6 +118,7 @@ charged = 0;
 
 fadein = 40;
 enemy = undefined;
+battle_enemy_data = undefined;
 enem = "Orks";
 enem_sing = "Ork";
 threat = 0;
@@ -136,6 +137,17 @@ enemy_max = 0;
 hulk_forces = 0;
 
 dead_enemies = 0;
+
+enemies = {};
+
+add_to_enemies = function(_data){
+    if (struct_exists(enemies, _data.name)){
+        enemies[$ _data.name] += _data.number;
+    } else {
+        enemies[$ _data.name] = _data.number;
+    }
+    enemy_dudes += _data.number;
+}
 
 units_lost_counts = {};
 vehicles_lost_counts = {};
@@ -212,7 +224,7 @@ land_raiders = 0;
 land_speeders = 0;
 whirlwinds = 0;
 
-enemy_dudes = "";
+enemy_dudes = 0;
 
 en_scouts = 0;
 en_tacticals = 0;
@@ -271,3 +283,16 @@ betchers = obj_ini.betchers; // slight melee penalty
 catalepsean = obj_ini.catalepsean; // minor global attack decrease
 occulobe = obj_ini.occulobe; // penalty if morning and susceptible to flash grenades
 mucranoid = obj_ini.mucranoid; // chance to short-circuit
+
+valid_special_feature = function(){return (is_struct(special_feature) && is_instanceof(special_feature, Problem))}
+
+register_kills_to_missions = function(casulties){
+    if (obj_ncombat.battle_special != ""){
+        if (obj_ncombat.valid_special_feature()){
+            var _feat = obj_ncombat.special_feature;
+            _feat.casualty_packet = casulties;
+            _feat.battle_on_enemy_casulties();
+        }
+    }
+}
+

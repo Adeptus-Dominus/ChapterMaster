@@ -135,14 +135,6 @@ global.xenos_factions = [
     eFACTION.TYRANIDS,
 ];
 
-global.fleet_move_options = [
-    "move",
-    "crusade1",
-    "crusade2",
-    "crusade3",
-    "mars_spelunk1",
-];
-
 global.alliance_grades = [
     "Hated",
     "Hostile",

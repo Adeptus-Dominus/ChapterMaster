@@ -71,7 +71,6 @@ Arguments with stars `(argument*)` can be omitted.
 - `mechmission (mission*)` - triggers a mechaniicus mission, can be run as is or with an optional missiono parameter to specify a particular mission
     - `mech_mars`
     - `mech_raider`
-    - `mech_bionics`
 
     
 ### Disposition:

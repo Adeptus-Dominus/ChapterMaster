@@ -1,0 +1,368 @@
+{
+	"mech" : {
+	    "fortified" : false,
+	    "cols" : [
+	        {
+	            "distance" : 10,
+	            "enemies" : [
+	                {
+	                    "name" : "Thallax",
+	                    "number" : 4
+	                },
+	                {
+	                    "name" : "Praetorian Servitor",
+	                    "number" : 6
+	                }
+	            ]
+	        }
+	    ]
+	},
+    "Necron Dynasties_force1": {
+        "threat": 1,
+        "fortified": false,
+        "cols": [
+            {
+                "distance": 0,
+                "enemies": [
+                    { "name": "Necron Destroyer", "number": 1 },
+                    { "name": "Necron Warrior", "number": 10 }
+                ]
+            }
+        ]
+    },
+    "Necron Dynasties_force2": {
+        "threat": 2,
+        "fortified": false,
+        "cols": [
+            {
+                "distance": 0,
+                "enemies": [
+                    { "name": "Necron Destroyer", "number": 1 },
+                    { "name": "Necron Warrior", "number": 20 },
+                    { "name": "Necron Immortal", "number": 10 }
+                ]
+            },
+            {
+                "distance": 10,
+                "enemies": [
+                    { "name": "Necron Warrior", "number": 20 },
+                    { "name": "Canoptek Spyder", "number": 3 }
+                ]
+            }
+        ]
+    },
+    "Necron Dynasties_force3": {
+        "threat": 3,
+        "fortified": false,
+        "cols": [
+            {
+                "distance": 0,
+                "enemies": [
+                    { "name": "Necron Overlord", "number": 1 },
+                    { "name": "Necron Destroyer", "number": 3 },
+                    { "name": "Lychguard", "number": 5 },
+                    { "name": "Necron Warrior", "number": 100 }
+                ]
+            },
+            {
+                "distance": 10,
+                "enemies": [
+                    { "name": "Canoptek Spyder", "number": 6 },
+                    { "name": "Canoptek Scarab", "number": 120 }
+                ]
+            },
+            {
+                "distance": 20,
+                "enemies": [
+                    { "name": "Doomsday Arc", "number": 2 },
+                    { "name": "Monolith", "number": 1 }
+                ]
+            }
+        ]
+    },
+    "Necron Dynasties_force4": {
+        "threat": 4,
+        "fortified": false,
+        "cols": [
+            {
+                "distance": 0,
+                "enemies": [
+                    { "name": "Necron Overlord", "number": 1 },
+                    { "name": "Necron Destroyer", "number": 6 },
+                    { "name": "Lychguard", "number": 10 }
+                ]
+            },
+            {
+                "distance": 10,
+                "enemies": [
+                    { "name": "Necron Warrior", "number": 250 },
+                    { "name": "Necron Immortal", "number": 20 }
+                ]
+            },
+            {
+                "distance": 20,
+                "enemies": [
+                    { "name": "Canoptek Spyder", "number": 6 },
+                    { "name": "Canoptek Scarab", "number": 120 },
+                    { "name": "Tomb Stalker", "number": 1 }
+                ]
+            },
+            {
+                "distance": 30,
+                "enemies": [
+                    { "name": "Doomsday Arc", "number": 2 },
+                    { "name": "Monolith", "number": 1 }
+                ]
+            },
+            {
+                "distance": 0,
+                "flank": true,
+                "enemies": [
+                    { "name": "Necron Wraith", "number": 6 }
+                ]
+            }
+        ]
+    },
+    "Necron Dynasties_force5": {
+        "threat": 5,
+        "fortified": false,
+        "cols": [
+            {
+                "distance": 0,
+                "enemies": [
+                    { "name": "Necron Overlord", "number": 1 },
+                    { "name": "Necron Destroyer", "number": 12 },
+                    { "name": "Lychguard", "number": 20 }
+                ]
+            },
+            {
+                "distance": 10,
+                "enemies": [
+                    { "name": "Necron Warrior", "number": 600 },
+                    { "name": "Necron Immortal", "number": 40 }
+                ]
+            },
+            {
+                "distance": 20,
+                "enemies": [
+                    { "name": "Canoptek Spyder", "number": 12 },
+                    { "name": "Canoptek Scarab", "number": 240 },
+                    { "name": "Tomb Stalker", "number": 2 }
+                ]
+            },
+            {
+                "distance": 30,
+                "enemies": [
+                    { "name": "Doomsday Arc", "number": 4 },
+                    { "name": "Monolith", "number": 2 },
+                    { "name": "Necron Destroyer", "number": 12 }
+                ]
+            },
+            {
+                "distance": 0,
+                "flank": true,
+                "enemies": [
+                    { "name": "Necron Wraith", "number": 12 }
+                ]
+            }
+        ]
+    },
+    "Necron Dynasties_force6": {
+        "threat": 6,
+        "fortified": false,
+        "cols": [
+            {
+                "distance": 0,
+                "enemies": [
+                    { "name": "Necron Overlord", "number": 2 },
+                    { "name": "Necron Destroyer", "number": 20 },
+                    { "name": "Lychguard", "number": 40 }
+                ]
+            },
+            {
+                "distance": 10,
+                "enemies": [
+                    { "name": "Necron Warrior", "number": 800 },
+                    { "name": "Necron Immortal", "number": 50 }
+                ]
+            },
+            {
+                "distance": 20,
+                "enemies": [
+                    { "name": "Canoptek Spyder", "number": 16 },
+                    { "name": "Canoptek Scarab", "number": 320 },
+                    { "name": "Tomb Stalker", "number": 3 }
+                ]
+            },
+            {
+                "distance": 30,
+                "enemies": [
+                    { "name": "Doomsday Arc", "number": 6 },
+                    { "name": "Monolith", "number": 2 },
+                    { "name": "Necron Destroyer", "number": 20 }
+                ]
+            },
+            {
+                "distance": 0,
+                "flank": true,
+                "enemies": [
+                    { "name": "Necron Wraith", "number": 24 }
+                ]
+            }
+        ]
+    },
+    "Heretics_force1": {
+        "threat": 1,
+        "fortified": false,
+        "cols": [
+            {
+                "distance": 0,
+                "enemies": [
+                    { "name": "Chaos Space Marine", "number": 5 },
+                    { "name": "Cultist", "number": 30 }
+                ]
+            }
+        ]
+    },
+    "Heretics_force2": {
+        "threat": 2,
+        "fortified": false,
+        "cols": [
+            {
+                "distance": 0,
+                "enemies": [
+                    { "name": "Chaos Chosen", "number": 1 },
+                    { "name": "Chaos Space Marine", "number": 35 },
+                    { "name": "Havoc", "number": 5 }
+                ]
+            },
+            {
+                "distance": 10,
+                "enemies": [
+                    { "name": "Cultist", "number": 100 },
+                    { "name": "Rhino", "number": 2 },
+                    { "name": "Predator", "number": 4 }
+                ]
+            }
+        ]
+    },
+    "Heretics_force3": {
+        "threat": 3,
+        "fortified": false,
+        "cols": [
+            {
+                "distance": 0,
+                "enemies": [
+                    { "name": "Chaos Lord", "number": 1 },
+                    { "name": "Chaos Sorcerer", "number": 1 },
+                    { "name": "Chaos Chosen", "number": 10 },
+                    { "name": "Chaos Space Marine", "number": 100 }
+                ]
+            },
+            {
+                "distance": 10,
+                "enemies": [
+                    { "name": "Rhino", "number": 6 },
+                    { "name": "Defiler", "number": 2 }
+                ]
+            },
+            {
+                "distance": 20,
+                "enemies": [
+                    { "name": "Cultist", "number": 300 },
+                    { "name": "Helbrute", "number": 3 },
+                    { "name": "Predator", "number": 6 },
+                    { "name": "Land Raider", "number": 2 }
+                ]
+            }
+        ]
+    },
+    "Heretics_force4": {
+        "threat": 4,
+        "fortified": false,
+        "cols": [
+            {
+                "distance": 0,
+                "enemies": [
+                    { "name": "Chaos Lord", "number": 1 },
+                    { "name": "Chaos Sorcerer", "number": 2 },
+                    { "name": "Chaos Chosen", "number": 10 }
+                ]
+            },
+            {
+                "distance": 10,
+                "enemies": [
+                    { "name": "Chaos Space Marine", "number": 250 },
+                    { "name": "Havoc", "number": 20 }
+                ]
+            },
+            {
+                "distance": 20,
+                "enemies": [
+                    { "name": "Rhino", "number": 15 },
+                    { "name": "Defiler", "number": 4 },
+                    { "name": "Heldrake", "number": 1 }
+                ]
+            },
+            {
+                "distance": 30,
+                "enemies": [
+                    { "name": "Cultist", "number": 600 },
+                    { "name": "Helbrute", "number": 3 },
+                    { "name": "Predator", "number": 6 },
+                    { "name": "Vindicator", "number": 3 },
+                    { "name": "Land Raider", "number": 2 }
+                ]
+            }
+        ]
+    },
+    "Heretics_force5": {
+        "threat": 5,
+        "fortified": false,
+        "cols": [
+            {
+                "distance": 0,
+                "enemies": [
+                    { "name": "Chaos Lord", "number": 1 },
+                    { "name": "Chaos Sorcerer", "number": 3 },
+                    { "name": "Chaos Chosen", "number": 20 },
+                    { "name": "Obliterator", "number": 6 }
+                ]
+            },
+            {
+                "distance": 10,
+                "enemies": [
+                    { "name": "Chaos Space Marine", "number": 600 },
+                    { "name": "Havoc", "number": 40 },
+                    { "name": "Raptor", "number": 40 }
+                ]
+            },
+            {
+                "distance": 20,
+                "enemies": [
+                    { "name": "Rhino", "number": 25 },
+                    { "name": "Defiler", "number": 8 },
+                    { "name": "Heldrake", "number": 3 }
+                ]
+            },
+            {
+                "distance": 30,
+                "enemies": [
+                    { "name": "Cultist", "number": 600 },
+                    { "name": "Helbrute", "number": 5 },
+                    { "name": "Predator", "number": 10 },
+                    { "name": "Vindicator", "number": 6 },
+                    { "name": "Land Raider", "number": 3 },
+                    { "name": "Possessed", "number": 30 }
+                ]
+            },
+            {
+                "distance": 0,
+                "flank": true,
+                "enemies": [
+                    { "name": "Chaos Terminator", "number": 10 }
+                ]
+            }
+        ]
+    }
+}
