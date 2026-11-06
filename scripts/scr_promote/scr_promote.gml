@@ -56,11 +56,11 @@ function setup_promotion_popup() {
 
                 _affected[$ string(target_comp)] = true;
 
-                units_to_move.move_to_company(target_comp);
+                var _squads = units_to_move.count_squads("all", true);
+                units_to_move.move_to_company(target_comp, false);
 
                 var _target_role = role_name[target_role];
 
-                var _squads = units_to_move.count_squads("all", true);
                 for (var i = 0; i < units_to_move.number(); i++) {
                     var _unit = units_to_move.units[i];
                     _unit.update_role(_target_role);
