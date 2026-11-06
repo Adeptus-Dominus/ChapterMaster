@@ -1319,7 +1319,7 @@ static __protect_raiders_squad_selected = function() {
     var _squad_dex = stat_average(_squad_units, "dexterity");
     var _tester = global.character_tester;
 
-    var _mod = _squad_wisdom + _squad_dex / 20;
+    var _mod = (_squad_wisdom + _squad_dex) / 20;
     if (scr_has_adv("Ambushers")) {
         _mod += 10;
     }
@@ -1378,10 +1378,6 @@ static __protect_raiders_squad_selected = function() {
             setup_battle_formations();
             add_to_battle();
         }
-        with(obj_controller){
-            exit_adhoc_manage();
-        }
-
         _battle.battle_enemy_data = {
             threat : 3,
             fortified : false,
@@ -1419,6 +1415,7 @@ static __protect_raiders_squad_selected = function() {
             ]
         };
     }
+    scr_toggle_manage();
 }    
 
 static __inquisition_tomb_init = function(){
