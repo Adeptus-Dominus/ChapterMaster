@@ -139,6 +139,8 @@ function PenAndPaperSim() constructor {
         if (_forces >= 60) {
             _penalty = 100;
         }
+
+        return _penalty;
     }
 }
 

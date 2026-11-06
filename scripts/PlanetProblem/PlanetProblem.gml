@@ -1342,7 +1342,7 @@ static __protect_raiders_squad_selected = function() {
             for (var i = 0; i < array_length(_squad_units); i++) {
                 var _marine = _squad_units[i];
                 if (i == _dead_marine) {
-                    var _dead_string = "{_marine.name_role()}s body is eventually discovered some way off from the main battle his rent armour and body showing the extent of combat that must have occured";
+                    var _dead_string = $"{_marine.name_role()}s body is eventually discovered some way off from the main battle his rent armour and body showing the extent of combat that must have occured";
                     _dead_marine.kill();
                     continue;
                 }
@@ -1440,10 +1440,8 @@ static __inquisition_tomb_per_turn = function() {
     if (p_data.player_forces <= 0){
         exit;
     }
-    LOGGER.info($"player on planet with necron mission {p_data.name()}");
     var _have_bomb = 0;
     _have_bomb = scr_check_equip("Plasma Bomb", system.name, planet, 0);
-    LOGGER.info($"have bomb? {_have_bomb} ");
     if (_have_bomb == 0) {
         exit;
     }
@@ -1508,14 +1506,11 @@ static inquisition_tomb_mission_sequence = function() {
     if (_roll > 97) {
         // Tomb World wakes up
         data.tomb_awakens = true;
-        if (player_forces <= 30) {
-            _battle = 4;
-        }
-        if (player_forces > 30) {
-            _battle = 5;
-        }
-        if (player_forces > 100) {
+        _battle = 4;
+        if (p_data.player_forces > 100) {
             _battle = 6;
+        } else if (p_data.player_forces > 30){
+            _battle = 5;
         }
     }
 

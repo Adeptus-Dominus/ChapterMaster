@@ -16,6 +16,8 @@
     "on_destruction" - runs when the fleet is destroyed, the mission is deleted after this function has run
         - must be triggered BEFORE the fleet instance is destroyed
 
+    "action_description" -  provides a custom string for hover purposes of the fleets current status
+
     "mission_log_entry" - runs to provide a data row for the mission log
 
 - other than these entry points and any other later defined positions mission specific code should not run outside of the FleetProblem container

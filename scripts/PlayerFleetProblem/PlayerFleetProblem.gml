@@ -66,7 +66,7 @@ static on_merge = function(merged_fleet){
 __init();
 
 static __great_crusade_action_description = function(){
-    return {loc : "Crusading", zoomable : in_room()};
+    return {loc : "Crusading", zoomable : in_room(fleet)};
 }
 
 static __great_crusade_init = function(){

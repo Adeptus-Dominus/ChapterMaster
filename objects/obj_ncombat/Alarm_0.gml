@@ -139,7 +139,7 @@ try {
     var _enemies_assigned = false;
 
     if (is_undefined(battle_enemy_data)){
-        enemy_organisations = json_to_gamemaker(working_directory + "/data/technologies.json", json_parse);
+        enemy_organisations = json_to_gamemaker(working_directory + "/data/battle_organisation_formats.json", json_parse);
         if (battle_special != ""){
             if (struct_exists(enemy_organisations, battle_special)){
                 battle_enemy_data = enemy_organisations[$ battle_special]
@@ -177,7 +177,7 @@ try {
                     if (_col.distance > 0){
                         _u.x = instance_nearest(0,240, obj_pnunit).x - _col.distance;
                     } else {
-                        u.x = instance_nearest(0,240, obj_pnunit).x - 80;
+                        _u.x = instance_nearest(0,240, obj_pnunit).x - 80;
                     }
                 } else {
                     _u.x =  _xxx + _col.distance
@@ -187,7 +187,7 @@ try {
                     if (!_u.flank){
                         _u.x = _nearest_player.x + 10;
                     } else {
-                        u.x = _nearest_player.x - 10;
+                        _u.x = _nearest_player.x - 10;
                     }
                     _u.engaged = true;
                     _nearest_player.engaged = true
@@ -196,8 +196,6 @@ try {
             _enemies_assigned = true;
         }
     }
-    LOGGER.info(obj_enunit);
-    LOGGER.info(obj_pnunit);
     if (!_enemies_assigned){
         // * Praetorian Servitor Group *
         if (string_count("mech", battle_special) > 0) {

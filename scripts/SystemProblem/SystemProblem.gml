@@ -5,8 +5,6 @@
 function SystemProblem(_name, _system = noone, _data = {}, _timer = -1) : Problem(_name, _timer, _data) constructor{
 system = _system;
 
-//base only assigns members when data.members exists; default it here without clobbering that
-
 zero_timer_checks = true;
 per_turn_checks = true;
 
