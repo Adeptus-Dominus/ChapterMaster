@@ -1,4 +1,3 @@
-
 function location_out_of_player_control(unit_loc) {
     static _locs = [
         "Terra",
@@ -36,7 +35,7 @@ global.planet_problem_keys = [
     "ethereal",
     "demon_world",
     "governor_purge_enemies",
-    "inquisition_purge"
+    "inquisition_purge",
 ];
 
 function mission_name_key(mission) {
@@ -111,7 +110,7 @@ function scr_new_governor_mission(planet, problem = "") {
     };
     if (problem != "") {
         var _p_data = get_planet_data(planet);
-        _p_data.new_problem(problem, 20 + irandom(20),mission_data);
+        _p_data.new_problem(problem, 20 + irandom(20), mission_data);
     }
 }
 
@@ -137,7 +136,6 @@ function init_marine_acting_strange() {
     scr_event_log("color", _text);
 }
 
-
 ///removie all of a given problem from a planet
 /// @self Asset.GMObject.obj_star
 function remove_planet_problem(planet, problem, star = noone) {
@@ -145,7 +143,7 @@ function remove_planet_problem(planet, problem, star = noone) {
     if (star == noone) {
         for (var i = 0; i < array_length(p_problem[planet]); i++) {
             if (p_problem[planet][i].p_id == problem) {
-                array_delete(p_problem[planet],i, 1);
+                array_delete(p_problem[planet], i, 1);
                 _had_problem = true;
             }
         }
@@ -172,13 +170,13 @@ function remove_star_problem(problem, star = noone) {
 }
 
 /// @self struct.PlanetData | Asset.GMObject.obj_star
-function generic_problems_to_mission_log (){
+function generic_problems_to_mission_log() {
     var _logs = [];
     for (var p = 0; p < array_length(problems); p++) {
         var _problem = problems[p];
         var _data = _problem.mission_log_entry();
         LOGGER.info($"{_data}");
-        if (!is_undefined(_data)){
+        if (!is_undefined(_data)) {
             array_push(_logs, _data);
         }
     }

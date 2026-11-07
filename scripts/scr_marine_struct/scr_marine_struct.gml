@@ -2441,21 +2441,21 @@ function fetch_unit_uid(uuid) {
     return undefined;
 }
 
-function clean_unit_array(array){
-    for (var i = array_length(array) - 1; i >= 0; i--){
+function clean_unit_array(array) {
+    for (var i = array_length(array) - 1; i >= 0; i--) {
         var _unit = array[i];
-        if (!is_struct(_unit)){
+        if (!is_struct(_unit)) {
             array_delete(array, i, 1);
             continue;
         }
-        if (_unit.marine_number > (company_length(_unit.company) -  1)){
+        if (_unit.marine_number > (company_length(_unit.company) - 1)) {
             array_delete(array, i, 1);
             continue;
         }
         var _current_unit = fetch_unit([_unit.company, _unit.marine_number]);
-        if (!is_struct(_current_unit) || _current_unit.uid != _unit.uid){
+        if (!is_struct(_current_unit) || _current_unit.uid != _unit.uid) {
             array_delete(array, i, 1);
-            continue;            
+            continue;
         }
     }
     return array;

@@ -216,10 +216,10 @@ function FeatureSelected(_feature, _system, _planet) constructor {
                 break;
             case eP_FEATURES.MISSION:
                 feature.draw_data = {
-                    x1 :xx,
-                    y1 : yy,
-                    w : area_width,
-                }
+                    x1: xx,
+                    y1: yy,
+                    w: area_width,
+                };
                 feature.planet_draw_feature_selected();
         }
         if (generic) {

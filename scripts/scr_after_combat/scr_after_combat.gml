@@ -147,7 +147,6 @@ function after_battle_slime_and_equipment_maintenance(unit) {
     }
 }
 
-
 /// @self Asset.GMObject.obj_pnunit
 function check_for_plasma_bomb_and_tomb(unit) {
     var _star = obj_ncombat.battle_object;
@@ -168,8 +167,8 @@ function check_for_plasma_bomb_and_tomb(unit) {
 /// @self Asset.GMObject.obj_pnunit
 function after_battle_part2() {
     var _unit;
-    var _destroy_tomb = (!obj_ncombat.plasma_bomb && !obj_ncombat.defeat &&  obj_ncombat.battle_special != "mech_tomb");
-    var _check_exterminatus = (obj_ncombat.dropping && !obj_ncombat.defeat);
+    var _destroy_tomb = !obj_ncombat.plasma_bomb && !obj_ncombat.defeat && obj_ncombat.battle_special != "mech_tomb";
+    var _check_exterminatus = obj_ncombat.dropping && !obj_ncombat.defeat;
     for (var i = 0; i < array_length(unit_struct); i++) {
         _unit = unit_struct[i];
 
@@ -182,7 +181,7 @@ function after_battle_part2() {
             continue;
         }
         after_battle_slime_and_equipment_maintenance(_unit);
-        if (_destroy_tomb){
+        if (_destroy_tomb) {
             _destroy_tomb = check_for_plasma_bomb_and_tomb(_unit);
         }
         if (marine_type[i] == "Death Company") {

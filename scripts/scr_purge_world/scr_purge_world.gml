@@ -132,7 +132,7 @@ function PlayerPurge(action_type, action_score, planet_data) constructor {
     };
 }
 
-function log_ship_effort_purge(){
+function log_ship_effort_purge() {
     if (instance_exists(obj_drop_select)) {
         with (obj_drop_select) {
             if (instance_exists(sh_target)) {
@@ -145,26 +145,25 @@ function log_ship_effort_purge(){
 
 /// @self Struct.PlanetData
 function scr_purge_world(action_type, action_score) {
-
     var _mission_override = false;
-    for (var i = array_length(problems) - 1; i >=  0; i--){
+    for (var i = array_length(problems) - 1; i >= 0; i--) {
         var _prob = problems[i];
-        if (!_prob.has_func("on_purge")){
+        if (!_prob.has_func("on_purge")) {
             continue;
         }
-        if (!_prob.has_data("purge_type")){
+        if (!_prob.has_data("purge_type")) {
             continue;
         }
-        if (_prob.data.purge_type == action_type){
+        if (_prob.data.purge_type == action_type) {
             _prob.purge_data = {
                 action_type,
                 action_score,
-            }
+            };
             _mission_override = true;
             _prob.on_purge();
         }
     }
-    if (_mission_override){
+    if (_mission_override) {
         log_ship_effort_purge();
         exit;
     }
@@ -262,7 +261,6 @@ function scr_purge_world(action_type, action_score) {
         }
 
         _popup_text += _purge.population_death_string();
-
     }
 
     if (action_type == eDROP_TYPE.PURGESELECTIVE) {
@@ -271,13 +269,11 @@ function scr_purge_world(action_type, action_score) {
         _popup_text += choose($"searching for high profile targets. Once found, they are dragged outside from their lairs. Their execution would soon follow.", $"rooting out sources of corruption. Heretics are dragged from their lairs and executed in the streets.");
 
         _popup_text += _purge.population_death_string();
-
     }
 
     if (action_type == eDROP_TYPE.PURGEASSASSINATE) {
         assasinate_governor_setup(action_score);
     } else if (action_type != eDROP_TYPE.PURGEASSASSINATE) {
-
         // DO EET
         var _txt2 = _popup_text;
         switch (_purge.heres_target) {
@@ -297,7 +293,6 @@ function scr_purge_world(action_type, action_score) {
         var _pip = instance_create(0, 0, obj_popup);
         _pip.title = "Purge Results";
         _pip.text = _txt2;
-
     }
     log_ship_effort_purge();
 }

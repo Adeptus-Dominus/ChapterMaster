@@ -126,42 +126,41 @@ add_feature = function(planet, feature) {
 
 problems = [];
 
-add_problem = function(_p_id, _data = {}, _timer = -1){
+add_problem = function(_p_id, _data = {}, _timer = -1) {
     var _prob = new SystemProblem(_p_id, self, _data, _timer);
     array_push(problems, _prob);
     return _prob;
-}
+};
 
-
-has_problem = function(_p_id, _return_problem = false){
-    for (var i=0; i < array_length(problems);i++){
-        if (problems[i].p_id == _p_id){
-            if (_return_problem){
+has_problem = function(_p_id, _return_problem = false) {
+    for (var i = 0; i < array_length(problems); i++) {
+        if (problems[i].p_id == _p_id) {
+            if (_return_problem) {
                 return problems[i];
             }
             return true;
         }
     }
     return false;
-}
+};
 
-problems_to_mission_log = function(){
+problems_to_mission_log = function() {
     var _temp_log = [];
     for (var i = 1; i <= planets; i++) {
         for (var p = 0; p < array_length(p_problem[i]); p++) {
             var _problem = p_problem[i][p];
             var _data = _problem.mission_log_entry();
-            if (!is_undefined(_data)){
+            if (!is_undefined(_data)) {
                 array_push(_temp_log, _data);
             }
         }
     }
     _temp_log = array_concat(_temp_log, generic_problems_to_mission_log());
     return _temp_log;
-}
+};
 
 /// @self Asset.GMObject.obj_star
-has_orbiting_player_fleet = function () {
+has_orbiting_player_fleet = function() {
     if (instance_exists(obj_p_fleet)) {
         var _nearest = instance_nearest(x, y, obj_p_fleet);
         if (_nearest.action != "move" && point_distance(_nearest.x, _nearest.y, x, y) == 0) {
@@ -169,7 +168,7 @@ has_orbiting_player_fleet = function () {
         }
     }
     return false;
-}
+};
 
 /// @function get_orbiting_player_fleet()
 /// @description Returns the ID of the nearest player fleet orbiting the given system or star.
@@ -185,7 +184,7 @@ has_orbiting_player_fleet = function () {
 /// ```
 get_orbiting_player_fleet = function() {
     var _fleet = instance_nearest(x, y, obj_p_fleet);
-    if (!instance_exists(_fleet)){
+    if (!instance_exists(_fleet)) {
         return noone;
     }
     if (object_distance(self, _fleet) > 0 || _fleet.action == "move") {
@@ -193,7 +192,7 @@ get_orbiting_player_fleet = function() {
     } else {
         return _fleet.id;
     }
-}
+};
 
 system_player_ground_forces = 0;
 
@@ -254,12 +253,12 @@ function has_problem_planet(problem, _return_problem = false) {
         var _has_problem = get_planet_data(i).has_problem(problem, _return_problem);
         if (!_return_problem && _has_problem) {
             return true;
-        } else if (_return_problem && _has_problem != false){
+        } else if (_return_problem && _has_problem != false) {
             return _has_problem;
         }
     }
     return false;
-} 
+}
 
 var _array_size = 23;
 present_fleet = array_create(_array_size, 0);
@@ -359,10 +358,13 @@ function deserialize(save_data) {
                 if (_var_name == "p_problem") {
                     var _planet_problems = _planet[$ _var_name];
                     for (var f = 0; f < array_length(_planet_problems); f++) {
-                        if (!is_struct(_planet_problems[f])){
+                        if (!is_struct(_planet_problems[f])) {
                             continue;
                         }
-                        var _new_prob = new PlanetProblem("", 0, {}, {planet:p,system:id});
+                        var _new_prob = new PlanetProblem("", 0, {}, {
+                            planet: p,
+                            system: id,
+                        });
                         _new_prob.load(_planet_problems[f]);
                         array_push(p_problem[p], _new_prob);
                     }

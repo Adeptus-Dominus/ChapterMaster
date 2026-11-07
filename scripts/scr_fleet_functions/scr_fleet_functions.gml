@@ -13,46 +13,48 @@ function distribute_strength_to_fleet(strength, fleet) {
         }
     }
 }
+
 /// @{Id.Instance.obj_p_fleet}
-function fleet_is_orbiting(){
+function fleet_is_orbiting() {
     orbiting = noone;
-    if (action == "move"){
+    if (action == "move") {
         return orbiting;
     }
     var _star = instance_nearest(x, y, obj_star);
-    if (_star.x == x  && _star.y == y){
-        orbiting = _star.id
+    if (_star.x == x && _star.y == y) {
+        orbiting = _star.id;
         return orbiting;
     }
     return noone;
 }
 
 /// @param {Id.Instance.obj_en_fleet|Id.Instance.obj_p_fleet} _fleet
-function fleet_location_description(_fleet){
+function fleet_location_description(_fleet) {
     var _loc = noone;
-    for (var i = 0; i< array_length(_fleet.problems); i++){
+    for (var i = 0; i < array_length(_fleet.problems); i++) {
         var _loc = _fleet.problems[i].fleet_action_description();
-        if (_loc != noone){
+        if (_loc != noone) {
             return _loc;
         }
     }
     var _zoomable = true;
-    if (!in_room(_fleet)){
-        _loc = "Out of Sector"
+    if (!in_room(_fleet)) {
+        _loc = "Out of Sector";
         _zoomable = false;
-    }
-    else if (_fleet.action == "Lost") {
+    } else if (_fleet.action == "Lost") {
         _loc = localize("Lost");
         _zoomable = false;
     } else if (_fleet.action == "move") {
         _loc = localize("Warp Travel");
-    }  else {
+    } else {
         var _near_star = instance_nearest(_fleet.x, _fleet.y, obj_star);
         _loc = _near_star.name;
     }
-    return {loc: _loc != noone ? _loc : "" , zoomable : _zoomable};
+    return {
+        loc: _loc != noone ? _loc : "",
+        zoomable: _zoomable,
+    };
 }
-
 
 /// @self Id.Instance.obj_en_fleet|Id.Instance.obj_p_fleet
 /// @param {Id.Instance.obj_en_fleet|Id.Instance.obj_p_fleet} fleet
@@ -566,8 +568,6 @@ function object_distance(obj_1, obj_2) {
     return point_distance(obj_1.x, obj_1.y, obj_2.x, obj_2.y);
 }
 
-
-
 function get_orbiting_fleets(faction, system = noone) {
     var _fleets = [];
     var _faction_list = is_array(faction);
@@ -694,7 +694,7 @@ function fleet_arrival_logic() {
     action = "";
     fleet_register_at_star(id, _dest_star);
 
-    for (var i=0; i<array_length(problems);i++){
+    for (var i = 0; i < array_length(problems); i++) {
         problems[i].on_arrival();
     }
     //TODO create oppertunity to purge new colonisers if they have taint and the player has garrisons or control of the planet
@@ -1328,10 +1328,10 @@ function fleet_register_at_star(_fleet, _star) {
         _star.vision = 1;
     }
 
-    if (_faction != eFACTION.PLAYER){
-        if (obj_controller.known[_faction] == 0){
+    if (_faction != eFACTION.PLAYER) {
+        if (obj_controller.known[_faction] == 0) {
             var _p_fleet = _star.get_orbiting_player_fleet();
-            if (_p_fleet != noone){
+            if (_p_fleet != noone) {
                 obj_controller.known[_faction] = 1;
             }
         }
@@ -1390,7 +1390,6 @@ function fleet_register_at_nearest_star(_fleet, _max_distance = undefined) {
 
     return noone;
 }
-
 
 /// @desc Creates a new enemy fleet, registering at the nearest star if within 50px.
 /// @param {Real} _x

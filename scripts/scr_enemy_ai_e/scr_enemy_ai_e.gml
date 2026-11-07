@@ -520,7 +520,7 @@ function scr_enemy_ai_e() {
         }
 
         if (p_player[run] > 0 && force_count > 0) {
-            _chaos_meeting = _p_data.has_problem( "chaos_lord_meeting");
+            _chaos_meeting = _p_data.has_problem("chaos_lord_meeting");
         }
         if ((p_player[run] > 0) && (force_count > 0)) {
             for (var force = 2; force < 14; force++) {
@@ -551,34 +551,34 @@ function scr_enemy_ai_e() {
                         }
                         break;
                     case 7:
-                        if (p_guardsmen[run] + p_pdf[run] == 0  && p_orks[run] > 0) {
+                        if (p_guardsmen[run] + p_pdf[run] == 0 && p_orks[run] > 0) {
                             battle_opponent = 7;
                         }
                         break;
                     case 8:
-                        if (p_guardsmen[run] == 0  && p_tau[run] > 0) {
+                        if (p_guardsmen[run] == 0 && p_tau[run] > 0) {
                             battle_opponent = 8;
                         }
                         break;
                     case 9:
-                        if (p_guardsmen[run] + p_pdf[run] == 0  && p_tyranids[run] > 0) {
+                        if (p_guardsmen[run] + p_pdf[run] == 0 && p_tyranids[run] > 0) {
                             battle_opponent = 9;
                         }
                         break;
                     case 10:
                         pause = _chaos_meeting;
-                        if (p_guardsmen[run] + p_pdf[run] == 0  && p_chaos[run] > 0 && !pause && obj_controller.faction_status[10] == "War") {
+                        if (p_guardsmen[run] + p_pdf[run] == 0 && p_chaos[run] > 0 && !pause && obj_controller.faction_status[10] == "War") {
                             battle_opponent = 10;
                         }
                         break;
                     case 11:
                         pause = _chaos_meeting;
-                        if (p_guardsmen[run] + p_pdf[run] == 0  && p_traitors[run] > 0 && !pause && obj_controller.faction_status[10] == "War") {
+                        if (p_guardsmen[run] + p_pdf[run] == 0 && p_traitors[run] > 0 && !pause && obj_controller.faction_status[10] == "War") {
                             battle_opponent = 11;
                         }
                         break;
                     case 13:
-                        if (p_guardsmen[run] + p_pdf[run] == 0  && p_necrons[run] > 0) {
+                        if (p_guardsmen[run] + p_pdf[run] == 0 && p_necrons[run] > 0) {
                             battle_opponent = 13;
                         }
                         break;

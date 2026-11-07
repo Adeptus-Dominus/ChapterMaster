@@ -52,18 +52,18 @@ function scr_chaos_alliance_test() {
         var _planet = 0;
         var _star = noone;
         with (obj_star) {
-            for (var i = 1; i <= planets; i++){
+            for (var i = 1; i <= planets; i++) {
                 if (planet_feature_bool(p_feature[i], eP_FEATURES.WARLORD10) > 0) {
                     _planet = i;
                     _star = id;
                     break;
                 }
             }
-            if (_star != noone){
+            if (_star != noone) {
                 break;
             }
         }
-        if (_star == noone){
+        if (_star == noone) {
             diplo_text = "[Error: No WL10 planet feature found.]";
             exit;
         }
@@ -71,7 +71,7 @@ function scr_chaos_alliance_test() {
         _that_title = _p_data.name();
 
         var _meeting_arranged = false;
-        _p_data.new_problem("chaos_lord_meeting", 36, {trap : _trap});
+        _p_data.new_problem("chaos_lord_meeting", 36, {trap: _trap});
     }
     if (_result == "fail") {
         var rando;

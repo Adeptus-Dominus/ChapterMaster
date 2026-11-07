@@ -19,7 +19,7 @@ function UnitGroup(units = []) constructor {
     };
 
     static has_role = function(_role) {
-        if (is_real(_role)){
+        if (is_real(_role)) {
             _role = obj_ini.player_role_data[_role].role;
         }
         for (var i = 0; i < array_length(units); i++) {
@@ -760,7 +760,7 @@ function SearchConditions(data) constructor {
             array_push(checks_order, squadless_valuate);
         }
         if (role != "") {
-            if (!is_string(role)){
+            if (!is_string(role)) {
                 role = obj_ini.player_role_data[role].role;
             }
             array_push(checks_order, role_valuate);
@@ -973,8 +973,8 @@ enum eMISSION_SELECT_TYPE {
 }
 
 function group_selection(group, selection_data = {}) {
-    if (instance_exists(obj_star_select)){
-        if (is_struct(obj_star_select.feature)){
+    if (instance_exists(obj_star_select)) {
+        if (is_struct(obj_star_select.feature)) {
             obj_star_select.feature.destroy = true;
         }
     }

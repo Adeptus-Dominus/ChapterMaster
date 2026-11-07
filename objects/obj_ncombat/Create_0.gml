@@ -140,14 +140,14 @@ dead_enemies = 0;
 
 enemies = {};
 
-add_to_enemies = function(_data){
-    if (struct_exists(enemies, _data.name)){
+add_to_enemies = function(_data) {
+    if (struct_exists(enemies, _data.name)) {
         enemies[$ _data.name] += _data.number;
     } else {
         enemies[$ _data.name] = _data.number;
     }
     enemy_dudes += _data.number;
-}
+};
 
 units_lost_counts = {};
 vehicles_lost_counts = {};
@@ -284,15 +284,16 @@ catalepsean = obj_ini.catalepsean; // minor global attack decrease
 occulobe = obj_ini.occulobe; // penalty if morning and susceptible to flash grenades
 mucranoid = obj_ini.mucranoid; // chance to short-circuit
 
-valid_special_feature = function(){return (is_struct(special_feature) && is_instanceof(special_feature, Problem))}
+valid_special_feature = function() {
+    return is_struct(special_feature) && is_instanceof(special_feature, Problem);
+};
 
-register_kills_to_missions = function(casulties){
-    if (obj_ncombat.battle_special != ""){
-        if (obj_ncombat.valid_special_feature()){
+register_kills_to_missions = function(casulties) {
+    if (obj_ncombat.battle_special != "") {
+        if (obj_ncombat.valid_special_feature()) {
             var _feat = obj_ncombat.special_feature;
             _feat.casualty_packet = casulties;
             _feat.battle_on_enemy_casulties();
         }
     }
-}
-
+};

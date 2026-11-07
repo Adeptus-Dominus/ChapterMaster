@@ -380,14 +380,14 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             var _found = false;
             var _star = noone;
             var _planet = noone;
-            var _problem = noone
+            var _problem = noone;
             with (obj_star) {
-                var _problem = has_problem_planet("chaos_lord_meeting" , true);
-                if (is_struct(_problem)){
-                     _found = true;
+                var _problem = has_problem_planet("chaos_lord_meeting", true);
+                if (is_struct(_problem)) {
+                    _found = true;
                     _star = id;
                     _planet = _problem.planet;
-                    break;                   
+                    break;
                 }
             }
             if (!_found) {
@@ -971,10 +971,8 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                 var _found = false;
                 var _star, _planet;
                 with (obj_star) {
-                    if (has_problem_planet("chaos_lord_meeting")){
-
-                    }
-                    for (var i = 1; i <= planets;i++) {
+                    if (has_problem_planet("chaos_lord_meeting")) {}
+                    for (var i = 1; i <= planets; i++) {
                         var _p_data = get_planet_data(i);
                         for (var r = 1; r <= 4; r++) {
                             if (p_problem[i][r].p_id == "chaos_lord_meeting") {
