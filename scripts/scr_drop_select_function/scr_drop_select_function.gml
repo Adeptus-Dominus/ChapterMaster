@@ -271,7 +271,7 @@ function drop_select_unit_selection() {
             if (obj_ncombat.battle_object.space_hulk == 1) {
                 obj_ncombat.battle_special = "space_hulk";
             }
-            if ((_p_data.has_feature(eP_FEATURES.WARLORD6)) && (obj_ncombat.enemy == eFACTION.ELDAR) && (obj_controller.faction_defeated[6] == 0)) {
+            if (_p_data.has_feature(eP_FEATURES.WARLORD6) && (obj_ncombat.enemy == eFACTION.ELDAR) && (obj_controller.faction_defeated[6] == 0)) {
                 obj_ncombat.leader = 1;
             }
             if (obj_ncombat.enemy == eFACTION.ORK && _p_data.has_feature(eP_FEATURES.ORKWARBOSS)) {
@@ -279,7 +279,7 @@ function drop_select_unit_selection() {
                 obj_ncombat.ork_warboss = _planet[search_planet_features(_planet, eP_FEATURES.ORKWARBOSS)[0]];
             }
 
-            for (var i=0; i<array_length(_p_data.problems);i++){
+            for (var i = 0; i < array_length(_p_data.problems); i++) {
                 _p_data.problems[i].before_battle_effects();
             }
 
@@ -394,40 +394,44 @@ function drop_select_unit_selection() {
     }
 }
 
-function chaos_fuck_up_purge(){
+function chaos_fuck_up_purge() {
     var pop;
     pop = instance_create(0, 0, obj_popup);
     pop.image = "chaos_symbol";
     pop.title = "Concealed Heresy";
     pop.text = $"Your astartes set out and begin to cleanse {planet_numeral_name(obj_ncombat.battle_id, obj_ncombat.battle_object)} of possible heresy.  The general populace appears to be devout in their faith, but a disturbing trend appears- the odd citizen cursing your forces, frothing at the mouth, and screaming out heresy most foul.  One week into the cleansing a large hostile force is detected approaching and encircling your forces.";
-    pop.add_option([{
-        str1 : "For the Emperor",
-        choice_func : function(){
-            with (obj_drop_select) {
-                obj_controller.cooldown = 30;
-                // ** Starts the battle **
-                is_in_combat = true;
+    pop.add_option(
+        [
+            {
+                str1: "For the Emperor",
+                choice_func: function() {
+                    with (obj_drop_select) {
+                        obj_controller.cooldown = 30;
+                        // ** Starts the battle **
+                        is_in_combat = true;
 
-                instance_deactivate_all_safe();
-                instance_activate_object(obj_drop_select);
+                        instance_deactivate_all_safe();
+                        instance_activate_object(obj_drop_select);
 
-                instance_create(0, 0, obj_ncombat);
-                obj_ncombat.battle_object = obj_drop_select.p_target;
-                obj_ncombat.battle_loc = obj_drop_select.p_target.name;
-                obj_ncombat.battle_id = obj_controller.selecting_planet;
-                obj_ncombat.dropping = 0;
-                obj_ncombat.attacking = 10;
-                obj_ncombat.enemy = eFACTION.CHAOS;
-                obj_ncombat.formation_set = 2;
-                obj_ncombat.leader = 1;
-                obj_ncombat.threat = 5;
-                obj_ncombat.battle_special = "WL10_reveal";
-                scr_battle_allies();
-                setup_battle_formations();
-                roster.add_to_battle();
-            }                                
-        }
-    }])
+                        instance_create(0, 0, obj_ncombat);
+                        obj_ncombat.battle_object = obj_drop_select.p_target;
+                        obj_ncombat.battle_loc = obj_drop_select.p_target.name;
+                        obj_ncombat.battle_id = obj_controller.selecting_planet;
+                        obj_ncombat.dropping = 0;
+                        obj_ncombat.attacking = 10;
+                        obj_ncombat.enemy = eFACTION.CHAOS;
+                        obj_ncombat.formation_set = 2;
+                        obj_ncombat.leader = 1;
+                        obj_ncombat.threat = 5;
+                        obj_ncombat.battle_special = "WL10_reveal";
+                        scr_battle_allies();
+                        setup_battle_formations();
+                        roster.add_to_battle();
+                    }
+                },
+            },
+        ],
+    );
     cancel_combat();
     combating = 0;
     instance_activate_all();

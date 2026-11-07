@@ -121,7 +121,7 @@ function PenAndPaperSim() constructor {
         ];
     };
 
-    static small_forces_penalty_chart = function(_forces){
+    static small_forces_penalty_chart = function(_forces) {
         var _penalty = 0;
         // SMALL TEAM OF MARINES
         if (_forces > 6) {
@@ -141,7 +141,7 @@ function PenAndPaperSim() constructor {
         }
 
         return _penalty;
-    }
+    };
 }
 
 global.character_tester = new PenAndPaperSim();

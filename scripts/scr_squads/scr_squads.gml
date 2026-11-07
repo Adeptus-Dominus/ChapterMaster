@@ -665,7 +665,7 @@ function UnitSquad(squad_type = undefined, company = 0) constructor {
         return data_pack;
     };
 
-    static clean_members = function(){
+    static clean_members = function() {
         members = clean_unit_array(members);
     };
 

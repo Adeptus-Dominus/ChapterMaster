@@ -1,5 +1,5 @@
 //so this only runs if there aren't these types of instances
-if (instances_exist_any([obj_saveload, obj_popup, obj_ncombat,obj_fleet])) {
+if (instances_exist_any([obj_saveload, obj_popup, obj_ncombat, obj_fleet])) {
     exit;
 }
 
@@ -152,11 +152,11 @@ if ((cooldown <= 0) && (battle_world[current_battle] > 0) && (combating == 0)) {
             obj_ncombat.fortified = 0;
         }
 
-        if (is_struct(battle_special[current_battle])){
+        if (is_struct(battle_special[current_battle])) {
             var _spec_data = battle_special[current_battle];
             obj_ncombat.battle_special = _spec_data.special_id;
             obj_ncombat.special_feature = _spec_data.special_feature;
-            if (struct_exists(_spec_data, "battle_enemy_data")){
+            if (struct_exists(_spec_data, "battle_enemy_data")) {
                 obj_ncombat.battle_enemy_data = _spec_data.battle_enemy_data;
             }
         } else {

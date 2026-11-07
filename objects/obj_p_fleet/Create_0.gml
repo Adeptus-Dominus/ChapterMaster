@@ -28,7 +28,6 @@ escort_sel = [];
 escort_uid = [];
 problems = [];
 
-
 image_speed = 0;
 
 fix = 2;
@@ -52,12 +51,11 @@ hurssy = 0;
 hurssy_time = 0;
 /// Called from save function to take all object variables and convert them to a json savable format and return it
 
-
 add_problem = method(self, add_fleet_problem);
 
 problems_to_mission_log = method(self, fleet_problems_to_mission_log);
 
-arrived_at_star = function(){
+arrived_at_star = function() {
     set_fleet_location(orbiting.name);
     if (orbiting.visited == 0) {
         for (var plan_num = 1; plan_num <= orbiting.planets; plan_num++) {
@@ -84,13 +82,12 @@ arrived_at_star = function(){
     }
     if ((orbiting.owner == eFACTION.TAU) && (obj_controller.faction_defeated[eFACTION.TAU] == 0) && (obj_controller.known[eFACTION.TAU] == 0)) {
         obj_controller.known[eFACTION.TAU] = 1;
-    } 
-
+    }
 
     if (orbiting.p_type[1] == "Craftworld") {
         var _rando = roll_dice_chapter(1, 100, "high");
 
-        if ((_rando >= 95)) {
+        if (_rando >= 95) {
             obj_controller.known[eFACTION.ELDAR] = 1;
             scr_alert("green", "elfs", "Eldar Craftworld discovered.", orbiting.old_x, orbiting.old_y);
             with (obj_en_fleet) {
@@ -103,13 +100,13 @@ arrived_at_star = function(){
         // if (rando>=95) and (dist<=300) then show_message("MON'KEIGH");
     }
 
-    instance_activate_object(obj_star); 
-}
+    instance_activate_object(obj_star);
+};
 
-arrive_at_waypoint = function(){
+arrive_at_waypoint = function() {
     run_problem_sequence("on_waypoint_arrival");
     set_new_player_fleet_course(complex_route);
-}
+};
 
 full_ship_array = function(exclude_capitals = false, exclude_frigates = false, exclude_escorts = false) {
     var all_ships = [];
@@ -138,11 +135,11 @@ full_ship_array = function(exclude_capitals = false, exclude_frigates = false, e
     }
 
     return all_ships;
-}
+};
 
-calculate_eta = function(target_x, target_y,from_star = true, to_star = true){
-    calculate_fleet_eta(x, y, target_x, target_y, fleet_speed, from_star , to_star , warp_able);
-}
+calculate_eta = function(target_x, target_y, from_star = true, to_star = true) {
+    calculate_fleet_eta(x, y, target_x, target_y, fleet_speed, from_star, to_star, warp_able);
+};
 
 move = method(self, set_fleet_movement);
 
@@ -174,7 +171,10 @@ serialize = function() {
 };
 
 deserialize = function(save_data) {
-    var exclusions = ["orbiting", "problems"]; // skip automatic setting of certain vars, handle explicitly later
+    var exclusions = [
+        "orbiting",
+        "problems",
+    ]; // skip automatic setting of certain vars, handle explicitly later
 
     // Automatic var setting
     var all_names = struct_get_names(save_data);

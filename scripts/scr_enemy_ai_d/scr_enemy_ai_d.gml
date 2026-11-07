@@ -1,8 +1,8 @@
 /// @self Asset.GMObject.obj_star
 function scr_enemy_ai_d() {
-    while (x < -15000){
+    while (x < -15000) {
         x += 20000;
-        y += 20000;        
+        y += 20000;
     }
 
     // Planetary problems here
@@ -74,7 +74,6 @@ function scr_enemy_ai_d() {
     }
     run_problem_sequence("basic_turn_end");
     for (var i = 1; i <= planets; i++) {
-
         var _pdata = get_planet_data(i);
         _pdata.problem_count_down(i);
 

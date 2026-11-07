@@ -69,7 +69,7 @@ if (ii_check == 0) {
 
 if (owner == eFACTION.TYRANIDS && orbiting != noone) {
     image_alpha = 0;
-    if (orbiting.has_orbiting_player_fleet() || orbiting.vision == 1){
+    if (orbiting.has_orbiting_player_fleet() || orbiting.vision == 1) {
         image_alpha = 1;
     }
 }

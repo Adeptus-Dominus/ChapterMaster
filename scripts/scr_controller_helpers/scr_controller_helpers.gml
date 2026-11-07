@@ -59,7 +59,7 @@ function scr_menu_clear_up(specific_area_function) {
 /// @description handles in game area and menu changes
 /// @returns {bool}
 function scr_change_menu(wanted_menu, specific_area_function = undefined) {
-    if (instance_exists(obj_ncombat)){
+    if (instance_exists(obj_ncombat)) {
         instance_activate_all();
     }
     var continue_sequence = false;
@@ -478,19 +478,19 @@ function scr_end_turn() {
                     with (obj_p_fleet) {
                         if ((action == "move") && (obj_controller.faction_status[eFACTION.IMPERIUM] == "War")) {
                             var _him = instance_nearest(action_x, action_y, obj_star);
-                            _him.navy_enemy_fleet_enroute =  (point_distance(action_x, action_y, _him.x, _him.y) == 0);
+                            _him.navy_enemy_fleet_enroute = point_distance(action_x, action_y, _him.x, _him.y) == 0;
                         }
                     }
                     with (obj_en_fleet) {
                         if ((action == "move") && (owner > 5)) {
                             var _him = instance_nearest(action_x, action_y, obj_star);
-                            _him.navy_enemy_fleet_enroute =  (point_distance(action_x, action_y, _him.x, _him.y) == 0);
+                            _him.navy_enemy_fleet_enroute = point_distance(action_x, action_y, _him.x, _him.y) == 0;
                         }
                     }
 
                     if (instance_exists(obj_p_fleet)) {
-                        wait_and_execute(1, function(){
-                            with(obj_p_fleet){
+                        wait_and_execute(1, function() {
+                            with (obj_p_fleet) {
                                 player_fleet_end_turn();
                             }
                         });

@@ -171,7 +171,7 @@ function UnitQuickFindPanel() constructor {
             var _point_data = _cur_fleet.point_breakdown;
 
             var _sys_points = obj_controller.specialist_point_handler.point_breakdown.systems;
-            if (_cur_fleet.orbiting != noone){
+            if (_cur_fleet.orbiting != noone) {
                 if (struct_exists(_sys_points, _cur_fleet.orbiting.name)) {
                     _point_data = _sys_points[$ _cur_fleet.orbiting.name][0];
                 }
@@ -290,7 +290,7 @@ function UnitQuickFindPanel() constructor {
         mission_table = new Table(_data);
     };
 
-    static main_panel_content = function(){
+    static main_panel_content = function() {
         var _xx = main_panel.XX;
         var _yy = main_panel.YY;
         is_entered = scr_hit(_xx, _yy, _xx + main_panel.width, _yy + main_panel.height);
@@ -404,10 +404,12 @@ function UnitQuickFindPanel() constructor {
     static pane_hidden = 15;
     static pane_revealed = 0;
     static sequence_complete = 30;
-    static pane_moving = function(){
+
+    static pane_moving = function() {
         return hide_sequence != pane_hidden && hide_sequence != pane_revealed;
-    }
-    static hide_reveal_sequence = function(){
+    };
+
+    static hide_reveal_sequence = function() {
         var _x_draw = 0;
         var _lower_draw = main_panel.height + 110;
         if (hide_sequence == sequence_complete) {
@@ -415,7 +417,7 @@ function UnitQuickFindPanel() constructor {
         }
         var _increment = 0;
         if (pane_moving()) {
-            _increment = (main_panel.width / pane_hide_frames);
+            _increment = main_panel.width / pane_hide_frames;
             if (hide_sequence > pane_hide_frames) {
                 _x_draw = (_increment * (hide_sequence - pane_hide_frames)) - main_panel.width;
             } else {
@@ -445,11 +447,11 @@ function UnitQuickFindPanel() constructor {
                 }
             }
         } else {
-            if (tab_buttons.hider.draw(_increment * (hide_sequence - 15) , _lower_draw , localize("Show"))) {
+            if (tab_buttons.hider.draw(_increment * (hide_sequence - 15), _lower_draw, localize("Show"))) {
                 hide_sequence++;
             }
         }
-    }
+    };
 
     static travel_camera_to_target = function() {
         if (array_length(travel_target) != 2) {
@@ -471,6 +473,7 @@ function UnitQuickFindPanel() constructor {
     };
 
     errored_once = false;
+
     static draw = function() {
         try {
             add_draw_return_values();
@@ -483,7 +486,7 @@ function UnitQuickFindPanel() constructor {
             travel_camera_to_target();
             pop_draw_return_values();
         } catch (_exception) {
-            if (!errored_once){
+            if (!errored_once) {
                 ERROR_HANDLER.handle_exception(_exception);
                 errored_once = true;
             }

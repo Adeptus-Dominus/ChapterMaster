@@ -129,11 +129,9 @@ try {
     }
     if (title == "Scheduled Event:2") {
         exit;
-    } 
+    }
 
     if ((press == 1) && (option2 != "")) {
-
-
         if (image == "artifact2") {
             scr_return_ship(obj_ground_mission.loc, obj_ground_mission, obj_ground_mission.num);
             var man_size, ship_id, comp, plan, i;

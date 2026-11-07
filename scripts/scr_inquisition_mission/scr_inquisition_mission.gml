@@ -90,7 +90,7 @@ function scr_inquisition_mission(event, forced_mission = eINQUISITION_MISSION.RA
                 mission_inquistion_purge();
                 break;
             case eINQUISITION_MISSION.INQUISITOR:
-                new SystemProblem("hunt_inquisitor");
+                new SystemProblem("hunt_inquisitor")
                 break;
             case eINQUISITION_MISSION.SPYRER:
                 mission_inquistion_spyrer();
@@ -130,7 +130,7 @@ function scr_inquisition_mission(event, forced_mission = eINQUISITION_MISSION.RA
                     }
                 }
                 var _eta = scr_mission_eta(_star.x, _star.y, 25);
-                _star.get_planet_data(_planet).new_problem("inquisition_demon_world", _eta)
+                _star.get_planet_data(_planet).new_problem("inquisition_demon_world", _eta);
                 break;
         }
     }
@@ -222,25 +222,24 @@ function mission_inquisition_artifact() {
     LOGGER.info("RE: Artifact Hold");
     text = "The Inquisition is trusting you with a special mission.  A local Inquisitor has a powerful artifact.  You are to keep it safe, and NOT use it, until the artifact may be safely retrieved.  Can your chapter handle this mission?";
     var _pop_data = {
-        options : [
+        options: [
             {
                 str1: "Accept",
                 choice_func: mission_inquisition_artifact_accept,
             },
             {
-                str1 : "Refuse",
+                str1: "Refuse",
                 choice_func: popup_default_close,
-            }
+            },
         ],
-        estimate : irandom_range(6, 26)
-    }
+        estimate: irandom_range(6, 26),
+    };
 
     scr_popup("Inquisition Mission", text, "inquisition", _pop_data);
 }
 
-
 // @self Asset.GMObject.obj_popup
-function mission_inquisition_artifact_accept(){
+function mission_inquisition_artifact_accept() {
     var _last_artifact;
     scr_quest(0, "artifact_loan", 4, pop_data.estimate);
     if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
@@ -280,7 +279,6 @@ function mission_inquisition_artifact_accept(){
     obj_controller.cooldown = 10;
     exit;
 }
-
 
 function hunt_inquisition_spared_inquisitor_consequence(event) {
     var _diceh = roll_dice_chapter(1, 100, "high");
@@ -381,8 +379,7 @@ function mission_inquistion_purge() {
     }
 
     var _p_data = _star.get_planet_data(planet);
-    _p_data.new_problem("inquisition_purge", 1, {mission_flavour : _mission_flavour});
-
+    _p_data.new_problem("inquisition_purge", 1, {mission_flavour: _mission_flavour});
 }
 
 function mission_investigate_planet() {
@@ -419,7 +416,6 @@ function mission_investigate_planet() {
     _eta = min(max(3, _eta), 100);
     _star.get_planet_data(planet).new_problem("inquisition_recon", _eta);
 }
-
 
 function set_gender() {
     return choose(eGENDER.FEMALE, eGENDER.MALE);

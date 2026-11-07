@@ -40,135 +40,134 @@ other info
 /// @param {Real} _timer
 /// @param {struct} _data
 /// @param {Id.Instance.obj_p_fleet} |  {Id.Instance.obj_en_fleet} _fleet
-function FleetProblem(_name, _timer = -1, _data = {}, _fleet = noone) : Problem(_name, _timer, _data) constructor{
-fleet = _fleet;
+function FleetProblem(_name, _timer = -1, _data = {}, _fleet = noone) : Problem(_name, _timer, _data) constructor {
+    fleet = _fleet;
 
-static __refresh_data = function(){
-    if (!instance_exists(fleet)){
-        delete_mission = true;
-    }
-}
-
-per_turn_checks = true;
-
-static save = function(){
-    var _save_copy = variable_clone(self);
-    struct_remove(_save_copy, "fleet");
-    __save_members(_save_copy)
-    return _save_copy;
-}
-
-//the owning fleet must re-attach itself after loading (problem.fleet = self)
-static load = function(data){
-    move_data_to_current_scope(data);
-    __load_members();
-}
-
-static __check_delete = function(){
-    if (timer == -1 || (delete_mission)){
-        if (!instance_exists(fleet)){
-            exit;
+    static __refresh_data = function() {
+        if (!instance_exists(fleet)) {
+            delete_mission = true;
         }
-        var _prob = -1;
-        for (var i = 0; i < array_length(fleet.problems); i++){
-            if (fleet.problems[i] == self){
-                _prob = i;
-            }
-        }
-        if (_prob > -1){
-            array_delete(fleet.problems, _prob, 1);
-        }
-    }
-}
-
-//runs the entry point with fleet_event_data available for the duration of the call
-static __trigger_with_event = function(trigger_string, _event_data = {}){
-    var _func = find_func(trigger_string);
-    if (is_undefined(_func)){
-        exit;
-    }
-    fleet_event_data = _event_data;
-    __handle_triggered_mission_func(_func);
-    struct_remove(self, "fleet_event_data");
-}
-
-static basic_turn_end = function(){
-    timer--;
-    if ((timer > -1) && per_turn_checks) {
-        var _func = find_func("per_turn");
-        __handle_triggered_mission_func(_func);
-    }
-    __check_delete();
-}
-
-/// @param {Id.Instance.obj_star} star
-static on_arrival = function(){
-    __trigger_with_event("on_arrival");
-}
-
-/// @param {Id.Instance.obj_p_fleet} new_fleet
-static on_split = function(new_fleet){
-    __trigger_with_event("on_split", {new_fleet});
-}
-
-static on_waypoint_arrival = function(){
-    __trigger_with_event("on_waypoint_arrival");
-}
-
-/// @param {Id.Instance.obj_p_fleet} merged_fleet
-static on_merge = function(merged_fleet){
-    __trigger_with_event("on_merge", {merged_fleet});
-}
-
-//call this before the fleet instance is destroyed
-static on_destruction = function(){
-    __trigger_with_event("on_destruction");
-    delete_mission = true;
-    __check_delete();
-}
-
-static __default_mission_log_entry = function(){
-    if (!instance_exists(fleet)){
-        return undefined;
-    }
-    if (stage_id == "preliminary") {
-        return undefined;
-    }
-    var _data = {
-        location : fleet_location_description(fleet).loc,
-        mission: description(),
-        time: timer,
-        problem: self,
     };
 
-    _data.click_left = method(_data, function() {
-        set_map_pan_to_loc(problem.fleet);
-    });
+    per_turn_checks = true;
 
-    return _data;
-}
+    static save = function() {
+        var _save_copy = variable_clone(self);
+        struct_remove(_save_copy, "fleet");
+        __save_members(_save_copy);
+        return _save_copy;
+    };
 
-static fleet_action_description = function(){
-    var _func = find_func("action_description");
-    if (!is_undefined(_func)){
-        return _func();
-    }
-    return noone;
-}
+    //the owning fleet must re-attach itself after loading (problem.fleet = self)
+    static load = function(data) {
+        move_data_to_current_scope(data);
+        __load_members();
+    };
 
+    static __check_delete = function() {
+        if (timer == -1 || delete_mission) {
+            if (!instance_exists(fleet)) {
+                exit;
+            }
+            var _prob = -1;
+            for (var i = 0; i < array_length(fleet.problems); i++) {
+                if (fleet.problems[i] == self) {
+                    _prob = i;
+                }
+            }
+            if (_prob > -1) {
+                array_delete(fleet.problems, _prob, 1);
+            }
+        }
+    };
 
-static __init = function(){
-    if (p_id == ""){
-        exit;
-    }
-    var _func = find_func("init");
-    if (!is_undefined(_func)){
+    //runs the entry point with fleet_event_data available for the duration of the call
+    static __trigger_with_event = function(trigger_string, _event_data = {}) {
+        var _func = find_func(trigger_string);
+        if (is_undefined(_func)) {
+            exit;
+        }
+        fleet_event_data = _event_data;
         __handle_triggered_mission_func(_func);
-    }
-}
+        struct_remove(self, "fleet_event_data");
+    };
+
+    static basic_turn_end = function() {
+        timer--;
+        if ((timer > -1) && per_turn_checks) {
+            var _func = find_func("per_turn");
+            __handle_triggered_mission_func(_func);
+        }
+        __check_delete();
+    };
+
+    /// @param {Id.Instance.obj_star} star
+    static on_arrival = function() {
+        __trigger_with_event("on_arrival");
+    };
+
+    /// @param {Id.Instance.obj_p_fleet} new_fleet
+    static on_split = function(new_fleet) {
+        __trigger_with_event("on_split", {new_fleet});
+    };
+
+    static on_waypoint_arrival = function() {
+        __trigger_with_event("on_waypoint_arrival");
+    };
+
+    /// @param {Id.Instance.obj_p_fleet} merged_fleet
+    static on_merge = function(merged_fleet) {
+        __trigger_with_event("on_merge", {merged_fleet});
+    };
+
+    //call this before the fleet instance is destroyed
+    static on_destruction = function() {
+        __trigger_with_event("on_destruction");
+        delete_mission = true;
+        __check_delete();
+    };
+
+    static __default_mission_log_entry = function() {
+        if (!instance_exists(fleet)) {
+            return undefined;
+        }
+        if (stage_id == "preliminary") {
+            return undefined;
+        }
+        var _data = {
+            location: fleet_location_description(fleet).loc,
+            mission: description(),
+            time: timer,
+            problem: self,
+        };
+
+        _data.click_left = method(_data, function() {
+            set_map_pan_to_loc(problem.fleet);
+        });
+
+        return _data;
+    };
+
+    static fleet_action_description = function() {
+        var _func = find_func("action_description");
+        if (!is_undefined(_func)) {
+            return _func();
+        }
+        return noone;
+    };
+
+    static __init = function() {
+        if (p_id == "") {
+            exit;
+        }
+        var _func = find_func("init");
+        if (!is_undefined(_func)) {
+            __handle_triggered_mission_func(_func);
+        }
+    };
 }
 
-function load_fleet_problems(_problem_constructor, _save_data){
+function load_fleet_problems(_problem_constructor, _save_data) {
     // Problems, old saves won't have this key
     problems = [];
     if (struct_exists(_save_data, "problems")) {
@@ -185,17 +184,19 @@ function load_fleet_problems(_problem_constructor, _save_data){
         }
     }
 }
-function add_fleet_problem(_p_id, _timer = -1, _data = {}){
+
+function add_fleet_problem(_p_id, _timer = -1, _data = {}) {
     var _instance = object_index == obj_en_fleet ? AiFleetProblem : PlayerFleetProblem;
     var _problem = new _instance(_p_id, _timer, _data, self);
-    if (_problem.delete_mission) return undefined;
+    if (_problem.delete_mission) {
+        return undefined;
+    }
     array_push(problems, _problem);
     return _problem;
 }
 
-
-function fleet_problems_to_mission_log(){
-    var _temp_log = []
+function fleet_problems_to_mission_log() {
+    var _temp_log = [];
     for (var i = 0; i < array_length(problems); i++) {
         var _mission_data = problems[i].mission_log_entry();
         array_push(_temp_log, _mission_data);
@@ -203,9 +204,3 @@ function fleet_problems_to_mission_log(){
 
     return _temp_log;
 }
-
-
-
-
-
-

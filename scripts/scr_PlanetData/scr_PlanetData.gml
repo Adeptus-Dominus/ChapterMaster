@@ -9,14 +9,15 @@ function PlanetData(_planet, _system) constructor {
     planet = _planet;
     system = _system;
 
-    static save_problems = function(){
+    static save_problems = function() {
         var _probs = [];
-        for (var i = 0; i < array_length(problems); i++){
+        for (var i = 0; i < array_length(problems); i++) {
             array_push(_probs, problems[i].save());
         }
         return _probs;
-    }
-    static save = function(){
+    };
+
+    static save = function() {
         var _planet_data = {
             dispo: system.dispo[planet],
             planet: system.planet[planet],
@@ -28,14 +29,14 @@ function PlanetData(_planet, _system) constructor {
                 continue;
             }
             var _val = system[$ _var_name][planet];
-            if (_var_name == "p_problem"){
+            if (_var_name == "p_problem") {
                 _val = save_problems();
             }
             variable_struct_set(_planet_data, _var_name, _val);
-        } 
+        }
 
-        return _planet_data;       
-    }
+        return _planet_data;
+    };
 
     static refresh_data = function() {
         features = system.p_feature[planet];
@@ -767,14 +768,13 @@ function PlanetData(_planet, _system) constructor {
     };
 
     static has_problem = function(problem, _return_problem = false) {
-        for (var i = 0; i < array_length(problems); i++){
-            if (problems[i].p_id == problem){
-                if (!_return_problem){
+        for (var i = 0; i < array_length(problems); i++) {
+            if (problems[i].p_id == problem) {
+                if (!_return_problem) {
                     return true;
                 } else {
                     return problems[i];
                 }
-                
             }
         }
         return false;
@@ -785,34 +785,33 @@ function PlanetData(_planet, _system) constructor {
     };
 
     static find_problem = function(problem) {
-        for (var i = 0; i < array_length(problems); i++){
-            if (problems[i].p_id == problem){
+        for (var i = 0; i < array_length(problems); i++) {
+            if (problems[i].p_id == problem) {
                 return problems[i];
             }
         }
         return noone;
     };
 
-    static new_problem = function(p_id, timer = -1, data = {}, register = true){
-        var _prob = new PlanetProblem(p_id, timer, data,  self);
-        if (register){
-            register_problem(_prob)
+    static new_problem = function(p_id, timer = -1, data = {}, register = true) {
+        var _prob = new PlanetProblem(p_id, timer, data, self);
+        if (register) {
+            register_problem(_prob);
         }
         return _prob;
-    }
+    };
 
-    static register_problem = function(problem){
+    static register_problem = function(problem) {
         array_push(system.p_problem[planet], problem);
-        problems = system.p_problem[planet];        
-    }
+        problems = system.p_problem[planet];
+    };
 
-
-    static problem_count_down = function (count_change = 1) {
-        for (var i = array_length(problems) -1; i >= 0; i--) {
+    static problem_count_down = function(count_change = 1) {
+        for (var i = array_length(problems) - 1; i >= 0; i--) {
             var _problem = problems[i];
             _problem.basic_turn_end();
         }
-    }
+    };
 
     static problems_to_mission_log = method(self, generic_problems_to_mission_log);
 
@@ -1567,7 +1566,7 @@ function PlanetData(_planet, _system) constructor {
         if (garrisons.garrison_force) {
             garrisons.find_leader();
             garrisons.garrison_disposition_change(true);
-        }        
+        }
     };
 
     static planet_selection_logic = function() {

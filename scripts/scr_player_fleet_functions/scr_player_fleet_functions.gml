@@ -17,7 +17,6 @@ function fleet_has_roles(fleet, roles = []) {
     }
 }
 
-
 /// @desc Creates a new player fleet, registering at the nearest star if within 50px.
 /// @param {Real} _x
 /// @param {Real} _y
@@ -616,67 +615,67 @@ function calculate_fleet_bombard_score(ship_array) {
     return bomb_score;
 }
 
-function player_fleet_end_turn(){
-try {
-    run_problem_sequence("basic_turn_end");
-    acted = 0;
-    if (action == "Lost") {
-        set_fleet_location("Lost");
-        exit;
-    } else if (action == "") {
-        var spid = instance_nearest(x, y, obj_star);
-        fleet_register_at_star(self, spid);
+function player_fleet_end_turn() {
+    try {
+        run_problem_sequence("basic_turn_end");
+        acted = 0;
+        if (action == "Lost") {
+            set_fleet_location("Lost");
+            exit;
+        } else if (action == "") {
+            var spid = instance_nearest(x, y, obj_star);
+            fleet_register_at_star(self, spid);
 
-        if (instance_exists(orbiting)) {
-            if (orbiting.visited == 0) {
-                for (var planet_num = 1; planet_num <= orbiting.planets; planet_num += 1) {
-                    if (array_length(orbiting.p_feature[planet_num]) != 0) {
-                        with (orbiting) {
-                            scr_planetary_feature(planet_num);
+            if (instance_exists(orbiting)) {
+                if (orbiting.visited == 0) {
+                    for (var planet_num = 1; planet_num <= orbiting.planets; planet_num += 1) {
+                        if (array_length(orbiting.p_feature[planet_num]) != 0) {
+                            with (orbiting) {
+                                scr_planetary_feature(planet_num);
+                            }
                         }
                     }
+                    orbiting.visited = 1;
                 }
-                orbiting.visited = 1;
+
+                meet_system_governors(orbiting);
+            }
+        } else if (action == "move") {
+            set_fleet_location("Warp");
+
+            if (instance_nearest(action_x, action_y, obj_star).storm > 0) {
+                exit;
             }
 
-            meet_system_governors(orbiting);
-        }
-    } else if (action == "move") {
-        set_fleet_location("Warp");
+            var spid = point_distance(x, y, action_x, action_y);
+            spid = spid / action_eta;
+            var dir = point_direction(x, y, action_x, action_y);
 
-        if (instance_nearest(action_x, action_y, obj_star).storm > 0) {
-            exit;
-        }
+            x = x + lengthdir_x(spid, dir);
+            y = y + lengthdir_y(spid, dir);
 
-        var spid = point_distance(x, y, action_x, action_y);
-        spid = spid / action_eta;
-        var dir = point_direction(x, y, action_x, action_y);
+            action_eta -= 1;
+            just_left = false;
 
-        x = x + lengthdir_x(spid, dir);
-        y = y + lengthdir_y(spid, dir);
+            if (action_eta == 0) {
+                action = "";
+                x = action_x;
+                y = action_y;
+                fleet_is_orbiting();
+                if (orbiting != noone) {
+                    arrived_at_star();
+                } else {
+                    set_fleet_location("Near " + instance_nearest(x, y, obj_star).name);
+                }
 
-        action_eta -= 1;
-        just_left = false;
-
-        if (action_eta == 0){
-            action = "";
-            x = action_x;
-            y = action_y;
-            fleet_is_orbiting();
-            if (orbiting != noone){
-                arrived_at_star();
-            } else {
-                set_fleet_location("Near " + instance_nearest(x, y,obj_star).name);
-            }
-
-            if (array_length(complex_route) > 0) {
-                arrive_at_waypoint();
-            } else {
-                run_problem_sequence("on_arrival");
+                if (array_length(complex_route) > 0) {
+                    arrive_at_waypoint();
+                } else {
+                    run_problem_sequence("on_arrival");
+                }
             }
         }
+    } catch (_exception) {
+        ERROR_HANDLER.handle_exception(_exception);
     }
-} catch (_exception) {
-    ERROR_HANDLER.handle_exception(_exception);
-}
 }

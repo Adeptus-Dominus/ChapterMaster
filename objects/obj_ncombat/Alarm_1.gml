@@ -140,14 +140,12 @@ if ("inquisition_tomb" == battle_special) {
         p1 = "Cave dirt crunches beneath the soles of your marines as they continue their descent.  There is little warning when the ground begins to shake.  An old, dusty breeze seems to flow through the tunnel, followed by rumbling sensations and distant mechanical sounds.  ";
         if (threat == 2) {
             p1 += "Within minutes Necrons begin to appear from every direction.  There appears to be nearly fourty, cramped in the dark tunnels.";
-        }
-        else if (threat == 3) {
+        } else if (threat == 3) {
             p1 += "Within minutes Necrons begin to appear from every direction.  There appears to be nearly a hundred, cramped in the dark tunnels.";
-        }
-        else if (threat == 4) {
+        } else if (threat == 4) {
             p1 += "Within minutes Necrons begin to appear from every direction.  Their numbers are wihout number.";
         }
-    } 
+    }
 
     if (special_feature.data.enemy == "wraith") {
         p1 += "two Necron Wraiths appear out of nowhere and begin to attack.";

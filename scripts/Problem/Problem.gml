@@ -1,11 +1,10 @@
 /// @param {string} _sequence_func
-function run_problem_sequence(_sequence_func){
+function run_problem_sequence(_sequence_func) {
     var _prob_length = array_length(problems);
-    for (var i = _prob_length - 1; i >= 0; i--){
+    for (var i = _prob_length - 1; i >= 0; i--) {
         problems[i][$ _sequence_func]();
-    }    
+    }
 }
-
 
 /// @param {string} _name
 /// @param {Real} _timer
@@ -19,75 +18,78 @@ function Problem(_name, _timer, _data) constructor {
     f_type = eP_FEATURES.MISSION;
     stage_id = "";
     members = [];
-    if (struct_exists(data, "stage")){
+    if (struct_exists(data, "stage")) {
         stage_id = data.stage;
     }
-    if (struct_exists(data, "members")){
+    if (struct_exists(data, "members")) {
         members = data.members;
     }
-    static has_data = function(key){
+
+    static has_data = function(key) {
         return struct_exists(data, key);
-    }
-    static description = function(){
-        if (!has_func("description")){
+    };
+
+    static description = function() {
+        if (!has_func("description")) {
             var _n = mission_name_key(p_id);
             _n = _n == "" ? p_id : _n;
             return _n;
         } else {
             return find_func("description")();
         }
-    }
+    };
 
-    static __popup_delete = function(){
-        with(obj_popup){
+    static __popup_delete = function() {
+        with (obj_popup) {
             popup_default_close();
         }
         __check_delete();
-    }
+    };
 
-    static __save_members = function(_save_copy){
+    static __save_members = function(_save_copy) {
         var _mems = clean_unit_array(members);
         _save_copy.members = [];
-        for (var i=0;i<array_length(_mems);i++){
+        for (var i = 0; i < array_length(_mems); i++) {
             _save_copy.members[i] = _mems[i].uid;
-        }        
-    }
+        }
+    };
 
-    static __load_members =  function(){
-        for (var i=0;i<array_length(members);i++){
+    static __load_members = function() {
+        for (var i = 0; i < array_length(members); i++) {
             members[i] = fetch_unit_uid(members[i]);
         }
-    }
+    };
 
-    static find_func_ref = function(trigger_string){
+    static find_func_ref = function(trigger_string) {
         var _func_string = "__" + p_id + "_" + trigger_string;
         return _func_string;
-    }
+    };
 
-    static has_func = function(trigger_string){
+    static has_func = function(trigger_string) {
         var _func_string = find_func_ref(trigger_string);
-        return struct_exists(self,_func_string);
-    }
-    static find_func = function(trigger_string){
+        return struct_exists(self, _func_string);
+    };
+
+    static find_func = function(trigger_string) {
         var _func_string = find_func_ref(trigger_string);
-        if (struct_exists(self,_func_string)){
-            return self[$ _func_string]
+        if (struct_exists(self, _func_string)) {
+            return self[$ _func_string];
         }
         return undefined;
-    }
+    };
 
-    static __popup_choice = function(trigger_string){
+    static __popup_choice = function(trigger_string) {
         var _func = find_func(trigger_string);
-        if (!is_undefined(_func)){
+        if (!is_undefined(_func)) {
             return method(self, _func);
         }
         return undefined;
-    }
+    };
 
-    static mission_log_entry = function(){
+    static mission_log_entry = function() {
         LOGGER.info($"mission : {p_id}");
         var _func = find_func("mission_log_entry");
-        if (!is_undefined(_func)){
+        if (!is_undefined(_func)) {
             try {
                 return _func();
             } catch (_exception) {
@@ -98,18 +100,18 @@ function Problem(_name, _timer, _data) constructor {
             }
         }
         return __default_mission_log_entry();
-    }
+    };
 
-    static __default_mission_log_entry = function(){
+    static __default_mission_log_entry = function() {
         LOGGER.info($"mission : {p_id}");
-        if (!instance_exists(system)){
+        if (!instance_exists(system)) {
             return undefined;
         }
         if (stage_id == "preliminary") {
             return undefined;
         }
         var _data = {
-            location : is_callable(system.name) ? system.name() : system.name,
+            location: is_callable(system.name) ? system.name() : system.name,
             system: system,
             mission: description(),
             time: timer,
@@ -121,34 +123,34 @@ function Problem(_name, _timer, _data) constructor {
         });
 
         return _data;
-    }
+    };
 
-    static __create_popup_option = function(_str1 = "", _func_string = "popup_delete"){
+    static __create_popup_option = function(_str1 = "", _func_string = "popup_delete") {
         var _opt = {
-            str1 : _str1,
-            run_in_popup : false
-        }
-        if (_func_string == "popup_delete"){
+            str1: _str1,
+            run_in_popup: false,
+        };
+        if (_func_string == "popup_delete") {
             _opt.choice_func = __popup_delete;
         } else {
             var _func = __popup_choice(_func_string);
-            if (!is_undefined(_func)){
+            if (!is_undefined(_func)) {
                 _opt.choice_func = _func;
             } else {
-                LOGGER.error($"unknown popup trigger {_func_string} for {p_id}") 
+                LOGGER.error($"unknown popup trigger {_func_string} for {p_id}");
             }
         }
 
         return _opt;
-    }
+    };
 
-    static __add_option = function(_str1 = "", _func_string = "popup_delete"){
+    static __add_option = function(_str1 = "", _func_string = "popup_delete") {
         add_option(__create_popup_option(_str1, _func_string));
-    }
+    };
 
     //triggered at the end of scr_shoot
-    static battle_on_enemy_casulties = function(){
-        if (!struct_exists(self, "casualty_packet")){
+    static battle_on_enemy_casulties = function() {
+        if (!struct_exists(self, "casualty_packet")) {
             exit;
         }
         instance_activate_object(obj_star);
@@ -157,55 +159,53 @@ function Problem(_name, _timer, _data) constructor {
 
         struct_remove(self, "casualty_packet");
 
-        instance_deactivate_object(obj_star);  
-    }
+        instance_deactivate_object(obj_star);
+    };
 
     //triggers in obj_ncombat alarm 5
-    static battle_final_message = function(){
+    static battle_final_message = function() {
         instance_activate_object(obj_star);
         var _func = find_func("battle_final_message");
-        __handle_triggered_mission_func(_func);   
-        instance_deactivate_object(obj_star);      
-    }
+        __handle_triggered_mission_func(_func);
+        instance_deactivate_object(obj_star);
+    };
 
-    static after_battle_effects = function(){
+    static after_battle_effects = function() {
         instance_activate_object(obj_star);
         var _func = find_func("battle_aftermath");
-        __handle_triggered_mission_func(_func);   
+        __handle_triggered_mission_func(_func);
         instance_deactivate_object(obj_star);
-    }
+    };
 
-        //triggered within drop select
-    static before_battle_effects = function(){
+    //triggered within drop select
+    static before_battle_effects = function() {
         instance_activate_object(obj_star);
         var _func = find_func("setup_battle");
-        __handle_triggered_mission_func(_func);   
-        instance_deactivate_object(obj_star);   
-    }
+        __handle_triggered_mission_func(_func);
+        instance_deactivate_object(obj_star);
+    };
 
-    static on_squad_selection = function(){
+    static on_squad_selection = function() {
         instance_activate_object(obj_star);
         var _func = find_func("squad_selected");
-        __handle_triggered_mission_func(_func);       
+        __handle_triggered_mission_func(_func);
         instance_deactivate_object(obj_star);
-    }
+    };
 
-
-    static on_unit_selection = function(){
+    static on_unit_selection = function() {
         var _func = find_func("unit_select");
-        if (!is_undefined(_func)){
+        if (!is_undefined(_func)) {
             var _selec_data = obj_controller.selection_data;
-            if (struct_exists(_selec_data, "selections")){
+            if (struct_exists(_selec_data, "selections")) {
                 members = _selec_data.selections;
             }
-            __handle_triggered_mission_func(_func);   
-        }    
+            __handle_triggered_mission_func(_func);
+        }
         instance_deactivate_object(obj_star);
-    }
+    };
 
-
-    static __handle_triggered_mission_func = function(func){
-        if (!is_undefined(func)){
+    static __handle_triggered_mission_func = function(func) {
+        if (!is_undefined(func)) {
             __refresh_data();
             try {
                 func();
@@ -216,7 +216,7 @@ function Problem(_name, _timer, _data) constructor {
         }
         __check_delete();
         obj_controller.location_viewer.update_mission_log();
-    }
+    };
 
     //requires the completion and required_months flag to be in the data struct
     static __increment_mission_completion = function() {
@@ -229,34 +229,34 @@ function Problem(_name, _timer, _data) constructor {
             return 0;
         }
         return (data.completion / data.required_months) * 100;
-    }
+    };
 
-    static __inquisition_mission_options = function(){
+    static __inquisition_mission_options = function() {
         var _options = [
             {
                 str1: "Accept",
-                choice_func: function(){
+                choice_func: function() {
                     var _mission = pop_data.mission;
                     reset_popup_options();
                     var _func_str = _mission.find_func_ref("accept");
-                    if (struct_exists(_mission, _func_str)){
-                        with(_mission){
+                    if (struct_exists(_mission, _func_str)) {
+                        with (_mission) {
                             _mission[$ _func_str]();
                         }
-                    } 
+                    }
                     obj_controller.demanding = 0;
-                }
+                },
             },
         ];
-        if (!obj_controller.demanding){
+        if (!obj_controller.demanding) {
             array_push(_options, {
                 str1: "Refuse",
-                choice_func: function(){
+                choice_func: function() {
                     pop_data.mission.delete_mission = true;
                     popup_default_close();
-                }
-            })
+                },
+            });
         }
-        return _options
-    }
+        return _options;
+    };
 }

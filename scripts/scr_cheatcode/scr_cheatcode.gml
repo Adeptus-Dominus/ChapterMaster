@@ -354,7 +354,7 @@ function scr_cheatcode(argument0) {
 }
 
 /// @self Asset.GMObject.obj_star_select
-function draw_system_debug(){
+function draw_system_debug() {
     add_draw_return_values();
     debug_slate.inside_method = function() {
         debug_slate.title = localize("DEBUG");
@@ -366,14 +366,14 @@ function draw_system_debug(){
         var _keys = global.planet_problem_keys;
         var _star_missions = [
             "great_crusade",
-            "hunt_inquisitor"
-        ]
+            "hunt_inquisitor",
+        ];
         _base_y += 2;
         draw_set_font(fnt_40k_12);
         for (var i = 0; i < array_length(_star_missions); i++) {
             var _y = _base_y + i * 20;
             var _c = draw_unit_buttons([_base_x, _base_y], _star_missions[i]);
-            if (scr_hit(_c[0], _c[1],_c[2],_c[3])) {
+            if (scr_hit(_c[0], _c[1], _c[2], _c[3])) {
                 tooltip_draw(mission_name_key(_star_missions[i]));
                 if (mouse_button_clicked()) {
                     target.add_problem(_star_missions[i], {}, 3).timer = 3;
@@ -382,8 +382,8 @@ function draw_system_debug(){
             _base_y += _c[3] - _c[1];
         }
     };
-    debug_slate.draw(350 + main_data_slate.width, 160, 0.6, 0.6); 
-    pop_draw_return_values();    
+    debug_slate.draw(350 + main_data_slate.width, 160, 0.6, 0.6);
+    pop_draw_return_values();
 }
 
 /// @self Asset.GMObject.obj_star_select

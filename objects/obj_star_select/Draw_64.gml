@@ -290,7 +290,7 @@ try {
                 }
             }
         }
-        var _p_fleet = target.get_orbiting_player_fleet()
+        var _p_fleet = target.get_orbiting_player_fleet();
         if (current_button != "") {
             if (array_contains(["Build", "Base", "Arsenal", "Gene-Vault"], current_button)) {
                 /// @type {Id.Instance.obj_temp_build}
@@ -374,7 +374,7 @@ try {
                 scr_destroy_planet(2);
             }
         }
-    } else if (global.cheat_debug ){
+    } else if (global.cheat_debug) {
         draw_system_debug();
     }
 

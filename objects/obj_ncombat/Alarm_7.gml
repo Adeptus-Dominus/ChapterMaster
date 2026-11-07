@@ -46,7 +46,6 @@ try {
         }
     }
     if (string_count("cs_meeting", battle_special) > 0) {
-
         with (obj_star) {
             if (name == obj_ncombat.battle_loc) {
                 instance_create(x, y, obj_temp_meeting);
@@ -226,7 +225,7 @@ try {
             scr_recent("battle_victory", $"{battle_loc} {scr_roman(battle_id)}", enemy);
         }
 
-        if ((defeat) && (final_marine_deaths + final_command_deaths >= 10)) {
+        if (defeat && (final_marine_deaths + final_command_deaths >= 10)) {
             scr_recent("battle_defeat", $"{enemy}, {final_marine_deaths + final_command_deaths}");
         }
     } else {
@@ -267,7 +266,7 @@ try {
         }
     }
 
-    if (valid_special_feature()){
+    if (valid_special_feature()) {
         special_feature.after_battle_effects();
     }
     if ((enemy == eFACTION.PLAYER && on_ship == true) && (!defeat)) {
@@ -327,7 +326,6 @@ try {
     }
 
     if (enemy == eFACTION.CHAOS) {
-
         if (((battle_special == "cs_meeting_battle5") || (battle_special == "cs_meeting_battle6")) && (defeat == 0)) {
             var mos = false;
 

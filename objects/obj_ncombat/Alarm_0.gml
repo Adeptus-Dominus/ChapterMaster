@@ -138,69 +138,68 @@ try {
     LOGGER.info($"default Distance : {xxx}");
     var _enemies_assigned = false;
 
-    if (is_undefined(battle_enemy_data)){
+    if (is_undefined(battle_enemy_data)) {
         enemy_organisations = json_to_gamemaker(working_directory + "/data/battle_organisation_formats.json", json_parse);
-        if (battle_special != ""){
-            if (struct_exists(enemy_organisations, battle_special)){
-                battle_enemy_data = enemy_organisations[$ battle_special]
+        if (battle_special != "") {
+            if (struct_exists(enemy_organisations, battle_special)) {
+                battle_enemy_data = enemy_organisations[$ battle_special];
             }
         } else {
             var _battle_string = $"{global.faction_names[enemy]}_force{force}";
-            if (leader == true){
+            if (leader == true) {
                 _battle_string = "leader_" + _battle_string;
             }
-            if (struct_exists(enemy_organisations, _battle_string)){
-                battle_enemy_data = enemy_organisations[$_battle_string]
+            if (struct_exists(enemy_organisations, _battle_string)) {
+                battle_enemy_data = enemy_organisations[$ _battle_string];
             }
         }
-    } 
-    if (!is_undefined(battle_enemy_data)){
+    }
+    if (!is_undefined(battle_enemy_data)) {
         move_data_to_current_scope(battle_enemy_data);
-        if (struct_exists(battle_enemy_data , "fortified")){
+        if (struct_exists(battle_enemy_data, "fortified")) {
             fortified = battle_enemy_data.fortified;
         }
-        if (struct_exists(battle_enemy_data , "threat")){
+        if (struct_exists(battle_enemy_data, "threat")) {
             threat = battle_enemy_data.threat;
         }
-        if (struct_exists(battle_enemy_data , "leader")){
+        if (struct_exists(battle_enemy_data, "leader")) {
             leader = battle_enemy_data.leader;
         }
-        if (struct_exists(battle_enemy_data , "cols")){
+        if (struct_exists(battle_enemy_data, "cols")) {
             var _cols = battle_enemy_data.cols;
-            for (var i = 0; i < array_length(_cols); i++){
+            for (var i = 0; i < array_length(_cols); i++) {
                 var _col = _cols[i];
                 _u = instance_create(0, 240, obj_enunit);
                 _u.flank = struct_exists(_col, "flank") && _col.flank;
                 _u.add_enemies(_col.enemies);
-                _u.engaged = struct_exists(_col , "engaged") && (_col.engaged);
-                if (_u.flank){
-                    if (_col.distance > 0){
-                        _u.x = instance_nearest(0,240, obj_pnunit).x - _col.distance;
+                _u.engaged = struct_exists(_col, "engaged") && _col.engaged;
+                if (_u.flank) {
+                    if (_col.distance > 0) {
+                        _u.x = instance_nearest(0, 240, obj_pnunit).x - _col.distance;
                     } else {
-                        _u.x = instance_nearest(0,240, obj_pnunit).x - 80;
+                        _u.x = instance_nearest(0, 240, obj_pnunit).x - 80;
                     }
                 } else {
-                    _u.x =  _xxx + _col.distance
+                    _u.x = _xxx + _col.distance;
                 }
-                if (_u.engaged){
+                if (_u.engaged) {
                     var _nearest_player = instance_nearest(_u.flank ? 0 : _xxx, 240, obj_pnunit);
-                    if (!_u.flank){
+                    if (!_u.flank) {
                         _u.x = _nearest_player.x + 10;
                     } else {
                         _u.x = _nearest_player.x - 10;
                     }
                     _u.engaged = true;
-                    _nearest_player.engaged = true
+                    _nearest_player.engaged = true;
                 }
             }
             _enemies_assigned = true;
         }
     }
-    if (!_enemies_assigned){
+    if (!_enemies_assigned) {
         // * Praetorian Servitor Group *
         if (string_count("mech", battle_special) > 0) {
             fortified = 0;
-
 
             u = instance_create(_xxx + 10, 240, obj_enunit);
             enemy_dudes = "";
@@ -2738,7 +2737,7 @@ try {
                 u.dudes_num[1] = 20;
                 u.flank = 1;
             }
-        }   
+        }
     }
 
     // ** Set up player defenses **

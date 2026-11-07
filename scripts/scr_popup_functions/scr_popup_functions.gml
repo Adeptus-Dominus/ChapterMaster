@@ -124,7 +124,7 @@ function PopupOption(data) constructor {
 
     static get_label = function(_index) {
         return $"{_index + 1}. {str1}";
-    }
+    };
 
     static on_hover = function(_popup) {
         if (struct_exists(self, "hover") && is_callable(hover)) {
@@ -133,7 +133,7 @@ function PopupOption(data) constructor {
                 script_execute(_hover);
             }
         }
-    }
+    };
 
     static on_click = function(_popup) {
         if (!is_callable(choice_func)) {
@@ -167,7 +167,7 @@ function PopupOption(data) constructor {
                 instance_destroy(_popup);
             }
         }
-    }
+    };
 }
 
 /// @self Asset.GMObject.obj_popup

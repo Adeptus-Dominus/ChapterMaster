@@ -48,9 +48,9 @@ function task_selector_squad_manage() {
         }*/
         array_push(_squads, _squad);
     }
-    if (struct_exists(selection_data , "feature") && array_length(_squads)){
+    if (struct_exists(selection_data, "feature") && array_length(_squads)) {
         var _feat = selection_data.feature;
-        if (is_struct(_feat) && is_instanceof(_feat, PlanetProblem)){
+        if (is_struct(_feat) && is_instanceof(_feat, PlanetProblem)) {
             _feat.data.squads = _squads;
             _feat.on_squad_selection();
         }
@@ -157,9 +157,9 @@ function task_selector_man_manage() {
         }
     }
     selection_data.selections = _selections;
-    if (struct_exists(selection_data, "feature")){
+    if (struct_exists(selection_data, "feature")) {
         var _feat = selection_data.feature;
-        if (is_struct(_feat) && is_instanceof(_feat, PlanetProblem)){
+        if (is_struct(_feat) && is_instanceof(_feat, PlanetProblem)) {
             _feat.on_unit_selection();
         }
     }

@@ -212,7 +212,7 @@ if (purge == 0) {
     }
 
     var spesh = false;
-    if ((_p_data.has_feature(eP_FEATURES.WARLORD10)) && (obj_controller.faction_defeated[10] == 0) && (obj_controller.faction_gender[10] == 1) && (obj_controller.known[eFACTION.CHAOS] > 0) && (obj_controller.turn >= obj_controller.chaos_turn)) {
+    if (_p_data.has_feature(eP_FEATURES.WARLORD10) && (obj_controller.faction_defeated[10] == 0) && (obj_controller.faction_gender[10] == 1) && (obj_controller.known[eFACTION.CHAOS] > 0) && (obj_controller.turn >= obj_controller.chaos_turn)) {
         spesh = true;
     }
 

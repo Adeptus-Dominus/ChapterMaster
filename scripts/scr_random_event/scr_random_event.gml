@@ -442,8 +442,6 @@ function scr_random_event(execute_now) {
         var _planet = irandom_range(1, _star.planets);
         var _pdata = _star.get_planet_data(_planet);
         _pdata.new_problem("harlequins", irandom_range(2, 5));
-
-
     } else if (chosen_event == eEVENT.SUCCESSION_WAR) {
         LOGGER.info("RE: Succession War");
         var eligible_stars = [];
@@ -728,7 +726,7 @@ function scr_random_event(execute_now) {
         if (planet > 0 && instance_exists(star)) {
             var _p_data = star.get_planet_data(planet);
             var _eta = scr_mission_eta(star.x, star.y, 1);
-            _p_data.new_problem("hunt_fallen",_eta);
+            _p_data.new_problem("hunt_fallen", _eta);
         }
         _evented = true;
     }
