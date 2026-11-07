@@ -145,7 +145,7 @@ try {
                 battle_enemy_data = enemy_organisations[$ battle_special];
             }
         } else {
-            var _battle_string = $"{global.faction_names[enemy]}_force{force}";
+            var _battle_string = $"{global.faction_names[enemy]}_force{threat}";
             if (leader == true) {
                 _battle_string = "leader_" + _battle_string;
             }
