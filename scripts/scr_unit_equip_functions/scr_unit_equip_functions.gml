@@ -595,8 +595,8 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
         }
     }
 
-    static load_item_from_string(_item){
-        var _tag_set = equipment_tag_key_from_value(_item_item);
+    static load_item_from_string = function(_item){
+        var _tag_set = equipment_tag_key_from_value(_item);
         if (_tag_set == ""){
             var _attempt_find = gear_weapon_data("any", _item);
             if (_attempt_find == false){
