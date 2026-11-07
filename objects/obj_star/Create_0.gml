@@ -340,7 +340,7 @@ function deserialize(save_data) {
 
     if (struct_exists(save_data, "problems")) {
         for (var i = 0; i < array_length(save_data.problems); i++){
-            var _prob = new SystemProblem("", self, {}, 0);
+            var _prob = new SystemProblem(save_data.problems[i].p_id, self, {}, 0);
             _prob.load(save_data.problems[i]);
             array_push(problems, _prob);
         }        

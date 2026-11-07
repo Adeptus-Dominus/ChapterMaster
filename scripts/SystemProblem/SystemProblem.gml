@@ -19,11 +19,13 @@ function SystemProblem(_name, _system = noone, _data = {}, _timer = -1) : Proble
     static load = function(data) {
         move_data_to_current_scope(data);
         __load_members();
-        __refresh_data();
     };
 
     static __check_delete = function() {
         if (timer == -1 || delete_mission) {
+            if (!instance_exists(system)){
+                exit;
+            }
             var _prob = -1;
             for (var i = 0; i < array_length(system.problems); i++) {
                 if (system.problems[i] == self) {
@@ -49,8 +51,7 @@ function SystemProblem(_name, _system = noone, _data = {}, _timer = -1) : Proble
 
     static basic_turn_end = function() {
         if (!instance_exists(system)){
-            delete_mission = true;
-            __check_delete();
+            timer = -1;
             exit;
         }
         if (system.storm <= 0) {
