@@ -229,6 +229,14 @@ global.unit_equip_slots = [
     "all",
 ];
 
+global.marine_equipment_getters = [
+    "weapon_one",
+    "weapon_two",
+    "armour",
+    "gear",
+    "mobility_item",
+]
+
 global.role_data_keys = [
     "wep1",
     "wep2",
@@ -256,6 +264,12 @@ global.equipment_qualities = [
     "master_crafted",
     "artifact",
 ];
+
+global.equipment_tags = {
+    "heavy_weapon" : "Heavy Ranged",
+    "power_armour" : "Power Armour",
+    "terminator" : "Terminator Armour"
+}
 
 global.string_to_enum_roles_map = {
     none: eROLE.NONE,

@@ -56,7 +56,7 @@ function EquipmentStruct(item_data = undefined, core_type = "", quality_request 
     quality = quality_request == "none" ? "standard" : quality_request;
     // Struct defaults end;
 
-    // Loop through teh data, to fill the struct;
+    // Loop through the data, to fill the struct;
     if (is_struct(item_data)) {
         var _struct_keys = struct_get_names(item_data);
         for (var i = 0; i < array_length(_struct_keys); i++) {
@@ -504,6 +504,66 @@ function EquipmentStruct(item_data = undefined, core_type = "", quality_request 
     };
 }
 
+function TagSetItems(_tag){
+    name = global.equipment_tags[$ _tag];
+    key = _tag
+    items = gear_with_tag("any", key, true);
+
+    req_exp = 1000;
+    for (var i = 0; i < array_length(items); i++){
+        req_exp = min(items[i], req_exp);
+    }
+
+    static has_tag = function(_tag){
+        if (_tag == key){
+            return true
+        } else {
+            for (var i = 0; i < array_length(items); i++){
+                if (items[i].has_tag(_tag)){
+                    return true;
+                }
+            }            
+        }
+        return false;
+    }
+}
+
+function gear_with_tag(_search_area = "any", _wanted_tag, _fetch_struct = false){
+    var matches = [];
+    var gear_areas = [
+        "gear",
+        "armour",
+        "mobility",
+    ];
+
+    var _areas = (search_area == "any") ? array_concat(gear_areas, ["weapon"]) : [search_area];
+
+    for (var a = 0; a < array_length(_areas); a++) {
+        var _area = _areas[a];
+        var _area_data = undefined;
+
+        if (array_contains(gear_areas, _area)) {
+            _area_data = global.gear[$ _area];
+        } else if (_area == "weapon") {
+            _area_data = global.weapons;
+        }
+        if (is_undefined(_area_data)) continue;
+
+        var _keys = struct_get_names(_area_data);
+        for (var k = 0; k < array_length(_keys); k++) {
+            var _key = _keys[k];
+            if (array_contains(_area_data[$ _key].tags, _wanted_tag)) {
+                if (_fetch_struct) {
+                    array_push(matches, gear_weapon_data(_area, _key, "all"));
+                } else {
+                    array_push(matches, _key);
+                }
+            }
+        }
+    }
+    return matches;
+}
+
 /// @param {string} search_area possible values: "any", "weapon", "gear", "armour", "mobility"
 function gear_weapon_data(search_area = "any", item, wanted_data = "all", sub_class = false, quality_request = "standard", arti_struct = -1) {
     var item_data_set = false;
@@ -605,4 +665,14 @@ function quality_color(_item_quality) {
         case "artifact":
             return #40bfbf;
     }
+}
+
+function equipment_tag_key_from_value(_value) {
+    var _keys = struct_get_names(global.equipment_tags);
+    for (var i = 0; i < array_length(_keys); i++) {
+        if (global.equipment_tags[$ _keys[i]] == _value) {
+            return _keys[i];
+        }
+    }
+    return "";
 }
