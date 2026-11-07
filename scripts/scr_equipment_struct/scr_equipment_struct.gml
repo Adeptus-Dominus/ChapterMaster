@@ -511,7 +511,7 @@ function TagSetItems(_tag) constructor{
 
     req_exp = 1000;
     for (var i = 0; i < array_length(items); i++){
-        req_exp = min(items[i], req_exp);
+        req_exp = min(items[i].req_exp, req_exp);
     }
 
     static has_tag = function(_tag){
@@ -526,23 +526,40 @@ function TagSetItems(_tag) constructor{
         }
         return false;
     }
+
+    static has_item = function(_item){
+        for (var i = 0; i < array_length(items); i++){
+            if (items[i].name == _item){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static total_in_inventory = function(){
+        var _total = 0;
+        for (var i = 0; i < array_length(items); i++){
+            _total += scr_item_count(items[i].name);
+        }
+        return _total;
+    }
 }
 
 function gear_with_tag(_search_area = "any", _wanted_tag, _fetch_struct = false){
-    var matches = [];
-    var gear_areas = [
+    var _matches = [];
+    var _gear_areas = [
         "gear",
         "armour",
         "mobility",
     ];
 
-    var _areas = (search_area == "any") ? array_concat(gear_areas, ["weapon"]) : [search_area];
+    var _areas = (_search_area == "any") ? array_concat(_gear_areas, ["weapon"]) : [_search_area];
 
     for (var a = 0; a < array_length(_areas); a++) {
         var _area = _areas[a];
         var _area_data = undefined;
 
-        if (array_contains(gear_areas, _area)) {
+        if (array_contains(_gear_areas, _area)) {
             _area_data = global.gear[$ _area];
         } else if (_area == "weapon") {
             _area_data = global.weapons;
@@ -554,14 +571,14 @@ function gear_with_tag(_search_area = "any", _wanted_tag, _fetch_struct = false)
             var _key = _keys[k];
             if (array_contains(_area_data[$ _key].tags, _wanted_tag)) {
                 if (_fetch_struct) {
-                    array_push(matches, gear_weapon_data(_area, _key, "all"));
+                    array_push(_matches, gear_weapon_data(_area, _key, "all"));
                 } else {
-                    array_push(matches, _key);
+                    array_push(_matches, _key);
                 }
             }
         }
     }
-    return matches;
+    return _matches;
 }
 
 /// @param {string} search_area possible values: "any", "weapon", "gear", "armour", "mobility"

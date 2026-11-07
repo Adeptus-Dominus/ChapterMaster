@@ -58,7 +58,7 @@ function setup_promotion_popup() {
                 var _squads = units_to_move.count_squads("all", true);
                 units_to_move.move_to_company(target_comp, false);
 
-                var _target_role = role_name[target_role];
+                var _target_role = promote_roles[target_role].name
 
                 for (var i = 0; i < units_to_move.number(); i++) {
                     var _unit = units_to_move.units[i];
@@ -186,7 +186,7 @@ function draw_popup_promotion() {
     var role_x = 0;
     role_y = 0;
     if (target_comp != -1) {
-        for (var r = 1, l = array_length(promote_roles); r < l; r++) {
+        for (var r = 0; r < array_length(promote_roles); r++) {
             var _name = promote_roles[r].name;
             var _data = promote_roles[r];
             if (_name != "") {

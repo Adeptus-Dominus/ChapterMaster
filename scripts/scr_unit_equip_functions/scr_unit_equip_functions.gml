@@ -852,19 +852,31 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
         if (check_group == noone){
             _check_array = obj_controller.display_unit;
         } else {
-            _check_array = check_group;
+            if (is_instanceof(check_group, UnitGroup)){
+                _check_array = check_group.units
+            } else {
+                _check_array = check_group;
+            }
         }
         var _dread_warning_sorted = slot != eEQUIPMENT_SLOT.ARMOUR || get_item("armour").has_tag("dreadnought");
 
+        var _is_set = is_instanceof(_item, TagSetItems);
         if (needed_count > 0) {
             for (var u = 0; u < array_length(_check_array); u++) {
                 if (check_group == noone && (!obj_controller.man_sel[u] || obj_controller.man[u] != "man")) {
                     continue;
                 }
                 var _unit = _check_array[u];
-                if (_unit[$ _marine_slot_getter]() == _wanted_item) {
-                    _found += 1;
+                if (_is_set){
+                    if (_item.has_item(_unit[$ _marine_slot_getter]())){
+                        _found += 1;
+                    }
+                } else {
+                    if (_unit[$ _marine_slot_getter]() == _wanted_item) {
+                        _found += 1;
+                    }
                 }
+
 
                 if (_wanted_item == ITEM_NAME_NONE) {
                     _found += 1;
@@ -883,7 +895,11 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
                     }
                 }
             }
-            _found += scr_item_count(_wanted_item);
+            if (_is_set){
+                _found += _item.total_in_inventory();
+            } else {
+                _found += scr_item_count(_wanted_item);
+            }
         }
 
         equipment_found_and_valid[slot] = equipment_found_and_valid[slot] && _found >= needed_count;
@@ -896,7 +912,7 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
             warning += localize("{0} units don't have exp for {1}: {2} required.", [_marines_without_exp, localize(_wanted_item), _item.req_exp]);
         }
 
-        var _check_tags = ["teminator", "dreadnought" ];
+        var _check_tags = ["terminator", "dreadnought" ];
         for (var i = 0; i < array_length(_check_tags); i++){
             var _tag = _check_tags[i];
             if (_item.has_tag($"{_tag}_only")) {
@@ -927,7 +943,7 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
         return {
             warning,
             equipment_found_and_valid,
-            allow_loudout : array_sum(equipment_found_and_valid) >= STANDARD_EQUIP_SLOT_COUNT;
+            allow_loudout : array_sum(equipment_found_and_valid) >= STANDARD_EQUIP_SLOT_COUNT
         };
     };
 

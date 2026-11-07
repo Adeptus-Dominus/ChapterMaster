@@ -18,7 +18,7 @@ function UnitGroup(units = []) constructor {
         array_push(units, unit);
     };
 
-    static tally_equipment(){
+    static tally_equipment = function(){
         var _equipment_map = new CountingMap();
         for (var i = 0; i < number(); i++){
             var _unit = units[i];
