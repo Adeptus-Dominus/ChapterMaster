@@ -7,6 +7,9 @@ try {
     var _list_term_armour = global.list_terminator_armour;
 
     if (engage == true) {
+        marines_with_role.for_each(function(_unit){
+
+        });
         for (var co = 0; co <= obj_ini.companies; co++) {
             if (role_number[co] > 0) {
                 for (var i = 0; i < array_length(obj_ini.TTRPG[co]); i++) {
@@ -112,7 +115,7 @@ try {
         all_good = _equip_data.check_set_is_equipable(marines_with_role.number(), marines_with_role.units);
 
 
-        if (total_role_number > 0) {
+        if (marines_with_role.number() > 0) {
             var _role_name = obj_ini.player_role_data[role].role;
             total_roles = $"You currently have {marines_with_role.number()}x {_role_name} across all companies.";
             for (var i = 0; i < obj_ini.companies; i++) {

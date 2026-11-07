@@ -3,7 +3,6 @@ role = obj_controller.settings;
 refresh = true;
 engage = false;
 
-total_role_number = 0;
 total_roles = "";
 
 role_number = [];

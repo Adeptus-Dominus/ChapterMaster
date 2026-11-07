@@ -688,7 +688,7 @@ function setup_role_settings_buttons() {
 }
 
 function scr_draw_mass_equip_gui() {
-    if (total_role_number > 0) {
+    if (marines_with_role.number() > 0) {
         draw_set_color(c_gray);
         draw_set_halign(fa_left);
         draw_set_font(fnt_40k_30b);
@@ -744,7 +744,7 @@ function scr_draw_mass_equip_gui() {
         }
     }
 
-    if (total_role_number > 0 && tab > -1) {
+    if (marines_with_role.number() > 0 && tab > -1) {
         item_name = [];
         var infanty_roles = [
             eROLE.CHAPTERMASTER,
