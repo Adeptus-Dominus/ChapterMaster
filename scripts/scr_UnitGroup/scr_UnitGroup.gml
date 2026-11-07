@@ -18,6 +18,18 @@ function UnitGroup(units = []) constructor {
         array_push(units, unit);
     };
 
+    static tally_equipment(){
+        var _equipment_map = new CountingMap();
+        for (var i = 0; i < number(); i++){
+            var _unit = units[i];
+            for (var s = 0; s < STANDARD_EQUIP_SLOT_COUNT; s++){
+                var _item = _unit[$ marine_equipment_getters[s]]();
+                _equipment_map.add(_item);
+            }
+        }
+        return _equipment_map;
+    }
+
     static has_role = function(_role) {
         if (is_real(_role)) {
             _role = obj_ini.player_role_data[_role].role;

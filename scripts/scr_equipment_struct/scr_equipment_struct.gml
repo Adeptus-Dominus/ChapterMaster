@@ -504,7 +504,7 @@ function EquipmentStruct(item_data = undefined, core_type = "", quality_request 
     };
 }
 
-function TagSetItems(_tag){
+function TagSetItems(_tag) constructor{
     name = global.equipment_tags[$ _tag];
     key = _tag
     items = gear_with_tag("any", key, true);

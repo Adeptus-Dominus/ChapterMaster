@@ -927,6 +927,7 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
         return {
             warning,
             equipment_found_and_valid,
+            allow_loudout : array_sum(equipment_found_and_valid) >= STANDARD_EQUIP_SLOT_COUNT;
         };
     };
 

@@ -266,9 +266,9 @@ global.equipment_qualities = [
 ];
 
 global.equipment_tags = {
-    "heavy_weapon" : "Heavy Ranged",
-    "power_armour" : "Power Armour",
-    "terminator" : "Terminator Armour"
+    "heavy_ranged" : "Heavy Ranged",
+    "power_armour" : "Any Power Armour",
+    "terminator" : "Any Terminator Armour"
 }
 
 global.string_to_enum_roles_map = {

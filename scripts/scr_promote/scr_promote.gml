@@ -9,7 +9,7 @@ function setup_promotion_popup() {
 
         var god = 0, nuuum = 0;
         for (var f = 0; f < array_length(display_unit); f++) {
-            if (!man_sel[f] || ma_promote[f] < 1 || obj_controller.man[i] != "man"){
+            if (!man_sel[f] || ma_promote[f] < 1 || obj_controller.man[f] != "man"){
                 continue;
             }
             var _unit = obj_controller.display_unit[f];
@@ -245,6 +245,7 @@ function draw_popup_promotion() {
         instance_destroy();
     }
 
-    promote_button.draw(array_sum(all_good.equipment_found_and_valid) == STANDARD_EQUIP_SLOT_COUNT && target_role > -1);
+    var _promote_able = is_struct(all_good) && struct_exists(all_good, "equipment_found_and_valid") && all_good.allow_loudout;
+    promote_button.draw(_promote_able && target_role > -1);
     pop_draw_return_values();
 }
