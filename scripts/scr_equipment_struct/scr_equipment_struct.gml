@@ -541,7 +541,7 @@ function TagSetItems(_tag) constructor{
         item_map = new CountingMap();
         for (var i = 0; i < array_length(items); i++){
             var _item = items[i].name;
-            item_map.add(_item, scr_item_count(items[i].name))
+            item_map.add(_item, scr_item_count(items[i].name));
         }
     }
 

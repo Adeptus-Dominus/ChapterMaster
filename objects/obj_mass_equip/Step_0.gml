@@ -3,9 +3,6 @@ try {
         instance_destroy();
     }
 
-    var _list_basic_armour = global.list_basic_power_armour;
-    var _list_term_armour = global.list_terminator_armour;
-
     if (engage == true) {
         for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++){
             var _tag = equipment_tag_key_from_value(equipment_set[i]);

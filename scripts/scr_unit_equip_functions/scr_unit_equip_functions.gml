@@ -435,11 +435,14 @@ function scr_update_unit_mobility_item(new_mobility_item, from_armoury = true, t
 }
 
 /// @self Struct.TTRPG_stats
-function alter_unit_equipment(update_equipment, from_armoury = true, to_armoury = true, quality = "any") {
+function alter_unit_equipment(update_equipment, from_armoury = true, to_armoury = true, quality = "any", swap_artifacts = false) {
     var _outcome_desc = "";
     static no_equip = "Not enough equipment:";
     var _missing_items = "";
     var _success = true;
+    var _getters = global.marine_equipment_getters;
+    var _set = false;
+    var _map = undefined;
     if (is_array(update_equipment)) {
         update_equipment = convert_equipment_array_into_struct(update_equipment);
     }
@@ -451,7 +454,16 @@ function alter_unit_equipment(update_equipment, from_armoury = true, to_armoury 
         }
         var _item = update_equipment[$ _slot_key];
         if (is_struct(_item) && is_instanceof(_item, TagSetItems)){
+            _set = true;
+            var _map = _item;
+            var _current_item = self[$ _getters[i]]();
+            if (_item.has_item(_current_item)){
+                continue;
+            }
             _item = _item.get_item_from_map();
+        }
+        if (!swap_artifacts && !is_string(self[$ _getters[i]](true))){
+            continue;
         }
         var _outcome = "";
         switch (_slot_key) {
@@ -472,6 +484,9 @@ function alter_unit_equipment(update_equipment, from_armoury = true, to_armoury 
                 break;
         }
         if (_outcome == "no_items") {
+            if (_set){
+                _map.item_map.add(_item);
+            }
             _missing_items += $"{_missing_items == "" ? "" : ","} {localize(_item)}";
             _success = false;
         }
