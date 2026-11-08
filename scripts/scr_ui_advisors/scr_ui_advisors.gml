@@ -80,7 +80,7 @@ function scr_ui_advisors() {
         var _active_roles = active_roles();
         var _chap_role = reclusiam_vars.chaplain_role;
         var _chap_count = reclusiam_vars.chapter_chaplains.number();
-
+        penitorium = array_length(jailed_marines);
         if (_chap_count > 0) {
             blurp = localize("Sir!  You requested a report?  Currently, we have deployed {0} {1}s to watch over the health of our Battle-Brothers in the field.  We have an additional {2} {1}s who await only your order to carry the word to the troops.", [_chap_count, localize(_chap_role), 0]);
         }
@@ -105,37 +105,62 @@ function scr_ui_advisors() {
             if (penitorium == 0) {
                 blurp += localize("##Our men have been behaving as they should.  Not a single one is scheduled for corrective action of any type.");
             }
-
-            draw_set_font(cjk_font(fnt_40k_30b));
-            draw_set_halign(fa_center);
-            draw_text_transformed(xx + 1262, yy + 70, localize("Penitorium"), 0.6, 0.6, 0);
-
-            if (penitorium > 0) {
-                draw_set_font(cjk_font(fnt_40k_14));
-                draw_set_halign(fa_left);
-
-                for (var qp = 1; qp <= min(36, penitorium); qp++) {
-                    var unit = fetch_unit([penit_co[qp], penit_id[qp]]);
-                    if (!is_struct(unit)) {
-                        continue;
-                    }
-                    var r_eta = "";
-                    if (unit.corruption > 0) {
-                        r_eta = string(round((unit.corruption * unit.corruption) / 50));
-                        if (unit.corruption >= 90) {
-                            r_eta = localize("Never");
-                        }
-                    } else if (unit.corruption <= 0) {
-                        r_eta = "0";
-                    }
-                    draw_rectangle(xx + 947, yy + 100 + ((qp - 1) * 20), xx + 1577, yy + 100 + (qp * 20), 1);
-                    draw_text(xx + 950, yy + 100 + ((qp - 1) * 20), string_hash_to_newline(localized_name_role(unit)));
-                    draw_text(xx + 1200, yy + 100 + ((qp - 1) * 20), string_hash_to_newline(localize("ETA: {0}", [r_eta])));
-                    draw_text(xx + 1432, yy + 100 + ((qp - 1) * 20), string_hash_to_newline(localize("[Execute]  [Release]")));
-                }
-            }
-            draw_set_font(cjk_font(fnt_40k_14));
         }
+
+        draw_set_font(cjk_font(fnt_40k_30b));
+        draw_set_halign(fa_center);
+        draw_text_transformed(xx + 1262, yy + 70, localize("Penitorium"), 0.6, 0.6, 0);
+
+        if (penitorium > 0) {
+            draw_set_font(cjk_font(fnt_40k_14));
+            draw_set_halign(fa_left);
+
+            var _stop = min(35, penitorium);
+            for (var qp = 0; qp < _stop; qp++) {
+                var _unit = fetch_unit(jailed_marines[qp]);
+                if (!is_struct(_unit)) {
+                    continue;
+                }
+                var r_eta = "";
+                if (_unit.corruption > 0) {
+                    r_eta = string(round((_unit.corruption * _unit.corruption) / 50));
+                    if (_unit.corruption >= 90) {
+                        r_eta = localize("Never");
+                    }
+                } else if (_unit.corruption <= 0) {
+                    r_eta = "0";
+                }
+                var _y = 100 + (qp * 20)
+                draw_rectangle(xx + 947, yy +  (_y), xx + 1577, yy +  _y, 1);
+                draw_text(xx + 950, yy +  (_y), localized_name_role(_unit));
+                draw_text(xx + 1200, yy +  (_y), localize("ETA: {0}", [r_eta]));
+                var _delete_entry = false;
+                var _execute_button = draw_unit_buttons([xx + 1432, yy +  _y],"[Execute]", [0.4, 0.4]);
+                if (point_and_click(_execute_button)){
+                    if (_unit.role() == obj_ini.player_role_data[eROLE.CHAPTERMASTER].role) {
+                        alarm[7] = 5;
+                        global.defeat = 3;
+                    }
+                    _unit.kill();
+                    _delete_entry = true;           
+                }
+
+                var _release_button = draw_unit_buttons([_execute_button[2], _execute_button[1]],"[Release]", [0.4, 0.4]);
+        
+                if (point_and_click(_release_button)){
+                    _unit.god_status -= 10;
+                    _delete_entry = true;                         
+                }
+                if (_delete_entry){
+                    array_delete(jailed_marines, qp, 1);
+                    qp--;
+                    _stop--;
+                }
+
+            }
+        }
+        draw_set_font(cjk_font(fnt_40k_14));
+
 
         draw_set_font(cjk_font(fnt_40k_14));
         draw_set_alpha(1);
@@ -770,12 +795,12 @@ function scr_ui_advisors() {
         draw_text(xx + 222.5, yy + 200.5, localize("Kills:"));
 
         // draw_text_ext(xx + 222, yy + 216, string_hash_to_newline(string(tot_ki)), -1, 396);
-        var unit = fetch_unit([0, 1]);
-        if (is_struct(unit)) {
-            if (unit.ship_location == -1) {
-                draw_text(xx + 222, yy + 380, string_hash_to_newline(localize("Current Location: {0} {1}#Health: {2}%", [unit.location_string, unit.planet_location, unit.hp()])));
-            } else if (unit.ship_location > -1) {
-                draw_text(xx + 222, yy + 380, string_hash_to_newline(localize("Current Location: Onboard {0}#Health: {1}%", [obj_ini.ship[unit.ship_location], unit.hp()])));
+        var _unit = fetch_unit([0, 1]);
+        if (is_struct(_unit)) {
+            if (_unit.ship_location == -1) {
+                draw_text(xx + 222, yy + 380, string_hash_to_newline(localize("Current Location: {0} {1}#Health: {2}%", [_unit.location_string, _unit.planet_location, _unit.hp()])));
+            } else if (_unit.ship_location > -1) {
+                draw_text(xx + 222, yy + 380, string_hash_to_newline(localize("Current Location: Onboard {0}#Health: {1}%", [obj_ini.ship[_unit.ship_location], _unit.hp()])));
             }
         }
 

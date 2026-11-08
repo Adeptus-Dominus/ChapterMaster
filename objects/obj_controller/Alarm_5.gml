@@ -298,10 +298,7 @@ try {
             if (_unit.god_status != 10) {
                 continue;
             }
-
-            p += 1;
-            penit_co[p] = c;
-            penit_id[p] = e;
+            array_push(jailed_marines, [c,e ]); 
             penitorium += 1;
             _unit.alter_loyalty(-1);
             if ((_unit.corruption < 90) && (_unit.corruption > 0)) {
