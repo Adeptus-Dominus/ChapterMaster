@@ -506,7 +506,7 @@ function EquipmentStruct(item_data = undefined, core_type = "", quality_request 
 
 function TagSetItems(_set) constructor {
     if (is_real(_set)){
-        var _set = global.equipment_tags[_set];
+        _set = global.equipment_tags[_set];
     }
     name = _set.name;
     type = _set.type;
@@ -712,7 +712,6 @@ function quality_color(_item_quality) {
 }
 
 function equipment_tag_key_from_value(_value) {
-    var _keys = struct_get_names(global.equipment_tags);
     for (var i = 0; i < array_length(global.equipment_tags); i++) {
         if (global.equipment_tags[i].name == _value) {
             return global.equipment_tags[i].tag;
@@ -722,7 +721,6 @@ function equipment_tag_key_from_value(_value) {
 }
 
 function is_item_set(_value){
-    var _keys = struct_get_names(global.equipment_tags);
     for (var i = 0; i < array_length(global.equipment_tags); i++) {
         if (global.equipment_tags[i].name == _value) {
             return i;
@@ -731,7 +729,7 @@ function is_item_set(_value){
     return -1;    
 }
 
-fuction get_from_item_set(set_name,  _from_armoury = false,_new_quality = "any" _old_equipment = "", _old_quality = "any"){
+function get_from_item_set(set_name,  _from_armoury = false,_new_quality = "any", _old_equipment = "", _old_quality = "any"){
     var _item = "";
     var _set_index = is_item_set(set_name);
     var _quality_diff = _new_quality != "any" && _old_quality != _new_quality;
@@ -741,7 +739,7 @@ fuction get_from_item_set(set_name,  _from_armoury = false,_new_quality = "any" 
             return EQUIPMENT_UNCHANGED;
         }
         _set.create_item_map();
-        if (array_length(struct_get_keys(_set.item_map)) == 0){
+        if (array_length(_set.item_map.keys()) == 0){
             return NO_ITEM_IN_ARMOURY;
         }
         _item = _set.get_item_from_map()
