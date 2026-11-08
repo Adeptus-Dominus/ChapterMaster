@@ -15,334 +15,28 @@ function scr_ui_advisors() {
     }
 
     // ** Librarium **
-    if (menu == eMENU.LIBRARIUM) {
+    else if (menu == eMENU.LIBRARIUM) {
         scr_librarium();
     }
 
     // ** Recruiting **
-    if (menu == eMENU.RECRUITING) {
+    else if (menu == eMENU.RECRUITING) {
         scr_draw_recruit_advisor();
     }
 
     // ** Armamentarium **
-    if (menu == eMENU.ARMAMENTARIUM) {}
+    else if (menu == eMENU.ARMAMENTARIUM) {}
 
     // ** Apothecarium **
-    if (menu == eMENU.APOTHECARION) {
+    else if (menu == eMENU.APOTHECARION) {
         scr_apothecarium();
     }
 
     // ** Reclusium **
-    if (menu == eMENU.RECLUSIAM) {
-        draw_sprite(spr_rock_bg, 0, xx, yy);
-
-        draw_set_alpha(0.75);
-        draw_set_color(0);
-        draw_rectangle(xx + 342, yy + 66, xx + 903, yy + 818, 0);
-        draw_set_alpha(1);
-        draw_set_color(c_gray);
-        draw_rectangle(xx + 342, yy + 66, xx + 903, yy + 818, 1);
-        draw_line(xx + 342, yy + 426, xx + 903, yy + 426);
-
-        draw_set_alpha(0.75);
-        draw_set_color(0);
-        draw_rectangle(xx + 945, yy + 66, xx + 1580, yy + 818, 0);
-        draw_set_alpha(1);
-        draw_set_color(c_gray);
-        draw_rectangle(xx + 945, yy + 66, xx + 1580, yy + 818, 1);
-
-        var _head = get_department_head(eCHAPTER_DEPARTMENTS.CHAP);
-
-        var _has_head = is_struct(_head);
-        if (_has_head) {
-            if (struct_exists(obj_ini.custom_advisors, "chaplain")) {
-                scr_image("advisor/splash", obj_ini.custom_advisors.chaplain, xx + 16, yy + 43, 310, 828);
-            } else {
-                scr_image("advisor/splash", 3, xx + 16, yy + 43, 310, 828);
-            }
-            draw_set_halign(fa_left);
-            draw_set_color(c_gray);
-            draw_set_font(cjk_font(fnt_40k_30b));
-            draw_text_transformed(xx + 336 + 16, yy + 66, localize("Reclusium"), 1, 1, 0);
-            draw_text_transformed(xx + 336 + 16, yy + 100, localized_name_role(_head), 0.6, 0.6, 0);
-        } else {
-            scr_image("advisor/splash", 1, xx + 16, yy + 43, 310, 828);
-            draw_set_halign(fa_left);
-            draw_set_color(c_gray);
-            draw_set_font(cjk_font(fnt_40k_30b));
-            draw_text_transformed(xx + 336 + 16, yy + 66, localize("Reclusium"), 1, 1, 0);
-            draw_text_transformed(xx + 336 + 16, yy + 100, localize("Adept {0}", [obj_controller.adept_name]), 0.6, 0.6, 0);
-        }
-
-        draw_set_font(cjk_font(fnt_40k_14));
-        draw_set_alpha(1);
-        draw_set_color(c_gray);
-        var _active_roles = active_roles();
-        var _chap_role = reclusiam_vars.chaplain_role;
-        var _chap_count = reclusiam_vars.chapter_chaplains.number();
-
-        if (_chap_count > 0) {
-            blurp = localize("Sir!  You requested a report?  Currently, we have deployed {0} {1}s to watch over the health of our Battle-Brothers in the field.  We have an additional {2} {1}s who await only your order to carry the word to the troops.", [_chap_count, localize(_chap_role), 0]);
-        }
-        if (_chap_count == 0) {
-            blurp = localize("Sir!  You requested a report?  Currently, we have {0} {1}s who await only your order to carry the word to the troops.", [0, localize(_chap_role)]);
-        }
-        if (!scr_has_adv_any(["Tech-Cult Religion", "Spiritual Healers"])) {
-            blurp += localize("##Currently, we are training additional {0} at a ", [localize(_chap_role)]);
-            var _recruit_rates = global.recruitment_rates;
-            blurp += localize(_recruit_rates[training_chaplain]);
-            if (training_chaplain > 0 && training_chaplain <= 6) {
-                var training_points_values = global.chaplain_training_tiers;
-                eta = floor((47 - chaplain_points) / training_points_values[training_chaplain]) + 1;
-            }
-            blurp += localize(" rate");
-            if (training_chaplain > 0) {
-                blurp += localize(" and expect to see a new one in {0} month's time.", [eta]);
-            }
-            if (training_chaplain < 5) {
-                blurp += localize("We can increase this rate, but it will require us to requisition additional facilities, as well as upkeep, Sir.");
-            }
-            if (penitorium == 0) {
-                blurp += localize("##Our men have been behaving as they should.  Not a single one is scheduled for corrective action of any type.");
-            }
-
-            draw_set_font(cjk_font(fnt_40k_30b));
-            draw_set_halign(fa_center);
-            draw_text_transformed(xx + 1262, yy + 70, localize("Penitorium"), 0.6, 0.6, 0);
-
-            if (penitorium > 0) {
-                draw_set_font(cjk_font(fnt_40k_14));
-                draw_set_halign(fa_left);
-
-                for (var qp = 1; qp <= min(36, penitorium); qp++) {
-                    var unit = fetch_unit([penit_co[qp], penit_id[qp]]);
-                    if (!is_struct(unit)) {
-                        continue;
-                    }
-                    var r_eta = "";
-                    if (unit.corruption > 0) {
-                        r_eta = string(round((unit.corruption * unit.corruption) / 50));
-                        if (unit.corruption >= 90) {
-                            r_eta = localize("Never");
-                        }
-                    } else if (unit.corruption <= 0) {
-                        r_eta = "0";
-                    }
-                    draw_rectangle(xx + 947, yy + 100 + ((qp - 1) * 20), xx + 1577, yy + 100 + (qp * 20), 1);
-                    draw_text(xx + 950, yy + 100 + ((qp - 1) * 20), string_hash_to_newline(localized_name_role(unit)));
-                    draw_text(xx + 1200, yy + 100 + ((qp - 1) * 20), string_hash_to_newline(localize("ETA: {0}", [r_eta])));
-                    draw_text(xx + 1432, yy + 100 + ((qp - 1) * 20), string_hash_to_newline(localize("[Execute]  [Release]")));
-                }
-            }
-            draw_set_font(cjk_font(fnt_40k_14));
-        }
-
-        draw_set_font(cjk_font(fnt_40k_14));
-        draw_set_alpha(1);
-        draw_set_color(c_gray);
-
-        if (menu_adept == 1) {
-            blurp = localize("Your Chapter contains {0} {1}s.##", [_chap_count, localize(_chap_role)]);
-            if (!scr_has_adv_any(["Tech-Cult Religion", "Spiritual Healers"])) {
-                blurp += localize("Training of further {0}s", [localize(_chap_role)]);
-                if (training_chaplain >= 0 && training_chaplain <= 6) {
-                    var _recruit_pace = global.recruitment_pace_descriptions;
-                    blurp += localize(_recruit_pace[training_chaplain]);
-                }
-                if (training_chaplain > 0) {
-                    blurp += localize("  The next {0} is expected in {1} months.", [localize(_chap_role), eta]);
-                }
-            }
-        }
-
-        draw_set_halign(fa_left);
-        draw_text_ext(xx + 336 + 16, yy + 130, string_hash_to_newline(string(blurp)), -1, 536);
-
-        draw_set_halign(fa_center);
-        draw_set_color(c_gray);
-        draw_set_font(cjk_font(fnt_40k_30b));
-        draw_text_transformed(xx + 622, yy + 440, localize("Chapter Revelry"), 0.6, 0.6, 0);
-        draw_set_halign(fa_left);
-        draw_set_color(c_gray);
-        draw_set_font(cjk_font(fnt_40k_14));
-
-        var blurp2 = "";
-        // TODO rename fest_type and fest_scheduled into feast_type and feast_schedule and refactor scripts
-        if (menu_adept == 0) {
-            if (fest_scheduled == 0) {
-                if (!scr_has_adv_any(["Tech-Cult Religion", "Spiritual Healers"])) {
-                    blurp2 = localize("As our bolters are charged with death for the Emperor's enemies, our thoughts are charged with his wisdom.  As our bodies are armoured with Adamantium, our souls are protected with our loyalty- loyalty to Him, and loyalty to our brothers.  The bonds of this brotherhood are worth revering, even if a lull in duty invites doubt and heresy.  Should you wish to schedule a rousing event, or challenge, I will make it so.  Under the careful watch of our {0}s, our brothers' spirits may be lifted.", [localize(_chap_role)]);
-                }
-                if (reclusiam_vars.spiritual_healers) {
-                    blurp2 = "";
-                }
-                if (global.chapter_name == "Iron Hands") {
-                    blurp2 = "";
-                }
-            }
-            if (fest_scheduled == 1) {
-                if (fest_type != "Chapter Relic") {
-                    blurp2 = localize("A {0} has been scheduled on ", [localize(fest_type)]);
-                }
-                if (fest_type == "Chapter Relic") {
-                    blurp2 = localize("Chapter Relic construction has been scheduled on ");
-                }
-
-                if (fest_planet == 0) {
-                    blurp2 += string(obj_ini.ship[fest_sid]);
-                }
-                if (fest_planet > 0) {
-                    blurp2 += string(fest_star) + " " + scr_roman(fest_wid);
-                }
-
-                if (fest_honoring == 0) {
-                    blurp2 += localize(".  ");
-                }
-                if (fest_honoring == 1) {
-                    blurp2 += localize(" in your name.  ");
-                }
-                // Specific company
-                if (fest_honoring == 2) {
-                    blurp2 += localize(" in honor of the ");
-                }
-                if (fest_honoring == 3) {
-                    blurp2 += localize(" in honor of ");
-                    var _unit = fetch_unit([fest_honor_co, fest_honor_id]);
-                    blurp2 += $"{localize(_unit.role())} ";
-                    blurp2 += localize("{0} {1} Company).  ", [_unit.name(), romanNumerals[fest_honor_co]]);
-                }
-                if (fest_honoring == 4) {
-                    // faction
-                    blurp2 += localize(", honoring ");
-                }
-                if (fest_honoring == 5) {
-                    blurp2 += localize(", giving praise to The Emperor.  ");
-                }
-                if (fest_honoring == 6) {
-                    blurp2 += localize(" to honor our chapter.  ");
-                }
-
-                if (fest_lav <= 1) {
-                    blurp2 += localize("Very little requisiton has been set aside for the event");
-                }
-                if (fest_lav == 2) {
-                    blurp2 += localize("A minor amount of requisition has been dedicated for the event");
-                }
-                if (fest_lav == 3) {
-                    blurp2 += localize("Moderate expenses are being made for the event");
-                }
-                if (fest_lav == 4) {
-                    blurp2 += localize("A great amount of requisiton is set aside for the event");
-                }
-                if (fest_lav == 5) {
-                    blurp2 += localize("The event is set to be lavish and excessive, with maximum requisition spent");
-                }
-
-                if (fest_repeats <= 1) {
-                    blurp2 += localize(".  It is set to run for {0} month.", [fest_repeats]);
-                }
-                if (fest_repeats > 1) {
-                    blurp2 += localize(".  It is set to run for {0} months.", [fest_repeats]);
-                }
-
-                if (fest_type == "Great Feast") {
-                    if ((fest_feature1 == 1) && (fest_feature2 + fest_feature3 == 0)) {
-                        blurp2 += localize("  The feast will be made up entirely of a banquet.");
-                    }
-                    if ((fest_feature1 == 1) && (fest_feature2 + fest_feature3 > 0)) {
-                        blurp2 += localize("  The feast will primarily be made up of a banquet, although ");
-                        if (fest_feature2 + fest_feature3 == 2) {
-                            blurp2 += localize("drugs and alcohol will be present for those who wish to partake.");
-                        }
-                        if ((fest_feature2 == 1) && (fest_feature3 == 0)) {
-                            blurp2 += localize("alcohol will also be present.");
-                        }
-                        if ((fest_feature2 == 0) && (fest_feature3 == 1)) {
-                            blurp2 += localize("drugs will also be present.");
-                        }
-                    }
-                    if (fest_feature1 == 0) {
-                        if ((fest_feature2 == 1) && (fest_feature3 == 0)) {
-                            blurp2 = localize("  The feast will only be such in name, and actually primarily be composed of alcohol consumption and roudy behavior.");
-                        }
-                        if ((fest_feature2 == 0) && (fest_feature3 == 1)) {
-                            blurp2 = localize("  The feast will only be such in name, and actually primarily be composed of lines of drugs and roudy behavior.");
-                        }
-                    }
-                }
-                if (fest_type == "Tournament") {
-                    if (fest_feature3 == 1) {
-                        blurp2 += localize("  Other Chapters have been invited to partake in the event, although it is not known who, if any, might show.");
-                    }
-                    if (fest_feature2 == 1) {
-                        blurp2 += localize("  Spectators are encouraged, with efforts made to keep attending simple.");
-                    }
-                }
-                if (fest_type == "Deathmatch") {
-                    if (fest_feature2 == 1) {
-                        blurp2 += localize("  Spectators are encouraged, with efforts made to keep attending simple.");
-                    }
-                    if (fest_feature3 == 1) {
-                        blurp2 += localize("  Smaller, similar deathmatches will be held for Imperial citizens who wish to partake.");
-                    }
-                }
-                if (fest_type == "Chapter Relic") {
-                    if (fest_feature1 == 1) {
-                        blurp2 += localize("  Our {0}s aim to create a weapon.", [localize(obj_ini.player_role_data[eROLE.TECHMARINE].role)]);
-                    }
-                    if (fest_feature2 == 1) {
-                        blurp2 += localize("  Our {0}s aim to create a suit of armour.", [localize(obj_ini.player_role_data[eROLE.TECHMARINE].role)]);
-                    }
-                    if (fest_feature3 == 1) {
-                        blurp2 += localize("  Our {0}s aim to hone and strengthen an already existing relic.", [localize(obj_ini.player_role_data[eROLE.TECHMARINE].role)]);
-                    }
-                }
-                if (fest_type == "Imperial Mass") {
-                    if (fest_feature2 == 1) {
-                        blurp2 += localize("  An Ecclesiarchy priest has been requested to lead the sermons.");
-                    }
-                    if (fest_feature3 == 1) {
-                        blurp2 += localize("  Adepta Sororita presence has been requested, to share in praising the Emperor.");
-                    }
-                }
-                if (fest_type == "Chapter Sermon") {
-                    if ((fest_feature1 == 1) && (fest_feature2 + fest_feature3 == 0)) {
-                        blurp2 += localize("  The Chapter Cult Sermon is pointedly sanctioned within the bounds of the Codex Astartes and Imperial tradition.");
-                    }
-                    if ((fest_feature1 == 0) && (fest_feature2 + fest_feature3 == 0)) {
-                        blurp2 += localize("  The Chapter Cult Sermon contains some radical or questionable practices, but such is allowed, as our traditions.");
-                    }
-                    if (fest_feature2 == 1) {
-                        blurp2 += localize("  Blood sacrifices are a primary focus with the sermon, celebrating martial prowess and our semi-divinity.");
-                    }
-                    if ((fest_feature2 > 0) && (fest_feature3 == 1)) {
-                        blurp2 += localize("  Drugs will also be present for the ceremony.");
-                    }
-                    if ((fest_feature2 == 0) && (fest_feature3 > 1)) {
-                        blurp2 += localize("  Mind-altering drugs will be a primary focus of the sermon.");
-                    }
-                }
-                if (fest_type == "Triumphal March") {
-                    if (fest_feature1 == 1) {
-                        blurp2 += localize("  Local Imperials will be required to attend our march- those that attempt to avoid our revelry are clearly heretics and will be dealt with as such.");
-                    }
-                    if (fest_feature2 == 1) {
-                        blurp2 += localize("  Cadences and battle cries will honor our closest allies, giving them due credit where it is needed.");
-                    }
-                    if (fest_feature3 == 1) {
-                        blurp2 += localize("  Bloody trophies of our conquests will be brandished to the populance.");
-                    }
-                }
-            }
-        }
-
-        draw_text_ext(xx + 336 + 16, yy + 477, string_hash_to_newline(string(blurp2)), -1, 536);
-
-        draw_set_alpha(1);
-        draw_set_font(cjk_font(fnt_40k_14));
+    else if (menu == eMENU.RECLUSIAM) {
+        scr_ui_reclusiam();
     }
-
-    // ** Festivals **
+// ** Festivals **
     if (menu == eMENU.FESTIVAL) {
         var _checkbox_sprite_index = 0;
         draw_set_font(cjk_font(fnt_40k_14b));
@@ -770,12 +464,12 @@ function scr_ui_advisors() {
         draw_text(xx + 222.5, yy + 200.5, localize("Kills:"));
 
         // draw_text_ext(xx + 222, yy + 216, string_hash_to_newline(string(tot_ki)), -1, 396);
-        var unit = fetch_unit([0, 1]);
-        if (is_struct(unit)) {
-            if (unit.ship_location == -1) {
-                draw_text(xx + 222, yy + 380, string_hash_to_newline(localize("Current Location: {0} {1}#Health: {2}%", [unit.location_string, unit.planet_location, unit.hp()])));
-            } else if (unit.ship_location > -1) {
-                draw_text(xx + 222, yy + 380, string_hash_to_newline(localize("Current Location: Onboard {0}#Health: {1}%", [obj_ini.ship[unit.ship_location], unit.hp()])));
+        var _unit = fetch_unit([0, 1]);
+        if (is_struct(_unit)) {
+            if (_unit.ship_location == -1) {
+                draw_text(xx + 222, yy + 380, string_hash_to_newline(localize("Current Location: {0} {1}#Health: {2}%", [_unit.location_string, _unit.planet_location, _unit.hp()])));
+            } else if (_unit.ship_location > -1) {
+                draw_text(xx + 222, yy + 380, string_hash_to_newline(localize("Current Location: Onboard {0}#Health: {1}%", [obj_ini.ship[_unit.ship_location], _unit.hp()])));
             }
         }
 
@@ -783,7 +477,6 @@ function scr_ui_advisors() {
 
         draw_sprite(spr_arrow, 0, xx + 217, yy + 32);
     }
-
     // ** Welcome Screens **
     if (menu >= eMENU.WELCOME_SCREEN1 && menu <= eMENU.WELCOME_SCREEN4) {
         draw_sprite(spr_welcome_bg, 0, xx, yy);

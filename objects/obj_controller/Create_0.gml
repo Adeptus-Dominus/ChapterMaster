@@ -513,8 +513,7 @@ penitent_turnly = 0;
 penitent_turn = 0;
 penitent_end = 0;
 blood_debt = 0;
-penit_co = array_create(51, 0);
-penit_id = array_create(51, 0);
+jailed_marines = [];
 
 // ** Sets penitent or blood debt if chapter disadvantage is selected **
 if (instance_exists(obj_ini)) {
@@ -1108,6 +1107,7 @@ serialize = function() {
         "management_buttons",
         "settings_buttons_ui_components",
         "camera_moved_this_turn",
+        "jailed_marines"
     ];
     var _excluded_from_save_start = ["restart_"];
 

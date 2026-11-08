@@ -6,57 +6,7 @@ if ((trading > 0) && (force_goodbye != 0)) {
     trading = 0;
 }
 
-// ** Reclusium Jail Marines**
-if ((menu == eMENU.RECLUSIAM) && (cooldown <= 0) && (penitorium > 0)) {
-    var re = 0;
-    for (var qp = 1; qp <= min(36, penitorium); qp++) {
-        if ((qp <= penitorium) && (mouse_y >= yy + 100 + ((qp - 1) * 20)) && (mouse_y < yy + 100 + (qp * 20))) {
-            if ((mouse_x >= xx + 1433) && (mouse_x < xx + 1497)) {
-                cooldown = 20;
-                var c = penit_co[qp], e = penit_id[qp];
-
-                var _unit = fetch_unit([c, e]);
-                if (_unit.role() == obj_ini.player_role_data[eROLE.CHAPTERMASTER].role) {
-                    alarm[7] = 5;
-                    global.defeat = 3;
-                }
-                // TODO Needs to be based on role
-                _unit.kill();
-                diplo_char = c;
-                with (obj_ini) {
-                    scr_company_order(obj_controller.diplo_char);
-                }
-                re = 1;
-                diplo_char = 0;
-            }
-            if ((mouse_x >= xx + 1508) && (mouse_x < xx + 1567)) {
-                cooldown = 20;
-                var c = penit_co[qp], e = penit_id[qp];
-                var _unit = fetch_unit([c, e]);
-                _unit.god_status -= 10;
-                re = 1;
-            }
-        }
-    }
-    if (re == 1) {
-        for (var g = 1; g <= 100; g++) {
-            penit_co[g] = 0;
-            penit_id[g] = 0;
-        }
-        penitorium = 0;
-        var p = 0;
-        for (var c = 0; c < 11; c++) {
-            for (var e = 0; e < array_length(obj_ini.TTRPG[c]); e++) {
-                if (obj_ini.TTRPG[c][e].god_status == 10) {
-                    p += 1;
-                    penit_co[p] = c;
-                    penit_id[p] = e;
-                    penitorium += 1;
-                }
-            }
-        }
-    }
-} else if ((menu == eMENU.RECRUITING) && (cooldown <= 0)) {
+ if ((menu == eMENU.RECRUITING) && (cooldown <= 0)) {
     // ** Recruitement **
     if ((mouse_x >= xx + 748) && (mouse_x < xx + 772)) {
         if ((mouse_y >= yy + 355) && (mouse_y < yy + 373) && (recruiting < 1) && (gene_seed > 0) && (obj_ini.doomed == 0) && (penitent == 0)) {
