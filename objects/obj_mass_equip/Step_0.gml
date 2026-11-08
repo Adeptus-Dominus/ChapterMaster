@@ -46,7 +46,7 @@ try {
                 var romanNumerals = scr_roman_numerals();
                 var _company_name = i == 0 ? "HQ" : $"{romanNumerals[i - 1]} Company";
 
-                var _marines_in_company = marines_with_role.get_from({company : i})
+                var _marines_in_company = marines_with_role.get_from({companies : i})
                 if (_marines_in_company.number() > 0) {
                     total_roles += $" {_company_name}: {_marines_in_company.number()};";
                 }

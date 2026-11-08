@@ -63,7 +63,7 @@ function setup_promotion_popup() {
                 for (var i = 0; i < units_to_move.number(); i++) {
                     var _unit = units_to_move.units[i];
                     _unit.update_role(_target_role);
-                    _unit.alter_equipment({"wep1": req_wep1, "wep2": req_wep2, "mobi": req_mobi, "armour": req_armour, "gear": req_gear});
+                    _unit.alter_equipment(equipment_set);
                 }
 
                 with (obj_controller) {
@@ -205,7 +205,7 @@ function draw_popup_promotion() {
                         var _r_data = variable_clone(obj_ini.player_role_data[_data.role_id])
                         equipment_set = convert_equipment_struct_into_array(_r_data);
                         var _equip_data = new UnitEquipment(equipment_set);
-                        all_good = _equip_data.check_set_is_equipable(units);
+                        all_good = _equip_data.check_set_is_equipable(units , selected_for_promotion);
                     }
                 }
                 if (r % 3 == 0) {
