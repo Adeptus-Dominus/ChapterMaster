@@ -289,6 +289,7 @@ try {
         }
     }
     var p = 0;
+    jailed_marines = [];
     for (var c = 0; c < 11; c++) {
         for (var e = 0; e < array_length(obj_ini.TTRPG[c]); e++) {
             var _unit = fetch_unit([c, e]);
@@ -298,7 +299,7 @@ try {
             if (_unit.god_status != 10) {
                 continue;
             }
-            array_push(jailed_marines, [c,e ]); 
+            array_push(jailed_marines, _unit); 
             penitorium += 1;
             _unit.alter_loyalty(-1);
             if ((_unit.corruption < 90) && (_unit.corruption > 0)) {
