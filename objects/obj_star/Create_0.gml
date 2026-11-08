@@ -293,6 +293,11 @@ serialize = function() {
         save_data.p_governor = object_star.p_governor;
     }
 
+    save_data.problems = [];
+    for (var i = 0; i < array_length(problems); i++){
+        array_push(save_data.problems, problems[i].save());
+    }
+
     var excluded_from_save = [
         "temp",
         "serialize",
@@ -304,6 +309,7 @@ serialize = function() {
         "system_datas",
         "present_fleet",
         "__garrison_operative_present",
+        "problems"
     ];
     var excluded_from_save_start = ["p_"];
 
@@ -318,6 +324,7 @@ function deserialize(save_data) {
         "present_fleet",
         "planet_data",
         "feature",
+        "problems"
     ]; // skip automatic setting of certain vars, handle explicitly later
 
     // Automatic var setting
@@ -329,6 +336,14 @@ function deserialize(save_data) {
         }
         var _loaded_value = struct_get(save_data, _var_name);
         variable_instance_set(id, _var_name, _loaded_value);
+    }
+
+    if (struct_exists(save_data, "problems")) {
+        for (var i = 0; i < array_length(save_data.problems); i++){
+            var _prob = new SystemProblem("placeholder", self, {}, 0);
+            _prob.load(save_data.problems[i]);
+            array_push(problems, _prob);
+        }        
     }
 
     if (struct_exists(save_data, "planet_data")) {

@@ -8,8 +8,24 @@ function SystemProblem(_name, _system = noone, _data = {}, _timer = -1) : Proble
     zero_timer_checks = true;
     per_turn_checks = true;
 
+
+    static save = function() {
+        var _save_copy = variable_clone(self);
+        struct_remove(_save_copy, "system");
+        __save_members(_save_copy);
+        return _save_copy;
+    };
+
+    static load = function(data) {
+        move_data_to_current_scope(data);
+        __load_members();
+    };
+
     static __check_delete = function() {
         if (timer == -1 || delete_mission) {
+            if (!instance_exists(system)){
+                exit;
+            }
             var _prob = -1;
             for (var i = 0; i < array_length(system.problems); i++) {
                 if (system.problems[i] == self) {
@@ -34,6 +50,10 @@ function SystemProblem(_name, _system = noone, _data = {}, _timer = -1) : Proble
     };
 
     static basic_turn_end = function() {
+        if (!instance_exists(system)){
+            timer = -1;
+            exit;
+        }
         if (system.storm <= 0) {
             timer--;
         }
