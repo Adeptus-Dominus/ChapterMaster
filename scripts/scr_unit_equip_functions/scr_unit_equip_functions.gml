@@ -450,6 +450,9 @@ function alter_unit_equipment(update_equipment, from_armoury = true, to_armoury 
             continue;
         }
         var _item = update_equipment[$ _slot_key];
+        if (is_struct(_item) && is_instanceof(_item, TagSetItems)){
+            _item = _item.get_item_from_map();
+        }
         var _outcome = "";
         switch (_slot_key) {
             case "wep1":
@@ -867,12 +870,13 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
                     continue;
                 }
                 var _unit = _check_array[u];
+                var _getter = method(_unit, _unit[$ _marine_slot_getter]);
                 if (_is_set){
-                    if (_item.has_item(_unit[$ _marine_slot_getter]())){
+                    if (_item.has_item(_getter())){
                         _found += 1;
                     }
                 } else {
-                    if (_unit[$ _marine_slot_getter]() == _wanted_item) {
+                    if (_getter() == _wanted_item) {
                         _found += 1;
                     }
                 }

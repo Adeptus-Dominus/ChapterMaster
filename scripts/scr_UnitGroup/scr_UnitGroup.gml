@@ -23,7 +23,7 @@ function UnitGroup(units = []) constructor {
         for (var i = 0; i < number(); i++){
             var _unit = units[i];
             for (var s = 0; s < STANDARD_EQUIP_SLOT_COUNT; s++){
-                var _item = _unit[$ marine_equipment_getters[s]]();
+                var _item = method(_unit, _unit[$ global.marine_equipment_getters[s]])();
                 _equipment_map.add(_item);
             }
         }

@@ -7,95 +7,22 @@ try {
     var _list_term_armour = global.list_terminator_armour;
 
     if (engage == true) {
-        marines_with_role.for_each(function(_unit){
-
-        });
-        for (var co = 0; co <= obj_ini.companies; co++) {
-            if (role_number[co] > 0) {
-                for (var i = 0; i < array_length(obj_ini.TTRPG[co]); i++) {
-                    var _unit = fetch_unit([co, i]);
-                    if (!is_struct(_unit)) {
-                        continue;
-                    }
-                    if (!_unit.has_role(role)) {
-                        continue;
-                    }
-                    if (_unit.squad != "none") {
-                        var _squad = fetch_squad(_unit.squad);
-                        if (!_squad.allow_bulk_swap) {
-                            continue;
-                        }
-                    }
-
-                    // ** Start Armour **
-                    var unit_armour = _unit.get_armour_data();
-                    var has_valid_armour = is_struct(unit_armour);
-
-                    // Check if unit_armour is a struct and evaluate tag-based or name-based compatibility
-                    if (has_valid_armour) {
-                        switch (req_armour) {
-                            case STR_ANY_POWER_ARMOUR:
-                                has_valid_armour = array_contains(_list_basic_armour, unit_armour.name);
-                                break;
-                            case STR_ANY_TERMINATOR_ARMOUR:
-                                has_valid_armour = array_contains(_list_term_armour, unit_armour.name);
-                                break;
-                            default:
-                                has_valid_armour = req_armour == unit_armour.name;
-                        }
-                    }
-
-                    // Attempt to equip if not valid
-                    if (!has_valid_armour) {
-                        var result = _unit.update_armour(req_armour);
-
-                        // Fallback: If request was for Power Armour but update failed, try Terminator
-                        if (result != "complete" && req_armour == STR_ANY_POWER_ARMOUR) {
-                            _unit.update_armour(STR_ANY_TERMINATOR_ARMOUR);
-                        }
-
-                        // Refresh unit_armour after update
-                        unit_armour = _unit.get_armour_data();
-                    }
-                    // ** End Armour **
-
-                    // ** Start Weapons **
-                    if (_unit.weapon_one() != req_wep1) {
-                        if (is_string(_unit.weapon_one(true))) {
-                            if (can_assign_weapon(_unit, req_wep1)) {
-                                _unit.update_weapon_one(req_wep1);
-                            }
-                        }
-                    }
-                    if (_unit.weapon_two() != req_wep2) {
-                        if (is_string(_unit.weapon_two(true))) {
-                            if (can_assign_weapon(_unit, req_wep2)) {
-                                _unit.update_weapon_two(req_wep2);
-                            }
-                        }
-                    }
-                    // ** Start Gear **
-                    if (is_string(_unit.gear(true))) {
-                        _unit.update_gear(req_gear);
-                    }
-
-                    // ** Start Mobility Items **
-                    if (_unit.mobility_item() != req_mobi) {
-                        var _forbidden_tags = [
-                            "terminator",
-                            "dreadnought",
-                        ];
-                        if (is_struct(unit_armour) && unit_armour.has_tags(_forbidden_tags)) {
-                            _unit.update_mobility_item("");
-                        } else {
-                            _unit.update_mobility_item(req_mobi);
-                        }
-                    }
-                    // ** End role check **
-                }
-                // ** End this marine **
+        for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++){
+            var _tag = equipment_tag_key_from_value(equipment_set[i]);
+            if (_tag != ""){
+                equipment_set[i] = new TagSetItems(_tag);
+                equipment_set[i].create_item_map();
             }
-            // ** End repeat **
+        }
+        for (var i = 0; i < array_length(marines_with_role.units); i++) {
+            var _unit = marines_with_role.units[i];
+            if (_unit.squad != "none") {
+                var _squad = fetch_squad(_unit.squad);
+                if (!_squad.allow_bulk_swap) {
+                    continue;
+                }
+            }
+            _unit.alter_equipment(equipment_set);
         }
         engage = false;
     }
@@ -118,7 +45,7 @@ try {
         if (marines_with_role.number() > 0) {
             var _role_name = obj_ini.player_role_data[role].role;
             total_roles = $"You currently have {marines_with_role.number()}x {_role_name} across all companies.";
-            for (var i = 0; i < obj_ini.companies; i++) {
+            for (var i = 0; i <= obj_ini.companies; i++) {
                 var romanNumerals = scr_roman_numerals();
                 var _company_name = i == 0 ? "HQ" : $"{romanNumerals[i - 1]} Company";
 

@@ -506,8 +506,9 @@ function EquipmentStruct(item_data = undefined, core_type = "", quality_request 
 
 function TagSetItems(_tag) constructor{
     name = global.equipment_tags[$ _tag];
-    key = _tag
+    key = _tag;
     items = gear_with_tag("any", key, true);
+    item_map = noone;
 
     req_exp = 1000;
     for (var i = 0; i < array_length(items); i++){
@@ -535,6 +536,22 @@ function TagSetItems(_tag) constructor{
         }
         return false;
     }
+
+    static create_item_map = function(){
+        item_map = new CountingMap();
+        for (var i = 0; i < array_length(items); i++){
+            var _item = items[i].name;
+            item_map.add(_item, scr_item_count(items[i].name))
+        }
+    }
+
+    static get_item_from_map = function(_item = ""){
+        if (_item == ""){
+            _item = array_random_element(item_map.keys());
+        }
+        item_map.add(_item, -1);
+        return _item;
+    }  
 
     static total_in_inventory = function(){
         var _total = 0;
@@ -569,6 +586,9 @@ function gear_with_tag(_search_area = "any", _wanted_tag, _fetch_struct = false)
         var _keys = struct_get_names(_area_data);
         for (var k = 0; k < array_length(_keys); k++) {
             var _key = _keys[k];
+            if (!struct_exists(_area_data[$ _key], "tags")){
+                continue;
+            }
             if (array_contains(_area_data[$ _key].tags, _wanted_tag)) {
                 if (_fetch_struct) {
                     array_push(_matches, gear_weapon_data(_area, _key, "all"));
