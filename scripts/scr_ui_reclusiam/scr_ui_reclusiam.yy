@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_ui_reclusiam",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_ui_reclusiam",
+  "parent":{
+    "name":"Interface",
+    "path":"folders/Scripts/Interface.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

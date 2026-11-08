@@ -260,16 +260,15 @@ function scr_toggle_reclu() {
                     reclusiam_vars.chaplain_role = _active_roles[eROLE.CHAPLAIN];
                 }
                 penitorium = 0;
+                jailed_marines = [];
 
                 // Get list of jailed marines
                 var p = 0;
                 for (var c = 0; c < 11; c++) {
                     for (var e = 0; e < array_length(obj_ini.TTRPG[c]); e++) {
-                        if (obj_ini.TTRPG[c][e].god_status == 10) {
-                            p += 1;
-                            penit_co[p] = c;
-                            penit_id[p] = e;
-                            penitorium += 1;
+                        var _unit = fetch_unit([c,e]);
+                        if (_unit.god_status == 10) {
+                            array_push(jailed_marines, _unit);
                         }
                     }
                 }

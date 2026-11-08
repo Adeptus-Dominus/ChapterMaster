@@ -980,6 +980,7 @@
     {"id":{"name":"scr_ui_display_weapons","path":"scripts/scr_ui_display_weapons/scr_ui_display_weapons.yy",},},
     {"id":{"name":"scr_ui_formation_bars","path":"scripts/scr_ui_formation_bars/scr_ui_formation_bars.yy",},},
     {"id":{"name":"scr_ui_manage","path":"scripts/scr_ui_manage/scr_ui_manage.yy",},},
+    {"id":{"name":"scr_ui_reclusiam","path":"scripts/scr_ui_reclusiam/scr_ui_reclusiam.yy",},},
     {"id":{"name":"scr_ui_refresh","path":"scripts/scr_ui_refresh/scr_ui_refresh.yy",},},
     {"id":{"name":"scr_ui_settings","path":"scripts/scr_ui_settings/scr_ui_settings.yy",},},
     {"id":{"name":"scr_ui_tooltip","path":"scripts/scr_ui_tooltip/scr_ui_tooltip.yy",},},

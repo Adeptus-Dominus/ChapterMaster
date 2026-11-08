@@ -13,12 +13,7 @@ function scr_special_view(command_group) {
         sel_uni[i] = "";
         sel_veh[i] = "";
     }
-    for (var i = 0; i < 501; i++) {
-        if (i <= 50) {
-            penit_co[i] = 0;
-            penit_id[i] = 0;
-        }
-    }
+
     reset_manage_arrays();
 
     mans = 0;
