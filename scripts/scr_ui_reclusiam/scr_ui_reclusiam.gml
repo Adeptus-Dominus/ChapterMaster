@@ -88,9 +88,6 @@ function scr_ui_reclusiam(){
         var _stop = min(35, penitorium);
         for (var qp = 0; qp < _stop; qp++) {
             var _unit = jailed_marines[qp];
-            if (!is_struct(_unit)) {
-                continue;
-            }
             var r_eta = "";
             if (_unit.corruption > 0) {
                 r_eta = string(round((_unit.corruption * _unit.corruption) / 50));
@@ -336,5 +333,8 @@ function scr_ui_reclusiam(){
     draw_set_alpha(1);
     draw_set_font(cjk_font(fnt_40k_14));
 }
+
+
+
 
     

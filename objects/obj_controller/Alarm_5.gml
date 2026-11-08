@@ -288,7 +288,6 @@ try {
             }
         }
     }
-    var p = 0;
     //TODO: find some other loops this can get bunched with to cut down on repeated loops
     jailed_marines = [];
     for (var c = 0; c < 11; c++) {
