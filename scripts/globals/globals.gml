@@ -265,17 +265,42 @@ global.equipment_qualities = [
     "artifact",
 ];
 
-global.equipment_tags = {
-    "heavy_ranged" : {
+global.equipment_tags = [
+    {
         name : "Heavy Ranged",
         type : "weapon",
+        tag : "heavy_ranged"
     },
-    "power_armour" : {name : "Any Power Armour",type : "armour",},
-    "terminator" : {name : "Any Terminator Armour", type : "armour"},
-    "pistol" : {name : "Pistols", type : "weapon",},
-    "flame" : {name : "Flame Weapons", type : "weapon",},
-    "power" : {name : "Power Weapons", type : "weapon",},
-}
+    {
+        name : "Any Power Armour",
+        type : "armour",
+        tag :"power_armour"
+    },
+    {
+        name : "Any Terminator Armour", 
+        type : "armour", 
+        tag : "terminator"
+    },
+    {
+        name : "Pistols", 
+        type : "weapon",
+        tag : "pistol"
+    },
+    {
+        name : "Flame Weapons", 
+        type : "weapon",
+        tag : "flame"
+    },
+    {
+        name : "Power Weapons", 
+        type : "weapon",
+        tag : "power"
+    },
+]
+
+//TODO these could be compiled on game start
+global.armour_tag_sets = [STR_ANY_POWER_ARMOUR, STR_ANY_TERMINATOR_ARMOUR];
+global.weapon_tag_sets = ["Pistols", "Flame Weapons", "Power Weapons" ,"Heavy Ranged"];
 
 global.string_to_enum_roles_map = {
     none: eROLE.NONE,

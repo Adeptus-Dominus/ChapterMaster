@@ -469,7 +469,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             new_role = obj_ini.player_role_data[new_role].role;
         }
         if (has_role(new_role)) {
-            return "no change";
+            return EQUIPMENT_UNCHANGED;
         }
         var _promotion_alert = "";
         var _astartes = base_group == "astartes";
