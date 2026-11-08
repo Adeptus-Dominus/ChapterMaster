@@ -505,9 +505,10 @@ function EquipmentStruct(item_data = undefined, core_type = "", quality_request 
 }
 
 function TagSetItems(_tag) constructor{
-    name = global.equipment_tags[$ _tag];
+    name = global.equipment_tags[$ _tag].name;
+    type = global.equipment_tags[$ _tag].type;
     key = _tag;
-    items = gear_with_tag("any", key, true);
+    items = gear_with_tag(type, key, true);
     item_map = noone;
 
     req_exp = 1000;
@@ -517,7 +518,7 @@ function TagSetItems(_tag) constructor{
 
     static has_tag = function(_tag){
         if (_tag == key){
-            return true
+            return true;
         } else {
             for (var i = 0; i < array_length(items); i++){
                 if (items[i].has_tag(_tag)){
@@ -707,7 +708,7 @@ function quality_color(_item_quality) {
 function equipment_tag_key_from_value(_value) {
     var _keys = struct_get_names(global.equipment_tags);
     for (var i = 0; i < array_length(_keys); i++) {
-        if (global.equipment_tags[$ _keys[i]] == _value) {
+        if (global.equipment_tags[$ _keys[i]].name == _value) {
             return _keys[i];
         }
     }

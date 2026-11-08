@@ -441,13 +441,13 @@ function alter_unit_equipment(update_equipment, from_armoury = true, to_armoury 
     var _missing_items = "";
     var _success = true;
     var _getters = global.marine_equipment_getters;
-    var _set = false;
-    var _map = undefined;
     if (is_array(update_equipment)) {
         update_equipment = convert_equipment_array_into_struct(update_equipment);
     }
     // Slot order is fixed: armour must be applied before mobi so its validation sees the final armour.
     for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
+        var _map = undefined;
+        var _set = false;
         var _slot_key = global.unit_equip_slots[i];
         if (!struct_exists(update_equipment, _slot_key)) {
             continue;

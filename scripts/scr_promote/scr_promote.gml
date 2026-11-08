@@ -245,7 +245,7 @@ function draw_popup_promotion() {
         instance_destroy();
     }
 
-    var _promote_able = is_struct(all_good) && struct_exists(all_good, "allow_loadout") && all_good.allow_loadout;
+    var _promote_able = is_struct(all_good) && all_good.allow_loadout;
     promote_button.draw(_promote_able && target_role > -1);
     pop_draw_return_values();
 }

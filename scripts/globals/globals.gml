@@ -266,9 +266,15 @@ global.equipment_qualities = [
 ];
 
 global.equipment_tags = {
-    "heavy_ranged" : "Heavy Ranged",
-    "power_armour" : "Any Power Armour",
-    "terminator" : "Any Terminator Armour"
+    "heavy_ranged" : {
+        name : "Heavy Ranged",
+        type : "weapon",
+    },
+    "power_armour" : {name : "Any Power Armour",type : "armour",},
+    "terminator" : {name : "Any Terminator Armour", type : "armour"},
+    "pistol" : {name : "Pistols", type : "weapon",},
+    "flame" : {name : "Flame Weapons", type : "weapon",},
+    "power" : {name : "Power Weapons", type : "weapon",},
 }
 
 global.string_to_enum_roles_map = {
