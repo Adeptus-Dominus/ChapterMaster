@@ -8,7 +8,6 @@ function SystemProblem(_name, _system = noone, _data = {}, _timer = -1) : Proble
     zero_timer_checks = true;
     per_turn_checks = true;
 
-
     static save = function() {
         var _save_copy = variable_clone(self);
         struct_remove(_save_copy, "system");
@@ -23,7 +22,7 @@ function SystemProblem(_name, _system = noone, _data = {}, _timer = -1) : Proble
 
     static __check_delete = function() {
         if (timer == -1 || delete_mission) {
-            if (!instance_exists(system)){
+            if (!instance_exists(system)) {
                 exit;
             }
             var _prob = -1;
@@ -50,7 +49,7 @@ function SystemProblem(_name, _system = noone, _data = {}, _timer = -1) : Proble
     };
 
     static basic_turn_end = function() {
-        if (!instance_exists(system)){
+        if (!instance_exists(system)) {
             timer = -1;
             exit;
         }
