@@ -1,4 +1,9 @@
 function scr_ui_reclusiam(){
+    var romanNumerals = scr_roman_numerals();
+    var xx = camera_get_view_x(view_camera[0]);
+    var yy = camera_get_view_y(view_camera[0]);
+    var blurp = "";
+    var eta = 0;
     draw_sprite(spr_rock_bg, 0, xx, yy);
 
     draw_set_alpha(0.75);
@@ -100,7 +105,7 @@ function scr_ui_reclusiam(){
             draw_text(xx + 950, yy +  (_y), localized_name_role(_unit));
             draw_text(xx + 1200, yy +  (_y), localize("ETA: {0}", [r_eta]));
             var _delete_entry = false;
-            var _execute_button = draw_unit_buttons([xx + 1432, yy +  _y],"[Execute]", [0.4, 0.4]);
+            var _execute_button = draw_unit_buttons([xx + 1432, yy +  _y],"[Execute]", [0.6, 0.6], c_red);
             if (point_and_click(_execute_button)){
                 if (_unit.role() == obj_ini.player_role_data[eROLE.CHAPTERMASTER].role) {
                     alarm[7] = 5;
@@ -110,7 +115,7 @@ function scr_ui_reclusiam(){
                 _delete_entry = true;           
             }
 
-            var _release_button = draw_unit_buttons([_execute_button[2], _execute_button[1]],"[Release]", [0.4, 0.4]);
+            var _release_button = draw_unit_buttons([_execute_button[2], _execute_button[1]],"[Release]", [0.6, 0.6], CM_GREEN_COLOR);
     
             if (point_and_click(_release_button)){
                 _unit.god_status -= 10;
