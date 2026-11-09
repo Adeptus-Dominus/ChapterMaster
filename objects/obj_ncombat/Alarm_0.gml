@@ -138,21 +138,23 @@ try {
     LOGGER.info($"default Distance : {xxx}");
     var _enemies_assigned = false;
 
+    if (is_undefined(battle_enemy_data) && battle_special != "") {
+        enemy_organisations = json_to_gamemaker(working_directory + "/data/battle_organisation_specials.json", json_parse);
+        if (struct_exists(enemy_organisations, battle_special)) {
+            battle_enemy_data = enemy_organisations[$ battle_special];
+        }
+    }
     if (is_undefined(battle_enemy_data)) {
         enemy_organisations = json_to_gamemaker(working_directory + "/data/battle_organisation_formats.json", json_parse);
-        if (battle_special != "") {
-            if (struct_exists(enemy_organisations, battle_special)) {
-                battle_enemy_data = enemy_organisations[$ battle_special];
-            }
-        } else {
-            var _battle_string = $"{global.faction_names_en[enemy]}_force{threat}";
-            if (leader == true) {
-                _battle_string = "leader_" + _battle_string;
-            }
-            if (struct_exists(enemy_organisations, _battle_string)) {
-                battle_enemy_data = enemy_organisations[$ _battle_string];
-            }
+
+        var _battle_string = $"{global.faction_names_en[enemy]}_force{threat}";
+        if (leader == true) {
+            _battle_string = "leader_" + _battle_string;
         }
+        if (struct_exists(enemy_organisations, _battle_string)) {
+            battle_enemy_data = enemy_organisations[$ _battle_string];
+        }
+
     }
     if (!is_undefined(battle_enemy_data)) {
         move_data_to_current_scope(battle_enemy_data);
@@ -197,19 +199,6 @@ try {
         }
     }
     if (!_enemies_assigned) {
-        // * Praetorian Servitor Group *
-        if (string_count("mech", battle_special) > 0) {
-            fortified = 0;
-
-            u = instance_create(_xxx + 10, 240, obj_enunit);
-            enemy_dudes = "";
-            u.dudes[1] = "Thallax";
-            u.dudes_num[1] = 4;
-            enemies[1] = 4;
-            u.dudes[2] = "Praetorian Servitor";
-            u.dudes_num[2] = 6;
-            enemies[2] = 6;
-        }
         // * Greater Daemon *
         if (battle_special == "ship_demon") {
             fortified = 0;

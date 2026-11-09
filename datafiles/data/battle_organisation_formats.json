@@ -1,22 +1,4 @@
 {
-	"mech" : {
-	    "fortified" : false,
-	    "cols" : [
-	        {
-	            "distance" : 10,
-	            "enemies" : [
-	                {
-	                    "name" : "Thallax",
-	                    "number" : 4
-	                },
-	                {
-	                    "name" : "Praetorian Servitor",
-	                    "number" : 6
-	                }
-	            ]
-	        }
-	    ]
-	},
     "Necron Dynasties_force1": {
         "threat": 1,
         "fortified": false,
