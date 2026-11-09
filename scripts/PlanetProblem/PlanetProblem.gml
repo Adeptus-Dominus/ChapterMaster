@@ -72,8 +72,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
         return _save_copy;
     };
 
-    static load = function(data) {
-        move_data_to_current_scope(data);
+    static post_load = function() {
         __load_members();
         __refresh_data();
     };

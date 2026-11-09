@@ -15,8 +15,7 @@ function SystemProblem(_name, _system = noone, _data = {}, _timer = -1) : Proble
         return _save_copy;
     };
 
-    static load = function(data) {
-        move_data_to_current_scope(data);
+    static post_load = function() {
         __load_members();
     };
 
