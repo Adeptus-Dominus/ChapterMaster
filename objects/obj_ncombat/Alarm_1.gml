@@ -8,6 +8,7 @@ if ((ally > 0) && (ally_forces > 0)) {
     }
 }
 
+enemy_dudes = string(enemy_dudes);
 // Player crap here
 var p1 = "";
 var p2 = "";
