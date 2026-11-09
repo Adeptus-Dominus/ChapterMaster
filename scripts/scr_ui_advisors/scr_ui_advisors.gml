@@ -12,31 +12,21 @@ function scr_ui_advisors() {
     // ** Fleet **
     if (menu == eMENU.FLEET) {
         scr_fleet_advisor();
-    }
-
-    // ** Librarium **
-    else if (menu == eMENU.LIBRARIUM) {
+    } else // ** Librarium **
+    if (menu == eMENU.LIBRARIUM) {
         scr_librarium();
-    }
-
-    // ** Recruiting **
-    else if (menu == eMENU.RECRUITING) {
+    } else // ** Recruiting **
+    if (menu == eMENU.RECRUITING) {
         scr_draw_recruit_advisor();
-    }
-
-    // ** Armamentarium **
-    else if (menu == eMENU.ARMAMENTARIUM) {}
-
-    // ** Apothecarium **
-    else if (menu == eMENU.APOTHECARION) {
+    } else // ** Armamentarium **
+    if (menu == eMENU.ARMAMENTARIUM) {} else // ** Apothecarium **
+    if (menu == eMENU.APOTHECARION) {
         scr_apothecarium();
-    }
-
-    // ** Reclusium **
-    else if (menu == eMENU.RECLUSIAM) {
+    } else // ** Reclusium **
+    if (menu == eMENU.RECLUSIAM) {
         scr_ui_reclusiam();
     }
-// ** Festivals **
+    // ** Festivals **
     if (menu == eMENU.FESTIVAL) {
         var _checkbox_sprite_index = 0;
         draw_set_font(cjk_font(fnt_40k_14b));
