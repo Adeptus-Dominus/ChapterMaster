@@ -1,4 +1,4 @@
-function scr_ui_reclusiam(){
+function scr_ui_reclusiam() {
     var romanNumerals = scr_roman_numerals();
     var xx = camera_get_view_x(view_camera[0]);
     var yy = camera_get_view_y(view_camera[0]);
@@ -97,37 +97,35 @@ function scr_ui_reclusiam(){
             } else if (_unit.corruption <= 0) {
                 r_eta = "0";
             }
-            var _y = 100 + (qp * 20)
-            draw_rectangle(xx + 947, yy +  (_y), xx + 1577, yy +  _y, 1);
-            draw_text(xx + 950, yy +  (_y), localized_name_role(_unit));
-            draw_text(xx + 1200, yy +  (_y), localize("ETA: {0}", [r_eta]));
+            var _y = 100 + (qp * 20);
+            draw_rectangle(xx + 947, yy + _y, xx + 1577, yy + _y, 1);
+            draw_text(xx + 950, yy + _y, localized_name_role(_unit));
+            draw_text(xx + 1200, yy + _y, localize("ETA: {0}", [r_eta]));
             var _delete_entry = false;
-            var _execute_button = draw_unit_buttons([xx + 1432, yy +  _y],"[Execute]", [0.6, 0.6], c_red);
-            if (point_and_click(_execute_button)){
+            var _execute_button = draw_unit_buttons([xx + 1432, yy + _y], "[Execute]", [0.6, 0.6], c_red);
+            if (point_and_click(_execute_button)) {
                 if (_unit.role() == obj_ini.player_role_data[eROLE.CHAPTERMASTER].role) {
                     alarm[7] = 5;
                     global.defeat = 3;
                 }
                 _unit.kill();
-                _delete_entry = true;           
+                _delete_entry = true;
             }
 
-            var _release_button = draw_unit_buttons([_execute_button[2], _execute_button[1]],"[Release]", [0.6, 0.6], CM_GREEN_COLOR);
-    
-            if (point_and_click(_release_button)){
+            var _release_button = draw_unit_buttons([_execute_button[2], _execute_button[1]], "[Release]", [0.6, 0.6], CM_GREEN_COLOR);
+
+            if (point_and_click(_release_button)) {
                 _unit.god_status -= 10;
-                _delete_entry = true;                         
+                _delete_entry = true;
             }
-            if (_delete_entry){
+            if (_delete_entry) {
                 array_delete(jailed_marines, qp, 1);
                 qp--;
                 _stop--;
             }
-
         }
     }
     draw_set_font(cjk_font(fnt_40k_14));
-
 
     draw_set_font(cjk_font(fnt_40k_14));
     draw_set_alpha(1);
@@ -333,8 +331,3 @@ function scr_ui_reclusiam(){
     draw_set_alpha(1);
     draw_set_font(cjk_font(fnt_40k_14));
 }
-
-
-
-
-    

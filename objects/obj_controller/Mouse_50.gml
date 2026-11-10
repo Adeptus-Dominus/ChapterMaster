@@ -6,7 +6,7 @@ if ((trading > 0) && (force_goodbye != 0)) {
     trading = 0;
 }
 
- if ((menu == eMENU.RECRUITING) && (cooldown <= 0)) {
+if ((menu == eMENU.RECRUITING) && (cooldown <= 0)) {
     // ** Recruitement **
     if ((mouse_x >= xx + 748) && (mouse_x < xx + 772)) {
         if ((mouse_y >= yy + 355) && (mouse_y < yy + 373) && (recruiting < 1) && (gene_seed > 0) && (obj_ini.doomed == 0) && (penitent == 0)) {
