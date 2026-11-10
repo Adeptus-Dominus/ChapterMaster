@@ -1309,13 +1309,13 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
                 _gar_pop.title = $"Strange Disappearance";
                 _gar_pop.pdata = p_data;
                 _gar_pop.text = $"Your Marines make planet fall and are directed to report to the governor for the duration of the operation after a period of reconnaissance dig in for their ambush. After a two weeks have passed A message from the governor reaches your astropaths that your marines have not been heard of for some time, The raiders also were not noted to have arrived onor left the planet";
-                var _dead_marine = array_random_index(_squad_units);
+                var _dead_index = array_random_index(_squad_units);
                 var _dead_string = "";
                 for (var i = 0; i < array_length(_squad_units); i++) {
                     var _marine = _squad_units[i];
-                    if (i == _dead_marine) {
-                        var _dead_string = $"{_marine.name_role()}s body is eventually discovered some way off from the main battle his rent armour and body showing the extent of combat that must have occured";
-                        _dead_marine.kill();
+                    if (i == _dead_index) {
+                        _dead_string = $"{_marine.name_role()}s body is eventually discovered some way off from the main battle his rent armour and body showing the extent of combat that must have occured";
+                        _marine.kill();
                         continue;
                     }
 
