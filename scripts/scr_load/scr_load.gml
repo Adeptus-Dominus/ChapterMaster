@@ -155,6 +155,17 @@ function scr_load(save_part, save_id) {
         global.load = -1;
         scr_image("force", -50, 0, 0, 0, 0);
         LOGGER.info("Loading completed");
+        with (obj_star) {
+            for (var p = 1; p <= planets; p++) {
+                for (var i = 0; i < array_length(p_problem[p]); i++) {
+                    p_problem[p][i].post_load();
+                }
+            }
+            for (var i = 0; i < array_length(problems); i++) {
+                problems[i].post_load();
+            }
+        }
+
     }
 
     var t2 = get_timer();

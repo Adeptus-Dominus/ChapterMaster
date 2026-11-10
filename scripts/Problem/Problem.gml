@@ -25,6 +25,10 @@ function Problem(_name, _timer, _data) constructor {
         members = data.members;
     }
 
+    static load = function(data) {
+        move_data_to_current_scope(data);
+    };
+    
     static has_data = function(key) {
         return struct_exists(data, key);
     };
