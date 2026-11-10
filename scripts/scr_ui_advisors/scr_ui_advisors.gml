@@ -12,18 +12,17 @@ function scr_ui_advisors() {
     // ** Fleet **
     if (menu == eMENU.FLEET) {
         scr_fleet_advisor();
-    } else // ** Librarium **
-    if (menu == eMENU.LIBRARIUM) {
+    } else if (menu == eMENU.LIBRARIUM) {
+        // ** Librarium **
         scr_librarium();
-    } else // ** Recruiting **
-    if (menu == eMENU.RECRUITING) {
+    } else if (menu == eMENU.RECRUITING) {
+        // ** Recruiting **
         scr_draw_recruit_advisor();
-    } else // ** Armamentarium **
-    if (menu == eMENU.ARMAMENTARIUM) {} else // ** Apothecarium **
-    if (menu == eMENU.APOTHECARION) {
+    } else if (menu == eMENU.ARMAMENTARIUM) {} else if (menu == eMENU.APOTHECARION) {
+        // ** Apothecarium ** // ** Armamentarium **
         scr_apothecarium();
-    } else // ** Reclusium **
-    if (menu == eMENU.RECLUSIAM) {
+    } else if (menu == eMENU.RECLUSIAM) {
+        // ** Reclusium **
         scr_ui_reclusiam();
     }
     // ** Festivals **

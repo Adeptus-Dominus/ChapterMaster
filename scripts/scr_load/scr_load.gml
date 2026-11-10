@@ -165,7 +165,6 @@ function scr_load(save_part, save_id) {
                 problems[i].post_load();
             }
         }
-
     }
 
     var t2 = get_timer();

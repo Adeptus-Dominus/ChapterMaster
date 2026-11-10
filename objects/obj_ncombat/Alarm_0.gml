@@ -154,7 +154,6 @@ try {
         if (struct_exists(enemy_organisations, _battle_string)) {
             battle_enemy_data = enemy_organisations[$ _battle_string];
         }
-
     }
     if (!is_undefined(battle_enemy_data)) {
         move_data_to_current_scope(battle_enemy_data);
