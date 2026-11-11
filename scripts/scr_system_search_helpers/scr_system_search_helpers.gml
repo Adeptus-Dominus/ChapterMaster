@@ -31,6 +31,7 @@ function FleetsEnroute(x, y) constructor{
                 array_push(_save_data, ["pl", fleets[i].uid]);
             }
         }
+        return _save_data;
     }
 
     static load = function(){
@@ -38,6 +39,7 @@ function FleetsEnroute(x, y) constructor{
             exit;
         }
         var _data = load_data;
+        var _fleets = [];
         for (var i = 0; i < array_length(_data); i++){
             var _fleet_inst = obj_p_fleet;
             if (_data[i][0] == "en"){
@@ -45,10 +47,11 @@ function FleetsEnroute(x, y) constructor{
             }
             with (_fleet_inst){
                 if (uid == _data[i][1]){
-                    array_push(fleets, id);
+                    array_push(_fleets, id);
                 }
             }
         }
+        fleets = _fleets;
         struct_remove(self, "load_data");
     }
 
