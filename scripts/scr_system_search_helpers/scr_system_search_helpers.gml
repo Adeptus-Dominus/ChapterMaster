@@ -1,4 +1,4 @@
-function FleetsEnroute(x, y){
+function FleetsEnroute(x, y) constructor{
     fleets = [];
     self.x = x;
     self.y = y;
@@ -25,7 +25,7 @@ function FleetsEnroute(x, y){
         clean();
         var _save_data = [];
         for (var i = 0; i < array_length(fleets); i++){
-            if (fleets[i].object_index = obj_en_fleet){
+            if (fleets[i].object_index == obj_en_fleet){
                 array_push(_save_data, ["en", fleets[i].uid]);
             } else {
                 array_push(_save_data, ["pl", fleets[i].uid]);
@@ -44,7 +44,7 @@ function FleetsEnroute(x, y){
                 _fleet_inst = obj_en_fleet;
             }
             with (_fleet_inst){
-                if (uid == _data[i][i]){
+                if (uid == _data[i][1]){
                     array_push(fleets, id);
                 }
             }
@@ -53,9 +53,10 @@ function FleetsEnroute(x, y){
     }
 
     static navy_enemies = function(){
+        clean();
         var _player_at_war = obj_controller.faction_status[eFACTION.IMPERIUM] == "War";
         for (var i = 0; i < array_length(fleets); i++){
-            if (fleet.owner > 5 || (fleet.owner == eFACTION.PLAYER && _player_at_war)){
+            if (fleets[i].owner > 5 || (fleets[i].owner == eFACTION.PLAYER && _player_at_war)){
                 return true
             }
         }

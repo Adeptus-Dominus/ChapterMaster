@@ -28,7 +28,6 @@ storm_image = 0;
 trader = 0;
 visited = 0;
 stored_owner = -1;
-navy_enemy_fleet_enroute = false;
 fleets_enroute = new FleetsEnroute(x, y);
 
 in_view = true;
