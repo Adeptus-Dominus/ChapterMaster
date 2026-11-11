@@ -1,3 +1,50 @@
+function end_combat_and_cleanup_objects(){
+    with (obj_ncombat){
+    instance_activate_all();
+    with (obj_pnunit) {
+        instance_destroy();
+    }
+    with (obj_enunit) {
+        instance_destroy();
+    }
+    with (obj_nfort) {
+        instance_destroy();
+    }
+    with (obj_centerline) {
+        instance_destroy();
+    }
+    obj_controller.new_buttons_hide = 0;
+
+    if (instance_exists(obj_cursor)) {
+        obj_cursor.image_index = 0;
+    }
+     if (instance_exists(obj_turn_end)){
+            var _battle_index = obj_turn_end.current_battle;
+            if (_battle_index < array_length(obj_turn_end.battle_object)) {
+                var _battle_object = obj_turn_end.battle_object[_battle_index];
+
+                var _planet = obj_turn_end.battle_world[_battle_index];
+
+                _battle_object.p_player[_planet] -= world_size;
+
+                if (defeat == 1) {
+                    _battle_object.p_player[_planet] = 0;
+                }
+                obj_controller.combat = 0;
+                with (obj_turn_end) {
+                    alarm[4] = 1;
+                }
+            } else if (!instance_exists(obj_popup)){
+                obj_controller.combat = 0;
+                obj_controller.cooldown = 10;
+                obj_turn_end.alarm[1] = 4;
+            }
+        }
+    }
+    instance_destroy();
+    }
+}
+
 /// @desc Queues this column's dead player marines in obj_ncombat.marines_to_recover, ranked by experience plus a role bonus.
 /// @self Asset.GMObject.obj_pnunit
 /// @returns {Undefined}

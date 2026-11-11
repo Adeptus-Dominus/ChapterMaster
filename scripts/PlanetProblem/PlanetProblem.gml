@@ -1580,9 +1580,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
     static __inquisition_tomb_battle_aftermath = function() {
         if (!data.tomb_awakens) {
             if (defeat == 1) {
-                obj_controller.combat = 0;
-                obj_controller.cooldown = 10;
-                obj_turn_end.alarm[1] = 4;
+                exit;
             } else if (defeat == 0) {
                 obj_controller.combat = 0;
                 var pip = instance_create(0, 0, obj_popup);

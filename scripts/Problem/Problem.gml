@@ -193,7 +193,6 @@ function Problem(_name, _timer, _data) constructor {
         instance_activate_object(obj_star);
         var _func = find_func("squad_selected");
         __handle_triggered_mission_func(_func);
-        instance_deactivate_object(obj_star);
     };
 
     static on_unit_selection = function() {
@@ -205,7 +204,6 @@ function Problem(_name, _timer, _data) constructor {
             }
             __handle_triggered_mission_func(_func);
         }
-        instance_deactivate_object(obj_star);
     };
 
     static __handle_triggered_mission_func = function(func) {

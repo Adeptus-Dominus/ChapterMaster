@@ -36,9 +36,7 @@ if (battle_special == 3.1) {
             setup_battle_formations();
             add_to_battle();
         } else {
-            instance_destroy(obj_ncombat);
-            instance_destroy(obj_pnunit);
-            instance_activate_all();
+            end_combat_and_cleanup_objects();
             delete _roster;
         }
     }

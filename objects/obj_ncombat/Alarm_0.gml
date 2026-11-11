@@ -2754,11 +2754,5 @@ try {
     instance_activate_object(obj_enunit);
 } catch (_exception) {
     ERROR_HANDLER.handle_exception(_exception);
-    with (obj_enunit) {
-        instance_destroy();
-    }
-    with (obj_pnunit) {
-        instance_destroy();
-    }
-    instance_destroy();
+    end_combat_and_cleanup_objects();
 }
