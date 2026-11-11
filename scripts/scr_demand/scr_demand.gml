@@ -364,7 +364,7 @@ function scr_demand(demand_type) {
                     if (owner == eFACTION.TAU) {
                         action_x = instance_nearest(x, y, obj_star).x;
                         action_y = instance_nearest(x, y, obj_star).y;
-                        alarm[4] = 1;
+                        set_fleet_movement();
                     }
                 }
                 instance_activate_object(obj_star);

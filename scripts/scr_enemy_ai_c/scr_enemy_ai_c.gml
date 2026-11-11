@@ -400,7 +400,7 @@ function scr_enemy_ai_c() {
                                         //Go out and take planet
                                         fleet.action_x = think.x;
                                         fleet.action_y = think.y;
-                                        fleet.alarm[4] = 1;
+                                        set_fleet_movement();
                                     }
 
                                     instance_activate_object(obj_star);

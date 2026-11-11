@@ -3,6 +3,8 @@ capital_number = 0;
 frigate_number = 0;
 escort_number = 0;
 selected = 0;
+uid = scr_uuid_generate();
+
 /// @type {Id.Instance.obj_star}
 orbiting = noone;
 warp_able = true;
@@ -56,6 +58,7 @@ add_problem = method(self, add_fleet_problem);
 problems_to_mission_log = method(self, fleet_problems_to_mission_log);
 
 arrived_at_star = function() {
+    orbiting.fleets_enroute.remove(id);
     set_fleet_location(orbiting.name);
     if (orbiting.visited == 0) {
         for (var plan_num = 1; plan_num <= orbiting.planets; plan_num++) {

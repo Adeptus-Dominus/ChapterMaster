@@ -28,7 +28,8 @@ storm_image = 0;
 trader = 0;
 visited = 0;
 stored_owner = -1;
-navy_enemy_fleet_enroute = false;
+fleets_enroute = new FleetsEnroute(x, y);
+
 in_view = true;
 
 /// @type {Bool|Undefined}
@@ -260,6 +261,18 @@ function has_problem_planet(problem, _return_problem = false) {
     return false;
 }
 
+function post_load(){
+    for (var p = 1; p <= planets; p++) {
+        for (var i = 0; i < array_length(p_problem[p]); i++) {
+            p_problem[p][i].post_load();
+        }
+    }
+    for (var i = 0; i < array_length(problems); i++) {
+        problems[i].post_load();
+    }
+    fleets_enroute.load();    
+}
+
 var _array_size = 23;
 present_fleet = array_create(_array_size, 0);
 
@@ -298,6 +311,8 @@ serialize = function() {
         array_push(save_data.problems, problems[i].save());
     }
 
+    save_data.fleets_enroute = fleets_enroute.save();
+
     var excluded_from_save = [
         "temp",
         "serialize",
@@ -310,6 +325,7 @@ serialize = function() {
         "present_fleet",
         "__garrison_operative_present",
         "problems",
+        "fleets_enroute"
     ];
     var excluded_from_save_start = ["p_"];
 
@@ -325,6 +341,7 @@ function deserialize(save_data) {
         "planet_data",
         "feature",
         "problems",
+        "fleets_enroute"
     ]; // skip automatic setting of certain vars, handle explicitly later
 
     // Automatic var setting
@@ -345,6 +362,10 @@ function deserialize(save_data) {
             array_push(problems, _prob);
         }
     }
+
+     if (struct_exists(save_data, "fleets_enroute")) {
+        fleets_enroute.load_data = save_data.fleets_enroute;
+     }
 
     if (struct_exists(save_data, "planet_data")) {
         var planet_arr = save_data.planet_data;
