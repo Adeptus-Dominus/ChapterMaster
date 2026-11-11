@@ -266,6 +266,11 @@ function set_fleet_movement(_fastest_route = true, _new_action = "move", _minimu
     // Finalize Movement State
     fleet_unregister_from_star(id);
     action = _new_action;
+    if (action == "move" && _target_is_sys){
+        if  (owner > 5 || (owner == eFACTION.PLAYER && obj_controller.faction_status[eFACTION.IMPERIUM] == "War")){
+            _target_sys.navy_enemy_fleet_enroute = true;
+        }
+    }
     action_eta = _eta > 5000 ? _eta : clamp(_eta, _minimum_eta, _maximum_eta);
 }
 
