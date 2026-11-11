@@ -1,24 +1,24 @@
 function end_combat_and_cleanup_objects(){
     with (obj_ncombat){
-    instance_activate_all();
-    with (obj_pnunit) {
-        instance_destroy();
-    }
-    with (obj_enunit) {
-        instance_destroy();
-    }
-    with (obj_nfort) {
-        instance_destroy();
-    }
-    with (obj_centerline) {
-        instance_destroy();
-    }
-    obj_controller.new_buttons_hide = 0;
+        instance_activate_all();
+        with (obj_pnunit) {
+            instance_destroy();
+        }
+        with (obj_enunit) {
+            instance_destroy();
+        }
+        with (obj_nfort) {
+            instance_destroy();
+        }
+        with (obj_centerline) {
+            instance_destroy();
+        }
+        obj_controller.new_buttons_hide = 0;
 
-    if (instance_exists(obj_cursor)) {
-        obj_cursor.image_index = 0;
-    }
-     if (instance_exists(obj_turn_end)){
+        if (instance_exists(obj_cursor)) {
+            obj_cursor.image_index = 0;
+        }
+        if (instance_exists(obj_turn_end) && !dropping && attacking == 0){
             var _battle_index = obj_turn_end.current_battle;
             if (_battle_index < array_length(obj_turn_end.battle_object)) {
                 var _battle_object = obj_turn_end.battle_object[_battle_index];
@@ -40,8 +40,7 @@ function end_combat_and_cleanup_objects(){
                 obj_turn_end.alarm[1] = 4;
             }
         }
-    }
-    instance_destroy();
+        instance_destroy();
     }
 }
 
