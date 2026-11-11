@@ -1,3 +1,69 @@
+function FleetsEnroute(x, y){
+    fleets = [];
+    self.x = x;
+    self.y = y;
+    static register_fleet = function(_fleet){
+        array_push(fleets, _fleet.id);
+    }
+
+    static clean = function(){
+        for (var i = array_length(fleets) -  1; i >= 0 ; i--){
+            if (!instance_exists(fleets[i])){
+                array_delete(fleets, i, 1);
+            }
+        }
+    }
+    static remove = function(_fleet){
+        for (var i = 0; i < array_length(fleets); i++){
+            if (fleets[i] == _fleet){
+                array_delete(fleets,i, 1);
+                break;
+            }
+        }
+    }
+    static save = function(){
+        clean();
+        var _save_data = [];
+        for (var i = 0; i < array_length(fleets); i++){
+            if (fleets[i].object_index = obj_en_fleet){
+                array_push(_save_data, ["en", fleets[i].uid]);
+            } else {
+                array_push(_save_data, ["pl", fleets[i].uid]);
+            }
+        }
+    }
+
+    static load = function(){
+        if (!struct_exists(self, "load_data")){
+            exit;
+        }
+        var _data = load_data;
+        for (var i = 0; i < array_length(_data); i++){
+            var _fleet_inst = obj_p_fleet;
+            if (_data[i][0] == "en"){
+                _fleet_inst = obj_en_fleet;
+            }
+            with (_fleet_inst){
+                if (uid == _data[i][i]){
+                    array_push(fleets, id);
+                }
+            }
+        }
+        struct_remove(self, "load_data");
+    }
+
+    static navy_enemies = function(){
+        var _player_at_war = obj_controller.faction_status[eFACTION.IMPERIUM] == "War";
+        for (var i = 0; i < array_length(fleets); i++){
+            if (fleet.owner > 5 || (fleet.owner == eFACTION.PLAYER && _player_at_war)){
+                return true
+            }
+        }
+        return false;
+    }
+}
+
+
 function stars_with_help_requests() {
     var _stars = [];
 
