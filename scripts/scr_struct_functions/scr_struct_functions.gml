@@ -118,7 +118,10 @@ function CountingMap(_initial_array = undefined) constructor {
         return struct_empty(map);
     }
 
-    static get_custom_string = function(_callback) {
+    default_custom_string = function(_key, _count, _i, _keys) {
+        return $"{_count}x {_key}{smart_delimeter_sign(_keys, _i, false)}";
+    };
+    static get_custom_string = function(_callback = default_custom_string) {
         var _keys = struct_get_names(map);
         var _len = array_length(_keys);
         if (_len == 0) {

@@ -65,7 +65,7 @@ function popup_default_close() {
         if (instance_exists(obj_turn_end) && obj_controller.complex_event == false) {
             var _battle_index = obj_turn_end.current_battle;
             if (_battle_index < obj_turn_end.battles) {
-                alarm[4] = 1;
+                obj_turn_end.alarm[4] = 1;
             } else {
                 if (number != 0) {
                     obj_turn_end.alarm[1] = 4;
