@@ -909,55 +909,31 @@ function remove_stc_from_planet() {
         }
 
         if (scr_has_adv("Tech-Scavengers")) {
-            var ex1 = "";
-            var ex1_num = 0;
-            var ex2 = "";
-            var ex2_num = 0;
-            var ex3 = "";
-            var ex3_num = 0;
-
             var stah = instance_nearest(x, y, obj_star);
 
+            var _loot = new CountingMapEquipment();
+
             if (pdata.origional_owner == 2) {
-                ex1 = "Meltagun";
-                ex1_num = choose(2, 3, 4);
-                ex2 = "Flamer";
-                ex2_num = choose(2, 3, 4);
-                ex3 = choose("Power Fist", "Chainsword", "Bolt Pistol");
-                ex3_num = choose(2, 3, 4, 5);
+                _loot.add("Meltagun", choose(2, 3, 4));
+                _loot.add("Flamer", choose(2, 3, 4));
+                _loot.add(choose("Power Fist", "Chainsword", "Bolt Pistol"), irandom_range(2,5));
             }
-            if (pdata.origional_owner == eFACTION.MECHANICUS) {
-                ex1 = "Plasma Pistol";
-                ex1_num = choose(1, 2);
-                ex2 = "Power Armour";
-                ex2_num = choose(2, 3, 4);
-                ex3 = choose("Servo-arm", "Bionics");
-                ex3_num = choose(2, 3, 4);
+            else if (pdata.origional_owner == eFACTION.MECHANICUS) {
+                _loot.add("Plasma Pistol", choose(1,2));
+                _loot.add("Power Armour", choose(2, 3, 4));
+                _loot.add(choose("Servo-arm", "Bionics"), irandom_range(2,4));
             }
-            if (pdata.origional_owner == 5) {
-                ex1 = "Flamer";
-                ex1_num = choose(3, 4, 5, 6);
-                ex2 = "Heavy Flamer";
-                ex2_num = choose(1, 2, 3);
-                ex3 = choose("Chainsword", "Bolt Pistol");
-                ex3_num = choose(2, 3, 4, 5);
+            else if (pdata.origional_owner == 5) {
+                _loot.add("Flamer", irandom_range(3,6));
+                _loot.add("Heavy Flamer", irandom_range(1,3));
+                _loot.add(choose("Chainsword", "Bolt Pistol"), irandom_range(2,5));
             }
 
             if (ex1 != "") {
                 pop.text += "##While they're at it your Battle Brothers also find ";
-                if (ex1_num > 0) {
-                    pop.text += string(ex1_num) + " " + string(ex1);
-                }
-                if (ex2_num > 0) {
-                    pop.text += ", " + string(ex2_num) + " " + string(ex2);
-                }
-                if (ex3_num > 0) {
-                    pop.text += ", and " + string(ex3_num) + " " + string(ex3);
-                }
+                pop.text += _loot.get_custom_string();
                 pop.text += ".";
-                scr_add_item(ex1, ex1_num);
-                scr_add_item(ex2, ex2_num);
-                scr_add_item(ex3, ex3_num);
+                _loot.add_to_armoury();
             }
         }
 
