@@ -142,7 +142,7 @@ function AiFleetProblem(_name, _timer = -1, _data = {}, _fleet = noone) : FleetP
                 random_sector_exit_point();
                 action_spd = 256;
                 action = "";
-                set_fleet_movement();
+                move();
                 instance_destroy();
             }
             alter_disposition(eFACTION.INQUISITION, -15);

@@ -260,9 +260,7 @@ function inquisitor_inspect_base() {
                     flee.action_x = x;
                     flee.action_y = y;
                     flee.trade_goods += "|investigate_dead|";
-                    with (flee) {
-                        set_fleet_movement();
-                    }
+                    flee.move();
                 }
             }
         }
