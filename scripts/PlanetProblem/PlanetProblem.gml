@@ -1571,7 +1571,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
             _roster.only_locals();
             _roster.update_roster();
             if (array_length(_roster.selected_units)) {
-                _roster.setup_battle_formations();
+                setup_battle_formations();
                 _roster.add_to_battle();
             }
 
@@ -1589,7 +1589,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
             }
             obj_controller.combat = 0;
             var pip = instance_create(0, 0, obj_popup);
-            inquisition_tomb_mission_start();
+            __inquisition_tomb_mission_start();
             var _completed = __advance_inquisition_tomb_mission();
             with (pip) {
                 if (_completed) {

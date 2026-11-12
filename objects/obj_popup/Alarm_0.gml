@@ -3,13 +3,14 @@ if (battle_special == 3.1) {
 
     var _roster = new Roster();
     with (_roster) {
-        roster_location = obj_ncombat.battle_loc;
-        roster_planet = obj_ncombat.battle_id;
+        roster_location = loc;
+        roster_planet = planet;
         determine_full_roster();
         only_locals();
         update_roster();
     }
     if (!array_length(_roster.selected_units)) {
+        instance_destroy();
         exit;
     }
     // show_message(string(obj_popup.loc)+": planet name, "+string(loc)+", "+string(planet));
