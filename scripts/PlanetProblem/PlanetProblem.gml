@@ -1402,7 +1402,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
 
     static __inquisition_tomb_accept = function() {
         data.mission_stage = 0;
-        data.bomb_warninng = false;
+        data.bomb_warning = false;
         var _text = $"Inquisition Mission Accepted: A bomb must be planted within the Necron Tomb on {p_data.name()} within {timer} months.";
         scr_event_log("", _text, system.name);
     };
