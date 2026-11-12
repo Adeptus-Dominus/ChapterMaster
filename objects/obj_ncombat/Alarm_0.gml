@@ -490,7 +490,7 @@ try {
         // ** Aeldar Force **
         if (enemy == eFACTION.ELDAR) {
             // Ranger Group
-            if (threat == 1) {
+            if (threat == 1 && choose(true,false)) {
                 u = instance_create(_xxx, 240, obj_enunit);
                 enemy_dudes = "20";
 
@@ -505,7 +505,7 @@ try {
                 enemies[3] = u.dudes[3];
             }
             // Harlequin Group
-            if (threat == 1) {
+            else if (threat == 1 && choose(true,false)) {
                 u = instance_create(_xxx, 240, obj_enunit);
                 enemy_dudes = "9";
 
@@ -520,7 +520,7 @@ try {
                 enemies[3] = u.dudes[3];
             }
             // Craftworld Small Group
-            if (threat == 1) {
+            else if (threat == 1) {
                 u = instance_create(_xxx, 240, obj_enunit);
                 enemy_dudes = "24";
 
@@ -2013,7 +2013,7 @@ try {
                 u.dudes[2] = "Mutant";
                 u.dudes_num[2] = 2000;
 
-                u = instance_create(_xxx, 40, obj_enunit);
+                u = instance_create(_xxx + 40, 240, obj_enunit);
                 u.dudes[1] = "Cultist";
                 u.dudes_num[1] = 1000;
                 u.dudes[2] = "Mutant";
