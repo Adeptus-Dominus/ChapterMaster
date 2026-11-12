@@ -20,7 +20,7 @@ function end_combat_and_cleanup_objects(){
         }
         if (instance_exists(obj_turn_end) && !dropping && attacking == 0){
             var _battle_index = obj_turn_end.current_battle;
-            if (_battle_index < array_length(obj_turn_end.battle_object)) {
+            if (_battle_index < array_length(obj_turn_end.battle_object) && _battle_index < obj_turn_end.battles) {
                 var _battle_object = obj_turn_end.battle_object[_battle_index];
 
                 var _planet = obj_turn_end.battle_world[_battle_index];

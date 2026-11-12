@@ -1,6 +1,17 @@
 if (battle_special == 3.1) {
     var that;
 
+    var _roster = new Roster();
+    with (_roster) {
+        roster_location = obj_ncombat.battle_loc;
+        roster_planet = obj_ncombat.battle_id;
+        determine_full_roster();
+        only_locals();
+        update_roster();
+    }
+    if (!array_length(_roster.selected_units)) {
+        exit;
+    }
     // show_message(string(obj_popup.loc)+": planet name, "+string(loc)+", "+string(planet));
 
     with (obj_star) {
@@ -24,22 +35,8 @@ if (battle_special == 3.1) {
     instance_deactivate_all_safe();
     instance_activate_object(obj_ncombat);
     instance_activate_object(obj_pnunit);
-
-    var _roster = new Roster();
-    with (_roster) {
-        roster_location = obj_ncombat.battle_loc;
-        roster_planet = obj_ncombat.battle_id;
-        determine_full_roster();
-        only_locals();
-        update_roster();
-        if (array_length(selected_units)) {
-            setup_battle_formations();
-            add_to_battle();
-        } else {
-            end_combat_and_cleanup_objects();
-            delete _roster;
-        }
-    }
+    _roster.setup_battle_formations();
+    _roster.add_to_battle();
     delete _roster;
 }
 instance_destroy();
