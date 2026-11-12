@@ -456,16 +456,14 @@ function scr_enemy_ai_e() {
 
                 if ((obj_controller.faction_status[i] == "War") && (!special_stop) && (present_fleet[i] > 0)) {
                     // Quene battle
-                    obj_turn_end.battles += 1;
-                    obj_turn_end.battle[obj_turn_end.battles] = 1;
-                    obj_turn_end.battle_world[obj_turn_end.battles] = 0;
-                    obj_turn_end.battle_opponent[obj_turn_end.battles] = i; // Who triggered it first
-                    obj_turn_end.battle_location[obj_turn_end.battles] = name;
-                    obj_turn_end.battle_pobject[obj_turn_end.battles] = instance_nearest(x, y, obj_p_fleet);
-
-                    if (!instance_exists(obj_turn_end.battle_pobject[obj_turn_end.battles])) {
-                        obj_turn_end.battles -= 1;
-                        break;
+                    if (has_orbiting_player_fleet()){
+                        obj_turn_end.add_battle({
+                            battle_type : eBATTLE_TYPES.FLEET,
+                            opponent : i,
+                            location : name,
+                            object : id
+                            pobject : instance_nearest(x, y, obj_p_fleet)
+                        });
                     }
 
                     if (i == 10) {
@@ -586,12 +584,13 @@ function scr_enemy_ai_e() {
 
                 // other battle crap here
                 if (battle_opponent > 0) {
-                    obj_turn_end.battles += 1;
-                    obj_turn_end.battle[obj_turn_end.battles] = 1;
-                    obj_turn_end.battle_world[obj_turn_end.battles] = run;
-                    obj_turn_end.battle_opponent[obj_turn_end.battles] = battle_opponent;
-                    obj_turn_end.battle_location[obj_turn_end.battles] = name;
-                    obj_turn_end.battle_object[obj_turn_end.battles] = id;
+                    obj_turn_end.add_battle({
+                        planet : run,
+                        battle_type : 1,
+                        opponent : battle_opponent,
+                        location : name,
+                        object : id
+                    });
                 }
             }
         }

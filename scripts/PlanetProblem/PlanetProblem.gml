@@ -226,13 +226,8 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
 
     // by default mission battles do not reduce the fortification level or enemy power on a planet
     static new_end_turn_battle = function(battle_opponent_id, special_id = p_id, enemy_data = undefined) {
-        var _battle_index = obj_turn_end.battles++;
-        obj_turn_end.battle[_battle_index] = 1;
-        obj_turn_end.battle_world[_battle_index] = planet;
-        obj_turn_end.battle_opponent[_battle_index] = battle_opponent_id;
-        obj_turn_end.battle_location[_battle_index] = system.name;
-        obj_turn_end.battle_object[_battle_index] = system;
-        obj_turn_end.battle_special[_battle_index] = {
+
+        var _spec = {
             special_id: special_id,
             special_feature: self,
         };
@@ -245,7 +240,16 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
         if (!struct_exists(enemy_data, "reduce_fortification")) {
             enemy_data.reduce_fortification = false;
         }
-        obj_turn_end.battle_special[_battle_index].battle_enemy_data = enemy_data;
+        _spec.battle_enemy_data = enemy_data;
+        obj_turn_end.add_battle({
+            planet : planet,
+            battle_type : eBATTLE_TYPES.GROUNDFORCES,
+            opponent : battle_opponent_id,
+            location : system.name,
+            object : system,
+            special : _spec
+        });
+        
     };
 
     static new_battle = function(battle_opponent_id, special_id = p_id) {
@@ -1234,8 +1238,6 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
     };
 
     static __protect_raiders_battle_aftermath = function() {
-        // show_message(obj_turn_end.current_battle);
-        // show_message(obj_turn_end.battle_world[obj_turn_end.current_battle]);
         // title / text / image / speshul
         var _planet_string = p_data.name();
         delete_mission = true;

@@ -34,13 +34,7 @@ function popup_defualt_click_action() {
     if (obj_controller.scrollbar_engaged) {
         exit;
     }
-
-    if (battle_special > 0) {
-        alarm[0] = 1;
-        cooldown = 10;
-        exit;
-    }
-
+    
     if (type == ePOPUP_TYPE.BATTLE_OPTIONS) {
         obj_controller.cooldown = 10;
         if (instance_exists(obj_turn_end)) {

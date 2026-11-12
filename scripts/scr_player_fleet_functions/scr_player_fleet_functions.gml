@@ -162,8 +162,10 @@ function merge_player_fleets(main_fleet, merge_fleet) {
 
     if (instance_exists(obj_turn_end)) {
         for (var _bi = 0; _bi < array_length(obj_turn_end.battle_pobject); _bi++) {
-            if (obj_turn_end.battle_pobject[_bi] == merge_fleet.id && obj_turn_end.battle_world[_bi] == 0) {
-                obj_turn_end.battle_pobject[_bi] = main_fleet.id;
+            var _battle = obj_turn_end.battles[_bi];
+            var _player_fleet = _battle.pobject;
+            if (_player_fleet.id == merge_fleet.id && _battle.battle_type == eBATTLE_TYPES.FLEET) {
+                _player_fleet.id = main_fleet.id;
             }
         }
     }

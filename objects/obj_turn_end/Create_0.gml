@@ -45,17 +45,12 @@ popup_special = [""];
 /// @type {Array<Struct.NotificationAlert>}
 alerts_list = [];
 
-battle = array_create(_popup_size, 0);
-battle_location = array_create(_popup_size, "");
-/// @desc 0 means space combat, 1+ means planet number (I hate this)
-battle_world = array_create(_popup_size, undefined);
-battle_opponent = array_create(_popup_size, 0);
-/// @type {Array<Id.Instance.obj_star>}
-battle_object = array_create(_popup_size, noone);
-/// @type {Array<Id.Instance.obj_p_fleet>}
-battle_pobject = array_create(_popup_size, noone);
-battle_special = array_create(_popup_size, "");
+battles = [];
+next_battle_data = noone;
 
+add_battle = function(_battle){
+	array_push(battles, new EndTurnBattle(_battle));
+}
 var _string_size = 16;
 strin = array_create(_string_size, "");
 
