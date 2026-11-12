@@ -71,14 +71,59 @@ if ((mission == "bad") && (plan.p_first[num] == eFACTION.MECHANICUS) && (plan.p_
         scr_audience(plan.p_owner[num], "declare_war", -20);
     }
 
+    var _mech_battle = method(obj_popup, function(){
+
+        var _star;
+
+        var _roster = new Roster();
+        with (_roster) {
+            roster_location = obj_popup.loc;
+            roster_planet = obj_popup.planet;
+            determine_full_roster();
+            only_locals();
+            update_roster();
+        }
+        if (!array_length(_roster.selected_units)) {
+            instance_destroy();
+            LOGGER.error("no forces found for mechanicus battle");
+            exit;
+        }
+        // show_message(string(obj_popup.loc)+": planet name, "+string(loc)+", "+string(planet));
+
+        _star = find_star_by_name(loc);
+
+        instance_create(0, 0, obj_ncombat);
+        obj_ncombat.enemy = eFACTION.MECHANICUS;
+        obj_ncombat.battle_object = _star;
+        obj_ncombat.battle_loc = loc;
+        obj_ncombat.battle_id = planet;
+        obj_ncombat.fortified = 5;
+        obj_ncombat.battle_special = "mech_stc";
+        obj_ncombat.threat = 4;
+        obj_ncombat.formation_set = 3;
+
+        instance_deactivate_all_safe();
+        instance_activate_object(obj_ncombat);
+        instance_activate_object(obj_pnunit);
+        _roster.setup_battle_formations();
+        _roster.add_to_battle();
+        delete _roster;
+        instance_destroy();
+        exit;
+    })
     // Start battle
     pop.battle_special = 3.1;
     obj_controller.trading_artifact = 0;
     clear_diplo_choices();
+    pop.replace_options({
+        str1 : "To Battle!",
+        choice_func : _mech_battle
+    });
     obj_controller.menu = 0;
 
     pop.loc = plan.name;
     pop.planet = num;
+
 
     exit;
 }
