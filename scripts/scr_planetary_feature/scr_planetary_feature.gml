@@ -846,7 +846,7 @@ function remove_stc_from_planet() {
             pop.text += "Half-way through the mission a small army of Praetorian Servitors and Skitarii bear down upon your men.  The Mechanicus guards seem to be upset.";
 
             if (pdata.current_owner == eFACTION.MECHANICUS) {
-                obj_controller.disposition[3] -= 40;
+                alter_disposition(eFACTION.MECHANICUS, -40);
             }
 
             if (pdata.current_owner > 3 && pdata.current_owner <= 6) {
@@ -861,10 +861,50 @@ function remove_stc_from_planet() {
             obj_controller.trading_artifact = 0;
             clear_diplo_choices();
             obj_controller.menu = 0;
+            var _mech_battle = method(obj_popup, function(){
 
-            pop.loc = pdata.system.name;
-            pop.planet = pdata.planet;
+                var _star;
 
+                var _roster = new Roster();
+                with (_roster) {
+                    roster_location = obj_popup.loc;
+                    roster_planet = obj_popup.planet;
+                    determine_full_roster();
+                    only_locals();
+                    update_roster();
+                }
+                if (!array_length(_roster.selected_units)) {
+                    instance_destroy();
+                    LOGGER.error("no forces found for mechanicus battle");
+                    exit;
+                }
+                // show_message(string(obj_popup.loc)+": planet name, "+string(loc)+", "+string(planet));
+
+                _star = find_star_by_name(loc);
+
+                instance_create(0, 0, obj_ncombat);
+                obj_ncombat.enemy = eFACTION.MECHANICUS;
+                obj_ncombat.battle_object = _star;
+                obj_ncombat.battle_loc = loc;
+                obj_ncombat.battle_id = planet;
+                obj_ncombat.fortified = 5;
+                obj_ncombat.battle_special = "mech_stc";
+                obj_ncombat.threat = 4;
+                obj_ncombat.formation_set = 3;
+
+                instance_deactivate_all_safe();
+                instance_activate_object(obj_ncombat);
+                instance_activate_object(obj_pnunit);
+                _roster.setup_battle_formations();
+                _roster.add_to_battle();
+                delete _roster;
+                instance_destroy();
+                exit;
+            })
+            pop.replace_options({
+                str1 : "To Battle!",
+                choice_func : _mech_battle
+            });
             exit;
         }
 
