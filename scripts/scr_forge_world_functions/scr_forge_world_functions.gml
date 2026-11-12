@@ -222,9 +222,8 @@ function build_planet_defence_fleets() {
             if (instance_exists(_nearest)) {
                 _current_imperial_fleet.action_x = _nearest.x;
                 _current_imperial_fleet.action_y = _nearest.y;
-                with (_current_imperial_fleet) {
-                    set_fleet_movement();
-                }
+                _current_imperial_fleet.move();
+
                 instance_activate_object(obj_star);
                 scr_alert("", "forge_world", $"New imperial defence ship sets off for {_nearest.name} from {forge.name}");
                 return $"New imperial defence ships set off for {_nearest.name} from {forge.name}";

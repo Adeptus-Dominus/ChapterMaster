@@ -737,7 +737,7 @@ function PlanetData(_planet, _system) constructor {
                         action_x = new_wagh_star.x;
                         action_y = new_wagh_star.y;
                         action = "";
-                        set_fleet_movement();
+                        move();
                     }
                 }
                 instance_activate_object(obj_star);
@@ -1830,9 +1830,7 @@ function PlanetData(_planet, _system) constructor {
                         if (_found_near_planet) {
                             necron_fleet2.action_x = _nearest_planet.x;
                             necron_fleet2.action_y = _nearest_planet.y;
-                            with (necron_fleet2) {
-                                set_fleet_movement();
-                            }
+                            necron_fleet2.move();
                         }
                     }
                 }
