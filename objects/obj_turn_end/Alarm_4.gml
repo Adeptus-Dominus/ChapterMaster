@@ -51,24 +51,17 @@ if ((battles > 0) && (current_battle <= battles)) {
             var tempy = battle_object[current_battle].p_owner[battle_world[current_battle]];
 
             if ((tempy == 1) || (tempy == 2) || (tempy == 3)) {
-                if (battle_object[current_battle].p_fortified[battle_world[current_battle]] == 1) {
-                    strin[3] = "Minimally";
-                }
-                if (battle_object[current_battle].p_fortified[battle_world[current_battle]] == 2) {
-                    strin[3] = "Lightly";
-                }
-                if (battle_object[current_battle].p_fortified[battle_world[current_battle]] == 3) {
-                    strin[3] = "Moderately";
-                }
-                if (battle_object[current_battle].p_fortified[battle_world[current_battle]] == 4) {
-                    strin[3] = "Highly";
-                }
-                if (battle_object[current_battle].p_fortified[battle_world[current_battle]] == 5) {
-                    strin[3] = "Extremely";
-                }
-                if (battle_object[current_battle].p_fortified[battle_world[current_battle]] == 6) {
-                    strin[3] = "Maximally";
-                }
+                var array_string = [
+                    "",
+                    "Minimally",
+                    "Lightly",
+                    "Moderately",
+                    "Highly",
+                    "Extremely",
+                    "Maximally",
+                ];
+                var battle_fortification = battle_object[current_battle].p_fortified[battle_world[current_battle]];
+                strin[3] = array_string[clamp(battle_fortification, 1, 6)];
             }
 
             tempy = 0;
@@ -90,24 +83,7 @@ if ((battles > 0) && (current_battle <= battles)) {
             }
 
             if (battle_opponent[current_battle] <= 20) {
-                if (tempy == 1) {
-                    strin[4] = "Minimal Forces";
-                }
-                if (tempy == 2) {
-                    strin[4] = "Sparse Forces";
-                }
-                if (tempy == 3) {
-                    strin[4] = "Moderate Forces";
-                }
-                if (tempy == 4) {
-                    strin[4] = "Numerous Forces";
-                }
-                if (tempy == 5) {
-                    strin[4] = "Very Numerous";
-                }
-                if (tempy == 6) {
-                    strin[4] = "Overwhelming";
-                }
+                strin[4] = global.force_strength_descriptions[clamp(tempy, 1, 6)];
             }
         }
 
