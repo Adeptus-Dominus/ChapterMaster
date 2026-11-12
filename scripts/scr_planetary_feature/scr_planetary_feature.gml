@@ -713,9 +713,7 @@ function ground_forces_collect_artifact() {
 
             if (!_loot.is_empty()) {
                 pop.text += "##While they're at it your Battle Brothers also find ";
-                pop.text += _loot.get_custom_string(function(){
-                    return $" {_count} {_key},"
-                });
+                pop.text += _loot.get_custom_string();
                 pop.text += ".";
                 _loot.add_to_armoury();
             }
@@ -904,9 +902,7 @@ function remove_stc_from_planet() {
 
             if (!_loot.is_empty()) {
                 pop.text += "##While they're at it your Battle Brothers also find ";
-                pop.text += _loot.get_custom_string(function(){
-                    return $" {_count} {_key},"
-                });
+                pop.text += _loot.get_custom_string();
                 pop.text += ".";
                 _loot.add_to_armoury();
             }

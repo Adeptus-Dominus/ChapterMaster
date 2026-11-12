@@ -18,9 +18,14 @@ function end_combat_and_cleanup_objects(){
         if (instance_exists(obj_cursor)) {
             obj_cursor.image_index = 0;
         }
-        if (!instance_exists(obj_popup) && instance_exists(obj_turn_end) && !dropping && attacking == 0){
-            var _battle_index = obj_turn_end.current_battle;
-            if (_battle_index < array_length(obj_turn_end.battle_object) && _battle_index < obj_turn_end.battles) {
+        var _end_turn_battle = instance_exists(obj_turn_end) && !dropping && attacking == 0;
+
+        var _battle_index;
+        var _within_index_length = false;
+        if (_end_turn_battle && end_turn_battle_queue){
+            _battle_index = obj_turn_end.current_battle;
+            _within_index_length = (_battle_index < array_length(obj_turn_end.battle_object) && _battle_index < obj_turn_end.battles);
+            if (_within_index_length) {
                 var _battle_object = obj_turn_end.battle_object[_battle_index];
 
                 var _planet = obj_turn_end.battle_world[_battle_index];
@@ -30,6 +35,11 @@ function end_combat_and_cleanup_objects(){
                 if (defeat == 1) {
                     _battle_object.p_player[_planet] = 0;
                 }
+            }
+        }
+
+        if (!instance_exists(obj_popup) && _end_turn_battle){
+            if (_within_index_length) {
                 obj_controller.combat = 0;
                 with (obj_turn_end) {
                     alarm[4] = 1;
