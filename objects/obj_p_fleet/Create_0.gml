@@ -60,6 +60,7 @@ problems_to_mission_log = method(self, fleet_problems_to_mission_log);
 arrived_at_star = function() {
     orbiting.fleets_enroute.remove(id);
     set_fleet_location(orbiting.name);
+    orbiting.present_fleet[1]++;
     if (orbiting.visited == 0) {
         for (var plan_num = 1; plan_num <= orbiting.planets; plan_num++) {
             if (array_length(orbiting.p_feature[plan_num]) != 0) {
