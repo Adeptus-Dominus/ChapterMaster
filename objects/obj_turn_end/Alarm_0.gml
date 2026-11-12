@@ -159,7 +159,7 @@ try {
                 if (tempy == 0){
                     LOGGER.debug("error : enemy forces for battle 0");
                 }
-                strin[4] = global.force_strength_descriptions[clamp(tempy, 1, 6)]
+                strin[4] = global.force_strength_descriptions[clamp(tempy, 1, 6)];
 
                 obj_controller.cooldown = 9999;
             }

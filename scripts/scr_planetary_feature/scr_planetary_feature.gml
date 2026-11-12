@@ -863,12 +863,11 @@ function remove_stc_from_planet() {
             obj_controller.menu = 0;
             var _mech_battle = method(obj_popup, function(){
 
-                var _star;
-
+                var _p_data = pdata;
                 var _roster = new Roster();
                 with (_roster) {
-                    roster_location = obj_popup.loc;
-                    roster_planet = obj_popup.planet;
+                    roster_location = _p_data.system.name;
+                    roster_planet = _p_data.planet;
                     determine_full_roster();
                     only_locals();
                     update_roster();
@@ -880,13 +879,12 @@ function remove_stc_from_planet() {
                 }
                 // show_message(string(obj_popup.loc)+": planet name, "+string(loc)+", "+string(planet));
 
-                _star = find_star_by_name(loc);
 
                 instance_create(0, 0, obj_ncombat);
                 obj_ncombat.enemy = eFACTION.MECHANICUS;
-                obj_ncombat.battle_object = _star;
-                obj_ncombat.battle_loc = loc;
-                obj_ncombat.battle_id = planet;
+                obj_ncombat.battle_object = _p_data.star;
+                obj_ncombat.battle_loc = _p_data.system.name;
+                obj_ncombat.battle_id = _p_data.planet;
                 obj_ncombat.fortified = 5;
                 obj_ncombat.battle_special = "mech_stc";
                 obj_ncombat.threat = 4;
@@ -929,7 +927,7 @@ function remove_stc_from_planet() {
                 _loot.add(choose("Chainsword", "Bolt Pistol"), irandom_range(2,5));
             }
 
-            if (ex1 != "") {
+            if (!_loot.is_empty()) {
                 pop.text += "##While they're at it your Battle Brothers also find ";
                 pop.text += _loot.get_custom_string();
                 pop.text += ".";

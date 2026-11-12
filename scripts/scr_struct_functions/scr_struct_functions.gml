@@ -114,6 +114,10 @@ function CountingMap(_initial_array = undefined) constructor {
         }
     };
 
+    static is_empty = function(){
+        return struct_empty(map);
+    }
+
     static get_custom_string = function(_callback) {
         var _keys = struct_get_names(map);
         var _len = array_length(_keys);
@@ -141,7 +145,7 @@ function CountingMap(_initial_array = undefined) constructor {
 
 
 //TODO add support for different equipment qualities
-function CountingMapEquipment(_initial_array = undefined) :  CountingMap(_initial_array = undefined) constructor {
+function CountingMapEquipment(_initial_array = undefined) :  CountingMap(_initial_array) constructor {
     static add_to_armoury = function(){
         var _keys = struct_get_names(map);
         var _len = array_length(_keys);
@@ -151,7 +155,7 @@ function CountingMapEquipment(_initial_array = undefined) :  CountingMap(_initia
 
         for (var _i = 0; _i < _len; _i++) {
             var _key = _keys[_i];
-            scr_add_item(_key, map[$ _keys]);
+            scr_add_item(_key, map[$ _key]);
         }
     }
 }
