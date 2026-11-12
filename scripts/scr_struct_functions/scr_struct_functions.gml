@@ -114,7 +114,14 @@ function CountingMap(_initial_array = undefined) constructor {
         }
     };
 
-    static get_custom_string = function(_callback) {
+    static is_empty = function(){
+        return struct_empty(map);
+    }
+
+    static default_custom_string = function(_key, _count, _i, _keys) {
+        return $"{_count}x {_key}{smart_delimeter_sign(_keys, _i, false)}";
+    };
+    static get_custom_string = function(_callback = default_custom_string) {
         var _keys = struct_get_names(map);
         var _len = array_length(_keys);
         if (_len == 0) {
@@ -139,6 +146,22 @@ function CountingMap(_initial_array = undefined) constructor {
     };
 }
 
+
+//TODO add support for different equipment qualities
+function CountingMapEquipment(_initial_array = undefined) :  CountingMap(_initial_array) constructor {
+    static add_to_armoury = function(){
+        var _keys = struct_get_names(map);
+        var _len = array_length(_keys);
+        if (_len == 0) {
+            return false;
+        }
+
+        for (var _i = 0; _i < _len; _i++) {
+            var _key = _keys[_i];
+            scr_add_item(_key, map[$ _key]);
+        }
+    }
+}
 /// @description Copies a key from source to target if it exists in the source
 /// @param {struct} source - The struct to read from
 /// @param {struct} target - The struct to write to

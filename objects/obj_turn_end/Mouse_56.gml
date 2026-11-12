@@ -121,6 +121,7 @@ if ((cooldown <= 0) && (battle_world[current_battle] > 0) && (combating == 0)) {
         obj_ncombat.battle_object = _battle_obj;
         obj_ncombat.battle_loc = _loc;
         obj_ncombat.battle_id = _planet;
+        obj_ncombat.end_turn_battle_queue = true;
 
         var _enemy = obj_ncombat.enemy;
 

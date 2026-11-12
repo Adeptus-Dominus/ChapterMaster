@@ -115,7 +115,7 @@ function Problem(_name, _timer, _data) constructor {
             return undefined;
         }
         var _data = {
-            location: is_callable(system.name) ? system.name() : system.name,
+            location: is_instanceof(self, PlanetProblem) ? p_data.name() : system.name,
             system: system,
             mission: description(),
             time: timer,
@@ -142,6 +142,7 @@ function Problem(_name, _timer, _data) constructor {
                 _opt.choice_func = _func;
             } else {
                 LOGGER.error($"unknown popup trigger {_func_string} for {p_id}");
+                _opt.choice_func = __popup_delete;
             }
         }
 
@@ -193,7 +194,6 @@ function Problem(_name, _timer, _data) constructor {
         instance_activate_object(obj_star);
         var _func = find_func("squad_selected");
         __handle_triggered_mission_func(_func);
-        instance_deactivate_object(obj_star);
     };
 
     static on_unit_selection = function() {
@@ -205,7 +205,6 @@ function Problem(_name, _timer, _data) constructor {
             }
             __handle_triggered_mission_func(_func);
         }
-        instance_deactivate_object(obj_star);
     };
 
     static __handle_triggered_mission_func = function(func) {

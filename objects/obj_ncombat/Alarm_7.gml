@@ -238,26 +238,6 @@ try {
             instance_destroy();
         }
     }
-    if ((!dropping && attacking == 0) && (string_count("_attack", battle_special) == 0) && (string_count("mech", battle_special) == 0) && (string_count("ruins", battle_special) == 0) && (battle_special != "ship_demon") && (string_count("cs_meeting", battle_special) == 0)) {
-        if (instance_exists(obj_turn_end)) {
-            var _battle_index = obj_turn_end.current_battle;
-            if (_battle_index < array_length(obj_turn_end.battle_object)) {
-                var _battle_object = obj_turn_end.battle_object[_battle_index];
-
-                var _planet = obj_turn_end.battle_world[_battle_index];
-
-                _battle_object.p_player[_planet] -= world_size;
-
-                if (defeat == 1) {
-                    _battle_object.p_player[_planet] = 0;
-                }
-            }
-            obj_controller.combat = 0;
-            with (obj_turn_end) {
-                alarm[4] = 1;
-            }
-        }
-    }
     if ((string_count("ruins", battle_special) > 0) && (defeat == 1)) {
         //TODO this logic is wrong assumes all player units died in ruins
         var _combat_star = find_star_by_name(battle_loc);
@@ -433,30 +413,13 @@ try {
         }
     }
 
-    instance_activate_all();
-    with (obj_pnunit) {
-        instance_destroy();
-    }
-    with (obj_enunit) {
-        instance_destroy();
-    }
-    with (obj_nfort) {
-        instance_destroy();
-    }
-    with (obj_centerline) {
-        instance_destroy();
-    }
-    obj_controller.new_buttons_hide = 0;
-
-    if (instance_exists(obj_cursor)) {
-        obj_cursor.image_index = 0;
-    }
 
     if (combat_debugger.active) {
         combat_debugger.flush({enemy_name: enem, defeat: defeat, turns: turn_count, player_start: player_max, player_end: player_forces});
     }
 
-    instance_destroy();
+    end_combat_and_cleanup_objects();
 } catch (_exception) {
     ERROR_HANDLER.handle_exception(_exception);
+    end_combat_and_cleanup_objects();
 }

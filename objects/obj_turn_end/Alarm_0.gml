@@ -156,24 +156,11 @@ try {
                     tempy = battle_object[current_battle].p_necrons[battle_world[current_battle]];
                 }
 
-                if (tempy == 1) {
-                    strin[4] = "Minimal Forces";
+                if (tempy == 0){
+                    LOGGER.debug("error : enemy forces for battle 0");
                 }
-                if (tempy == 2) {
-                    strin[4] = "Sparse Forces";
-                }
-                if (tempy == 3) {
-                    strin[4] = "Moderate Forces";
-                }
-                if (tempy == 4) {
-                    strin[4] = "Numerous Forces";
-                }
-                if (tempy == 5) {
-                    strin[4] = "Very Numerous";
-                }
-                if (tempy == 6) {
-                    strin[4] = "Overwhelming";
-                }
+                strin[4] = global.force_strength_descriptions[clamp(tempy, 1, 6)];
+
                 obj_controller.cooldown = 9999;
             }
 

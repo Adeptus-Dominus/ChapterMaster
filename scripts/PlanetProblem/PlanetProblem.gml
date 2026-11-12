@@ -965,6 +965,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
         if (!instance_exists(obj_popup)) {
             scr_popup("Mechanicus Mission Accepted", "", "mechanicus");
         }
+        stage_id = "awating_player";
         obj_popup.text = $"The Adeptus Mechanicus await your forces at {_name}.  They are expecting at least two squads of Astartes and have placed the testing on hold until their arrival.  {global.chapter_name} have 16 months to arrive.";
         scr_event_log("", $"Mechanicus Mission Accepted: At least two squads of marines are expected at {_name} within 16 months.", system.name);
         mark("green");
@@ -1401,6 +1402,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
 
     static __inquisition_tomb_accept = function() {
         data.mission_stage = 0;
+        data.bomb_warning = false;
         var _text = $"Inquisition Mission Accepted: A bomb must be planted within the Necron Tomb on {p_data.name()} within {timer} months.";
         scr_event_log("", _text, system.name);
     };
@@ -1412,6 +1414,10 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
         var _have_bomb = 0;
         _have_bomb = scr_check_equip("Plasma Bomb", system.name, planet, 0);
         if (_have_bomb == 0) {
+            if (!data.bomb_warning){
+                scr_popup("Necron Tomb Excursion", $"Forces on {p_data.name()} dont have a Plasma Bomb so cannot proceed with the mission", "necron_cave");
+                data.bomb_warning = true;
+            }
             exit;
         }
         var _tixt;
@@ -1441,7 +1447,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
     /// @self Asset.GMObject.obj_popup
     /// @desc Advances the Necron Tomb mission or starts a combat encounter.
     /// @returns {Undefined}
-    static inquisition_tomb_mission_sequence = function() {
+    static __inquisition_tomb_mission_sequence = function() {
         var _battle;
         var _penalty = global.character_tester.small_forces_penalty_chart(p_data.player_forces);
         var _roll = roll_dice_chapter(1, 100, "low");
@@ -1454,7 +1460,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
         // Result
         data.tomb_awakens = false;
         if (_roll <= 60) {
-            advance_inquisition_tomb_mission();
+            __advance_inquisition_tomb_mission();
             exit;
         }
         if ((_roll > 60) && (_roll <= 82)) {
@@ -1491,6 +1497,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
                 reduce_fortification: true,
                 reduce_power: true,
             };
+            data.enemy = "";
             switch (_battle) {
                 case 1:
                     _battle_data.cols = [
@@ -1557,20 +1564,18 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
             var _battle = new_battle(eFACTION.NECRONS);
             _battle.battle_enemy_data = _battle_data;
             var _roster = new Roster();
-            with (_roster) {
-                roster_location = system.name;
-                roster_planet = planet;
-                determine_full_roster();
-                only_locals();
-                update_roster();
-                if (array_length(selected_units)) {
-                    setup_battle_formations();
-                    add_to_battle();
-                }
+
+            _roster.roster_location = system.name;
+            _roster.roster_planet = planet;
+            _roster.determine_full_roster();
+            _roster.only_locals();
+            _roster.update_roster();
+            if (array_length(_roster.selected_units)) {
+                setup_battle_formations();
+                _roster.add_to_battle();
             }
 
             instance_deactivate_object(obj_star);
-
             instance_destroy(obj_popup);
         }
 
@@ -1579,30 +1584,27 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
 
     static __inquisition_tomb_battle_aftermath = function() {
         if (!data.tomb_awakens) {
-            if (defeat == 1) {
-                obj_controller.combat = 0;
-                obj_controller.cooldown = 10;
-                obj_turn_end.alarm[1] = 4;
-            } else if (defeat == 0) {
-                obj_controller.combat = 0;
-                var pip = instance_create(0, 0, obj_popup);
-                inquisition_tomb_mission_start();
-                var _completed = advance_inquisition_tomb_mission();
-                with (pip) {
-                    if (_completed) {
-                        keyboard_clear(vk_enter);
-                    } else {
-                        text = "The last of the attackers is cut down.  Your marines regroup in the tunnel and ready themselves to press deeper into the complex.\n\n" + text;
-                    }
-                    number = instance_exists(obj_turn_end);
+            if (obj_ncombat.defeat) {
+                exit;
+            }
+            obj_controller.combat = 0;
+            var pip = instance_create(0, 0, obj_popup);
+            __inquisition_tomb_mission_start();
+            var _completed = __advance_inquisition_tomb_mission();
+            with (pip) {
+                if (_completed) {
+                    keyboard_clear(vk_enter);
+                } else {
+                    text = "The last of the attackers is cut down.  Your marines regroup in the tunnel and ready themselves to press deeper into the complex.\n\n" + text;
                 }
+                number = instance_exists(obj_turn_end);
             }
         } else {
             var pip = instance_create(0, 0, obj_popup);
             with (pip) {
                 title = "Necron Tomb Awakens";
                 image = "necron_army";
-                if (obj_ncombat.defeat == 0) {
+                if (!obj_ncombat.defeat) {
                     text = "Your marines make a tactical retreat back to the surface, hounded by Necrons all the way.  The Inquisition mission is a failure- you were to blow up the Necron Tomb World stealthily, not wake it up.  The Inquisition is not pleased with your conduct.";
                 } else {
                     text = "Your marines are killed down to the last man.  The Inquisition mission is a failure- you were to blow up the Necron Tomb World stealthily, not wake it up.  The Inquisition is not pleased with your conduct.";
@@ -1628,7 +1630,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
         }
     };
 
-    static advance_inquisition_tomb_mission = function() {
+    static __advance_inquisition_tomb_mission = function() {
         data.mission_stage++;
         obj_popup.title = $"Necron Tunnels : {data.mission_stage}";
 
