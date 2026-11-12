@@ -24,7 +24,7 @@ function end_combat_and_cleanup_objects(){
         var _within_index_length = false;
         if (_end_turn_battle && end_turn_battle_queue){
             _battle_index = obj_turn_end.current_battle;
-            _within_index_length = (_battle_index < array_length(obj_turn_end.battle_object) && _battle_index < obj_turn_end.battles);
+            _within_index_length = (_battle_index <= obj_turn_end.battles && _battle_index < array_length(obj_turn_end.battle_object));
             if (_within_index_length) {
                 var _battle_object = obj_turn_end.battle_object[_battle_index];
 
