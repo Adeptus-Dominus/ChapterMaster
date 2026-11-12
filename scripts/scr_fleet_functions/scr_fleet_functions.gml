@@ -266,7 +266,7 @@ function set_fleet_movement(_fastest_route = true, _new_action = "move", _minimu
     // Finalize Movement State
     fleet_unregister_from_star(id);
     action = _new_action;
-    if (action == "move" && _target_is_sys){
+    if (action == "move" && _target_is_sys) {
         _target_sys.fleets_enroute.register_fleet(id);
     }
     action_eta = _eta > 5000 ? _eta : clamp(_eta, _minimum_eta, _maximum_eta);

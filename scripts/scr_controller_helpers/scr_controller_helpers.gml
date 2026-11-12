@@ -471,7 +471,7 @@ function scr_end_turn() {
                     global.audio_manager.play_sfx(SFX_END_TURN);
 
                     turn += 1;
-                    
+
                     if (instance_exists(obj_p_fleet)) {
                         wait_and_execute(1, function() {
                             with (obj_p_fleet) {

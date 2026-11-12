@@ -343,7 +343,7 @@ try {
             inquisitor_ship_approaches();
         } else if (action_eta == 0) {
             action = "";
-            if (fleet_is_orbiting() != noone){
+            if (fleet_is_orbiting() != noone) {
                 orbiting.fleets_enroute.remove(id);
             }
             if (array_length(complex_route) > 0) {
