@@ -13,7 +13,7 @@ popups_end = 0;
 
 combating = 0;
 cooldown = 10;
-current_battle = 1;
+current_battle = 0;
 current_popup = 0;
 
 info_mahreens = 0;

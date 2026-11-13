@@ -34,7 +34,7 @@ function popup_defualt_click_action() {
     if (obj_controller.scrollbar_engaged) {
         exit;
     }
-    
+
     if (type == ePOPUP_TYPE.BATTLE_OPTIONS) {
         obj_controller.cooldown = 10;
         if (instance_exists(obj_turn_end)) {
@@ -58,7 +58,7 @@ function popup_default_close() {
         obj_controller.cooldown = 10;
         if (instance_exists(obj_turn_end) && obj_controller.complex_event == false) {
             var _battle_index = obj_turn_end.current_battle;
-            if (_battle_index < obj_turn_end.battles) {
+            if (_battle_index < array_length(obj_turn_end.battles)) {
                 obj_turn_end.alarm[4] = 1;
             } else {
                 if (number != 0) {

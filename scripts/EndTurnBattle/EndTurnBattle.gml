@@ -32,7 +32,7 @@ function EndTurnBattle(_data) constructor{
         // Fight fight fight, space
         var _battle_fleet = pobject;
         if (_battle_fleet.capital_number + _battle_fleet.frigate_number + _battle_fleet.escort_number <= 0) {
-            alarm[4] = 1;
+            obj_turn_end.alarm[4] = 1;
             exit;
         }
 
@@ -101,9 +101,9 @@ function EndTurnBattle(_data) constructor{
         var _enemy = obj_ncombat.enemy;
 
         var _planet_data = new PlanetData(planet, object);
-        if (tip == "offensive") {
+        if (stance == "offensive") {
             obj_ncombat.formation_set = 1;
-        } else if (tip == "defensive") {
+        } else if (stance == "defensive") {
             obj_ncombat.formation_set = 2;
         }
 
@@ -147,23 +147,21 @@ function EndTurnBattle(_data) constructor{
         }
 
         var _roster = new Roster();
-        with (_roster) {
-            roster_location = location;
-            roster_planet = planet;
-            determine_full_roster();
-            only_locals();
-            update_roster();
-            if (array_length(selected_units)) {
-                setup_battle_formations();
-                add_to_battle();
-            }
+        _roster.roster_location = location;
+        _roster.roster_planet = planet;
+        _roster.determine_full_roster();
+        _roster.only_locals();
+        _roster.update_roster();
+        if (array_length(_roster.selected_units)) {
+            setup_battle_formations();
+            _roster.add_to_battle();
         }
         delete _roster;
         instance_deactivate_object(object);
 	}
 	static prep_battle = function(){
 		var _battle_data = {};
-		var _battle_star = find_star_by_name(location);
+		var _battle_star = object;
 
 		_battle_data.star_x = _battle_star.x;
 		_battle_data.star_y = _battle_star.y;
@@ -208,7 +206,7 @@ function EndTurnBattle(_data) constructor{
 						frigates: _fri_total,
 						escorts: _esc_total,
 					};
-					if (obj_controller.faction_status[e] == "War"){
+					if (obj_controller.faction_status[e] == "War" || e == eFACTION.TYRANIDS || e == eFACTION.NECRONS){
 						array_push(_battle_data.enemy_fleets, _fleet_entry);
 					} else {
 						array_push(_battle_data.allied_fleets, _fleet_entry);
@@ -311,10 +309,10 @@ function EndTurnBattle(_data) constructor{
         var _p_fleet_y = 118;
         for (var i = 0; i < array_length(_types); i++){
         	var _type = _types[i];
-	        if (_battle_data.player_fleet_count[$ _type] > 0) {
-	        	var _count = _battle_data.player_fleet_count[$ _type];
-	        	var _percentage = _battle_data.player_fleet_health[$ _type];
-	            draw_text(xxx + 310, yyy + _p_fleet_y + (20 * i),  "{_count} {type_names[i]} ({_percentage}% HP)");
+	        if (battle_data.player_fleet_count[$ _type] > 0) {
+	        	var _count = battle_data.player_fleet_count[$ _type];
+	        	var _percentage = battle_data.player_fleet_health[$ _type];
+	            draw_text(xxx + 310, yyy + _p_fleet_y + (20 * i),  $"{_count} {type_names[i]} ({_percentage}% HP)");
 	        }        	
         }
 
@@ -322,15 +320,15 @@ function EndTurnBattle(_data) constructor{
 
         var _en_fleet_x = xxx + 12;
         var _text_offset = 32;
-        for (var i = 0; i < array_length(_battle_data.enemy_fleets); i++){
-        	var _fleet = _battle_data.enemy_fleets[i];
+        for (var i = 0; i < array_length(battle_data.enemy_fleets); i++){
+        	var _fleet = battle_data.enemy_fleets[i];
         	var _cur_fleet_x = _en_fleet_x + (110 * i)
-        	scr_image("ui/force", _fleet.owner, _en_fleet_x + _cur_fleet_x, yyy + 237, 64, 64);
+        	scr_image("ui/force", _fleet.owner,  _cur_fleet_x, yyy + 237, 64, 64);
         	var _ships_string = "";
         	for (var e = 0; e < array_length(_types); e++){
         		var _num = _fleet[$ _types[e]];
         		if (_num > 0){
-        			_ships_string +=  $"{_num} {string_plural(_type_names[e], num)}\n";
+        			_ships_string +=  $"{_num} {string_plural(_type_names[e], _num)}\n";
         		}
         	}
             draw_text_transformed(_cur_fleet_x + _text_offset, yyy + 286, _ships_string, 0.7, 1, 0);
@@ -340,15 +338,15 @@ function EndTurnBattle(_data) constructor{
 
         var _al_fleet_x = xxx + 342342;
         var _text_offset = 32;
-        for (var i = 0; i < array_length(_battle_data.allied_fleets); i++){
-        	var _fleet = _battle_data.allied_fleets[i];
+        for (var i = 0; i < array_length(battle_data.allied_fleets); i++){
+        	var _fleet = battle_data.allied_fleets[i];
         	var _cur_fleet_x = _al_fleet_x + (110 * i)
-        	scr_image("ui/force", _fleet.owner, _al_fleet_x + _cur_fleet_x, yyy + 237, 64, 64);
+        	scr_image("ui/force", _fleet.owner,  _cur_fleet_x, yyy + 237, 64, 64);
         	var _ships_string = "";
         	for (var e = 0; e < array_length(_types); e++){
         		var _num = _fleet[$ _types[e]];
         		if (_num > 0){
-        			_ships_string +=  $"{_num} {string_plural(_type_names[e], num)}\n";
+        			_ships_string +=  $"{_num} {string_plural(_type_names[e], _num)}\n";
         		}
         	}
             draw_text_transformed(_cur_fleet_x + _text_offset, yyy + 286, _ships_string, 0.7, 1, 0);
@@ -386,7 +384,7 @@ function EndTurnBattle(_data) constructor{
 	    draw_set_font(fnt_40k_30b);
 
 	    if (battle_type == eBATTLE_TYPES.GROUNDFORCES) {
-	        draw_text_transformed(xxx + 265, yyy + 11, $"Forces Attacked! ({location} " + scr_roman(battle_world[planet]) + ")", 0.7, 0.7, 0);
+	        draw_text_transformed(xxx + 265, yyy + 11, $"Forces Attacked! ({location} " + scr_roman(planet) + ")", 0.7, 0.7, 0);
 	    }else {
 	        draw_text_transformed(xxx + 265, yyy + 11, $"Fleet Attacked! ({location} System)", 0.7, 0.7, 0);
 	    }
@@ -402,10 +400,10 @@ function EndTurnBattle(_data) constructor{
 
 	    else {
 	        if (opponent <= 20) {
-	            draw_text(xxx + 310, yyy + 118, $"{_battle_data.marines} Marines");
-	            draw_text(xxx + 310, yyy + 138, $"{_battle_data.vehicles}  Vehicles");
-	            if (_battle_data.fortification != "") {
-	                draw_text(xxx + 310, yyy + 158, $"{_battle_data.fortification} Fortified");
+	            draw_text(xxx + 310, yyy + 118, $"{battle_data.marines} Marines");
+	            draw_text(xxx + 310, yyy + 138, $"{battle_data.vehicles}  Vehicles");
+	            if (battle_data.fortification != "") {
+	                draw_text(xxx + 310, yyy + 158, $"{battle_data.fortification} Fortified");
 	            } // Not / Barely / Lightly / Moderately / Highly / Maximally
 	        }
 
@@ -417,12 +415,12 @@ function EndTurnBattle(_data) constructor{
 
 	        draw_set_halign(fa_center);
 	        scr_image("ui/force", opponent, xxx + 12, yyy + 257, 64, 64);
-	        draw_text_transformed(xxx + 44, yyy + 316, _battle_data.enemy_strength, 0.75, 1, 0);
+	        draw_text_transformed(xxx + 44, yyy + 316, battle_data.enemy_strength, 0.75, 1, 0);
 	        draw_set_halign(fa_center);
 	        draw_set_font(fnt_40k_14b);
 
 	        var _offensive = buttons.offence.draw();
-        	var _defensive buttons.defence.draw();
+        	var _defensive = buttons.defence.draw();
         	if (_defensive || _offensive){
         		if (_defensive){
         			start_ground_battle("defensive")

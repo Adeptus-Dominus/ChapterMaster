@@ -102,7 +102,7 @@ try {
         if ((enemy[op] == 4) && (enemy_status[op] < 0)) {
             _combat_enemy = enemy[op];
             with (obj_en_fleet) {
-                if ((owner != _combat_enemy) || (orbiting != obj_controller.temp[1070])) {
+                if ((owner != _combat_enemy) || (orbiting != _battle_sys)) {
                     x -= FLEET_BATTLE_DISPLACEMENT;
                     y -= FLEET_BATTLE_DISPLACEMENT;
                 }
@@ -166,7 +166,7 @@ try {
         instance_activate_object(obj_turn_end);
 
         if (instance_exists(obj_turn_end)) {
-            scr_alert("red", "inqis", string(msg), _random_star.x + 16, _random_star.y - 24);
+            scr_alert("red", "inqis", string(msg), _battle_sys.x + 16, _battle_sys.y - 24);
         }
         if ((!instance_exists(obj_turn_end)) && (obj_controller.faction_status[eFACTION.INQUISITION] != "War")) {
             var pip = instance_create(0, 0, obj_popup);
