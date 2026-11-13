@@ -1064,16 +1064,16 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                 qual_string = "exp_low";
             }
             quality = scr_add_item(new_weapon, -1, quality);
-            if (quality == "no_item") {
+            if (quality == NO_ITEM_IN_ARMOURY) {
                 return [
                     false,
-                    "no_items",
+                    NO_ITEM_IN_ARMOURY,
                 ];
             }
             qual_string = quality != undefined ? quality : "standard";
         } else {
             viable = false;
-            qual_string = "no_items";
+            qual_string = NO_ITEM_IN_ARMOURY;
         }
         if (new_weapon == "Company Standard") {
             if (role() != obj_ini.player_role_data[eROLE.ANCIENT].role) {

@@ -5,26 +5,32 @@ function setup_promotion_popup() {
         var pip = instance_create(0, 0, obj_popup);
         pip.type = 5;
         pip.company = managing;
+        pip.selected_for_promotion = new UnitGroup([]);
 
         var god = 0, nuuum = 0;
         for (var f = 0; f < array_length(display_unit); f++) {
-            if ((ma_promote[f] >= 1 || is_specialist(ma_role[f], SPECIALISTS_RANK_AND_FILE) || is_specialist(ma_role[f], SPECIALISTS_SQUAD_LEADERS)) && man_sel[f] == 1) {
-                nuuum += 1;
-                if (pip.min_exp == 0) {
-                    pip.min_exp = ma_exp[f];
-                }
-                pip.min_exp = min(ma_exp[f], pip.min_exp);
+            if (!man_sel[f] || ma_promote[f] < 1 || obj_controller.man[f] != "man"){
+                continue;
             }
-            if ((god == 0) && (ma_promote[f] >= 1) && (man_sel[f] == 1)) {
+            var _unit = obj_controller.display_unit[f];
+            if (_unit.IsSpecialist(SPECIALISTS_RANK_AND_FILE) || _unit.IsSpecialist(SPECIALISTS_SQUAD_LEADERS) ) {
+                if (pip.min_exp == 0) {
+                    pip.min_exp = _unit.experience;
+                }
+                pip.min_exp = min(_unit.experience, pip.min_exp);
+            }
+            if ((god == 0) ) {
                 god = 1;
                 pip.unit_role = ma_role[f];
             }
+            pip.selected_for_promotion.push(_unit);
         }
-        if (nuuum > 1) {
-            pip.unit_role = "Marines";
-        }
+
         with (pip) {
-            units = nuuum;
+            units = selected_for_promotion.number();
+            if (units > 1){
+                unit_role = "Marines";
+            }
             promote_button = new UnitButtonObject({
                 x1: 1450,
                 y1: 491,
@@ -32,7 +38,7 @@ function setup_promotion_popup() {
                 label: "Promote",
             });
             promote_button.bind_method = function() {
-                units_to_move = new UnitGroup([]);
+                units_to_move = selected_for_promotion.get_from({"stat" : [["experience", min_exp, "inmore"]]}, true, false);
                 // Gets the number of marines in the target company
                 var role_squad_equivilances = {}; //this is the only way to set variables as keys in gml
                 variable_struct_set(role_squad_equivilances, obj_ini.player_role_data[eROLE.TACTICAL].role, "tactical_squad");
@@ -41,13 +47,6 @@ function setup_promotion_popup() {
                 variable_struct_set(role_squad_equivilances, obj_ini.player_role_data[eROLE.SCOUT].role, "scout_squad");
                 variable_struct_set(role_squad_equivilances, obj_ini.player_role_data[eROLE.VETERAN].role, "veteran_squad");
                 variable_struct_set(role_squad_equivilances, obj_ini.player_role_data[eROLE.TERMINATOR].role, "terminator_squad");
-
-                for (var i = 0; i < array_length(obj_controller.display_unit); i++) {
-                    if ((obj_controller.man[i] == "man") && (obj_controller.man_sel[i] == 1) && (obj_controller.ma_exp[i] >= min_exp)) {
-                        var _unit = obj_controller.display_unit[i];
-                        units_to_move.push(_unit);
-                    }
-                }
 
                 var _affected = {};
                 for (var i = 0; i < units_to_move.number(); i++) {
@@ -59,12 +58,12 @@ function setup_promotion_popup() {
                 var _squads = units_to_move.count_squads("all", true);
                 units_to_move.move_to_company(target_comp, false);
 
-                var _target_role = role_name[target_role];
+                var _target_role = promote_roles[target_role].name
 
                 for (var i = 0; i < units_to_move.number(); i++) {
                     var _unit = units_to_move.units[i];
                     _unit.update_role(_target_role);
-                    _unit.alter_equipment({"wep1": req_wep1, "wep2": req_wep2, "mobi": req_mobi, "armour": req_armour, "gear": req_gear});
+                    _unit.alter_equipment(equipment_set);
                 }
 
                 with (obj_controller) {
@@ -115,6 +114,7 @@ function setup_promotion_popup() {
             target_company_radio(min_exp);
             target_comp = 0;
             get_unit_promotion_options();
+            equipment_set = {};
         }
     }
 }
@@ -178,7 +178,7 @@ function draw_popup_promotion() {
     companies_select.draw();
     if (companies_select.changed) {
         target_comp = companies_select.selection_val("val");
-        target_role = 0;
+        target_role = -1;
         get_unit_promotion_options();
     }
     draw_set_halign(fa_left);
@@ -186,21 +186,26 @@ function draw_popup_promotion() {
     var role_x = 0;
     role_y = 0;
     if (target_comp != -1) {
-        for (var r = 1, l = array_length(role_name); r < l; r++) {
-            if (role_name[r] != "") {
+        for (var r = 0; r < array_length(promote_roles); r++) {
+            var _name = promote_roles[r].name;
+            var _data = promote_roles[r];
+            if (_name != "") {
                 draw_set_alpha(1);
                 check = " ";
                 if (target_role == r) {
                     check = "x";
                 }
-                if (min_exp < role_exp[r]) {
+                if (min_exp < _data.exp) {
                     draw_set_alpha(0.25);
                 }
-                draw_text(1030 + role_x, 310 + role_y, localize("{0} [{1}]", [localize(role_name[r]), check]));
+                draw_text(1030 + role_x, 310 + role_y, localize("{0} [{1}]", [localize(_name), check]));
                 if (point_and_click([1030 + role_x, 310 + role_y, 1180 + role_x, 330 + role_y])) {
-                    if (min_exp >= role_exp[r]) {
+                    if (min_exp >= _data.exp) {
                         target_role = r;
-                        all_good = calculate_equipment_needs();
+                        var _r_data = variable_clone(obj_ini.player_role_data[_data.role_id])
+                        equipment_set = convert_equipment_struct_into_array(_r_data);
+                        var _equip_data = new UnitEquipment(equipment_set);
+                        all_good = _equip_data.check_set_is_equipable(units , selected_for_promotion);
                     }
                 }
                 if (r % 3 == 0) {
@@ -215,59 +220,24 @@ function draw_popup_promotion() {
 
     draw_set_alpha(1);
 
-    draw_text(1020, 370, string_hash_to_newline(localize("Required Gear:")));
+    draw_text(1020, 370, localize("Required Gear:"));
     var gr = 0, tox = "";
 
-    if (target_role > 0) {
-        if (req_armour != "") {
-            gr = req_armour_num - have_armour_num;
-            tox = "";
-            if (gr > 0) {
-                draw_set_color(c_red);
-            } else {
-                draw_set_color(CM_GREEN_COLOR);
+    if (target_role > -1) {
+        var _draw_x = 1030;
+        var _draw_y = 390;
+        var _draw_step = 20;
+        for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++){
+            if (equipment_set[i] == ""){
+                continue;
             }
-            draw_text(1030, 390, localize("{0} {1} (Have {2})", [req_armour_num, localize(req_armour), have_armour_num]));
+            draw_set_color(all_good.equipment_found_and_valid[i] ? CM_GREEN_COLOR : c_red);
+            draw_text(1030, _draw_y + (i * _draw_step), equipment_set[i]);
         }
-        if (req_gear != "") {
-            gr = req_gear_num - have_gear_num;
-            tox = "";
-            if (gr > 0) {
-                draw_set_color(c_red);
-            } else {
-                draw_set_color(CM_GREEN_COLOR);
-            }
-            draw_text(1030, 410, localize("{0} {1} (Have {2})", [req_gear_num, localize(req_gear), have_gear_num]));
-        }
-        if (req_mobi != "") {
-            gr = req_mobi_num - have_mobi_num;
-            tox = "";
-            if (gr > 0) {
-                draw_set_color(c_red);
-            } else {
-                draw_set_color(CM_GREEN_COLOR);
-            }
-            draw_text(1030, 430, localize("{0} {1} (Have {2})", [req_mobi_num, localize(req_mobi), have_mobi_num]));
-        }
-        if (req_wep1 != "") {
-            gr = req_wep1_num - have_wep1_num;
-            tox = "";
-            if (gr > 0) {
-                draw_set_color(c_red);
-            } else {
-                draw_set_color(CM_GREEN_COLOR);
-            }
-            draw_text(1280, 390, localize("{0} {1} (Have {2})", [req_wep1_num, localize(req_wep1), have_wep1_num]));
-        }
-        if (req_wep2 != "") {
-            gr = req_wep2_num - have_wep2_num;
-            tox = "";
-            if (gr > 0) {
-                draw_set_color(c_red);
-            } else {
-                draw_set_color(CM_GREEN_COLOR);
-            }
-            draw_text(1280, 410, localize("{0} {1} (Have {2})", [req_wep2_num, localize(req_wep2), have_wep2_num]));
+
+        if (all_good.warning != ""){
+            draw_set_color(c_red);
+            draw_text(1030, _draw_y + (STANDARD_EQUIP_SLOT_COUNT * _draw_step), all_good.warning);
         }
     }
 
@@ -275,6 +245,7 @@ function draw_popup_promotion() {
         instance_destroy();
     }
 
-    promote_button.draw(all_good && target_role > 0);
+    var _promote_able = is_struct(all_good) && all_good.allow_loadout;
+    promote_button.draw(_promote_able && target_role > -1);
     pop_draw_return_values();
 }

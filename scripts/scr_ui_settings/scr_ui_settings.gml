@@ -621,6 +621,7 @@ function scr_select_role_settings_ui() {
             instance_destroy();
         }
         instance_create(0, 0, obj_mass_equip);
+        obj_mass_equip.marines_with_role = collect_role_group("all", "", false, {role : settings}, true);
     }
 }
 
@@ -687,7 +688,7 @@ function setup_role_settings_buttons() {
 }
 
 function scr_draw_mass_equip_gui() {
-    if (total_role_number > 0) {
+    if (marines_with_role.number() > 0) {
         draw_set_color(c_gray);
         draw_set_halign(fa_left);
         draw_set_font(fnt_40k_30b);
@@ -698,7 +699,7 @@ function scr_draw_mass_equip_gui() {
         draw_text_ext_transformed(107, 190 + (string_height_ext(string_hash_to_newline(total_roles), -1, 471 * 1.66) * 0.6), string_hash_to_newline(string(all_equip)), -1, 471 * 1.66, 0.6, 0.6, 0);
 
         draw_set_alpha(1);
-        if (good1 + good2 + good3 + good4 + good5 != 5) {
+        if (!all_good.allow_loadout) {
             draw_set_alpha(0.5);
         }
         draw_set_font(fnt_40k_14b);
@@ -710,12 +711,12 @@ function scr_draw_mass_equip_gui() {
         if (scr_hit(114, 626, 560, 665) == true) {
             draw_set_color(c_white);
             draw_set_alpha(0.2);
-            if (good1 + good2 + good3 + good4 + good5 != 5) {
+            if (!all_good.allow_loadout) {
                 draw_set_alpha(0.1);
             }
             draw_rectangle(114, 626, 560, 665, 0);
             draw_set_alpha(1);
-            if (mouse_button_clicked() && (good1 + good2 + good3 + good4 + good5 == 5)) {
+            if (mouse_button_clicked() && (all_good.allow_loadout)) {
                 engage = true;
                 refresh = true;
                 effect_create_depth(depth - 1, ef_firework, 800, 400, 5, c_yellow);
@@ -726,69 +727,24 @@ function scr_draw_mass_equip_gui() {
         draw_set_font(fnt_40k_30b);
         draw_set_halign(fa_left);
 
-        if (req_wep1 != "") {
-            draw_set_color(c_gray);
-            if (req_wep1_num > have_wep1_num) {
-                draw_set_color(c_red);
+        var _draw_x = 1030;
+        var _draw_y = 390;
+        var _draw_step = 28;
+        for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++){
+            if (equipment_set[i] == ""){
+                continue;
             }
-            if (req_wep1_num > have_wep1_num) {
-                draw_text_transformed(154, 670, string_hash_to_newline("-Not enough " + string(req_wep1) + " (Have " + string(have_wep1_num) + ", Need " + string(req_wep1_num) + ")"), 0.6, 0.6, 0);
-            }
-            if (req_wep1_num <= have_wep1_num) {
-                draw_text_transformed(154, 670, string_hash_to_newline("-" + string(req_wep1) + " (Have " + string(have_wep1_num) + ", Need " + string(req_wep1_num) + ")"), 0.6, 0.6, 0);
-            }
+            draw_set_color(all_good.equipment_found_and_valid[i] ? CM_GREEN_COLOR : c_red);
+            draw_text(1030, _draw_y + (i * _draw_step), equipment_set[i]);
         }
-        if (req_wep2 != "") {
-            draw_set_color(c_gray);
-            if (req_wep2_num > have_wep2_num) {
-                draw_set_color(c_red);
-            }
-            if (req_wep2_num > have_wep2_num) {
-                draw_text_transformed(154, 698, string_hash_to_newline("-Not enough " + string(req_wep2) + " (Have " + string(have_wep2_num) + ", Need " + string(req_wep2_num) + ")"), 0.6, 0.6, 0);
-            }
-            if (req_wep2_num <= have_wep2_num) {
-                draw_text_transformed(154, 698, string_hash_to_newline("-" + string(req_wep2) + " (Have " + string(have_wep2_num) + ", Need " + string(req_wep2_num) + ")"), 0.6, 0.6, 0);
-            }
-        }
-        if (req_armour != "") {
-            draw_set_color(c_gray);
-            if (req_armour_num > have_armour_num) {
-                draw_set_color(c_red);
-            }
-            if (req_armour_num > have_armour_num) {
-                draw_text_transformed(154, 726, string_hash_to_newline("-Not enough " + string(req_armour) + " (Have " + string(have_armour_num) + ", Need " + string(req_armour_num) + ")"), 0.6, 0.6, 0);
-            }
-            if (req_armour_num <= have_armour_num) {
-                draw_text_transformed(154, 726, string_hash_to_newline("-" + string(req_armour) + " (Have " + string(have_armour_num) + ", Need " + string(req_armour_num) + ")"), 0.6, 0.6, 0);
-            }
-        }
-        if (req_gear != "") {
-            draw_set_color(c_gray);
-            if (req_gear_num > have_gear_num) {
-                draw_set_color(c_red);
-            }
-            if (req_gear_num > have_gear_num) {
-                draw_text_transformed(154, 754, string_hash_to_newline("-Not enough " + string(req_gear) + " (Have " + string(have_gear_num) + ", Need " + string(req_gear_num) + ")"), 0.6, 0.6, 0);
-            }
-            if (req_gear_num <= have_gear_num) {
-                draw_text_transformed(154, 754, string_hash_to_newline("-" + string(req_gear) + " (Have " + string(have_gear_num) + ", Need " + string(req_gear_num) + ")"), 0.6, 0.6, 0);
-            }
-        }
-        if (req_mobi != "") {
-            draw_set_color(c_gray);
-            if (req_mobi_num > have_mobi_num) {
-                draw_set_color(c_red);
-            }
-            if (req_mobi_num > have_mobi_num) {
-                draw_text_transformed(154, 782, string_hash_to_newline("-Not enough " + string(req_mobi) + " (Have " + string(have_mobi_num) + ", Need " + string(req_mobi_num) + ")"), 0.6, 0.6, 0);
-            }
-            if (req_mobi_num <= have_mobi_num) {
-                draw_text_transformed(154, 782, string_hash_to_newline("-" + string(req_mobi) + " (Have " + string(have_mobi_num) + ", Need " + string(req_mobi_num) + ")"), 0.6, 0.6, 0);
-            }
+
+        if (all_good.warning != ""){
+            draw_set_color(c_red);
+            draw_text(1030, _draw_y + (STANDARD_EQUIP_SLOT_COUNT * _draw_step), all_good.warning);
         }
     }
 
-    if (total_role_number > 0 && tab > -1) {
+    if (marines_with_role.number() > 0 && tab > -1) {
         item_name = [];
         var infanty_roles = [
             eROLE.CHAPTERMASTER,

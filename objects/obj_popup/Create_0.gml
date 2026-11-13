@@ -62,7 +62,7 @@ subtype = 0;
 
 company = 0;
 target_comp = -1;
-target_role = 0;
+target_role = -1;
 unit_role = "";
 units = 0;
 min_exp = 0;
@@ -111,43 +111,57 @@ company_promote_data = [
     }, //10th company
 ];
 
-// TODO: swap out for dynaic array lengths
-role_name = array_create(12, "");
-role_exp = array_create(12, 0);
+promote_roles = [];
 
 // TODO: connect this logic with the other_manage_data() to reduce verboseness;
 get_unit_promotion_options = function() {
     var _role_data = obj_ini.player_role_data;
     var _company_units = collect_company(target_comp);
     var spec = 0;
-    array_set_value(role_name, "");
-    array_set_value(role_exp, 0);
-    var i = 0;
+    promote_roles = [];
     // this area does the required exp for roles per company
     if (unit_role == _role_data[eROLE.TECHMARINE].role) {
         //techmarine
-        role_name[1] = _role_data[eROLE.TECHMARINE].role;
-        role_exp[1] = 5;
+        array_push(promote_roles, {
+            name: _role_data[eROLE.TECHMARINE].role,
+            exp: 5,
+            role_id: eROLE.TECHMARINE,
+        });
         spec = 1;
     } else if (unit_role == _role_data[eROLE.APOTHECARY].role) {
         //apothecary
-        role_name[1] = _role_data[eROLE.APOTHECARY].role;
-        role_exp[1] = 5;
+        array_push(promote_roles, {
+            name: _role_data[eROLE.APOTHECARY].role,
+            exp: 5,
+            role_id: eROLE.APOTHECARY,
+        });
         spec = 1;
     } else if (unit_role == _role_data[eROLE.CHAPLAIN].role && _role_data[eROLE.CHAPLAIN].available_to_player) {
         //chaplain
-        role_name[1] = _role_data[eROLE.CHAPLAIN].role;
-        role_exp[1] = 5;
+        array_push(promote_roles, {
+            name: _role_data[eROLE.CHAPLAIN].role,
+            exp: 5,
+            role_id: eROLE.CHAPLAIN,
+        });
         spec = 1;
     } else if (unit_role == _role_data[eROLE.LEXICANUM].role) {
-        role_name[1] = _role_data[eROLE.LIBRARIAN].role;
-        role_exp[1] = 125;
+        array_push(promote_roles, {
+            name: _role_data[eROLE.LIBRARIAN].role,
+            exp: 125,
+            role_id: eROLE.LIBRARIAN,
+        });
         spec = 1;
-        role_name[2] = _role_data[eROLE.CODICIERY].role;
-        role_exp[2] = 80;
+        array_push(promote_roles, {
+            name: _role_data[eROLE.CODICIERY].role,
+            exp: 80,
+            role_id: eROLE.CODICIERY,
+        });
     } else if (unit_role == _role_data[eROLE.CODICIERY].role) {
-        role_name[1] = _role_data[eROLE.LIBRARIAN].role;
-        role_exp[1] = 125;
+        array_push(promote_roles, {
+            name: _role_data[eROLE.LIBRARIAN].role,
+            exp: 125,
+            role_id: eROLE.LIBRARIAN,
+        });
         spec = 1;
     }
     if (target_comp > 0 && target_comp <= 10 && spec == 0) {
@@ -170,97 +184,112 @@ get_unit_promotion_options = function() {
             for (var s = 0; s < array_length(_singles); s++) {
                 var _r_data = _singles[s];
                 if (!_company_units.has_role(_r_data.role)) {
-                    i++;
-                    role_name[i] = _role_data[_r_data.role].role;
-                    role_exp[i] = _r_data.exp;
+                    array_push(promote_roles, {
+                        name: _role_data[_r_data.role].role,
+                        exp: _r_data.exp,
+                        role_id: _r_data.role,
+                    });
                 }
             }
-            i += 1;
-            role_name[i] = _role_data[eROLE.DREADNOUGHT].role; //dreadnought
-            role_exp[i] = 200;
+            array_push(promote_roles, {
+                name: _role_data[eROLE.DREADNOUGHT].role, //dreadnought
+                exp: 200,
+                role_id: eROLE.DREADNOUGHT,
+            });
         }
 
         if (obj_controller.command_set[2] == 1) {
             if (array_contains([2, 3, 4, 5, 6, 7], target_comp)) {
-                i += 1;
-                role_name[i] = _role_data[eROLE.TACTICAL].role; //tacts
-                role_exp[i] = company_promote_data[target_comp].exp;
-                if (obj_controller.command_set[2] == 0) {
-                    role_exp[i] = 0;
-                }
+                array_push(promote_roles, {
+                    name: _role_data[eROLE.TACTICAL].role, //tacts
+                    exp: company_promote_data[target_comp].exp,
+                    role_id: eROLE.TACTICAL,
+                });
             }
 
             if (array_contains([2, 3, 4, 5, 8], target_comp)) {
-                i += 1;
-                role_name[i] = _role_data[eROLE.ASSAULT].role; //assualts
-                role_exp[i] = company_promote_data[target_comp].exp;
-                if (obj_controller.command_set[2] == 0) {
-                    role_exp[i] = 0;
-                }
+                array_push(promote_roles, {
+                    name: _role_data[eROLE.ASSAULT].role, //assualts
+                    exp: company_promote_data[target_comp].exp,
+                    role_id: eROLE.ASSAULT,
+                });
             }
 
             if (array_contains([2, 3, 4, 5, 9], target_comp)) {
-                i += 1;
-                role_name[i] = _role_data[eROLE.DEVASTATOR].role; //devs
-                role_exp[i] = company_promote_data[target_comp].exp;
-                if (obj_controller.command_set[2] == 0) {
-                    role_exp[i] = 0;
-                }
+                array_push(promote_roles, {
+                    name: _role_data[eROLE.DEVASTATOR].role, //devs
+                    exp: company_promote_data[target_comp].exp,
+                    role_id: eROLE.DEVASTATOR,
+                });
             }
 
             if (target_comp == 1) {
-                i += 1;
-                role_name[i] = _role_data[eROLE.TERMINATOR].role; //terminators
-                role_exp[i] = 100;
+                array_push(promote_roles, {
+                    name: _role_data[eROLE.TERMINATOR].role, //terminators
+                    exp: 100,
+                    role_id: eROLE.TERMINATOR,
+                });
             }
 
             if (target_comp == 10) {
-                i += 1;
-                role_name[i] = _role_data[eROLE.SCOUT].role; //scouts
-                role_exp[i] = company_promote_data[target_comp].exp;
-                if (obj_controller.command_set[2] == 0) {
-                    role_exp[i] = 0;
-                }
+                array_push(promote_roles, {
+                    name: _role_data[eROLE.SCOUT].role, //scouts
+                    exp: company_promote_data[target_comp].exp,
+                    role_id: eROLE.SCOUT,
+                });
             }
 
             if (target_comp == 1) {
-                i += 1;
-                role_name[i] = _role_data[eROLE.VETERAN].role; //veterans
-                role_exp[i] = 100;
+                array_push(promote_roles, {
+                    name: _role_data[eROLE.VETERAN].role, //veterans
+                    exp: 100,
+                    role_id: eROLE.VETERAN,
+                });
             }
         } else {
-            i += 1;
-            role_name[i] = _role_data[eROLE.TACTICAL].role; //tacts
-            role_exp[i] = 0;
+            array_push(promote_roles, {
+                name: _role_data[eROLE.TACTICAL].role, //tacts
+                exp: 0,
+                role_id: eROLE.TACTICAL,
+            });
 
-            i += 1;
-            role_name[i] = _role_data[eROLE.ASSAULT].role; //assualts
-            role_exp[i] = 0;
+            array_push(promote_roles, {
+                name: _role_data[eROLE.ASSAULT].role, //assualts
+                exp: 0,
+                role_id: eROLE.ASSAULT,
+            });
 
-            i += 1;
-            role_name[i] = _role_data[eROLE.DEVASTATOR].role; //devs
-            role_exp[i] = 0;
+            array_push(promote_roles, {
+                name: _role_data[eROLE.DEVASTATOR].role, //devs
+                exp: 0,
+                role_id: eROLE.DEVASTATOR,
+            });
 
-            i += 1;
-            role_name[i] = _role_data[eROLE.TERMINATOR].role; //terminators
-            role_exp[i] = 100;
+            array_push(promote_roles, {
+                name: _role_data[eROLE.TERMINATOR].role, //terminators
+                exp: 100,
+                role_id: eROLE.TERMINATOR,
+            });
 
-            i += 1;
-            role_name[i] = _role_data[eROLE.SCOUT].role; //scouts
-            role_exp[i] = 0;
+            array_push(promote_roles, {
+                name: _role_data[eROLE.SCOUT].role, //scouts
+                exp: 0,
+                role_id: eROLE.SCOUT,
+            });
 
-            i += 1;
-            role_name[i] = _role_data[eROLE.VETERAN].role; //veterans
-            role_exp[i] = 0;
+            array_push(promote_roles, {
+                name: _role_data[eROLE.VETERAN].role, //veterans
+                exp: 0,
+                role_id: eROLE.VETERAN,
+            });
         }
     }
     if ((target_comp == 0 || target_comp > 10) && (spec == 0)) {
-        i += 1;
-        role_name[i] = _role_data[eROLE.HONOURGUARD].role; //honor guard
-        role_exp[i] = 140;
-        if (obj_controller.command_set[2] == 0) {
-            role_exp[i] = 0;
-        }
+        array_push(promote_roles, {
+            name: _role_data[eROLE.HONOURGUARD].role, //honor guard
+            exp: (obj_controller.command_set[2] == 0) ? 0 : 140,
+            role_id: eROLE.HONOURGUARD,
+        });
     }
 };
 
