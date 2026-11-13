@@ -302,6 +302,8 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
             obj_controller.cooldown = 20;
             scr_event_log("", $"Beast hunters deployed to {_numeral_name} for {timer} months.", p_data.system.name);
             obj_controller.close_popups = false;
+            scr_toggle_manage();
+
         }
     };
 
@@ -421,6 +423,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
         obj_controller.cooldown = 500;
         scr_event_log("", $"{_trainer.name_role()} deployed to {_numeral_name} for {_mission_length} months.", p_data.system.name);
         obj_controller.close_popups = false;
+        scr_toggle_manage();
     };
 
     static __train_forces_resolve = function() {
