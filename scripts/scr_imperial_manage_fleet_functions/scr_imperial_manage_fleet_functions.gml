@@ -34,7 +34,7 @@ function new_colony_fleet(doner_star, doner_planet, target, target_planet, missi
     new_colonise_fleet.action_x = target.x;
     new_colonise_fleet.action_y = target.y;
     new_colonise_fleet.target = target;
-    new_colonise_fleet.move()
+    new_colonise_fleet.move();
     scr_event_log("green", $"New colony fleet departs from {doner_star.name}. for the {target.name} system", doner_star.name);
 }
 

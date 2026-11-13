@@ -1,5 +1,5 @@
-function end_combat_and_cleanup_objects(){
-    with (obj_ncombat){
+function end_combat_and_cleanup_objects() {
+    with (obj_ncombat) {
         instance_activate_all();
         with (obj_pnunit) {
             instance_destroy();
@@ -22,9 +22,11 @@ function end_combat_and_cleanup_objects(){
 
         var _battle_index;
         var _within_index_length = false;
-        if (_end_turn_battle && end_turn_battle_queue){
+        if (_end_turn_battle && end_turn_battle_queue) {
             _battle_index = obj_turn_end.current_battle;
+
             _within_index_length = (_battle_index < array_length(obj_turn_end.battles));
+
             if (_within_index_length) {
                 var _battle = obj_turn_end.battles[_battle_index];
 
@@ -38,7 +40,7 @@ function end_combat_and_cleanup_objects(){
             }
         }
 
-        if (!instance_exists(obj_popup) && _end_turn_battle){
+        if (!instance_exists(obj_popup) && _end_turn_battle) {
             if (_within_index_length) {
                 obj_controller.combat = 0;
                 with (obj_turn_end) {

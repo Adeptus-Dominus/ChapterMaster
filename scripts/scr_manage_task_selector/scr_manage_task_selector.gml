@@ -168,6 +168,8 @@ function task_selector_man_manage() {
             specialist_point_handler.calculate_research_points();
             break;
     }
-    exit_adhoc_manage();
+    if (menu == eMENU.MANAGE) {
+        exit_adhoc_manage();
+    }
     exit;
 }

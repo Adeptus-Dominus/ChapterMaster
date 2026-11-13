@@ -490,7 +490,7 @@ try {
         // ** Aeldar Force **
         if (enemy == eFACTION.ELDAR) {
             // Ranger Group
-            if (threat == 1 && choose(true,false)) {
+            if (threat == 1 && choose(true, false)) {
                 u = instance_create(_xxx, 240, obj_enunit);
                 enemy_dudes = "20";
 
@@ -503,9 +503,8 @@ try {
                 u.dudes[3] = "Striking Scorpian";
                 u.dudes_num[3] = 10;
                 enemies[3] = u.dudes[3];
-            }
-            // Harlequin Group
-            else if (threat == 1 && choose(true,false)) {
+            } else // Harlequin Group
+            if (threat == 1 && choose(true, false)) {
                 u = instance_create(_xxx, 240, obj_enunit);
                 enemy_dudes = "9";
 
@@ -518,9 +517,8 @@ try {
                 u.dudes[3] = "Trouper";
                 u.dudes_num[3] = 6;
                 enemies[3] = u.dudes[3];
-            }
-            // Craftworld Small Group
-            else if (threat == 1) {
+            } else // Craftworld Small Group
+            if (threat == 1) {
                 u = instance_create(_xxx, 240, obj_enunit);
                 enemy_dudes = "24";
 
