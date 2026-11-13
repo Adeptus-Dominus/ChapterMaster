@@ -46,8 +46,8 @@ function EndTurnBattle(_data) constructor{
         var _battle_instance = instance_create(0, 0, obj_fleet);
 
         var _map_i = 0;
-        for (var i = 0; i < array_length(_battle_data.enemy_fleets); i++){
-        	var _fleet = _battle_data.enemy_fleets[i];
+        for (var i = 0; i < array_length(battle_data.enemy_fleets); i++){
+        	var _fleet = battle_data.enemy_fleets[i];
         	_map_i = i + 1;
         	_battle_instance.enemy[_map_i] = _fleet.owner;
         	_battle_instance.enemy_status[_map_i] = -1;
@@ -56,8 +56,8 @@ function EndTurnBattle(_data) constructor{
 	        _battle_instance.en_escort[_map_i] = _fleet.escorts;
         }
 
-        for (var i = 0; i < array_length(_battle_data.allied_fleets); i++){
-        	var _fleet = _battle_data.allied_fleets[i];
+        for (var i = 0; i < array_length(battle_data.allied_fleets); i++){
+        	var _fleet = battle_data.allied_fleets[i];
         	_map_i++;
         	_battle_instance.enemy[_map_i] = _fleet.owner;
         	_battle_instance.enemy_status[_map_i] = 1;
@@ -312,7 +312,7 @@ function EndTurnBattle(_data) constructor{
 	        if (battle_data.player_fleet_count[$ _type] > 0) {
 	        	var _count = battle_data.player_fleet_count[$ _type];
 	        	var _percentage = battle_data.player_fleet_health[$ _type];
-	            draw_text(xxx + 310, yyy + _p_fleet_y + (20 * i),  $"{_count} {type_names[i]} ({_percentage}% HP)");
+	            draw_text(xxx + 310, yyy + _p_fleet_y + (20 * i),  $"{_count} {_type_names[i]} ({_percentage}% HP)");
 	        }        	
         }
 
@@ -336,7 +336,7 @@ function EndTurnBattle(_data) constructor{
             draw_set_font(fnt_40k_14b);
         }
 
-        var _al_fleet_x = xxx + 342342;
+        var _al_fleet_x = xxx + 342;
         var _text_offset = 32;
         for (var i = 0; i < array_length(battle_data.allied_fleets); i++){
         	var _fleet = battle_data.allied_fleets[i];
