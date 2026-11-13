@@ -161,7 +161,7 @@ function merge_player_fleets(main_fleet, merge_fleet) {
     }
 
     if (instance_exists(obj_turn_end)) {
-        for (var _bi = 0; _bi < array_length(obj_turn_end.battle_pobject); _bi++) {
+        for (var _bi = 0; _bi < array_length(obj_turn_end.battles); _bi++) {
             var _battle = obj_turn_end.battles[_bi];
             var _player_fleet = _battle.pobject;
             if (_player_fleet.id == merge_fleet.id && _battle.battle_type == eBATTLE_TYPES.FLEET) {
@@ -305,9 +305,10 @@ function add_ship_to_fleet(index, fleet = noone) {
 /// @param {Id.Instance.obj_star|noone} destination_star The star to retreat to. If noone, the fleet stays in place.
 function player_retreat_from_fleet_combat(destination_star = noone) {
     try {
-        var _p_fleet = obj_turn_end.battle_pobject[obj_turn_end.current_battle];
-        var _loc_star = find_star_by_name(obj_turn_end.battle_location[obj_turn_end.current_battle]);
-        var _battle_opponent = obj_turn_end.battle_opponent[obj_turn_end.current_battle];
+        var _battle = obj_turn_end.battles[obj_turn_end.current_battle];
+        var _p_fleet = _battle.pobject;
+        var _loc_star = _battle.object
+        var _battle_opponent = _battle.opponent;
 
         // Fleet strength comparison
         var _p_strength = _p_fleet.escort_number + _p_fleet.frigate_number * 2 + _p_fleet.capital_number * 4;

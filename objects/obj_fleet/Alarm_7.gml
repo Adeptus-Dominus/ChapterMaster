@@ -8,7 +8,7 @@ try {
     }
 
     if ((player_started == 0) && instance_exists(obj_turn_end)) {
-        _player_battle_fleet = obj_turn_end.battle_pobject[obj_turn_end.current_battle];
+        _player_battle_fleet = obj_turn_end.battles[obj_turn_end.current_battle].pobject;
     }
 
     if (instance_number(obj_en_ship) > 0) {
@@ -30,39 +30,23 @@ try {
         }
     }
 
+    var _battle_sys = noone
     if ((player_started == 0) && instance_exists(obj_turn_end)) {
-        with (obj_star) {
-            if (name != obj_turn_end.battle_location[obj_turn_end.current_battle]) {
-                x -= 10000;
-                y -= 10000;
-            }
-        }
+        _battle_sys = obj_turn_end.battles[obj_turn_end.current_battle].object
     }
     if (player_started == 1) {
-        with (obj_star) {
-            if (id != obj_fleet.ene_fleet) {
-                x -= 10000;
-                y -= 10000;
-            }
-        }
+        _battle_sys = obj_fleet.ene_fleet
     }
-    var _random_star = instance_nearest(room_width, room_height, obj_star);
-    obj_controller.temp[1070] = _random_star.id;
-    with (obj_star) {
-        if ((x < -5000) && (y < -5000)) {
-            x += 10000;
-            y += 10000;
-        }
-    }
+
 
     for (var op = 1; op <= 5; op++) {
         if ((enemy[op] != 0) && (enemy[op] != 4)) {
-            obj_controller.temp[1071] = enemy[op];
+            var _combat_enemy = enemy[op];
 
             // Park every fleet not fighting at the battle star offmap so the instance_nearest() loop below only finds participants.
             // Restore after losses are applied.
             with (obj_en_fleet) {
-                if ((owner != obj_controller.temp[1071]) || (orbiting != obj_controller.temp[1070])) {
+                if ((owner != _combat_enemy) || (orbiting != _battle_sys)) {
                     x -= FLEET_BATTLE_DISPLACEMENT;
                     y -= FLEET_BATTLE_DISPLACEMENT;
                 }
@@ -116,16 +100,16 @@ try {
         }
 
         if ((enemy[op] == 4) && (enemy_status[op] < 0)) {
-            obj_controller.temp[1071] = enemy[op];
+            _combat_enemy = enemy[op];
             with (obj_en_fleet) {
-                if ((owner != obj_controller.temp[1071]) || (orbiting != obj_controller.temp[1070])) {
+                if ((owner != _combat_enemy) || (orbiting != obj_controller.temp[1070])) {
                     x -= FLEET_BATTLE_DISPLACEMENT;
                     y -= FLEET_BATTLE_DISPLACEMENT;
                 }
             }
             var ofleet = instance_nearest(room_width / 2, room_height / 2, obj_en_fleet);
             killer = true;
-            obj_controller.temp[1071] = enemy[op];
+            _combat_enemy = enemy[op];
             killer_tg = ofleet.inquisitor;
             with (ofleet) {
                 instance_destroy();
