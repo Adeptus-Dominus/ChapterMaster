@@ -27,10 +27,12 @@ if (obj_controller.audience > 0) {
     exit;
 }
 
-if ((show == 0) && (current_popup == 0)) {
+if ((show == -1) && (current_popup == 0)) {
     draw_sprite(spr_loading, image_index, 23, 73);
 }
 
 if ((show > -1) && (current_battle < array_length(battles))) {
-    battles[current_battle].draw_selector();
+    if (!instances_exist_any([obj_saveload, obj_popup, obj_ncombat, obj_fleet])){
+        battles[current_battle].draw_selector();
+    }
 }

@@ -3,8 +3,7 @@ try {
     combating = 0;
     
     if (current_battle < array_length(battles)){
-        var _battle_prep_variables = battles[current_battle].prep_battle();
-        next_battle_data = _battle_prep_variables;
+        battles[current_battle].prep_battle();
         show = current_battle;
 
     } else {

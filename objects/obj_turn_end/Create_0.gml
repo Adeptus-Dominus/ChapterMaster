@@ -16,9 +16,6 @@ cooldown = 10;
 current_battle = 0;
 current_popup = 0;
 
-info_mahreens = 0;
-info_vehicles = 0;
-
 first_x = obj_controller.x; // Return to this position once all the battles are done
 first_y = obj_controller.y;
 
@@ -46,7 +43,6 @@ popup_special = [""];
 alerts_list = [];
 
 battles = [];
-next_battle_data = noone;
 
 add_battle = function(_battle){
 	array_push(battles, new EndTurnBattle(_battle));

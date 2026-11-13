@@ -165,6 +165,8 @@ function EndTurnBattle(_data) constructor{
 
 		_battle_data.star_x = _battle_star.x;
 		_battle_data.star_y = _battle_star.y;
+		obj_controller.x = _battle_data.star_x;
+		obj_controller.y = _battle_data.star_y;
 
 		if (battle_type == eBATTLE_TYPES.FLEET) {
 			_battle_data.player_fleet_count = {
@@ -220,8 +222,10 @@ function EndTurnBattle(_data) constructor{
 			_battle_data.marines = _forces[0];
 			_battle_data.vehicles = _forces[1];
 
-			_battle_data.marines = info_mahreens;
-			_battle_data.vehicles = info_vehicles;
+			if ((_battle_data.marines + _battle_data.vehicles) <= 0){
+				obj_turn_end.alarm[4] = 1;
+			}
+
 			_battle_data.fortification = "";
 
 			var _owner = object.p_owner[planet];
@@ -365,7 +369,7 @@ function EndTurnBattle(_data) constructor{
         }
 	}
 
-	draw_selector = function(){
+	static draw_selector = function(){
 	    var xxx = 535;
 	    var yyy = 200;
 
