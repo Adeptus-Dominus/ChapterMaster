@@ -110,8 +110,7 @@ function AiFleetProblem(_name, _timer = -1, _data = {}, _fleet = noone) : FleetP
         ]);        
     }
 
-    static __deliver_hunt_trophy_refuse = function(){
-        reset_popup_options();
+    static __deliver_hunt_trophy_claim_artifact = function(){
         var _tag = "";
         var _daemonic = roll_dice_chapter(1, 10, "low");
         if (_daemonic == 10){
@@ -126,12 +125,15 @@ function AiFleetProblem(_name, _timer = -1, _data = {}, _fleet = noone) : FleetP
         if (_base_type == "weapon"){
             _arti.update_type("Company Standard");
         }
-
-        obj_popup.text = "Your Marines elect to keep the {data.trophy_name} for the chapter in it's honour!";
-
-        if (_base_type == "weapon"){
+        if (_base_type == "weapon" && instance_exists(obj_popup)){
             obj_popup.text += "The grisly remains have been fashioned into a make shift standard that is crude but fearsome to behold"; 
         }
+    }
+
+    static __deliver_hunt_trophy_refuse = function(){
+        reset_popup_options();
+        obj_popup.text = "Your Marines elect to keep the {data.trophy_name} for the chapter in it's honour!";
+        find_func("claim_artifact")()
     }
     static __deliver_hunt_trophy_accept(){
         obj_popup.text = $"You Send a reply to tell the commander you accept and will ensure the trophy is delivered in person by the marine that slew the beast";
@@ -200,7 +202,8 @@ function AiFleetProblem(_name, _timer = -1, _data = {}, _fleet = noone) : FleetP
             scr_popup(
                 "Regiments Destroyed ", 
                 $"The guard Regiments from {data.origin_sys} serving in the imperial navy fleet have been annihilated wholesale there is no reason to now deliver the trophy from the hunt to them The trophy will instead remain in the chapters possession",
-            );  
+            );
+            find_func("claim_artifact")(); 
             return;     
         }
 
@@ -242,6 +245,14 @@ function AiFleetProblem(_name, _timer = -1, _data = {}, _fleet = noone) : FleetP
                 _text,
             );                  
         }
+    }
+    static __deliver_hunt_trophy_on_destruction = function() {
+        delete_mission = true;
+        scr_popup(
+            "Fleet Destroyed", 
+            $"With the Imperial Navy fleet containing the regiments from {data.origin_sys} destroyed there is no reason to now deliver the trophy from the hunt to them The trophy will instead remain in the chapters possession",
+        );
+        find_func("claim_artifact")();       
     }
 
 /*function init_newly_revealed_battle_ground(){

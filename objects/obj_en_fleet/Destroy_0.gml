@@ -30,3 +30,5 @@ if (instance_exists(obj_controller)) {
         }
     }
 }
+
+run_problem_sequence("on_destruction");
