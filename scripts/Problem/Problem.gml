@@ -153,6 +153,17 @@ function Problem(_name, _timer, _data) constructor {
         add_option(__create_popup_option(_str1, _func_string));
     };
 
+    static basic_turn_end = function() {
+        if ((timer > -1) && per_turn_checks) {
+            var _func = find_func("per_turn");
+            __handle_triggered_mission_func(_func);
+        }
+        if ((timer == 0) && zero_timer_checks && !delete_mission) {
+            var _func = find_func("resolve");
+            __handle_triggered_mission_func(_func);
+        }
+    };
+
     //triggered at the end of scr_shoot
     static battle_on_enemy_casulties = function() {
         if (!struct_exists(self, "casualty_packet")) {

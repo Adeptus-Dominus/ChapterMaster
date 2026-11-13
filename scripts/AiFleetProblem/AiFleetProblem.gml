@@ -69,10 +69,97 @@ function AiFleetProblem(_name, _timer = -1, _data = {}, _fleet = noone) : FleetP
 
     __init();
 
+    static __deliver_hunt_trophy_init == function(){
+        if (!has_data("trophy_owner"){
+            var _rand = scr_random_marine(role_groups(SPECIALISTS_RANK_AND_FILE));
+            if (_rand == "none"){
+                delete_mission = true;
+                exit;                
+            } else {
+                data.trophy_owner = fetch_unit(_rand);
+            }
+        }
+        if (!has_data("beast_name")){
+            data.beast_name = "Great Beast";
+        }
+        if (!has_data("origin_sys")){
+            data.origin_sys = array_random_element(scr_get_stars()).name
+        }
+        var _format_beast_trophy = function(){
+            return choose(
+                $"The Severed Crown of {data.beast_name}",
+                $"The Fanged Skull of {data.beast_name}",
+                $"The Head of {data.beast_name}",
+                $"The Blackened Remains of {data.beast_name}"
+            );
+        }
+        data.trophy_name = _format_beast_trophy();
+
+        if (!instance_exists(obj_popup)){
+            instance_create(0, 0, obj_popup);
+        };
+        obj_popup.text = $"Much fanfare is made of the great trophy {data.trophy_owner.name_role()} bears: {data.trophy_name}.";
+        obj_popup.text += $" The governor proclaims it proof that {data.beast} was the most fearsome predator in the sector.";
+
+
+        obj_popup.text += $"\n\nAn astropathic message is later recieved from the Commander of an Imperial Navy fleet explaining that his fleet is currrently home to the {irandom_numeral(100)},{irandom_numeral(100)} and {irandom_numeral(100)} {data.origin_sys} Regiments and pleads that the trophy be handed over to his fleet in order to boost the moral of the regiments and fleet in general";
+
+        replace_options([
+            __create_popup_option("Refuse and place the trophy into the Librarium", "refuse"),
+            __create_popup_option("Accept", "accept"),
+        ]);        
+    }
+
+    static __deliver_hunt_trophy_refuse = function(){
+        reset_popup_options();
+        var _tag = "";
+        var _daemonic = roll_dice_chapter(1, 10, "low");
+        if (_daemonic == 10){
+            _tag = "daemonic";
+        }                
+        var _arti = scr_add_artifact("trophy", _tag, 0, "");
+        _arti = fetch_artifact(_arti);
+        _arti.name = data.trophy_name;
+        _arti.set_loc(_data.origin_sys);
+        //base_type == choose("gear", "weapon", "trophy");
+        var _base_type = choose("weapon", "trophy");
+        if (_base_type == "weapon"){
+            _arti.update_type("Company Standard");
+        }
+
+        obj_popup.text = "Your Marines elect to keep the {data.trophy_name} for the chapter in it's honour!";
+
+        if (_base_type == "weapon"){
+            obj_popup.text += "The grisly remains have been fashioned into a make shift standard that is crude but fearsome to behold"; 
+        }
+    }
+    static __deliver_hunt_trophy_accept(){
+        obj_popup.text = $"You Send a reply to tell the commander you accept and will ensure the trophy is delivered in person by the marine that slew the beast";
+        var _targ_fleet = data.target_fleet;
+
+        var _targ_fleet_intercept = fleets_next_location(fleet);
+        if (_targ_fleet.action == ""){
+            obj_popup.text += $"\n\n the fleet in question is currently active around the  {_targ_fleet_intercept.name} system";
+        } else {
+            obj_popup.text += $"\n\n the fleet will next be accessible around the  {_targ_fleet_intercept.name} system";
+        }
+
+        data.target_fleet = _targ_fleet.uid;
+
+        data.delivering_marine = data.trophy_owner.name_role();
+        var _t_owner = data.trophy_owner;
+        data.trophy_owner = _t_owner.uid;
+        reset_popup_options();
+    }
+
+        _fleet_event.turn_end = "deliver_trophy_end_turn_check";
+        _fleet_event.destroy = "deliver_trophy_mission_fleet_destroyed";
+        _fleet_event.timer_end = "deliver_trophy_mission_timed_out";
+
     //unfinished will be completed in adjacent pr
     static __deliver_hunt_trophy_mission_log_entry = function() {
         var _mission = localize("Deliver Trophy Guard");
-        var _sys = fleets_next_location(fleet);
+        var _sys = fleets_next_location(fleet);å
         var _mission_data = {
             system: _sys.name,
             system_id: _sys.id,
@@ -80,7 +167,7 @@ function AiFleetProblem(_name, _timer = -1, _data = {}, _fleet = noone) : FleetP
             important_person: data.trophy_owner,
             person_name: data.delivering_marine,
             planet: 0,
-            start_system: data.system,
+            start_system: data.origin_sys,
             time: timer,
         };
         _mission_data.mission = self;
@@ -102,6 +189,79 @@ function AiFleetProblem(_name, _timer = -1, _data = {}, _fleet = noone) : FleetP
         });
         return _mission_data;
     };
+
+    static __deliver_hunt_trophy_per_turn = function() {
+        var _ratio = 0;
+        with (fleet){
+            _ratio = fleet_remaining_guard_ratio();
+        }
+
+        if (_ratio <= 0){
+            scr_popup(
+                "Regiments Destroyed ", 
+                $"The guard Regiments from {data.origin_sys} serving in the imperial navy fleet have been annihilated wholesale there is no reason to now deliver the trophy from the hunt to them The trophy will instead remain in the chapters possession",
+            );  
+            return;     
+        }
+
+        if (!is_orbiting(fleet)){
+            continue;
+        }
+        if !(fleet.orbiting.has_orbiting_player_fleet()){
+            continue;
+        }
+
+        var _nearest_player = instance_at_location(fleet.x,fleet.y,obj_p_fleet);
+
+        var _ships = fleet_full_ship_array(_nearest_player);
+        var _marine = fetch_unit_uid(data.trophy_owner);
+        var _present = _marine.is_at_location("", 0, _ships);
+        var _meet_point = fleet.orbiting;  
+        if (_present){
+            var _text = "{_marine.role(name)} is able to rendevous with the imperial navy at {_meet_point.name}."
+            _text += $" The guard regiments of {data.origin_sys} are overjoyed at the delivery of the trophy and find the beast that the head came from adorns many of the regiments banners.";
+
+            var _marine_epithet = choose("The King-Slayer", "The Pale Reaper", "The Emperor’s Fang")
+
+
+            _marine.add_epithet({
+                title : _marine_epithet,
+                story : $"Slew a mighty beast in {data.origin_sys} after harvesting the {pop_data.trophy_name} their exploits became legendary within the sector largly due the aderation of the {data.origin_sys} regiments"
+            })
+            _text += $" While The task is for the most part thankless your chapters esteem has risen greatly with the exploits of {_marine.name_role()} spreading far and wide amoung guard regiments and has garnered the epithet {_marine_epithet}.";
+            var _roll = roll_dice_chapter(1, 100, "high");
+            if (_roll>30 && _roll<70){
+                //TODO would be cool to have this changed to be a guard specific piece of equipment
+                _text += "In return for your labour and in honour of your chapter the commander of the guard division has a brand new Rhino destined for the army diverted to your chapter";
+                scr_add_vehicle("Rhino");
+            } else if (_roll>=70 ){
+                //init_newly_revealed_battle_ground();
+            }
+            scr_popup(
+                "Trophy Delivered ", 
+                _text,
+            );                  
+        }
+    }
+
+/*function init_newly_revealed_battle_ground(){
+    var _wanted_types = ["Ice","Desert","Agri","Lava","Death"];
+    var _star = scr_get_stars(true,[],_wanted_types)[0];
+    if (array_length(_star)){
+        _star = _star[0]
+    }
+    _text += "During the concourse that follows with the fleet command your marines learn of a old battle ground discovered on {_star.name}.";
+    _text += "According too intel it appeared to be an old astartes battle ground from an unknown age, communications have been passed onto the adeptus mechanicus who will no doubt pick the site clean should they reach it before you do";
+
+    var _planet = scr_get_planet_with_type(_wanted_types);
+    var _battle_ground = new NewPlanetFeature(P_features.OLDBATTLEGROUND);
+
+    _battle_ground.player_hidden = false;
+
+    _battle_ground.imperium_known = true;
+
+    _star.add_feature(_planet,_battle_ground);
+}*/
 
     static __radical_inquisitor_init = function() {
         if (!instance_exists(obj_popup)) {
