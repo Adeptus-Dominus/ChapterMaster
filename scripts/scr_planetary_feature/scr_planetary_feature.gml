@@ -698,17 +698,15 @@ function ground_forces_collect_artifact() {
             if (pdata.origional_owner == 2) {
                 _loot.add("Meltagun", choose(2, 3, 4));
                 _loot.add("Flamer", choose(2, 3, 4));
-                _loot.add(choose("Power Fist", "Chainsword", "Bolt Pistol"), irandom_range(2,5));
-            }
-            else if (pdata.origional_owner == eFACTION.MECHANICUS) {
-                _loot.add("Plasma Pistol", choose(1,2));
+                _loot.add(choose("Power Fist", "Chainsword", "Bolt Pistol"), irandom_range(2, 5));
+            } else if (pdata.origional_owner == eFACTION.MECHANICUS) {
+                _loot.add("Plasma Pistol", choose(1, 2));
                 _loot.add("Power Armour", choose(2, 3, 4));
-                _loot.add(choose("Servo-arm", "Bionics"), irandom_range(2,4));
-            }
-            else if (pdata.origional_owner == 5) {
-                _loot.add("Flamer", irandom_range(3,6));
-                _loot.add("Heavy Flamer", irandom_range(1,3));
-                _loot.add(choose("Chainsword", "Bolt Pistol"), irandom_range(2,5));
+                _loot.add(choose("Servo-arm", "Bionics"), irandom_range(2, 4));
+            } else if (pdata.origional_owner == 5) {
+                _loot.add("Flamer", irandom_range(3, 6));
+                _loot.add("Heavy Flamer", irandom_range(1, 3));
+                _loot.add(choose("Chainsword", "Bolt Pistol"), irandom_range(2, 5));
             }
 
             if (!_loot.is_empty()) {
@@ -836,8 +834,7 @@ function remove_stc_from_planet() {
             clear_diplo_choices();
             obj_controller.menu = 0;
             pop.pdata = pdata;
-            var _mech_battle = method(obj_popup, function(){
-
+            var _mech_battle = method(obj_popup, function() {
                 var _p_data = pdata;
                 var _roster = new Roster();
                 with (_roster) {
@@ -853,7 +850,6 @@ function remove_stc_from_planet() {
                     exit;
                 }
                 // show_message(string(obj_popup.loc)+": planet name, "+string(loc)+", "+string(planet));
-
 
                 instance_create(0, 0, obj_ncombat);
                 obj_ncombat.enemy = eFACTION.MECHANICUS;
@@ -873,11 +869,8 @@ function remove_stc_from_planet() {
                 delete _roster;
                 instance_destroy();
                 exit;
-            })
-            pop.replace_options({
-                str1 : "To Battle!",
-                choice_func : _mech_battle
             });
+            pop.replace_options({str1: "To Battle!", choice_func: _mech_battle});
             exit;
         }
 
@@ -887,17 +880,15 @@ function remove_stc_from_planet() {
             if (pdata.origional_owner == 2) {
                 _loot.add("Meltagun", choose(2, 3, 4));
                 _loot.add("Flamer", choose(2, 3, 4));
-                _loot.add(choose("Power Fist", "Chainsword", "Bolt Pistol"), irandom_range(2,5));
-            }
-            else if (pdata.origional_owner == eFACTION.MECHANICUS) {
-                _loot.add("Plasma Pistol", choose(1,2));
+                _loot.add(choose("Power Fist", "Chainsword", "Bolt Pistol"), irandom_range(2, 5));
+            } else if (pdata.origional_owner == eFACTION.MECHANICUS) {
+                _loot.add("Plasma Pistol", choose(1, 2));
                 _loot.add("Power Armour", choose(2, 3, 4));
-                _loot.add(choose("Servo-arm", "Bionics"), irandom_range(2,4));
-            }
-            else if (pdata.origional_owner == 5) {
-                _loot.add("Flamer", irandom_range(3,6));
-                _loot.add("Heavy Flamer", irandom_range(1,3));
-                _loot.add(choose("Chainsword", "Bolt Pistol"), irandom_range(2,5));
+                _loot.add(choose("Servo-arm", "Bionics"), irandom_range(2, 4));
+            } else if (pdata.origional_owner == 5) {
+                _loot.add("Flamer", irandom_range(3, 6));
+                _loot.add("Heavy Flamer", irandom_range(1, 3));
+                _loot.add(choose("Chainsword", "Bolt Pistol"), irandom_range(2, 5));
             }
 
             if (!_loot.is_empty()) {

@@ -303,7 +303,6 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
             scr_event_log("", $"Beast hunters deployed to {_numeral_name} for {timer} months.", p_data.system.name);
             obj_controller.close_popups = false;
             scr_toggle_manage();
-
         }
     };
 
@@ -1417,7 +1416,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
         var _have_bomb = 0;
         _have_bomb = scr_check_equip("Plasma Bomb", system.name, planet, 0);
         if (_have_bomb == 0) {
-            if (!data.bomb_warning){
+            if (!data.bomb_warning) {
                 scr_popup("Necron Tomb Excursion", $"Forces on {p_data.name()} dont have a Plasma Bomb so cannot proceed with the mission", "necron_cave");
                 data.bomb_warning = true;
             }

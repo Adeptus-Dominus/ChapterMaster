@@ -118,7 +118,7 @@ function scr_enemy_ai_c() {
                                     }
                                     fleet.action_x = stue2.x;
                                     fleet.action_y = stue2.y;
-                                    fleet.move()
+                                    fleet.move();
                                     instance_activate_object(obj_star);
                                 }
                             }
@@ -398,7 +398,7 @@ function scr_enemy_ai_c() {
                                         //Go out and take planet
                                         fleet.action_x = think.x;
                                         fleet.action_y = think.y;
-                                        fleet.move()
+                                        fleet.move();
                                     }
 
                                     instance_activate_object(obj_star);
