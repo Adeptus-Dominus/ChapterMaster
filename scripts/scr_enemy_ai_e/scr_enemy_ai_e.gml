@@ -455,19 +455,9 @@ function scr_enemy_ai_e() {
                 }
 
                 if ((obj_controller.faction_status[i] == "War") && (!special_stop) && (present_fleet[i] > 0)) {
-                    // Quene battle
-                    obj_turn_end.battles += 1;
-                    obj_turn_end.battle[obj_turn_end.battles] = 1;
-                    obj_turn_end.battle_world[obj_turn_end.battles] = 0;
-                    obj_turn_end.battle_opponent[obj_turn_end.battles] = i; // Who triggered it first
-                    obj_turn_end.battle_location[obj_turn_end.battles] = name;
-                    obj_turn_end.battle_pobject[obj_turn_end.battles] = instance_nearest(x, y, obj_p_fleet);
 
-                    if (!instance_exists(obj_turn_end.battle_pobject[obj_turn_end.battles])) {
-                        obj_turn_end.battles -= 1;
-                        break;
-                    }
 
+                    var _special = "";
                     if (i == 10) {
                         obj_controller.temp[1049] = string(name);
                         with (obj_temp2) {
@@ -479,25 +469,26 @@ function scr_enemy_ai_e() {
                         with (obj_en_fleet) {
                             if ((action == "") && (orbiting == obj_controller.temp[1049]) && (owner == 10)) {
                                 if (string_count("warband", trade_goods) > 0) {
-                                    instance_create(x, y, obj_temp2);
+                                    _special = "BLOOD";
+                                    break;
                                 }
                                 if (string_lower(trade_goods) == "chaos") {
-                                    instance_create(x, y, obj_temp3);
+                                    _special = "CHAOS";
+                                    break;
                                 }
                             }
                         }
-                        if (instance_exists(obj_temp2)) {
-                            obj_turn_end.battle_special[obj_turn_end.battles] = "BLOOD";
-                            with (obj_temp2) {
-                                instance_destroy();
-                            }
-                        }
-                        if (instance_exists(obj_temp3)) {
-                            obj_turn_end.battle_special[obj_turn_end.battles] = "CHAOS";
-                            with (obj_temp2) {
-                                instance_destroy();
-                            }
-                        }
+                    }
+                    // Quene battle
+                    if (has_orbiting_player_fleet()){
+                        obj_turn_end.add_battle({
+                            battle_type : eBATTLE_TYPES.FLEET,
+                            opponent : i,
+                            location : name,
+                            object : id,
+                            pobject : instance_nearest(x, y, obj_p_fleet),
+                            special : _special
+                        });
                     }
                     break;
                 }
@@ -586,12 +577,13 @@ function scr_enemy_ai_e() {
 
                 // other battle crap here
                 if (battle_opponent > 0) {
-                    obj_turn_end.battles += 1;
-                    obj_turn_end.battle[obj_turn_end.battles] = 1;
-                    obj_turn_end.battle_world[obj_turn_end.battles] = run;
-                    obj_turn_end.battle_opponent[obj_turn_end.battles] = battle_opponent;
-                    obj_turn_end.battle_location[obj_turn_end.battles] = name;
-                    obj_turn_end.battle_object[obj_turn_end.battles] = id;
+                    obj_turn_end.add_battle({
+                        planet : run,
+                        battle_type : eBATTLE_TYPES.GROUNDFORCES,
+                        opponent : battle_opponent,
+                        location : name,
+                        object : id
+                    });
                 }
             }
         }
