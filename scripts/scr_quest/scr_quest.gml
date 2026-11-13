@@ -192,7 +192,7 @@ function scr_quest(quest_satus, quest_name, quest_fac, quest_end) {
             flit.action_y = obj_ground_mission.y;
             flit.target = instance_nearest(flit.action_x, flit.action_y, obj_p_fleet);
         }
-        flit.move()
+        flit.move();
 
         with (obj_temp2) {
             instance_destroy();

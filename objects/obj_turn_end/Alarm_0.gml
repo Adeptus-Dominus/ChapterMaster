@@ -156,7 +156,7 @@ try {
                     tempy = battle_object[current_battle].p_necrons[battle_world[current_battle]];
                 }
 
-                if (tempy == 0){
+                if (tempy == 0) {
                     LOGGER.debug("error : enemy forces for battle 0");
                 }
                 strin[4] = global.force_strength_descriptions[clamp(tempy, 1, 6)];
