@@ -96,6 +96,14 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
     };
 
     //overrides Problem's base version
+    static __advance_timer = function() {
+        if (p_data.system.storm <= 0) {
+            timer--;
+        }
+        return true;
+    };
+
+    //overrides Problem's base version
     static __handle_triggered_mission_func = function(func) {
         if (!is_undefined(func)) {
             __refresh_data();
@@ -108,20 +116,6 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
         }
         __check_delete();
         obj_controller.location_viewer.update_mission_log();
-    };
-
-    static basic_turn_end = function() {
-        if (p_data.system.storm <= 0) {
-            timer--;
-        }
-        if ((timer > -1) && per_turn_checks) {
-            var _func = find_func("per_turn");
-            __handle_triggered_mission_func(_func);
-        }
-        if ((timer == 0) && zero_timer_checks && !delete_mission) {
-            var _func = find_func("resolve");
-            __handle_triggered_mission_func(_func);
-        }
     };
 
     //TODO in the future this should be calculated once on feature selection and then draw each turn
@@ -271,68 +265,35 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
         }
     };
 
-    static __hunt_beast_beast_name = function(){
-        switch (p_data.planet_type){
+    static __hunt_beast_beast_name = function() {
+        switch (p_data.planet_type) {
             case "Feudal":
-                return choose(
-                    "The Thorn-King",
-                    "Blackwood Stalker",
-                    "Crowned Razorback",
-                    "Cathedral Stag",
-                    "Old Bloodfather",
-                    "The Green Tyrant"
-                );
+                return choose("The Thorn-King", "Blackwood Stalker", "Crowned Razorback", "Cathedral Stag", "Old Bloodfather", "The Green Tyrant");
 
             case "Ice":
-                return choose(
-                    "The Frostwyrm",
-                    "Glacial Leviathan",
-                    "The Howling Pale",
-                    "Rimehorn Colossus",
-                    "White Death Ursid",
-                    "Icebound Devourer"
-                );
+                return choose("The Frostwyrm", "Glacial Leviathan", "The Howling Pale", "Rimehorn Colossus", "White Death Ursid", "Icebound Devourer");
 
             case "Death":
-                return choose(
-                    "The Charnel Leviathan",
-                    "God-Eater Beast",
-                    "Void-Spined Terror",
-                    "Apex Predatrix",
-                    "Emperor’s Bane",
-                    "The Unending Maw"
-                );
+                return choose("The Charnel Leviathan", "God-Eater Beast", "Void-Spined Terror", "Apex Predatrix", "Emperor's Bane", "The Unending Maw");
         }
 
-        return "Glistening Horror";        
-    }
+        return "Glistening Horror";
+    };
 
-    static __hunt_beast_rumor(){
-            switch (p_data.planet_type){
-                case "Feudal":
-                    return choose(
-                        $"Peasants whisper prayers at night, for {data.beast_name} walks the old forest paths.",
-                        $"Knights of the realm have failed to slay {data.beast_name}, their banners now hang in tatters.",
-                        $"Church bells toll whenever {data.beast_name} is sighted."
-                    );
+    static __hunt_beast_rumor = function() {
+        switch (p_data.planet_type) {
+            case "Feudal":
+                return choose($"Peasants whisper prayers at night, for {data.beast_name} walks the old forest paths.", $"Knights of the realm have failed to slay {data.beast_name}, their banners now hang in tatters.", $"Church bells toll whenever {data.beast_name} is sighted.");
 
-                case "Ice":
-                    return choose(
-                        $"The ice cracks when {data.beast_name} hunts.",
-                        $"Entire hab-blocks were found frozen solid in the wake of {data.beast_name}.",
-                        $"The wind carries the howls of {data.beast_name} across the tundra."
-                    );
+            case "Ice":
+                return choose($"The ice cracks when {data.beast_name} hunts.", $"Entire hab-blocks were found frozen solid in the wake of {data.beast_name}.", $"The wind carries the howls of {data.beast_name} across the tundra.");
 
-                case "Death":
-                    return choose(
-                        $"Nothing lives long where {data.beast_name} roams.",
-                        $"Scavenger clans refuse entire regions claimed by {data.beast_name}.",
-                        $"Even apex predators flee the shadow of {data.beast_name}."
-                    );
-            }
-
-            return $"{_beast_name} is the most fesarsome fauna in the entire segment according to locals";
+            case "Death":
+                return choose($"Nothing lives long where {data.beast_name} roams.", $"Scavenger clans refuse entire regions claimed by {data.beast_name}.", $"Even apex predators flee the shadow of {data.beast_name}.");
         }
+
+        return $"{data.beast_name} is the most fearsome fauna in the entire segmentum according to locals";
+    };
 
     static __hunt_beast_init = function() {
         stage_id = "preliminary";
@@ -342,7 +303,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
 
     static __hunt_beast_feature_selected = function() {
         var _hunt_rumour = __hunt_beast_rumor();
-        draw_data.mission_description = $"The governor of {p_data.name()} has bemoaned the raiding of huge beasts on the fringes of the planets largest city, the numbers have swelled recently and are causing huge damage to the planets small economy. Rumours circulate loocally about the beasts they say {_hunt_rumour}. You could send a force to intervene, it would provide a fine test of metal for any that partake.";
+        draw_data.mission_description = $"The governor of {p_data.name()} has bemoaned the raiding of huge beasts on the fringes of the planets largest city, the numbers have swelled recently and are causing huge damage to the planets small economy. Rumours circulate locally about the beasts they say {_hunt_rumour}. You could send a force to intervene, it would provide a fine test of mettle for any that partake.";
         draw_data.help = "This is a good opportunity to provide experience and training, having at least one marine with experience in such matters would be advisable";
         draw_data.button_text = "Send Hunters";
         draw_data.button_function = method(self, function() {
@@ -393,7 +354,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
         var _unit_report_string = "";
         var _deaths = 0;
         var _successful_hunters = [];
-        var _largest_pass= 0;
+        var _largest_pass = 0;
 
         if (!array_length(_hunters)) {
             return;
@@ -403,10 +364,8 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
             var _unit = _hunters[i];
             var _unit_pass = _tester.standard_test(_unit, "weapon_skill", 10, ["beast"]);
             if (_unit_pass[0]) {
-                if (!_success) {
-                    _success = true;
-                    _largest_pass = max(_largest_pass,_unit_pass[1]);
-                }
+                _success = true;
+                _largest_pass = max(_largest_pass, _unit_pass[1]);
                 _unit_report_string += _unit.add_trait("beast_slayer", true, true);
                 array_push(_successful_hunters, _unit);
             } else {
@@ -430,15 +389,15 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
             _unit.job = "none";
         }
 
-        var _pop_data.mission = self;
+        var _pop_data = {
+            mission: self,
+        };
 
         var _navy_fleets = get_imperial_navy_fleets();
-        if (array_length(_successful_hunters) && _largest_pass > 25 && array_length(_navy_fleets)){
+        if (array_length(_successful_hunters) && _largest_pass > 25 && array_length(_navy_fleets)) {
             data.trophy_owner = array_random_element(_successful_hunters);
             data.target_fleet = array_random_element(_navy_fleets);
-            var _options = __create_popup_option("Continue", "progress_to_deliver_trophy")
-
-            _pop_data.options = _options;
+            _pop_data.options = __create_popup_option("Continue", "progress_to_deliver_trophy");
         }
 
         if (_success) {
@@ -459,15 +418,15 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
         delete_mission = true;
     };
 
-    static __hunt_beast_progress_to_deliver_trophy = fuction(){
+    static __hunt_beast_progress_to_deliver_trophy = function() {
         var _trophy_data = {
-            trophy_owner : data.trophy_owner,
-            beast_name : data.beast_name,
-            origin_sys : system.name,
-        }
+            trophy_owner: data.trophy_owner.uid,
+            beast_name: data.beast_name,
+            origin_sys: system.name,
+        };
         data.target_fleet.add_problem("deliver_hunt_trophy", 500, _trophy_data);
         delete_mission = true;
-    }
+    };
 
     static __train_forces_feature_selected = function() {
         draw_data.mission_description = $"The governor of {p_data.name()} fears the planet will not hold in the case of major incursion, it has not seen war in some time and he fears the ineptitude of the commanders available, he asks for aid in planning a thorough plan for defense and schedule of works for a period of at least 6 months.";
@@ -1502,7 +1461,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
         var _have_bomb = 0;
         _have_bomb = scr_check_equip("Plasma Bomb", system.name, planet, 0);
         if (_have_bomb == 0) {
-            if (!data.bomb_warning){
+            if (!data.bomb_warning) {
                 scr_popup("Necron Tomb Excursion", $"Forces on {p_data.name()} dont have a Plasma Bomb so cannot proceed with the mission", "necron_cave");
                 data.bomb_warning = true;
             }

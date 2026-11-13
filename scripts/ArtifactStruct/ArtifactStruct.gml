@@ -83,6 +83,7 @@ function ArtifactStruct(_type_name = "", _tags = [], _identification_timer = 0, 
         "Chalice",
         "Robot",
         "Tome",
+        "Trophy",
     ];
 
     static HERETICAL_TAGS = [

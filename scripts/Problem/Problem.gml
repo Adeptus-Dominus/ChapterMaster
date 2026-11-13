@@ -17,6 +17,8 @@ function Problem(_name, _timer, _data) constructor {
     delete_mission = false;
     f_type = eP_FEATURES.MISSION;
     stage_id = "";
+    per_turn_checks = false;
+    zero_timer_checks = false;
     members = [];
     if (struct_exists(data, "stage")) {
         stage_id = data.stage;
@@ -153,7 +155,15 @@ function Problem(_name, _timer, _data) constructor {
         add_option(__create_popup_option(_str1, _func_string));
     };
 
+    static __advance_timer = function() {
+        timer--;
+        return true;
+    };
+
     static basic_turn_end = function() {
+        if (!__advance_timer()) {
+            return;
+        }
         if ((timer > -1) && per_turn_checks) {
             var _func = find_func("per_turn");
             __handle_triggered_mission_func(_func);
@@ -162,6 +172,7 @@ function Problem(_name, _timer, _data) constructor {
             var _func = find_func("resolve");
             __handle_triggered_mission_func(_func);
         }
+        __check_delete();
     };
 
     //triggered at the end of scr_shoot
