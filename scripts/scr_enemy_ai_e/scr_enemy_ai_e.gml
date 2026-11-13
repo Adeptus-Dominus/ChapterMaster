@@ -461,7 +461,7 @@ function scr_enemy_ai_e() {
                             battle_type : eBATTLE_TYPES.FLEET,
                             opponent : i,
                             location : name,
-                            object : id
+                            object : id,
                             pobject : instance_nearest(x, y, obj_p_fleet)
                         });
                     }

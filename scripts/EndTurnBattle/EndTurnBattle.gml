@@ -43,8 +43,9 @@ function EndTurnBattle(_data) constructor{
 
         combating = 1;
 
-        var _map_i = 0;
         var _battle_instance = instance_create(0, 0, obj_fleet);
+
+        var _map_i = 0;
         for (var i = 0; i < array_length(_battle_data.enemy_fleets); i++){
         	var _fleet = _battle_data.enemy_fleets[i];
         	_map_i = i + 1;
@@ -55,7 +56,6 @@ function EndTurnBattle(_data) constructor{
 	        _battle_instance.en_escort[_map_i] = _fleet.escorts;
         }
 
-        var _battle_instance = instance_create(0, 0, obj_fleet);
         for (var i = 0; i < array_length(_battle_data.allied_fleets); i++){
         	var _fleet = _battle_data.allied_fleets[i];
         	_map_i++;
@@ -89,10 +89,10 @@ function EndTurnBattle(_data) constructor{
         combating = 1;
 
         instance_deactivate_all_safe();
-        instance_activate_object(battle_object[current_battle]);
+        instance_activate_object(object);
 
         instance_create(0, 0, obj_ncombat);
-        obj_ncombat.enemy = battle_opponent[current_battle];
+        obj_ncombat.enemy = opponent;
         obj_ncombat.battle_object = object;
         obj_ncombat.battle_loc = location;
         obj_ncombat.battle_id = planet;
@@ -159,7 +159,7 @@ function EndTurnBattle(_data) constructor{
             }
         }
         delete _roster;
-        instance_deactivate_object(battle_object[current_battle]);
+        instance_deactivate_object(object);
 	}
 	static prep_battle = function(){
 		var _battle_data = {};
@@ -170,14 +170,14 @@ function EndTurnBattle(_data) constructor{
 
 		if (battle_type == eBATTLE_TYPES.FLEET) {
 			_battle_data.player_fleet_count = {
-                capitals : round(pobject.capital_number);
-                frigates : round(pobject.frigate_number);
-                escorts : round(pobject.escort_number);				
+                capitals : round(pobject.capital_number),
+                frigates : round(pobject.frigate_number),
+                escorts : round(pobject.escort_number),			
 			}
 			_battle_data.player_fleet_health = {
-                capitals : round(pobject.capital_health);
-                frigates : round(pobject.frigate_health);
-                escorts : round(pobject.escort_health);					
+                capitals : round(pobject.capital_health),
+                frigates : round(pobject.frigate_health),
+                escorts : round(pobject.escort_health),				
 			}
 			// Fleet battle - collect enemy fleet data
 			_battle_data.enemy_fleets = [];
@@ -208,7 +208,7 @@ function EndTurnBattle(_data) constructor{
 						frigates: _fri_total,
 						escorts: _esc_total,
 					};
-					if ((obj_controller.faction_status[e] == "War"){
+					if (obj_controller.faction_status[e] == "War"){
 						array_push(_battle_data.enemy_fleets, _fleet_entry);
 					} else {
 						array_push(_battle_data.allied_fleets, _fleet_entry);
@@ -240,7 +240,7 @@ function EndTurnBattle(_data) constructor{
 			}
 
 			var _enemy_forces = 0;
-			if (opponent == eFACTION.ORKS) {
+			if (opponent == eFACTION.ORK) {
 				_enemy_forces = object.p_orks[planet];
 			} else if (opponent == eFACTION.TAU) {
 				_enemy_forces = object.p_tau[planet];
@@ -248,7 +248,7 @@ function EndTurnBattle(_data) constructor{
 				_enemy_forces = object.p_tyranids[planet];
 			} else if (opponent == eFACTION.CHAOS) {
 				_enemy_forces = object.p_chaos[planet];
-			} else if (opponent == eFACTION.TRAITORS) {
+			} else if (opponent == eFACTION.HERETICS) {
 				_enemy_forces = object.p_traitors[planet];
 			} else if (opponent == eFACTION.NECRONS) {
 				_enemy_forces = object.p_necrons[planet];
@@ -321,7 +321,7 @@ function EndTurnBattle(_data) constructor{
         draw_set_halign(fa_center);
 
         var _en_fleet_x = xxx + 12;
-        var _text_offset = 32'
+        var _text_offset = 32;
         for (var i = 0; i < array_length(_battle_data.enemy_fleets); i++){
         	var _fleet = _battle_data.enemy_fleets[i];
         	var _cur_fleet_x = _en_fleet_x + (110 * i)
@@ -339,7 +339,7 @@ function EndTurnBattle(_data) constructor{
         }
 
         var _al_fleet_x = xxx + 342342;
-        var _text_offset = 32'
+        var _text_offset = 32;
         for (var i = 0; i < array_length(_battle_data.allied_fleets); i++){
         	var _fleet = _battle_data.allied_fleets[i];
         	var _cur_fleet_x = _al_fleet_x + (110 * i)
@@ -380,7 +380,7 @@ function EndTurnBattle(_data) constructor{
 	    draw_set_font(fnt_40k_14);
 	    draw_set_halign(fa_left);
 	    draw_set_color(c_gray);
-	    draw_text(xxx + 8, yyy + 13, $"{obj_turn_end.current_battle}/{array_length(obj_turn_end.battles)}";
+	    draw_text(xxx + 8, yyy + 13, $"{obj_turn_end.current_battle}/{array_length(obj_turn_end.battles)}");
 
 	    draw_set_halign(fa_center);
 	    draw_set_font(fnt_40k_30b);
