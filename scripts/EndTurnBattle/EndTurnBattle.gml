@@ -41,7 +41,7 @@ function EndTurnBattle(_data) constructor{
 
         // Start battle here
 
-        combating = 1;
+        obj_turn_end.combating = 1;
 
         var _battle_instance = instance_create(0, 0, obj_fleet);
 
@@ -66,7 +66,7 @@ function EndTurnBattle(_data) constructor{
 	        _battle_instance.en_escort[_map_i] = _fleet.escorts;
         }
 
-        if (special == "chaos") {
+        if (special == "CHAOS") {
             _battle_instance.chaos_exp = 1;
         }
         if (special == "BLOOD") {
@@ -86,7 +86,7 @@ function EndTurnBattle(_data) constructor{
         obj_controller.cooldown = 8;
 
         // Start battle here
-        combating = 1;
+        obj_turn_end.combating = 1;
 
         instance_deactivate_all_safe();
         instance_activate_object(object);
@@ -206,7 +206,7 @@ function EndTurnBattle(_data) constructor{
 						frigates: _fri_total,
 						escorts: _esc_total,
 					};
-					if (obj_controller.faction_status[e] == "War" || e == eFACTION.TYRANIDS || e == eFACTION.NECRONS){
+					if (obj_controller.faction_status[_e] == "War" || _e == eFACTION.TYRANIDS || _e == eFACTION.NECRONS){
 						array_push(_battle_data.enemy_fleets, _fleet_entry);
 					} else {
 						array_push(_battle_data.allied_fleets, _fleet_entry);
@@ -216,7 +216,9 @@ function EndTurnBattle(_data) constructor{
 			}
 		} else if (battle_type == eBATTLE_TYPES.GROUNDFORCES && planet > 0) {
 			// Ground battle - collect ground forces data
-			scr_count_forces(string(location), planet, true);
+			var _forces = scr_count_forces(location, planet, true, true);
+			_battle_data.marines = _forces[0];
+			_battle_data.vehicles = _forces[1];
 
 			_battle_data.marines = info_mahreens;
 			_battle_data.vehicles = info_vehicles;

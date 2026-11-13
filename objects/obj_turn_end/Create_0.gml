@@ -62,4 +62,4 @@ handle_discovered_governor_assasinations();
 
 alerts = 0;
 fast = 0; // Playback cursor: alerts unlock (fade in + typewriter) once fast >= their position
-show = 0;
+show = -1;

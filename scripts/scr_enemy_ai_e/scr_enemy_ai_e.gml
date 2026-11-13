@@ -469,11 +469,11 @@ function scr_enemy_ai_e() {
                         with (obj_en_fleet) {
                             if ((action == "") && (orbiting == obj_controller.temp[1049]) && (owner == 10)) {
                                 if (string_count("warband", trade_goods) > 0) {
-                                    _special = "CHAOS";
+                                    _special = "BLOOD";
                                     break;
                                 }
                                 if (string_lower(trade_goods) == "chaos") {
-                                    _special = "BLOOD";
+                                    _special = "CHAOS";
                                     break;
                                 }
                             }

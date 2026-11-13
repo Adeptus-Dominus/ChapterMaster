@@ -5,7 +5,7 @@ try {
     if (current_battle < array_length(battles)){
         var _battle_prep_variables = battles[current_battle].prep_battle();
         next_battle_data = _battle_prep_variables;
-        show = current_battle
+        show = current_battle;
 
     } else {
 	    obj_controller.x = first_x;

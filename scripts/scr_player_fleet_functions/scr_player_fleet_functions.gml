@@ -168,7 +168,7 @@ function merge_player_fleets(main_fleet, merge_fleet) {
             }
             var _player_fleet = _battle.pobject;
             if (_player_fleet.id == merge_fleet.id && _battle.battle_type == eBATTLE_TYPES.FLEET) {
-                _battle.pobject.id = main_fleet.id;
+                _battle.pobject = main_fleet.id;
             }
         }
     }

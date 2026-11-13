@@ -31,6 +31,6 @@ if ((show == 0) && (current_popup == 0)) {
     draw_sprite(spr_loading, image_index, 23, 73);
 }
 
-if ((show > 0) && (current_battle < array_length(battles))) {
+if ((show > -1) && (current_battle < array_length(battles))) {
     battles[current_battle].draw_selector();
 }
