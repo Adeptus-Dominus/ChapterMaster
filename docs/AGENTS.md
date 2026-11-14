@@ -59,5 +59,7 @@ Rules:
 
 For each added guard, ask: "What real input or state reaches this line and makes this guard necessary?" If the answer is "maybe" or "just in case", reject it.
 
+## Misc Rules
+
 - Write elegant, idiomatic, clean code, like a senior software developer.
 - Don't try to create new `.yy` files when creating new `.gml` scripts. They'll be created by GameMaker automatically.
