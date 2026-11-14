@@ -1116,7 +1116,7 @@ function scr_initialize_custom() {
         tenth -= 10;
         dreadnought += 1;
     }
-    if ((obj_creation.squad_distribution < 2) && scr_has_disadv("Obliterated")) {
+    if (scr_has_disadv("Obliterated")) {
         techmarines -= 7;
         epistolary -= 2;
         codiciery -= 1;

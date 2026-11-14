@@ -802,8 +802,10 @@ function PlanetData(_planet, _system) constructor {
     };
 
     static register_problem = function(problem) {
-        array_push(system.p_problem[planet], problem);
-        problems = system.p_problem[planet];
+        if (!problem.delete_mission){
+            array_push(system.p_problem[planet], problem);
+            problems = system.p_problem[planet];
+        }
     };
 
     static problem_count_down = function(count_change = 1) {
