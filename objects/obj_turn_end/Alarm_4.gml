@@ -2,12 +2,16 @@ current_battle += 1;
 instance_activate_object(obj_star);
 combating = 0;
 
-// Probably want something right here to organize the battle just in case
-// Space battles first
-// Ground battles after
+var _battle_data;
+while (current_battle < array_length(battles)) {
+    _battle_data = battles[current_battle].prep_battle();
+    if (!_battle_data.skip_battle) {
+        break;
+    }
+    current_battle += 1;
+}
 
-if (current_battle < array_length(battles)){
-    battles[current_battle].prep_battle();
+if (current_battle < array_length(battles)) {
     show = current_battle;
 } else {
     obj_controller.x = first_x;

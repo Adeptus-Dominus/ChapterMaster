@@ -160,7 +160,7 @@ function EndTurnBattle(_data) constructor{
         instance_deactivate_object(object);
 	}
 	static prep_battle = function(){
-		var _battle_data = {};
+		var _battle_data = {skip_battle: false};
 		var _battle_star = object;
 
 		_battle_data.star_x = _battle_star.x;
@@ -222,9 +222,7 @@ function EndTurnBattle(_data) constructor{
 			_battle_data.marines = _forces[0];
 			_battle_data.vehicles = _forces[1];
 
-			if ((_battle_data.marines + _battle_data.vehicles) <= 0){
-				obj_turn_end.alarm[4] = 1;
-			}
+			_battle_data.skip_battle = ((_battle_data.marines + _battle_data.vehicles) <= 0);
 
 			_battle_data.fortification = "";
 
