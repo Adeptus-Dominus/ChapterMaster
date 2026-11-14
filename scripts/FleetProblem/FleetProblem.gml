@@ -92,15 +92,6 @@ function FleetProblem(_name, _timer = -1, _data = {}, _fleet = noone) : Problem(
         struct_remove(self, "fleet_event_data");
     };
 
-    static basic_turn_end = function() {
-        timer--;
-        if ((timer > -1) && per_turn_checks) {
-            var _func = find_func("per_turn");
-            __handle_triggered_mission_func(_func);
-        }
-        __check_delete();
-    };
-
     /// @param {Id.Instance.obj_star} star
     static on_arrival = function() {
         __trigger_with_event("on_arrival");

@@ -42,6 +42,9 @@ function scr_add_artifact(artifact_type = "random", artifact_tags = "", is_ident
             base_type = "Device";
             base_type_detail = choose("Casket", "Chalice", "Statue");
             break;
+        case "trophy":
+            base_type_detail = "Trophy";
+            break;
         case "random":
         case "random_nodemon":
             var rand1 = irandom(99); // 0 to 99
