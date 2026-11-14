@@ -757,6 +757,7 @@
     {"id":{"name":"DiscordPool","path":"scripts/DiscordPool/DiscordPool.yy",},},
     {"id":{"name":"DiscordWebhook","path":"scripts/DiscordWebhook/DiscordWebhook.yy",},},
     {"id":{"name":"draw_line_dashed","path":"scripts/draw_line_dashed/draw_line_dashed.yy",},},
+    {"id":{"name":"EndTurnBattle","path":"scripts/EndTurnBattle/EndTurnBattle.yy",},},
     {"id":{"name":"enums","path":"scripts/enums/enums.yy",},},
     {"id":{"name":"ErrorHandler","path":"scripts/ErrorHandler/ErrorHandler.yy",},},
     {"id":{"name":"exp_and_exp_growth","path":"scripts/exp_and_exp_growth/exp_and_exp_growth.yy",},},
