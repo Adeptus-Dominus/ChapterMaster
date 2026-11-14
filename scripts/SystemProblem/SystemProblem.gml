@@ -47,22 +47,15 @@ function SystemProblem(_name, _system = noone, _data = {}, _timer = -1) : Proble
         __check_delete();
     };
 
-    static basic_turn_end = function() {
+    static __advance_timer = function() {
         if (!instance_exists(system)) {
             timer = -1;
-            exit;
+            return false;
         }
         if (system.storm <= 0) {
             timer--;
         }
-        if ((timer > -1) && per_turn_checks) {
-            var _func = find_func("per_turn");
-            __handle_triggered_mission_func(_func);
-        }
-        if ((timer == 0) && zero_timer_checks && !delete_mission) {
-            var _func = find_func("resolve");
-            __handle_triggered_mission_func(_func);
-        }
+        return true;
     };
 
     static mark = function(colour) {
