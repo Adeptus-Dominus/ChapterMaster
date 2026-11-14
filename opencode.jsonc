@@ -19,5 +19,6 @@
   ],
   "snapshot": false,
   "model": "opencode/deepseek-v4.1-flash-free",
-  "websearch": false
+  "websearch": false,
+  "plugin": ["opencode-search@0.0.9"]
 }
