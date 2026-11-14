@@ -52,7 +52,7 @@ jobs:
 
       - uses: actions/checkout@v6
         with:
-          fetch-depth: 1
+          fetch-depth: 0
           persist-credentials: false
 
       - name: Install OpenCode
@@ -63,7 +63,7 @@ jobs:
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh issue view "$ISSUE_NUMBER" --json title,body > /tmp/issue_context.json
+          gh issue view "$ISSUE_NUMBER" --json title,body,comments > /tmp/issue_context.json
 
       - name: Prepare Triage Plan
         env:
@@ -72,7 +72,7 @@ jobs:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OPENCODE_PERMISSION: '{ "external_directory": { "/home/runner/work/**": "allow", "/tmp/*": "allow" } }'
+          OPENCODE_PERMISSION: '{ "external_directory": { "/home/runner/work/**": "allow", "/tmp/*": "allow" }, "websearch": "deny" }'
           OPENCODE_MAIN_MODEL: ${{ vars.OPENCODE_MAIN_MODEL }}
         run: |
           rm -f /tmp/triage_plan.json
@@ -137,7 +137,9 @@ jobs:
 
           Ensure the output in /tmp/triage_plan.json is valid raw JSON without Markdown code fences or extra text."
 
-          opencode run -m ${OPENCODE_MAIN_MODEL} "$PROMPT"
+          MODEL_ARGS=()
+          [ -n "${OPENCODE_MAIN_MODEL}" ] && MODEL_ARGS=(-m "${OPENCODE_MAIN_MODEL}")
+          timeout 20m opencode run "${MODEL_ARGS[@]}" "$PROMPT"
 
       - name: Apply Triage Plan
         env:
@@ -230,7 +232,7 @@ jobs:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OPENCODE_PERMISSION: '{ "external_directory": { "/home/runner/work/**": "allow", "/tmp/*": "allow" } }'
+          OPENCODE_PERMISSION: '{ "external_directory": { "/home/runner/work/**": "allow", "/tmp/*": "allow" }, "websearch": "deny" }'
           OPENCODE_MAIN_MODEL: ${{ vars.OPENCODE_MAIN_MODEL }}
           COMMENT_BODY: ${{ github.event.comment.body }}
         run: |
@@ -272,6 +274,7 @@ jobs:
 
           ISSUE_TITLE=$(jq -r '.title // "No title"' /tmp/issue_context.json)
           ISSUE_BODY=$(jq -r '.body // "No description provided."' /tmp/issue_context.json)
+          ISSUE_COMMENTS=$(jq -r 'if (.comments | length) > 0 then [.comments[] | "- @\(.author.login // "ghost") (\(.createdAt)): \(.body)"] | join("\n") else "None" end' /tmp/issue_context.json)
 
           PROMPT="You are investigating Issue #${ISSUE_NUMBER} at ${REPO}.
 
@@ -281,6 +284,11 @@ jobs:
           ---
           ${ISSUE_BODY}
           ---
+
+          Existing Comments:
+          ---
+          ${ISSUE_COMMENTS}
+          ---
           ${HINT_BLOCK}
 
           Tasks:
@@ -288,12 +296,30 @@ jobs:
           2. Propose solution(s)/fix(es).
           3. Write your full markdown investigation report and proposed fix(es) to /tmp/investigation.md.
 
+          Investigation Method:
+          - If the issue names a commit SHA, diff it against HEAD first with \`git diff <sha>..HEAD --stat\` or \`git show <sha>:<path>\`.
+          - Parse GML stacktraces \`Script:method:line\` as a method inside \`scripts/Script/Script.gml\` (or \`objects/<obj>/<event>.gml\`).
+          - Trace stacktrace frames and direct callers/callees first before doing broad repo-wide greps.
+          - Ignore error-formatting or logging helpers (e.g. ErrorHandler) unless the crash line is inside them.
+          - If you must query GitHub, use \`gh\` (already authenticated), not \`curl\`.
+
           Rules:
           - Reference files like so: https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/scripts/DebugView/DebugView.gml.
           - Reference specific code lines (or ranges) like so: https://github.com/Adeptus-Dominus/ChapterMaster/blob/main/scripts/DebugView/DebugView.gml#L24 (or #L24-L28 for a range).
           - Do NOT execute any modifying GitHub commands. Only write the file /tmp/investigation.md."
 
-          opencode run -m ${OPENCODE_MAIN_MODEL} "$PROMPT"
+          MODEL_ARGS=()
+          [ -n "${OPENCODE_MAIN_MODEL}" ] && MODEL_ARGS=(-m "${OPENCODE_MAIN_MODEL}")
+
+          if ! timeout 20m opencode run "${MODEL_ARGS[@]}" "$PROMPT"; then
+            STATUS=$?
+            if [ "$STATUS" -eq 124 ]; then
+              printf '\n\n> Investigation timed out after 20 minutes.\n' >> /tmp/investigation.md
+            else
+              echo "::error::opencode run failed with exit code $STATUS"
+              exit "$STATUS"
+            fi
+          fi
 
       - name: Post Investigation Comment
         env:
