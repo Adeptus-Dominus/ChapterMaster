@@ -802,7 +802,7 @@ function PlanetData(_planet, _system) constructor {
     };
 
     static register_problem = function(problem) {
-        if (!problem.delete_mission){
+        if (!problem.delete_mission) {
             array_push(system.p_problem[planet], problem);
             problems = system.p_problem[planet];
         }
