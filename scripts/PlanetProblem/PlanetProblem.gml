@@ -1556,10 +1556,91 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
                     break;
                 case 4:
                     _battle_data.threat = 2;
+                    _battle_data.cols = [
+                        {
+                            distance: 0,
+                            enemies: [
+                                {
+                                    name: "Necron Destroyer",
+                                    number: 1,
+                                },
+                                {
+                                    name: "Necron Warrior",
+                                    number: 20,
+                                },
+                                {
+                                    name: "Necron Immortal",
+                                    number: 10,
+                                },
+                            ],
+                        },
+                        {
+                            distance: 10,
+                            enemies: [
+                                {
+                                    name: "Necron Warrior",
+                                    number: 20,
+                                },
+                                {
+                                    name: "Canoptek Spyder",
+                                    number: 3,
+                                },
+                            ],
+                        },
+                    ];
                     break;
                 case 5:
                 case 6:
                     _battle_data.threat = 3;
+                    _battle_data.cols = [
+                        {
+                            distance: 0,
+                            enemies: [
+                                {
+                                    name: "Necron Overlord",
+                                    number: 1,
+                                },
+                                {
+                                    name: "Necron Destroyer",
+                                    number: 3,
+                                },
+                                {
+                                    name: "Lychguard",
+                                    number: 5,
+                                },
+                                {
+                                    name: "Necron Warrior",
+                                    number: 100,
+                                },
+                            ],
+                        },
+                        {
+                            distance: 10,
+                            enemies: [
+                                {
+                                    name: "Canoptek Spyder",
+                                    number: 6,
+                                },
+                                {
+                                    name: "Canoptek Scarab",
+                                    number: 120,
+                                },
+                            ],
+                        },
+                        {
+                            distance: 20,
+                            enemies: [
+                                {
+                                    name: "Doomsday Arc",
+                                    number: 2,
+                                },
+                                {
+                                    name: "Monolith",
+                                    number: 1,
+                                },
+                            ],
+                        },
+                    ];
                     break;
             }
 
@@ -1617,7 +1698,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
 
             with (system) {
                 var _planet = obj_ncombat.battle_id;
-                p_necrons[planet] = 4;
+                p_necrons[_planet] = 4;
                 if (awake_tomb_world(p_feature[_planet]) == 0) {
                     awaken_tomb_world(p_feature[_planet]);
                 }
