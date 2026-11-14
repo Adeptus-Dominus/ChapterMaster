@@ -1662,12 +1662,9 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
 
             delete_mission = true;
 
-            with (system) {
-                var _planet = obj_ncombat.battle_id;
-                p_necrons[planet] = 4;
-                if (awake_tomb_world(p_feature[_planet]) == 0) {
-                    awaken_tomb_world(p_feature[_planet]);
-                }
+            p_data.edit_forces(eFACTION.NECRONS, 4);
+            if (awake_tomb_world(p_data.features) == 0) {
+                awaken_tomb_world(p_data.features);
             }
 
             alter_disposition(eFACTION.INQUISITION, -5);
