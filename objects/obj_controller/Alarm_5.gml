@@ -629,6 +629,9 @@ try {
     location_viewer.update_mission_log();
     init_ork_waagh();
     return_lost_ships_chance();
+    with(obj_en_fleet){
+        run_problem_sequence("basic_turn_end");
+    }
     //complex route plotting for player fleets
     with (obj_p_fleet) {
         if (array_length(complex_route) > 0 && action == "") {
