@@ -99,7 +99,7 @@ try {
             }
         }
 
-        if ((enemy[op] == 4) && (enemy_status[op] < 0)) {
+        if ((enemy[op] == eFACTION.INQUISITION) && (enemy_status[op] < 0)) {
             _combat_enemy = enemy[op];
             with (obj_en_fleet) {
                 if ((owner != _combat_enemy) || (orbiting != _battle_sys)) {

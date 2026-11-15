@@ -1,60 +1,31 @@
-var total_enemies = 0;
-var total_allies = 1;
+var _total_enemies = array_length(enemy_fleets);
+var _total_allies = array_length(allied_fleets);
 
-for (var i = 1; i <= 6; i++) {
-    if (enemy[i] != 0) {
-        if (enemy_status[i] < 0) {
-            total_enemies += 1;
-        }
-        if (enemy_status[i] > 0) {
-            total_allies += 1;
-        }
-    }
+var _fleet_offset = 1;
+var _y2 = room_height / _total_enemies / 2;
+for (var i = 0; i < _total_enemies; i++){
+    var y1 = _fleet_offset * _y2;
+
+    var _spawner = instance_create(room_width + 200, y1, obj_fleet_spawner);
+    _spawner.owner = enemy_fleets[i].owner;
+    _spawner.height = _y2;
+    _spawner.number = i;
+    _spawner.ally = true;
+    _spawner.fleet_data = enemy_fleets[i];
+    _fleet_offset += 2;    
 }
 
-if (total_enemies > 0) {
-    var t = 1;
-    var y2 = room_height / total_enemies / 2;
-    var tt = 0;
-    for (var i = 1; i <= 5; i++) {
-        if (enemy_status[i] < 0) {
-            tt += 1;
-            var y1 = t * y2;
+var _fleet_offset = 1;
+var _y2 = room_height / _total_allies / 2;
+for (var i = 0; i < _total_allies; i++){
+    var y1 = _fleet_offset * _y2;
 
-            var spawner = instance_create(room_width + 200, y1, obj_fleet_spawner);
-            spawner.owner = enemy[i];
-            spawner.height = y2;
-            spawner.number = i;
-
-            t += 2;
-        }
-    }
-}
-
-if (total_allies > 0) {
-    var t = 1;
-    var y2 = room_height / total_allies / 2;
-    var tt = 0;
-    for (var i = 1; i <= 5; i++) {
-        if (enemy_status[i] > 0) {
-            tt += 1;
-            var y1 = t * y2;
-
-            var spawner = instance_create(200, y1, obj_fleet_spawner);
-
-            if (i == 1) {
-                spawner.owner = eFACTION.PLAYER;
-            }
-            if (i > 1) {
-                spawner.owner = enemy[i];
-            } // Get the ENEMY after the actual enemies
-
-            spawner.height = y2;
-            spawner.number = i;
-
-            t += 2;
-        }
-    }
+    var _spawner = instance_create(room_width + 200, y1, obj_fleet_spawner);
+    _spawner.owner = allied_fleets[i].owner;
+    _spawner.height = _y2;
+    _spawner.number = i;
+    _spawner.fleet_data = allied_fleets[i];
+    _fleet_offset += 2;    
 }
 
 // Buffs here
@@ -71,7 +42,7 @@ if ((siege == 1) && (siege == 555)) {
 } // Need to finish this
 if (slow == 1) {
     global_attack = global_attack * 0.9;
-    global_defense = global_defense * 1.2;
+    global_defense = §global_defense * 1.2;
 }
 if (melee == 1) {
     global_melee = global_melee * 1.15;

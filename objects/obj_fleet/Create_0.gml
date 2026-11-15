@@ -70,18 +70,20 @@ threat = 4;
 
 var _size = 11;
 
-enemy = array_create(_size, 0);
-enemy_status = array_create(_size, 0);
-en_capital = array_create(_size, 0);
-en_capital_max = array_create(_size, 0);
-en_capital_lost = array_create(_size, 0);
-en_frigate = array_create(_size, 0);
-en_frigate_max = array_create(_size, 0);
-en_frigate_lost = array_create(_size, 0);
-en_escort = array_create(_size, 0);
-en_escort_max = array_create(_size, 0);
-en_escort_lost = array_create(_size, 0);
-en_ships_max = array_create(_size, 0);
+enemy = [];
+enemy_status = [];
+en_capital = [];
+en_capital_lost = [];
+en_frigate = [];
+en_frigate_lost = [];
+en_escort = [];
+en_escort_lost = [];
+total_enemies = 0;
+total_allies = 1;
+
+enemy_fleets = [];
+allied_fleets = [];
+
 // Should be 0-5 for each of the factions
 
 capital = 0;

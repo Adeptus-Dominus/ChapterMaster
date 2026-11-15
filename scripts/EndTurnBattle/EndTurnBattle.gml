@@ -3,6 +3,12 @@ enum eBATTLE_TYPES {
 	GROUNDFORCES
 }
 
+enum eENEMY_STATUS { 
+	EMPTY,
+	ENEMY,
+	ALLY
+}
+
 function EndTurnBattle(_data) constructor{
 	battle_type = eBATTLE_TYPES.GROUNDFORCES;
 	location = "";
@@ -45,26 +51,8 @@ function EndTurnBattle(_data) constructor{
 
         var _battle_instance = instance_create(0, 0, obj_fleet);
 
-        var _map_i = 0;
-        for (var i = 0; i < array_length(battle_data.enemy_fleets); i++){
-        	var _fleet = battle_data.enemy_fleets[i];
-        	_map_i = i + 1;
-        	_battle_instance.enemy[_map_i] = _fleet.owner;
-        	_battle_instance.enemy_status[_map_i] = -1;
-	        _battle_instance.en_capital[_map_i] = _fleet.capitals;
-	        _battle_instance.en_frigate[_map_i] = _fleet.frigates;
-	        _battle_instance.en_escort[_map_i] = _fleet.escorts;
-        }
-
-        for (var i = 0; i < array_length(battle_data.allied_fleets); i++){
-        	var _fleet = battle_data.allied_fleets[i];
-        	_map_i++;
-        	_battle_instance.enemy[_map_i] = _fleet.owner;
-        	_battle_instance.enemy_status[_map_i] = 1;
-	        _battle_instance.en_capital[_map_i] = _fleet.capitals;
-	        _battle_instance.en_frigate[_map_i] = _fleet.frigates;
-	        _battle_instance.en_escort[_map_i] = _fleet.escorts;
-        }
+        _battle_instance.allied_fleets = battle_data.allied_fleets;
+        _battle_instance.enemy_fleets = battle_data.enemy_fleets;
 
         if (special == "CHAOS") {
             _battle_instance.chaos_exp = 1;
@@ -183,38 +171,24 @@ function EndTurnBattle(_data) constructor{
 			_battle_data.enemy_fleets = [];
 			_battle_data.allied_fleets = [];
 
-			for (var _e = 2; _e <= 11; _e++) {
-				if (_e == 11) {
-					_e = 13;
-				}
-				if (_battle_star.present_fleet[_e] > 0) {
-					// Store lookup values on self so they're accessible inside `with`
-					var _star_id = _battle_star.id;
-					var _cap_total = 0;
-					var _fri_total = 0;
-					var _esc_total = 0;
+			var _fleets = get_all_orbiting_fleets(_battle_star);
 
-					with (obj_en_fleet) {
-						if ((orbiting == _star_id) && (owner == _e)) {
-							_cap_total += round(capital_number);
-							_fri_total += round(frigate_number);
-							_esc_total += round(escort_number);
-						}
-					}
-
-					var _fleet_entry = {
-						owner: _e,
-						capitals: _cap_total,
-						frigates: _fri_total,
-						escorts: _esc_total,
-					};
-					if (obj_controller.faction_status[_e] == "War" || _e == eFACTION.TYRANIDS || _e == eFACTION.NECRONS){
-						array_push(_battle_data.enemy_fleets, _fleet_entry);
-					} else {
-						array_push(_battle_data.allied_fleets, _fleet_entry);
-					}
-
-				}
+			for (var _e = 0; _e < array_length(_fleets); _e++) {
+				var _fleet = _fleets[_e];
+				var _fleet_entry = {
+					capitals: round(_fleet.capital_number),
+					frigates: round(_fleet.frigate_number),
+					escorts: round(_fleet.escort_number),
+					fleet : _fleet.id
+					owner : _fleet.owner
+				};
+				if (obj_controller.faction_status[_fleet.owner] == "War" || _fleet.owner == eFACTION.TYRANIDS || _fleet.owner == eFACTION.NECRONS){
+					_fleet_entry.enemy_status = eENEMY_STATUS.ENEMY;
+					array_push(_battle_data.enemy_fleets, _fleet_entry);
+				} else {
+					_fleet_entry.enemy_status = eENEMY_STATUS.ALLY;
+					array_push(_battle_data.allied_fleets, _fleet_entry);
+				}		
 			}
 		} else if (battle_type == eBATTLE_TYPES.GROUNDFORCES && planet > 0) {
 			// Ground battle - collect ground forces data
