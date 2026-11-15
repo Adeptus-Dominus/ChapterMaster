@@ -88,7 +88,7 @@ function Problem(_name, _timer, _data) constructor {
     static find_func = function(trigger_string) {
         var _func_string = find_func_ref(trigger_string);
         if (struct_exists(self, _func_string)) {
-            return self[$ _func_string];
+            return method(self, self[$ _func_string]);
         }
         return undefined;
     };
