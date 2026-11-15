@@ -2,7 +2,16 @@
 function run_problem_sequence(_sequence_func) {
     var _prob_length = array_length(problems);
     for (var i = _prob_length - 1; i >= 0; i--) {
-        problems[i][$ _sequence_func]();
+        var _problem = problems[i];
+        var _func = _problem[$ _sequence_func];
+        // Static entry points are returned unbound by the struct accessor; bind
+        // them so they run in the problem's scope instead of the caller's.
+        try {
+            method(_problem, _func)();
+        } catch (_exception) {
+            _problem.delete_mission = true;
+            ERROR_HANDLER.handle_exception(_exception);
+        }
     }
 }
 
@@ -79,7 +88,7 @@ function Problem(_name, _timer, _data) constructor {
     static find_func = function(trigger_string) {
         var _func_string = find_func_ref(trigger_string);
         if (struct_exists(self, _func_string)) {
-            return self[$ _func_string];
+            return method(self, self[$ _func_string]);
         }
         return undefined;
     };
