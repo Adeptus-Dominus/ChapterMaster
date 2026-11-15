@@ -42,7 +42,7 @@ if ((siege == 1) && (siege == 555)) {
 } // Need to finish this
 if (slow == 1) {
     global_attack = global_attack * 0.9;
-    global_defense = §global_defense * 1.2;
+    global_defense = global_defense * 1.2;
 }
 if (melee == 1) {
     global_melee = global_melee * 1.15;

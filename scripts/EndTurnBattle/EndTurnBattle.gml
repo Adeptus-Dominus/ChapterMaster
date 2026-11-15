@@ -179,7 +179,7 @@ function EndTurnBattle(_data) constructor{
 					capitals: round(_fleet.capital_number),
 					frigates: round(_fleet.frigate_number),
 					escorts: round(_fleet.escort_number),
-					fleet : _fleet.id
+					fleet : _fleet.id,
 					owner : _fleet.owner
 				};
 				if (obj_controller.faction_status[_fleet.owner] == "War" || _fleet.owner == eFACTION.TYRANIDS || _fleet.owner == eFACTION.NECRONS){

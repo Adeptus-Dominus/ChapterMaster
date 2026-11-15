@@ -1,7 +1,7 @@
 try {
     var _player_battle_fleet = noone;
-    var killer = false;
-    var killer_tg = 0;
+    var _killer = false;
+    var _killer_tg = 0;
 
     if (player_started == 1) {
         _player_battle_fleet = pla_fleet;
@@ -58,8 +58,8 @@ try {
 
         if (_fleet_entry.owner == eFACTION.INQUISITION) {
             if (_fleet_entry.enemy_status == eENEMY_STATUS.ENEMY) {
-                killer = true;
-                killer_tg = _fleet.inquisitor;
+                _killer = true;
+                _killer_tg = _fleet.inquisitor;
                 instance_destroy(_fleet);
             }
             continue;
@@ -96,7 +96,7 @@ try {
 
     obj_controller.cooldown = 20;
 
-    if (killer) {
+    if (_killer) {
         scr_loyalty("Inquisitor Killer", "+");
         if (obj_controller.loyalty >= 85) {
             obj_controller.last_inquisitor_inspection -= 44;
@@ -113,17 +113,17 @@ try {
 
         var msg = "";
         var inquis_name = "";
-        if (killer_tg > 0) {
-            inquis_name = $"Inquisitor {obj_controller.inquisitor[killer_tg]}";
+        if (_killer_tg > 0) {
+            inquis_name = $"Inquisitor {obj_controller.inquisitor[_killer_tg]}";
             msg += $"{inquis_name} has been killed!";
         }
-        if (obj_controller.inquisitor_type[killer_tg] == "Ordo Hereticus") {
+        if (obj_controller.inquisitor_type[_killer_tg] == "Ordo Hereticus") {
             scr_loyalty("Inquisitor Killer", "+");
         }
 
-        array_delete(obj_controller.inquisitor_gender, killer_tg, 1);
-        array_delete(obj_controller.inquisitor_type, killer_tg, 1);
-        array_delete(obj_controller.inquisitor, killer_tg, 1);
+        array_delete(obj_controller.inquisitor_gender, _killer_tg, 1);
+        array_delete(obj_controller.inquisitor_type, _killer_tg, 1);
+        array_delete(obj_controller.inquisitor, _killer_tg, 1);
 
         //TODO add weighting characteristics to set_gender
         var _gender = set_gender();

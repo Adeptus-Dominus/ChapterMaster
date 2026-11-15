@@ -1,22 +1,26 @@
+var _ally = fleet_data.enemy_status == eENEMY_STATUS.ALLY;
+var _cruiser = _ally ? obj_al_cruiser : obj_en_cruiser;
+var _capital = _ally ? obj_al_capital : obj_en_capital;
+
 if ((owner == eFACTION.IMPERIUM) || (owner == eFACTION.ELDAR)) {
     // This is an orderly Imperial ship formation
     var _vertical_offset = 0;
     var _horizontal_offset = 0;
     var _ship = noone;
     var _ship_index = 0;
-    if (obj_fleet.enemy_status[number] < 0) {
+    if (!_ally) {
         _horizontal_offset = 1200;
         _ship_index = 5;
-    } else if (obj_fleet.enemy_status[number] > 0) {
+    } else {
         _horizontal_offset = 50;
         _ship_index = 0;
     }
 
     repeat (4) {
-        if (obj_fleet.enemy_status[number] < 0) {
+        if (!_ally) {
             _ship_index -= 1;
         }
-        if (obj_fleet.enemy_status[number] > 0) {
+        if (_ally) {
             _ship_index += 1;
         }
 
@@ -25,35 +29,18 @@ if ((owner == eFACTION.IMPERIUM) || (owner == eFACTION.ELDAR)) {
             _vertical_offset += en_height[_ship_index] / 2;
             repeat (en_num[_ship_index]) {
                 if (en_size[_ship_index] < 3) {
-                    if (obj_fleet.enemy_status[number] < 0) {
-                        _ship = instance_create(_horizontal_offset, _vertical_offset, obj_en_cruiser);
-                        _vertical_offset += en_height[_ship_index];
-                        _ship.class = en_column[_ship_index];
-                        _ship.owner = owner;
-                        _ship.size = en_size[_ship_index];
-                    }
-                    if (obj_fleet.enemy_status[number] > 0) {
-                        _ship = instance_create(_horizontal_offset, _vertical_offset, obj_al_cruiser);
-                        _vertical_offset += en_height[_ship_index];
-                        _ship.class = en_column[_ship_index];
-                        _ship.owner = owner;
-                        _ship.size = en_size[_ship_index];
-                    }
+                    _ship = instance_create(_horizontal_offset, _vertical_offset, _cruiser);
+                    _vertical_offset += en_height[_ship_index];
+                    _ship.class = en_column[_ship_index];
+                    _ship.owner = owner;
+                    _ship.size = en_size[_ship_index];
                 }
                 if (en_size[_ship_index] >= 3) {
-                    if (obj_fleet.enemy_status[number] < 0) {
-                        _ship = instance_create(_horizontal_offset, _vertical_offset, obj_en_capital);
-                        _vertical_offset += en_height[_ship_index];
-                        _ship.class = en_column[_ship_index];
-                        _ship.owner = owner;
-                        _ship.size = en_size[_ship_index];
-                    } else if (obj_fleet.enemy_status[number] > 0) {
-                        _ship = instance_create(_horizontal_offset, _vertical_offset, obj_al_capital);
-                        _vertical_offset += en_height[_ship_index];
-                        _ship.class = en_column[_ship_index];
-                        _ship.owner = owner;
-                        _ship.size = en_size[_ship_index];
-                    }
+                    _ship = instance_create(_horizontal_offset, _vertical_offset, _capital);
+                    _vertical_offset += en_height[_ship_index];
+                    _ship.class = en_column[_ship_index];
+                    _ship.owner = owner;
+                    _ship.size = en_size[_ship_index];
                 }
             }
             _horizontal_offset += en_width[_ship_index];
@@ -68,10 +55,10 @@ if ((owner == eFACTION.ORK) || (owner == eFACTION.CHAOS)) {
         if (en_column[i] != "") {
             repeat (en_num[i]) {
                 if (en_size[i] > 1) {
-                    _ship = instance_create(random_range(1200, 1400), round(random_range(y, y + height) + 50), obj_en_capital);
+                    _ship = instance_create(random_range(1200, 1400), round(random_range(y, y + height) + 50), _capital);
                 }
                 if (en_size[i] == 1) {
-                    _ship = instance_create(random_range(1200, 1400), round(random_range(y, y + height) + 50), obj_en_cruiser);
+                    _ship = instance_create(random_range(1200, 1400), round(random_range(y, y + height) + 50), _cruiser);
                 }
                 _ship.class = en_column[i];
                 _ship.owner = owner;
@@ -87,7 +74,7 @@ if (owner == eFACTION.TAU) {
     var _ship = noone;
     var _vertical_offset = y - ((en_height[5] * en_num[5]) / 2) + (en_height[5] / 2);
     repeat (en_num[5]) {
-        _ship = instance_create(_horizontal_offset, _vertical_offset, obj_en_cruiser);
+        _ship = instance_create(_horizontal_offset, _vertical_offset, _cruiser);
         _vertical_offset += en_height[5];
         _ship.class = "Warden";
         _ship.owner = owner;
@@ -99,14 +86,14 @@ if (owner == eFACTION.TAU) {
     _vertical_offset += en_height[2] / 2;
     _vertical_offset += en_height[3] / 2;
     repeat (en_num[2]) {
-        _ship = instance_create(_horizontal_offset, _vertical_offset, obj_en_cruiser);
+        _ship = instance_create(_horizontal_offset, _vertical_offset, _cruiser);
         _vertical_offset += en_height[2];
         _ship.class = "Emissary";
         _ship.owner = owner;
         _ship.size = en_size[2];
     }
     repeat (en_num[3]) {
-        _ship = instance_create(_horizontal_offset, _vertical_offset, obj_en_cruiser);
+        _ship = instance_create(_horizontal_offset, _vertical_offset, _cruiser);
         _vertical_offset += en_height[3];
         _ship.class = "Protector";
         _ship.owner = owner;
@@ -117,7 +104,7 @@ if (owner == eFACTION.TAU) {
     _vertical_offset = y - ((en_height[4] * en_num[4]) / 2);
     _vertical_offset += en_height[4] / 2;
     repeat (en_num[4]) {
-        _ship = instance_create(_horizontal_offset, _vertical_offset, obj_en_cruiser);
+        _ship = instance_create(_horizontal_offset, _vertical_offset, _cruiser);
         _vertical_offset += en_height[4];
         _ship.class = "Castellan";
         _ship.owner = owner;
@@ -128,7 +115,7 @@ if (owner == eFACTION.TAU) {
     _vertical_offset = y - ((en_height[1] * en_num[1]) / 2);
     _vertical_offset += en_height[1] / 2;
     repeat (en_num[1]) {
-        _ship = instance_create(_horizontal_offset, _vertical_offset, obj_en_capital);
+        _ship = instance_create(_horizontal_offset, _vertical_offset, _capital);
         _vertical_offset += en_height[1];
         _ship.class = "Custodian";
         _ship.owner = owner;
@@ -142,7 +129,7 @@ if (owner == eFACTION.TYRANIDS) {
     var _ship = noone;
     var _vertical_offset = y - ((en_height[4] * en_num[4]) / 2) + (en_height[4] / 2);
     repeat (en_num[4]) {
-        _ship = instance_create(_horizontal_offset, _vertical_offset, obj_en_cruiser);
+        _ship = instance_create(_horizontal_offset, _vertical_offset, _cruiser);
         _vertical_offset += en_height[4];
         _ship.class = "Prowler";
         _ship.owner = owner;
@@ -153,7 +140,7 @@ if (owner == eFACTION.TYRANIDS) {
     _vertical_offset = y - ((en_height[3] * en_num[3]) / 2);
     _vertical_offset += en_height[3] / 2;
     repeat (en_num[3]) {
-        _ship = instance_create(_horizontal_offset, _vertical_offset, obj_en_cruiser);
+        _ship = instance_create(_horizontal_offset, _vertical_offset, _cruiser);
         _vertical_offset += en_height[3];
         _ship.class = "Razorfiend";
         _ship.owner = owner;
@@ -164,7 +151,7 @@ if (owner == eFACTION.TYRANIDS) {
     _vertical_offset = y - ((en_height[2] * en_num[2]) / 2);
     _vertical_offset += en_height[2] / 2;
     repeat (en_num[2]) {
-        _ship = instance_create(_horizontal_offset, _vertical_offset, obj_en_cruiser);
+        _ship = instance_create(_horizontal_offset, _vertical_offset, _cruiser);
         _vertical_offset += en_height[2];
         _ship.class = "Stalker";
         _ship.owner = owner;
@@ -175,7 +162,7 @@ if (owner == eFACTION.TYRANIDS) {
     _vertical_offset = y - ((en_height[1] * en_num[1]) / 2);
     _vertical_offset += en_height[1] / 2;
     repeat (en_num[1]) {
-        _ship = instance_create(_horizontal_offset, _vertical_offset, obj_en_capital);
+        _ship = instance_create(_horizontal_offset, _vertical_offset, _capital);
         _vertical_offset += en_height[1];
         _ship.class = "Leviathan";
         _ship.owner = owner;
@@ -189,7 +176,7 @@ if (owner == eFACTION.NECRONS) {
     var _ship = noone;
     var _vertical_offset = y - ((en_height[4] * en_num[4]) / 2) + (en_height[4] / 2);
     repeat (en_num[4]) {
-        _ship = instance_create(_horizontal_offset, _vertical_offset, obj_en_cruiser);
+        _ship = instance_create(_horizontal_offset, _vertical_offset, _cruiser);
         _vertical_offset += en_height[4];
         _ship.class = "Dirge Class";
         _ship.owner = owner;
@@ -200,7 +187,7 @@ if (owner == eFACTION.NECRONS) {
     _vertical_offset = y - ((en_height[3] * en_num[3]) / 2);
     _vertical_offset += en_height[3] / 2;
     repeat (en_num[3]) {
-        _ship = instance_create(_horizontal_offset, _vertical_offset, obj_en_cruiser);
+        _ship = instance_create(_horizontal_offset, _vertical_offset, _cruiser);
         _vertical_offset += en_height[3];
         _ship.class = "Jackal Class";
         _ship.owner = owner;
@@ -211,7 +198,7 @@ if (owner == eFACTION.NECRONS) {
     _vertical_offset = y - ((en_height[2] * en_num[2]) / 2);
     _vertical_offset += en_height[2] / 2;
     repeat (en_num[2]) {
-        _ship = instance_create(_horizontal_offset, _vertical_offset, obj_en_cruiser);
+        _ship = instance_create(_horizontal_offset, _vertical_offset, _cruiser);
         _vertical_offset += en_height[2];
         _ship.class = "Shroud Class";
         _ship.owner = owner;
@@ -222,7 +209,7 @@ if (owner == eFACTION.NECRONS) {
     _vertical_offset = y - ((en_height[1] * en_num[1]) / 2);
     _vertical_offset += en_height[1] / 2;
     repeat (en_num[1]) {
-        _ship = instance_create(_horizontal_offset, _vertical_offset, obj_en_capital);
+        _ship = instance_create(_horizontal_offset, _vertical_offset, _capital);
         _vertical_offset += en_height[1];
         _ship.class = "Reaper Class";
         _ship.owner = owner;
