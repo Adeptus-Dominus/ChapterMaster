@@ -51,6 +51,15 @@ function EndTurnBattle(_data) constructor{
 
         var _battle_instance = instance_create(0, 0, obj_fleet);
 
+        _battle_instance.player_fleet = {
+        	fleet : pobject,
+        	owner : eFACTION.PLAYER,
+        	capitals: _battle_fleet.capital_number,
+        	frigates : _battle_fleet.frigate_number,
+        	escorts : _battle_fleet.escort_number
+
+        }
+
         _battle_instance.allied_fleets = battle_data.allied_fleets;
         _battle_instance.enemy_fleets = battle_data.enemy_fleets;
 

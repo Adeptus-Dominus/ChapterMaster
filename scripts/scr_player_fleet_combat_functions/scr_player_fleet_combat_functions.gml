@@ -383,3 +383,50 @@ function setup_player_combat_ship() {
         y = room_height / 2;
     }
 }
+
+
+function fleet_combat_destroy_ship(){
+
+    if (size >= 3) {
+        fleet_data.capitals += 1;
+    } else if (size == 2) {
+        fleet_data.frigates += 1;
+    } else if (size == 1) {
+        fleet_data.escorts += 1;
+    }
+
+    image_alpha = 0.5;
+
+    if (array_contains(["Gorbag's Revenge", "Dethdeala", "Kroolboy", "Desecrator", "Custodian", "Leviathan", "Battle Barge", "Gloriana"], class)) {
+        fleet_data.capitals += 1;
+    } else if (array_contains(["Battlekroozer", "Daemon", "Avenger Class Grand Cruiser", "Carnage", "Emissary", "Protector", "Razorfiend", "Strike Cruiser"], class)) {
+        fleet_data.frigates += 1;
+    } else if (array_contains(["Ravager", "Iconoclast", "Warden", "Castellan", "Stalker", "Prowler", "Sword Class Frigate", "Hunter", "Gladius"], class)) {
+        fleet_data.escorts += 1;
+    }
+
+    if (owner != eFACTION.TYRANIDS && obj_fleet.start != 0) {
+        var husk = instance_create(x, y, obj_en_husk);
+        husk.sprite_index = sprite_index;
+        husk.direction = direction;
+        husk.image_angle = image_angle;
+        husk.depth = depth;
+        husk.image_speed = 0;
+        repeat (choose(4, 5, 6)) {
+            var explo = instance_create(x, y, obj_explosion);
+            explo.image_xscale = 0.5;
+            explo.image_yscale = 0.5;
+            explo.x += random_range(sprite_width * 0.25, sprite_width * -0.25);
+            explo.y += random_range(sprite_width * 0.25, sprite_width * -0.25);
+        }
+    }
+    if (owner == eFACTION.TYRANIDS) {
+        effect_create_depth(depth - 1, ef_firework, x, y, 1, c_purple);
+    }
+    if (object_index == obj_p_ship){
+        x = -7000;
+        y = room_height / 2;        
+    } else {
+        instance_destroy();   
+    }
+}

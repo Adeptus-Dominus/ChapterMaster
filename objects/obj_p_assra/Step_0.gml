@@ -238,49 +238,8 @@ if ((boarding == true) && (board_cooldown >= 0) && instance_exists(target) && in
                             }
                         }
 
-                        with (target) {
-                            var wh, gud;
-                            wh = 0;
-                            gud = 0;
-                            repeat (5) {
-                                wh += 1;
-                                if (obj_fleet.enemy[wh] == owner) {
-                                    gud = wh;
-                                }
-                            }
-                            if (size == 3) {
-                                obj_fleet.en_capital_lost[gud] += 1;
-                            }
-                            if (size == 2) {
-                                obj_fleet.en_frigate_lost[gud] += 1;
-                            }
-                            if (size == 1) {
-                                obj_fleet.en_escort_lost[gud] += 1;
-                            }
-                        }
-
-                        husk.sprite_index = target.sprite_index;
-                        husk.direction = target.direction;
-                        husk.image_angle = target.image_angle;
-                        husk.depth = target.depth;
-                        husk.image_speed = 0;
-
-                        if (instance_exists(target)) {
-                            if ((target.hp <= 0) && (target.bridge > 0)) {
-                                repeat (choose(3, 4, 5)) {
-                                    var explo;
-                                    explo = instance_create(target.x, target.y, obj_explosion);
-                                    explo.image_xscale = 0.5;
-                                    explo.image_yscale = 0.5;
-                                    explo.x += random_range(target.sprite_width * 0.25, target.sprite_width * -0.25);
-                                    explo.y += random_range(target.sprite_width * 0.25, target.sprite_width * -0.25);
-                                }
-                            }
-                            // if (target.hp>0) and (target.bridge<=0) then show_message("SHIP CAPTURED");
-
-                            with (target) {
-                                instance_destroy();
-                            }
+                        with (target){
+                            fleet_combat_destroy_ship();
                         }
                     }
                 }

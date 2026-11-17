@@ -9,21 +9,25 @@ for (var i = 0; i < _total_enemies; i++){
     var _spawner = instance_create(room_width + 200, y1, obj_fleet_spawner);
     _spawner.owner = enemy_fleets[i].owner;
     _spawner.height = _y2;
-    _spawner.number = i;
     _spawner.ally = true;
     _spawner.fleet_data = enemy_fleets[i];
     _fleet_offset += 2;    
 }
 
-var _fleet_offset = 1;
-var _y2 = room_height / _total_allies / 2;
+var _y2 = room_height / _total_allies / 2 + 1;
+
+var _player_spawner = instance_create(200, _y2, obj_fleet_spawner);
+_player_spawner.owner = eFACTION.PLAYER;
+_player_spawner.fleet_data = player_fleet;
+
+var _fleet_offset = 3;
+
 for (var i = 0; i < _total_allies; i++){
     var y1 = _fleet_offset * _y2;
 
-    var _spawner = instance_create(room_width + 200, y1, obj_fleet_spawner);
+    var _spawner = instance_create(200, y1, obj_fleet_spawner);
     _spawner.owner = allied_fleets[i].owner;
     _spawner.height = _y2;
-    _spawner.number = i;
     _spawner.fleet_data = allied_fleets[i];
     _fleet_offset += 2;    
 }
