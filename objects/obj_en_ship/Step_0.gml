@@ -466,40 +466,7 @@ if (owner == 6) {
     }
 
     if (hp <= 0) {
-        var gud = 0;
-        for (var i = 1; i <= 5; i++) {
-            if (obj_fleet.enemy[i] == owner) {
-                gud = i;
-            }
-        }
-
-        if (size == 3) {
-            obj_fleet.en_capital_lost[gud] += 1;
-        }
-        if (size == 2) {
-            obj_fleet.en_frigate_lost[gud] += 1;
-        }
-        if (size == 1) {
-            obj_fleet.en_escort_lost[gud] += 1;
-        }
-
-        image_alpha = 0.5;
-
-        var husk = instance_create(x, y, obj_en_husk);
-        husk.sprite_index = sprite_index;
-        husk.direction = direction;
-        husk.image_angle = image_angle;
-        husk.depth = depth;
-        husk.image_speed = 0;
-        repeat (choose(4, 5, 6)) {
-            var explo = instance_create(x, y, obj_explosion);
-            explo.image_xscale = 0.5;
-            explo.image_yscale = 0.5;
-            explo.x += random_range(sprite_width * 0.25, sprite_width * -0.25);
-            explo.y += random_range(sprite_width * 0.25, sprite_width * -0.25);
-        }
-
-        instance_destroy();
+        fleet_combat_destroy_ship();
     }
 
     if ((hp > 0) && instance_exists(obj_p_ship)) {

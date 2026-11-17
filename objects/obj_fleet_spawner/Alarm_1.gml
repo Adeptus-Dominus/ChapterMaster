@@ -33,6 +33,7 @@ if ((owner == eFACTION.IMPERIUM) || (owner == eFACTION.ELDAR)) {
                     _vertical_offset += en_height[_ship_index];
                     _ship.class = en_column[_ship_index];
                     _ship.owner = owner;
+                    _ship.fleet_data = fleet_data;
                     _ship.size = en_size[_ship_index];
                 }
                 if (en_size[_ship_index] >= 3) {
@@ -40,6 +41,7 @@ if ((owner == eFACTION.IMPERIUM) || (owner == eFACTION.ELDAR)) {
                     _vertical_offset += en_height[_ship_index];
                     _ship.class = en_column[_ship_index];
                     _ship.owner = owner;
+                    _ship.fleet_data = fleet_data;
                     _ship.size = en_size[_ship_index];
                 }
             }
@@ -62,6 +64,7 @@ if ((owner == eFACTION.ORK) || (owner == eFACTION.CHAOS)) {
                 }
                 _ship.class = en_column[i];
                 _ship.owner = owner;
+                _ship.fleet_data = fleet_data;
                 _ship.size = en_size[i];
             }
         }
@@ -78,6 +81,7 @@ if (owner == eFACTION.TAU) {
         _vertical_offset += en_height[5];
         _ship.class = "Warden";
         _ship.owner = owner;
+        _ship.fleet_data = fleet_data;
         _ship.size = en_size[5];
     }
     _horizontal_offset += en_width[5];
@@ -90,6 +94,7 @@ if (owner == eFACTION.TAU) {
         _vertical_offset += en_height[2];
         _ship.class = "Emissary";
         _ship.owner = owner;
+        _ship.fleet_data = fleet_data;
         _ship.size = en_size[2];
     }
     repeat (en_num[3]) {
@@ -97,6 +102,7 @@ if (owner == eFACTION.TAU) {
         _vertical_offset += en_height[3];
         _ship.class = "Protector";
         _ship.owner = owner;
+        _ship.fleet_data = fleet_data;
         _ship.size = en_size[3];
     }
     _horizontal_offset += max(en_width[2], en_width[3]);
@@ -108,6 +114,7 @@ if (owner == eFACTION.TAU) {
         _vertical_offset += en_height[4];
         _ship.class = "Castellan";
         _ship.owner = owner;
+        _ship.fleet_data = fleet_data;
         _ship.size = en_size[4];
     }
     _horizontal_offset += en_width[4];
@@ -119,6 +126,7 @@ if (owner == eFACTION.TAU) {
         _vertical_offset += en_height[1];
         _ship.class = "Custodian";
         _ship.owner = owner;
+        _ship.fleet_data = fleet_data;
         _ship.size = en_size[1];
     }
 }
@@ -133,6 +141,7 @@ if (owner == eFACTION.TYRANIDS) {
         _vertical_offset += en_height[4];
         _ship.class = "Prowler";
         _ship.owner = owner;
+        _ship.fleet_data = fleet_data;
         _ship.size = en_size[4];
     }
     _horizontal_offset += en_width[4];
@@ -144,6 +153,7 @@ if (owner == eFACTION.TYRANIDS) {
         _vertical_offset += en_height[3];
         _ship.class = "Razorfiend";
         _ship.owner = owner;
+        _ship.fleet_data = fleet_data;
         _ship.size = en_size[3];
     }
     _horizontal_offset += en_width[3];
@@ -155,6 +165,7 @@ if (owner == eFACTION.TYRANIDS) {
         _vertical_offset += en_height[2];
         _ship.class = "Stalker";
         _ship.owner = owner;
+        _ship.fleet_data = fleet_data;
         _ship.size = en_size[2];
     }
     _horizontal_offset += en_width[2];
@@ -166,6 +177,7 @@ if (owner == eFACTION.TYRANIDS) {
         _vertical_offset += en_height[1];
         _ship.class = "Leviathan";
         _ship.owner = owner;
+        _ship.fleet_data = fleet_data;
         _ship.size = en_size[1];
     }
 }
@@ -180,6 +192,7 @@ if (owner == eFACTION.NECRONS) {
         _vertical_offset += en_height[4];
         _ship.class = "Dirge Class";
         _ship.owner = owner;
+        _ship.fleet_data = fleet_data;
         _ship.size = en_size[4];
     }
     _horizontal_offset += en_width[4];
@@ -191,6 +204,7 @@ if (owner == eFACTION.NECRONS) {
         _vertical_offset += en_height[3];
         _ship.class = "Jackal Class";
         _ship.owner = owner;
+        _ship.fleet_data = fleet_data;
         _ship.size = en_size[3];
     }
     _horizontal_offset += en_width[3];
@@ -202,6 +216,7 @@ if (owner == eFACTION.NECRONS) {
         _vertical_offset += en_height[2];
         _ship.class = "Shroud Class";
         _ship.owner = owner;
+        _ship.fleet_data = fleet_data;
         _ship.size = en_size[2];
     }
     _horizontal_offset += en_width[2];
@@ -213,6 +228,7 @@ if (owner == eFACTION.NECRONS) {
         _vertical_offset += en_height[1];
         _ship.class = "Reaper Class";
         _ship.owner = owner;
+        _ship.fleet_data = fleet_data;
         _ship.size = en_size[1];
     }
 }

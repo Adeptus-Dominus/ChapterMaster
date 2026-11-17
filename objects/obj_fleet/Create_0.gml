@@ -73,16 +73,23 @@ var _size = 11;
 enemy = [];
 enemy_status = [];
 en_capital = [];
-en_capital_lost = [];
 en_frigate = [];
-en_frigate_lost = [];
 en_escort = [];
-en_escort_lost = [];
 total_enemies = 0;
 total_allies = 1;
 
 enemy_fleets = [];
 allied_fleets = [];
+player_fleet = {
+    fleet: noone,
+    owner: eFACTION.PLAYER,
+    capitals: 0,
+    frigates: 0,
+    escorts: 0,
+    capital_lost: 0,
+    frigate_lost: 0,
+    escort_lost: 0,
+};
 
 // Should be 0-5 for each of the factions
 

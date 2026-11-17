@@ -52,13 +52,15 @@ function EndTurnBattle(_data) constructor{
         var _battle_instance = instance_create(0, 0, obj_fleet);
 
         _battle_instance.player_fleet = {
-        	fleet : pobject,
-        	owner : eFACTION.PLAYER,
-        	capitals: _battle_fleet.capital_number,
-        	frigates : _battle_fleet.frigate_number,
-        	escorts : _battle_fleet.escort_number
-
-        }
+            fleet : pobject,
+            owner : eFACTION.PLAYER,
+            capitals : _battle_fleet.capital_number,
+            frigates : _battle_fleet.frigate_number,
+            escorts : _battle_fleet.escort_number,
+            capital_lost : 0,
+            frigate_lost : 0,
+            escort_lost : 0
+        };
 
         _battle_instance.allied_fleets = battle_data.allied_fleets;
         _battle_instance.enemy_fleets = battle_data.enemy_fleets;
@@ -189,7 +191,10 @@ function EndTurnBattle(_data) constructor{
 					frigates: round(_fleet.frigate_number),
 					escorts: round(_fleet.escort_number),
 					fleet : _fleet.id,
-					owner : _fleet.owner
+					owner : _fleet.owner,
+					capital_lost : 0,
+					frigate_lost : 0,
+					escort_lost : 0
 				};
 				if (obj_controller.faction_status[_fleet.owner] == "War" || _fleet.owner == eFACTION.TYRANIDS || _fleet.owner == eFACTION.NECRONS){
 					_fleet_entry.enemy_status = eENEMY_STATUS.ENEMY;

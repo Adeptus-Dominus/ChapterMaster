@@ -217,8 +217,6 @@ if ((boarding == true) && (board_cooldown >= 0) && instance_exists(target) && in
                     }
 
                     if ((target.hp <= 0) || (target.bridge <= 0)) {
-                        var husk = instance_create(target.x, target.y, obj_en_husk);
-
                         if (experience == 0) {
                             experience = 2;
                             if ((target.owner == eFACTION.ECCLESIARCHY) || (target.owner == eFACTION.ORK) || (target.owner == eFACTION.ELDAR) || (target.owner == eFACTION.NECRONS)) {

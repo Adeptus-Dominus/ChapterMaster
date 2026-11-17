@@ -39,7 +39,6 @@ try {
     }
 
     // EndTurnBattle hands over one entry per fleet in the battle, enemies first then allies.
-    // Loss counters follow that same order.
     var _battle_fleets = array_concat(enemy_fleets, allied_fleets);
     var _fleet_count = array_length(_battle_fleets);
 
@@ -65,14 +64,11 @@ try {
             continue;
         }
 
-        var _capital_lost = en_capital_lost[i] ?? 0;
-        var _frigate_lost = en_frigate_lost[i] ?? 0;
-        var _escort_lost = en_escort_lost[i] ?? 0;
+        var _capital_lost = _fleet_entry.capital_lost;
+        var _frigate_lost = _fleet_entry.frigate_lost;
+        var _escort_lost = _fleet_entry.escort_lost;
 
         if (_capital_lost + _frigate_lost + _escort_lost >= _fleet.capital_number + _fleet.frigate_number + _fleet.escort_number) {
-            en_capital_lost[i] = _capital_lost - _fleet.capital_number;
-            en_frigate_lost[i] = _frigate_lost - _fleet.frigate_number;
-            en_escort_lost[i] = _escort_lost - _fleet.escort_number;
             instance_destroy(_fleet);
             continue;
         }
@@ -84,10 +80,6 @@ try {
         _fleet.capital_number -= _capital_applied;
         _fleet.frigate_number -= _frigate_applied;
         _fleet.escort_number -= _escort_applied;
-
-        en_capital_lost[i] = _capital_lost - _capital_applied;
-        en_frigate_lost[i] = _frigate_lost - _frigate_applied;
-        en_escort_lost[i] = _escort_lost - _escort_applied;
 
         if (_fleet.capital_number + _fleet.frigate_number + _fleet.escort_number <= 0) {
             instance_destroy(_fleet);

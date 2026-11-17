@@ -190,6 +190,9 @@ function setup_player_combat_ship() {
 
     name = obj_ini.ship[ship_id];
     class = obj_ini.ship_class[ship_id];
+    owner = eFACTION.PLAYER;
+    size = obj_ini.ship_size[ship_id];
+    fleet_data = obj_fleet.player_fleet;
     hp = obj_ini.ship_hp[ship_id] * 1;
     maxhp = obj_ini.ship_hp[ship_id] * 1;
     conditions = obj_ini.ship_conditions[ship_id];
@@ -385,25 +388,18 @@ function setup_player_combat_ship() {
 }
 
 
-function fleet_combat_destroy_ship(){
+function fleet_combat_destroy_ship() {
+    var _player_ship = (object_index == obj_p_ship) || object_is_ancestor(object_index, obj_p_ship);
 
     if (size >= 3) {
-        fleet_data.capitals += 1;
+        fleet_data.capital_lost += 1;
     } else if (size == 2) {
-        fleet_data.frigates += 1;
+        fleet_data.frigate_lost += 1;
     } else if (size == 1) {
-        fleet_data.escorts += 1;
+        fleet_data.escort_lost += 1;
     }
 
     image_alpha = 0.5;
-
-    if (array_contains(["Gorbag's Revenge", "Dethdeala", "Kroolboy", "Desecrator", "Custodian", "Leviathan", "Battle Barge", "Gloriana"], class)) {
-        fleet_data.capitals += 1;
-    } else if (array_contains(["Battlekroozer", "Daemon", "Avenger Class Grand Cruiser", "Carnage", "Emissary", "Protector", "Razorfiend", "Strike Cruiser"], class)) {
-        fleet_data.frigates += 1;
-    } else if (array_contains(["Ravager", "Iconoclast", "Warden", "Castellan", "Stalker", "Prowler", "Sword Class Frigate", "Hunter", "Gladius"], class)) {
-        fleet_data.escorts += 1;
-    }
 
     if (owner != eFACTION.TYRANIDS && obj_fleet.start != 0) {
         var husk = instance_create(x, y, obj_en_husk);
@@ -423,10 +419,22 @@ function fleet_combat_destroy_ship(){
     if (owner == eFACTION.TYRANIDS) {
         effect_create_depth(depth - 1, ef_firework, x, y, 1, c_purple);
     }
-    if (object_index == obj_p_ship){
+
+    if (_player_ship) {
+        if (size >= 3) {
+            obj_fleet.capital -= 1;
+            obj_fleet.capital_lost += 1;
+        } else if (size == 2) {
+            obj_fleet.frigate -= 1;
+            obj_fleet.frigate_lost += 1;
+        } else if (size == 1) {
+            obj_fleet.escort -= 1;
+            obj_fleet.escort_lost += 1;
+        }
+        obj_fleet.ship_lost[ship_id] = 1;
         x = -7000;
-        y = room_height / 2;        
+        y = room_height / 2;
     } else {
-        instance_destroy();   
+        instance_destroy();
     }
 }
