@@ -73,3 +73,20 @@ if (!instance_exists(obj_fleet_spawner)) {
     alarm[4] = 1;
     exit;
 }
+
+// Spawners place their ships on the next two steps, so the battle starts after them.
+if (control) {
+    instance_activate_object(obj_cursor);
+}
+
+instance_activate_object(obj_p_ship);
+instance_activate_object(obj_en_ship);
+
+instance_create(0, 0, obj_fleet_controller);
+
+if (!instance_exists(obj_en_ship)) {
+    combat_end = -1;
+    start = 6;
+    obj_p_ship.alarm[3] = 1;
+    alarm[0] = 10;
+}
