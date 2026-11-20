@@ -97,7 +97,3 @@ if (!instance_exists(obj_fleet_spawner)) {
     alarm[4] = 1;
     exit;
 }
-
-with (obj_fleet_spawner) {
-    alarm[0] = 1;
-}
