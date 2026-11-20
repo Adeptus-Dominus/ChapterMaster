@@ -48,10 +48,10 @@ if (player_started == 0) {
 }
 if (player_started == 1) {
     var taxt = string(global.chapter_name) + " engage and destroy a";
-    if ((enemy[1] == 2) || (enemy[1] == 4) || (enemy[1] == 5) || (enemy[1] == 6)) {
+    if ((engaged_faction == 2) || (engaged_faction == 4) || (engaged_faction == 5) || (engaged_faction == 6)) {
         taxt += "n";
     }
-    taxt += " " + string(obj_controller.faction[enemy[1]]);
+    taxt += " " + string(obj_controller.faction[engaged_faction]);
     taxt += " fleet at " + string(ene_fleet.name) + ".";
     scr_event_log("", taxt);
 
@@ -69,8 +69,8 @@ if (player_started == 1) {
             }
         }
     }
-    if ((enemy[1] != 4) && (obj_controller.faction_status[enemy[1]] != "War")) {
-        scr_audience(enemy[1], "declare_war", obj_controller.disposition[enemy[1]] - 20, "War", 3, 2);
+    if ((engaged_faction != eFACTION.INQUISITION) && (obj_controller.faction_status[engaged_faction] != "War")) {
+        scr_audience(engaged_faction, "declare_war", obj_controller.disposition[engaged_faction] - 20, "War", 3, 2);
     }
 }
 

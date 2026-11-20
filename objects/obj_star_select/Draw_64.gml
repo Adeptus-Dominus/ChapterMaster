@@ -416,6 +416,7 @@ try {
                     _battle_instance.player_started = 1;
                     _battle_instance.pla_fleet = _player_fleet;
                     _battle_instance.ene_fleet = target;
+                    _battle_instance.engaged_faction = _button.fleet.owner;
                     _battle_instance.player_fleet = {
                         fleet: _player_fleet,
                         owner: eFACTION.PLAYER,
