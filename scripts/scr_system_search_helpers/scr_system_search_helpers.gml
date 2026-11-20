@@ -535,14 +535,24 @@ function scr_planet_image_numbers(p_type) {
 function star_has_planet_with_forces(star, faction, minimum_strength = 1) {
     var found = false;
     with (star) {
-        for (var p = 0; p <= planets && !found; p++) {
-            if (found) {
-                break;
-            }
+        for (var p = 1; p <= planets && !found; p++) {
             found = planet_has_forces(star, p, faction, minimum_strength);
         }
     }
     return found;
+}
+
+/// @param {Id.Instance.obj_star} star
+/// @param {Enum.eFACTION} faction
+/// @param {Real} minimum_strength
+/// @returns {Real} Planet index, or -1 if none matches
+function find_planet_with_forces(star, faction, minimum_strength = 1) {
+    for (var p = 1; p <= star.planets; p++) {
+        if (planet_has_forces(star, p, faction, minimum_strength)) {
+            return p;
+        }
+    }
+    return -1;
 }
 
 /// @param {Id.Instance.obj_star} star

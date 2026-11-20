@@ -56,7 +56,7 @@ function scr_inquisition_mission(event, forced_mission = eINQUISITION_MISSION.RA
                 // array_push(demon_worlds, _star); // turning this off til i have a way to finish the mission
             }
 
-            if (star_has_planet_with_forces(_star, eFACTION.TYRANIDS, 4)) {
+            if (find_planet_with_forces(_star, eFACTION.TYRANIDS, 4) != -1) {
                 array_push(tyranid_org_worlds, _star);
                 found_tyranid_org = true;
             }
@@ -104,12 +104,10 @@ function scr_inquisition_mission(event, forced_mission = eINQUISITION_MISSION.RA
             case eINQUISITION_MISSION.TYRANID_ORGANISM:
                 LOGGER.info("RE: Gaunt Capture");
                 var _star = array_random_element(tyranid_org_worlds);
-                var planet = -1;
-                for (var i = 1; i <= _star.planets; i++) {
-                    if (_star.p_tyranids[i] > 4) {
-                        planet = i;
-                        break;
-                    }
+                var planet = find_planet_with_forces(_star, eFACTION.TYRANIDS, 4);
+                if (planet == -1) {
+                    LOGGER.error($"No valid Tyranid planet found on {_star.name}");
+                    break;
                 }
 
                 var _eta = scr_mission_eta(_star.x, _star.y, 1);
