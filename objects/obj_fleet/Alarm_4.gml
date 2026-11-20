@@ -59,11 +59,6 @@ if (player_started == 1) {
         with (obj_star_select) {
             alarm[1] = 1;
             player_fleet = 0;
-            var i = -1;
-            repeat (15) {
-                i += 1;
-                en_fleet[i] = 0;
-            }
         }
     }
     if (instance_exists(pla_fleet)) {

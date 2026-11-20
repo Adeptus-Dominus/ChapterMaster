@@ -57,6 +57,23 @@ function scr_image(path, image_id, x1, y1, width, height) {
     }
 }
 
+function scr_img_sprite(path, image_id){
+    var _entry = obj_img.image_registry[$ path];
+        if (!is_undefined(_entry)) {
+            var _sprites = _entry.sprites;
+            var _index = (_entry.fixed_index >= 0) ? _entry.fixed_index : image_id;
+
+            if (_index < array_length(_sprites)) {
+                var _sprite = _sprites[_index];
+                if ((_sprite > 0) && sprite_exists(_sprite)) {
+                    return _sprite;
+                }
+            }
+            LOGGER.error("Sprite Not Found")
+            return spr_none;
+        }
+}
+
 function scr_image_draw_missing(x1, y1, width, height) {
     var _old_alpha = draw_get_alpha();
     var _old_color = draw_get_color();

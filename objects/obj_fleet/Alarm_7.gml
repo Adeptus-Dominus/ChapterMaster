@@ -41,6 +41,7 @@ try {
     // EndTurnBattle hands over one entry per fleet in the battle, enemies first then allies.
     var _battle_fleets = array_concat(enemy_fleets, allied_fleets);
     var _fleet_count = array_length(_battle_fleets);
+    instance_activate_object(obj_en_fleet);
 
     for (var i = 0; i < _fleet_count; i++) {
         var _fleet_entry = _battle_fleets[i];
