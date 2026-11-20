@@ -37,8 +37,6 @@ speed_button = new SpriteButton({
 original_speed = game_get_speed(gamespeed_fps);
 speed_mode = 0;
 
-enemy = 0;
-enemy_status = "attacking";
 
 tempor1 = 0;
 tempor2 = 0;
@@ -67,16 +65,6 @@ column[5] = "";
 column_width[5] = 0; // Furthest right
 
 threat = 4;
-
-var _size = 11;
-
-enemy = [];
-enemy_status = [];
-en_capital = [];
-en_frigate = [];
-en_escort = [];
-total_enemies = 0;
-total_allies = 1;
 
 enemy_fleets = [];
 allied_fleets = [];
