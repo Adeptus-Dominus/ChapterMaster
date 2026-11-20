@@ -69,4 +69,7 @@ capital_max = capital;
 frigate_max = frigate;
 escort_max = escort;
 
-obj_fleet_spawner.alarm[0] = 1;
+if (!instance_exists(obj_fleet_spawner)) {
+    alarm[4] = 1;
+    exit;
+}

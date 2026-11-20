@@ -2,8 +2,7 @@
 
 ## Useful Links
 
-- GameMaker Manual GitHub: https://github.com/YoYoGames/GameMaker-Manual/develop/Manual/contents/GameMaker_Language/
-- GameMaker Manual: https://manual.gamemaker.io/beta/en/
+- GameMaker Manual (official docs): https://github.com/YoYoGames/GameMaker-Manual/develop/Manual/contents/GameMaker_Language/
 - GameMaker Forum (community evidence, working solutions, and tips): https://forum.gamemaker.io/
 
 ## Sequential Execution
@@ -13,15 +12,30 @@ The only exception is when you use parallel sub-agents, each handling a separate
 
 ## Banned Symbols
 
-The entire codebase must use only 7-bit ASCII characters (Unicode range U+0000 to U+007F). Never use the following symbols:
-- Curly quotes (“ ” ‘ ’) -> use straight quotes (" ').
-- Em/En dashes (— –) -> use hyphen (-).
-- Math symbols (× ÷ ≠ ≤ ≥ ±) -> use ASCII equivalents (* / != <= >= +/-).
-- Bullets (• ▪ ◦) -> use asterisk (*) or hyphen (-).
-- Ellipsis (…) -> use three periods (...).
-- Arrows (→ ⇒) -> use ASCII (-> =>).
+Use only 7-bit ASCII (U+0000–U+007F). Exceptions only where a string literal technically requires a Unicode char; note it explicitly.
 
-If a single non-ASCII character outside of a mandatory UI string (i.e., a user-facing label that explicitly requires it) is found, the entire submission is rejected.
+Replace or remove:
+- Curly quotes and apostrophes (“ ” ‘ ’ ‛ ‟) -> straight (" ')
+- Em dash (—), en dash (–), horizontal bar (―), figure dash (‒) -> follow the replacement rule below
+- Ellipsis (… ‥) -> three periods (...)
+- Bullets (• ▪ ◦ ‣ · ∙) -> hyphen (-)
+- Arrows (→ ← ⇒ ⇐ ↔) -> -> <- => <= <->
+- Math signs (× ÷ ≠ ≤ ≥ ± − √ ∞) -> * / != <= >= +/- - sqrt inf
+- Primes (′ ″ ‴) -> ' '' '''
+- Ligatures (ﬁ ﬂ) -> fi fl
+- Non-breaking and invisible chars (U+00A0, U+00AD, U+200B, U+200C, U+200D, U+FEFF, U+2011) -> remove or use normal space/hyphen
+- Guillemets (« » ‹ ›) -> straight quotes
+- Degree, middle dot, section, dagger ( ° · § † ‡) -> write out or drop
+
+Em/en dash replacement rule:
+- Aside or parenthetical -> parentheses, or paired commas if the aside is short
+- Explanation, reveal, or list intro -> colon
+- Two independent clauses -> semicolon, or period if you want a harder break
+- Hard interruption in dialogue -> ellipsis (trailing off), period, or an action beat
+- Range (1990–2000) -> "to" (preferred) or hyphen
+- Attribution -> comma, period, or parentheses per style guide
+
+Never replace an em dash with a bare comma between independent clauses. That is a comma splice.
 
 ## Reduce Comment Noise
 
@@ -47,6 +61,5 @@ For each added guard, ask: "What real input or state reaches this line and makes
 
 ## Misc Rules
 
-- Favor idiomatic terseness: ternary operators, nullish coalescing (??, ??=) where readable.
 - Write elegant, idiomatic, clean code, like a senior software developer.
 - Don't try to create new `.yy` files when creating new `.gml` scripts. They'll be created by GameMaker automatically.

@@ -9,7 +9,7 @@
   "compaction": {
     "auto": true,
     "prune": true,
-    "reserved": 120000
+    "reserved": 50000
   },
   "formatter": false,
   "instructions": [
@@ -18,5 +18,7 @@
     "docs/CODE_STYLE.md"
   ],
   "snapshot": false,
-  "model": "opencode/muse-spark-1.2-contributor-free"
+  "model": "opencode/deepseek-v4.1-flash-free",
+  "websearch": false,
+  "plugin": ["opencode-search@0.0.9"]
 }
