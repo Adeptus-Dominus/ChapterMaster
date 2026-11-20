@@ -88,6 +88,10 @@ function CountingMap(_initial_array = undefined) constructor {
         add_all(_initial_array);
     }
 
+    static keys = function(){
+        return struct_get_names(map);
+    }
+
     static add = function(_key, number = 1) {
         if (_key == "") {
             return;

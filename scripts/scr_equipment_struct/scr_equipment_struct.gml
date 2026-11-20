@@ -56,7 +56,7 @@ function EquipmentStruct(item_data = undefined, core_type = "", quality_request 
     quality = quality_request == "none" ? "standard" : quality_request;
     // Struct defaults end;
 
-    // Loop through teh data, to fill the struct;
+    // Loop through the data, to fill the struct;
     if (is_struct(item_data)) {
         var _struct_keys = struct_get_names(item_data);
         for (var i = 0; i < array_length(_struct_keys); i++) {
@@ -504,6 +504,110 @@ function EquipmentStruct(item_data = undefined, core_type = "", quality_request 
     };
 }
 
+function TagSetItems(_set) constructor {
+    if (is_real(_set)){
+        _set = global.equipment_tags[_set];
+    }
+    name = _set.name;
+    type = _set.type;
+    tag = _set.tag;
+    items = gear_with_tag(type, tag, true);
+    item_map = noone;
+
+    req_exp = 1000;
+    for (var i = 0; i < array_length(items); i++){
+        req_exp = min(items[i].req_exp, req_exp);
+    }
+
+    static has_tag = function(_tag){
+        if (_tag == tag){
+            return true;
+        } else {
+            for (var i = 0; i < array_length(items); i++){
+                if (items[i].has_tag(_tag)){
+                    return true;
+                }
+            }            
+        }
+        return false;
+    }
+
+    static has_item = function(_item){
+        for (var i = 0; i < array_length(items); i++){
+            if (items[i].name == _item){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static create_item_map = function(){
+        item_map = new CountingMap();
+        for (var i = 0; i < array_length(items); i++){
+            var _item = items[i].name;
+            var _count = scr_item_count(items[i].name);
+            if (_count >= 1){
+                item_map.add(_item, scr_item_count(items[i].name));
+            } 
+        }
+    }
+
+    static get_item_from_map = function(_item = ""){
+        if (_item == ""){
+            _item = array_random_element(item_map.keys());
+        }
+        item_map.add(_item, -1);
+        return _item;
+    }  
+
+    static total_in_inventory = function(){
+        var _total = 0;
+        for (var i = 0; i < array_length(items); i++){
+            _total += scr_item_count(items[i].name);
+        }
+        return _total;
+    }
+}
+
+function gear_with_tag(_search_area = "any", _wanted_tag, _fetch_struct = false){
+    var _matches = [];
+    var _gear_areas = [
+        "gear",
+        "armour",
+        "mobility",
+    ];
+
+    var _areas = (_search_area == "any") ? array_concat(_gear_areas, ["weapon"]) : [_search_area];
+
+    for (var a = 0; a < array_length(_areas); a++) {
+        var _area = _areas[a];
+        var _area_data = undefined;
+
+        if (array_contains(_gear_areas, _area)) {
+            _area_data = global.gear[$ _area];
+        } else if (_area == "weapon") {
+            _area_data = global.weapons;
+        }
+        if (is_undefined(_area_data)) continue;
+
+        var _keys = struct_get_names(_area_data);
+        for (var k = 0; k < array_length(_keys); k++) {
+            var _key = _keys[k];
+            if (!struct_exists(_area_data[$ _key], "tags")){
+                continue;
+            }
+            if (array_contains(_area_data[$ _key].tags, _wanted_tag)) {
+                if (_fetch_struct) {
+                    array_push(_matches, gear_weapon_data(_area, _key, "all"));
+                } else {
+                    array_push(_matches, _key);
+                }
+            }
+        }
+    }
+    return _matches;
+}
+
 /// @param {string} search_area possible values: "any", "weapon", "gear", "armour", "mobility"
 function gear_weapon_data(search_area = "any", item, wanted_data = "all", sub_class = false, quality_request = "standard", arti_struct = -1) {
     var item_data_set = false;
@@ -605,4 +709,47 @@ function quality_color(_item_quality) {
         case "artifact":
             return #40bfbf;
     }
+}
+
+function equipment_tag_key_from_value(_value) {
+    for (var i = 0; i < array_length(global.equipment_tags); i++) {
+        if (global.equipment_tags[i].name == _value) {
+            return global.equipment_tags[i].tag;
+        }
+    }
+    return "";
+}
+
+function is_item_set(_value){
+    for (var i = 0; i < array_length(global.equipment_tags); i++) {
+        if (global.equipment_tags[i].name == _value) {
+            return i;
+        }
+    }
+    return -1;    
+}
+
+function get_from_item_set(set_name,  _from_armoury = false,_new_quality = "any", _old_equipment = "", _old_quality = "any"){
+    var _item = "";
+    var _set_index = is_item_set(set_name);
+    var _quality_diff = _new_quality != "any" && _old_quality != _new_quality;
+    if (_from_armoury){
+        var _set = new TagSetItems(_set_index);
+        if (_quality_diff && _old_equipment != "" && _set.has_item(_old_equipment)){
+            return EQUIPMENT_UNCHANGED;
+        }
+        _set.create_item_map();
+        if (array_length(_set.item_map.keys()) == 0){
+            return NO_ITEM_IN_ARMOURY;
+        }
+        _item = _set.get_item_from_map()
+    } else {
+        var _set = global.equipment_tags[_set_index];
+        var _items = gear_with_tag(_set.type, _set.tag, false);
+        if (_quality_diff && _old_equipment != ""  && array_contains(_items, _old_equipment)){
+            return EQUIPMENT_UNCHANGED;
+        }
+       _item =  array_random_element(_items);
+    }
+    return _item;
 }
