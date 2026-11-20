@@ -2,6 +2,8 @@
 #macro STR_ERROR_MESSAGE_HEAD $"Your game just encountered and caught an error!"
 #macro STR_ERROR_MESSAGE_HEAD2 $"Your game just encountered a critical error! :("
 #macro STR_ERROR_MESSAGE_PS $"P.S. You can ALT-TAB and try to continue playing, though it's recommended to wait for a response to your bug report."
+#macro SEND_DISCORD_REPORTS false
+#macro SEND_GITHUB_REPORTS true
 
 function GameError(_header, _message, _stacktrace = "", _critical = false, _report_title = "") constructor {
     var _context = ERROR_HANDLER.get_context();
@@ -273,8 +275,6 @@ function ErrorHandler() constructor {
     /// @desc Sends the report to Discord and GitHub with optional user notes.
     /// @param {string} _user_text Optional user description text.
     static __send = function(_user_text = "") {
-        var _url = "__DISCORD_WEBHOOK_URL__";
-
         if (!is_instanceof(pending_error, GameError)) {
             LOGGER.error("Not a valid GameError");
             return;
@@ -285,13 +285,18 @@ function ErrorHandler() constructor {
             return;
         }
 
-        if (_url == "" || string_pos("__", _url) == 1) {
-            LOGGER.debug("Discord webhook not configured; skipping Discord report.");
-        } else {
-            __send_discord(pending_error, _url, _user_text);
+        if (SEND_DISCORD_REPORTS) {
+            var _url = "__DISCORD_WEBHOOK_URL__";
+            if (_url == "" || string_pos("__", _url) == 1) {
+                LOGGER.debug("Discord webhook not configured; skipping Discord report.");
+            } else {
+                __send_discord(pending_error, _url, _user_text);
+            }
         }
 
-        GITHUB_BUG_REPORTER.report(pending_error, _user_text);
+        if (SEND_GITHUB_REPORTS) {
+            GITHUB_BUG_REPORTER.report(pending_error, _user_text);
+        }
     };
 
     /// @desc Packages and dispatches the report to Discord.
