@@ -1,14 +1,12 @@
 var total_enemies = 0;
 var total_allies = 1;
 
-for (var i = 1; i <= 6; i++) {
-    if (enemy[i] != 0) {
-        if (enemy_status[i] < 0) {
-            total_enemies += 1;
-        }
-        if (enemy_status[i] > 0) {
-            total_allies += 1;
-        }
+for (var i = 1; i <= 5; i++) {
+    if (enemy_status[i] < 0) {
+        total_enemies += 1;
+    }
+    if (enemy_status[i] > 0) {
+        total_allies += 1;
     }
 }
 
@@ -95,4 +93,11 @@ capital_max = capital;
 frigate_max = frigate;
 escort_max = escort;
 
-obj_fleet_spawner.alarm[0] = 1;
+if (!instance_exists(obj_fleet_spawner)) {
+    alarm[4] = 1;
+    exit;
+}
+
+with (obj_fleet_spawner) {
+    alarm[0] = 1;
+}

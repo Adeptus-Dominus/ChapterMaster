@@ -36,6 +36,11 @@ function EndTurnBattle(_data) constructor{
             exit;
         }
 
+        if (array_length(battle_data.enemy_fleets) + array_length(battle_data.allied_fleets) <= 0) {
+            obj_turn_end.alarm[4] = 1;
+            exit;
+        }
+
         obj_controller.cooldown = 8000;
         instance_activate_all();
 
