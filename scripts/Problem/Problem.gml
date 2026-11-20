@@ -1,6 +1,37 @@
+function mission_log_batch_begin() {
+    if (!variable_global_exists("mission_log_batch_depth")) {
+        global.mission_log_batch_depth = 0;
+        global.mission_log_dirty = false;
+    }
+    global.mission_log_batch_depth++;
+}
+
+function mission_log_batch_end() {
+    if (!variable_global_exists("mission_log_batch_depth")) {
+        return;
+    }
+    global.mission_log_batch_depth--;
+    if (global.mission_log_batch_depth <= 0) {
+        global.mission_log_batch_depth = 0;
+        if (global.mission_log_dirty) {
+            global.mission_log_dirty = false;
+            obj_controller.location_viewer.update_mission_log();
+        }
+    }
+}
+
+function mission_log_update_request() {
+    if (variable_global_exists("mission_log_batch_depth") && global.mission_log_batch_depth > 0) {
+        global.mission_log_dirty = true;
+    } else {
+        obj_controller.location_viewer.update_mission_log();
+    }
+}
+
 /// @param {string} _sequence_func
 function run_problem_sequence(_sequence_func) {
     var _prob_length = array_length(problems);
+    mission_log_batch_begin();
     for (var i = _prob_length - 1; i >= 0; i--) {
         var _problem = problems[i];
         var _func = _problem[$ _sequence_func];
@@ -13,6 +44,7 @@ function run_problem_sequence(_sequence_func) {
             ERROR_HANDLER.handle_exception(_exception);
         }
     }
+    mission_log_batch_end();
 }
 
 /// @param {string} _name
@@ -102,7 +134,7 @@ function Problem(_name, _timer, _data) constructor {
     };
 
     static mission_log_entry = function() {
-        LOGGER.info($"mission : {p_id}");
+        LOGGER.debug($"mission : {p_id}");
         var _func = find_func("mission_log_entry");
         if (!is_undefined(_func)) {
             try {
@@ -118,7 +150,6 @@ function Problem(_name, _timer, _data) constructor {
     };
 
     static __default_mission_log_entry = function() {
-        LOGGER.info($"mission : {p_id}");
         if (!instance_exists(system)) {
             return undefined;
         }
@@ -249,7 +280,7 @@ function Problem(_name, _timer, _data) constructor {
             }
         }
         __check_delete();
-        obj_controller.location_viewer.update_mission_log();
+        mission_log_update_request();
     };
 
     //requires the completion and required_months flag to be in the data struct
