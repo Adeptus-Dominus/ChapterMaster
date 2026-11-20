@@ -37,8 +37,6 @@ speed_button = new SpriteButton({
 original_speed = game_get_speed(gamespeed_fps);
 speed_mode = 0;
 
-enemy = 0;
-enemy_status = "attacking";
 
 tempor1 = 0;
 tempor2 = 0;
@@ -68,20 +66,19 @@ column_width[5] = 0; // Furthest right
 
 threat = 4;
 
-var _size = 11;
+enemy_fleets = [];
+allied_fleets = [];
+player_fleet = {
+    fleet: noone,
+    owner: eFACTION.PLAYER,
+    capitals: 0,
+    frigates: 0,
+    escorts: 0,
+    capital_lost: 0,
+    frigate_lost: 0,
+    escort_lost: 0,
+};
 
-enemy = array_create(_size, 0);
-enemy_status = array_create(_size, 0);
-en_capital = array_create(_size, 0);
-en_capital_max = array_create(_size, 0);
-en_capital_lost = array_create(_size, 0);
-en_frigate = array_create(_size, 0);
-en_frigate_max = array_create(_size, 0);
-en_frigate_lost = array_create(_size, 0);
-en_escort = array_create(_size, 0);
-en_escort_max = array_create(_size, 0);
-en_escort_lost = array_create(_size, 0);
-en_ships_max = array_create(_size, 0);
 // Should be 0-5 for each of the factions
 
 capital = 0;

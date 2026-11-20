@@ -124,18 +124,27 @@ raid = 0;
 bombard = 0;
 purge = 0;
 
-player_fleet = 0;
-imperial_fleet = 0;
-mechanicus_fleet = 0;
-inquisitor_fleet = 0;
-eldar_fleet = 0;
-ork_fleet = 0;
-tau_fleet = 0;
-tyranid_fleet = 0;
-heretic_fleet = 0;
+player_fleet = target.has_orbiting_player_fleet();
 
-en_fleet = array_create(15, 0);
+fleet_engage_buttons = [];
+create_fleet_engage_buttons = function() {
+    fleet_engage_buttons = [];
+    var _fleets = get_all_orbiting_fleets(target);
+    for (var i = 0; i < array_length(_fleets); i++) {
+        var _fleet = _fleets[i];
+        var _sprite = scr_img_sprite("ui/force", _fleet.owner);
+        array_push(fleet_engage_buttons, new SpriteButton({
+            sprite: _sprite,
+            scale_x: 32 / sprite_get_width(_sprite),
+            scale_y: 32 / sprite_get_height(_sprite),
+            x1: 33 + 64 * i,
+            y1: 425,
+            tooltip_text: $"Engage {obj_controller.faction[_fleet.owner]} Fleet",
+            fleet: _fleet,
+        }));
+    }
+};
 
-if (obj_controller.menu == eMENU.DEFAULT) {
-    alarm[1] = 1;
+if (player_fleet && obj_controller.menu == eMENU.DEFAULT) {
+    create_fleet_engage_buttons();
 }

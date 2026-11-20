@@ -64,49 +64,7 @@ if (instance_exists(obj_en_ship)) {
 }
 
 if ((hp <= 0) && (x > -5000)) {
-    if ((class == "Battle Barge") || (class == "Gloriana")) {
-        obj_fleet.capital -= 1;
-        obj_fleet.capital_lost += 1;
-    }
-    if (class == "Strike Cruiser") {
-        obj_fleet.frigate -= 1;
-        obj_fleet.frigate_lost += 1;
-    }
-    if (class == "Hunter") {
-        obj_fleet.escort -= 1;
-        obj_fleet.escort_lost += 1;
-    }
-    if (class == "Gladius") {
-        obj_fleet.escort -= 1;
-        obj_fleet.escort_lost += 1;
-    }
-
-    obj_fleet.ship_lost[ship_id] = 1; // show_message("obj_fleet.ship_lost["+string(ship_id)+"] = 1");
-
-    image_alpha = 0.5;
-    if (obj_fleet.start != 0) {
-        /*ex=instance_create(x,y,obj_explosion);
-        ex.image_xscale=2;ex.image_yscale=2;
-        ex.image_speed=0.75;*/
-
-        var husk;
-        husk = instance_create(x, y, obj_en_husk);
-        husk.sprite_index = sprite_index;
-        husk.direction = direction;
-        husk.image_angle = image_angle;
-        husk.depth = depth;
-        husk.image_speed = 0;
-        repeat (choose(4, 5, 6)) {
-            var explo;
-            explo = instance_create(x, y, obj_explosion);
-            explo.image_xscale = 0.5;
-            explo.image_yscale = 0.5;
-            explo.x += random_range(sprite_width * 0.25, sprite_width * -0.25);
-            explo.y += random_range(sprite_width * 0.25, sprite_width * -0.25);
-        }
-    }
-    x = -7000;
-    y = room_height / 2;
+    fleet_combat_destroy_ship();
 }
 if ((hp > 0) && instance_exists(target)) {
     for (var i = 0; i < array_length(cooldown); i++) {

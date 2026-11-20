@@ -32,7 +32,6 @@ var wep = "";
 var dam = 0;
 var o_dist = 0;
 var spid = 0;
-var gud = 0;
 
 if (owner != eFACTION.ELDAR) {
     if ((class == "Daemon") && (image_alpha < 1)) {
@@ -41,47 +40,7 @@ if (owner != eFACTION.ELDAR) {
 
     // Check if ship is destroyed
     if (hp <= 0) {
-        for (var wh = 1; wh <= 5; wh++) {
-            if (obj_fleet.enemy[wh] == owner) {
-                gud = wh;
-            }
-        }
-
-        if ((class == "Gorbag's Revenge" || (class == "Dethdeala") || (class == "Kroolboy") || (class == "Desecrator")) || (class == "Custodian")) {
-            obj_fleet.en_capital_lost[gud] += 1;
-        } else if ((class == "Battlekroozer") || (class == "Daemon") || (class == "Avenger Class Grand Cruiser") || (class == "Carnage") || (class == "Emissary") || (class == "Protector")) {
-            obj_fleet.en_frigate_lost[gud] += 1;
-        } else if ((class == "Ravager") || (class == "Iconoclast") || (class == "Warden") || (class == "Castellan")) {
-            obj_fleet.en_escort_lost[gud] += 1;
-        } else if (class == "Leviathan") {
-            obj_fleet.en_capital_lost[gud] += 1;
-        } else if (class == "Razorfiend") {
-            obj_fleet.en_frigate_lost[gud] += 1;
-        } else if ((class == "Stalker") || (class == "Prowler") || (class == "Sword Class Frigate")) {
-            obj_fleet.en_escort_lost[gud] += 1;
-        }
-
-        image_alpha = 0.5;
-
-        if (owner != eFACTION.TYRANIDS) {
-            var husk = instance_create(x, y, obj_en_husk);
-            husk.sprite_index = sprite_index;
-            husk.direction = direction;
-            husk.image_angle = image_angle;
-            husk.depth = depth;
-            husk.image_speed = 0;
-            for (var i = 0; i < choose(4, 5, 6); i++) {
-                var explo = instance_create(x, y, obj_explosion);
-                explo.image_xscale = 0.5;
-                explo.image_yscale = 0.5;
-                explo.x += random_range(sprite_width * 0.25, sprite_width * -0.25);
-                explo.y += random_range(sprite_width * 0.25, sprite_width * -0.25);
-            }
-        }
-        if (owner == eFACTION.TYRANIDS) {
-            effect_create_depth(depth - 1, ef_firework, x, y, 1, c_purple);
-        }
-        instance_destroy();
+        fleet_combat_destroy_ship();
     }
     // While ship is alive, attack
     if ((hp > 0) && instance_exists(obj_en_ship)) {
@@ -417,39 +376,7 @@ if (owner != eFACTION.ELDAR) {
 // Checks if the enemy fleet is Eldar
 if (owner == eFACTION.ELDAR) {
     if (hp <= 0) {
-        for (var wh = 1; wh <= 5; wh++) {
-            if (obj_fleet.enemy[wh] == owner) {
-                gud = wh;
-            }
-        }
-
-        if (class == "Void Stalker") {
-            obj_fleet.en_capital_lost[gud] += 1;
-        }
-        if (class == "Shadow Class") {
-            obj_fleet.en_frigate_lost[gud] += 1;
-        }
-        if ((class == "Hellebore") || (class == "Aconite")) {
-            obj_fleet.en_escort_lost[gud] += 1;
-        }
-
-        image_alpha = 0.5;
-
-        var husk = instance_create(x, y, obj_en_husk);
-        husk.sprite_index = sprite_index;
-        husk.direction = direction;
-        husk.image_angle = image_angle;
-        husk.depth = depth;
-        husk.image_speed = 0;
-
-        for (var i = 0; i < choose(4, 5, 6); i++) {
-            var explo = instance_create(x, y, obj_explosion);
-            explo.image_xscale = 0.5;
-            explo.image_yscale = 0.5;
-            explo.x += random_range(sprite_width * 0.25, sprite_width * -0.25);
-            explo.y += random_range(sprite_width * 0.25, sprite_width * -0.25);
-        }
-        instance_destroy();
+        fleet_combat_destroy_ship();
     }
     if ((hp > 0) && instance_exists(obj_en_ship)) {
         if (class == "Void Stalker") {

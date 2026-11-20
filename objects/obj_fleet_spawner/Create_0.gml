@@ -1,6 +1,5 @@
 owner = 0;
 height = 0;
-number = 0;
 
 en_escort = 0;
 en_frigate = 0;
