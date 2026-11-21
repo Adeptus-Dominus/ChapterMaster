@@ -349,7 +349,7 @@ function AiFleetProblem(_name, _timer = -1, _data = {}, _fleet = noone) : FleetP
             exit;
         } else if (_offer == 3) {
             with (fleet) {
-                with (instance_nearest(fleet.x, fleet.y, obj_p_fleet)) {
+                with (instance_nearest(x, y, obj_p_fleet)) {
                     scr_add_corruption(true, "1d3");
                 }
                 instance_destroy();
