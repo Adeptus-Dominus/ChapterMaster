@@ -44,9 +44,9 @@ alerts_list = [];
 
 battles = [];
 
-add_battle = function(_battle){
-	array_push(battles, new EndTurnBattle(_battle));
-}
+add_battle = function(_battle) {
+    array_push(battles, new EndTurnBattle(_battle));
+};
 var _string_size = 16;
 strin = array_create(_string_size, "");
 

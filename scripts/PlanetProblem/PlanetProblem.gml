@@ -220,7 +220,6 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
 
     // by default mission battles do not reduce the fortification level or enemy power on a planet
     static new_end_turn_battle = function(battle_opponent_id, special_id = p_id, enemy_data = undefined) {
-
         var _spec = {
             special_id: special_id,
             special_feature: self,
@@ -235,15 +234,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
             enemy_data.reduce_fortification = false;
         }
         _spec.battle_enemy_data = enemy_data;
-        obj_turn_end.add_battle({
-            planet : planet,
-            battle_type : eBATTLE_TYPES.GROUNDFORCES,
-            opponent : battle_opponent_id,
-            location : system.name,
-            object : system,
-            special : _spec
-        });
-        
+        obj_turn_end.add_battle({planet: planet, battle_type: eBATTLE_TYPES.GROUNDFORCES, opponent: battle_opponent_id, location: system.name, object: system, special: _spec});
     };
 
     static new_battle = function(battle_opponent_id, special_id = p_id) {
