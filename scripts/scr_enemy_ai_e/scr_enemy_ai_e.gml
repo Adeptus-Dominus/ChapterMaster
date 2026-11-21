@@ -455,8 +455,6 @@ function scr_enemy_ai_e() {
                 }
 
                 if ((obj_controller.faction_status[i] == "War") && (!special_stop) && (present_fleet[i] > 0)) {
-
-
                     var _special = "";
                     if (i == 10) {
                         obj_controller.temp[1049] = string(name);
@@ -480,15 +478,8 @@ function scr_enemy_ai_e() {
                         }
                     }
                     // Quene battle
-                    if (has_orbiting_player_fleet()){
-                        obj_turn_end.add_battle({
-                            battle_type : eBATTLE_TYPES.FLEET,
-                            opponent : i,
-                            location : name,
-                            object : id,
-                            pobject : instance_nearest(x, y, obj_p_fleet),
-                            special : _special
-                        });
+                    if (has_orbiting_player_fleet()) {
+                        obj_turn_end.add_battle({battle_type: eBATTLE_TYPES.FLEET, opponent: i, location: name, object: id, pobject: instance_nearest(x, y, obj_p_fleet), special: _special});
                     }
                     break;
                 }
@@ -577,13 +568,7 @@ function scr_enemy_ai_e() {
 
                 // other battle crap here
                 if (battle_opponent > 0) {
-                    obj_turn_end.add_battle({
-                        planet : run,
-                        battle_type : eBATTLE_TYPES.GROUNDFORCES,
-                        opponent : battle_opponent,
-                        location : name,
-                        object : id
-                    });
+                    obj_turn_end.add_battle({planet: run, battle_type: eBATTLE_TYPES.GROUNDFORCES, opponent: battle_opponent, location: name, object: id});
                 }
             }
         }

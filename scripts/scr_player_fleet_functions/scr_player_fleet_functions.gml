@@ -163,7 +163,7 @@ function merge_player_fleets(main_fleet, merge_fleet) {
     if (instance_exists(obj_turn_end)) {
         for (var _bi = 0; _bi < array_length(obj_turn_end.battles); _bi++) {
             var _battle = obj_turn_end.battles[_bi];
-            if (_battle.battle_type != eBATTLE_TYPES.FLEET){
+            if (_battle.battle_type != eBATTLE_TYPES.FLEET) {
                 continue;
             }
             var _player_fleet = _battle.pobject;
@@ -310,7 +310,7 @@ function player_retreat_from_fleet_combat(destination_star = noone) {
     try {
         var _battle = obj_turn_end.battles[obj_turn_end.current_battle];
         var _p_fleet = _battle.pobject;
-        var _loc_star = _battle.object
+        var _loc_star = _battle.object;
         var _battle_opponent = _battle.opponent;
 
         // Fleet strength comparison
