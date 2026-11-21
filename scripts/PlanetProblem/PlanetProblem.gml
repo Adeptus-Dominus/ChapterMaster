@@ -2097,7 +2097,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
             };
             var _roster = new Roster();
             _roster.selected_units = members;
-            _roster.setup_battle_formations();
+            setup_battle_formations();
             _roster.add_to_battle();
 
             obj_controller.useful_info += "CHTRP|";

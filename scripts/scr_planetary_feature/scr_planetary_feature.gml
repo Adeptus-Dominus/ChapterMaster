@@ -864,7 +864,7 @@ function remove_stc_from_planet() {
                 instance_deactivate_all_safe();
                 instance_activate_object(obj_ncombat);
                 instance_activate_object(obj_pnunit);
-                _roster.setup_battle_formations();
+                setup_battle_formations();
                 _roster.add_to_battle();
                 delete _roster;
                 instance_destroy();
