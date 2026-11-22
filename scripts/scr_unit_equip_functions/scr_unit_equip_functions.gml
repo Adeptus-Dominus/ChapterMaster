@@ -414,19 +414,18 @@ function alter_unit_equipment(update_equipment, _from_armoury = true, _to_armour
     for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
         var _tag_set_map = undefined;
         var _set = false;
-        var _getter = method(self, _getters[i]);
+        var _getter = method(self, self[$ _getters[i]);
         var _slot_key = global.unit_equip_slots[i];
         if (!struct_exists(update_equipment, _slot_key)) {
             continue;
         }
         var _item = update_equipment[$ _slot_key];
         var _current_item = _getter(true);
-        if (!swap_artifacts && !is_string(_raw_value_of_current_equip)){
+        if (!swap_artifacts && !is_string(_item)){
             continue;
         }
         if (is_struct(_item) && is_instanceof(_item, TagSetItems)){
             _set = true;
-            var _tag_set_map = _tag_set_map;
             if (_tag_set_map.has_item(_current_item)){
                 continue;
             }

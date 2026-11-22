@@ -554,13 +554,13 @@ function TagSetItems(_set) constructor {
 
     static kick_items_with_tag = function(_tag){
         var _has_map = item_map != noone;
-        for (var i = array_length(items)-1; i <= 0; i--){
+        for (var i = array_length(items)-1; i >= 0; i--){
             var _kick = false;
             if (items[i].has_tag(_tag)){
                 _kick =  true;
             }
             if (_has_map && _kick && item_map.get() > 0){
-                item_map.remove(_tag)
+                item_map.remove(items[i].name)
             }
             if (_kick){
                 array_delete(items, i, 1);
