@@ -731,22 +731,6 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
             var _group_big = choose(true, false);
             var _battle_enemy_data = {};
             if (_group_big) {
-                _battle_enemy_data = {
-                    threat: 1,
-                    fortified: false,
-                    cols: [
-                        {
-                            distance: 80,
-                            enemies: [
-                                {
-                                    name: "Fallen",
-                                    number: 1,
-                                },
-                            ],
-                        },
-                    ],
-                };
-
                 // * Large Fallen Group *
                 _battle_enemy_data = {
                     threat: 1,
@@ -758,6 +742,23 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
                                 {
                                     name: "Fallen",
                                     number: choose(3, 4, 5),
+                                },
+                            ],
+                        },
+                    ],
+                };
+            } else {
+                // * Lone Fallen *
+                _battle_enemy_data = {
+                    threat: 1,
+                    fortified: false,
+                    cols: [
+                        {
+                            distance: 80,
+                            enemies: [
+                                {
+                                    name: "Fallen",
+                                    number: 1,
                                 },
                             ],
                         },
