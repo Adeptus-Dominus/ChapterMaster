@@ -546,7 +546,7 @@ function TagSetItems(_set, _quality = "any") constructor {
         return false;
     }
 
-    static has_map = functionn(){
+    static has_map = function(){
         return item_map != noone;
     }
     static create_item_map = function(){
