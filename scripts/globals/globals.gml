@@ -296,6 +296,11 @@ global.equipment_tags = [
         type : "weapon",
         tag : "power"
     },
+    {
+        name : "Chain Weapons", 
+        type : "weapon",
+        tag : "chain"
+    },
 ]
 
 // Tag sets are derived from equipment_tags, so a new set only needs one entry there.

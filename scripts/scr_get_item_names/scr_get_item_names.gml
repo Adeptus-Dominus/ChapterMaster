@@ -27,7 +27,9 @@ function push_marine_ranged_weapons_item_names(_item_names) {
     array_resize(_item_names, initial_size + item_count);
 
     var index = initial_size;
-    _item_names[@ index++] = "Archeotech Laspistol";
+    _item_names[@ index++] = "Heavy Ranged"
+    _item_names[@ index++] = "Pistols"
+    _item_names[@ index++] = "Flame Weapons"
     _item_names[@ index++] = "Assault Cannon";
     _item_names[@ index++] = "Bolt Pistol";
     _item_names[@ index++] = "Bolter";
@@ -68,6 +70,8 @@ function push_marine_melee_weapons_item_names(_item_names) {
 
     var index = initial_size;
     _item_names[@ index++] = "Combat Knife";
+    _item_names[@ index++] = "Power Weapons"
+    _item_names[@ index++] = "Chain Weapons"
     _item_names[@ index++] = "Chainsword";
     _item_names[@ index++] = "Chainaxe";
     _item_names[@ index++] = "Eviscerator";
