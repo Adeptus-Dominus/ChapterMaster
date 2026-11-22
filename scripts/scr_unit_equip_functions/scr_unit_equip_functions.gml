@@ -848,6 +848,9 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
         var _dread_warning_sorted = slot != eEQUIPMENT_SLOT.ARMOUR || get_item("armour").has_tag("dreadnought");
 
         var _is_set = is_instanceof(_item, TagSetItems);
+        if (_is_set){
+            _item.kick_items_with_tag("vehicle");
+        }
         if (needed_count > 0) {
             for (var u = 0; u < array_length(_check_array); u++) {
                 if (check_group == noone && (!obj_controller.man_sel[u] || obj_controller.man[u] != "man")) {

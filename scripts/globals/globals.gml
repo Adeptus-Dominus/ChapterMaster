@@ -272,12 +272,12 @@ global.equipment_tags = [
         tag : "heavy_ranged"
     },
     {
-        name : "Any Power Armour",
+        name : STR_ANY_POWER_ARMOUR,
         type : "armour",
         tag :"power_armour"
     },
     {
-        name : "Any Terminator Armour", 
+        name : STR_ANY_TERMINATOR_ARMOUR, 
         type : "armour", 
         tag : "terminator"
     },
@@ -298,9 +298,20 @@ global.equipment_tags = [
     },
 ]
 
-//TODO these could be compiled on game start
-global.armour_tag_sets = [STR_ANY_POWER_ARMOUR, STR_ANY_TERMINATOR_ARMOUR];
-global.weapon_tag_sets = ["Pistols", "Flame Weapons", "Power Weapons" ,"Heavy Ranged"];
+// Tag sets are derived from equipment_tags, so a new set only needs one entry there.
+global.armour_tag_sets = [];
+global.weapon_tag_sets = [];
+for (var i = 0; i < array_length(global.equipment_tags); i++) {
+    var _equipment_set = global.equipment_tags[i];
+    switch (_equipment_set.type) {
+        case "armour":
+            array_push(global.armour_tag_sets, _equipment_set.name);
+            break;
+        case "weapon":
+            array_push(global.weapon_tag_sets, _equipment_set.name);
+            break;
+    }
+}
 
 global.string_to_enum_roles_map = {
     none: eROLE.NONE,

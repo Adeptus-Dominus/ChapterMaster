@@ -149,6 +149,10 @@ function CountingMap(_initial_array = undefined) constructor {
     static get = function(_key) {
         return struct_exists(map, _key) ? map[$ _key] : 0;
     };
+
+    static remove = function(_key){
+        struct_remove(map, _key);
+    }
 }
 
 //TODO add support for different equipment qualities
