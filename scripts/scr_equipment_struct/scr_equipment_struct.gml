@@ -429,42 +429,43 @@ function EquipmentStruct(item_data = undefined, core_type = "", quality_request 
     };
 
     static has_tags = function(search_tags) {
-        var satisfied = false;
-        var wanted_tags_length = array_length(search_tags);
+        var _satisfied = false;
+        var _wanted_tags_length = array_length(search_tags);
         for (var i = 0; i < array_length(tags); i++) {
-            for (var s = 0; s < wanted_tags_length; s++) {
+            for (var s = 0; s < _wanted_tags_length; s++) {
                 if (search_tags[s] == tags[i]) {
-                    satisfied = true;
+                    _satisfied = true;
                     break;
                 }
             }
-            if (satisfied) {
+            if (_satisfied) {
                 break;
             }
         }
-        return satisfied;
+        return _satisfied;
     };
 
     static has_tags_all = function(search_tags, require_all = false) {
-        var satisfied = false;
-        var wanted_tags_length = array_length(search_tags);
+        var _satisfied = false;
+        var _wanted_tags_length = array_length(search_tags);
+        search_tags = variable_clone(search_tags);
         for (var i = 0; i < array_length(tags); i++) {
-            for (var s = 0; s < wanted_tags_length; s++) {
+            for (var s = 0; s < _wanted_tags_length; s++) {
                 if (search_tags[s] == tags[i]) {
                     array_delete(search_tags, s, 1);
-                    wanted_tags_length--;
+                    _wanted_tags_length--;
                     s--;
-                    if (wanted_tags_length == 0) {
-                        satisfied = true;
+                    if (_wanted_tags_length == 0) {
+                        _satisfied = true;
                         break;
                     }
                 }
             }
-            if (satisfied) {
+            if (_satisfied) {
                 break;
             }
         }
-        return satisfied;
+        return _satisfied;
     };
 
     static owner_data = function(owner) {
@@ -587,11 +588,11 @@ function TagSetItems(_set, _quality = "any") constructor {
                 
             } 
         } else {
-            _check_item = items[_item]
+            var _check_item = items[_item];
             if (_has_map  && item_map.get(_check_item.name) > 0){
                 item_map.remove(_check_item.name)
             }
-            array_delete(items, i, 1);
+            array_delete(items, _item, 1);
         }
     }
 

@@ -485,11 +485,11 @@ function get_filtered_equipment_item_names(_item_names, _equip_category, _melee_
         if (!is_undefined(_excluded_tags)){
             _set.kick_items_with_tag(_excluded_tags);
         }
-        for (var i = 0; i < array_length(_set.items); i++){
-            var _item = _set.items[i];
+        for (var j = 0; j < array_length(_set.items); j++){
+            var _item = _set.items[j];
             var _item_valid = filter_item(_item, _melee_or_ranged, _required_tags, _excluded_tags);
             if (!_item_valid){
-                _set.kick_item(i, false);
+                _set.kick_item(j, false);
             }
         }
         _valid = _set.total_in_inventory() > 0;
