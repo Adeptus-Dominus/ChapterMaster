@@ -562,14 +562,13 @@ function TagSetItems(_set, _quality = "any") constructor {
 
     static kick_items_with_tag = function(_tag){
         if (is_array(_tag)){
-            for (var i = 0; i < val; i++){
+            for (var i = 0; i < array_length(_tag); i++){
                 kick_items_with_tag(_tag[i]);
             }
             return;
         }
         var _has_map = has_map();
         for (var i = array_length(items)-1; i >= 0; i--){
-            var _kick = false;
             var _item = items[i];
             if (_item.has_tag(_tag)){
                 kick_item(i, false)
@@ -581,21 +580,18 @@ function TagSetItems(_set, _quality = "any") constructor {
         var _has_map = has_map();
         if (_check_string && is_string(_item)){
             for (var i = array_length(items)-1; i >= 0; i--){
-                var _kick = false;
                 var _check_item = items[i];
                 if (_check_item.name == _item){
-                    _kick =  true;
+                    kick_item(i, false);
                 }
-                kick_item(i, false);
+                
             } 
         } else {
             _check_item = items[_item]
-            if (_has_map && _kick && item_map.get(_check_item.name) > 0){
+            if (_has_map  && item_map.get(_check_item.name) > 0){
                 item_map.remove(_check_item.name)
             }
-            if (_kick){
-                array_delete(items, i, 1);
-            }
+            array_delete(items, i, 1);
         }
     }
 

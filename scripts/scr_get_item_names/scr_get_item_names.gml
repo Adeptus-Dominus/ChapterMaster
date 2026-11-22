@@ -30,6 +30,7 @@ function push_marine_ranged_weapons_item_names(_item_names) {
     _item_names[@ index++] = "Heavy Ranged"
     _item_names[@ index++] = "Pistols"
     _item_names[@ index++] = "Flame Weapons"
+    _item_names[@ index++] = "Archeotech Laspistol";
     _item_names[@ index++] = "Assault Cannon";
     _item_names[@ index++] = "Bolt Pistol";
     _item_names[@ index++] = "Bolter";
@@ -463,7 +464,7 @@ function get_filtered_equipment_item_names(_item_names, _equip_category, _melee_
         }
 
         // Excluded tags
-        if (_valid && _excluded_tags != undefined) {
+        if (_excluded_tags != undefined) {
             if (_item.has_tags(_excluded_tags)){
                 return false;
             }
@@ -479,7 +480,7 @@ function get_filtered_equipment_item_names(_item_names, _equip_category, _melee_
     }
     for (var i = 0; i < array_length(_tags); i++) {
         var _valid = true;
-        var _set = new TagSetItems(_tags[i],_qual_string);
+        var _set = new TagSetItems(is_item_set(_tags[i]));
         _set.create_item_map();
         if (!is_undefined(_excluded_tags)){
             _set.kick_items_with_tag(_excluded_tags);
@@ -491,7 +492,7 @@ function get_filtered_equipment_item_names(_item_names, _equip_category, _melee_
                 _set.kick_item(i, false);
             }
         }
-        _valid = _set.total_in_inventory > 0;
+        _valid = _set.total_in_inventory() > 0;
         if (_valid){
             array_push(_matched_names, _tags[i]);
         }    
@@ -523,8 +524,7 @@ function get_filtered_equipment_item_names(_item_names, _equip_category, _melee_
     var index = _initial_size;
     for (var j = 0; j < array_length(_matched_names); j++) {
         var _item_name = _matched_names[j];
-        var equip_data = gear_weapon_data(_equip_category, _item_name);
-        _item_names[@ index++] = equip_data.name;
+        _item_names[@ index++] = _item_name;
     }
 
     return _item_names;
