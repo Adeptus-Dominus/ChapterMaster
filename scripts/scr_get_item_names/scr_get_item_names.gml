@@ -779,7 +779,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                 return;
         }
         return;
-    } else if (_role == eROLE.DREADNOUGHT)
+    } else if (_role == eROLE.DREADNOUGHT){
         switch (_slot) {
             case eEQUIPMENT_SLOT.WEAPON_ONE:
             case eEQUIPMENT_SLOT.WEAPON_TWO:
