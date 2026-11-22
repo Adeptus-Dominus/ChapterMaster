@@ -903,15 +903,17 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
             warning += localize("{0} units don't have exp for {1}: {2} required.", [_marines_without_exp, localize(_wanted_item), _item.req_exp]);
         }
 
-        var _check_tags = ["terminator", "dreadnought" ];
-        for (var i = 0; i < array_length(_check_tags); i++){
-            var _tag = _check_tags[i];
-            if (_item.has_tag($"{_tag}_only")) {
-                if (!get_item("armour").has_tag(_tag)) {
-                    equipment_found_and_valid[slot] = false;
-                    warning += localize("Cannot use {0} without {1} Armour.", [localize(_wanted_item),_tag]);
-                }
-            }            
+        if (!_is_set){
+            var _check_tags = ["terminator", "dreadnought" ];
+            for (var i = 0; i < array_length(_check_tags); i++){
+                var _tag = _check_tags[i];
+                if (_item.has_tag($"{_tag}_only")) {
+                    if (!get_item("armour").has_tag(_tag)) {
+                        equipment_found_and_valid[slot] = false;
+                        warning += localize("Cannot use {0} without {1} Armour.", [localize(_wanted_item),_tag]);
+                    }
+                }            
+            }
         }
     };
 

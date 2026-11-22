@@ -333,6 +333,7 @@ function draw_popup_equip(before_after_styling = true) {
         if (i == eEQUIPMENT_SLOT.ARMOUR && equipment_recipient_type == eEQUIP_TARGET_TYPE.DREADNOUGHT){
             _button.active = false;
             _button.draw();
+            continue;
         }
         if (_button.draw(equipment_area != i)) {
             equipment_area = i;
@@ -392,6 +393,9 @@ function draw_popup_equip(before_after_styling = true) {
         var _results = _equip_data.check_set_is_equipable(unit_count);
 
         equipment_found_and_valid = _results.equipment_found_and_valid;
+        if (equipment_recipient_type == eEQUIP_TARGET_TYPE.DREADNOUGHT){
+            equipment_found_and_valid[eEQUIPMENT_SLOT.ARMOUR] = true;//early exit checks for ease
+        }
         warning = _results.warning;
     }
 
