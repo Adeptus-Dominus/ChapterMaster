@@ -1116,7 +1116,7 @@ function scr_initialize_custom() {
         tenth -= 10;
         dreadnought += 1;
     }
-    if ((obj_creation.squad_distribution < 2) && scr_has_disadv("Obliterated")) {
+    if (scr_has_disadv("Obliterated")) {
         techmarines -= 7;
         epistolary -= 2;
         codiciery -= 1;
@@ -2544,36 +2544,37 @@ function scr_initialize_custom() {
             }
             if (!_is_vehicle && _role == "captains") {
                 var _cap_gen_name = global.name_generator.ChapterMemberNameGeneration();
+                var _new_name = "";
                 switch (_coy.coy) {
                     case 1:
-                        var _new_name = honor_captain_name != "" ? honor_captain_name : _cap_gen_name;
+                        _new_name = honor_captain_name != "" ? honor_captain_name : _cap_gen_name;
                         break;
                     case 2:
-                        var _new_name = watch_master_name != "" ? watch_master_name : _cap_gen_name;
+                        _new_name = watch_master_name != "" ? watch_master_name : _cap_gen_name;
                         break;
                     case 3:
-                        var _new_name = arsenal_master_name != "" ? arsenal_master_name : _cap_gen_name;
+                        _new_name = arsenal_master_name != "" ? arsenal_master_name : _cap_gen_name;
                         break;
                     case 4:
-                        var _new_name = lord_admiral_name != "" ? lord_admiral_name : _cap_gen_name;
+                        _new_name = lord_admiral_name != "" ? lord_admiral_name : _cap_gen_name;
                         break;
                     case 5:
-                        var _new_name = march_master_name != "" ? march_master_name : _cap_gen_name;
+                        _new_name = march_master_name != "" ? march_master_name : _cap_gen_name;
                         break;
                     case 6:
-                        var _new_name = rites_master_name != "" ? rites_master_name : _cap_gen_name;
+                        _new_name = rites_master_name != "" ? rites_master_name : _cap_gen_name;
                         break;
                     case 7:
-                        var _new_name = chief_victualler_name != "" ? chief_victualler_name : _cap_gen_name;
+                        _new_name = chief_victualler_name != "" ? chief_victualler_name : _cap_gen_name;
                         break;
                     case 8:
-                        var _new_name = lord_executioner_name != "" ? lord_executioner_name : _cap_gen_name;
+                        _new_name = lord_executioner_name != "" ? lord_executioner_name : _cap_gen_name;
                         break;
                     case 9:
-                        var _new_name = relic_master_name != "" ? relic_master_name : _cap_gen_name;
+                        _new_name = relic_master_name != "" ? relic_master_name : _cap_gen_name;
                         break;
                     case 10:
-                        var _new_name = recruiter_name != "" ? recruiter_name : _cap_gen_name;
+                        _new_name = recruiter_name != "" ? recruiter_name : _cap_gen_name;
                         break;
                 }
                 _unit.set_name(_new_name);

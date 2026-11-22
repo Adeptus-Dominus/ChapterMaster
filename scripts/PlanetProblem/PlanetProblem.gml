@@ -72,8 +72,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
         return _save_copy;
     };
 
-    static load = function(data) {
-        move_data_to_current_scope(data);
+    static post_load = function() {
         __load_members();
         __refresh_data();
     };
@@ -97,6 +96,14 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
     };
 
     //overrides Problem's base version
+    static __advance_timer = function() {
+        if (p_data.system.storm <= 0) {
+            timer--;
+        }
+        return true;
+    };
+
+    //overrides Problem's base version
     static __handle_triggered_mission_func = function(func) {
         if (!is_undefined(func)) {
             __refresh_data();
@@ -109,20 +116,6 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
         }
         __check_delete();
         obj_controller.location_viewer.update_mission_log();
-    };
-
-    static basic_turn_end = function() {
-        if (p_data.system.storm <= 0) {
-            timer--;
-        }
-        if ((timer > -1) && per_turn_checks) {
-            var _func = find_func("per_turn");
-            __handle_triggered_mission_func(_func);
-        }
-        if ((timer == 0) && zero_timer_checks && !delete_mission) {
-            var _func = find_func("resolve");
-            __handle_triggered_mission_func(_func);
-        }
     };
 
     //TODO in the future this should be calculated once on feature selection and then draw each turn
@@ -149,7 +142,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
         var _text_body_height = string_height_ext(draw_data.mission_description, -1, draw_data.w - 20);
         if (draw_data.help != "") {
             draw_text_ext(draw_data.x1 + 10, draw_data.y1 + 40 + _text_body_height + 10, draw_data.help, -1, draw_data.w - 20);
-            _text_body_height += string_height_ext(draw_data.mission_description, -1, draw_data.w - 20) + 10;
+            _text_body_height += string_height_ext(draw_data.help, -1, draw_data.w - 20) + 10;
         }
 
         if (draw_data.button_text != "") {
@@ -227,13 +220,8 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
 
     // by default mission battles do not reduce the fortification level or enemy power on a planet
     static new_end_turn_battle = function(battle_opponent_id, special_id = p_id, enemy_data = undefined) {
-        var _battle_index = obj_turn_end.battles++;
-        obj_turn_end.battle[_battle_index] = 1;
-        obj_turn_end.battle_world[_battle_index] = planet;
-        obj_turn_end.battle_opponent[_battle_index] = battle_opponent_id;
-        obj_turn_end.battle_location[_battle_index] = system.name;
-        obj_turn_end.battle_object[_battle_index] = system;
-        obj_turn_end.battle_special[_battle_index] = {
+
+        var _spec = {
             special_id: special_id,
             special_feature: self,
         };
@@ -246,7 +234,16 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
         if (!struct_exists(enemy_data, "reduce_fortification")) {
             enemy_data.reduce_fortification = false;
         }
-        obj_turn_end.battle_special[_battle_index].battle_enemy_data = enemy_data;
+        _spec.battle_enemy_data = enemy_data;
+        obj_turn_end.add_battle({
+            planet : planet,
+            battle_type : eBATTLE_TYPES.GROUNDFORCES,
+            opponent : battle_opponent_id,
+            location : system.name,
+            object : system,
+            special : _spec
+        });
+        
     };
 
     static new_battle = function(battle_opponent_id, special_id = p_id) {
@@ -272,13 +269,45 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
         }
     };
 
+    static __hunt_beast_beast_name = function() {
+        switch (p_data.planet_type) {
+            case "Feudal":
+                return choose("The Thorn-King", "Blackwood Stalker", "Crowned Razorback", "Cathedral Stag", "Old Bloodfather", "The Green Tyrant");
+
+            case "Ice":
+                return choose("The Frostwyrm", "Glacial Leviathan", "The Howling Pale", "Rimehorn Colossus", "White Death Ursid", "Icebound Devourer");
+
+            case "Death":
+                return choose("The Charnel Leviathan", "God-Eater Beast", "Void-Spined Terror", "Apex Predatrix", "Emperor's Bane", "The Unending Maw");
+        }
+
+        return "Glistening Horror";
+    };
+
+    static __hunt_beast_rumor = function() {
+        switch (p_data.planet_type) {
+            case "Feudal":
+                return choose($"Peasants whisper prayers at night, for {data.beast_name} walks the old forest paths.", $"Knights of the realm have failed to slay {data.beast_name}, their banners now hang in tatters.", $"Church bells toll whenever {data.beast_name} is sighted.");
+
+            case "Ice":
+                return choose($"The ice cracks when {data.beast_name} hunts.", $"Entire hab-blocks were found frozen solid in the wake of {data.beast_name}.", $"The wind carries the howls of {data.beast_name} across the tundra.");
+
+            case "Death":
+                return choose($"Nothing lives long where {data.beast_name} roams.", $"Scavenger clans refuse entire regions claimed by {data.beast_name}.", $"Even apex predators flee the shadow of {data.beast_name}.");
+        }
+
+        return $"{data.beast_name} is the most fearsome fauna in the entire segmentum according to locals";
+    };
+
     static __hunt_beast_init = function() {
         stage_id = "preliminary";
         data.applicant = "Governor";
+        data.beast_name = __hunt_beast_beast_name();
     };
 
     static __hunt_beast_feature_selected = function() {
-        draw_data.mission_description = $"The governor of {p_data.name()} has bemoaned the raiding of huge beasts on the fringes of the planets largest city, the numbers have swelled recently and are causing huge damage to the planets small economy. You could send a force to intervene, it would provide a fine test of metal for any that partake.";
+        var _hunt_rumour = __hunt_beast_rumor();
+        draw_data.mission_description = $"The governor of {p_data.name()} has bemoaned the raiding of huge beasts on the fringes of the planets largest city, the numbers have swelled recently and are causing huge damage to the planets small economy. Rumours circulate locally about the beasts they say {_hunt_rumour}. You could send a force to intervene, it would provide a fine test of mettle for any that partake.";
         draw_data.help = "This is a good opportunity to provide experience and training, having at least one marine with experience in such matters would be advisable";
         draw_data.button_text = "Send Hunters";
         draw_data.button_function = method(self, function() {
@@ -303,6 +332,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
             obj_controller.cooldown = 20;
             scr_event_log("", $"Beast hunters deployed to {_numeral_name} for {timer} months.", p_data.system.name);
             obj_controller.close_popups = false;
+            scr_toggle_manage();
         }
     };
 
@@ -329,6 +359,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
         var _unit_report_string = "";
         var _deaths = 0;
         var _successful_hunters = [];
+        var _largest_pass = 0;
 
         if (!array_length(_hunters)) {
             return;
@@ -338,9 +369,8 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
             var _unit = _hunters[i];
             var _unit_pass = _tester.standard_test(_unit, "weapon_skill", 10, ["beast"]);
             if (_unit_pass[0]) {
-                if (!_success) {
-                    _success = true;
-                }
+                _success = true;
+                _largest_pass = max(_largest_pass, _unit_pass[1]);
                 _unit_report_string += _unit.add_trait("beast_slayer", true, true);
                 array_push(_successful_hunters, _unit);
             } else {
@@ -364,6 +394,17 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
             _unit.job = "none";
         }
 
+        var _pop_data = {
+            mission: self,
+        };
+
+        var _navy_fleets = get_imperial_navy_fleets();
+        if (array_length(_successful_hunters) && _largest_pass > 25 && array_length(_navy_fleets)) {
+            data.trophy_owner = array_random_element(_successful_hunters);
+            data.target_fleet = array_random_element(_navy_fleets);
+            _pop_data.options = __create_popup_option("Continue", "progress_to_deliver_trophy");
+        }
+
         if (_success) {
             _mission_string = $"The mission was a success and a great number of beasts rounded up and slain, your marines were able to gain great skills and the prestige of your chapter has increased greatly across the planets populace.";
             if (_deaths) {
@@ -375,10 +416,20 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
             _mission_string += $"\n{_unit_report_string}";
         }
 
-        scr_popup($"Beast Hunt on {p_data.name()}", _mission_string, "", "");
+        scr_popup($"Beast Hunt on {p_data.name()}", _mission_string, "", _pop_data);
         for (var i = 0; i < array_length(_hunters); i++) {
             _hunters[i].job = "none";
         }
+        delete_mission = true;
+    };
+
+    static __hunt_beast_progress_to_deliver_trophy = function() {
+        var _trophy_data = {
+            trophy_owner: data.trophy_owner.uid,
+            beast_name: data.beast_name,
+            origin_sys: system.name,
+        };
+        data.target_fleet.add_problem("deliver_hunt_trophy", 500, _trophy_data);
         delete_mission = true;
     };
 
@@ -422,6 +473,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
         obj_controller.cooldown = 500;
         scr_event_log("", $"{_trainer.name_role()} deployed to {_numeral_name} for {_mission_length} months.", p_data.system.name);
         obj_controller.close_popups = false;
+        scr_toggle_manage();
     };
 
     static __train_forces_resolve = function() {
@@ -679,22 +731,6 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
             var _group_big = choose(true, false);
             var _battle_enemy_data = {};
             if (_group_big) {
-                _battle_enemy_data = {
-                    threat: 1,
-                    fortified: false,
-                    cols: [
-                        {
-                            distance: 80,
-                            enemies: [
-                                {
-                                    name: "Fallen",
-                                    number: 1,
-                                },
-                            ],
-                        },
-                    ],
-                };
-
                 // * Large Fallen Group *
                 _battle_enemy_data = {
                     threat: 1,
@@ -706,6 +742,23 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
                                 {
                                     name: "Fallen",
                                     number: choose(3, 4, 5),
+                                },
+                            ],
+                        },
+                    ],
+                };
+            } else {
+                // * Lone Fallen *
+                _battle_enemy_data = {
+                    threat: 1,
+                    fortified: false,
+                    cols: [
+                        {
+                            distance: 80,
+                            enemies: [
+                                {
+                                    name: "Fallen",
+                                    number: 1,
                                 },
                             ],
                         },
@@ -966,6 +1019,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
         if (!instance_exists(obj_popup)) {
             scr_popup("Mechanicus Mission Accepted", "", "mechanicus");
         }
+        stage_id = "awating_player";
         obj_popup.text = $"The Adeptus Mechanicus await your forces at {_name}.  They are expecting at least two squads of Astartes and have placed the testing on hold until their arrival.  {global.chapter_name} have 16 months to arrive.";
         scr_event_log("", $"Mechanicus Mission Accepted: At least two squads of marines are expected at {_name} within 16 months.", system.name);
         mark("green");
@@ -1234,8 +1288,6 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
     };
 
     static __protect_raiders_battle_aftermath = function() {
-        // show_message(obj_turn_end.current_battle);
-        // show_message(obj_turn_end.battle_world[obj_turn_end.current_battle]);
         // title / text / image / speshul
         var _planet_string = p_data.name();
         delete_mission = true;
@@ -1310,13 +1362,13 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
                 _gar_pop.title = $"Strange Disappearance";
                 _gar_pop.pdata = p_data;
                 _gar_pop.text = $"Your Marines make planet fall and are directed to report to the governor for the duration of the operation after a period of reconnaissance dig in for their ambush. After a two weeks have passed A message from the governor reaches your astropaths that your marines have not been heard of for some time, The raiders also were not noted to have arrived onor left the planet";
-                var _dead_marine = array_random_index(_squad_units);
+                var _dead_index = array_random_index(_squad_units);
                 var _dead_string = "";
                 for (var i = 0; i < array_length(_squad_units); i++) {
                     var _marine = _squad_units[i];
-                    if (i == _dead_marine) {
-                        var _dead_string = $"{_marine.name_role()}s body is eventually discovered some way off from the main battle his rent armour and body showing the extent of combat that must have occured";
-                        _dead_marine.kill();
+                    if (i == _dead_index) {
+                        _dead_string = $"{_marine.name_role()}s body is eventually discovered some way off from the main battle his rent armour and body showing the extent of combat that must have occured";
+                        _marine.kill();
                         continue;
                     }
 
@@ -1402,6 +1454,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
 
     static __inquisition_tomb_accept = function() {
         data.mission_stage = 0;
+        data.bomb_warning = false;
         var _text = $"Inquisition Mission Accepted: A bomb must be planted within the Necron Tomb on {p_data.name()} within {timer} months.";
         scr_event_log("", _text, system.name);
     };
@@ -1413,6 +1466,10 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
         var _have_bomb = 0;
         _have_bomb = scr_check_equip("Plasma Bomb", system.name, planet, 0);
         if (_have_bomb == 0) {
+            if (!data.bomb_warning) {
+                scr_popup("Necron Tomb Excursion", $"Forces on {p_data.name()} dont have a Plasma Bomb so cannot proceed with the mission", "necron_cave");
+                data.bomb_warning = true;
+            }
             exit;
         }
         var _tixt;
@@ -1442,7 +1499,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
     /// @self Asset.GMObject.obj_popup
     /// @desc Advances the Necron Tomb mission or starts a combat encounter.
     /// @returns {Undefined}
-    static inquisition_tomb_mission_sequence = function() {
+    static __inquisition_tomb_mission_sequence = function() {
         var _battle;
         var _penalty = global.character_tester.small_forces_penalty_chart(p_data.player_forces);
         var _roll = roll_dice_chapter(1, 100, "low");
@@ -1455,7 +1512,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
         // Result
         data.tomb_awakens = false;
         if (_roll <= 60) {
-            advance_inquisition_tomb_mission();
+            __advance_inquisition_tomb_mission();
             exit;
         }
         if ((_roll > 60) && (_roll <= 82)) {
@@ -1492,6 +1549,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
                 reduce_fortification: true,
                 reduce_power: true,
             };
+            data.enemy = "";
             switch (_battle) {
                 case 1:
                     _battle_data.cols = [
@@ -1558,20 +1616,18 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
             var _battle = new_battle(eFACTION.NECRONS);
             _battle.battle_enemy_data = _battle_data;
             var _roster = new Roster();
-            with (_roster) {
-                roster_location = system.name;
-                roster_planet = planet;
-                determine_full_roster();
-                only_locals();
-                update_roster();
-                if (array_length(selected_units)) {
-                    setup_battle_formations();
-                    add_to_battle();
-                }
+
+            _roster.roster_location = system.name;
+            _roster.roster_planet = planet;
+            _roster.determine_full_roster();
+            _roster.only_locals();
+            _roster.update_roster();
+            if (array_length(_roster.selected_units)) {
+                setup_battle_formations();
+                _roster.add_to_battle();
             }
 
             instance_deactivate_object(obj_star);
-
             instance_destroy(obj_popup);
         }
 
@@ -1580,30 +1636,27 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
 
     static __inquisition_tomb_battle_aftermath = function() {
         if (!data.tomb_awakens) {
-            if (defeat == 1) {
-                obj_controller.combat = 0;
-                obj_controller.cooldown = 10;
-                obj_turn_end.alarm[1] = 4;
-            } else if (defeat == 0) {
-                obj_controller.combat = 0;
-                var pip = instance_create(0, 0, obj_popup);
-                inquisition_tomb_mission_start();
-                var _completed = advance_inquisition_tomb_mission();
-                with (pip) {
-                    if (_completed) {
-                        keyboard_clear(vk_enter);
-                    } else {
-                        text = "The last of the attackers is cut down.  Your marines regroup in the tunnel and ready themselves to press deeper into the complex.\n\n" + text;
-                    }
-                    number = instance_exists(obj_turn_end);
+            if (obj_ncombat.defeat) {
+                exit;
+            }
+            obj_controller.combat = 0;
+            var pip = instance_create(0, 0, obj_popup);
+            __inquisition_tomb_mission_start();
+            var _completed = __advance_inquisition_tomb_mission();
+            with (pip) {
+                if (_completed) {
+                    keyboard_clear(vk_enter);
+                } else {
+                    text = "The last of the attackers is cut down.  Your marines regroup in the tunnel and ready themselves to press deeper into the complex.\n\n" + text;
                 }
+                number = instance_exists(obj_turn_end);
             }
         } else {
             var pip = instance_create(0, 0, obj_popup);
             with (pip) {
                 title = "Necron Tomb Awakens";
                 image = "necron_army";
-                if (obj_ncombat.defeat == 0) {
+                if (!obj_ncombat.defeat) {
                     text = "Your marines make a tactical retreat back to the surface, hounded by Necrons all the way.  The Inquisition mission is a failure- you were to blow up the Necron Tomb World stealthily, not wake it up.  The Inquisition is not pleased with your conduct.";
                 } else {
                     text = "Your marines are killed down to the last man.  The Inquisition mission is a failure- you were to blow up the Necron Tomb World stealthily, not wake it up.  The Inquisition is not pleased with your conduct.";
@@ -1612,12 +1665,9 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
 
             delete_mission = true;
 
-            with (system) {
-                var _planet = obj_ncombat.battle_id;
-                p_necrons[planet] = 4;
-                if (awake_tomb_world(p_feature[_planet]) == 0) {
-                    awaken_tomb_world(p_feature[_planet]);
-                }
+            p_data.edit_forces(eFACTION.NECRONS, 4);
+            if (awake_tomb_world(p_data.features) == 0) {
+                awaken_tomb_world(p_data.features);
             }
 
             alter_disposition(eFACTION.INQUISITION, -5);
@@ -1629,7 +1679,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
         }
     };
 
-    static advance_inquisition_tomb_mission = function() {
+    static __advance_inquisition_tomb_mission = function() {
         data.mission_stage++;
         obj_popup.title = $"Necron Tunnels : {data.mission_stage}";
 
@@ -2048,7 +2098,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
             };
             var _roster = new Roster();
             _roster.selected_units = members;
-            _roster.setup_battle_formations();
+            setup_battle_formations();
             _roster.add_to_battle();
 
             obj_controller.useful_info += "CHTRP|";

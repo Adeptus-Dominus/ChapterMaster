@@ -13,11 +13,8 @@ popups_end = 0;
 
 combating = 0;
 cooldown = 10;
-current_battle = 1;
+current_battle = 0;
 current_popup = 0;
-
-info_mahreens = 0;
-info_vehicles = 0;
 
 first_x = obj_controller.x; // Return to this position once all the battles are done
 first_y = obj_controller.y;
@@ -45,17 +42,11 @@ popup_special = [""];
 /// @type {Array<Struct.NotificationAlert>}
 alerts_list = [];
 
-battle = array_create(_popup_size, 0);
-battle_location = array_create(_popup_size, "");
-/// @desc 0 means space combat, 1+ means planet number (I hate this)
-battle_world = array_create(_popup_size, undefined);
-battle_opponent = array_create(_popup_size, 0);
-/// @type {Array<Id.Instance.obj_star>}
-battle_object = array_create(_popup_size, noone);
-/// @type {Array<Id.Instance.obj_p_fleet>}
-battle_pobject = array_create(_popup_size, noone);
-battle_special = array_create(_popup_size, "");
+battles = [];
 
+add_battle = function(_battle){
+	array_push(battles, new EndTurnBattle(_battle));
+}
 var _string_size = 16;
 strin = array_create(_string_size, "");
 
@@ -67,4 +58,4 @@ handle_discovered_governor_assasinations();
 
 alerts = 0;
 fast = 0; // Playback cursor: alerts unlock (fade in + typewriter) once fast >= their position
-show = 0;
+show = -1;

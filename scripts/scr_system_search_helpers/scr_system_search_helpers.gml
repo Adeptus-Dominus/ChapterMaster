@@ -1,3 +1,75 @@
+function FleetsEnroute(x, y) constructor {
+    fleets = [];
+    self.x = x;
+    self.y = y;
+
+    static register_fleet = function(_fleet) {
+        array_push(fleets, _fleet.id);
+    };
+
+    static clean = function() {
+        for (var i = array_length(fleets) - 1; i >= 0; i--) {
+            if (!instance_exists(fleets[i])) {
+                array_delete(fleets, i, 1);
+            }
+        }
+    };
+
+    static remove = function(_fleet) {
+        for (var i = 0; i < array_length(fleets); i++) {
+            if (fleets[i] == _fleet) {
+                array_delete(fleets, i, 1);
+                break;
+            }
+        }
+    };
+
+    static save = function() {
+        clean();
+        var _save_data = [];
+        for (var i = 0; i < array_length(fleets); i++) {
+            if (fleets[i].object_index == obj_en_fleet) {
+                array_push(_save_data, ["en", fleets[i].uid]);
+            } else {
+                array_push(_save_data, ["pl", fleets[i].uid]);
+            }
+        }
+        return _save_data;
+    };
+
+    static load = function() {
+        if (!struct_exists(self, "load_data")) {
+            exit;
+        }
+        var _data = load_data;
+        var _fleets = [];
+        for (var i = 0; i < array_length(_data); i++) {
+            var _fleet_inst = obj_p_fleet;
+            if (_data[i][0] == "en") {
+                _fleet_inst = obj_en_fleet;
+            }
+            with (_fleet_inst) {
+                if (uid == _data[i][1]) {
+                    array_push(_fleets, id);
+                }
+            }
+        }
+        fleets = _fleets;
+        struct_remove(self, "load_data");
+    };
+
+    static navy_enemies = function() {
+        clean();
+        var _player_at_war = obj_controller.faction_status[eFACTION.IMPERIUM] == "War";
+        for (var i = 0; i < array_length(fleets); i++) {
+            if (fleets[i].owner > 5 || (fleets[i].owner == eFACTION.PLAYER && _player_at_war)) {
+                return true;
+            }
+        }
+        return false;
+    };
+}
+
 function stars_with_help_requests() {
     var _stars = [];
 
@@ -463,14 +535,24 @@ function scr_planet_image_numbers(p_type) {
 function star_has_planet_with_forces(star, faction, minimum_strength = 1) {
     var found = false;
     with (star) {
-        for (var p = 0; p <= planets && !found; p++) {
-            if (found) {
-                break;
-            }
+        for (var p = 1; p <= planets && !found; p++) {
             found = planet_has_forces(star, p, faction, minimum_strength);
         }
     }
     return found;
+}
+
+/// @param {Id.Instance.obj_star} star
+/// @param {Enum.eFACTION} faction
+/// @param {Real} minimum_strength
+/// @returns {Real} Planet index, or -1 if none matches
+function find_planet_with_forces(star, faction, minimum_strength = 1) {
+    for (var p = 1; p <= star.planets; p++) {
+        if (planet_has_forces(star, p, faction, minimum_strength)) {
+            return p;
+        }
+    }
+    return -1;
 }
 
 /// @param {Id.Instance.obj_star} star

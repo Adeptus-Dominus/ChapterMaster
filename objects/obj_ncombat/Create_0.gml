@@ -32,6 +32,7 @@ upgraded_librarians = [];
 special_feature = undefined;
 reduce_fortification = true;
 reduce_power = true;
+end_turn_battle_queue = false;
 
 view_x = obj_controller.x;
 view_y = obj_controller.y;

@@ -125,6 +125,7 @@
     {"$GMIncludedFile":"","%Name":"audio_modding.md","CopyToMask":-1,"filePath":"datafiles","name":"audio_modding.md","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"armour.json","CopyToMask":-1,"filePath":"datafiles/data","name":"armour.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"battle_organisation_formats.json","CopyToMask":-1,"filePath":"datafiles/data","name":"battle_organisation_formats.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"battle_organisation_specials.json","CopyToMask":-1,"filePath":"datafiles/data","name":"battle_organisation_specials.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"chaos_sm.json","CopyToMask":-1,"filePath":"datafiles/data/dialogue","name":"chaos_sm.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"sisters.json","CopyToMask":-1,"filePath":"datafiles/data/dialogue","name":"sisters.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"gear.json","CopyToMask":-1,"filePath":"datafiles/data","name":"gear.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
@@ -612,7 +613,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2026.100.0.1171",
+    "IDEVersion":"2026.100.0.1199",
   },
   "name":"ChapterMaster",
   "resources":[
@@ -756,6 +757,7 @@
     {"id":{"name":"DiscordPool","path":"scripts/DiscordPool/DiscordPool.yy",},},
     {"id":{"name":"DiscordWebhook","path":"scripts/DiscordWebhook/DiscordWebhook.yy",},},
     {"id":{"name":"draw_line_dashed","path":"scripts/draw_line_dashed/draw_line_dashed.yy",},},
+    {"id":{"name":"EndTurnBattle","path":"scripts/EndTurnBattle/EndTurnBattle.yy",},},
     {"id":{"name":"enums","path":"scripts/enums/enums.yy",},},
     {"id":{"name":"ErrorHandler","path":"scripts/ErrorHandler/ErrorHandler.yy",},},
     {"id":{"name":"exp_and_exp_growth","path":"scripts/exp_and_exp_growth/exp_and_exp_growth.yy",},},

@@ -266,7 +266,7 @@ function scr_toggle_reclu() {
                 var p = 0;
                 for (var c = 0; c < 11; c++) {
                     for (var e = 0; e < array_length(obj_ini.TTRPG[c]); e++) {
-                        var _unit = fetch_unit([c,e]);
+                        var _unit = fetch_unit([c, e]);
                         if (_unit.god_status == 10) {
                             array_push(jailed_marines, _unit);
                         }
@@ -471,21 +471,6 @@ function scr_end_turn() {
                     global.audio_manager.play_sfx(SFX_END_TURN);
 
                     turn += 1;
-                    with (obj_star) {
-                        navy_enemy_fleet_enroute = false;
-                    }
-                    with (obj_p_fleet) {
-                        if ((action == "move") && (obj_controller.faction_status[eFACTION.IMPERIUM] == "War")) {
-                            var _him = instance_nearest(action_x, action_y, obj_star);
-                            _him.navy_enemy_fleet_enroute = point_distance(action_x, action_y, _him.x, _him.y) == 0;
-                        }
-                    }
-                    with (obj_en_fleet) {
-                        if ((action == "move") && (owner > 5)) {
-                            var _him = instance_nearest(action_x, action_y, obj_star);
-                            _him.navy_enemy_fleet_enroute = point_distance(action_x, action_y, _him.x, _him.y) == 0;
-                        }
-                    }
 
                     if (instance_exists(obj_p_fleet)) {
                         wait_and_execute(1, function() {

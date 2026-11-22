@@ -1107,7 +1107,7 @@ serialize = function() {
         "management_buttons",
         "settings_buttons_ui_components",
         "camera_moved_this_turn",
-        "jailed_marines"
+        "jailed_marines",
     ];
     var _excluded_from_save_start = ["restart_"];
 

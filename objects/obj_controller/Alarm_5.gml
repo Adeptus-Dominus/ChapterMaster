@@ -299,7 +299,7 @@ try {
             if (_unit.god_status != 10) {
                 continue;
             }
-            array_push(jailed_marines, _unit); 
+            array_push(jailed_marines, _unit);
             penitorium += 1;
             _unit.alter_loyalty(-1);
             if ((_unit.corruption < 90) && (_unit.corruption > 0)) {
@@ -629,6 +629,9 @@ try {
     location_viewer.update_mission_log();
     init_ork_waagh();
     return_lost_ships_chance();
+    with(obj_en_fleet){
+        run_problem_sequence("basic_turn_end");
+    }
     //complex route plotting for player fleets
     with (obj_p_fleet) {
         if (array_length(complex_route) > 0 && action == "") {

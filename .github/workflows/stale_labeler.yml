@@ -10,10 +10,12 @@ jobs:
       issues: write
       pull-requests: write
     steps:
-      - uses: actions/stale@v9
+      - uses: actions/stale@v11
         with:
-          stale-pr-message: "This PR is marked as stale, because it has been open for 7 days with no activity."
-          days-before-stale: 7
-          days-before-issue-stale: -1
+          stale-pr-message: "This pull request is marked as stale; 14 days without activity."
+          stale-issue-message: "This issue is marked as stale; 14 days without activity."
+          only-issue-types: "Bug"
+          days-before-stale: 14
           days-before-close: -1
           stale-pr-label: "Status: Stale"
+          stale-issue-label: "Status: Stale"

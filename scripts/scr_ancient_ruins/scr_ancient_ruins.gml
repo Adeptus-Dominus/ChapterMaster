@@ -39,10 +39,7 @@ function scr_ruins_suprise_attack_player() {
                 setup_battle_formations();
                 add_to_battle();
             } else {
-                instance_destroy(obj_ncombat);
-                instance_destroy(obj_pnunit);
-                instance_destroy(obj_enunit);
-                instance_activate_all();
+                end_combat_and_cleanup_objects();
                 scr_ruins_reward(_star, _planet, self);
             }
         }
@@ -68,7 +65,7 @@ function scr_ruins_suprise_attack_player() {
         instance_destroy(obj_popup);
         instance_destroy(obj_star_select);
         instance_destroy(obj_ground_mission);
-        instance_destroy(obj_ncombat);
+        end_combat_and_cleanup_objects();
     }
 }
 

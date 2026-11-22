@@ -184,7 +184,7 @@ function TradeAttempt(diplomacy) constructor {
             with (flit) {
                 action_x = target.x;
                 action_y = target.y;
-                set_fleet_movement();
+                move();
             }
         }
     };

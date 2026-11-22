@@ -65,10 +65,10 @@ function ork_ship_production(planet) {
                             }
                         }
                     }
+                    instance_activate_object(obj_star);
                     _fleet.action_x = targetStar.x;
                     _fleet.action_y = targetStar.y;
-                    _fleet.alarm[4] = 1;
-                    instance_activate_object(obj_star);
+                    set_fleet_movement();
                 }
             }
         }

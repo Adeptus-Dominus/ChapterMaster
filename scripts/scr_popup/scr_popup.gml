@@ -1,4 +1,4 @@
-function scr_popup(type, text, image, popup_special = "") {
+function scr_popup(type, text, image = "", popup_special = "") {
     // title / text / image / speshul
 
     // Automatic quene of popups to be displayed at the end of the end of the turn

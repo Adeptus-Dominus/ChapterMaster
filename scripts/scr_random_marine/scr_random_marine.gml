@@ -1,7 +1,7 @@
 /// @param {string|Array<string>} role
 /// @param {Real} exp_req
 /// @param {Struct} search_params a struct giving extra search information
-function scr_random_marine(role, exp_req, search_params = {}) {
+function scr_random_marine(role, exp_req = 0, search_params = {}) {
     var company_list = [
         0,
         1,

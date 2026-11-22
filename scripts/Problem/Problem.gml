@@ -2,7 +2,16 @@
 function run_problem_sequence(_sequence_func) {
     var _prob_length = array_length(problems);
     for (var i = _prob_length - 1; i >= 0; i--) {
-        problems[i][$ _sequence_func]();
+        var _problem = problems[i];
+        var _func = _problem[$ _sequence_func];
+        // Static entry points are returned unbound by the struct accessor; bind
+        // them so they run in the problem's scope instead of the caller's.
+        try {
+            method(_problem, _func)();
+        } catch (_exception) {
+            _problem.delete_mission = true;
+            ERROR_HANDLER.handle_exception(_exception);
+        }
     }
 }
 
@@ -17,6 +26,8 @@ function Problem(_name, _timer, _data) constructor {
     delete_mission = false;
     f_type = eP_FEATURES.MISSION;
     stage_id = "";
+    per_turn_checks = false;
+    zero_timer_checks = false;
     members = [];
     if (struct_exists(data, "stage")) {
         stage_id = data.stage;
@@ -24,6 +35,10 @@ function Problem(_name, _timer, _data) constructor {
     if (struct_exists(data, "members")) {
         members = data.members;
     }
+
+    static load = function(data) {
+        move_data_to_current_scope(data);
+    };
 
     static has_data = function(key) {
         return struct_exists(data, key);
@@ -73,7 +88,7 @@ function Problem(_name, _timer, _data) constructor {
     static find_func = function(trigger_string) {
         var _func_string = find_func_ref(trigger_string);
         if (struct_exists(self, _func_string)) {
-            return self[$ _func_string];
+            return method(self, self[$ _func_string]);
         }
         return undefined;
     };
@@ -111,7 +126,7 @@ function Problem(_name, _timer, _data) constructor {
             return undefined;
         }
         var _data = {
-            location: is_callable(system.name) ? system.name() : system.name,
+            location: is_instanceof(self, PlanetProblem) ? p_data.name() : system.name,
             system: system,
             mission: description(),
             time: timer,
@@ -138,6 +153,7 @@ function Problem(_name, _timer, _data) constructor {
                 _opt.choice_func = _func;
             } else {
                 LOGGER.error($"unknown popup trigger {_func_string} for {p_id}");
+                _opt.choice_func = __popup_delete;
             }
         }
 
@@ -146,6 +162,26 @@ function Problem(_name, _timer, _data) constructor {
 
     static __add_option = function(_str1 = "", _func_string = "popup_delete") {
         add_option(__create_popup_option(_str1, _func_string));
+    };
+
+    static __advance_timer = function() {
+        timer--;
+        return true;
+    };
+
+    static basic_turn_end = function() {
+        if (!__advance_timer()) {
+            return;
+        }
+        if ((timer > -1) && per_turn_checks) {
+            var _func = find_func("per_turn");
+            __handle_triggered_mission_func(_func);
+        }
+        if ((timer == 0) && zero_timer_checks && !delete_mission) {
+            var _func = find_func("resolve");
+            __handle_triggered_mission_func(_func);
+        }
+        __check_delete();
     };
 
     //triggered at the end of scr_shoot
@@ -189,7 +225,6 @@ function Problem(_name, _timer, _data) constructor {
         instance_activate_object(obj_star);
         var _func = find_func("squad_selected");
         __handle_triggered_mission_func(_func);
-        instance_deactivate_object(obj_star);
     };
 
     static on_unit_selection = function() {
@@ -201,7 +236,6 @@ function Problem(_name, _timer, _data) constructor {
             }
             __handle_triggered_mission_func(_func);
         }
-        instance_deactivate_object(obj_star);
     };
 
     static __handle_triggered_mission_func = function(func) {

@@ -35,12 +35,6 @@ function popup_defualt_click_action() {
         exit;
     }
 
-    if (battle_special > 0) {
-        alarm[0] = 1;
-        cooldown = 10;
-        exit;
-    }
-
     if (type == ePOPUP_TYPE.BATTLE_OPTIONS) {
         obj_controller.cooldown = 10;
         if (instance_exists(obj_turn_end)) {
@@ -63,8 +57,13 @@ function popup_default_close() {
     if (instance_exists(obj_controller)) {
         obj_controller.cooldown = 10;
         if (instance_exists(obj_turn_end) && obj_controller.complex_event == false) {
-            if (number != 0) {
-                obj_turn_end.alarm[1] = 4;
+            var _battle_index = obj_turn_end.current_battle;
+            if (_battle_index < array_length(obj_turn_end.battles)) {
+                obj_turn_end.alarm[4] = 1;
+            } else {
+                if (number != 0) {
+                    obj_turn_end.alarm[1] = 4;
+                }
             }
         }
     }
