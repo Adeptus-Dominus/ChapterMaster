@@ -29,13 +29,8 @@ try {
     if ((refresh == true) && (obj_controller.settings > 0)) {
 
         var _cur_role = obj_ini.player_role_data[role];
-        req_armour = _cur_role.armour;
-        req_wep1 = _cur_role.wep1;
-        req_wep2 = _cur_role.wep2;
-        req_gear = _cur_role.gear;
-        req_mobi = _cur_role.mobi;
 
-        equipment_set = [req_wep1,req_wep2,req_armour,req_gear,req_mobi];
+        equipment_set = convert_equipment_struct_into_array(_cur_role);
         var _equip_data = new UnitEquipment(equipment_set);
         all_good = _equip_data.check_set_is_equipable(marines_with_role.number(), marines_with_role.units);
 

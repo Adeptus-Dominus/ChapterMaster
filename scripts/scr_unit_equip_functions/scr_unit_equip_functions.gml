@@ -458,7 +458,7 @@ function alter_unit_equipment(update_equipment, _from_armoury = true, _to_armour
                 _missing_items += $"{_missing_items == "" ? "" : ","} {localize(_item)}";
             }
 
-            if (_success && outcomeoutcome != EQUIPMENT_UNCHANGED){
+            if (_success && _outcome.outcome != EQUIPMENT_UNCHANGED){
                 _success = false;
             }
         }
