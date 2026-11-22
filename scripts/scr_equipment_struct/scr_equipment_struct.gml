@@ -91,6 +91,10 @@ function EquipmentStruct(item_data = undefined, core_type = "", quality_request 
         recovery_chance = clamp(recovery_chance, 0, 100);
     }
 
+    static is_ranged = function(){
+        return range > 1.1;
+    }
+
     /// @desc Whether a given stat currently has a displayable value for this item
     /// @param {string} stat The stat key
     /// @param {string} type The item's type, used for type-specific conditions
@@ -504,7 +508,7 @@ function EquipmentStruct(item_data = undefined, core_type = "", quality_request 
     };
 }
 
-function TagSetItems(_set) constructor {
+function TagSetItems(_set, _quality = "any") constructor {
     if (is_real(_set)){
         _set = global.equipment_tags[_set];
     }
@@ -513,6 +517,7 @@ function TagSetItems(_set) constructor {
     tag = _set.tag;
     items = gear_with_tag(type, tag, true);
     item_map = noone;
+    quality = _quality;
 
     req_exp = 1000;
     for (var i = 0; i < array_length(items); i++){
@@ -541,32 +546,57 @@ function TagSetItems(_set) constructor {
         return false;
     }
 
+    static has_map = functionn(){
+        return item_map != noone;
+    }
     static create_item_map = function(){
-        item_map = new CountingMap();
+        item_map = new CountingMapEquipment();
         for (var i = 0; i < array_length(items); i++){
             var _item = items[i].name;
-            var _count = scr_item_count(items[i].name);
+            var _count = scr_item_count(items[i].name,quality);
             if (_count >= 1){
-                item_map.add(_item, scr_item_count(items[i].name));
+                item_map.add(_item, scr_item_count(items[i].name,quality));
             } 
         }
     }
 
     static kick_items_with_tag = function(_tag){
-        var _has_map = item_map != noone;
+        if (is_array(_tag)){
+            for (var i = 0; i < val; i++){
+                kick_items_with_tag(_tag[i]);
+            }
+            return;
+        }
+        var _has_map = has_map();
         for (var i = array_length(items)-1; i >= 0; i--){
             var _kick = false;
             var _item = items[i];
-            if (items[i].has_tag(_tag)){
-                _kick =  true;
+            if (_item.has_tag(_tag)){
+                kick_item(i, false)
             }
-            if (_has_map && _kick && item_map.get(_item.name) > 0){
-                item_map.remove(_item.name)
+        } 
+    }
+
+    static kick_item = function(_item, _check_string = true){
+        var _has_map = has_map();
+        if (_check_string && is_string(_item)){
+            for (var i = array_length(items)-1; i >= 0; i--){
+                var _kick = false;
+                var _check_item = items[i];
+                if (_check_item.name == _item){
+                    _kick =  true;
+                }
+                kick_item(i, false);
+            } 
+        } else {
+            _check_item = items[_item]
+            if (_has_map && _kick && item_map.get(_check_item.name) > 0){
+                item_map.remove(_check_item.name)
             }
             if (_kick){
                 array_delete(items, i, 1);
             }
-        } 
+        }
     }
 
     static get_item_from_map = function(_item = ""){
