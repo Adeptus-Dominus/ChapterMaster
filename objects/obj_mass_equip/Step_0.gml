@@ -9,7 +9,9 @@ try {
             if (_tag != -1){
                 equipment_set[i] = new TagSetItems(_tag);
                 equipment_set[i].create_item_map();
-                equipment_set[i].kick_items_with_tag("vehicle");
+                if (obj_controller.settings != eROLE.DREADNOUGHT){
+                    equipment_set[i].kick_items_with_tag("vehicle");
+                }
             }
         }
         for (var i = 0; i < array_length(marines_with_role.units); i++) {
