@@ -14,7 +14,7 @@ jobs:
         with:
           stale-pr-message: "This pull request is marked as stale; 14 days without activity."
           stale-issue-message: "This issue is marked as stale; 14 days without activity."
-          only-issue-types: "bug"
+          only-issue-types: "Bug"
           days-before-stale: 14
           days-before-close: -1
           stale-pr-label: "Status: Stale"
