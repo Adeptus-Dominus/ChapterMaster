@@ -125,8 +125,8 @@ bombard = 0;
 purge = 0;
 
 player_fleet = target.has_orbiting_player_fleet();
-
 fleet_engage_buttons = [];
+select_fleet_combat = undefined;
 create_fleet_engage_buttons = function() {
     fleet_engage_buttons = [];
     var _fleets = get_all_orbiting_fleets(target);
@@ -143,8 +143,14 @@ create_fleet_engage_buttons = function() {
             fleet: _fleet,
         }));
     }
+
+    select_fleet_combat = ReactiveString("Select Fleet Combat",0,0,{
+        font : fnt_40k_14b,
+        colour : CM_GREEN_COLOR
+    })
 };
 
 if (player_fleet && obj_controller.menu == eMENU.DEFAULT) {
+
     create_fleet_engage_buttons();
 }

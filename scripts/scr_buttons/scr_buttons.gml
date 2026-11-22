@@ -231,7 +231,7 @@ function ReactiveString(text_param, x1_param = 0, y1_param = 0, data = {}) const
     standard_loc_data();
     x1 = x1_param;
     y1 = y1_param;
-    text = text_param;
+    text = localize(text_param);
     font = fnt_40k_14;
     font_cjk = cjk_font(font);
     add_draw_return_values();

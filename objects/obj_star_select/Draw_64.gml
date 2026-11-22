@@ -379,7 +379,7 @@ try {
     }
 
     if (target != 0) {
-        if ((player_fleet > 0) && (imperial_fleet + mechanicus_fleet + inquisitor_fleet + eldar_fleet + ork_fleet + tau_fleet + heretic_fleet > 0)) {
+        if (array_length(fleet_engage_buttons)) {
             draw_set_color(0);
             draw_set_alpha(0.75);
             draw_rectangle(37, 413, 270, 452, 0);
