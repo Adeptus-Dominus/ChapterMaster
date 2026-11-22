@@ -412,24 +412,25 @@ function alter_unit_equipment(update_equipment, _from_armoury = true, _to_armour
     }
     // Slot order is fixed: armour must be applied before mobi so its validation sees the final armour.
     for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
-        var _map = undefined;
+        var _tag_set_map = undefined;
         var _set = false;
+        var _getter = method(self, _getters[i]);
         var _slot_key = global.unit_equip_slots[i];
         if (!struct_exists(update_equipment, _slot_key)) {
             continue;
         }
         var _item = update_equipment[$ _slot_key];
+        var _current_item = _getter(true);
+        if (!swap_artifacts && !is_string(_raw_value_of_current_equip)){
+            continue;
+        }
         if (is_struct(_item) && is_instanceof(_item, TagSetItems)){
             _set = true;
-            var _map = _item;
-            var _current_item = self[$ _getters[i]]();
-            if (_item.has_item(_current_item)){
+            var _tag_set_map = _tag_set_map;
+            if (_tag_set_map.has_item(_current_item)){
                 continue;
             }
-            _item = _item.get_item_from_map();
-        }
-        if (!swap_artifacts && !is_string(self[$ _getters[i]](true))){
-            continue;
+            _item = _tag_set_map.get_item_from_map();
         }
         var _outcome = "";
         switch (_slot_key) {
@@ -451,7 +452,7 @@ function alter_unit_equipment(update_equipment, _from_armoury = true, _to_armour
         }
         if (!_outcome.success){
             if (_set){
-                _map.item_map.add(_item);
+                _tag_set_map.item_map.add(_item);
             }
             if (_outcome.outcome == NO_ITEM_IN_ARMOURY) {
                 _missing_items += $"{_missing_items == "" ? "" : ","} {localize(_item)}";
