@@ -542,49 +542,34 @@ enum eENGAGEMENT {
 /// @param {number} _slot - The equipment slot number, 1-5; for primary weapon, secondary weapon, armour, gear/upgrade, and mobility/accessory.
 /// @returns {string} The name of the slot.
 function get_slot_name(_role, _slot) {
+    if (_role != eROLE.DREADNOUGHT && _role < eROLE.MARINEEND){
+        switch (_slot) {
+            case eEQUIPMENT_SLOT.WEAPON_ONE:
+                return "First Weapon";
+            case eEQUIPMENT_SLOT.WEAPON_TWO:
+                return "Second Weapon";
+            case eEQUIPMENT_SLOT.ARMOUR:
+                return "Armour";
+            case eEQUIPMENT_SLOT.GEAR:
+                return "Gear";
+            case eEQUIPMENT_SLOT.MOBILITY:
+                return "Mobility";
+            default:
+                return "Unknown";
+        }
+    } else if (_role == eROLE.DREADNOUGHT){
+        switch (_slot) {
+            case 0:
+                return "First Weapon";
+            case 1:
+                return "Second Weapon";
+            case 4:
+                return "Accessory";
+            default:
+                return "Unknown";
+        }
+    }
     switch (_role) {
-        case eROLE.CHAPTERMASTER:
-        case eROLE.HONOURGUARD:
-        case eROLE.VETERAN:
-        case eROLE.TERMINATOR:
-        case eROLE.CAPTAIN:
-        case eROLE.CHAMPION:
-        case eROLE.TACTICAL:
-        case eROLE.DEVASTATOR:
-        case eROLE.ASSAULT:
-        case eROLE.ANCIENT:
-        case eROLE.SCOUT:
-        case eROLE.CHAPLAIN:
-        case eROLE.APOTHECARY:
-        case eROLE.TECHMARINE:
-        case eROLE.LIBRARIAN:
-        case eROLE.SERGEANT:
-        case eROLE.VETERANSERGEANT:
-            switch (_slot) {
-                case 0:
-                    return "First Weapon";
-                case 1:
-                    return "Second Weapon";
-                case 2:
-                    return "Armour";
-                case 3:
-                    return "Gear";
-                case 4:
-                    return "Mobility";
-                default:
-                    return "Unknown";
-            }
-        case eROLE.DREADNOUGHT:
-            switch (_slot) {
-                case 0:
-                    return "First Weapon";
-                case 1:
-                    return "Second Weapon";
-                case 4:
-                    return "Accessory";
-                default:
-                    return "Unknown";
-            }
         case eROLE.LANDRAIDER:
             switch (_slot) {
                 case 0:
@@ -677,211 +662,197 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
 
     var _with_none_if_not_skip = _skip_none ? false : true;
 
-    switch (_role) {
-        case eROLE.CHAPTERMASTER:
-        case eROLE.HONOURGUARD:
-        case eROLE.VETERAN:
-        case eROLE.TERMINATOR:
-        case eROLE.CAPTAIN:
-        case eROLE.CHAMPION:
-        case eROLE.TACTICAL:
-        case eROLE.DEVASTATOR:
-        case eROLE.ASSAULT:
-        case eROLE.ANCIENT:
-        case eROLE.SCOUT:
-        case eROLE.CHAPLAIN:
-        case eROLE.APOTHECARY:
-        case eROLE.TECHMARINE:
-        case eROLE.LIBRARIAN:
-        case eROLE.SERGEANT:
-        case eROLE.VETERANSERGEANT:
-            switch (_slot) {
-                case 0:
-                case 1:
-                    if (_engagement == eENGAGEMENT.RANGED) {
-                        if (_show_available_only) {
-                            get_filtered_equipment_item_names(
-                                _item_names,
-                                "weapon",
-                                false, // ranged
-                                _master_crafted_only,
-                                undefined, // no required tags
-                                ["vehicle"], // exclude vehicle weapons
-                                _with_none_if_not_skip,
-                                true, // with_any
-                            );
-                        } else {
-                            get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
-                            push_marine_ranged_weapons_item_names(_item_names);
-                        }
-                    } else if (_engagement == eENGAGEMENT.MELEE) {
-                        if (_show_available_only) {
-                            get_filtered_equipment_item_names(
-                                _item_names,
-                                "weapon",
-                                true, // melee
-                                _master_crafted_only,
-                                undefined, // no required tags
-                                ["vehicle"], // exclude vehicle weapons
-                                _with_none_if_not_skip,
-                                true, // with_any
-                            );
-                            if (_include_company_standard) {
-                                _item_names[@ array_length(_item_names)] = "Company Standard";
-                            }
-                        } else {
-                            get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
-                            push_marine_melee_weapons_item_names(_item_names);
-                        }
-                    } else if (_engagement == eENGAGEMENT.ANY) {
-                        if (_show_available_only) {
-                            get_filtered_equipment_item_names(
-                                _item_names,
-                                "weapon",
-                                undefined, // no range filter
-                                _master_crafted_only,
-                                undefined, // no required tags
-                                ["vehicle"], // exclude vehicle weapons
-                                _with_none_if_not_skip,
-                                true, // with_any
-                            );
-                        } else {
-                            get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
-                            push_marine_ranged_weapons_item_names(_item_names);
-                            push_marine_melee_weapons_item_names(_item_names);
-                        }
-                    } else {
-                        ERROR_HANDLER.assert_popup($"Invalid engagement enumerator for infantry: {_engagement}");
-                        return;
-                    }
-                    break;
-                case 2:
-                    if (_show_available_only) {
-                        _item_names = get_filtered_equipment_item_names(
-                            _item_names,
-                            "armour",
-                            undefined, // no range filter
-                            false, // not master crafted
-                            undefined, // no required tags
-                            ["vehicle"], // exclude vehicle armour
-                            _with_none_if_not_skip,
-                            true, // with_any
-                        );
-                    } else {
-                        get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
-                        push_marine_armour_item_names(_item_names);
-                    }
-                    break;
-                case 3:
+    if (_role != eROLE.DREADNOUGHT && _role < eROLE.MARINEEND){
+        switch (_slot) {
+            case 0:
+            case 1:
+                if (_engagement == eENGAGEMENT.RANGED) {
                     if (_show_available_only) {
                         get_filtered_equipment_item_names(
                             _item_names,
-                            "gear",
-                            undefined, // no range filter
-                            false, // not master crafted
+                            "weapon",
+                            false, // ranged
+                            _master_crafted_only,
                             undefined, // no required tags
-                            ["vehicle", "no_equip"], // exclude vehicle gear + unequippable items
+                            ["vehicle"], // exclude vehicle weapons
                             _with_none_if_not_skip,
                             true, // with_any
                         );
                     } else {
                         get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
-                        push_marine_gear_item_names(_item_names);
+                        push_marine_ranged_weapons_item_names(_item_names);
                     }
-                    break;
-                case 4:
+                } else if (_engagement == eENGAGEMENT.MELEE) {
                     if (_show_available_only) {
                         get_filtered_equipment_item_names(
                             _item_names,
-                            "mobility",
-                            undefined, // no range filter
-                            false, // not master crafted
+                            "weapon",
+                            true, // melee
+                            _master_crafted_only,
                             undefined, // no required tags
-                            ["vehicle"], // exclude vehicle mobility
+                            ["vehicle"], // exclude vehicle weapons
+                            _with_none_if_not_skip,
+                            true, // with_any
+                        );
+                        if (_include_company_standard) {
+                            _item_names[@ array_length(_item_names)] = "Company Standard";
+                        }
+                    } else {
+                        get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
+                        push_marine_melee_weapons_item_names(_item_names);
+                    }
+                } else if (_engagement == eENGAGEMENT.ANY) {
+                    if (_show_available_only) {
+                        get_filtered_equipment_item_names(
+                            _item_names,
+                            "weapon",
+                            undefined, // no range filter
+                            _master_crafted_only,
+                            undefined, // no required tags
+                            ["vehicle"], // exclude vehicle weapons
                             _with_none_if_not_skip,
                             true, // with_any
                         );
                     } else {
                         get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
-                        push_marine_mobility_item_names(_item_names);
+                        push_marine_ranged_weapons_item_names(_item_names);
+                        push_marine_melee_weapons_item_names(_item_names);
                     }
-                    break;
-                default:
-                    ERROR_HANDLER.assert_popup($"Invalid slot for infantry: {_slot}");
+                } else {
+                    ERROR_HANDLER.assert_popup($"Invalid engagement enumerator for infantry: {_engagement}");
                     return;
-            }
-            break;
-        case eROLE.DREADNOUGHT:
-            switch (_slot) {
-                case eEQUIPMENT_SLOT.WEAPON_ONE:
-                case eEQUIPMENT_SLOT.WEAPON_TWO:
-                    if (_engagement == eENGAGEMENT.RANGED) {
-                        if (_show_available_only) {
-                            get_filtered_equipment_item_names(
-                                _item_names,
-                                "weapon",
-                                false, // ranged
-                                _master_crafted_only,
-                                ["dreadnought"], // required tags
-                                undefined, // no excluded tags
-                                _with_none_if_not_skip,
-                                true, // with_any
-                            );
-                        } else {
-                            get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
-                            push_dreadnought_ranged_weapons_item_names(_item_names);
-                        }
-                    } else if (_engagement == eENGAGEMENT.MELEE) {
-                        if (_show_available_only) {
-                            get_filtered_equipment_item_names(
-                                _item_names,
-                                "weapon",
-                                true, // melee
-                                _master_crafted_only,
-                                ["dreadnought"], // required tags
-                                undefined, // no excluded tags
-                                _with_none_if_not_skip,
-                                true, // with_any
-                            );
-                        } else {
-                            get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
-                            push_dreadnought_melee_weapons_item_names(_item_names);
-                        }
-                    } else if (_engagement == eENGAGEMENT.ANY) {
-                        if (_show_available_only) {
-                            get_filtered_equipment_item_names(
-                                _item_names,
-                                "weapon",
-                                undefined, // no range filter
-                                _master_crafted_only,
-                                ["dreadnought"], // required tags
-                                undefined, // no excluded tags
-                                _with_none_if_not_skip,
-                                true, // with_any
-                            );
-                        } else {
-                            get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
-                            push_dreadnought_ranged_weapons_item_names(_item_names);
-                            push_dreadnought_melee_weapons_item_names(_item_names);
-                        }
-                    } else {
-                        ERROR_HANDLER.assert_popup($"Invalid engagement enumerator for dreadnought: {_engagement}");
-                        return;
-                    }
-                    break;
-                case eEQUIPMENT_SLOT.MOBILITY:
+                }
+                break;
+            case 2:
+                if (_show_available_only) {
+                    _item_names = get_filtered_equipment_item_names(
+                        _item_names,
+                        "armour",
+                        undefined, // no range filter
+                        false, // not master crafted
+                        undefined, // no required tags
+                        ["vehicle"], // exclude vehicle armour
+                        _with_none_if_not_skip,
+                        true, // with_any
+                    );
+                } else {
                     get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
-                    push_tank_accessory_item_names(_item_names, false, true);
-                    break;
-                case eEQUIPMENT_SLOT.GEAR:
-                case eEQUIPMENT_SLOT.ARMOUR:
-                    // Dreadnought doesn't have these slots, but empty lists are shown in the UI
-                    break;
-                default:
-                    ERROR_HANDLER.assert_popup($"Invalid slot for dreadnought: {_slot}");
+                    push_marine_armour_item_names(_item_names);
+                }
+                break;
+            case 3:
+                if (_show_available_only) {
+                    get_filtered_equipment_item_names(
+                        _item_names,
+                        "gear",
+                        undefined, // no range filter
+                        false, // not master crafted
+                        undefined, // no required tags
+                        ["vehicle", "no_equip"], // exclude vehicle gear + unequippable items
+                        _with_none_if_not_skip,
+                        true, // with_any
+                    );
+                } else {
+                    get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
+                    push_marine_gear_item_names(_item_names);
+                }
+                break;
+            case 4:
+                if (_show_available_only) {
+                    get_filtered_equipment_item_names(
+                        _item_names,
+                        "mobility",
+                        undefined, // no range filter
+                        false, // not master crafted
+                        undefined, // no required tags
+                        ["vehicle"], // exclude vehicle mobility
+                        _with_none_if_not_skip,
+                        true, // with_any
+                    );
+                } else {
+                    get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
+                    push_marine_mobility_item_names(_item_names);
+                }
+                break;
+            default:
+                ERROR_HANDLER.assert_popup($"Invalid slot for infantry: {_slot}");
+                return;
+        }
+        return;
+    } else if (_role == eROLE.DREADNOUGHT)
+        switch (_slot) {
+            case eEQUIPMENT_SLOT.WEAPON_ONE:
+            case eEQUIPMENT_SLOT.WEAPON_TWO:
+                if (_engagement == eENGAGEMENT.RANGED) {
+                    if (_show_available_only) {
+                        get_filtered_equipment_item_names(
+                            _item_names,
+                            "weapon",
+                            false, // ranged
+                            _master_crafted_only,
+                            ["dreadnought"], // required tags
+                            undefined, // no excluded tags
+                            _with_none_if_not_skip,
+                            true, // with_any
+                        );
+                    } else {
+                        get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
+                        push_dreadnought_ranged_weapons_item_names(_item_names);
+                    }
+                } else if (_engagement == eENGAGEMENT.MELEE) {
+                    if (_show_available_only) {
+                        get_filtered_equipment_item_names(
+                            _item_names,
+                            "weapon",
+                            true, // melee
+                            _master_crafted_only,
+                            ["dreadnought"], // required tags
+                            undefined, // no excluded tags
+                            _with_none_if_not_skip,
+                            true, // with_any
+                        );
+                    } else {
+                        get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
+                        push_dreadnought_melee_weapons_item_names(_item_names);
+                    }
+                } else if (_engagement == eENGAGEMENT.ANY) {
+                    if (_show_available_only) {
+                        get_filtered_equipment_item_names(
+                            _item_names,
+                            "weapon",
+                            undefined, // no range filter
+                            _master_crafted_only,
+                            ["dreadnought"], // required tags
+                            undefined, // no excluded tags
+                            _with_none_if_not_skip,
+                            true, // with_any
+                        );
+                    } else {
+                        get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
+                        push_dreadnought_ranged_weapons_item_names(_item_names);
+                        push_dreadnought_melee_weapons_item_names(_item_names);
+                    }
+                } else {
+                    ERROR_HANDLER.assert_popup($"Invalid engagement enumerator for dreadnought: {_engagement}");
                     return;
-            }
-            break;
+                }
+                break;
+            case eEQUIPMENT_SLOT.MOBILITY:
+                get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
+                push_tank_accessory_item_names(_item_names, false, true);
+                break;
+            case eEQUIPMENT_SLOT.GEAR:
+            case eEQUIPMENT_SLOT.ARMOUR:
+                // Dreadnought doesn't have these slots, but empty lists are shown in the UI
+                break;
+            default:
+                ERROR_HANDLER.assert_popup($"Invalid slot for dreadnought: {_slot}");
+                return;
+        }
+        return;
+    }
+
+    switch(_role){
         case eROLE.LANDRAIDER:
             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
             switch (_slot) {
