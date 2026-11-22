@@ -7,7 +7,7 @@ try {
         for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++){
             var _tag = is_item_set(equipment_set[i]);
             if (_tag != -1){
-                equipment_set[i] = new TagSetItems(equipment_set[i]);
+                equipment_set[i] = new TagSetItems(_tag);
                 equipment_set[i].create_item_map();
             }
         }
