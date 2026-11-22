@@ -286,7 +286,7 @@ function ArtifactStruct(_type_name = "", _tags = [], _identification_timer = 0, 
     /// @param {Real} slot Weapon slot: 1 = weapon two, otherwise weapon one.
     static equip_on_unit = function(unit, slot = 0) {
         var _item = get_type();
-        var _result = false;
+        var _result = new EquipOutcome(false, "invalid item");
 
         if (_item == "mobility") {
             _result = unit.update_mobility_item(artifact_id);
@@ -302,7 +302,7 @@ function ArtifactStruct(_type_name = "", _tags = [], _identification_timer = 0, 
             }
         }
 
-        if (_result != "complete") {
+        if (!_result.success) {
             return;
         }
 

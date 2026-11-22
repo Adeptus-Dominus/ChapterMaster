@@ -7,9 +7,9 @@
 /// @param {bool} _with_any - Whether to include ITEM_NAME_ANY in the list.
 function get_none_or_any_item_names(_item_names, _with_none = false, _with_any = false) {
     var expandCount = (_with_any != 0) + (_with_none != 0);
-    var initial_size = array_length(_item_names);
-    array_resize(_item_names, initial_size + expandCount);
-    var index = initial_size;
+    var _initial_size = array_length(_item_names);
+    array_resize(_item_names, _initial_size + expandCount);
+    var index = _initial_size;
     if (_with_none) {
         _item_names[@ index++] = ITEM_NAME_NONE;
     }
@@ -23,10 +23,13 @@ function get_none_or_any_item_names(_item_names, _with_none = false, _with_any =
 /// @returns {void}
 function push_marine_ranged_weapons_item_names(_item_names) {
     var item_count = 29;
-    var initial_size = array_length(_item_names);
-    array_resize(_item_names, initial_size + item_count);
+    var _initial_size = array_length(_item_names);
+    array_resize(_item_names, _initial_size + item_count);
 
-    var index = initial_size;
+    var index = _initial_size;
+    _item_names[@ index++] = "Heavy Ranged"
+    _item_names[@ index++] = "Pistols"
+    _item_names[@ index++] = "Flame Weapons"
     _item_names[@ index++] = "Archeotech Laspistol";
     _item_names[@ index++] = "Assault Cannon";
     _item_names[@ index++] = "Bolt Pistol";
@@ -63,11 +66,13 @@ function push_marine_ranged_weapons_item_names(_item_names) {
 /// @returns {void}
 function push_marine_melee_weapons_item_names(_item_names) {
     var item_count = 19;
-    var initial_size = array_length(_item_names);
-    array_resize(_item_names, initial_size + item_count);
+    var _initial_size = array_length(_item_names);
+    array_resize(_item_names, _initial_size + item_count);
 
-    var index = initial_size;
+    var index = _initial_size;
     _item_names[@ index++] = "Combat Knife";
+    _item_names[@ index++] = "Power Weapons"
+    _item_names[@ index++] = "Chain Weapons"
     _item_names[@ index++] = "Chainsword";
     _item_names[@ index++] = "Chainaxe";
     _item_names[@ index++] = "Eviscerator";
@@ -93,10 +98,10 @@ function push_marine_melee_weapons_item_names(_item_names) {
 /// @returns {void}
 function push_marine_armour_item_names(_item_names) {
     var item_count = 13;
-    var initial_size = array_length(_item_names);
-    array_resize(_item_names, initial_size + item_count);
+    var _initial_size = array_length(_item_names);
+    array_resize(_item_names, _initial_size + item_count);
 
-    var index = initial_size;
+    var index = _initial_size;
     _item_names[@ index++] = "Scout Armour";
     _item_names[@ index++] = STR_ANY_POWER_ARMOUR;
     _item_names[@ index++] = "Power Armour";
@@ -117,10 +122,10 @@ function push_marine_armour_item_names(_item_names) {
 /// @returns {void}
 function push_marine_gear_item_names(_item_names) {
     var item_count = 4;
-    var initial_size = array_length(_item_names);
-    array_resize(_item_names, initial_size + item_count);
+    var _initial_size = array_length(_item_names);
+    array_resize(_item_names, _initial_size + item_count);
 
-    var index = initial_size;
+    var index = _initial_size;
     // _item_names[@ index++] = "Bionics";
     _item_names[@ index++] = "Iron Halo";
     _item_names[@ index++] = "Narthecium";
@@ -133,10 +138,10 @@ function push_marine_gear_item_names(_item_names) {
 /// @returns {void}
 function push_marine_mobility_item_names(_item_names) {
     var item_count = 5;
-    var initial_size = array_length(_item_names);
-    array_resize(_item_names, initial_size + item_count);
+    var _initial_size = array_length(_item_names);
+    array_resize(_item_names, _initial_size + item_count);
 
-    var index = initial_size;
+    var index = _initial_size;
     _item_names[@ index++] = "Bike";
     _item_names[@ index++] = "Jump Pack";
     _item_names[@ index++] = "Heavy Weapons Pack";
@@ -149,10 +154,10 @@ function push_marine_mobility_item_names(_item_names) {
 /// @returns {void}
 function push_dreadnought_ranged_weapons_item_names(_item_names) {
     var item_count = 9;
-    var initial_size = array_length(_item_names);
-    array_resize(_item_names, initial_size + item_count);
+    var _initial_size = array_length(_item_names);
+    array_resize(_item_names, _initial_size + item_count);
 
-    var index = initial_size;
+    var index = _initial_size;
     _item_names[@ index++] = "Multi-Melta";
     _item_names[@ index++] = "Plasma Cannon";
     _item_names[@ index++] = "Assault Cannon";
@@ -169,10 +174,10 @@ function push_dreadnought_ranged_weapons_item_names(_item_names) {
 /// @returns {void}
 function push_dreadnought_melee_weapons_item_names(_item_names) {
     var item_count = 3;
-    var initial_size = array_length(_item_names);
-    array_resize(_item_names, initial_size + item_count);
+    var _initial_size = array_length(_item_names);
+    array_resize(_item_names, _initial_size + item_count);
 
-    var index = initial_size;
+    var index = _initial_size;
     _item_names[@ index++] = "Close Combat Weapon";
     _item_names[@ index++] = "Dreadnought Power Claw";
     _item_names[@ index++] = "Dreadnought Lightning Claw"; // 3
@@ -183,10 +188,10 @@ function push_dreadnought_melee_weapons_item_names(_item_names) {
 /// @returns {void}
 function push_land_raider_front_weapons_item_names(_item_names) {
     var item_count = 4;
-    var initial_size = array_length(_item_names);
-    array_resize(_item_names, initial_size + item_count);
+    var _initial_size = array_length(_item_names);
+    array_resize(_item_names, _initial_size + item_count);
 
-    var index = initial_size;
+    var index = _initial_size;
     _item_names[@ index++] = "Twin Linked Heavy Bolter Mount";
     _item_names[@ index++] = "Twin Linked Lascannon Mount";
     _item_names[@ index++] = "Twin Linked Assault Cannon Mount";
@@ -198,10 +203,10 @@ function push_land_raider_front_weapons_item_names(_item_names) {
 /// @returns {void}
 function push_land_raider_relic_front_weapons_item_names(_item_names) {
     var item_count = 2;
-    var initial_size = array_length(_item_names);
-    array_resize(_item_names, initial_size + item_count);
+    var _initial_size = array_length(_item_names);
+    array_resize(_item_names, _initial_size + item_count);
 
-    var index = initial_size;
+    var index = _initial_size;
     // _item_names[@ index++] = "Thunderfire Cannon Mount";
     _item_names[@ index++] = "Neutron Blaster Turret";
     _item_names[@ index++] = "Reaper Autocannon Mount"; // 2
@@ -214,10 +219,10 @@ function push_land_raider_relic_front_weapons_item_names(_item_names) {
 /// @returns {void}
 function push_land_raider_regular_sponsons_item_names(_item_names) {
     var item_count = 3;
-    var initial_size = array_length(_item_names);
-    array_resize(_item_names, initial_size + item_count);
+    var _initial_size = array_length(_item_names);
+    array_resize(_item_names, _initial_size + item_count);
 
-    var index = initial_size;
+    var index = _initial_size;
     _item_names[@ index++] = "Twin Linked Lascannon Sponsons";
     _item_names[@ index++] = "Hurricane Bolter Sponsons";
     _item_names[@ index++] = "Flamestorm Cannon Sponsons"; // 3
@@ -228,10 +233,10 @@ function push_land_raider_regular_sponsons_item_names(_item_names) {
 /// @returns {void}
 function push_land_raider_relic_sponsons_item_names(_item_names) {
     var item_count = 4;
-    var initial_size = array_length(_item_names);
-    array_resize(_item_names, initial_size + item_count);
+    var _initial_size = array_length(_item_names);
+    array_resize(_item_names, _initial_size + item_count);
 
-    var index = initial_size;
+    var index = _initial_size;
     _item_names[@ index++] = "Quad Linked Heavy Bolter Sponsons";
     _item_names[@ index++] = "Twin Linked Heavy Flamer Sponsons";
     _item_names[@ index++] = "Twin Linked Multi-Melta Sponsons";
@@ -243,10 +248,10 @@ function push_land_raider_relic_sponsons_item_names(_item_names) {
 /// @returns {void}
 function push_land_raider_pintle_item_names(_item_names) {
     var item_count = 5;
-    var initial_size = array_length(_item_names);
-    array_resize(_item_names, initial_size + item_count);
+    var _initial_size = array_length(_item_names);
+    array_resize(_item_names, _initial_size + item_count);
 
-    var index = initial_size;
+    var index = _initial_size;
     _item_names[@ index++] = "Bolter";
     _item_names[@ index++] = "Combiflamer";
     _item_names[@ index++] = "Twin Linked Bolters";
@@ -259,10 +264,10 @@ function push_land_raider_pintle_item_names(_item_names) {
 /// @returns {void}
 function push_rhino_weapons_item_names(_item_names) {
     var item_count = 5;
-    var initial_size = array_length(_item_names);
-    array_resize(_item_names, initial_size + item_count);
+    var _initial_size = array_length(_item_names);
+    array_resize(_item_names, _initial_size + item_count);
 
-    var index = initial_size;
+    var index = _initial_size;
     _item_names[@ index++] = "Bolter";
     _item_names[@ index++] = "Combiflamer";
     _item_names[@ index++] = "Twin Linked Bolters";
@@ -272,10 +277,10 @@ function push_rhino_weapons_item_names(_item_names) {
 
 function push_rhino_side_item_names(_item_names) {
     var item_count = 1;
-    var initial_size = array_length(_item_names);
-    array_resize(_item_names, initial_size + item_count);
+    var _initial_size = array_length(_item_names);
+    array_resize(_item_names, _initial_size + item_count);
 
-    var index = initial_size;
+    var index = _initial_size;
     _item_names[@ index++] = "HK Missile";
 }
 
@@ -284,10 +289,10 @@ function push_rhino_side_item_names(_item_names) {
 /// @returns {void}
 function push_predator_turret_item_names(_item_names) {
     var item_count = 9;
-    var initial_size = array_length(_item_names);
-    array_resize(_item_names, initial_size + item_count);
+    var _initial_size = array_length(_item_names);
+    array_resize(_item_names, _initial_size + item_count);
 
-    var index = initial_size;
+    var index = _initial_size;
     _item_names[@ index++] = "Autocannon Turret";
     _item_names[@ index++] = "Twin Linked Lascannon Turret";
     _item_names[@ index++] = "Flamestorm Cannon Turret";
@@ -305,10 +310,10 @@ function push_predator_turret_item_names(_item_names) {
 /// @returns {void}
 function push_predator_sponsons_item_names(_item_names) {
     var item_count = 4;
-    var initial_size = array_length(_item_names);
-    array_resize(_item_names, initial_size + item_count);
+    var _initial_size = array_length(_item_names);
+    array_resize(_item_names, _initial_size + item_count);
 
-    var index = initial_size;
+    var index = _initial_size;
     _item_names[@ index++] = "Heavy Bolter Sponsons";
     _item_names[@ index++] = "Lascannon Sponsons";
     _item_names[@ index++] = "Heavy Flamer Sponsons";
@@ -320,10 +325,10 @@ function push_predator_sponsons_item_names(_item_names) {
 /// @returns {void}
 function push_predator_pintle_item_names(_item_names) {
     var item_count = 5;
-    var initial_size = array_length(_item_names);
-    array_resize(_item_names, initial_size + item_count);
+    var _initial_size = array_length(_item_names);
+    array_resize(_item_names, _initial_size + item_count);
 
-    var index = initial_size;
+    var index = _initial_size;
     _item_names[@ index++] = "Bolter";
     _item_names[@ index++] = "Combiflamer";
     _item_names[@ index++] = "Twin Linked Bolters";
@@ -336,10 +341,10 @@ function push_predator_pintle_item_names(_item_names) {
 /// @returns {void}
 function push_land_speeder_primary_item_names(_item_names) {
     var item_count = 2;
-    var initial_size = array_length(_item_names);
-    array_resize(_item_names, initial_size + item_count);
+    var _initial_size = array_length(_item_names);
+    array_resize(_item_names, _initial_size + item_count);
 
-    var index = initial_size;
+    var index = _initial_size;
     _item_names[@ index++] = "Multi-Melta";
     _item_names[@ index++] = "Heavy Bolter"; // 2
 }
@@ -349,10 +354,10 @@ function push_land_speeder_primary_item_names(_item_names) {
 /// @returns {void}
 function push_land_speeder_secondary_item_names(_item_names) {
     var item_count = 2;
-    var initial_size = array_length(_item_names);
-    array_resize(_item_names, initial_size + item_count);
+    var _initial_size = array_length(_item_names);
+    array_resize(_item_names, _initial_size + item_count);
 
-    var index = initial_size;
+    var index = _initial_size;
     _item_names[@ index++] = "Heavy Flamer";
     _item_names[@ index++] = "Assault Cannon"; // 2
 }
@@ -369,10 +374,10 @@ function push_whirlwind_missiles_item_names(_item_names) {
 /// @returns {void}
 function push_whirlwind_pintle_item_names(_item_names) {
     var item_count = 5;
-    var initial_size = array_length(_item_names);
-    array_resize(_item_names, initial_size + item_count);
+    var _initial_size = array_length(_item_names);
+    array_resize(_item_names, _initial_size + item_count);
 
-    var index = initial_size;
+    var index = _initial_size;
     _item_names[@ index++] = "Bolter";
     _item_names[@ index++] = "Combiflamer";
     _item_names[@ index++] = "Twin Linked Bolters";
@@ -386,10 +391,10 @@ function push_whirlwind_pintle_item_names(_item_names) {
 /// @returns {void}
 function push_tank_upgrade_item_names(_item_names, _is_land_raider = false) {
     var item_count = 3 + (_is_land_raider != 0);
-    var initial_size = array_length(_item_names);
-    array_resize(_item_names, initial_size + item_count);
+    var _initial_size = array_length(_item_names);
+    array_resize(_item_names, _initial_size + item_count);
 
-    var index = initial_size;
+    var index = _initial_size;
     // array_push(_item_names, "Armoured Ceramite");
     // array_push(_item_names, "Artificer Hull");
     // array_push(_item_names, "Heavy Armour");
@@ -411,10 +416,10 @@ function push_tank_upgrade_item_names(_item_names, _is_land_raider = false) {
 /// @returns {void}
 function push_tank_accessory_item_names(_item_names, _is_land_raider = false, _is_dreadnought = false) {
     var item_count = 3 + (!_is_dreadnought) + (!_is_land_raider && !_is_dreadnought);
-    var initial_size = array_length(_item_names);
-    array_resize(_item_names, initial_size + item_count);
+    var _initial_size = array_length(_item_names);
+    array_resize(_item_names, _initial_size + item_count);
 
-    var index = initial_size;
+    var index = _initial_size;
     if (!_is_dreadnought) {
         _item_names[@ index++] = "Dozer Blades";
     }
@@ -442,19 +447,61 @@ function get_filtered_equipment_item_names(_item_names, _equip_category, _melee_
     var _matched_names = [];
     var _equipment_keys = variable_struct_get_names(obj_ini.equipment);
 
+    filter_item = function(_item, _melee_or_ranged, _required_tags, _excluded_tags){
+        // Melee or ranged filter
+        if (_melee_or_ranged != undefined) {
+            var _is_ranged = _item.is_ranged();
+            if (_melee_or_ranged == _is_ranged) {
+                return false;
+            }
+        }
+
+        // Required tags
+        if (_required_tags != undefined) {
+            if (!_item.has_tags_all(_required_tags)){
+                return false;
+            }
+        }
+
+        // Excluded tags
+        if (_excluded_tags != undefined) {
+            if (_item.has_tags(_excluded_tags)){
+                return false;
+            }
+        }
+        return true;
+    }
+    var _qual_string = _is_master_crafted ? "master_crafted" : "any";
+    var _tags = [];
+    if (_equip_category == "weapon"){
+        _tags = global.weapon_tag_sets
+    } else if (_equip_category == "armour"){
+        _tags = global.armour_tag_sets
+    }
+    for (var i = 0; i < array_length(_tags); i++) {
+        var _valid = true;
+        var _set = new TagSetItems(is_item_set(_tags[i]));
+        _set.create_item_map();
+        if (!is_undefined(_excluded_tags)){
+            _set.kick_items_with_tag(_excluded_tags);
+        }
+        for (var j = array_length(_set.items) - 1; j >= 0; j--){
+            var _item = _set.items[j];
+            var _item_valid = filter_item(_item, _melee_or_ranged, _required_tags, _excluded_tags);
+            if (!_item_valid){
+                _set.kick_item(j, false);
+            }
+        }
+        _valid = _set.total_in_inventory() > 0;
+        if (_valid){
+            array_push(_matched_names, _tags[i]);
+        }    
+    }
     for (var i = 0; i < array_length(_equipment_keys); i++) {
+        var _valid = true;
         var _item_name = _equipment_keys[i];
-        var _item_struct = obj_ini.equipment[$ _item_name];
 
-        if (!is_struct(_item_struct) || !is_struct(_item_struct.quantity)) {
-            continue;
-        }
-
-        if (_is_master_crafted && scr_item_count(_item_name, "master_crafted") <= 0) {
-            continue;
-        }
-
-        if (scr_item_count(_item_name, "any") <= 0) {
+        if (scr_item_count(_item_name, _qual_string) <= 0) {
             continue;
         }
 
@@ -462,49 +509,22 @@ function get_filtered_equipment_item_names(_item_names, _equip_category, _melee_
         if (!is_struct(equip_data)) {
             continue;
         }
+        _valid = filter_item(equip_data, _melee_or_ranged, _required_tags, _excluded_tags)
 
-        // Melee or ranged filter
-        if (_melee_or_ranged != undefined) {
-            if ((_melee_or_ranged && equip_data.range > 1.1) || (!_melee_or_ranged && equip_data.range <= 1.1)) {
-                continue;
-            }
-        }
 
-        // Required tags
-        var valid = true;
-        if (_required_tags != undefined) {
-            for (var t = 0; t < array_length(_required_tags); t++) {
-                if (!equip_data.has_tag(_required_tags[t])) {
-                    valid = false;
-                    break;
-                }
-            }
-        }
-
-        // Excluded tags
-        if (valid && _excluded_tags != undefined) {
-            for (var t = 0; t < array_length(_excluded_tags); t++) {
-                if (equip_data.has_tag(_excluded_tags[t])) {
-                    valid = false;
-                    break;
-                }
-            }
-        }
-
-        if (valid) {
+        if (_valid) {
             array_push(_matched_names, _item_name);
         }
     }
 
     // Append matched item names to the output array
-    var initial_size = array_length(_item_names);
-    array_resize(_item_names, initial_size + array_length(_matched_names));
+    var _initial_size = array_length(_item_names);
+    array_resize(_item_names, _initial_size + array_length(_matched_names));
 
-    var index = initial_size;
+    var index = _initial_size;
     for (var j = 0; j < array_length(_matched_names); j++) {
         var _item_name = _matched_names[j];
-        var equip_data = gear_weapon_data(_equip_category, _item_name);
-        _item_names[@ index++] = equip_data.name;
+        _item_names[@ index++] = _item_name;
     }
 
     return _item_names;
@@ -522,49 +542,34 @@ enum eENGAGEMENT {
 /// @param {number} _slot - The equipment slot number, 1-5; for primary weapon, secondary weapon, armour, gear/upgrade, and mobility/accessory.
 /// @returns {string} The name of the slot.
 function get_slot_name(_role, _slot) {
+    if (_role != eROLE.DREADNOUGHT && _role < eROLE.MARINEEND){
+        switch (_slot) {
+            case eEQUIPMENT_SLOT.WEAPON_ONE:
+                return "First Weapon";
+            case eEQUIPMENT_SLOT.WEAPON_TWO:
+                return "Second Weapon";
+            case eEQUIPMENT_SLOT.ARMOUR:
+                return "Armour";
+            case eEQUIPMENT_SLOT.GEAR:
+                return "Gear";
+            case eEQUIPMENT_SLOT.MOBILITY:
+                return "Mobility";
+            default:
+                return "Unknown";
+        }
+    } else if (_role == eROLE.DREADNOUGHT){
+        switch (_slot) {
+            case 0:
+                return "First Weapon";
+            case 1:
+                return "Second Weapon";
+            case 4:
+                return "Accessory";
+            default:
+                return "Unknown";
+        }
+    }
     switch (_role) {
-        case eROLE.CHAPTERMASTER:
-        case eROLE.HONOURGUARD:
-        case eROLE.VETERAN:
-        case eROLE.TERMINATOR:
-        case eROLE.CAPTAIN:
-        case eROLE.CHAMPION:
-        case eROLE.TACTICAL:
-        case eROLE.DEVASTATOR:
-        case eROLE.ASSAULT:
-        case eROLE.ANCIENT:
-        case eROLE.SCOUT:
-        case eROLE.CHAPLAIN:
-        case eROLE.APOTHECARY:
-        case eROLE.TECHMARINE:
-        case eROLE.LIBRARIAN:
-        case eROLE.SERGEANT:
-        case eROLE.VETERANSERGEANT:
-            switch (_slot) {
-                case 0:
-                    return "First Weapon";
-                case 1:
-                    return "Second Weapon";
-                case 2:
-                    return "Armour";
-                case 3:
-                    return "Gear";
-                case 4:
-                    return "Mobility";
-                default:
-                    return "Unknown";
-            }
-        case eROLE.DREADNOUGHT:
-            switch (_slot) {
-                case 0:
-                    return "First Weapon";
-                case 1:
-                    return "Second Weapon";
-                case 4:
-                    return "Accessory";
-                default:
-                    return "Unknown";
-            }
         case eROLE.LANDRAIDER:
             switch (_slot) {
                 case 0:
@@ -657,211 +662,197 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
 
     var _with_none_if_not_skip = _skip_none ? false : true;
 
-    switch (_role) {
-        case eROLE.CHAPTERMASTER:
-        case eROLE.HONOURGUARD:
-        case eROLE.VETERAN:
-        case eROLE.TERMINATOR:
-        case eROLE.CAPTAIN:
-        case eROLE.CHAMPION:
-        case eROLE.TACTICAL:
-        case eROLE.DEVASTATOR:
-        case eROLE.ASSAULT:
-        case eROLE.ANCIENT:
-        case eROLE.SCOUT:
-        case eROLE.CHAPLAIN:
-        case eROLE.APOTHECARY:
-        case eROLE.TECHMARINE:
-        case eROLE.LIBRARIAN:
-        case eROLE.SERGEANT:
-        case eROLE.VETERANSERGEANT:
-            switch (_slot) {
-                case 0:
-                case 1:
-                    if (_engagement == eENGAGEMENT.RANGED) {
-                        if (_show_available_only) {
-                            get_filtered_equipment_item_names(
-                                _item_names,
-                                "weapon",
-                                false, // ranged
-                                _master_crafted_only,
-                                undefined, // no required tags
-                                ["vehicle"], // exclude vehicle weapons
-                                _with_none_if_not_skip,
-                                true, // with_any
-                            );
-                        } else {
-                            get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
-                            push_marine_ranged_weapons_item_names(_item_names);
-                        }
-                    } else if (_engagement == eENGAGEMENT.MELEE) {
-                        if (_show_available_only) {
-                            get_filtered_equipment_item_names(
-                                _item_names,
-                                "weapon",
-                                true, // melee
-                                _master_crafted_only,
-                                undefined, // no required tags
-                                ["vehicle"], // exclude vehicle weapons
-                                _with_none_if_not_skip,
-                                true, // with_any
-                            );
-                            if (_include_company_standard) {
-                                _item_names[@ array_length(_item_names)] = "Company Standard";
-                            }
-                        } else {
-                            get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
-                            push_marine_melee_weapons_item_names(_item_names);
-                        }
-                    } else if (_engagement == eENGAGEMENT.ANY) {
-                        if (_show_available_only) {
-                            get_filtered_equipment_item_names(
-                                _item_names,
-                                "weapon",
-                                undefined, // no range filter
-                                _master_crafted_only,
-                                undefined, // no required tags
-                                ["vehicle"], // exclude vehicle weapons
-                                _with_none_if_not_skip,
-                                true, // with_any
-                            );
-                        } else {
-                            get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
-                            push_marine_ranged_weapons_item_names(_item_names);
-                            push_marine_melee_weapons_item_names(_item_names);
-                        }
-                    } else {
-                        ERROR_HANDLER.assert_popup($"Invalid engagement enumerator for infantry: {_engagement}");
-                        return;
-                    }
-                    break;
-                case 2:
-                    if (_show_available_only) {
-                        _item_names = get_filtered_equipment_item_names(
-                            _item_names,
-                            "armour",
-                            undefined, // no range filter
-                            false, // not master crafted
-                            undefined, // no required tags
-                            ["vehicle"], // exclude vehicle armour
-                            _with_none_if_not_skip,
-                            true, // with_any
-                        );
-                    } else {
-                        get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
-                        push_marine_armour_item_names(_item_names);
-                    }
-                    break;
-                case 3:
+    if (_role != eROLE.DREADNOUGHT && _role < eROLE.MARINEEND){
+        switch (_slot) {
+            case 0:
+            case 1:
+                if (_engagement == eENGAGEMENT.RANGED) {
                     if (_show_available_only) {
                         get_filtered_equipment_item_names(
                             _item_names,
-                            "gear",
-                            undefined, // no range filter
-                            false, // not master crafted
+                            "weapon",
+                            false, // ranged
+                            _master_crafted_only,
                             undefined, // no required tags
-                            ["vehicle", "no_equip"], // exclude vehicle gear + unequippable items
+                            ["vehicle"], // exclude vehicle weapons
                             _with_none_if_not_skip,
                             true, // with_any
                         );
                     } else {
                         get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
-                        push_marine_gear_item_names(_item_names);
+                        push_marine_ranged_weapons_item_names(_item_names);
                     }
-                    break;
-                case 4:
+                } else if (_engagement == eENGAGEMENT.MELEE) {
                     if (_show_available_only) {
                         get_filtered_equipment_item_names(
                             _item_names,
-                            "mobility",
-                            undefined, // no range filter
-                            false, // not master crafted
+                            "weapon",
+                            true, // melee
+                            _master_crafted_only,
                             undefined, // no required tags
-                            ["vehicle"], // exclude vehicle mobility
+                            ["vehicle"], // exclude vehicle weapons
+                            _with_none_if_not_skip,
+                            true, // with_any
+                        );
+                        if (_include_company_standard) {
+                            _item_names[@ array_length(_item_names)] = "Company Standard";
+                        }
+                    } else {
+                        get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
+                        push_marine_melee_weapons_item_names(_item_names);
+                    }
+                } else if (_engagement == eENGAGEMENT.ANY) {
+                    if (_show_available_only) {
+                        get_filtered_equipment_item_names(
+                            _item_names,
+                            "weapon",
+                            undefined, // no range filter
+                            _master_crafted_only,
+                            undefined, // no required tags
+                            ["vehicle"], // exclude vehicle weapons
                             _with_none_if_not_skip,
                             true, // with_any
                         );
                     } else {
                         get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
-                        push_marine_mobility_item_names(_item_names);
+                        push_marine_ranged_weapons_item_names(_item_names);
+                        push_marine_melee_weapons_item_names(_item_names);
                     }
-                    break;
-                default:
-                    ERROR_HANDLER.assert_popup($"Invalid slot for infantry: {_slot}");
+                } else {
+                    ERROR_HANDLER.assert_popup($"Invalid engagement enumerator for infantry: {_engagement}");
                     return;
-            }
-            break;
-        case eROLE.DREADNOUGHT:
-            switch (_slot) {
-                case eEQUIPMENT_SLOT.WEAPON_ONE:
-                case eEQUIPMENT_SLOT.WEAPON_TWO:
-                    if (_engagement == eENGAGEMENT.RANGED) {
-                        if (_show_available_only) {
-                            get_filtered_equipment_item_names(
-                                _item_names,
-                                "weapon",
-                                false, // ranged
-                                _master_crafted_only,
-                                ["dreadnought"], // required tags
-                                undefined, // no excluded tags
-                                _with_none_if_not_skip,
-                                true, // with_any
-                            );
-                        } else {
-                            get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
-                            push_dreadnought_ranged_weapons_item_names(_item_names);
-                        }
-                    } else if (_engagement == eENGAGEMENT.MELEE) {
-                        if (_show_available_only) {
-                            get_filtered_equipment_item_names(
-                                _item_names,
-                                "weapon",
-                                true, // melee
-                                _master_crafted_only,
-                                ["dreadnought"], // required tags
-                                undefined, // no excluded tags
-                                _with_none_if_not_skip,
-                                true, // with_any
-                            );
-                        } else {
-                            get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
-                            push_dreadnought_melee_weapons_item_names(_item_names);
-                        }
-                    } else if (_engagement == eENGAGEMENT.ANY) {
-                        if (_show_available_only) {
-                            get_filtered_equipment_item_names(
-                                _item_names,
-                                "weapon",
-                                undefined, // no range filter
-                                _master_crafted_only,
-                                ["dreadnought"], // required tags
-                                undefined, // no excluded tags
-                                _with_none_if_not_skip,
-                                true, // with_any
-                            );
-                        } else {
-                            get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
-                            push_dreadnought_ranged_weapons_item_names(_item_names);
-                            push_dreadnought_melee_weapons_item_names(_item_names);
-                        }
-                    } else {
-                        ERROR_HANDLER.assert_popup($"Invalid engagement enumerator for dreadnought: {_engagement}");
-                        return;
-                    }
-                    break;
-                case eEQUIPMENT_SLOT.MOBILITY:
+                }
+                break;
+            case 2:
+                if (_show_available_only) {
+                    _item_names = get_filtered_equipment_item_names(
+                        _item_names,
+                        "armour",
+                        undefined, // no range filter
+                        false, // not master crafted
+                        undefined, // no required tags
+                        ["vehicle"], // exclude vehicle armour
+                        _with_none_if_not_skip,
+                        true, // with_any
+                    );
+                } else {
                     get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
-                    push_tank_accessory_item_names(_item_names, false, true);
-                    break;
-                case eEQUIPMENT_SLOT.GEAR:
-                case eEQUIPMENT_SLOT.ARMOUR:
-                    // Dreadnought doesn't have these slots, but empty lists are shown in the UI
-                    break;
-                default:
-                    ERROR_HANDLER.assert_popup($"Invalid slot for dreadnought: {_slot}");
+                    push_marine_armour_item_names(_item_names);
+                }
+                break;
+            case 3:
+                if (_show_available_only) {
+                    get_filtered_equipment_item_names(
+                        _item_names,
+                        "gear",
+                        undefined, // no range filter
+                        false, // not master crafted
+                        undefined, // no required tags
+                        ["vehicle", "no_equip"], // exclude vehicle gear + unequippable items
+                        _with_none_if_not_skip,
+                        true, // with_any
+                    );
+                } else {
+                    get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
+                    push_marine_gear_item_names(_item_names);
+                }
+                break;
+            case 4:
+                if (_show_available_only) {
+                    get_filtered_equipment_item_names(
+                        _item_names,
+                        "mobility",
+                        undefined, // no range filter
+                        false, // not master crafted
+                        undefined, // no required tags
+                        ["vehicle"], // exclude vehicle mobility
+                        _with_none_if_not_skip,
+                        true, // with_any
+                    );
+                } else {
+                    get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
+                    push_marine_mobility_item_names(_item_names);
+                }
+                break;
+            default:
+                ERROR_HANDLER.assert_popup($"Invalid slot for infantry: {_slot}");
+                return;
+        }
+        return;
+    } else if (_role == eROLE.DREADNOUGHT){
+        switch (_slot) {
+            case eEQUIPMENT_SLOT.WEAPON_ONE:
+            case eEQUIPMENT_SLOT.WEAPON_TWO:
+                if (_engagement == eENGAGEMENT.RANGED) {
+                    if (_show_available_only) {
+                        get_filtered_equipment_item_names(
+                            _item_names,
+                            "weapon",
+                            false, // ranged
+                            _master_crafted_only,
+                            ["dreadnought"], // required tags
+                            undefined, // no excluded tags
+                            _with_none_if_not_skip,
+                            true, // with_any
+                        );
+                    } else {
+                        get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
+                        push_dreadnought_ranged_weapons_item_names(_item_names);
+                    }
+                } else if (_engagement == eENGAGEMENT.MELEE) {
+                    if (_show_available_only) {
+                        get_filtered_equipment_item_names(
+                            _item_names,
+                            "weapon",
+                            true, // melee
+                            _master_crafted_only,
+                            ["dreadnought"], // required tags
+                            undefined, // no excluded tags
+                            _with_none_if_not_skip,
+                            true, // with_any
+                        );
+                    } else {
+                        get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
+                        push_dreadnought_melee_weapons_item_names(_item_names);
+                    }
+                } else if (_engagement == eENGAGEMENT.ANY) {
+                    if (_show_available_only) {
+                        get_filtered_equipment_item_names(
+                            _item_names,
+                            "weapon",
+                            undefined, // no range filter
+                            _master_crafted_only,
+                            ["dreadnought"], // required tags
+                            undefined, // no excluded tags
+                            _with_none_if_not_skip,
+                            true, // with_any
+                        );
+                    } else {
+                        get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
+                        push_dreadnought_ranged_weapons_item_names(_item_names);
+                        push_dreadnought_melee_weapons_item_names(_item_names);
+                    }
+                } else {
+                    ERROR_HANDLER.assert_popup($"Invalid engagement enumerator for dreadnought: {_engagement}");
                     return;
-            }
-            break;
+                }
+                break;
+            case eEQUIPMENT_SLOT.MOBILITY:
+                get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
+                push_tank_accessory_item_names(_item_names, false, true);
+                break;
+            case eEQUIPMENT_SLOT.GEAR:
+            case eEQUIPMENT_SLOT.ARMOUR:
+                // Dreadnought doesn't have these slots, but empty lists are shown in the UI
+                break;
+            default:
+                ERROR_HANDLER.assert_popup($"Invalid slot for dreadnought: {_slot}");
+                return;
+        }
+        return;
+    }
+
+    switch(_role){
         case eROLE.LANDRAIDER:
             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
             switch (_slot) {

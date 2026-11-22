@@ -3,43 +3,9 @@ role = obj_controller.settings;
 refresh = true;
 engage = false;
 
-total_role_number = 0;
 total_roles = "";
-
-role_number = [];
-
-armour_equip = "";
-wep1_equip = "";
-wep2_equip = "";
-mobi_equip = "";
-gear_equip = "";
 all_equip = "";
 
-req_armour = "";
-req_armour_num = 0;
-have_armour_num = 0;
-
-req_wep1 = "";
-req_wep1_num = 0;
-have_wep1_num = 0;
-
-req_wep2 = "";
-req_wep2_num = 0;
-have_wep2_num = 0;
-
-req_gear = "";
-req_gear_num = 0;
-have_gear_num = 0;
-
-req_mobi = "";
-req_mobi_num = 0;
-have_mobi_num = 0;
-
-good1 = 0;
-good2 = 0;
-good3 = 0;
-good4 = 0;
-good5 = 0;
 
 item_name = [];
 
@@ -51,16 +17,3 @@ cancel_button = new UnitButtonObject({
     font: fnt_40k_14b,
     color: c_gray,
 });
-
-//TODO get rid oof this and use weapon tags instead
-/// @param {Struct.TTRPG_stats} unit
-/// @param {string} weapon_name
-can_assign_weapon = function(unit, weapon_name) {
-    switch (weapon_name) {
-        case "Assault Cannon":
-            var _armour = unit.get_armour_data();
-            return is_struct(_armour) && _armour.has_tag("terminator");
-        default:
-            return true;
-    }
-};

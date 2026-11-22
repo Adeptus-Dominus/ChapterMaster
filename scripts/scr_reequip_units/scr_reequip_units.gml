@@ -436,6 +436,12 @@ function reequip_selection() {
     for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
         if (needed_equipment[i] == ITEM_NAME_NONE) {
             needed_equipment[i] = "";
+        } else {
+            var _tag = is_item_set(needed_equipment[i]);
+            if (_tag != -1){
+                needed_equipment[i] = new TagSetItems(_tag);
+                needed_equipment[i].create_item_map();
+            }
         }
     }
 

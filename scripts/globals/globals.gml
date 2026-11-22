@@ -229,6 +229,14 @@ global.unit_equip_slots = [
     "all",
 ];
 
+global.marine_equipment_getters = [
+    "weapon_one",
+    "weapon_two",
+    "armour",
+    "gear",
+    "mobility_item",
+]
+
 global.role_data_keys = [
     "wep1",
     "wep2",
@@ -256,6 +264,59 @@ global.equipment_qualities = [
     "master_crafted",
     "artifact",
 ];
+
+global.equipment_tags = [
+    {
+        name : "Heavy Ranged",
+        type : "weapon",
+        tag : "heavy_ranged"
+    },
+    {
+        name : STR_ANY_POWER_ARMOUR,
+        type : "armour",
+        tag :"power_armour"
+    },
+    {
+        name : STR_ANY_TERMINATOR_ARMOUR, 
+        type : "armour", 
+        tag : "terminator"
+    },
+    {
+        name : "Pistols", 
+        type : "weapon",
+        tag : "pistol"
+    },
+    {
+        name : "Flame Weapons", 
+        type : "weapon",
+        tag : "flame"
+    },
+    {
+        name : "Power Weapons", 
+        type : "weapon",
+        tag : "power"
+    },
+    {
+        name : "Chain Weapons", 
+        type : "weapon",
+        tag : "chain"
+    },
+]
+
+// Tag sets are derived from equipment_tags, so a new set only needs one entry there.
+global.armour_tag_sets = [];
+global.weapon_tag_sets = [];
+for (var i = 0; i < array_length(global.equipment_tags); i++) {
+    var _equipment_set = global.equipment_tags[i];
+    switch (_equipment_set.type) {
+        case "armour":
+            array_push(global.armour_tag_sets, _equipment_set.name);
+            break;
+        case "weapon":
+            array_push(global.weapon_tag_sets, _equipment_set.name);
+            break;
+    }
+}
 
 global.string_to_enum_roles_map = {
     none: eROLE.NONE,

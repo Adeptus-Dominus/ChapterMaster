@@ -2,10 +2,10 @@
 /// @param {string} _item_name The name of the item to add or remove
 /// @param {real} _quantity The number of items to add (positive) or remove (negative)
 /// @param {string} _quality The quality to add/remove: specific level, or "any", "best", or "worst" (default is "any")
-/// @return {string} Returns the affected quality string, or "no_item" if the operation failed
+/// @return {string} Returns the affected quality string, or NO_ITEM_IN_ARMOURY if the operation failed
 function scr_add_item(_item_name, _quantity = 1, _quality = "any") {
     if (_item_name == "" || _quantity == 0) {
-        return "no_item";
+        return NO_ITEM_IN_ARMOURY;
     }
 
     static qualities = global.equipment_qualities;
@@ -37,7 +37,7 @@ function scr_add_item(_item_name, _quantity = 1, _quality = "any") {
                 quantity: {},
             };
         } else {
-            return "no_item";
+            return NO_ITEM_IN_ARMOURY;
         }
     }
 
@@ -61,7 +61,7 @@ function scr_add_item(_item_name, _quantity = 1, _quality = "any") {
         // Get list of existing qualities
         var _available_qualities = variable_struct_get_names(_quantities);
         if (array_length(_available_qualities) == 0) {
-            return "no_item";
+            return NO_ITEM_IN_ARMOURY;
         }
 
         switch (_quality) {
@@ -77,7 +77,7 @@ function scr_add_item(_item_name, _quantity = 1, _quality = "any") {
                     }
                 }
                 if (_quality == "worst") {
-                    return "no_item"; // fallback, unchanged
+                    return NO_ITEM_IN_ARMOURY; // fallback, unchanged
                 }
                 break;
 
@@ -89,14 +89,14 @@ function scr_add_item(_item_name, _quantity = 1, _quality = "any") {
                     }
                 }
                 if (_quality == "best") {
-                    return "no_item"; // fallback, unchanged
+                    return NO_ITEM_IN_ARMOURY; // fallback, unchanged
                 }
                 break;
         }
 
         // Now actually remove
         if (!struct_exists(_quantities, _quality) || _quantities[$ _quality] <= 0) {
-            return "no_item";
+            return NO_ITEM_IN_ARMOURY;
         }
 
         _quantities[$ _quality] += _quantity;
