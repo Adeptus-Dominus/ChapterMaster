@@ -556,11 +556,12 @@ function TagSetItems(_set) constructor {
         var _has_map = item_map != noone;
         for (var i = array_length(items)-1; i >= 0; i--){
             var _kick = false;
+            var _item = items[i];
             if (items[i].has_tag(_tag)){
                 _kick =  true;
             }
-            if (_has_map && _kick && item_map.get() > 0){
-                item_map.remove(items[i].name)
+            if (_has_map && _kick && item_map.get(_item.name) > 0){
+                item_map.remove(_item.name)
             }
             if (_kick){
                 array_delete(items, i, 1);

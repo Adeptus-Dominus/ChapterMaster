@@ -437,10 +437,10 @@ function reequip_selection() {
         if (needed_equipment[i] == ITEM_NAME_NONE) {
             needed_equipment[i] = "";
         } else {
-            var _tag = is_item_set(equipment_set[i]);
+            var _tag = is_item_set(needed_equipment[i]);
             if (_tag != -1){
-                equipment_set[i] = new TagSetItems(_tag);
-                equipment_set[i].create_item_map();
+                needed_equipment[i] = new TagSetItems(_tag);
+                needed_equipment[i].create_item_map();
             }
         }
     }
