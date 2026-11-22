@@ -330,6 +330,10 @@ function draw_popup_equip(before_after_styling = true) {
     var _area_change = false;
     for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
         var _button = selectors[i];
+        if (i == eEQUIPMENT_SLOT.ARMOUR && equipment_recipient_type == eEQUIP_TARGET_TYPE.DREADNOUGHT){
+            _button.active = false;
+            _button.draw();
+        }
         if (_button.draw(equipment_area != i)) {
             equipment_area = i;
             _area_change = true;
@@ -381,7 +385,9 @@ function draw_popup_equip(before_after_styling = true) {
             warning = "";
             needed_equipment[equipment_area] = item_name[top];
         }
-
+        if (equipment_recipient_type == eEQUIP_TARGET_TYPE.DREADNOUGHT){
+            needed_equipment[eEQUIPMENT_SLOT.ARMOUR] = "Assortment";//early exit checks for ease
+        }
         var _equip_data = new UnitEquipment(needed_equipment);
         var _results = _equip_data.check_set_is_equipable(unit_count);
 
@@ -444,15 +450,22 @@ function reequip_selection() {
             }
         }
     }
-
+    var _unit_set = convert_equipment_array_into_struct(needed_equipment);
+    for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
+        var _item = needed_equipment[i];
+        if (_item == "Assortment"){
+            var _slot_key = global.unit_equip_slots[i];
+            struct_remove(_unit_set, _slot_key);
+        }
+    }
     for (var i = 0; i < array_length(obj_controller.display_unit); i++) {
         if (obj_controller.man[i] == "" || !obj_controller.man_sel[i]) {
             continue;
         }
         var _unit = obj_controller.display_unit[i];
-        var standard = master_crafted == 1 ? "master_crafted" : "any";
+        var _standard = master_crafted == 1 ? "master_crafted" : "any";
         if (is_struct(_unit)) {
-            _unit.alter_equipment(needed_equipment, true, true, standard);
+            _unit.alter_equipment(_unit_set, true, true, _standard);
             update_man_manage_array(i);
             continue;
         } else if (is_array(_unit) && (equipment_recipient_type > eEQUIP_TARGET_TYPE.DREADNOUGHT)) {
