@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_return_ship",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"ChapterManage",
+    "path":"folders/Scripts/ChapterManage.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
