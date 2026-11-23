@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_autosave",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"save_load",
+    "path":"folders/Scripts/save_load.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

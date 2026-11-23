@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_inquisition_mission",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"inquisition",
+    "path":"folders/Scripts/faction/inquisition.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"PlanetProblem",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"events_and_missions",
+    "path":"folders/Scripts/events_and_missions.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -295,7 +295,8 @@ with (obj_star) {
 // Eldar craftworld here
 craftworld = 1;
 
-repeat (100) {
+var _elder_craft = false
+while (!_elder_craft){
     xx = floor(random(room_width - 208)) + 104;
     yy = floor(random(room_height - 208)) + 104;
     if (point_distance(room_width / 2, room_height / 2, xx, yy) >= 50) {
@@ -303,7 +304,7 @@ repeat (100) {
         if ((point_distance(me.x, me.y, xx, yy) >= 150) && (xx < 1690 && yy > 780)) {
             var craft = instance_create(xx, yy, obj_star);
             craft.craftworld = 1;
-            array_push(craft.p_feature[1], new NewPlanetFeature(eP_FEATURES.WARLORD6));
+            array_push(craft.p_feature[1], new NewPlanetFeature(eP_FEATURES.ELDARFARSEER));
 
             var elforce = create_enemy_fleet(xx, yy, eFACTION.ELDAR);
             fleet_register_at_star(elforce, craft); // craft star has name="" so get_nearest_star in create_enemy_fleet won't find it
@@ -312,10 +313,10 @@ repeat (100) {
             elforce.frigate_number = choose(4, 5, 6);
             elforce.escort_number = floor(random_range(7, 11)) + 1;
             elforce.image_alpha = 0;
-            break;
+            _elder_craft = true;
         }
-    }
-}
+    }     
+} 
 // End craftworld
 
 with (obj_creation) {
