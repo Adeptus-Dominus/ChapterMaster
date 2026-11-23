@@ -643,7 +643,7 @@ diplo_alpha = 0;
 // ** Sets combat to not true **
 combat = 0;
 random_event_next = eEVENT.NONE;
-useful_info = "";
+useful_info = [];
 
 // ** Secret Lair styles **
 lair_styles = [

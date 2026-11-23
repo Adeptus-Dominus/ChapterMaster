@@ -115,7 +115,7 @@ try {
                 }
             }
             if (((orbiting.owner == eFACTION.PLAYER || system_feature_bool(orbiting.p_feature, eP_FEATURES.MONASTERY)) || (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD)) && (trade_goods != "cancel_inspection") && valid) {
-                if (obj_controller.disposition[6] >= 60) {
+                if (obj_controller.disposition[eFACTION.ELDAR] >= 60) {
                     scr_loyalty("Xeno Associate", "+");
                 }
                 if (obj_controller.disposition[7] >= 60) {

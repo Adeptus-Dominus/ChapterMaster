@@ -98,10 +98,8 @@ try {
             instance_destroy();
         }
 
-        if (chaos_angry >= 5) {
-            if (string_count("|CPF|", obj_controller.useful_info) == 0) {
-                obj_controller.useful_info += "|CPF|";
-            }
+        if (chaos_angry >= 5 && !array_contains(obj_controller.useful_info, eUSEFULLINFORMATION.CHAOS_ANGERED)) {
+            array_push(obj_controller.useful_info, eUSEFULLINFORMATION.CHAOS_ANGERED);
         }
 
         if (battle_special == "WL10_reveal") {
@@ -322,7 +320,7 @@ try {
                 }
             }
             // Master of Sanctity present, wishes to take in the player
-            if (instance_exists(obj_ground_mission) && (string_count("CRMOS|", obj_controller.useful_info) == 0)) {
+            if (instance_exists(obj_ground_mission) && !array_contains(obj_controller.useful_info, eUSEFULLINFORMATION.CHAOS_MASTER_OF_SANCTITY)) {
                 scr_toggle_diplomacy();
                 with (obj_controller) {
                     scr_dialogue("cs_meeting_m5");
@@ -330,7 +328,7 @@ try {
             }
 
             // Master of Sanctity not present, just get told that you have defeated the Chaos Lord
-            if ((!instance_exists(obj_ground_mission)) || (string_count("CRMOS|", obj_controller.useful_info) > 0)) {
+            if ((!instance_exists(obj_ground_mission)) || array_contains(obj_controller.useful_info, eUSEFULLINFORMATION.CHAOS_MASTER_OF_SANCTITY)) {
                 // Some kind of popup based on what you were going after
 
                 obj_controller.complex_event = false;

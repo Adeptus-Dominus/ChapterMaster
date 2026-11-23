@@ -1768,7 +1768,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
         scr_add_item("Webber", 4);
         obj_controller.cooldown = 10;
         scr_event_log("", $"Inquisition Mission Accepted: The Inquisition wishes for the capture of a particular strain Gaunt noticed on {p_data.name()} is advisable.", system.name);
-        obj_controller.useful_info += "Tyr|";
+        array_push(obj_controller.useful_info, eUSEFULLINFORMATION.TYRANID_ORGANISM);
         data.captured_gaunt = 0;
     };
 
@@ -2101,7 +2101,7 @@ function PlanetProblem(_name, _timer, _data, _planet_data) : Problem(_name, _tim
             setup_battle_formations();
             _roster.add_to_battle();
 
-            obj_controller.useful_info += "CHTRP|";
+            array_push(obj_controller.useful_info, eUSEFULLINFORMATION.CHAOS_TRAP_SET);
             instance_deactivate_object(obj_star);
             instance_destroy(obj_popup);
             exit;

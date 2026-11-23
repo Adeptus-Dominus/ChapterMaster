@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_eldar_functions",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_eldar_functions",
+  "parent":{
+    "name":"eldar",
+    "path":"folders/Scripts/faction/eldar.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
