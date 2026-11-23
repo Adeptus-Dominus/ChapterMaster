@@ -110,7 +110,8 @@ function scr_loyalty(argument0, argument1) {
                         noplus = 1;
                         break;
                     case "Use of Sorcery":
-                        if (string_count("|SC|", obj_controller.useful_info) == 0) {
+                        var _sorcery_known = array_contains(obj_controller.useful_info, eUSEFULLINFORMATION.SORCERY);
+                        if (!_sorcery_known) {
                             obj_controller.loyalty -= 30;
                             obj_controller.loyalty_hidden -= 30;
                             obj_controller.loyal_num[i] += 30;
@@ -118,19 +119,18 @@ function scr_loyalty(argument0, argument1) {
                         }
                         amount = 0;
                         noplus = 1;
-                        var one;
-                        one = 0;
-                        obj_controller.useful_info += "|SC|";
+                        var one = 0;
+                        array_push(obj_controller.useful_info, eUSEFULLINFORMATION.SORCERY);
 
-                        if ((obj_controller.disposition[4] >= 50) && (one == 0) && (string_count("|SC|", obj_controller.useful_info) == 1)) {
+                        if ((obj_controller.disposition[4] >= 50) && (one == 0) && !_sorcery_known) {
                             obj_controller.disposition[4] = 20;
                             one = 1;
                         }
-                        if ((obj_controller.disposition[4] < 50) && (string_count("|SC|", obj_controller.useful_info) == 1) && (obj_controller.disposition[4] > 10) && (one == 0)) {
+                        if ((obj_controller.disposition[4] < 50) && !_sorcery_known && (obj_controller.disposition[4] > 10) && (one == 0)) {
                             obj_controller.disposition[4] = 0;
                             one = 2;
                         }
-                        if (string_count("|SC|", obj_controller.useful_info) > 1) {
+                        if (_sorcery_known) {
                             obj_controller.disposition[4] = 0;
                             one = 2;
                         }
@@ -144,15 +144,11 @@ function scr_loyalty(argument0, argument1) {
                             }
                         }
                         if ((one >= 2) && (obj_controller.penitent == 0)) {
-                            repeat (2) {
-                                obj_controller.useful_info += "|SC|";
-                            }
+                            array_push(obj_controller.useful_info, eUSEFULLINFORMATION.SORCERY_REPEAT);
                             scr_audience(4, "loyalty_zero", 0, "", 0, 0);
                         }
                         if ((one >= 2) && (obj_controller.penitent == 1)) {
-                            repeat (2) {
-                                obj_controller.useful_info += "|SC|";
-                            }
+                            array_push(obj_controller.useful_info, eUSEFULLINFORMATION.SORCERY_REPEAT);
                             obj_controller.alarm[8] = 1;
                         }
 

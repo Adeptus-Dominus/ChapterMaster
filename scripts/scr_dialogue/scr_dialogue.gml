@@ -74,11 +74,11 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             event_log = string(obj_controller.faction_title[diplomacy]) + " " + string(obj_controller.faction_leader[diplomacy]) + $" declares war on the {global.chapter_name}.";
             scr_event_log("red", event_log);
 
-            if ((string_count("|SC|", obj_controller.useful_info) > 1) && (diplomacy == 4)) {
+            if (array_contains(obj_controller.useful_info, eUSEFULLINFORMATION.SORCERY_REPEAT) && (diplomacy == 4)) {
                 sorc = true;
             }
         }
-        if ((diplo_keyphrase == "declare_war") && (string_count("|SC|", obj_controller.useful_info) > 1) && (diplomacy == 4)) {
+        if ((diplo_keyphrase == "declare_war") && array_contains(obj_controller.useful_info, eUSEFULLINFORMATION.SORCERY_REPEAT) && (diplomacy == 4)) {
             sorc = true;
         }
 
@@ -204,7 +204,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             var _head = get_department_head(eCHAPTER_DEPARTMENTS.CHAP);
             diplo_text = $"[[{_head.name_role()} is silent for a moment, before giving you an imperceptible nod.]]\nI stand with you, Lord " + string(obj_ini.master_name) + ". Let us face this together.";
             add_diplomacy_option({option_text: "[Continue]", goto: "cs_meeting20"});
-            obj_controller.useful_info += "CRMOS|";
+            array_push(obj_controller.useful_info, eUSEFULLINFORMATION.CHAOS_MASTER_OF_SANCTITY);
         }
         if (diplo_keyphrase == "cs_meeting_m5") {
             diplomacy = -5.2;
@@ -599,7 +599,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
             if ((diplo_keyphrase == "hello") || ((diplo_keyphrase == "propose_alliance") && (faction_gender[10] == 2))) {
                 scr_loyalty("Heretic Contact", "+");
 
-                if ((faction_gender[10] == 1) && (string_count("CHTRP|", obj_controller.useful_info) == 0)) {
+                if ((faction_gender[10] == 1) && !array_contains(obj_controller.useful_info, eUSEFULLINFORMATION.CHAOS_TRAP_SET)) {
                     if (chaos_rating >= 1) {
                         rando = choose(1, 2, 3, 4);
                         if (rando == 1) {
@@ -664,8 +664,9 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                         }
                     }
                 }
-                if ((faction_gender[10] == 1) && (string_count("CHTRP|", obj_controller.useful_info) > 0)) {
-                    obj_controller.useful_info = string_replace(obj_controller.useful_info, "CHTRP|", "CHTRP2|");
+                if ((faction_gender[10] == 1) && array_contains(obj_controller.useful_info, eUSEFULLINFORMATION.CHAOS_TRAP_SET)) {
+                    obj_controller.useful_info = array_delete_values(obj_controller.useful_info, [eUSEFULLINFORMATION.CHAOS_TRAP_SET]);
+                    array_push(obj_controller.useful_info, eUSEFULLINFORMATION.CHAOS_TRAP_SPRUNG);
                     diplo_text += "I almost refused to believe that my little trap hadn't done you in, but here you are.  I may have misjudged you, " + string(obj_ini.master_name) + ".  Of course I still intend to kill you, regardless, but I can give credit where credit is due.";
                     force_goodbye = 1;
                 }
@@ -2899,303 +2900,7 @@ function scr_dialogue(diplo_keyphrase, data = {}) {
                 clear_diplo_choices();
             }
             if (diplo_keyphrase == "useful_information") {
-                var found = 0;
-                rando = choose(1, 1, 2, 3, 4, 4, 5);
-                force_goodbye = -1;
-
-                for (var i = 30; i < 30; i++) {
-                    if ((rando == 5) && (string_count("CM|", obj_controller.useful_info) > 0)) {
-                        rando -= 1;
-                    }
-                    if ((rando == 4) && (random_event_next != eEVENT.NONE)) {
-                        rando -= 1;
-                    }
-                    if ((rando == 3) && ((turn < chaos_turn) || (known[eFACTION.CHAOS] > 3))) {
-                        rando -= 1;
-                    }
-                    if ((rando == 2) && ((known[eFACTION.ORK] < 0) || (known[eFACTION.ORK] >= 3) || (string_count("WL7|", obj_controller.useful_info) == 1))) {
-                        rando -= 1;
-                    }
-                    if ((rando == 1) && (string_count("WG|", obj_controller.useful_info) > 1)) {
-                        rando = 5;
-                    }
-                }
-                // * Most corrupt mahreen *
-                if (rando == 5) {
-                    obj_controller.useful_info += "CM|";
-
-                    var _unit = scr_max_marine("chaos");
-
-                    if (_unit.company == 0) {
-                        diplo_text = "I have looked into the strands of fate, with your chapter, and found that the future is not suspect for any of your men.  None of them have their minds poisoned by the taint of chaos.";
-                    } else if (_unit.company > 0) {
-                        diplo_text = $"I have looked into the strands of fate, with your chapter.  Your 'battle brother' {_unit.name_role()} has a clouded, dark future- it is advised you watch him carefully.";
-                    }
-                }
-                // * Next random event *
-                if (rando == 4) {
-                    scr_random_event(false);
-                    if ((random_event_next == eEVENT.STRANGE_BEHAVIOR) && (obj_controller.disposition[6] < 15)) {
-                        diplo_text = "One of your Mon'keigh soldiers will no longer act as you expect him to. Be wary, when one Mon'keigh is influenced the rest of the herd will be.";
-                    } else if ((random_event_next == eEVENT.STRANGE_BEHAVIOR) && (obj_controller.disposition[6] >= 15)) {
-                        diplo_text = "One of your soldiers will no longer act as you expect him to. Be wary, when one is influenced the rest of the herd will be.";
-                    } else if (random_event_next == eEVENT.SPACE_HULK) {
-                        diplo_text = "It comes from the warp, a relic from the past. It is steeped in the energies of the ethereal tides. Beware.";
-                    } else if (random_event_next == eEVENT.PROMOTION) {
-                        diplo_text = "One of your soldiers will cover himself in glory. As his “Chapter Master”, a title I find inherently foolish, you may wish to reward him.";
-                    } else if (random_event_next == eEVENT.STRANGE_BUILDING) {
-                        diplo_text = "The Red robed ones, their “Machine God”, calls to them. Soon, one shall lose their tenuos grip on the here and now and follow the pictures in his head.";
-                    } else if (random_event_next == eEVENT.SORORITAS) {
-                        diplo_text = "Your priestesses of war, who worship He Who Fell, will gather their forces soon, to stay.";
-                    } else if (random_event_next == eEVENT.INQUISITION_MISSION) {
-                        diplo_text = "They will come very soon, the bearers of hellfire and hate. They will scour the sector for so-called ''Heresy''.";
-                    } else if (random_event_next == eEVENT.INQUISITION_PLANET) {
-                        diplo_text = "Your questions askers seek to learn more of a planet.  Warp meddlers and free thinkers would be well-served with caution. Beware, Chapter Master.";
-                    } else if (random_event_next == eEVENT.ROGUE_TRADER) {
-                        diplo_text = "Free thinkers, traders in the vast expanse. They are coming, perhaps you aught to set out your wares?";
-                    } else if (random_event_next == eEVENT.FLEET_DELAY) {
-                        diplo_text = "Mon'keigh, your fleets may be delayed by my kin. Eldar Pirates, your kind would call them.";
-                    } else if (random_event_next == eEVENT.HARLEQUINS) {
-                        diplo_text = "Rillietann. They have come. They are on some world, hidden, or soon will be.";
-                    } else if (random_event_next == eEVENT.SUCCESSION_WAR) {
-                        diplo_text = "Your underlings fight for power, Mon'keigh.  Someone will die who believes he is important. His children and ''friends'' will vie for the rite to call himself or herself governor. Or king. Or whatever self aggrandising title your people name yourselves.";
-                    } else if (random_event_next == eEVENT.RANDOM_FUN) {
-                        diplo_text = "Something will happen soon. The runes do not show me exactly what will happen, only that it concerns you. Watch the horizon, Mon'keigh.";
-                    } else if (random_event_next == eEVENT.WARP_STORMS) {
-                        diplo_text = "The tides of the Immaterium are unsettled. Of course, it's hard to calculate where the Immaterium will affect the Materium, but I predict it will come soon.";
-                    } else if (random_event_next == eEVENT.ENEMY_FORCES) {
-                        diplo_text = "From beyond your circle of firelight, they are coming. Rest not Mon'keigh, for they will come soon and are bent on destruction.";
-                    } else if (random_event_next == eEVENT.CRUSADE) {
-                        diplo_text = "Soon, your masters will call you to heel like a dog to attack the foes of man. One of your ''Crusades'' of hate, ignorance and bigotry will be called.";
-                    } else if (random_event_next == eEVENT.ENEMY) {
-                        diplo_text = "You will make an enemy among your fellow man. Soon they shall whisper into their lord's ear, telling that you are a threat, a beetle to be crushed beneath their boot.  You would do well to speak carefully, for some time.";
-                    } else if (random_event_next == eEVENT.MUTATION) {
-                        diplo_text = "Your 'battle brothers' are twisting like snakes beneath your feet. Watch yourself, Chapter Master.";
-                    } else if (random_event_next == eEVENT.SHIP_LOST) {
-                        diplo_text = "The Immaterium will swallow one of your ships.  Do not look for it to return.";
-                    } else if (random_event_next == eEVENT.CHAOS_INVASION) {
-                        diplo_text = "Your twisted brethren, who fell to the lure of the Immaterium, will soon arrive with their wrath and demons. Beware.";
-                    } else if (random_event_next == eEVENT.NECRON_AWAKEN) {
-                        diplo_text = "Our old enemies, the men of metal, are close. You call them “Necrons”, and you will need to fight them soon. Or flee, it matters not to me.";
-                    } else {
-                        diplo_text = "[Missing Dialogue: " + string(random_event_next) + " forcast.]"; // this will print a number rather that a string which is less than ideal, but we can just add new flavour text whem we get the bug reports
-                    }
-                }
-                // * Chaos warlord location *
-                if (rando == 3) {
-                    obj_controller.useful_info += "WL10|";
-                    if (obj_controller.faction_gender[10] == 1) {
-                        for (var i = 0; i < 5; i++) {
-                            if (found == 0) {
-                                instance_activate_object(obj_star);
-                                with (obj_temp5) {
-                                    instance_destroy();
-                                }
-                                with (obj_star) {
-                                    for (var j = 1; j <= 4; j++) {
-                                        if (planet_feature_bool(p_feature[1], eP_FEATURES.WARLORD10) == 1) {
-                                            instance_create(x, y, obj_temp5);
-                                        }
-                                    }
-                                }
-                                if (instance_exists(obj_temp5)) {
-                                    var you, nuum, plan = 0;
-                                    you = instance_nearest(obj_temp5.x, obj_temp5.y, obj_star);
-                                    nuum = you.name;
-                                    for (var j = 1; j <= you.planets; j++) {
-                                        if (planet_feature_bool(you.p_feature[1], eP_FEATURES.WARLORD10) == 1) {
-                                            plan = j;
-                                        }
-                                    }
-                                    found = 1;
-                                    diplo_text = $"The fallen warlord of your kind is located somewhere within the {nuum} system.  More I cannot say.  It would be prudent to deal with this soon- that abomination may not remain there long.";
-                                }
-                            }
-                        }
-                    }
-                    if (obj_controller.faction_gender[10] == 2) {
-                        diplo_text = "The Lord of Rage turns his foul gaze upon this sector.  With it death and destruction will soon come.  You had best be ready when it does.";
-                    }
-                }
-                // * Ork Warboss Location *
-                if (rando == 2) {
-                    obj_controller.useful_info += "WL7|";
-                    for (var i = 0; i < 5; i++) {
-                        if (found == 0) {
-                            instance_activate_object(obj_star);
-                            with (obj_temp5) {
-                                instance_destroy();
-                            }
-                            with (obj_star) {
-                                for (var j = 1; j <= 4; j++) {
-                                    if (planet_feature_bool(p_feature[1], eP_FEATURES.ORKWARBOSS) == 1) {
-                                        instance_create(x, y, obj_temp5);
-                                    }
-                                }
-                            }
-                            if (instance_exists(obj_temp5)) {
-                                var you, nuum, plan = 0;
-                                you = instance_nearest(obj_temp5.x, obj_temp5.y, obj_star);
-                                nuum = you.name;
-                                for (var j = 1; j <= you.planets; j++) {
-                                    if (planet_feature_bool(you.p_feature[1], eP_FEATURES.ORKWARBOSS) == 1) {
-                                        plan = j;
-                                    }
-                                }
-                                if (you.p_orks[plan] < 6) {
-                                    you.p_orks[plan] = 6;
-                                }
-                                diplo_text = "The greenskin horde is led by a massive Ork, one who calls himself " + string(faction_leader[eFACTION.ORK]) + ".  If this warboss were to perish the rest might be dealt with in a more languorous fashion.  He is located on " + string(nuum);
-                                if (plan == 1) {
-                                    diplo_text += " I.";
-                                }
-                                if (plan == 2) {
-                                    diplo_text += " II.";
-                                }
-                                if (plan == 3) {
-                                    diplo_text += " III.";
-                                }
-                                if (plan == 4) {
-                                    diplo_text += " IV.";
-                                }
-                                found = 1;
-                            }
-                        }
-                    }
-                }
-                // * Webway Gate Location *
-                // if (rando=1) and (string_count("WG|",obj_controller.useful_info)=2) then rando+=choose(1,2,3,3);
-                if (rando == 1) {
-                    obj_controller.useful_info += "WG|";
-                    if (string_count("WG|", obj_controller.useful_info) == 1) {
-                        for (var i = 0; i < 5; i++) {
-                            if (found == 0) {
-                                instance_activate_object(obj_star);
-                                with (obj_temp6) {
-                                    instance_destroy();
-                                }
-                                with (obj_temp5) {
-                                    instance_destroy();
-                                }
-                                if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
-                                    with (obj_star) {
-                                        if (owner == 1) {
-                                            instance_create(x, y, obj_temp6);
-                                        }
-                                    }
-                                }
-                                if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
-                                    with (obj_p_fleet) {
-                                        if (capital_number > 0) {
-                                            instance_create(x, y, obj_temp6);
-                                        }
-                                    }
-                                }
-
-                                with (obj_star) {
-                                    if (owner != eFACTION.IMPERIUM) {
-                                        instance_deactivate_object(id);
-                                    }
-                                    if ((owner == eFACTION.IMPERIUM) && (point_distance(x, y, obj_temp6.x, obj_temp6.y) > 250)) {
-                                        instance_deactivate_object(id);
-                                    }
-                                    if ((owner == eFACTION.IMPERIUM) && (planets < 1)) {
-                                        instance_deactivate_object(id);
-                                    }
-                                }
-                                var _gate_planet_name = "";
-                                var that = instance_nearest(random(room_width), random(room_height), obj_star);
-                                for (var index = 0; index < 5; index++) {
-                                    with (that) {
-                                        var j = 0, onceh = 0;
-                                        for (var k = 0; k < 10; k++) {
-                                            j = floor(random(planets)) + 1;
-                                            if ((array_length(p_feature[j]) == 0) && (onceh == 0)) {
-                                                onceh = j;
-                                            }
-                                        }
-                                        if (onceh != 0) {
-                                            array_push(p_feature[onceh], new NewPlanetFeature(eP_FEATURES.WEBWAY));
-                                            _gate_planet_name = planet_numeral_name(onceh, that);
-                                            break;
-                                        }
-                                    }
-                                }
-                                if (_gate_planet_name != "") {
-                                    diplo_text = $"A series of labyrinthian corridors and veins connect the galaxy.  The planet you know as {_gate_planet_name} contains a dormant entrance to this realm.";
-                                    found = 1;
-                                }
-                            }
-                        }
-                    }
-                    if (string_count("WG|", obj_controller.useful_info) == 2) {
-                        for (var i = 0; i < 5; i++) {
-                            if (found == 0) {
-                                instance_activate_object(obj_star);
-                                with (obj_temp6) {
-                                    instance_destroy();
-                                }
-                                with (obj_temp5) {
-                                    instance_destroy();
-                                }
-                                if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
-                                    with (obj_star) {
-                                        if (owner == 1) {
-                                            instance_create(x, y, obj_temp6);
-                                        }
-                                    }
-                                }
-                                if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
-                                    with (obj_p_fleet) {
-                                        if (capital_number > 0) {
-                                            instance_create(x, y, obj_temp6);
-                                        }
-                                    }
-                                }
-                                with (obj_star) {
-                                    if (owner != eFACTION.IMPERIUM) {
-                                        instance_deactivate_object(id);
-                                    }
-                                    if ((owner == eFACTION.IMPERIUM) && (point_distance(x, y, obj_temp6.x, obj_temp6.y) < 800)) {
-                                        instance_deactivate_object(id);
-                                    }
-                                    if ((owner == eFACTION.IMPERIUM) && (planets < 1)) {
-                                        instance_deactivate_object(id);
-                                    }
-                                }
-                                var _gate_planet_name = "";
-                                var that = instance_nearest(random(room_width), random(room_height), obj_star);
-                                for (var j = 0; j < 5; j++) {
-                                    with (that) {
-                                        var onceh = 0;
-                                        for (var k = 0; k < 10; k++) {
-                                            var l = floor(random(planets)) + 1;
-                                            if ((array_length(p_feature[l]) == 0) && (onceh == 0)) {
-                                                onceh = l;
-                                            }
-                                        }
-                                        if (onceh != 0) {
-                                            array_push(p_feature[onceh], new NewPlanetFeature(eP_FEATURES.WEBWAY));
-                                            _gate_planet_name = planet_numeral_name(onceh, that);
-                                            break;
-                                        }
-                                    }
-                                }
-                                if (_gate_planet_name != "") {
-                                    diplo_text = $"The second dormant webway gate lays upon {_gate_planet_name}.";
-                                    found = 1;
-                                }
-                            }
-                        }
-                    }
-                    with (obj_temp6) {
-                        instance_destroy();
-                    }
-                    with (obj_temp5) {
-                        instance_destroy();
-                    }
-                    instance_activate_object(obj_star);
-                }
+                elder_dialogue_useful_information();
             }
         }
         // ** ORKZZZ **

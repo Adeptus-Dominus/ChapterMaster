@@ -27,10 +27,10 @@ function scr_chaos_alliance_test() {
         _accept_chance -= 999;
         _result = "fail_fallen";
     }
-    if (string_count("|CPF|", obj_controller.useful_info) > 0) {
+    if (array_contains(obj_controller.useful_info, eUSEFULLINFORMATION.CHAOS_ANGERED)) {
         _result = "fail_angry";
     }
-    if (string_count("CHTRP2|", obj_controller.useful_info) > 0) {
+    if (array_contains(obj_controller.useful_info, eUSEFULLINFORMATION.CHAOS_TRAP_SPRUNG)) {
         _result = "fail";
     }
 

@@ -569,7 +569,7 @@ function TradeAttempt(diplomacy) constructor {
 
     var _info_val = 0;
     with (obj_controller) {
-        if ((random_event_next != eEVENT.NONE) && ((string_count("WL10|", useful_info) > 0) || (turn < chaos_turn)) && ((string_count("WL7|", useful_info) > 0) || (known[eFACTION.ORK] < 1)) && (string_count("WG|", useful_info) > 1) && (string_count("CM|", useful_info) > 0)) {
+        if ((random_event_next != eEVENT.NONE) && (array_contains(useful_info, eUSEFULLINFORMATION.CHAOS_WARLORD_LOCATION) || (turn < chaos_turn)) && (array_contains(useful_info, eUSEFULLINFORMATION.ORK_WARBOSS_LOCATION) || (known[eFACTION.ORK] < 1)) && (array_contains(useful_info, eUSEFULLINFORMATION.WEBWAYGATE_SECOND)) && (array_contains(useful_info, eUSEFULLINFORMATION.MOST_CORRUPT_MARINE))) {
             _info_val = 1000;
         }
     }
