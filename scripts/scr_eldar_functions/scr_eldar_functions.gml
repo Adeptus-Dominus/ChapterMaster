@@ -1,30 +1,26 @@
-
-
-
 function elder_dialogue_useful_information() {
-	var found = 0;
-    rando = choose(1, 1, 2, 3, 4, 4, 5);
+	var _found = 0;
+    var _rando = choose(1, 1, 2, 3, 4, 4, 5);
     force_goodbye = -1;
 
-    for (var i = 30; i < 30; i++) {
-        if ((rando == 5) && array_contains(obj_controller.useful_info, eUSEFULLINFORMATION.MOST_CORRUPT_MARINE)) {
-            rando -= 1;
-        }
-        if ((rando == 4) && (random_event_next != eEVENT.NONE)) {
-            rando -= 1;
-        }
-        if ((rando == 3) && ((turn < chaos_turn) || (known[eFACTION.CHAOS] > 3))) {
-            rando -= 1;
-        }
-        if ((rando == 2) && ((known[eFACTION.ORK] < 0) || (known[eFACTION.ORK] >= 3) || array_contains(obj_controller.useful_info, eUSEFULLINFORMATION.ORK_WARBOSS_LOCATION))) {
-            rando -= 1;
-        }
-        if ((rando == 1) && array_contains(obj_controller.useful_info, eUSEFULLINFORMATION.WEBWAYGATE_SECOND)) {
-            rando = 5;
-        }
+    if ((_rando == 5) && array_contains(obj_controller.useful_info, eUSEFULLINFORMATION.MOST_CORRUPT_MARINE)) {
+        _rando -= 1;
     }
+    if ((_rando == 4) && (random_event_next != eEVENT.NONE)) {
+        _rando -= 1;
+    }
+    if ((_rando == 3) && ((turn < chaos_turn) || (known[eFACTION.CHAOS] > 3))) {
+        _rando -= 1;
+    }
+    if ((_rando == 2) && ((known[eFACTION.ORK] < 0) || (known[eFACTION.ORK] >= 3) || array_contains(obj_controller.useful_info, eUSEFULLINFORMATION.ORK_WARBOSS_LOCATION))) {
+        _rando -= 1;
+    }
+    if ((_rando == 1) && array_contains(obj_controller.useful_info, eUSEFULLINFORMATION.WEBWAYGATE_SECOND)) {
+        _rando = 5;
+    }
+
     // * Most corrupt mahreen *
-    if (rando == 5) {
+    if (_rando == 5) {
         array_push(obj_controller.useful_info, eUSEFULLINFORMATION.MOST_CORRUPT_MARINE);
 
         var _unit = scr_max_marine("chaos");
@@ -36,11 +32,11 @@ function elder_dialogue_useful_information() {
         }
     }
     // * Next random event *
-    if (rando == 4) {
+    if (_rando == 4) {
         scr_random_event(false);
-        if ((random_event_next == eEVENT.STRANGE_BEHAVIOR) && (obj_controller.disposition[6] < 15)) {
+        if ((random_event_next == eEVENT.STRANGE_BEHAVIOR) && (obj_controller.disposition[eFACTION.ELDAR] < 15)) {
             diplo_text = "One of your Mon'keigh soldiers will no longer act as you expect him to. Be wary, when one Mon'keigh is influenced the rest of the herd will be.";
-        } else if ((random_event_next == eEVENT.STRANGE_BEHAVIOR) && (obj_controller.disposition[6] >= 15)) {
+        } else if ((random_event_next == eEVENT.STRANGE_BEHAVIOR) && (obj_controller.disposition[eFACTION.ELDAR] >= 15)) {
             diplo_text = "One of your soldiers will no longer act as you expect him to. Be wary, when one is influenced the rest of the herd will be.";
         } else if (random_event_next == eEVENT.SPACE_HULK) {
             diplo_text = "It comes from the warp, a relic from the past. It is steeped in the energies of the ethereal tides. Beware.";
@@ -85,11 +81,11 @@ function elder_dialogue_useful_information() {
         }
     }
     // * Chaos warlord location *
-    if (rando == 3) {
+    if (_rando == 3) {
         array_push(obj_controller.useful_info, eUSEFULLINFORMATION.CHAOS_WARLORD_LOCATION);
         if (obj_controller.faction_gender[10] == 1) {
             for (var i = 0; i < 5; i++) {
-                if (found == 0) {
+                if (_found == 0) {
                     instance_activate_object(obj_star);
                     with (obj_temp5) {
                         instance_destroy();
@@ -110,7 +106,7 @@ function elder_dialogue_useful_information() {
                                 plan = j;
                             }
                         }
-                        found = 1;
+                        _found = 1;
                         diplo_text = $"The fallen warlord of your kind is located somewhere within the {nuum} system.  More I cannot say.  It would be prudent to deal with this soon- that abomination may not remain there long.";
                     }
                 }
@@ -121,10 +117,10 @@ function elder_dialogue_useful_information() {
         }
     }
     // * Ork Warboss Location *
-    if (rando == 2) {
+    if (_rando == 2) {
         array_push(obj_controller.useful_info, eUSEFULLINFORMATION.ORK_WARBOSS_LOCATION);
 
-        if (found == 0) {
+        if (_found == 0) {
             instance_activate_object(obj_star);
 
             var _warboss_found = false;
@@ -137,18 +133,18 @@ function elder_dialogue_useful_information() {
             	}
             }
             if (_warboss_found) {
-                diplo_text = $"The greenskin horde is led by a massive Ork, one who calls himself ${faction_leader[eFACTION.ORK]}.  If this warboss were to perish the rest might be dealt with in a more languorous fashion.  He is located in the  {_star.name} system";
-                found = 1;
+                diplo_text = $"The greenskin horde is led by a massive Ork, one who calls himself {faction_leader[eFACTION.ORK]}.  If this warboss were to perish the rest might be dealt with in a more languorous fashion.  He is located in the {_star.name} system";
+                _found = 1;
             }
         }
     }
     // * Webway Gate Location *
-    // if ((rando == 1) && array_contains(obj_controller.useful_info, eUSEFULLINFORMATION.WEBWAYGATE_SECOND)) then rando += choose(1, 2, 3, 3);
-    if (rando == 1) {
+    // if ((_rando == 1) && array_contains(obj_controller.useful_info, eUSEFULLINFORMATION.WEBWAYGATE_SECOND)) then _rando += choose(1, 2, 3, 3);
+    if (_rando == 1) {
         if (!array_contains(obj_controller.useful_info, eUSEFULLINFORMATION.WEBWAYGATE)) {
             array_push(obj_controller.useful_info, eUSEFULLINFORMATION.WEBWAYGATE);
             for (var i = 0; i < 5; i++) {
-                if (found == 0) {
+                if (_found == 0) {
                     instance_activate_object(obj_star);
                     with (obj_temp6) {
                         instance_destroy();
@@ -202,14 +198,14 @@ function elder_dialogue_useful_information() {
                     }
                     if (_gate_planet_name != "") {
                         diplo_text = $"A series of labyrinthian corridors and veins connect the galaxy.  The planet you know as {_gate_planet_name} contains a dormant entrance to this realm.";
-                        found = 1;
+                        _found = 1;
                     }
                 }
             }
         } else if (!array_contains(obj_controller.useful_info, eUSEFULLINFORMATION.WEBWAYGATE_SECOND)) {
             array_push(obj_controller.useful_info, eUSEFULLINFORMATION.WEBWAYGATE_SECOND);
             for (var i = 0; i < 5; i++) {
-                if (found == 0) {
+                if (_found == 0) {
                     instance_activate_object(obj_star);
                     with (obj_temp6) {
                         instance_destroy();
@@ -262,7 +258,7 @@ function elder_dialogue_useful_information() {
                     }
                     if (_gate_planet_name != "") {
                         diplo_text = $"The second dormant webway gate lays upon {_gate_planet_name}.";
-                        found = 1;
+                        _found = 1;
                     }
                 }
             }

@@ -98,7 +98,7 @@ try {
             instance_destroy();
         }
 
-        if (chaos_angry >= 5) {
+        if (chaos_angry >= 5 && !array_contains(obj_controller.useful_info, eUSEFULLINFORMATION.CHAOS_ANGERED)) {
             array_push(obj_controller.useful_info, eUSEFULLINFORMATION.CHAOS_ANGERED);
         }
 

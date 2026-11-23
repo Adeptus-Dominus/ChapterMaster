@@ -267,7 +267,7 @@ function scr_cheatcode(argument0) {
                     obj_controller.disposition[5] = real(cheat_arguments[0]);
                     break;
                 case "depeld":
-                    obj_controller.disposition[6] = real(cheat_arguments[0]);
+                    obj_controller.disposition[eFACTION.ELDAR] = real(cheat_arguments[0]);
                     break;
                 case "depork":
                     obj_controller.disposition[7] = real(cheat_arguments[0]);
