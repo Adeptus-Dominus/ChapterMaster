@@ -271,7 +271,7 @@ function drop_select_unit_selection() {
             if (obj_ncombat.battle_object.space_hulk == 1) {
                 obj_ncombat.battle_special = "space_hulk";
             }
-            if (_p_data.has_feature(eP_FEATURES.WARLORD6) && (obj_ncombat.enemy == eFACTION.ELDAR) && (obj_controller.faction_defeated[6] == 0)) {
+            if (_p_data.has_feature(eP_FEATURES.ELDARFARSEER) && (obj_ncombat.enemy == eFACTION.ELDAR) && (obj_controller.faction_defeated[6] == 0)) {
                 obj_ncombat.leader = 1;
             }
             if (obj_ncombat.enemy == eFACTION.ORK && _p_data.has_feature(eP_FEATURES.ORKWARBOSS)) {

@@ -95,8 +95,8 @@ if (obj_ini.load_to_ships[0] > 0) {
 
 var px = _player_star.x;
 var py = _player_star.y;
-var xx = px;
-var yy = py;
+var _xx = px;
+var _yy = py;
 instance_deactivate_object(_player_star);
 
 // Mechanicus capital system
@@ -168,8 +168,8 @@ if (tau == 1) {
         planet[1] = 1;
         p_owner[1] = eFACTION.TAU;
         p_type[1] = "Desert";
-        xx = x;
-        yy = y;
+        _xx = x;
+        _yy = y;
         tau = choose(3, 4);
         p_influence[1][eFACTION.TAU] = 70;
     }
@@ -177,7 +177,7 @@ if (tau == 1) {
 
     var tau_start_size = irandom(4) + 5;
     for (var i = 0; i <= tau_start_size; i++) {
-        _current_system = instance_nearest(xx, yy, obj_star);
+        _current_system = instance_nearest(_xx, _yy, obj_star);
         with (_current_system) {
             if ((planets > 0) && (_current_system.p_type[1] != "Dead") && (_current_system.owner == eFACTION.IMPERIUM)) {
                 p_owner[1] = eFACTION.TAU;
@@ -272,9 +272,9 @@ if (_total_weight > 0) {
 
 // Another mechanicus
 repeat (choose(3, 4, 5)) {
-    xx = floor(random(room_width - 128)) + 64;
-    yy = floor(random(room_height - 128)) + 64;
-    _current_system = instance_nearest(xx, yy, obj_star);
+    var _xx = floor(random(room_width - 128)) + 64;
+    var _yy = floor(random(room_height - 128)) + 64;
+    _current_system = instance_nearest(_xx, _yy, obj_star);
     if ((_current_system.planets > 0) && (_current_system.owner == eFACTION.IMPERIUM)) {
         var forge_planet = irandom(_current_system.planets - 1) + 1;
         _current_system.planet[forge_planet] = 1;
@@ -295,27 +295,28 @@ with (obj_star) {
 // Eldar craftworld here
 craftworld = 1;
 
-repeat (100) {
-    xx = floor(random(room_width - 208)) + 104;
-    yy = floor(random(room_height - 208)) + 104;
-    if (point_distance(room_width / 2, room_height / 2, xx, yy) >= 50) {
-        var me = instance_nearest(xx, yy, obj_star);
-        if ((point_distance(me.x, me.y, xx, yy) >= 150) && (xx < 1690 && yy > 780)) {
-            var craft = instance_create(xx, yy, obj_star);
-            craft.craftworld = 1;
-            array_push(craft.p_feature[1], new NewPlanetFeature(eP_FEATURES.WARLORD6));
-
-            var elforce = create_enemy_fleet(xx, yy, eFACTION.ELDAR);
-            fleet_register_at_star(elforce, craft); // craft star has name="" so get_nearest_star in create_enemy_fleet won't find it
-            elforce.sprite_index = spr_fleet_eldar;
-            elforce.capital_number = choose(2, 3);
-            elforce.frigate_number = choose(4, 5, 6);
-            elforce.escort_number = floor(random_range(7, 11)) + 1;
-            elforce.image_alpha = 0;
-            break;
-        }
+var _elder_craft = false
+for (var i = 0; i < 150; i++){
+    var _xx = irandom_range(200, room_width - 200);
+    var _yy = irandom_range(150, room_height - 150);
+    if (point_distance(room_width / 2, room_height / 2, _xx, _yy) < 50) {
+        continue;
     }
-}
+    var _me = instance_nearest(_xx, _yy, obj_star);
+    if ((point_distance(_me.x, _me.y, _xx, _yy) >= 150)) {
+        var _craft = instance_create(_xx, _yy, obj_star);
+        _craft.craftworld = 1;
+        array_push(_craft.p_feature[1], new NewPlanetFeature(eP_FEATURES.ELDARFARSEER));
+        var _elforce = create_enemy_fleet(_xx, _yy, eFACTION.ELDAR);
+        fleet_register_at_star(_elforce, _craft); // craft star has name="" so get_nearest_star in create_enemy_fleet won't find it
+        _elforce.sprite_index = spr_fleet_eldar;
+        _elforce.capital_number = choose(2, 3);
+        _elforce.frigate_number = choose(4, 5, 6);
+        _elforce.escort_number = floor(random_range(7, 11)) + 1;
+        _elforce.image_alpha = 0;
+        _elder_craft = true;
+    }
+} 
 // End craftworld
 
 with (obj_creation) {

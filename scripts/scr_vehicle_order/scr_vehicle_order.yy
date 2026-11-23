@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_vehicle_order",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"Vehicles",
+    "path":"folders/Scripts/Vehicles.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

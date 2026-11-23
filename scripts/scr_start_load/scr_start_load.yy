@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_start_load",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"GameSetup",
+    "path":"folders/Scripts/GameSetup.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

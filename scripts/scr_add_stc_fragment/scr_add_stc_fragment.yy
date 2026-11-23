@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_add_stc_fragment",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"ChapterManage",
+    "path":"folders/Scripts/ChapterManage.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

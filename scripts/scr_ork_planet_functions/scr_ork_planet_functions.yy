@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_ork_planet_functions",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"Ork",
+    "path":"folders/Scripts/faction/Ork.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
