@@ -19,6 +19,7 @@ function hunt_player_serfs(planet, system) {
 
 function inquisition_fleet_inspection_chase() {
     var good = 0, acty = "";
+    var _struck = false;
     var reset = !instance_exists(target);
     if (!reset) {
         reset = target.object_index != obj_p_fleet;
@@ -41,9 +42,19 @@ function inquisition_fleet_inspection_chase() {
         }
 
         if (at_star != target_at_star) {
-            trade_goods += "!";
             acty = "chase";
-            scr_loyalty("Avoiding Inspections", "+");
+            if (action == "") {
+                var _fleet_coming = false;
+                if (target.action != "") {
+                    var _on_route = variable_instance_exists(target, "complex_route") && is_array(target.complex_route) && array_length(target.complex_route) > 0;
+                    _fleet_coming = _on_route || instance_nearest(target.action_x, target.action_y, obj_star).id == target_at_star;
+                }
+                if (!_fleet_coming) {
+                    trade_goods += "!";
+                    _struck = true;
+                    scr_loyalty("Avoiding Inspections", "+");
+                }
+            }
         }
 
         //Inquisitor is pissed as hell
@@ -59,7 +70,7 @@ function inquisition_fleet_inspection_chase() {
 
             chase_fleet_target_set(target);
             target_meet = instance_nearest(action_x, action_y, obj_star);
-            if ((string_count("!", trade_goods) == 4) && instance_exists(obj_turn_end)) {
+            if (_struck && (string_count("!", trade_goods) == 4) && instance_exists(obj_turn_end)) {
                 // color / type / text /x/y
 
                 scr_alert("blank", "blank", "blank", target_meet.x, target_meet.y);

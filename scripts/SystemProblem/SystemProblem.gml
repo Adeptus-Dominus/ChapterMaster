@@ -64,6 +64,20 @@ function SystemProblem(_name, _system = noone, _data = {}, _timer = -1) : Proble
         }
     };
 
+    static __hunt_inquisitor_buffer = 20;
+
+    static __player_reach_eta = function(_star) {
+        var _fleet = get_nearest_player_fleet(_star.x, _star.y);
+        if (_fleet == noone) {
+            return -1;
+        }
+        var _leeway = 0;
+        if (_fleet.action == "move") {
+            _leeway += _fleet.action_eta;
+        }
+        return get_viable_travel_time(_leeway, _fleet.x, _fleet.y, _star.x, _star.y, _fleet, false);
+    };
+
     static __init = function() {
         var _func = find_func("init");
         if (!is_undefined(_func)) {
@@ -126,6 +140,9 @@ function SystemProblem(_name, _system = noone, _data = {}, _timer = -1) : Proble
     static __hunt_inquisitor_init = function() {
         LOGGER.info("RE: Inquisitor Hunt");
 
+        var _max_travel_eta = 15;
+        var _eta = -1;
+
         if (system == noone) {
             var _stars = scr_get_stars();
 
@@ -135,16 +152,39 @@ function SystemProblem(_name, _system = noone, _data = {}, _timer = -1) : Proble
                 exit;
             }
 
-            system = array_random_element(_stars);
+            var _candidates = [];
+            var _etas = [];
+            for (var i = 0; i < array_length(_stars); i++) {
+                var _e = __player_reach_eta(_stars[i]);
+                if (_e != -1 && _e <= _max_travel_eta) {
+                    array_push(_candidates, _stars[i]);
+                    array_push(_etas, _e);
+                }
+            }
+
+            if (array_length(_candidates) == 0) {
+                delete_mission = true;
+                LOGGER.error("RE: Inquisitor Hunt, no star reachable in time");
+                exit;
+            }
+
+            var _pick = irandom(array_length(_candidates) - 1);
+            system = _candidates[_pick];
+            _eta = _etas[_pick];
             array_push(system.problems, self);
+        } else {
+            _eta = __player_reach_eta(system);
+            if (_eta == -1) {
+                delete_mission = true;
+                exit;
+            }
         }
 
         var _gender = set_gender();
         var _name = global.name_generator.GenerateFromSet($"imperial_{string_gender()}");
 
-        var _eta = scr_mission_eta(system.x, system.y, 1);
-        _eta = max(_eta, 8);
-        timer = _eta;
+        timer = _eta + __hunt_inquisitor_buffer;
+        _eta = timer;
         var _text = $"The Inquisition is trusting you with a special mission.  A radical inquisitor named {_name} will be visiting the {system.name} system in {_eta} month's time.  They are highly suspect of heresy, and as such, are to be put down.  Can your chapter handle this mission?";
         if (obj_controller.demanding) {
             _text = $"The Inquisition demands that your Chapter demonstrate its loyalty to the Imperium of Mankind and the Emperor.  A radical inquisitor is enroute to {system.name}, expected within {_eta} months.  They are to be silenced and removed.";
