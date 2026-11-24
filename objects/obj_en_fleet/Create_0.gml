@@ -140,7 +140,7 @@ deserialize = function(_save_data) {
     if (struct_exists(_save_data, "cargo_data")) {
         variable_instance_set(self, "cargo_data", _save_data.cargo_data);
         if (fleet_has_cargo("ork_warboss")) {
-            var _boss = new NewPlanetFeature(eP_FEATURES.ORKWARBOSS);
+            var _boss = new PlanetFeature(eP_FEATURES.ORKWARBOSS);
             _boss.load_json_data(cargo_data.ork_warboss);
             cargo_data.ork_warboss = _boss;
         }

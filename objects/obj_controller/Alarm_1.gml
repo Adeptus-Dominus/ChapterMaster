@@ -306,7 +306,7 @@ for (var i = 0; i < 150; i++){
     if ((point_distance(_me.x, _me.y, _xx, _yy) >= 150)) {
         var _craft = instance_create(_xx, _yy, obj_star);
         _craft.craftworld = 1;
-        array_push(_craft.p_feature[1], new NewPlanetFeature(eP_FEATURES.ELDARFARSEER));
+        _craft.get_planet_data(1).add_feature(eP_FEATURES.ELDARFARSEER);
         var _elforce = create_enemy_fleet(_xx, _yy, eFACTION.ELDAR);
         fleet_register_at_star(_elforce, _craft); // craft star has name="" so get_nearest_star in create_enemy_fleet won't find it
         _elforce.sprite_index = spr_fleet_eldar;

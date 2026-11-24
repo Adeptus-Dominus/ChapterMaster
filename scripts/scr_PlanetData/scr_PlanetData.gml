@@ -851,10 +851,23 @@ function PlanetData(_planet, _system) constructor {
         return planet_feature_bool(features, feature);
     };
 
-    static add_feature = function(feature_type) {
-        var new_feature = new NewPlanetFeature(feature_type);
-        array_push(system.p_feature[planet], new_feature);
-        return new_feature;
+    static add_feature = function(feature_type, data = {}) {
+        var _new_feature = new PlanetFeature(feature_type, data);
+        array_push(system.p_feature[planet], _new_feature);
+        features = system.p_feature[planet];
+        return _new_feature;
+    };
+
+    static add_upgrade = function(feature_type, data = {}) {
+        var _new_feature = undefined;
+        if (feature_type == eP_FEATURES.SECRET_BASE) {
+            _new_feature = new SecretBase(feature_type, data);
+        } else {
+            _new_feature = new PlayerUpgrade(feature_type, data);
+        }
+        array_push(system.p_upgrades[planet], _new_feature);
+        upgrades = system.p_upgrades[planet];
+        return _new_feature;
     };
 
     static has_upgrade = function(feature) {

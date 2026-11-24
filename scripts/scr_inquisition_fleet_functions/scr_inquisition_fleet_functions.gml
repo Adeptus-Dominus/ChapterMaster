@@ -107,7 +107,7 @@ function new_inquisitor_inspection() {
             if (owner == eFACTION.PLAYER) {
                 array_push(player_stars, id);
             }
-            if (system_feature_bool(p_feature, eP_FEATURES.MONASTERY)) {
+            if (has_feature(eP_FEATURES.MONASTERY)) {
                 monestary_system = self;
             }
         }
@@ -187,9 +187,9 @@ function inquisitor_ship_approaches() {
                 }
             }
         }
-    } else if (approach_system.owner == eFACTION.PLAYER || system_feature_bool(approach_system.p_feature, eP_FEATURES.MONASTERY)) {
+    } else if (approach_system.owner == eFACTION.PLAYER || approach_system.has_feature(eP_FEATURES.MONASTERY)) {
         do_alert = true;
-        if (system_feature_bool(approach_system.p_feature, eP_FEATURES.MONASTERY)) {
+        if (approach_system.has_feature(eP_FEATURES.MONASTERY)) {
             inquis_string = $"Our astropaths report that an inquisitor's ship is currently warping towards our Fortress Monastery. It is likely that theInquisitor {obj_controller.inquisitor[inquisitor]}  will attempt to perform inspection on our Fortress Monastery.";
         } else {
             inquis_string = $"Our astropaths report that an inquisitor's ship is currently warping towards our systems under chapter control. It is likely that Inquisitor {obj_controller.inquisitor[inquisitor]}  will want to make inspections of any chapter assets and fleets in the system.";

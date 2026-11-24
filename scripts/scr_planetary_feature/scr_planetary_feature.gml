@@ -42,8 +42,8 @@ function PlayerForge() constructor {
 }
 
 // Function creates a new struct planet feature of a  specified type
-function NewPlanetFeature(feature_type, other_data = {}) constructor {
-    f_type = feature_type;
+function PlanetFeature(_feature_type, _other_data = {}) constructor {
+    f_type = _feature_type;
 
     static reveal_to_player = function() {
         if (player_hidden == 1) {
@@ -66,43 +66,6 @@ function NewPlanetFeature(feature_type, other_data = {}) constructor {
             sealed = 0;
             player_hidden = 1;
             planet_display = "Dormant Necron Tomb";
-            break;
-
-        case eP_FEATURES.SECRET_BASE:
-            base_type = eBASE_TYPES.LAIR;
-            inquis_hidden = 1;
-            planet_display = "Hidden Secret Base";
-            player_hidden = 0;
-            style = "UTL";
-            if (struct_exists(other_data, "style")) {
-                style = other_data[$ "style"];
-            }
-            built = obj_controller.turn + 3;
-            forge = 0;
-            hippo = 0;
-            beastarium = 0;
-            torture = 0;
-            narcotics = 0;
-            relic = 0;
-            cookery = 0;
-            vox = 0;
-            librarium = 0;
-            throne = 0;
-            stasis = 0;
-            swimming = 0;
-            stock = 0;
-            break;
-        case eP_FEATURES.ARSENAL:
-            inquis_hidden = 1;
-            planet_display = "Arsenal";
-            player_hidden = 0;
-            built = obj_controller.turn + 3;
-            break;
-        case eP_FEATURES.GENE_VAULT:
-            inquis_hidden = 1;
-            planet_display = "Arsenal";
-            player_hidden = 0;
-            built = obj_controller.turn + 3;
             break;
         case eP_FEATURES.STARSHIP:
             planet_display = "Ancient Starship";
@@ -156,6 +119,7 @@ function NewPlanetFeature(feature_type, other_data = {}) constructor {
             player_hidden = 0;
             forge = 0;
             name = global.name_generator.GenerateFromSet("imperial_ship");
+            status = 
             break;
         case eP_FEATURES.RECRUITING_WORLD:
             planet_display = "Recruitment";
@@ -164,10 +128,10 @@ function NewPlanetFeature(feature_type, other_data = {}) constructor {
             recruit_cost = 0;
             break;
         case eP_FEATURES.CHAOSWARBAND:
-            if (!struct_exists(other_data, "patron")) {
+            if (!struct_exists(_other_data, "patron")) {
                 patron = choose("slaanesh", "tzeentch", "khorne", "nurgle", "undivided");
             } else {
-                self.patron = other_data.patron;
+                self.patron = _other_data.patron;
             }
         default:
             player_hidden = 1;
@@ -216,18 +180,6 @@ function return_planet_features(planet, search_feature) {
         }
     }
     return feature_positions;
-}
-
-// returns 1 if dearch feature is on at least one planet in system returns 0 is search feature is not found in system
-function system_feature_bool(system, search_feature) {
-    var sys_bool = 0;
-    for (var sys = 1; sys < 5; sys++) {
-        sys_bool = planet_feature_bool(system[sys], search_feature);
-        if (sys_bool == 1) {
-            break;
-        }
-    }
-    return sys_bool;
 }
 
 //returns 1 if feature found on given planet returns 0 if feature not found on planet
@@ -382,7 +334,7 @@ function create_starship_event() {
         return false;
     } else {
         var planet = irandom(star.planets - 1) + 1;
-        array_push(star.p_feature[planet], new NewPlanetFeature(eP_FEATURES.STARSHIP));
+        star.get_planet_data(planet).add_feature(eP_FEATURES.STARSHIP);
         scr_event_log("", "Ancient Starship discovered on " + string(star.name) + " " + scr_roman(planet) + ".", star.name);
     }
 }

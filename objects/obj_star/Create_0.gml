@@ -160,6 +160,25 @@ problems_to_mission_log = function() {
     return _temp_log;
 };
 
+has_feature = function(search_feature) {
+    var sys_bool = false;
+    for (var sys = 1; sys <= planets; sys++) {
+        if (planet_feature_bool(p_feature[sys], search_feature)){
+            return true;
+        }
+    }
+    return false;
+}
+
+//returns first found feature matching type
+get_feature = function(search_feature) {
+    for (var sys = 1; sys <= planets; sys++) {
+        if (planet_feature_bool(p_feature[sys], search_feature)){
+            return true;
+        }
+    }    
+}
+
 /// @self Asset.GMObject.obj_star
 has_orbiting_player_fleet = function() {
     if (instance_exists(obj_p_fleet)) {
@@ -383,11 +402,9 @@ function deserialize(save_data) {
                             continue;
                         }
 
-                        var _new_feat = new NewPlanetFeature(_feat.f_type);
+                        var _new_feat = get_planet_data(p).add_feature(_feat.f_type);
 
                         _new_feat.load_json_data(_feat);
-
-                        array_push(p_feature[p], _new_feat);
                     }
                     continue;
                 }

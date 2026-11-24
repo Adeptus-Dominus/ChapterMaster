@@ -49,5 +49,10 @@ function SectorHandler() constructor {
         return _copy;
     };
 
+    static set_chapter_base = function(){
+        with (obj_star){
+            if (has_feature())
+        }
+    }
     LOGGER.info("SectorHandler successfully initialised");
 }

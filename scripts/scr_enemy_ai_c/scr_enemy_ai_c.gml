@@ -455,11 +455,12 @@ function scr_enemy_ai_c() {
                     }
                     if ((planet_feature_bool(p_feature[i], eP_FEATURES.CAPILLARY_TOWERS) == 1) && (p_type[i] != "Dead")) {
                         p_feature[i] = [];
-                        array_push(p_feature[i], new NewPlanetFeature(eP_FEATURES.CAPILLARY_TOWERS), new NewPlanetFeature(eP_FEATURES.RECLAMATION_POOLS));
+                        get_planet_data(i).add_feature(eP_FEATURES.CAPILLARY_TOWERS);
+                        get_planet_data(i).add_feature(eP_FEATURES.RECLAMATION_POOLS);
                         p_population[i] = 0;
                     }
                     if ((planet_feature_bool(p_feature[i], eP_FEATURES.CAPILLARY_TOWERS) == 0) && (planet_feature_bool(p_feature[i], eP_FEATURES.RECLAMATION_POOLS) == 0) && (p_type[i] != "Dead")) {
-                        array_push(p_feature[i], new NewPlanetFeature(eP_FEATURES.CAPILLARY_TOWERS));
+                        get_planet_data(i).add_feature(eP_FEATURES.CAPILLARY_TOWERS);
                     }
                 }
             }

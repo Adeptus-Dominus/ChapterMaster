@@ -1,4 +1,4 @@
-/// @param {Struct.NewPlanetFeature|Struct.PlayerForge} _feature
+/// @param {Struct.PlanetFeature|Struct.PlayerForge} _feature
 function FeatureSelected(_feature, _system, _planet) constructor {
     feature = _feature;
     main_slate = new DataSlateMKTwo();

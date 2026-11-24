@@ -40,7 +40,7 @@ function LootPool(_data) constructor {
 /// @desc Processes rewards for exploring ancient ruins.
 /// @param {Id.Instance.obj_star} _star_system The star system object.
 /// @param {Real} _pid_idx Planet index within the system.
-/// @param {Struct.NewPlanetFeature} _ruins The ruins feature struct.
+/// @param {Struct.PlanetFeature} _ruins The ruins feature struct.
 function scr_ruins_reward(_star_system, _pid_idx, _ruins) {
     // 1. Guard Clause: Logic exit if items need recovery
     if (_ruins.unrecovered_items) {

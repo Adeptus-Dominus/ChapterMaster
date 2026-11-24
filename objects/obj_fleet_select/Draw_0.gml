@@ -72,7 +72,7 @@ if (!instance_exists(obj_drop_select) && !instance_exists(obj_bomb_select)) {
             var web = 0;
 
             if (sys_dist < 32) {
-                web = system_feature_bool(mine.p_feature, eP_FEATURES.WEBWAY) && system_feature_bool(sys.p_feature, eP_FEATURES.WEBWAY);
+                web = mine.has_feature(eP_FEATURES.WEBWAY) && sys.has_feature(eP_FEATURES.WEBWAY);
                 if (mine.id == sys.id) {
                     web = 0;
                 }

@@ -228,7 +228,7 @@ function AiFleetProblem(_name, _timer = -1, _data = {}, _fleet = noone) : FleetP
     _text += "According too intel it appeared to be an old astartes battle ground from an unknown age, communications have been passed onto the adeptus mechanicus who will no doubt pick the site clean should they reach it before you do";
 
     var _planet = scr_get_planet_with_type(_wanted_types);
-    var _battle_ground = new NewPlanetFeature(P_features.OLDBATTLEGROUND);
+    var _battle_ground = new PlanetFeature(P_features.OLDBATTLEGROUND);
 
     _battle_ground.player_hidden = false;
 
