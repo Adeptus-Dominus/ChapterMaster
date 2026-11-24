@@ -851,19 +851,27 @@ function PlanetData(_planet, _system) constructor {
         return planet_feature_bool(features, feature);
     };
 
-    static add_feature = function(feature_type, data = {}) {
-        var _new_feature = new PlanetFeature(feature_type, data);
+    static add_feature = function(_feature_type, _data = {}) {
+        var _new_feature = undefined;
+        switch (_feature_type){
+            case eP_FEATURES.MONASTERY:
+                _new_feature = new FortressMonastery(_feature_type, _data);
+                break;
+            default:
+                _new_feature = new PlanetFeature(_feature_type, _data);
+            break;
+        }
         array_push(system.p_feature[planet], _new_feature);
         features = system.p_feature[planet];
         return _new_feature;
     };
 
-    static add_upgrade = function(feature_type, data = {}) {
+    static add_upgrade = function(_feature_type, _data = {}) {
         var _new_feature = undefined;
-        if (feature_type == eP_FEATURES.SECRET_BASE) {
-            _new_feature = new SecretBase(feature_type, data);
+        if (_feature_type == eP_FEATURES.SECRET_BASE) {
+            _new_feature = new SecretBase(_feature_type, _data);
         } else {
-            _new_feature = new PlayerUpgrade(feature_type, data);
+            _new_feature = new PlayerUpgrade(_feature_type, _data);
         }
         array_push(system.p_upgrades[planet], _new_feature);
         upgrades = system.p_upgrades[planet];

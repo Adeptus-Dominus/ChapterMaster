@@ -1,5 +1,27 @@
 
 
+enum eBASE_TYPES {
+    LAIR,
+}
+
+enum ePLAYERFEATURESTATUS {
+    UNCONTESTED,
+    CONTESTED,
+    UNOCCUPIED,
+    DERELICT,
+    DAMAGED,
+    DESTROYED
+}
+
+
+function PlayerForge() constructor {
+    constructions = [];
+    size = 1;
+    techs_working = 0;
+    f_type = eP_FEATURES.FORGE;
+    vehicle_hanger = 0;
+}
+
 
 function PlayerUpgrade (_feature_type = eP_FEATURES.SECRET_BASE, _other_data = {}): PlanetFeature(_feature_type, _other_data) constructor {
     switch (f_type) {
@@ -15,6 +37,34 @@ function PlayerUpgrade (_feature_type = eP_FEATURES.SECRET_BASE, _other_data = {
     built = obj_controller.turn + 3;    
 }
 
+function FortressMonastery (_feature_type = eP_FEATURES.MONASTERY, _other_data = {}): PlayerUpgrade(_feature_type, _other_data) constructor {
+    planet_display = "Fortress Monastery";
+    player_hidden = 0;
+    forge = 0;
+    inquis_hidden = 0;
+    if (!struct_exists(_other_data, "name")){
+        name = global.name_generator.GenerateFromSet("imperial_ship");
+    } else {
+        name = _other_data.name;
+    }
+    status = ePLAYERFEATURESTATUS.UNCONTESTED;
+
+    static undamaged_states = [ePLAYERFEATURESTATUS.UNCONTESTED, ePLAYERFEATURESTATUS.CONTESTED, ePLAYERFEATURESTATUS,UNOCCUPIED];
+    static damaged_states = [ePLAYERFEATURESTATUS.DERELICT, ePLAYERFEATURESTATUS.DAMAGED, ePLAYERFEATURESTATUS.DESTROYED];
+    static player_controlled_states = [ePLAYERFEATURESTATUS.UNCONTESTED, ePLAYERFEATURESTATUS.CONTESTED];
+    static player_controlled = function(){
+        return array_contains(player_controlled, status);
+    }
+    static raided = function(){
+        if (array_contains(undamaged_states, status)){
+            status = damaged_states[0];
+        } else if (array_contains(damaged_states, status)){
+            if (status < ePLAYERFEATURESTATUS.DESTROYED){
+                status++;
+            }
+        }
+    }
+}
 
 function SecretBase (_feature_type = eP_FEATURES.SECRET_BASE, _other_data = {}): PlanetFeature(_feature_type, _other_data) constructor {
     base_type = eBASE_TYPES.LAIR;

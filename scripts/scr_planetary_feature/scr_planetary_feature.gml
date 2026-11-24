@@ -29,25 +29,6 @@ enum eP_FEATURES {
     ORKSTRONGHOLD,
 }
 
-enum eBASE_TYPES {
-    LAIR,
-}
-
-enum ePLAYERFEATURESTATUS {
-    UNCONTESTED,
-    CONTESTED,
-    UNOCCUPIED,
-    DERELICT,
-}
-
-function PlayerForge() constructor {
-    constructions = [];
-    size = 1;
-    techs_working = 0;
-    f_type = eP_FEATURES.FORGE;
-    vehicle_hanger = 0;
-}
-
 // Function creates a new struct planet feature of a  specified type
 function PlanetFeature(_feature_type, _other_data = {}) constructor {
     f_type = _feature_type;
@@ -120,13 +101,6 @@ function PlanetFeature(_feature_type, _other_data = {}) constructor {
             player_hidden = 1;
             planet_display = "Ork Stronghold";
             tier = 1;
-            break;
-        case eP_FEATURES.MONASTERY:
-            planet_display = "Fortress Monastery";
-            player_hidden = 0;
-            forge = 0;
-            name = global.name_generator.GenerateFromSet("imperial_ship");
-            status = ePLAYERFEATURESTATUS.UNCONTESTED;
             break;
         case eP_FEATURES.RECRUITING_WORLD:
             planet_display = "Recruitment";

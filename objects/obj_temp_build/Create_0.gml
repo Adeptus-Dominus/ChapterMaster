@@ -113,7 +113,7 @@ refresh = function() {
         title = localize("Secret Gene-Vault");
     }
 
-    title += $" {p_data.name()}"
+    title += $" {p_data.name()}";
 
     build_lair_button = new PurchaseButton({
         x1: window_x + 300,

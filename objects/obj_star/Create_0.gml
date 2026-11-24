@@ -410,20 +410,6 @@ function deserialize(save_data) {
                     }
                     continue;
                 }
-                if (_var_name == "p_feature") {
-                    var _planet_features = _planet[$ _var_name];
-                    for (var f = 0; f < array_length(_planet_features); f++) {
-                        var _feat = _planet_features[f];
-                        if (!is_struct(_feat) || !struct_exists(_feat, "f_type")) {
-                            continue;
-                        }
-
-                        var _new_feat = get_planet_data(p).add_feature(_feat.f_type);
-
-                        _new_feat.load_json_data(_feat);
-                    }
-                    continue;
-                }
                 if (_var_name == "p_upgrades") {
                     var _planet_features = _planet[$ _var_name];
                     for (var f = 0; f < array_length(_planet_features); f++) {
