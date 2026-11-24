@@ -1,7 +1,7 @@
 
 
 
-function PlayerUpgrade (_feature_type = eP_FEATURES.SECRET_BASE, _other_data = {}): PlanetFeature(_feature_type, _other_data = {}) constructor {
+function PlayerUpgrade (_feature_type = eP_FEATURES.SECRET_BASE, _other_data = {}): PlanetFeature(_feature_type, _other_data) constructor {
     switch (f_type) {
         case eP_FEATURES.ARSENAL:
             planet_display = "Gene Vault";
@@ -16,7 +16,7 @@ function PlayerUpgrade (_feature_type = eP_FEATURES.SECRET_BASE, _other_data = {
 }
 
 
-function SecretBase (_feature_type = eP_FEATURES.SECRET_BASE, _other_data = {}): PlanetFeature(_feature_type, _other_data = {}) constructor {
+function SecretBase (_feature_type = eP_FEATURES.SECRET_BASE, _other_data = {}): PlanetFeature(_feature_type, _other_data) constructor {
     base_type = eBASE_TYPES.LAIR;
     inquis_hidden = 1;
     planet_display = "Hidden Secret Base";
@@ -231,7 +231,7 @@ function SecretBase (_feature_type = eP_FEATURES.SECRET_BASE, _other_data = {}):
             }
         }
 
-        lair_window_description_text = localize("Deep beneath the surface of {0} {1} lays your ", [obj_temp_build.target.name, scr_roman(obj_controller.selecting_planet)]);
+        lair_window_description_text = localize("Deep beneath the surface of {0} {1} lays your ", [obj_temp_build.p_data.system.name, scr_roman(obj_temp_build.p_data.planet)]);
         if (inquis_hidden == 1) {
             lair_window_description_text += localize("secret lair.  ");
         } else {
@@ -542,8 +542,8 @@ function SecretBase (_feature_type = eP_FEATURES.SECRET_BASE, _other_data = {}):
 /// @desc Displays information on secret lairs.
 /// @returns {Undefined}
 function scr_secret_lair_view() {
-    var xx = 25;
-    var yy = 165;
+    var xx = obj_temp_build.window_x;
+    var yy = obj_temp_build.window_y;
 
     add_draw_return_values();
     draw_sprite(spr_popup_large, 1, xx, yy);
@@ -552,13 +552,13 @@ function scr_secret_lair_view() {
     draw_set_halign(fa_center);
 
     var planet_upgrades = obj_temp_build.p_data.upgrades;
-    var arsenal = false;
-    var gene_vault = false;
-    var secret_base = false;
+    var arsenal = obj_temp_build.arsenal;
+    var gene_vault = obj_temp_build.gene_vault;
+    var secret_base = obj_temp_build.secret_base;
+    var lair_exists = obj_temp_build.lair_exists;
     var lair_window_description_text = "";
     /// @type {Struct.PlanetFeature|undefined}
     var lair_struct = undefined;
-    var lair_exists = gene_vault || arsenal || secret_base;
 
     if (obj_temp_build.isnew) {
 
@@ -592,6 +592,7 @@ function scr_secret_lair_view() {
                     };
                     obj_temp_build.isnew = false;
                     obj_temp_build.p_data.add_upgrade(eP_FEATURES.SECRET_BASE, base_options);
+                    obj_temp_build.refresh();
                 }
             }
 
@@ -602,8 +603,6 @@ function scr_secret_lair_view() {
             draw_text_transformed(text_x2, base_y1 + 2 + y_offset, localize(style.description), 1, 0.8, 0);
         }
     }
-
-    //TODO add a PlanetData object to obj_temp_build so that planet nae can be generated with PlanetData.name()
 
     draw_text_transformed(xx + 312, yy + 10, obj_temp_build.title, 0.7, 0.7, 0);
 
@@ -624,7 +623,7 @@ function scr_secret_lair_view() {
 
     draw_set_font(cjk_font(fnt_40k_14b));
     lair_window_description_text = "";
-    if (planet_feature_bool(planet_upgrades, eP_FEATURES.ARSENAL) == 1) {
+    if (arsenal) {
         lair_struct = planet_upgrades[search_planet_features(planet_upgrades, eP_FEATURES.ARSENAL)[0]];
         if (lair_struct.inquis_hidden == 1) {
             lair_window_description_text = localize("A moderate sized secret Arsenal, this structure has ample holding area to store any number of artifacts and wargear.  Chaos and Daemonic items will be sent here by your Master of Relics, and due to the secret nature of its existance, the Inquisition will not find them during routine inspections.");
@@ -633,7 +632,7 @@ function scr_secret_lair_view() {
         }
     }
 
-    if (planet_feature_bool(planet_upgrades, eP_FEATURES.GENE_VAULT) == 1) {
+    if (gene_vault) {
         lair_struct = planet_upgrades[search_planet_features(planet_upgrades, eP_FEATURES.GENE_VAULT)[0]];
         if (lair_struct.inquis_hidden == 1) {
             lair_window_description_text = localize("A large facility with Gene-Vaults and additional spare rooms, this structure safely stores the majority of your Gene-Seed and is ran by servitors.  Due to its secret nature you may amass Gene-Seed and Test-Slave Incubators without fear of Inquisition reprisal or taking offense.");
@@ -661,107 +660,20 @@ function scr_secret_lair_view() {
         }
 
         draw_set_font(cjk_font(fnt_40k_14));
-
-        draw_sprite(spr_requisition, 0, xx + 160, yy + 47);
-        if (obj_controller.requisition < 1000) {
-            draw_set_color(c_red);
-        } else {
-            draw_set_color(COL_REQUISITION);
-        }
-
-        draw_text(xx + 180, yy + 47, "1000");
         draw_set_color(c_gray);
         draw_text_ext(xx + 21, yy + 65, localize("Customizable hideout that your forces may garrison into.  The Lair may be upgraded further."), -6, 600);
-        draw_rectangle(xx + 300, yy + 45, xx + 400, yy + 65, 0);
-        draw_set_halign(fa_center);
-        draw_set_color(c_black);
-        draw_text(xx + 350, yy + 47, localize("Build"));
-        draw_text(xx + 351, yy + 48, localize("Build"));
-        if (scr_hit(xx + 300, yy + 45, xx + 400, yy + 65)) {
-            draw_set_alpha(0.2);
-            draw_rectangle(xx + 300, yy + 45, xx + 400, yy + 65, 0);
-            draw_set_alpha(1);
+        obj_temp_build.build_lair_button.draw();
 
-            if (mouse_button_clicked() && (obj_controller.requisition >= 1000)) {
-                obj_temp_build.isnew = true;
-                obj_controller.requisition -= 1000;
-            }
-        }
-
-        draw_set_halign(fa_left);
-
-        draw_sprite(spr_requisition, 0, xx + 160, yy + 112);
-        if (obj_controller.requisition < 1500) {
-            draw_set_color(c_red);
-        } else {
-            draw_set_color(COL_REQUISITION);
-        }
-
-        draw_text(xx + 180, yy + 112, "1500");
         draw_set_color(c_gray);
         draw_text_ext(xx + 21, yy + 130, localize("Hidden armoury that stores unused Chaos and Daemonic artifacts, preventing them from discovery."), -1, 600);
-        draw_rectangle(xx + 300, yy + 110, xx + 400, yy + 130, 0);
-        draw_set_halign(fa_center);
-        draw_set_color(c_black);
-        draw_text(xx + 350, yy + 112, localize("Build"));
-        draw_text(xx + 351, yy + 113, localize("Build"));
-        if (scr_hit(xx + 300, yy + 110, xx + 400, yy + 130)) {
-            draw_set_alpha(0.2);
-            draw_rectangle(xx + 300, yy + 110, xx + 400, yy + 130, 0);
-            draw_set_alpha(1);
+        obj_temp_build.build_arsenal_button.draw();
 
-            if (mouse_button_clicked() && (obj_controller.requisition >= 1500)) {
-                obj_temp_build.p_data.add_upgrade(eP_FEATURES.ARSENAL);
-                obj_controller.requisition -= 1500;
-            }
-        }
-
-        draw_set_halign(fa_left);
-
-        draw_sprite(spr_requisition, 0, xx + 160, yy + 177);
-        if (obj_controller.requisition < 4000) {
-            draw_set_color(c_red);
-        } else {
-            draw_set_color(COL_REQUISITION);
-        }
-
-        draw_text(xx + 180, yy + 177, "4000");
         draw_set_color(c_gray);
         draw_text_ext(xx + 21, yy + 195, localize("Hidden gene-vault that off-sources the majority of your Gene-Seed and Test-Slave Incubators."), -1, 600);
-        draw_rectangle(xx + 300, yy + 175, xx + 400, yy + 195, 0);
-        draw_set_halign(fa_center);
-        draw_set_color(c_black);
-        draw_text(xx + 350, yy + 177, localize("Build"));
-        draw_text(xx + 351, yy + 178, localize("Build"));
-        if (scr_hit(xx + 300, yy + 175, xx + 400, yy + 195)) {
-            draw_set_alpha(0.2);
-            draw_rectangle(xx + 300, yy + 175, xx + 400, yy + 195, 0);
-            draw_set_alpha(1);
-
-            if (mouse_button_clicked() && (obj_controller.requisition >= 4000)) {
-                obj_temp_build.p_data.add_upgrade(eP_FEATURES.GENE_VAULT);
-                obj_controller.requisition -= 4000;
-            }
-        }
-
-        draw_set_halign(fa_left);
+        obj_temp_build.build_gene_vault_button.draw();
     }
 
-    draw_set_font(cjk_font(fnt_40k_30b));
-    draw_set_color(c_gray);
-    draw_rectangle(xx + 252, yy + 388, xx + 372, yy + 420, 0);
-    draw_set_halign(fa_center);
-    draw_set_color(c_black);
-    draw_text(xx + 312, yy + 388, localize("Back"));
-    if (scr_hit(xx + 252, yy + 388, xx + 372, yy + 420)) {
-        draw_set_alpha(0.2);
-        draw_rectangle(xx + 252, yy + 388, xx + 372, yy + 420, 0);
-        draw_set_alpha(1);
-
-        if (mouse_button_clicked()) {
-            obj_controller.menu = eMENU.DEFAULT;
-        }
-    }
+    obj_temp_build.back_button.draw();
 
     pop_draw_return_values();
 }

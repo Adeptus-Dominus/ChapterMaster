@@ -678,7 +678,7 @@ function UnitButtonObject(data = {}) constructor {
 /// @description Specialized UnitButtonObject requiring requisition points to click.
 /// @param {real} req Required requisition cost.
 /// @returns {bool}
-function PurchaseButton(req) : UnitButtonObject() constructor {
+function PurchaseButton(data, req) : UnitButtonObject(data) constructor {
     req_value = req;
 
     static draw = function(allow_click = true) {
@@ -686,8 +686,14 @@ function PurchaseButton(req) : UnitButtonObject() constructor {
         var _but = draw_unit_buttons([x1, y1, x2, y2], label, [1, 1], color,,, alpha);
         var _sh = sprite_get_height(spr_requisition);
         var _scale = (y2 - y1) / _sh;
-        draw_sprite_ext(spr_requisition, 0, x1, y2, _scale, _scale, 0, c_white, 1);
+        draw_sprite_ext(spr_requisition, 0, x2, y1, _scale, _scale, 0, c_white, 1);
         var _allow_click = obj_controller.requisition >= req_value;
+        if (obj_controller.requisition < req_value) {
+            draw_set_color(c_red);
+        } else {
+            draw_set_color(COL_REQUISITION);
+        }
+        draw_text(x2 + (sprite_get_width(spr_requisition) * _scale) + 2, y1, req_value);
         if (scr_hit(x1, y1, x2, y2) && tooltip != "") {
             tooltip_draw(tooltip);
         }
