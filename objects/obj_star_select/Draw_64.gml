@@ -293,18 +293,8 @@ try {
         var _p_fleet = target.get_orbiting_player_fleet();
         if (current_button != "") {
             if (array_contains(["Build", "Base", "Arsenal", "Gene-Vault"], current_button)) {
-                /// @type {Id.Instance.obj_temp_build}
-                var building = instance_create(x, y, obj_temp_build);
-                building.target = target;
-                building.planet = obj_controller.selecting_planet;
-                building.p_data = p_data;
-                building.lair = p_data.has_upgrade(eP_FEATURES.SECRET_BASE);
-                if (p_data.has_upgrade(eP_FEATURES.ARSENAL)) {
-                    building.arsenal = 1;
-                }
-                if (p_data.has_upgrade(eP_FEATURES.GENE_VAULT)) {
-                    building.gene_vault = 1;
-                }
+                var _building = instance_create(x, y, obj_temp_build);
+                _building.set_planet_data(p_data)
                 //is cm at this location
                 var _cm = cm_obj().get_struct();
                 obj_controller.temp[104] = _cm.is_at_location(target.name, obj_controller.selecting_planet);

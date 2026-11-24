@@ -555,15 +555,12 @@ function scr_secret_lair_view() {
     var arsenal = false;
     var gene_vault = false;
     var secret_base = false;
-    var title = "";
     var lair_window_description_text = "";
     /// @type {Struct.PlanetFeature|undefined}
     var lair_struct = undefined;
     var lair_exists = gene_vault || arsenal || secret_base;
 
     if (obj_temp_build.isnew) {
-        title = localize("Secret Lair", [obj_temp_build.target.name, scr_roman(obj_temp_build.planet)]);
-        draw_text_transformed(xx + 312, yy + 10, title, 0.7, 0.7, 0);
 
         draw_set_font(cjk_font(fnt_40k_14b));
         draw_text(xx + 312, yy + 45, localize("Select a Secret Lair style."));
@@ -576,14 +573,14 @@ function scr_secret_lair_view() {
         var text_x1 = base_x1 + 2;
         var text_x2 = text_x1 + 100;
 
-        for (var r = 0; r < array_length(obj_controller.lair_styles); r++) {
-            var style = obj_controller.lair_styles[r];
+        for (var r = 0; r < array_length(obj_temp_build.lair_styles); r++) {
+            var style = obj_temp_build.lair_styles[r];
             var y_offset = r * 30;
 
             draw_set_color(c_gray);
             draw_rectangle(base_x1, base_y1 + y_offset, base_x2, base_y2 + y_offset, 0);
 
-            if (scr_hit(base_x1, base_y1 + y_offset, base_x2, base_y2 + y_offset) == true) {
+            if (scr_hit(base_x1, base_y1 + y_offset, base_x2, base_y2 + y_offset)) {
                 draw_set_color(c_black);
                 draw_set_alpha(0.2);
                 draw_rectangle(base_x1, base_y1 + y_offset, base_x2, base_y2 + y_offset, 0);
@@ -608,7 +605,7 @@ function scr_secret_lair_view() {
 
     //TODO add a PlanetData object to obj_temp_build so that planet nae can be generated with PlanetData.name()
 
-    draw_text_transformed(xx + 312, yy + 10, title, 0.7, 0.7, 0);
+    draw_text_transformed(xx + 312, yy + 10, obj_temp_build.title, 0.7, 0.7, 0);
 
     draw_set_halign(fa_left);
 
