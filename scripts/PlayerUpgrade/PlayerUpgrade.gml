@@ -55,7 +55,7 @@ function FortressMonastery (_feature_type = eP_FEATURES.MONASTERY, _other_data =
     static damaged_states = [ePLAYERFEATURESTATUS.DERELICT, ePLAYERFEATURESTATUS.DAMAGED, ePLAYERFEATURESTATUS.DESTROYED];
     static player_controlled_states = [ePLAYERFEATURESTATUS.UNCONTESTED, ePLAYERFEATURESTATUS.CONTESTED];
     static player_controlled = function(){
-        return array_contains(player_controlled, status);
+        return array_contains(player_controlled_states, status);
     }
     static raided = function(){
         if (array_contains(undamaged_states, status)){
