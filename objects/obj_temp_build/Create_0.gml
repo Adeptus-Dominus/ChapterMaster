@@ -102,16 +102,18 @@ refresh = function() {
 
     title = "";
     if (isnew) {
-        title = localize("Secret Lair ({0} {1})", [p_data.system.name, scr_roman(p_data.planet)]);
+        title = localize("Secret Lair");
     } else if (!lair_exists) {
-        title = localize("Build ({0} {1})", [p_data.system.name, scr_roman(p_data.planet)]);
+        title = localize("Build");
     } else if (secret_base) {
-        title = localize("Secret Lair ({0} {1})", [p_data.system.name, scr_roman(p_data.planet)]);
+        title = localize("Secret Lair");
     } else if (arsenal) {
-        title = localize("Secret Arsenal ({0} {1})", [p_data.system.name, scr_roman(p_data.planet)]);
+        title = localize("Secret Arsenal");
     } else if (gene_vault) {
-        title = localize("Secret Gene-Vault ({0} {1})", [p_data.system.name, scr_roman(p_data.planet)]);
+        title = localize("Secret Gene-Vault");
     }
+
+    title += $" {p_data.name()}"
 
     build_lair_button = new PurchaseButton({
         x1: window_x + 300,

@@ -294,7 +294,7 @@ try {
         if (current_button != "") {
             if (array_contains(["Build", "Base", "Arsenal", "Gene-Vault"], current_button)) {
                 var _building = instance_create(x, y, obj_temp_build);
-                _building.set_planet_data(p_data)
+                _building.set_planet_data(p_data);
                 //is cm at this location
                 var _cm = cm_obj().get_struct();
                 obj_controller.temp[104] = _cm.is_at_location(target.name, obj_controller.selecting_planet);

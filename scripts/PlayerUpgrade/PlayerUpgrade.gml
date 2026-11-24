@@ -4,7 +4,7 @@
 function PlayerUpgrade (_feature_type = eP_FEATURES.SECRET_BASE, _other_data = {}): PlanetFeature(_feature_type, _other_data) constructor {
     switch (f_type) {
         case eP_FEATURES.ARSENAL:
-            planet_display = "Gene Vault";
+            planet_display = "Arsenal";
             break;
         case eP_FEATURES.GENE_VAULT:
             planet_display = "Gene Vault";

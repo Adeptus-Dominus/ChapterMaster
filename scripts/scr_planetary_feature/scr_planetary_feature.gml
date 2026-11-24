@@ -33,6 +33,13 @@ enum eBASE_TYPES {
     LAIR,
 }
 
+enum ePLAYERFEATURESTATUS {
+    UNCONTESTED,
+    CONTESTED,
+    UNOCCUPIED,
+    DERELICT,
+}
+
 function PlayerForge() constructor {
     constructions = [];
     size = 1;
@@ -119,7 +126,7 @@ function PlanetFeature(_feature_type, _other_data = {}) constructor {
             player_hidden = 0;
             forge = 0;
             name = global.name_generator.GenerateFromSet("imperial_ship");
-            status = 
+            status = ePLAYERFEATURESTATUS.UNCONTESTED;
             break;
         case eP_FEATURES.RECRUITING_WORLD:
             planet_display = "Recruitment";
