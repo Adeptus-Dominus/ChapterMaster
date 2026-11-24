@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"PlayerUpgrade",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"PlayerUpgrade",
+  "parent":{
+    "name":"Interface",
+    "path":"folders/Scripts/Interface.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
