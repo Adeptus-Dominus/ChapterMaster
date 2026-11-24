@@ -34,7 +34,8 @@ function PlayerUpgrade (_feature_type = eP_FEATURES.SECRET_BASE, _other_data = {
     }
     inquis_hidden = 1;
     player_hidden = 0;
-    built = obj_controller.turn + 3;    
+    gene_banks = false;
+    built = !struct_exists(_other_data, "built") ? obj_controller.turn + 3: _other_data.built;
 }
 
 function FortressMonastery (_feature_type = eP_FEATURES.MONASTERY, _other_data = {}): PlayerUpgrade(_feature_type, _other_data) constructor {
@@ -42,6 +43,7 @@ function FortressMonastery (_feature_type = eP_FEATURES.MONASTERY, _other_data =
     player_hidden = 0;
     forge = 0;
     inquis_hidden = 0;
+    built = !struct_exists(_other_data, "built") ? 0 : _other_data.built;
     if (!struct_exists(_other_data, "name")){
         name = global.name_generator.GenerateFromSet("imperial_ship");
     } else {
