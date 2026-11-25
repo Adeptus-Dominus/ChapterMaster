@@ -46,9 +46,17 @@ function SectorHandler() constructor {
         return game_year() - age;
     };
 
+    static save_ignore_fields = [
+        "warp_lanes",
+        "player_base",
+        "player_base_planet",
+    ]
+
     static save = function() {
         var _copy = variable_clone(self);
-        struct_remove(_copy, "warp_lanes");
+        for (var i = 0; i < array_length(save_ignore_fields); i++){
+            struct_remove(_copy, save_ignore_fields[i]);
+        }
         return _copy;
     };
 
@@ -58,6 +66,7 @@ function SectorHandler() constructor {
         }
         player_base = noone;
         player_base_planet = 0;
+        player_base_feature = noone;
         if (obj_ini.fleet_type != ePLAYER_BASE.PENITENT){
             with (obj_star){
                 var _mons = get_feature(eP_FEATURES.MONASTERY, false);
@@ -66,6 +75,7 @@ function SectorHandler() constructor {
                     if (_mon.player_controlled()){
                         player_base = id;
                         player_base_planet = _mon.planet;
+                        player_base_feature = _mon;
                         obj_ini.fleet_type = ePLAYER_BASE.HOME_WORLD;
                     }
                 }
@@ -83,7 +93,6 @@ function SectorHandler() constructor {
                     _star_with_player_control = id;
                 }
             }
-
             player_base = _star_with_player_control;
         }
         if (player_base == noone){
@@ -95,8 +104,19 @@ function SectorHandler() constructor {
                 player_base = find_ship_fleet(_cm_loc[1]);
             }
         }
+
+        if (player_base == noone && instance_exists(obj_controller)){
+            var _viewer = obj_controller.location_viewer;
+            var _player_presence_stars = _viewer.player_force_stars(eARRAYORDER.LARGEST);
+            if (array_length(_player_presence_stars) > 0){
+                player_base = _player_presence_stars[0];
+            }
+        }
         if (player_base == noone){
-            LOGGER.error("Can't fins player cm, fortress monastery or any fleets");
+            LOGGER.error("Can't find player cm, fortress monastery or any fleets, or planets with marine forces");
+        }
+        if (player_base_planet == 0 && obj_ini.fleet_type != ePLAYER_BASE.PENITENT){
+            obj_ini.fleet_type = ePLAYER_BASE.FLEET_BASED;
         }
         return player_base;
     }

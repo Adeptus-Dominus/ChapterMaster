@@ -754,7 +754,7 @@ instance_activate_object(obj_star);
 instance_activate_object(obj_turn_end);
 
 //If not fleet based and...
-if ((obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) && (defeat == 1) && !dropping) {
+if (&& (defeat == 1) && !dropping) {
     var _monastery_list = p_data.get_features(eP_FEATURES.MONASTERY);
 
     var monastery_count = array_length(_monastery_list);

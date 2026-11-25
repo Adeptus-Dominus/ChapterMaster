@@ -1,3 +1,11 @@
+enum eARRAYORDER {
+    NONE,
+    LARGEST,
+    SMALLEST,
+    NEAREST,
+    FURTHEST
+}
+
 function UnitQuickFindPanel() constructor {
     main_panel = new DataSlate();
     garrison_log = {};
@@ -47,17 +55,34 @@ function UnitQuickFindPanel() constructor {
         return struct_exists(garrison_log, name);
     };
 
-    static player_force_stars = function() {
+    static player_force_stars = function(arrange = eARRAYORDER.NONE) {
         var _names = struct_get_names(garrison_log);
         var _stars = [];
         for (var i = 0; i < array_length(_names); i++) {
             var _star = find_star_by_name(_names[i]);
             if (_star != noone) {
-                array_push(_stars, _star);
+                if (arrange == eARRAYORDER.NONE){
+                    array_push(_stars, _star);
+                } else {
+                    if (arrange == eARRAYORDER.LARGEST){
+                        for (var i = 0; i<array_length(_stars);++){
+                            if (_star.units > _stars[i].units){
+                                array_insert(_stars,i,_star);
+                            }
+                        }
+                    } 
+                }
             }
         }
 
-        return _stars;
+        if (arrange == eARRAYORDER.NONE){
+            return _stars;
+        } else {
+            var _final_array = [];
+            for (var i=0;i<array_length(_stars);i++){
+                array_push(_final_array, _stars[i]);
+            }
+        }
     };
 
     static add_unit_to_garrison_log = function(_unit, unit_location) {

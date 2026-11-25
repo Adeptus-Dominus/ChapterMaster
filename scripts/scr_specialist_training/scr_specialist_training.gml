@@ -253,7 +253,7 @@ function chaplain_training() {
 function librarian_training() {
     var recruit_count = 0;
     // * Psycher Training *
-    var training_points_values = global.chaplain_training_tiers;
+    var training_points_values = global.librarian_training_tiers;
     psyker_points += training_points_values[training_psyker];
 
     var goal = 48;
