@@ -102,7 +102,6 @@ function Problem(_name, _timer, _data) constructor {
     };
 
     static mission_log_entry = function() {
-        LOGGER.info($"mission : {p_id}");
         var _func = find_func("mission_log_entry");
         if (!is_undefined(_func)) {
             try {
@@ -118,7 +117,6 @@ function Problem(_name, _timer, _data) constructor {
     };
 
     static __default_mission_log_entry = function() {
-        LOGGER.info($"mission : {p_id}");
         if (!instance_exists(system)) {
             return undefined;
         }
