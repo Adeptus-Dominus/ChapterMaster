@@ -315,6 +315,7 @@ for (var i = 0; i < 150; i++){
         _elforce.escort_number = floor(random_range(7, 11)) + 1;
         _elforce.image_alpha = 0;
         _elder_craft = true;
+        break;
     }
 } 
 // End craftworld
