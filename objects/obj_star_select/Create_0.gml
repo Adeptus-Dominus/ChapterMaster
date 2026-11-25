@@ -69,14 +69,14 @@ main_data_slate = new DataSlate();
 
 potential_donors = [];
 
-colonist_button = new PurchaseButton(1000);
+colonist_button = new PurchaseButton({}, 1000);
 colonist_button.update({tooltip: "Planets with higher populations can provide more recruits both for your chapter and to keep a planets PDF bolstered, however colonists from other planets bring with them their home planets influences and evils \nREQ : 1000", label: "Request Colonists", target: target});
 colonist_button.bind_method = function() {
     var doner = array_random_element(obj_star_select.potential_donors);
     new_colony_fleet(doner[0], doner[1], target.id, obj_controller.selecting_planet, "bolster_population");
 };
 
-recruiting_button = new PurchaseButton(0);
+recruiting_button = new PurchaseButton({},0);
 recruiting_button.update({tooltip: "Enable recruiting", label: "Recruiting", target: target});
 recruiting_button.bind_method = function() {
     if (!p_data.has_feature(eP_FEATURES.RECRUITING_WORLD)) {
@@ -88,7 +88,7 @@ recruiting_button.bind_method = function() {
     }
 };
 
-recruitment_type_button = new PurchaseButton(0);
+recruitment_type_button = new PurchaseButton({},0);
 recruitment_type_button.update({tooltip: "Change recruitment type", label: "Recruitment Type", target: target});
 recruitment_type_button.bind_method = function() {
     var _recruit_world = p_data.get_features(eP_FEATURES.RECRUITING_WORLD)[0];
@@ -99,14 +99,14 @@ recruitment_type_button.bind_method = function() {
     }
 };
 
-recruitment_costdown_button = new PurchaseButton(0);
+recruitment_costdown_button = new PurchaseButton({},0);
 recruitment_costdown_button.update({tooltip: "Deaccelerate recruitment", label: "RQD", target: target});
 recruitment_costdown_button.bind_method = function() {
     var _recruit_world = p_data.get_features(eP_FEATURES.RECRUITING_WORLD)[0];
     _recruit_world.recruit_cost--;
 };
 
-recruitment_costup_button = new PurchaseButton(0);
+recruitment_costup_button = new PurchaseButton({},0);
 recruitment_costup_button.update({tooltip: "Accelerate recruitment with req", label: "RQU", target: target});
 recruitment_costup_button.bind_method = function() {
     var _recruit_world = p_data.get_features(eP_FEATURES.RECRUITING_WORLD)[0];

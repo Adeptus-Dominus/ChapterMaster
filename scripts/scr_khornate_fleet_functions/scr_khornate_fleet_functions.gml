@@ -49,7 +49,7 @@ function khorne_fleet_cargo() {
                     for (var i = 1; i <= planets; i++) {
                         if (landing_planet == 0) {
                             if ((planet_imperium_ground_total(i) > 0) && (p_population[i] > p_max_population[i] / 20)) {
-                                array_push(p_feature[i], new NewPlanetFeature(eP_FEATURES.CHAOSWARBAND));
+                                get_planet_data(i).add_feature(eP_FEATURES.CHAOSWARBAND);
                                 landing_planet = i;
                                 p_chaos[i] = 6;
                                 break;
@@ -59,7 +59,7 @@ function khorne_fleet_cargo() {
                             if ((p_player[i] > 0) && (p_population[i] > p_max_population[i] / 20)) {
                                 landing_planet = i;
                                 p_chaos[i] = 6;
-                                array_push(p_feature[i], new NewPlanetFeature(eP_FEATURES.CHAOSWARBAND));
+                                get_planet_data(i).add_feature(eP_FEATURES.CHAOSWARBAND);
                                 break;
                             } // Forces landed
                         }
@@ -293,7 +293,7 @@ function spawn_chaos_warlord() {
 function destroy_khorne_fleet() {
     var chaos_lord_killed = false;
     with (instance_nearest(x, y, obj_star)) {
-        if (system_feature_bool(p_feature, eP_FEATURES.CHAOSWARBAND) == 1) {
+        if (has_feature(eP_FEATURES.CHAOSWARBAND)) {
             chaos_lord_killed = true;
         }
     }

@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_secret_lair_view",
+  "%Name":"PlayerUpgrade",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_secret_lair_view",
+  "name":"PlayerUpgrade",
   "parent":{
     "name":"Interface",
     "path":"folders/Scripts/Interface.yy",

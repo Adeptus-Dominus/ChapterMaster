@@ -76,7 +76,7 @@ function player_home_planet(home_planet) {
         }
         name = obj_ini.home_name;
     }
-    array_push(p_feature[home_planet], new NewPlanetFeature(eP_FEATURES.MONASTERY));
+    get_planet_data(home_planet).add_feature(eP_FEATURES.MONASTERY);
     p_owner[home_planet] = eFACTION.PLAYER;
 
     p_first[home_planet] = eFACTION.PLAYER; //monestary
@@ -145,7 +145,7 @@ function set_player_recruit_planet(recruit_planet) {
             name = obj_ini.home_name;
         }
     }
-    array_push(p_feature[recruit_planet], new NewPlanetFeature(eP_FEATURES.RECRUITING_WORLD)); //recruiting world
+    get_planet_data(recruit_planet).add_feature(eP_FEATURES.RECRUITING_WORLD); //recruiting world
     if (p_type[recruit_planet] == "random") {
         p_type[recruit_planet] = choose("Death", "Temperate", "Desert", "Ice", "Hive", "Fuedal");
     }
@@ -188,7 +188,7 @@ function set_player_homeworld_star(chosen_star) {
             var _recruit_star = array_random_element(_possible_planets);
             set_player_recruit_planet(_recruit_star);
         } else if (obj_ini.recruit_relative_loc == 0) {
-            array_push(p_feature[_home_planet], new NewPlanetFeature(eP_FEATURES.RECRUITING_WORLD)); //recruiting world
+            get_planet_data(_home_planet).add_feature(eP_FEATURES.RECRUITING_WORLD); //recruiting world
             for (var i = 1; i <= planets; i++) {
                 if (i != _home_planet) {
                     p_type[i] = array_random_element(_planet_types);

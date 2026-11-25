@@ -160,6 +160,27 @@ problems_to_mission_log = function() {
     return _temp_log;
 };
 
+has_feature = function(search_feature) {
+    var sys_bool = false;
+    for (var sys = 1; sys <= planets; sys++) {
+        if (planet_feature_bool(p_feature[sys], search_feature)){
+            return true;
+        }
+    }
+    return false;
+}
+
+//returns first found feature matching type
+get_feature = function(search_feature) {
+    for (var sys = 1; sys <= planets; sys++) {
+        var _features = get_planet_data(sys).get_features(search_feature);
+        if (array_length(_features)){
+            return _features[0];
+        }
+    }
+    return noone;
+}
+
 /// @self Asset.GMObject.obj_star
 has_orbiting_player_fleet = function() {
     if (instance_exists(obj_p_fleet)) {
@@ -383,11 +404,23 @@ function deserialize(save_data) {
                             continue;
                         }
 
-                        var _new_feat = new NewPlanetFeature(_feat.f_type);
+                        var _new_feat = get_planet_data(p).add_feature(_feat.f_type);
 
                         _new_feat.load_json_data(_feat);
+                    }
+                    continue;
+                }
+                if (_var_name == "p_upgrades") {
+                    var _planet_features = _planet[$ _var_name];
+                    for (var f = 0; f < array_length(_planet_features); f++) {
+                        var _feat = _planet_features[f];
+                        if (!is_struct(_feat) || !struct_exists(_feat, "f_type")) {
+                            continue;
+                        }
 
-                        array_push(p_feature[p], _new_feat);
+                        var _new_feat = get_planet_data(p).add_upgrade(_feat.f_type);
+
+                        _new_feat.load_json_data(_feat);
                     }
                     continue;
                 }

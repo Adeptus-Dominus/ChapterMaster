@@ -82,7 +82,7 @@ function ork_ship_production(planet) {
     }
 }
 
-/// @self Struct.NewPlanetFeature
+/// @self Struct.PlanetFeature
 function kill_warboss() {
     f_type = eP_FEATURES.VICTORY_SHRINE;
     planet_display = $"{obj_controller.faction_leader[eFACTION.ORK]} Death Place";

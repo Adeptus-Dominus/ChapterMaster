@@ -322,8 +322,7 @@ if (owner == eFACTION.TYRANIDS) {
 if (owner == eFACTION.GENESTEALER) {
     for (var i = 1; i <= planets; i++) {
         if (p_population[i] > 0) {
-            var new_cult = new NewPlanetFeature(eP_FEATURES.GENE_STEALER_CULT);
-            array_push(p_feature[i], new_cult);
+            var new_cult = get_planet_data(i).add_feature(eP_FEATURES.GENE_STEALER_CULT);
             new_cult.cult_age = irandom(300);
             p_influence[i][eFACTION.TYRANIDS] = new_cult.cult_age / 10 + irandom(30);
             p_tyranids[i] = min(3, floor(p_influence[i][eFACTION.TYRANIDS] / 15));
@@ -397,7 +396,7 @@ if ((choose(0, 1) == 1) && (planets > 0)) {
                     if (goo == 0) {
                         switch (ranb) {
                             case 1:
-                                array_push(p_feature[_ran_num], new NewPlanetFeature(eP_FEATURES.SORORITAS_CATHEDRAL));
+                                get_planet_data(_ran_num).add_feature(eP_FEATURES.SORORITAS_CATHEDRAL);
                                 if (p_heresy[_ran_num] > 10) {
                                     p_heresy[_ran_num] -= 10;
                                 }
@@ -407,28 +406,28 @@ if ((choose(0, 1) == 1) && (planets > 0)) {
                                 break;
                             case 2:
                                 if ((p_type[_ran_num] != "Hive") && (p_type[_ran_num] != "Lava") && (goo == 0)) {
-                                    array_push(p_feature[_ran_num], new NewPlanetFeature(eP_FEATURES.NECRON_TOMB));
+                                    get_planet_data(_ran_num).add_feature(eP_FEATURES.NECRON_TOMB);
                                     goo = 1;
                                 }
                                 break;
                             case 3:
-                                array_push(p_feature[_ran_num], new NewPlanetFeature(eP_FEATURES.ARTIFACT));
+                                get_planet_data(_ran_num).add_feature(eP_FEATURES.ARTIFACT);
                                 goo = 1;
                                 break;
                             case 4:
-                                array_push(p_feature[_ran_num], new NewPlanetFeature(eP_FEATURES.STC_FRAGMENT));
+                                get_planet_data(_ran_num).add_feature(eP_FEATURES.STC_FRAGMENT);
                                 goo = 1;
                                 break;
                             case 5:
                                 if ((p_type[_ran_num] != "Ice") && (p_type[_ran_num] != "Dead") && (p_type[_ran_num] != "Feudal")) {
                                     goo = 1;
-                                    array_push(p_feature[_ran_num], new NewPlanetFeature(eP_FEATURES.ANCIENT_RUINS));
+                                    get_planet_data(_ran_num).add_feature(eP_FEATURES.ANCIENT_RUINS);
                                 }
                                 break;
                             //alternative spawn for necron tomb probably needs merging with other method
                             case 6:
                                 if ((p_type[_ran_num] == "Ice") || (p_type[_ran_num] == "Dead")) {
-                                    array_push(p_feature[_ran_num], new NewPlanetFeature(eP_FEATURES.NECRON_TOMB));
+                                    get_planet_data(_ran_num).add_feature(eP_FEATURES.NECRON_TOMB);
                                     goo = 1;
                                 }
                                 break;
@@ -436,7 +435,7 @@ if ((choose(0, 1) == 1) && (planets > 0)) {
                                 if ((p_type[_ran_num] == "Dead") || (p_type[_ran_num] == "Desert")) {
                                     var randum = floor(random(100)) + 1;
                                     if (randum <= 25) {
-                                        array_push(p_feature[_ran_num], new NewPlanetFeature(eP_FEATURES.CAVE_NETWORK));
+                                        get_planet_data(_ran_num).add_feature(eP_FEATURES.CAVE_NETWORK);
                                         goo = 1;
                                     }
                                 }

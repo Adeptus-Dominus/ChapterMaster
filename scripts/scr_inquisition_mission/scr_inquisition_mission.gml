@@ -177,7 +177,7 @@ function mission_inquisition_necron_world(tomb_worlds) {
 
     if (planet == -1) {
         planet = irandom_range(1, _star.planets);
-        array_push(_star.p_feature[planet], new NewPlanetFeature(eP_FEATURES.NECRON_TOMB));
+        _star.get_planet_data(planet).add_feature(eP_FEATURES.NECRON_TOMB);
     }
 
     var _eta = scr_mission_eta(_star.x, _star.y, 1);

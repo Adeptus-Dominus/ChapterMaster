@@ -48,6 +48,5 @@ function SectorHandler() constructor {
         struct_remove(_copy, "warp_lanes");
         return _copy;
     };
-
     LOGGER.info("SectorHandler successfully initialised");
 }

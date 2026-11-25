@@ -293,17 +293,8 @@ try {
         var _p_fleet = target.get_orbiting_player_fleet();
         if (current_button != "") {
             if (array_contains(["Build", "Base", "Arsenal", "Gene-Vault"], current_button)) {
-                /// @type {Id.Instance.obj_temp_build}
-                var building = instance_create(x, y, obj_temp_build);
-                building.target = target;
-                building.planet = obj_controller.selecting_planet;
-                building.lair = p_data.has_upgrade(eP_FEATURES.SECRET_BASE);
-                if (p_data.has_upgrade(eP_FEATURES.ARSENAL)) {
-                    building.arsenal = 1;
-                }
-                if (p_data.has_upgrade(eP_FEATURES.GENE_VAULT)) {
-                    building.gene_vault = 1;
-                }
+                var _building = instance_create(x, y, obj_temp_build);
+                _building.set_planet_data(p_data);
                 //is cm at this location
                 var _cm = cm_obj().get_struct();
                 obj_controller.temp[104] = _cm.is_at_location(target.name, obj_controller.selecting_planet);
@@ -356,7 +347,7 @@ try {
                         if (obj_controller.faction_status[eFACTION.IMPERIUM] == "War") {
                             obj_controller.recruiting_worlds_bought -= 1;
                         }
-                        array_push(target.p_feature[obj_controller.selecting_planet], new NewPlanetFeature(eP_FEATURES.RECRUITING_WORLD));
+                        p_data.add_feature(eP_FEATURES.RECRUITING_WORLD);
 
                         if (obj_controller.selecting_planet) {
                             obj_controller.recruiting_worlds += planet_numeral_name(obj_controller.selecting_planet, target);

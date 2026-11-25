@@ -193,7 +193,7 @@ function process_specialist_points() {
     with (obj_star) {
         var _in_spread = variable_struct_exists(_unit_spread, name);
 
-        if (_gene_seed_empty && system_feature_bool(self.p_feature, eP_FEATURES.RECRUITING_WORLD)) {
+        if (_gene_seed_empty && has_feature(eP_FEATURES.RECRUITING_WORLD)) {
             obj_controller.recruiting = 0;
             scr_alert("red", "recruiting", "The Chapter has run out of gene-seed!", 0, 0);
             _gene_seed_empty = false;

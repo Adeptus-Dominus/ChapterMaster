@@ -755,18 +755,21 @@ instance_activate_object(obj_turn_end);
 
 //If not fleet based and...
 if ((obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) && (defeat == 1) && !dropping) {
-    var monastery_list = search_planet_features(battle_object.p_feature[battle_id], eP_FEATURES.MONASTERY);
-    var monastery_count = array_length(monastery_list);
-    if (monastery_count > 0) {
-        for (var mon = 0; mon < monastery_count; mon++) {
-            battle_object.p_feature[battle_id][monastery_list[mon]].status = "destroyed";
-        }
+    var _monastery_list = p_data.get_features(eP_FEATURES.MONASTERY);
 
-        if (obj_controller.und_gene_vaults == 0) {
-            _newline = "Your Fortress Monastery has been raided.  " + string(obj_controller.gene_seed) + " Gene-Seed has been destroyed or stolen.";
-        }
-        if (obj_controller.und_gene_vaults > 0) {
-            _newline = "Your Fortress Monastery has been raided.  " + string(floor(obj_controller.gene_seed / 10)) + " Gene-Seed has been destroyed or stolen.";
+    var monastery_count = array_length(_monastery_list);
+    if (monastery_count > 0) {
+        var _monestary = _monastery_list[0];
+        for (var mon = 0; mon < monastery_count; mon++) {
+            if (_monastery_list[mon].player_controlled()){
+                if (obj_controller.und_gene_vaults == 0) {
+                    _newline = $"Your Fortress Monastery has been raided.  {obj_controller.gene_seed} Gene-Seed has been destroyed or stolen.";
+                }
+                if (obj_controller.und_gene_vaults > 0) {
+                    _newline = $"Your Fortress Monastery has been raided.  {floor(obj_controller.gene_seed / 10)} Gene-Seed has been destroyed or stolen.";
+                }
+            }
+            _monastery_list[mon].raided();
         }
 
         scr_event_log("red", _newline, battle_object.name);

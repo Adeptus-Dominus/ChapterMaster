@@ -179,7 +179,7 @@ switch (name) {
         planets = 3;
         p_type[1] = "Feudal";
         planet[1] = 1;
-        array_push(p_feature[1], new NewPlanetFeature(eP_FEATURES.NECRON_TOMB));
+        get_planet_data(1).add_feature(eP_FEATURES.NECRON_TOMB);
         p_type[2] = "Dead";
         planet[2] = 1;
         p_type[3] = "Dead";

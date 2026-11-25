@@ -126,7 +126,7 @@ function elder_dialogue_useful_information() {
             var _warboss_found = false;
             var _star = noone;
             with (obj_star) {
-            	if (system_feature_bool(p_feature, eP_FEATURES.ORKWARBOSS)){
+            	if (has_feature(eP_FEATURES.ORKWARBOSS)){
             		_warboss_found = true;
             		_star = id;
             		break;
@@ -190,7 +190,7 @@ function elder_dialogue_useful_information() {
                                 }
                             }
                             if (onceh != 0) {
-                                array_push(p_feature[onceh], new NewPlanetFeature(eP_FEATURES.WEBWAY));
+                                get_planet_data(onceh).add_feature(eP_FEATURES.WEBWAY);
                                 _gate_planet_name = planet_numeral_name(onceh, that);
                                 break;
                             }
@@ -250,7 +250,7 @@ function elder_dialogue_useful_information() {
                                 }
                             }
                             if (onceh != 0) {
-                                array_push(p_feature[onceh], new NewPlanetFeature(eP_FEATURES.WEBWAY));
+                                get_planet_data(onceh).add_feature(eP_FEATURES.WEBWAY);
                                 _gate_planet_name = planet_numeral_name(onceh, that);
                                 break;
                             }

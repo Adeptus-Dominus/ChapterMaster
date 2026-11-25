@@ -1,4 +1,4 @@
-/// @self Struct.NewPlanetFeature
+/// @self Struct.PlanetFeature
 function scr_ancient_ruins_setup() {
     var ruin_data = choose(["tiny", 5], ["small", 15], ["medium", 55], ["large", 110], ["sprawling", 0]);
     ruins_size = ruin_data[0];
@@ -70,7 +70,7 @@ function scr_ruins_suprise_attack_player() {
 }
 
 //spawn point for starship
-/// @self Struct.NewPlanetFeature
+/// @self Struct.PlanetFeature
 function scr_ruins_find_starship() {
     f_type = eP_FEATURES.STARSHIP;
     planet_display = "Ancient Starship";
@@ -80,7 +80,7 @@ function scr_ruins_find_starship() {
 }
 
 //allows ruins to be entered to retrive fallen marine gear
-/// @self Struct.NewPlanetFeature
+/// @self Struct.PlanetFeature
 function scr_ruins_player_forces_defeated() {
     planet_display = "Failed Ruins Expidition";
     completion_level = 1;
@@ -91,7 +91,7 @@ function scr_ruins_player_forces_defeated() {
 }
 
 //revcover equipment of fallen marines from ruins
-/// @self Struct.NewPlanetFeature
+/// @self Struct.PlanetFeature
 function scr_ruins_recover_from_dead() {
     /// @type {Asset.GMObject.obj_popup}
     var pop = instance_create(0, 0, obj_popup);
@@ -146,14 +146,14 @@ function scr_ruins_recover_from_dead() {
 }
 
 //mark ruins as fully explored
-/// @self Struct.NewPlanetFeature
+/// @self Struct.PlanetFeature
 function scr_ruins_explored() {
     planet_display = "Ancient Ruins";
     exploration_complete = true;
 }
 
 //determine what race the ruins once belonged to effect enemies that can be found
-/// @self Struct.NewPlanetFeature
+/// @self Struct.PlanetFeature
 function scr_ruins_determine_race() {
     var dice = floor(random(100)) + 1;
     if (dice <= 9) {
@@ -265,7 +265,7 @@ function scr_explore_ruins() {
 /// @self Asset.GMObject.obj_popup
 function ruins_exploration_main_sequence() {
     // Begin
-    /// @type {Struct.NewPlanetFeature}
+    /// @type {Struct.PlanetFeature}
     var _ruins = obj_ground_mission.explore_feature;
     var battle_threat = 0;
 
@@ -359,7 +359,7 @@ function ruins_exploration_main_sequence() {
 /// @self Struct.PlanetData
 function scr_check_for_ruins_exploration() {
     var _ruins_list = get_features(eP_FEATURES.ANCIENT_RUINS);
-    /// @type {Struct.NewPlanetFeature}
+    /// @type {Struct.PlanetFeature}
     var _explore_ruins = 0;
     if (array_length(_ruins_list) > 0) {
         for (var _ruin = 0; _ruin < array_length(_ruins_list); _ruin++) {
@@ -380,7 +380,7 @@ function scr_check_for_ruins_exploration() {
     }
 }
 
-/// @self Struct.NewPlanetFeature
+/// @self Struct.PlanetFeature
 function scr_ruins_combat_end() {
     ruins_battle = choose(6, 7, 9, 10, 11, 12);
 
