@@ -2024,32 +2024,44 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     };
 
     static allocate_unit_to_fresh_spawn = function(type = "default") {
-        var homestar = noone;
-        var spawn_location_chosen = false;
-        if (((type == "home") || (type == "default")) && (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD)) {
-            homestar = find_star_by_name(obj_ini.home_name);
-        } else if (type != "ship") {
-            homestar = find_star_by_name(type);
-        }
-        if (homestar != noone) {
-            for (var i = 1; i <= homestar.planets; i++) {
-                if (homestar.p_owner[i] == eFACTION.PLAYER || (obj_controller.faction_status[eFACTION.IMPERIUM] != "War" && array_contains(obj_controller.imperial_factions, homestar.p_owner[i]))) {
-                    planet_location = i;
-                    location_string = obj_ini.home_name;
-                    spawn_location_chosen = true;
+        var _spawn_location_chosen = false;
+        if (((type == "home") || (type == "default")){
+            var _loc = obj_ini.sector_handler.player_base_location();
+            if (_loc != noone){
+                if (_loc.object_index == obj_star){
+                    var _planet = obj_ini.sector_handler.player_base_planet;
+                    for (var i = 1; i <= _loc.planets; i++) {
+                        if (_loc.p_owner[i] == eFACTION.PLAYER || (obj_controller.faction_status[eFACTION.IMPERIUM] != "War" && array_contains(obj_controller.imperial_factions, _loc.p_owner[i]))) {
+                            planet_location = i;
+                            location_string = obj_ini.home_name;
+                            _spawn_location_chosen = true;
+                        }
+                    }
+                } else {
+                    get_unit_size();
+                    load_unit_to_fleet(_loc, self);
+                    _spawn_location_chosen = true;                
                 }
             }
-        }
-        if (!spawn_location_chosen) {
-            var player_fleet = get_largest_player_fleet();
-            if (player_fleet != noone) {
-                get_unit_size();
-                load_unit_to_fleet(player_fleet, self);
-                spawn_location_chosen = true;
+            if (!_spawn_location_chosen) {
+                var _loc = obj_ini.sector_handler.player_base_location(false);
+                if (_loc != noone){
+                    allocate_unit_to_fresh_spawn(type);
+                }
             }
-            //TODO add more work arounds in case of no valid spawn point
-            if (!spawn_location_chosen) {
-                if (player_fleet != noone) {}
+            return;
+        } else if (type != "ship") {
+            var _loc = find_star_by_name(type);
+            if (_loc != noone){
+                for (var i = 1; i <= _loc.planets; i++) {
+                    if (_loc.p_owner[i] == eFACTION.PLAYER || (obj_controller.faction_status[eFACTION.IMPERIUM] != "War" && array_contains(obj_controller.imperial_factions, _loc.p_owner[i]))) {
+                        planet_location = i;
+                        location_string = obj_ini.home_name;
+                        _spawn_location_chosen = true;
+                    }
+                }
+            } else {
+                allocate_unit_to_fresh_spawn();
             }
         }
     };

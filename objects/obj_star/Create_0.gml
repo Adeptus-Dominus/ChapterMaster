@@ -160,10 +160,10 @@ problems_to_mission_log = function() {
     return _temp_log;
 };
 
-has_feature = function(search_feature) {
+has_feature = function(_search_feature) {
     var sys_bool = false;
     for (var sys = 1; sys <= planets; sys++) {
-        if (planet_feature_bool(p_feature[sys], search_feature)){
+        if (planet_feature_bool(p_feature[sys], _search_feature)){
             return true;
         }
     }
@@ -171,11 +171,15 @@ has_feature = function(search_feature) {
 }
 
 //returns first found feature matching type
-get_feature = function(search_feature) {
+get_feature = function(_search_feature, _only_one = true) {
     for (var sys = 1; sys <= planets; sys++) {
-        var _features = get_planet_data(sys).get_features(search_feature);
+        var _features = get_planet_data(sys).get_features(_search_feature);
         if (array_length(_features)){
-            return _features[0];
+            if (_only_one){
+                return _features[0];
+            } else {
+                return _features;
+            }
         }
     }
     return noone;

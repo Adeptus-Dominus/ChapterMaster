@@ -106,102 +106,43 @@ function scr_quest(quest_satus, quest_name, quest_fac, quest_end) {
     }
 
     if (quick_trade != 0) {
-        if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
-            with (obj_star) {
-                if ((owner == eFACTION.PLAYER) && ((p_owner[1] == eFACTION.PLAYER) || (p_owner[2] == eFACTION.PLAYER))) {
-                    instance_create(x, y, obj_temp2);
-                }
-            }
+        var _loc = obj_ini.sector_handler.player_base_location(false);
+
+        if (_loc == noone){
+            LOGGER.error("abort could not find a player location");
         }
-        if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
-            with (obj_p_fleet) {
-                // Get fleet star system
-                if ((capital_number > 0) && (action == "")) {
-                    instance_create(instance_nearest(x, y, obj_star).x, instance_nearest(x, y, obj_star).y, obj_temp2);
-                }
-                if ((frigate_number > 0) && (action == "")) {
-                    instance_create(instance_nearest(x, y, obj_star).x, instance_nearest(x, y, obj_star).y, obj_ground_mission);
-                }
+
+        if (_loc.object_index == obj_p_fleet){
+            if (_loc.action != ""){
+                var _fleet = _loc;
+                var _loc = fleets_next_location(_loc);
             }
         }
 
-        with (obj_star) {
-            // Get origin star system for enemy fleet
-            if ((owner == quick_trade) && ((p_owner[1] == quick_trade) || (p_owner[2] == quick_trade) || (p_owner[3] == quick_trade) || (p_owner[4] == quick_trade))) {
-                instance_create(x, y, obj_temp3);
-            }
-        }
-
-        var targ = noone;
-        if (instance_exists(obj_temp2)) {
-            targ = instance_nearest(obj_temp2.x, obj_temp2.y, obj_temp3);
-        }
-        if ((!instance_exists(obj_temp2)) && instance_exists(obj_ground_mission)) {
-            targ = instance_nearest(obj_ground_mission.x, obj_ground_mission.y, obj_temp3);
-        }
-
-        // If player fleet is flying about then get their target for new target
-        if ((!instance_exists(obj_temp2)) && (!instance_exists(obj_ground_mission)) && instance_exists(obj_p_fleet)) {
-            with (obj_p_fleet) {
-                var pop;
-                if ((capital_number > 0) && (action != "")) {
-                    pop = instance_create(action_x, action_y, obj_temp2);
-                    pop.action_eta = action_eta;
-                }
-                if ((frigate_number > 0) && (action != "")) {
-                    pop = instance_create(action_x, action_y, obj_ground_mission);
-                    pop.action_eta = action_eta;
-                }
-            }
-        }
-        if (instance_exists(obj_temp2)) {
-            targ = instance_nearest(obj_temp2.x, obj_temp2.y, obj_temp3);
-        }
-        if ((!instance_exists(obj_temp2)) && instance_exists(obj_ground_mission)) {
-            targ = instance_nearest(obj_ground_mission.x, obj_ground_mission.y, obj_temp3);
-        }
-
-        var flit = create_enemy_fleet(targ.x, targ.y, quick_trade);
+        var _flit = create_enemy_fleet(_loc.x - 20, _loc.y - 20, quick_trade);
 
         if (quick_trade == 2) {
-            flit.sprite_index = spr_fleet_imperial;
+            _flit.sprite_index = spr_fleet_imperial;
         }
         if (quick_trade == 3) {
-            flit.sprite_index = spr_fleet_mechanicus;
+            _flit.sprite_index = spr_fleet_mechanicus;
         }
         if (quick_trade == 6) {
-            flit.action_spd = 6400;
-            flit.action_eta = 1;
-            flit.sprite_index = spr_fleet_eldar;
+            _flit.action_spd = 6400;
+            _flit.action_eta = 1;
+            _flit.sprite_index = spr_fleet_eldar;
         }
         if (quick_trade == 8) {
-            flit.sprite_index = spr_fleet_tau;
+            _flit.sprite_index = spr_fleet_tau;
         }
 
-        flit.image_index = 0;
-        flit.capital_number = 1;
-        flit.trade_goods = "";
+        _flit.image_index = 0;
+        _flit.capital_number = 1;
+        _flit.trade_goods = "";
 
-        if (instance_exists(obj_temp2)) {
-            flit.action_x = obj_temp2.x;
-            flit.action_y = obj_temp2.y;
-            flit.target = instance_nearest(flit.action_x, flit.action_y, obj_p_fleet);
-        }
-        if ((!instance_exists(obj_temp2)) && instance_exists(obj_ground_mission)) {
-            flit.action_x = obj_ground_mission.x;
-            flit.action_y = obj_ground_mission.y;
-            flit.target = instance_nearest(flit.action_x, flit.action_y, obj_p_fleet);
-        }
-        flit.move();
-
-        with (obj_temp2) {
-            instance_destroy();
-        }
-        with (obj_temp3) {
-            instance_destroy();
-        }
-        with (obj_ground_mission) {
-            instance_destroy();
-        }
+        _flit.action_x = _loc.x;
+        _flit.action_y = _loc.y;
+        _flit.target = instance_nearest(_flit.action_x, _flit.action_y, obj_p_fleet);
+        _flit.move();
     }
 }

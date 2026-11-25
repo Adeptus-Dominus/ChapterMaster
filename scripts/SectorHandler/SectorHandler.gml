@@ -4,6 +4,9 @@ function SectorHandler() constructor {
     year = 735;
     check_number = 5;
     warp_lanes = new WarpLaneHandler();
+    player_base = noone;
+    player_base_planet = 0;
+    __last_base_location_turn_check = 0;
 
     static date = function() {
         var _yf = "";
@@ -48,5 +51,55 @@ function SectorHandler() constructor {
         struct_remove(_copy, "warp_lanes");
         return _copy;
     };
+
+    static player_base_location(use_cache = true){
+        if (__last_base_location_turn_check == obj_controller && use_cache){
+            return player_base;
+        }
+        player_base = noone;
+        player_base_planet = 0;
+        if (obj_ini.fleet_type != ePLAYER_BASE.PENITENT){
+            with (obj_star){
+                var _mons = get_feature(eP_FEATURES.MONASTERY, false);
+                for (var i = 0; i < array_length(_mons); i++){
+                    var _mon = _mons[i];
+                    if (_mon.player_controlled()){
+                        player_base = id;
+                        player_base_planet = _mon.planet;
+                        obj_ini.fleet_type = ePLAYER_BASE.HOME_WORLD;
+                    }
+                }
+            }
+        }
+        if (player_base == noone){
+            player_base = get_largest_player_fleet();
+            obj_ini.fleet_type = ePLAYER_BASE.FLEET_BASED;
+        }
+
+        if (player_base == noone){
+            var _star_with_player_control = noone;
+            with (obj_star) {
+                if (array_contains(p_owner, eFACTION.PLAYER)) {
+                    _star_with_player_control = id;
+                }
+            }
+
+            player_base = _star_with_player_control;
+        }
+        if (player_base == noone){
+            var _cm = cm_obj().get_struct();
+            var _cm_loc = _cm.marine_location()
+            if (_cm_loc[0] == eLOCATION_TYPES.PLANET){
+                player_base = find_star_by_name(_cm_loc[2]);
+            } else if (_cm_loc[0] == eLOCATION_TYPES.SHIP) {
+                player_base = find_ship_fleet(_cm_loc[1]);
+            }
+        }
+        if (player_base == noone){
+            LOGGER.error("Can't fins player cm, fortress monastery or any fleets");
+        }
+        return player_base;
+    }
+    __last_base_location_turn_check = obj_controller.turn;
     LOGGER.info("SectorHandler successfully initialised");
 }

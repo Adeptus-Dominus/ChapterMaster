@@ -17,6 +17,24 @@ function fleet_has_roles(fleet, roles = []) {
     }
 }
 
+
+function find_ship_fleet(_index){
+    var _fleet = noone;
+    with (obj_p_fleet){
+        var _arrays = [capital_num,frigate_num,escort_num];
+        for (var i=0;i<3;i++){
+            if (array_contains(_arrays[i], _index)){
+                _fleet = id;
+                break;
+            }
+        }
+        if (_fleet !=noone){
+            break
+        }
+    }
+    return _fleet;
+}
+
 /// @desc Creates a new player fleet, registering at the nearest star if within 50px.
 /// @param {Real} _x
 /// @param {Real} _y

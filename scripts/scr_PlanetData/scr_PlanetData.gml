@@ -861,6 +861,8 @@ function PlanetData(_planet, _system) constructor {
                 _new_feature = new PlanetFeature(_feature_type, _data);
             break;
         }
+        _new_feature.planet = planet;
+        _new_feature.system = system.name;
         array_push(system.p_feature[planet], _new_feature);
         features = system.p_feature[planet];
         return _new_feature;
@@ -873,6 +875,8 @@ function PlanetData(_planet, _system) constructor {
         } else {
             _new_feature = new PlayerUpgrade(_feature_type, _data);
         }
+        _new_feature.planet = planet;
+        _new_feature.system = system.name;
         array_push(system.p_upgrades[planet], _new_feature);
         upgrades = system.p_upgrades[planet];
         return _new_feature;
