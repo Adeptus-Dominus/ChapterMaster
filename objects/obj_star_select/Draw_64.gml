@@ -370,7 +370,7 @@ try {
     }
 
     if (target != 0) {
-        if ((player_fleet > 0) && (imperial_fleet + mechanicus_fleet + inquisitor_fleet + eldar_fleet + ork_fleet + tau_fleet + heretic_fleet > 0)) {
+        if (array_length(fleet_engage_buttons)) {
             draw_set_color(0);
             draw_set_alpha(0.75);
             draw_rectangle(37, 413, 270, 452, 0);
@@ -386,12 +386,61 @@ try {
             draw_set_font(cjk_font(fnt_40k_14b));
             draw_text(37.5, 413.5, localize("Select Fleet Combat"));
 
-            var x3 = 49, y3 = 441;
+            for (var i = 0; i < array_length(fleet_engage_buttons); i++) {
+                var _button = fleet_engage_buttons[i];
+                _button.draw(obj_controller.cooldown <= 0);
 
-            for (var i = 1; i <= 7; i++) {
-                if (en_fleet[i] > 0) {
-                    scr_image("ui/force", en_fleet[i], x3 - 16, y3 - 16, 32, 32);
-                    x3 += 64;
+                if (_button.is_clicked) {
+                    var _player_fleet = target.get_orbiting_player_fleet();
+                    var _battle = new EndTurnBattle({battle_type: eBATTLE_TYPES.FLEET, object: target, pobject: _player_fleet, location: target.name});
+                    var _battle_data = _battle.prep_battle();
+
+                    obj_controller.cooldown = 8000;
+                    obj_controller.combat = 1;
+
+                    instance_deactivate_all_safe();
+                    instance_activate_object(_player_fleet);
+                    instance_activate_object(target);
+
+                    var _battle_instance = instance_create(0, 0, obj_fleet);
+                    _battle_instance.star_name = target.name;
+                    _battle_instance.player_started = 1;
+                    _battle_instance.pla_fleet = _player_fleet;
+                    _battle_instance.ene_fleet = target;
+                    _battle_instance.engaged_faction = _button.fleet.owner;
+                    _battle_instance.player_fleet = {
+                        fleet: _player_fleet,
+                        owner: eFACTION.PLAYER,
+                        capitals: _player_fleet.capital_number,
+                        frigates: _player_fleet.frigate_number,
+                        escorts: _player_fleet.escort_number,
+                        capital_lost: 0,
+                        frigate_lost: 0,
+                        escort_lost: 0,
+                    };
+                    _battle_instance.enemy_fleets = _battle_data.enemy_fleets;
+                    _battle_instance.allied_fleets = _battle_data.allied_fleets;
+
+                    var _battle_fleets = array_concat(_battle_data.enemy_fleets, _battle_data.allied_fleets);
+                    for (var j = 0; j < array_length(_battle_fleets); j++) {
+                        var _cargo_fleet = _battle_fleets[j].fleet;
+                        if (fleet_has_cargo("warband", _cargo_fleet)) {
+                            _battle_instance.chaos_exp = 2;
+                        } else if (fleet_has_cargo("chaos", _cargo_fleet)) {
+                            _battle_instance.chaos_exp = max(_battle_instance.chaos_exp, 1);
+                        }
+                    }
+
+                    for (var p = 0; p < target.planets; p++) {
+                        if (planet_feature_bool(target.p_feature[p], eP_FEATURES.MONASTERY) == 1) {
+                            _battle_instance.player_lasers = target.p_lasers[p];
+                        }
+                    }
+
+                    instance_deactivate_object(target);
+                    add_fleet_ships_to_combat(_player_fleet, _battle_instance);
+                    instance_deactivate_object(_player_fleet);
+                    break;
                 }
             }
         }

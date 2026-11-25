@@ -570,6 +570,17 @@ function scr_orbiting_fleet(faction, system = noone) {
 function object_distance(obj_1, obj_2) {
     return point_distance(obj_1.x, obj_1.y, obj_2.x, obj_2.y);
 }
+function get_all_orbiting_fleets(system = noone){
+    var _fleets = [];
+    var xx = system == noone ? x : system.x;
+    var yy = system == noone ? y : system.y;
+    with (obj_en_fleet) {
+        if (x == xx && y == yy) {
+            array_push(_fleets, id);
+        }
+    }
+    return _fleets;
+}
 
 function get_orbiting_fleets(faction, system = noone) {
     var _fleets = [];

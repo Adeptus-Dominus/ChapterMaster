@@ -13,7 +13,7 @@ if (beg != 0) {
                 //^have this be the same as roomSettings Height and Width or fleets will auto end!
 
                 combat_end -= 1;
-                LOGGER.info("Fleet Combat Ended- Loss - Enemy:" + string(enemy[1]));
+                LOGGER.info("Fleet Combat Ended- Loss - Enemy:" + string(enemy_fleets[0].owner));
             }
         }
     }
@@ -22,7 +22,7 @@ if (beg != 0) {
         start = 6;
         obj_p_ship.alarm[3] = 1;
         alarm[0] = 10;
-        LOGGER.info("Fleet Combat Ended- Victory - Enemy:" + string(enemy[1]));
+        LOGGER.info("Fleet Combat Ended- Victory - Enemy:" + string(enemy_fleets[0].owner));
     }
 
     if ((combat_end > -1) && (!instance_exists(obj_en_ship))) {
