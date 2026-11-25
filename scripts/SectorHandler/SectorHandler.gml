@@ -50,18 +50,20 @@ function SectorHandler() constructor {
         "warp_lanes",
         "player_base",
         "player_base_planet",
-    ]
+    ];
 
     static save = function() {
         var _copy = variable_clone(self);
         for (var i = 0; i < array_length(save_ignore_fields); i++){
-            struct_remove(_copy, save_ignore_fields[i]);
+            if (struct_exists(_copy , save_ignore_fields[i])){
+                struct_remove(_copy, save_ignore_fields[i]);
+            }
         }
         return _copy;
     };
 
     static player_base_location(use_cache = true){
-        if (__last_base_location_turn_check == obj_controller && use_cache){
+        if (use_cache && instance_exists(obj_controller) &&__last_base_location_turn_check == obj_controller.turn){
             return player_base;
         }
         player_base = noone;
@@ -83,7 +85,6 @@ function SectorHandler() constructor {
         }
         if (player_base == noone){
             player_base = get_largest_player_fleet();
-            obj_ini.fleet_type = ePLAYER_BASE.FLEET_BASED;
         }
 
         if (player_base == noone){
@@ -118,8 +119,8 @@ function SectorHandler() constructor {
         if (player_base_planet == 0 && obj_ini.fleet_type != ePLAYER_BASE.PENITENT){
             obj_ini.fleet_type = ePLAYER_BASE.FLEET_BASED;
         }
+        __last_base_location_turn_check = instance_exists(obj_controller.turn) ? obj_controller.turn : 0 ;
         return player_base;
     }
-    __last_base_location_turn_check = obj_controller.turn;
     LOGGER.info("SectorHandler successfully initialised");
 }

@@ -58,6 +58,23 @@ function UnitQuickFindPanel() constructor {
     static player_force_stars = function(arrange = eARRAYORDER.NONE) {
         var _names = struct_get_names(garrison_log);
         var _stars = [];
+
+        _place_by_largest = function(_array, index, _star){
+            if (_index == 0){
+                return [_star];
+            } else {
+                for (var s = 0; s < array_length(_array);s++){
+                    if (_star.units > _array[s].units){
+                        array_insert(_array, s, _star);
+                        continue;
+                    }
+                    if (s == array_length(_array) -1){
+                        array_push(_star);
+                    }
+                }
+            }
+            return _stars;
+        }
         for (var i = 0; i < array_length(_names); i++) {
             var _star = find_star_by_name(_names[i]);
             if (_star != noone) {
@@ -65,11 +82,7 @@ function UnitQuickFindPanel() constructor {
                     array_push(_stars, _star);
                 } else {
                     if (arrange == eARRAYORDER.LARGEST){
-                        for (var i = 0; i<array_length(_stars);++){
-                            if (_star.units > _stars[i].units){
-                                array_insert(_stars,i,_star);
-                            }
-                        }
+                        _stars = _place_by_largest(_stars, i , _star)
                     } 
                 }
             }
@@ -82,6 +95,7 @@ function UnitQuickFindPanel() constructor {
             for (var i=0;i<array_length(_stars);i++){
                 array_push(_final_array, _stars[i]);
             }
+            return _final_array;
         }
     };
 

@@ -5,6 +5,10 @@ function scr_income() {
     income_base = 32;
     income_tribute = 0;
     income_home = 0;
+    income_forge = 0;
+    income_agri = 0;
+    income_training = 0;
+
     var _player_base = obj_ini.sector_handler.player_base_location();
     if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
         income_home = 8;
@@ -47,10 +51,6 @@ function scr_income() {
         income_fleet = round(income_fleet / 2);
     }
 
-    income_forge = 0;
-    income_agri = 0;
-    income_training = 0;
-
     if (faction_status[eFACTION.MECHANICUS] != "War") {
         var _chapter_tech_count = scr_role_count(obj_ini.player_role_data[eROLE.TECHMARINE].role, "");
         if (_chapter_tech_count >= ((disposition[3] / 2) + 5)) {
@@ -59,24 +59,23 @@ function scr_income() {
     }
 
     if (training_apothecary > 0){
-        income_training -= global.apothecary_training_tiers[training_apothecary];
+        income_training -= global.apothecary_training_costs[training_apothecary];
     }
 
     if (training_chaplain > 0){
-        income_training -= global.chaplain_training_tiers[training_chaplain];
+        income_training -= global.chaplain_training_costs[training_chaplain];
     }
 
     if (training_psyker > 0){
-        income_training -= global.librarian_training_tiers[training_psyker];
+        income_training -= global.techmarine_training_costs[training_psyker];
     }
 
     if (training_techmarine > 0){
-        income_training -= global.techmarine_training_tiers[training_techmarine];
+        income_training -= global.psyker_training_costs[training_techmarine];
     }
 
     tau_stars = 0;
     if (instance_exists(obj_turn_end)) {
-        tau_messenger += 1;
         tau_messenger += 1;
     }
 

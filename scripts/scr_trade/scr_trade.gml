@@ -193,10 +193,10 @@ function TradeAttempt(diplomacy) constructor {
         var _trade_loc = noone
         var _loc = obj_ini.sector_handler.player_base_location();
         if (_loc != noone){
-            if (obj_ini.fleet_type = ePLAYER_BASE.HOME_WORLD){
+            if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD){
                 if (obj_ini.sector_handler.player_base_feature != noone){
                     var _monestry = obj_ini.sector_handler.player_base_feature;
-                    if (_monestry.status == .ePLAYERFEATURESTATUS.UNCONTESTED){
+                    if (_monestry.status == ePLAYERFEATURESTATUS.UNCONTESTED){
                         _trade_loc = _loc;
                     }
                 }
@@ -266,7 +266,7 @@ function TradeAttempt(diplomacy) constructor {
             return false;
         }
 
-        trade_from_star = nearest_from_array(_trade_loc_trade_loc.x,_trade_loc.y, viable_faction_trade_stars);
+        trade_from_star = nearest_from_array(_trade_loc.x,_trade_loc.y, viable_faction_trade_stars);
 
         trade_to_obj = _trade_loc;
         return true;

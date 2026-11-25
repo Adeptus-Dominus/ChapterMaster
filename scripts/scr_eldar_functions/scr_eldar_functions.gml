@@ -157,10 +157,9 @@ function elder_dialogue_useful_information() {
                     var _p_data = _star.get_planet_data(_planet);
                     _p_data.add_feature(eP_FEATURES.WEBWAY);
 
-                    if (_gate_planet_name != "") {
-                        diplo_text = $"A series of labyrinthian corridors and veins connect the galaxy.  The planet you know as {_p_data.name()} contains a dormant entrance to this realm.";
-                        _found = 1;
-                    }
+                    diplo_text = $"A series of labyrinthian corridors and veins connect the galaxy.  The planet you know as {_p_data.name()} contains a dormant entrance to this realm.";
+                    _found = 1;
+
                 }
             }
         } else if (!array_contains(obj_controller.useful_info, eUSEFULLINFORMATION.WEBWAYGATE_SECOND)) {

@@ -110,6 +110,7 @@ function scr_quest(quest_satus, quest_name, quest_fac, quest_end) {
 
         if (_loc == noone){
             LOGGER.error("abort could not find a player location");
+            return;
         }
 
         if (_loc.object_index == obj_p_fleet){
