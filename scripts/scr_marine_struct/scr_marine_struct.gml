@@ -2029,12 +2029,18 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             var _spawn_location_chosen = false;
             if (_loc.object_index == obj_star){
                 var _planet = obj_ini.sector_handler.player_base_planet;
-                for (var i = 1; i <= _loc.planets; i++) {
-                    if (_loc.p_owner[i] == eFACTION.PLAYER || (obj_controller.faction_status[eFACTION.IMPERIUM] != "War" && array_contains(obj_controller.imperial_factions, _loc.p_owner[i]))) {
-                        planet_location = i;
-                        location_string = _loc.name;
-                        _spawn_location_chosen = true;
+                if (_planet == 0){
+                    var _imperium_war = obj_controller.faction_status[eFACTION.IMPERIUM] != "War";
+                    for (var i = 1; i <= _loc.planets; i++) {
+                        if (_loc.p_owner[i] == eFACTION.PLAYER || (_imperium_war && array_contains(obj_controller.imperial_factions, _loc.p_owner[i]))) {
+                            _planet = i;
+                        }
                     }
+                }
+                if (_planet > 0){
+                    planet_location = i;
+                    location_string = _loc.name;
+                    _spawn_location_chosen = true;
                 }
             } else {
                 get_unit_size();

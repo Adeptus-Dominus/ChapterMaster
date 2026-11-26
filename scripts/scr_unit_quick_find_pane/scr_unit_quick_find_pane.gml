@@ -59,12 +59,12 @@ function UnitQuickFindPanel() constructor {
         var _names = struct_get_names(garrison_log);
         var _stars = [];
 
-        var _place_by_largest = function(_array, _star, log){
+        var _place_by_largest = function(_array, _star, _log){
             if (array_length(_array) == 0){
                 return [[_log, _star]];
             } else {
                 for (var s = 0; s < array_length(_array);s++){
-                    if (log.units > _array[s][0].units){
+                    if (array_length(_log.units) > array_length(_array[s][0].units)){
                         array_insert(_array, s, [_log, _star]);
                         break;
                     }
