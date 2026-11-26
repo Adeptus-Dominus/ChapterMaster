@@ -6,6 +6,7 @@ function SectorHandler() constructor {
     warp_lanes = new WarpLaneHandler();
     player_base = noone;
     player_base_planet = 0;
+    player_base_feature = noone;
     __last_base_location_turn_check = 0;
 
     static date = function() {
@@ -50,6 +51,7 @@ function SectorHandler() constructor {
         "warp_lanes",
         "player_base",
         "player_base_planet",
+        "player_base_feature"
     ];
 
     static save = function() {

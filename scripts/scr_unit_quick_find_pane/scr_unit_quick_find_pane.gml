@@ -59,17 +59,18 @@ function UnitQuickFindPanel() constructor {
         var _names = struct_get_names(garrison_log);
         var _stars = [];
 
-        _place_by_largest = function(_array, _index, _star){
-            if (_index == 0){
-                return [_star];
+        var _place_by_largest = function(_array, _star, log){
+            if (array_length(_array) == 0){
+                return [[_log, _star]];
             } else {
                 for (var s = 0; s < array_length(_array);s++){
-                    if (_star.units > _array[s].units){
-                        array_insert(_array, s, _star);
+                    if (log.units > _array[s][0].units){
+                        array_insert(_array, s, [_log, _star]);
                         break;
                     }
                     if (s == array_length(_array) -1){
-                        array_push(_array, _star);
+                        array_push(_array, [_log, _star]);
+                        break
                     }
                 }
             }
@@ -82,7 +83,7 @@ function UnitQuickFindPanel() constructor {
                     array_push(_stars, _star);
                 } else {
                     if (arrange == eARRAYORDER.LARGEST){
-                        _stars = _place_by_largest(_stars, i , _star)
+                        _stars = _place_by_largest(_stars,  _star, garrison_log[$ _names[i]])
                     } 
                 }
             }
@@ -93,7 +94,7 @@ function UnitQuickFindPanel() constructor {
         } else {
             var _final_array = [];
             for (var i=0;i<array_length(_stars);i++){
-                array_push(_final_array, _stars[i]);
+                array_push(_final_array, _stars[i][1]);
             }
             return _final_array;
         }
