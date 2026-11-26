@@ -59,21 +59,21 @@ function UnitQuickFindPanel() constructor {
         var _names = struct_get_names(garrison_log);
         var _stars = [];
 
-        _place_by_largest = function(_array, index, _star){
+        _place_by_largest = function(_array, _index, _star){
             if (_index == 0){
                 return [_star];
             } else {
                 for (var s = 0; s < array_length(_array);s++){
                     if (_star.units > _array[s].units){
                         array_insert(_array, s, _star);
-                        continue;
+                        break;
                     }
                     if (s == array_length(_array) -1){
-                        array_push(_star);
+                        array_push(_array, _star);
                     }
                 }
             }
-            return _stars;
+            return _array;
         }
         for (var i = 0; i < array_length(_names); i++) {
             var _star = find_star_by_name(_names[i]);

@@ -119,7 +119,7 @@ function SectorHandler() constructor {
         if (player_base_planet == 0 && obj_ini.fleet_type != ePLAYER_BASE.PENITENT){
             obj_ini.fleet_type = ePLAYER_BASE.FLEET_BASED;
         }
-        __last_base_location_turn_check = instance_exists(obj_controller.turn) ? obj_controller.turn : 0 ;
+        __last_base_location_turn_check = instance_exists(obj_controller) ? obj_controller.turn : 0 ;
         return player_base;
     }
     LOGGER.info("SectorHandler successfully initialised");

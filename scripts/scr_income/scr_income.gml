@@ -67,11 +67,11 @@ function scr_income() {
     }
 
     if (training_psyker > 0){
-        income_training -= global.techmarine_training_costs[training_psyker];
+        income_training -= global.psyker_training_costs[training_psyker];
     }
 
     if (training_techmarine > 0){
-        income_training -= global.psyker_training_costs[training_techmarine];
+        income_training -= global.techmarine_training_costs[training_techmarine];
     }
 
     tau_stars = 0;

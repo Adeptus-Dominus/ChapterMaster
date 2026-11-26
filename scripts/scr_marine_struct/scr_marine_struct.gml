@@ -2025,7 +2025,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
 
     static allocate_unit_to_fresh_spawn = function(type = "default") {
 
-        attempt_to_spawn_to_loc = function(_loc){
+        var _attempt_to_spawn_to_loc = function(_loc){
             var _spawn_location_chosen = false;
             if (_loc.object_index == obj_star){
                 var _planet = obj_ini.sector_handler.player_base_planet;
@@ -2043,24 +2043,24 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             }
             return _spawn_location_chosen;
         }
-        
+
         var _spawn_location_chosen = false;
         if (type == "home" || type == "default"){
             var _loc = obj_ini.sector_handler.player_base_location();
             if (_loc != noone){
-                _spawn_location_chosen = attempt_to_spawn_to_loc(_loc)
+                _spawn_location_chosen = _attempt_to_spawn_to_loc(_loc)
             }
             if (!_spawn_location_chosen) {
                 var _loc = obj_ini.sector_handler.player_base_location(false);
                 if (_loc != noone){
-                    _spawn_location_chosen = attempt_to_spawn_to_loc(_loc);
+                    _spawn_location_chosen = _attempt_to_spawn_to_loc(_loc);
                 }
             }
             return;
         } else if (type != "ship") {
             var _loc = find_star_by_name(type);
             if (_loc != noone){
-                _spawn_location_chosen = attempt_to_spawn_to_loc(_loc);
+                _spawn_location_chosen = _attempt_to_spawn_to_loc(_loc);
             } else {
                 allocate_unit_to_fresh_spawn();
             }
