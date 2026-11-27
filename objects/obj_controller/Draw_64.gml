@@ -65,20 +65,7 @@ if (!zoomed && !zui) {
     scr_ui_tooltip();
     if (menu == eMENU.DEFAULT) {
         location_viewer.draw();
-        helpful_places_button.update({x1: 1451, y1: 62 + sprite_get_height(spr_new_banner)});
-
-        if (helpful_places_button.draw()) {
-            if (!helpful_places) {
-                helpful_places = new HelpfulPlaces();
-            } else {
-                helpful_places = false;
-            }
-        }
-        if (helpful_places) {
-            if (!instances_exist_any([obj_turn_end, obj_ncombat, obj_fleet, obj_fleet_select, obj_popup, obj_star_select])) {
-                helpful_places.draw();
-            }
-        }
+        obj_ini.sector_handler.draw_helpful_places();
     }
     draw_sprite(spr_new_ui, menu == eMENU.DEFAULT, 0, 0);
     draw_set_color(c_white);

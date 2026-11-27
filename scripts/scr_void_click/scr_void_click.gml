@@ -12,10 +12,10 @@ function scr_void_click() {
         return false;
     }
     if (!obj_controller.zoomed) {
-        if (mouse_y < camera_get_view_y(view_camera[0]) + (62 * scale)) {
+        if (mouse_y < xx + (62 * scale)) {
             return false;
         }
-        if (mouse_y > camera_get_view_y(view_camera[0]) + (830 * scale)) {
+        if (mouse_y > yy + (830 * scale)) {
             return false;
         }
     }
@@ -35,12 +35,9 @@ function scr_void_click() {
             }
         }
     } else {
-        if (obj_controller.helpful_places != false) {
-            if (!instances_exist_any([obj_turn_end, obj_ncombat, obj_fleet, obj_fleet_select, obj_popup, obj_star_select])) {
-                if (obj_controller.helpful_places.entered()) {
-                    good = false;
-                }
-            }
+        var _sec_handler = obj_ini.sector_handler;
+        if (_sec_handler.helpful_places_drawable(){
+            good = !_sec_handler.helpful_places.entered();
         }
     }
 

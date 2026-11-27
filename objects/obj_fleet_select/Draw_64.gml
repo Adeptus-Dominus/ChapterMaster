@@ -44,5 +44,3 @@ try {
     ERROR_HANDLER.handle_exception(_exception);
     instance_destroy();
 }
-
-helpful_navigator.draw();

@@ -18,7 +18,7 @@ void_wid = 0;
 void_hei = 0;
 player_fleet = false;
 
-helpful_navigator = new HelpfulPlaces();
+obj_ini.sector_handler.ensure_helpful_places();
 
 /// @self Id.Instance.obj_fleet_select
 selection_window.inside_method = function() {
@@ -267,5 +267,5 @@ selection_window.inside_method = function() {
         }
     }
 
-    selection_window.currently_entered = scr_hit([xx, yy, xx + width, yy + selection_window.height]) || helpful_navigator.entered();
+    selection_window.currently_entered = scr_hit([xx, yy, xx + width, yy + selection_window.height]) || obj_ini.sector_handler.helpful_places.entered();
 };
