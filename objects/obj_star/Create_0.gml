@@ -172,17 +172,21 @@ has_feature = function(_search_feature) {
 
 //returns first found feature matching type
 get_feature = function(_search_feature, _only_one = true) {
+    var _all_features = [];
     for (var sys = 1; sys <= planets; sys++) {
         var _features = get_planet_data(sys).get_features(_search_feature);
         if (array_length(_features)){
             if (_only_one){
                 return _features[0];
             } else {
-                return _features;
+                _all_features = array_join(_all_features, _features);
             }
         }
     }
-    return noone;
+    if (_only_one){
+        return noone;
+    }
+    return _all_features;
 }
 
 /// @self Asset.GMObject.obj_star

@@ -66,7 +66,7 @@ function SectorHandler() constructor {
         return _copy;
     };
 
-    static player_base_location(use_cache = true){
+    static player_base_location = function(use_cache = true){
         if (use_cache && instance_exists(obj_controller) &&__last_base_location_turn_check == obj_controller.turn){
             return player_base;
         }
@@ -144,7 +144,7 @@ function SectorHandler() constructor {
         helpful_places = helpful_places == noone ? new HelpfulPlaces() : noone;
     }
     static ensure_helpful_places = function(){
-        helpful_places = helpful_places == noone ? toggle_helpful_places() : refresh_helpful_places();
+        var _i = helpful_places == noone ? toggle_helpful_places() : refresh_helpful_places();
         return helpful_places;
     }
 
@@ -159,7 +159,7 @@ function SectorHandler() constructor {
         }        
     }
 
-    static helpful_places_drawable = function(){helpful_places != noone && !instances_exist_any([obj_turn_end, obj_ncombat, obj_fleet, obj_popup, obj_star_select])};
+    static helpful_places_drawable = function(){return helpful_places != noone && !instances_exist_any([obj_turn_end, obj_ncombat, obj_fleet, obj_popup, obj_star_select])};
 
     LOGGER.info("SectorHandler successfully initialised");
 }

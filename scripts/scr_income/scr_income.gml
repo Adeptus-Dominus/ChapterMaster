@@ -11,6 +11,7 @@ function scr_income() {
 
     var _player_base = obj_ini.sector_handler.player_base_location();
     if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
+        //bonus for having a fortress monestary
         income_home = 8;
         with (obj_star){
             var _distance_to_player_home = point_distance(x, y, _player_base.x, _player_base.y);
@@ -38,7 +39,7 @@ function scr_income() {
                 }
             }
         }
-    } // Homeworld-based income
+    }
 
     income_fleet = 0;
     with (obj_p_fleet) {
@@ -46,7 +47,7 @@ function scr_income() {
         obj_controller.income_fleet -= frigate_number / 2;
         obj_controller.income_fleet -= escort_number / 10;
     }
-
+    //balance fleet chapters are better traders
     if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
         income_fleet = round(income_fleet / 2);
     }
