@@ -853,13 +853,13 @@ function PlanetData(_planet, _system) constructor {
 
     static add_feature = function(_feature_type, _data = {}) {
         var _new_feature = undefined;
-        switch (_feature_type){
+        switch (_feature_type) {
             case eP_FEATURES.MONASTERY:
                 _new_feature = new FortressMonastery(_feature_type, _data);
                 break;
             default:
                 _new_feature = new PlanetFeature(_feature_type, _data);
-            break;
+                break;
         }
         _new_feature.planet = planet;
         _new_feature.system = system.name;

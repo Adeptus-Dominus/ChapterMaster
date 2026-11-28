@@ -295,15 +295,15 @@ with (obj_star) {
 // Eldar craftworld here
 craftworld = 1;
 
-var _elder_craft = false
-for (var i = 0; i < 150; i++){
+var _elder_craft = false;
+for (var i = 0; i < 150; i++) {
     var _xx = irandom_range(200, room_width - 200);
     var _yy = irandom_range(150, room_height - 150);
     if (point_distance(room_width / 2, room_height / 2, _xx, _yy) < 50) {
         continue;
     }
     var _me = instance_nearest(_xx, _yy, obj_star);
-    if ((point_distance(_me.x, _me.y, _xx, _yy) >= 150)) {
+    if (point_distance(_me.x, _me.y, _xx, _yy) >= 150) {
         var _craft = instance_create(_xx, _yy, obj_star);
         _craft.craftworld = 1;
         _craft.get_planet_data(1).add_feature(eP_FEATURES.ELDARFARSEER);
@@ -317,7 +317,7 @@ for (var i = 0; i < 150; i++){
         _elder_craft = true;
         break;
     }
-} 
+}
 // End craftworld
 
 with (obj_creation) {

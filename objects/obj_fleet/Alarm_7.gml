@@ -30,14 +30,13 @@ try {
         }
     }
 
-    var _battle_sys = noone
+    var _battle_sys = noone;
     if ((player_started == 0) && instance_exists(obj_turn_end)) {
-        _battle_sys = obj_turn_end.battles[obj_turn_end.current_battle].object
+        _battle_sys = obj_turn_end.battles[obj_turn_end.current_battle].object;
     }
     if (player_started == 1) {
-        _battle_sys = obj_fleet.ene_fleet
+        _battle_sys = obj_fleet.ene_fleet;
     }
-
 
     for (var op = 1; op <= 5; op++) {
         if ((enemy[op] != 0) && (enemy[op] != 4)) {

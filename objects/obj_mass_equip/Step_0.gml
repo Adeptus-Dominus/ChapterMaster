@@ -4,12 +4,12 @@ try {
     }
 
     if (engage == true) {
-        for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++){
+        for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
             var _tag = is_item_set(equipment_set[i]);
-            if (_tag != -1){
+            if (_tag != -1) {
                 equipment_set[i] = new TagSetItems(_tag);
                 equipment_set[i].create_item_map();
-                if (obj_controller.settings != eROLE.DREADNOUGHT){
+                if (obj_controller.settings != eROLE.DREADNOUGHT) {
                     equipment_set[i].kick_items_with_tag("vehicle");
                 }
             }
@@ -29,13 +29,11 @@ try {
 
     // ** Refreshing **
     if ((refresh == true) && (obj_controller.settings > 0)) {
-
         var _cur_role = obj_ini.player_role_data[role];
 
         equipment_set = convert_equipment_struct_into_array(_cur_role);
         var _equip_data = new UnitEquipment(equipment_set);
         all_good = _equip_data.check_set_is_equipable(marines_with_role.number(), marines_with_role.units);
-
 
         if (marines_with_role.number() > 0) {
             var _role_name = obj_ini.player_role_data[role].role;
@@ -44,7 +42,7 @@ try {
                 var romanNumerals = scr_roman_numerals();
                 var _company_name = i == 0 ? "HQ" : $"{romanNumerals[i - 1]} Company";
 
-                var _marines_in_company = marines_with_role.get_from({companies : i})
+                var _marines_in_company = marines_with_role.get_from({companies: i});
                 if (_marines_in_company.number() > 0) {
                     total_roles += $" {_company_name}: {_marines_in_company.number()};";
                 }
@@ -67,7 +65,6 @@ try {
             var is_hand_slot = tab == 0 || tab == 1;
             scr_get_item_names(item_name, obj_controller.settings, tab, is_hand_slot ? eENGAGEMENT.ANY : eENGAGEMENT.NONE, true, false);
         }
-
     }
 } catch (_exception) {
     ERROR_HANDLER.handle_exception(_exception);

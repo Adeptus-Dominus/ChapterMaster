@@ -91,9 +91,9 @@ function EquipmentStruct(item_data = undefined, core_type = "", quality_request 
         recovery_chance = clamp(recovery_chance, 0, 100);
     }
 
-    static is_ranged = function(){
+    static is_ranged = function() {
         return range > 1.1;
-    }
+    };
 
     /// @desc Whether a given stat currently has a displayable value for this item
     /// @param {string} stat The stat key
@@ -510,7 +510,7 @@ function EquipmentStruct(item_data = undefined, core_type = "", quality_request 
 }
 
 function TagSetItems(_set, _quality = "any") constructor {
-    if (is_real(_set)){
+    if (is_real(_set)) {
         _set = global.equipment_tags[_set];
     }
     name = _set.name;
@@ -521,99 +521,99 @@ function TagSetItems(_set, _quality = "any") constructor {
     quality = _quality;
 
     req_exp = 1000;
-    for (var i = 0; i < array_length(items); i++){
+    for (var i = 0; i < array_length(items); i++) {
         req_exp = min(items[i].req_exp, req_exp);
     }
 
-    static has_tag = function(_tag){
-        if (_tag == tag){
+    static has_tag = function(_tag) {
+        if (_tag == tag) {
             return true;
         } else {
-            for (var i = 0; i < array_length(items); i++){
-                if (items[i].has_tag(_tag)){
+            for (var i = 0; i < array_length(items); i++) {
+                if (items[i].has_tag(_tag)) {
                     return true;
                 }
-            }            
+            }
         }
         return false;
-    }
+    };
 
-    static has_item = function(_item){
-        for (var i = 0; i < array_length(items); i++){
-            if (items[i].name == _item){
+    static has_item = function(_item) {
+        for (var i = 0; i < array_length(items); i++) {
+            if (items[i].name == _item) {
                 return true;
             }
         }
         return false;
-    }
+    };
 
-    static has_map = function(){
+    static has_map = function() {
         return item_map != noone;
-    }
-    static create_item_map = function(){
-        item_map = new CountingMapEquipment();
-        for (var i = 0; i < array_length(items); i++){
-            var _item = items[i].name;
-            var _count = scr_item_count(items[i].name,quality);
-            if (_count >= 1){
-                item_map.add(_item, scr_item_count(items[i].name,quality));
-            } 
-        }
-    }
+    };
 
-    static kick_items_with_tag = function(_tag){
-        if (is_array(_tag)){
-            for (var i = 0; i < array_length(_tag); i++){
+    static create_item_map = function() {
+        item_map = new CountingMapEquipment();
+        for (var i = 0; i < array_length(items); i++) {
+            var _item = items[i].name;
+            var _count = scr_item_count(items[i].name, quality);
+            if (_count >= 1) {
+                item_map.add(_item, scr_item_count(items[i].name, quality));
+            }
+        }
+    };
+
+    static kick_items_with_tag = function(_tag) {
+        if (is_array(_tag)) {
+            for (var i = 0; i < array_length(_tag); i++) {
                 kick_items_with_tag(_tag[i]);
             }
             return;
         }
         var _has_map = has_map();
-        for (var i = array_length(items)-1; i >= 0; i--){
+        for (var i = array_length(items) - 1; i >= 0; i--) {
             var _item = items[i];
-            if (_item.has_tag(_tag)){
-                kick_item(i, false)
+            if (_item.has_tag(_tag)) {
+                kick_item(i, false);
             }
-        } 
-    }
+        }
+    };
 
-    static kick_item = function(_item, _check_string = true){
+    static kick_item = function(_item, _check_string = true) {
         var _has_map = has_map();
-        if (_check_string && is_string(_item)){
-            for (var i = array_length(items)-1; i >= 0; i--){
+        if (_check_string && is_string(_item)) {
+            for (var i = array_length(items) - 1; i >= 0; i--) {
                 var _check_item = items[i];
-                if (_check_item.name == _item){
+                if (_check_item.name == _item) {
                     kick_item(i, false);
                 }
-                
-            } 
+            }
         } else {
             var _check_item = items[_item];
-            if (_has_map  && item_map.get(_check_item.name) > 0){
-                item_map.remove(_check_item.name)
+            if (_has_map && item_map.get(_check_item.name) > 0) {
+                item_map.remove(_check_item.name);
             }
             array_delete(items, _item, 1);
         }
-    }
+    };
 
-    static get_item_from_map = function(_item = ""){
-        if (_item == ""){
+    static get_item_from_map = function(_item = "") {
+        if (_item == "") {
             _item = array_random_element(item_map.keys());
         }
         item_map.add(_item, -1);
         return _item;
-    }  
+    };
 
-    static total_in_inventory = function(){
+    static total_in_inventory = function() {
         var _total = 0;
-        for (var i = 0; i < array_length(items); i++){
+        for (var i = 0; i < array_length(items); i++) {
             _total += scr_item_count(items[i].name);
         }
         return _total;
-    }
+    };
 }
 
-function gear_with_tag(_search_area = "any", _wanted_tag, _fetch_struct = false){
+function gear_with_tag(_search_area = "any", _wanted_tag, _fetch_struct = false) {
     var _matches = [];
     var _gear_areas = [
         "gear",
@@ -632,12 +632,14 @@ function gear_with_tag(_search_area = "any", _wanted_tag, _fetch_struct = false)
         } else if (_area == "weapon") {
             _area_data = global.weapons;
         }
-        if (is_undefined(_area_data)) continue;
+        if (is_undefined(_area_data)) {
+            continue;
+        }
 
         var _keys = struct_get_names(_area_data);
         for (var k = 0; k < array_length(_keys); k++) {
             var _key = _keys[k];
-            if (!struct_exists(_area_data[$ _key], "tags")){
+            if (!struct_exists(_area_data[$ _key], "tags")) {
                 continue;
             }
             if (array_contains(_area_data[$ _key].tags, _wanted_tag)) {
@@ -764,36 +766,36 @@ function equipment_tag_key_from_value(_value) {
     return "";
 }
 
-function is_item_set(_value){
+function is_item_set(_value) {
     for (var i = 0; i < array_length(global.equipment_tags); i++) {
         if (global.equipment_tags[i].name == _value) {
             return i;
         }
     }
-    return -1;    
+    return -1;
 }
 
-function get_from_item_set(set_name,  _from_armoury = false,_new_quality = "any", _old_equipment = "", _old_quality = "any"){
+function get_from_item_set(set_name, _from_armoury = false, _new_quality = "any", _old_equipment = "", _old_quality = "any") {
     var _item = "";
     var _set_index = is_item_set(set_name);
     var _quality_diff = _new_quality != "any" && _old_quality != _new_quality;
-    if (_from_armoury){
+    if (_from_armoury) {
         var _set = new TagSetItems(_set_index);
-        if (_quality_diff && _old_equipment != "" && _set.has_item(_old_equipment)){
+        if (_quality_diff && _old_equipment != "" && _set.has_item(_old_equipment)) {
             return EQUIPMENT_UNCHANGED;
         }
         _set.create_item_map();
-        if (array_length(_set.item_map.keys()) == 0){
+        if (array_length(_set.item_map.keys()) == 0) {
             return NO_ITEM_IN_ARMOURY;
         }
-        _item = _set.get_item_from_map()
+        _item = _set.get_item_from_map();
     } else {
         var _set = global.equipment_tags[_set_index];
         var _items = gear_with_tag(_set.type, _set.tag, false);
-        if (_quality_diff && _old_equipment != ""  && array_contains(_items, _old_equipment)){
+        if (_quality_diff && _old_equipment != "" && array_contains(_items, _old_equipment)) {
             return EQUIPMENT_UNCHANGED;
         }
-       _item =  array_random_element(_items);
+        _item = array_random_element(_items);
     }
     return _item;
 }

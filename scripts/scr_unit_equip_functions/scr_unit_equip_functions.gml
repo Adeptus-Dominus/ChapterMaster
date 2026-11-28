@@ -1,22 +1,22 @@
 // TODO: Merge all update function into one;
 /// @self Struct.TTRPG_stats
 
-#macro EQUIPMENT_UNCHANGED  "no change"
-#macro NO_ITEM_IN_ARMOURY  "no_items"
+#macro EQUIPMENT_UNCHANGED "no change"
+#macro NO_ITEM_IN_ARMOURY "no_items"
 #macro INVALID_ITEM "invalid item"
 
-function qualities_are_same(_old_qual = "any", _new_qual = "standard"){
+function qualities_are_same(_old_qual = "any", _new_qual = "standard") {
     return _new_qual == "any" || _new_qual == _old_qual;
 }
 
-function equipment_unchanged(_old_e_raw, _new_e, _new_is_arti, _old_qual, _new_qual){
+function equipment_unchanged(_old_e_raw, _new_e, _new_is_arti, _old_qual, _new_qual) {
     var _old_is_arti = !is_string(_old_e_raw);
-    if (_new_is_arti && _old_is_arti){
+    if (_new_is_arti && _old_is_arti) {
         var _id = _new_e;
-        if (_old_e_raw == _id){
+        if (_old_e_raw == _id) {
             return true;
         }
-    } else if (!_old_is_arti && _old_e_raw == _new_e && qualities_are_same(_old_qual, _new_qual)){
+    } else if (!_old_is_arti && _old_e_raw == _new_e && qualities_are_same(_old_qual, _new_qual)) {
         return true;
     }
     return false;
@@ -33,27 +33,25 @@ function scr_update_unit_armour(_new_armour, _from_armoury = true, _to_armoury =
     var _old_armour = armour();
     var _unequipping = _new_armour == "";
 
-    if (!_is_artifact && array_contains(global.armour_tag_sets, _new_armour)){
+    if (!_is_artifact && array_contains(global.armour_tag_sets, _new_armour)) {
         _new_armour = get_from_item_set(_new_armour, _from_armoury, _quality, _old_armour, armour_quality);
-        if (_new_armour == EQUIPMENT_UNCHANGED || _new_armour == NO_ITEM_IN_ARMOURY){
+        if (_new_armour == EQUIPMENT_UNCHANGED || _new_armour == NO_ITEM_IN_ARMOURY) {
             return new EquipOutcome(false, _new_armour);
         }
     }
 
-    if (equipment_unchanged(armour(true), _new_armour, _is_artifact, armour_quality, _quality)){
+    if (equipment_unchanged(armour(true), _new_armour, _is_artifact, armour_quality, _quality)) {
         return new EquipOutcome(false, EQUIPMENT_UNCHANGED);
     }
 
-    if (_is_artifact){
-        _artifact_id = _new_armour
+    if (_is_artifact) {
+        _artifact_id = _new_armour;
         var _arti = fetch_artifact(_artifact_id);
         _new_armour = _arti.get_type_name();
     }
 
-
     var _new_armour_data = gear_weapon_data("armour", _new_armour);
     var _old_armour_data = gear_weapon_data("armour", _old_armour);
-
 
     if (!is_struct(_new_armour_data) && !_unequipping) {
         return new EquipOutcome(false, INVALID_ITEM);
@@ -142,14 +140,14 @@ function scr_update_unit_weapon_one(new_weapon, _from_armoury = true, _to_armour
         new_weapon = _arti.get_type_name();
     }
 
-    if (!_is_artifact && array_contains(global.weapon_tag_sets, new_weapon)){
+    if (!_is_artifact && array_contains(global.weapon_tag_sets, new_weapon)) {
         new_weapon = get_from_item_set(new_weapon, _from_armoury, _quality, change_wep, weapon_one_quality);
-        if (new_weapon == EQUIPMENT_UNCHANGED || new_weapon == NO_ITEM_IN_ARMOURY){
+        if (new_weapon == EQUIPMENT_UNCHANGED || new_weapon == NO_ITEM_IN_ARMOURY) {
             return new EquipOutcome(false, new_weapon);
         }
     }
 
-    if (equipment_unchanged(weapon_one(true), new_weapon, _is_artifact, weapon_one_quality, _quality)){
+    if (equipment_unchanged(weapon_one(true), new_weapon, _is_artifact, weapon_one_quality, _quality)) {
         return new EquipOutcome(false, EQUIPMENT_UNCHANGED);
     }
 
@@ -199,14 +197,14 @@ function scr_update_unit_weapon_two(new_weapon, _from_armoury = true, _to_armour
         new_weapon = _arti.get_type_name();
     }
 
-    if (!_is_artifact && array_contains(global.weapon_tag_sets, new_weapon)){
+    if (!_is_artifact && array_contains(global.weapon_tag_sets, new_weapon)) {
         new_weapon = get_from_item_set(new_weapon, _from_armoury, _quality, change_wep, weapon_two_quality);
-        if (new_weapon == EQUIPMENT_UNCHANGED || new_weapon == NO_ITEM_IN_ARMOURY){
+        if (new_weapon == EQUIPMENT_UNCHANGED || new_weapon == NO_ITEM_IN_ARMOURY) {
             return new EquipOutcome(false, new_weapon);
         }
     }
 
-    if (equipment_unchanged(weapon_two(true), new_weapon, _is_artifact, weapon_two_quality, _quality)){
+    if (equipment_unchanged(weapon_two(true), new_weapon, _is_artifact, weapon_two_quality, _quality)) {
         return new EquipOutcome(false, EQUIPMENT_UNCHANGED);
     }
 
@@ -256,7 +254,7 @@ function scr_update_unit_gear(new_gear, _from_armoury = true, _to_armoury = true
         new_gear = _arti.get_type_name();
     }
 
-    if (equipment_unchanged(gear(true), new_gear, _is_artifact, gear_quality, _quality)){
+    if (equipment_unchanged(gear(true), new_gear, _is_artifact, gear_quality, _quality)) {
         return new EquipOutcome(false, EQUIPMENT_UNCHANGED);
     }
 
@@ -316,7 +314,7 @@ function scr_update_unit_mobility_item(new_mobility_item, _from_armoury = true, 
         new_mobility_item = _arti.get_type_name();
     }
 
-    if (equipment_unchanged(mobility_item(true), new_mobility_item, _is_artifact, mobility_item_quality, _quality)){
+    if (equipment_unchanged(mobility_item(true), new_mobility_item, _is_artifact, mobility_item_quality, _quality)) {
         return new EquipOutcome(false, EQUIPMENT_UNCHANGED);
     }
 
@@ -421,13 +419,13 @@ function alter_unit_equipment(update_equipment, _from_armoury = true, _to_armour
         var _set = false;
         var _getter = method(self, self[$ _getters[i]]);
         var _current_item = _getter(true);
-        if (!swap_artifacts && !is_string(_current_item)){
+        if (!swap_artifacts && !is_string(_current_item)) {
             continue;
         }
-        if (is_struct(_item) && is_instanceof(_item, TagSetItems)){
+        if (is_struct(_item) && is_instanceof(_item, TagSetItems)) {
             _tag_set_map = _item;
             _set = true;
-            if (_tag_set_map.has_item(_current_item)){
+            if (_tag_set_map.has_item(_current_item)) {
                 continue;
             }
             _item = _tag_set_map.get_item_from_map();
@@ -450,15 +448,15 @@ function alter_unit_equipment(update_equipment, _from_armoury = true, _to_armour
                 _outcome = update_mobility_item(_item, _from_armoury, _to_armoury, _quality);
                 break;
         }
-        if (!_outcome.success){
-            if (_set){
+        if (!_outcome.success) {
+            if (_set) {
                 _tag_set_map.item_map.add(_item);
             }
             if (_outcome.outcome == NO_ITEM_IN_ARMOURY) {
                 _missing_items += $"{_missing_items == "" ? "" : ","} {localize(_item)}";
             }
 
-            if (_success && _outcome.outcome != EQUIPMENT_UNCHANGED){
+            if (_success && _outcome.outcome != EQUIPMENT_UNCHANGED) {
                 _success = false;
             }
         }
@@ -581,15 +579,15 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
         var _slot = _slot_keys[i];
         var _item = equipment[$ _slot_keys[i]];
         if (!is_struct(_item)) {
-            equipment[$ _slot] = load_item_from_string(_item)
+            equipment[$ _slot] = load_item_from_string(_item);
         }
     }
 
-    static load_item_from_string = function(_item){
+    static load_item_from_string = function(_item) {
         var _tag_set = is_item_set(_item);
-        if (_tag_set == -1){
+        if (_tag_set == -1) {
             var _attempt_find = gear_weapon_data("any", _item);
-            if (_attempt_find == false){
+            if (_attempt_find == false) {
                 var _dp = _item != "" ? {name: _item} : undefined;
                 return new EquipmentStruct(_dp, "");
             } else {
@@ -598,7 +596,8 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
         } else {
             return new TagSetItems(_tag_set);
         }
-    }
+    };
+
     static update_arrays = function() {
         items = [
             equipment.wep1,
@@ -839,11 +838,11 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
         var _marines_without_exp = 0;
         equipment_found_and_valid[slot] = true;
         var _check_array = [];
-        if (check_group == noone){
+        if (check_group == noone) {
             _check_array = obj_controller.display_unit;
         } else {
-            if (is_instanceof(check_group, UnitGroup)){
-                _check_array = check_group.units
+            if (is_instanceof(check_group, UnitGroup)) {
+                _check_array = check_group.units;
             } else {
                 _check_array = check_group;
             }
@@ -859,8 +858,8 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
                 var _unit = _check_array[u];
                 var _getter = method(_unit, _unit[$ _marine_slot_getter]);
                 var _current_item = _getter();
-                if (_is_set){
-                    if (_item.has_item(_current_item)){
+                if (_is_set) {
+                    if (_item.has_item(_current_item)) {
                         _found += 1;
                     }
                 } else {
@@ -879,14 +878,14 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
                     }
                 }
                 if (!_dread_warning_sorted) {
-                    if (_unit.is_dreadnought() && !_is_set && !(_item).has_tag("dreadnought")) {
+                    if (_unit.is_dreadnought() && !_is_set && !_item.has_tag("dreadnought")) {
                         equipment_found_and_valid[slot] = false;
                         warning += localize("Marines may not exit Dreadnoughts.");
                         _dread_warning_sorted = true;
                     }
                 }
             }
-            if (_is_set){
+            if (_is_set) {
                 _found += _item.total_in_inventory();
             } else {
                 _found += scr_item_count(_wanted_item);
@@ -902,16 +901,19 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
             warning += localize("{0} units don't have exp for {1}: {2} required.", [_marines_without_exp, localize(_wanted_item), _item.req_exp]);
         }
 
-        if (!_is_set){
-            var _check_tags = ["terminator", "dreadnought" ];
-            for (var i = 0; i < array_length(_check_tags); i++){
+        if (!_is_set) {
+            var _check_tags = [
+                "terminator",
+                "dreadnought",
+            ];
+            for (var i = 0; i < array_length(_check_tags); i++) {
                 var _tag = _check_tags[i];
                 if (_item.has_tag($"{_tag}_only")) {
                     if (!get_item("armour").has_tag(_tag)) {
                         equipment_found_and_valid[slot] = false;
-                        warning += localize("Cannot use {0} without {1} Armour.", [localize(_wanted_item),_tag]);
+                        warning += localize("Cannot use {0} without {1} Armour.", [localize(_wanted_item), _tag]);
                     }
-                }            
+                }
             }
         }
     };
@@ -935,7 +937,7 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
         return {
             warning,
             equipment_found_and_valid,
-            allow_loadout : array_sum(equipment_found_and_valid) >= STANDARD_EQUIP_SLOT_COUNT
+            allow_loadout: array_sum(equipment_found_and_valid) >= STANDARD_EQUIP_SLOT_COUNT,
         };
     };
 

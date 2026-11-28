@@ -190,22 +190,22 @@ function TradeAttempt(diplomacy) constructor {
     };
 
     static find_trade_locations = function() {
-        var _trade_loc = noone
+        var _trade_loc = noone;
         var _loc = obj_ini.sector_handler.player_base_location();
-        if (_loc != noone){
-            if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD){
-                if (obj_ini.sector_handler.player_base_feature != noone){
+        if (_loc != noone) {
+            if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
+                if (obj_ini.sector_handler.player_base_feature != noone) {
                     var _monestry = obj_ini.sector_handler.player_base_feature;
-                    if (_monestry.status == ePLAYERFEATURESTATUS.UNCONTESTED){
+                    if (_monestry.status == ePLAYERFEATURESTATUS.UNCONTESTED) {
                         _trade_loc = _loc;
                     }
                 }
             } else {
-                _trade_loc = _loc
+                _trade_loc = _loc;
             }
         }
 
-        if (_trade_loc == noone){
+        if (_trade_loc == noone) {
             var player_trade_objects = [];
             with (obj_star) {
                 if (array_contains(p_owner, eFACTION.PLAYER)) {
@@ -228,7 +228,7 @@ function TradeAttempt(diplomacy) constructor {
                 }
                 return false;
             } else {
-                _trade_loc = array_random_element(player_trade_objects)
+                _trade_loc = array_random_element(player_trade_objects);
             }
         }
 
@@ -244,11 +244,11 @@ function TradeAttempt(diplomacy) constructor {
             }
             if (_check_val == 5) {
                 var ahuh = 0, q = 0;
-                for (var q = 1;q<=planets;q++) {
-                    if (p_owner[q] > eFACTION.ECCLESIARCHY){
+                for (var q = 1; q <= planets; q++) {
+                    if (p_owner[q] > eFACTION.ECCLESIARCHY) {
                         continue;
                     }
-                    if (p_owner[q] == eFACTION.ECCLESIARCHY || ((planet_feature_bool(p_feature[q], eP_FEATURES.SORORITAS_CATHEDRAL) == 1))) {
+                    if (p_owner[q] == eFACTION.ECCLESIARCHY || (planet_feature_bool(p_feature[q], eP_FEATURES.SORORITAS_CATHEDRAL) == 1)) {
                         ahuh = 1;
                     }
                 }
@@ -266,7 +266,7 @@ function TradeAttempt(diplomacy) constructor {
             return false;
         }
 
-        trade_from_star = nearest_from_array(_trade_loc.x,_trade_loc.y, viable_faction_trade_stars);
+        trade_from_star = nearest_from_array(_trade_loc.x, _trade_loc.y, viable_faction_trade_stars);
 
         trade_to_obj = _trade_loc;
         return true;
@@ -574,7 +574,7 @@ function TradeAttempt(diplomacy) constructor {
 
     var _info_val = 0;
     with (obj_controller) {
-        if ((random_event_next != eEVENT.NONE) && (array_contains(useful_info, eUSEFULLINFORMATION.CHAOS_WARLORD_LOCATION) || (turn < chaos_turn)) && (array_contains(useful_info, eUSEFULLINFORMATION.ORK_WARBOSS_LOCATION) || (known[eFACTION.ORK] < 1)) && (array_contains(useful_info, eUSEFULLINFORMATION.WEBWAYGATE_SECOND)) && (array_contains(useful_info, eUSEFULLINFORMATION.MOST_CORRUPT_MARINE))) {
+        if ((random_event_next != eEVENT.NONE) && (array_contains(useful_info, eUSEFULLINFORMATION.CHAOS_WARLORD_LOCATION) || (turn < chaos_turn)) && (array_contains(useful_info, eUSEFULLINFORMATION.ORK_WARBOSS_LOCATION) || (known[eFACTION.ORK] < 1)) && array_contains(useful_info, eUSEFULLINFORMATION.WEBWAYGATE_SECOND) && array_contains(useful_info, eUSEFULLINFORMATION.MOST_CORRUPT_MARINE)) {
             _info_val = 1000;
         }
     }

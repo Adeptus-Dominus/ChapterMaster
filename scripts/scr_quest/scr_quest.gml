@@ -108,13 +108,13 @@ function scr_quest(quest_satus, quest_name, quest_fac, quest_end) {
     if (quick_trade != 0) {
         var _loc = obj_ini.sector_handler.player_base_location(false);
 
-        if (_loc == noone){
+        if (_loc == noone) {
             LOGGER.error("abort could not find a player location");
             return;
         }
 
-        if (_loc.object_index == obj_p_fleet){
-            if (_loc.action != ""){
+        if (_loc.object_index == obj_p_fleet) {
+            if (_loc.action != "") {
                 var _fleet = _loc;
                 var _loc = fleets_next_location(_loc);
             }

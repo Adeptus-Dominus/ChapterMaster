@@ -32,7 +32,7 @@ if ((show == -1) && (current_popup == 0)) {
 }
 
 if ((show > -1) && (current_battle < array_length(battles))) {
-    if (!instances_exist_any([obj_saveload, obj_popup, obj_ncombat, obj_fleet])){
+    if (!instances_exist_any([obj_saveload, obj_popup, obj_ncombat, obj_fleet])) {
         battles[current_battle].draw_selector();
     }
 }

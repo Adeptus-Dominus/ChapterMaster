@@ -3,7 +3,7 @@ enum eARRAYORDER {
     LARGEST,
     SMALLEST,
     NEAREST,
-    FURTHEST
+    FURTHEST,
 }
 
 function UnitQuickFindPanel() constructor {
@@ -59,41 +59,46 @@ function UnitQuickFindPanel() constructor {
         var _names = struct_get_names(garrison_log);
         var _stars = [];
 
-        var _place_by_largest = function(_array, _star, _log){
-            if (array_length(_array) == 0){
-                return [[_log, _star]];
+        var _place_by_largest = function(_array, _star, _log) {
+            if (array_length(_array) == 0) {
+                return [
+                    [
+                        _log,
+                        _star,
+                    ],
+                ];
             } else {
-                for (var s = 0; s < array_length(_array);s++){
-                    if (array_length(_log.units) > array_length(_array[s][0].units)){
+                for (var s = 0; s < array_length(_array); s++) {
+                    if (array_length(_log.units) > array_length(_array[s][0].units)) {
                         array_insert(_array, s, [_log, _star]);
                         break;
                     }
-                    if (s == array_length(_array) -1){
+                    if (s == array_length(_array) - 1) {
                         array_push(_array, [_log, _star]);
-                        break
+                        break;
                     }
                 }
             }
             return _array;
-        }
+        };
         for (var i = 0; i < array_length(_names); i++) {
             var _star = find_star_by_name(_names[i]);
             if (_star != noone) {
-                if (arrange == eARRAYORDER.NONE){
+                if (arrange == eARRAYORDER.NONE) {
                     array_push(_stars, _star);
                 } else {
-                    if (arrange == eARRAYORDER.LARGEST){
-                        _stars = _place_by_largest(_stars,  _star, garrison_log[$ _names[i]])
-                    } 
+                    if (arrange == eARRAYORDER.LARGEST) {
+                        _stars = _place_by_largest(_stars, _star, garrison_log[$ _names[i]]);
+                    }
                 }
             }
         }
 
-        if (arrange == eARRAYORDER.NONE){
+        if (arrange == eARRAYORDER.NONE) {
             return _stars;
         } else {
             var _final_array = [];
-            for (var i=0;i<array_length(_stars);i++){
+            for (var i = 0; i < array_length(_stars); i++) {
                 array_push(_final_array, _stars[i][1]);
             }
             return _final_array;
@@ -788,4 +793,3 @@ function setup_planet_mission_group() {
         }
     }
 }
-

@@ -37,7 +37,6 @@ stasis = false;
 stasis_occupants = "";
 swimming = false;
 
-
 // ** Secret Lair styles **
 lair_styles = [
     {
@@ -115,43 +114,52 @@ refresh = function() {
 
     title += $" {p_data.name()}";
 
-    build_lair_button = new PurchaseButton({
-        x1: window_x + 300,
-        y1: window_y + 45,
-        set_width: true,
-        w: 100,
-        label: "Build",
-        font: fnt_40k_14,
-        color: CM_GREEN_COLOR,
-    }, 1000);
+    build_lair_button = new PurchaseButton(
+        {
+            x1: window_x + 300,
+            y1: window_y + 45,
+            set_width: true,
+            w: 100,
+            label: "Build",
+            font: fnt_40k_14,
+            color: CM_GREEN_COLOR,
+        },
+        1000,
+    );
     build_lair_button.bind_method = function() {
         isnew = true;
         refresh();
     };
 
-    build_arsenal_button = new PurchaseButton({
-        x1: window_x + 300,
-        y1: window_y + 110,
-        set_width: true,
-        w: 100,
-        label: "Build",
-        font: fnt_40k_14,
-        color: CM_GREEN_COLOR,
-    }, 1500);
+    build_arsenal_button = new PurchaseButton(
+        {
+            x1: window_x + 300,
+            y1: window_y + 110,
+            set_width: true,
+            w: 100,
+            label: "Build",
+            font: fnt_40k_14,
+            color: CM_GREEN_COLOR,
+        },
+        1500,
+    );
     build_arsenal_button.bind_method = function() {
         p_data.add_upgrade(eP_FEATURES.ARSENAL);
         refresh();
     };
 
-    build_gene_vault_button = new PurchaseButton({
-        x1: window_x + 300,
-        y1: window_y + 175,
-        set_width: true,
-        w: 100,
-        label: "Build",
-        font: fnt_40k_14,
-        color: CM_GREEN_COLOR,
-    }, 4000);
+    build_gene_vault_button = new PurchaseButton(
+        {
+            x1: window_x + 300,
+            y1: window_y + 175,
+            set_width: true,
+            w: 100,
+            label: "Build",
+            font: fnt_40k_14,
+            color: CM_GREEN_COLOR,
+        },
+        4000,
+    );
     build_gene_vault_button.bind_method = function() {
         p_data.add_upgrade(eP_FEATURES.GENE_VAULT);
         refresh();
@@ -166,7 +174,7 @@ refresh = function() {
         font: fnt_40k_30b,
         color: CM_GREEN_COLOR,
         bind_scope: id,
-        style : "pixel",
+        style: "pixel",
         bind_method: function() {
             obj_controller.menu = eMENU.DEFAULT;
         },

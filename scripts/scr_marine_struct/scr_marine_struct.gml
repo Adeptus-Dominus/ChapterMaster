@@ -2026,12 +2026,12 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
     static allocate_unit_to_fresh_spawn = function(type = "default") {
         var _handler = obj_ini.sector_handler;
 
-        var _attempt_to_spawn_to_loc = function(_loc){
+        var _attempt_to_spawn_to_loc = function(_loc) {
             var _handler = obj_ini.sector_handler;
             var _spawn_location_chosen = false;
-            if (_loc.object_index == obj_star){
+            if (_loc.object_index == obj_star) {
                 var _planet = _loc.id == _handler.player_base_location(true) ? _handler.player_base_planet : 0;
-                if (_planet == 0){
+                if (_planet == 0) {
                     var _imperium_war = obj_controller.faction_status[eFACTION.IMPERIUM] == "War";
                     for (var i = 1; i <= _loc.planets; i++) {
                         if (_loc.p_owner[i] == eFACTION.PLAYER || (!_imperium_war && array_contains(obj_controller.imperial_factions, _loc.p_owner[i]))) {
@@ -2039,7 +2039,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
                         }
                     }
                 }
-                if (_planet > 0){
+                if (_planet > 0) {
                     planet_location = _planet;
                     location_string = _loc.name;
                     _spawn_location_chosen = true;
@@ -2047,27 +2047,27 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             } else {
                 get_unit_size();
                 load_unit_to_fleet(_loc, self);
-                _spawn_location_chosen = true;                
+                _spawn_location_chosen = true;
             }
             return _spawn_location_chosen;
-        }
+        };
 
         var _spawn_location_chosen = false;
-        if (type == "home" || type == "default"){
+        if (type == "home" || type == "default") {
             var _loc = _handler.player_base_location();
-            if (_loc != noone){
-                _spawn_location_chosen = _attempt_to_spawn_to_loc(_loc)
+            if (_loc != noone) {
+                _spawn_location_chosen = _attempt_to_spawn_to_loc(_loc);
             }
             if (!_spawn_location_chosen) {
                 var _loc = _handler.player_base_location(false);
-                if (_loc != noone){
+                if (_loc != noone) {
                     _spawn_location_chosen = _attempt_to_spawn_to_loc(_loc);
                 }
             }
             return;
         } else if (type != "ship") {
             var _loc = find_star_by_name(type);
-            if (_loc != noone){
+            if (_loc != noone) {
                 _spawn_location_chosen = _attempt_to_spawn_to_loc(_loc);
             } else {
                 allocate_unit_to_fresh_spawn();

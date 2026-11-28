@@ -1,5 +1,5 @@
 function elder_dialogue_useful_information() {
-	var _found = 0;
+    var _found = 0;
     var _rando = choose(1, 1, 2, 3, 4, 4, 5);
     force_goodbye = -1;
 
@@ -126,11 +126,11 @@ function elder_dialogue_useful_information() {
             var _warboss_found = false;
             var _star = noone;
             with (obj_star) {
-            	if (has_feature(eP_FEATURES.ORKWARBOSS)){
-            		_warboss_found = true;
-            		_star = id;
-            		break;
-            	}
+                if (has_feature(eP_FEATURES.ORKWARBOSS)) {
+                    _warboss_found = true;
+                    _star = id;
+                    break;
+                }
             }
             if (_warboss_found) {
                 diplo_text = $"The greenskin horde is led by a massive Ork, one who calls himself {faction_leader[eFACTION.ORK]}.  If this warboss were to perish the rest might be dealt with in a more languorous fashion.  He is located in the {_star.name} system";
@@ -147,7 +147,7 @@ function elder_dialogue_useful_information() {
                 if (_found == 0) {
                     var _player_base = obj_ini.sector_handler.player_base_location(false);
                     var _star;
-                    if (_player_base != noone){
+                    if (_player_base != noone) {
                         _star = instance_nearest(_player_base.x, _player_base.y, obj_star);
                     } else {
                         _star = array_random_element(scr_get_stars(true));
@@ -159,7 +159,6 @@ function elder_dialogue_useful_information() {
 
                     diplo_text = $"A series of labyrinthian corridors and veins connect the galaxy.  The planet you know as {_p_data.name()} contains a dormant entrance to this realm.";
                     _found = 1;
-
                 }
             }
         } else if (!array_contains(obj_controller.useful_info, eUSEFULLINFORMATION.WEBWAYGATE_SECOND)) {

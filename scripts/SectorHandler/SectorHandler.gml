@@ -53,33 +53,33 @@ function SectorHandler() constructor {
         "player_base_planet",
         "player_base_feature",
         "helpful_places",
-        "helpful_places_button"
+        "helpful_places_button",
     ];
 
     static save = function() {
         var _copy = variable_clone(self);
-        for (var i = 0; i < array_length(save_ignore_fields); i++){
-            if (struct_exists(_copy , save_ignore_fields[i])){
+        for (var i = 0; i < array_length(save_ignore_fields); i++) {
+            if (struct_exists(_copy, save_ignore_fields[i])) {
                 struct_remove(_copy, save_ignore_fields[i]);
             }
         }
         return _copy;
     };
 
-    static player_base_location = function(use_cache = true){
-        if (use_cache && instance_exists(obj_controller) &&__last_base_location_turn_check == obj_controller.turn){
+    static player_base_location = function(use_cache = true) {
+        if (use_cache && instance_exists(obj_controller) && __last_base_location_turn_check == obj_controller.turn) {
             return player_base;
         }
         player_base = noone;
         player_base_planet = 0;
         player_base_feature = noone;
         var _handler = self;
-        if (obj_ini.fleet_type != ePLAYER_BASE.PENITENT){
-            with (obj_star){
+        if (obj_ini.fleet_type != ePLAYER_BASE.PENITENT) {
+            with (obj_star) {
                 var _mons = get_feature(eP_FEATURES.MONASTERY, false);
-                for (var i = 0; i < array_length(_mons); i++){
+                for (var i = 0; i < array_length(_mons); i++) {
                     var _mon = _mons[i];
-                    if (_mon.player_controlled()){
+                    if (_mon.player_controlled()) {
                         _handler.player_base = id;
                         _handler.player_base_planet = _mon.planet;
                         _handler.player_base_feature = _mon;
@@ -88,11 +88,11 @@ function SectorHandler() constructor {
                 }
             }
         }
-        if (player_base == noone){
+        if (player_base == noone) {
             player_base = get_largest_player_fleet();
         }
 
-        if (player_base == noone){
+        if (player_base == noone) {
             with (obj_star) {
                 if (array_contains(p_owner, eFACTION.PLAYER)) {
                     _handler.player_base = id;
@@ -100,55 +100,55 @@ function SectorHandler() constructor {
                 }
             }
         }
-        if (player_base == noone){
+        if (player_base == noone) {
             var _cm = cm_obj().get_struct();
-            var _cm_loc = _cm.marine_location()
-            if (_cm_loc[0] == eLOCATION_TYPES.PLANET){
+            var _cm_loc = _cm.marine_location();
+            if (_cm_loc[0] == eLOCATION_TYPES.PLANET) {
                 player_base = find_star_by_name(_cm_loc[2]);
             } else if (_cm_loc[0] == eLOCATION_TYPES.SHIP) {
                 player_base = find_ship_fleet(_cm_loc[1]);
             }
         }
 
-        if (player_base == noone && instance_exists(obj_controller)){
+        if (player_base == noone && instance_exists(obj_controller)) {
             var _viewer = obj_controller.location_viewer;
             var _player_presence_stars = _viewer.player_force_stars(eARRAYORDER.LARGEST);
-            if (array_length(_player_presence_stars) > 0){
+            if (array_length(_player_presence_stars) > 0) {
                 player_base = _player_presence_stars[0];
             }
         }
-        if (player_base == noone){
+        if (player_base == noone) {
             LOGGER.error("Can't find player cm, fortress monastery or any fleets, or planets with marine forces");
         }
-        if (player_base_planet == 0 && obj_ini.fleet_type != ePLAYER_BASE.PENITENT){
+        if (player_base_planet == 0 && obj_ini.fleet_type != ePLAYER_BASE.PENITENT) {
             obj_ini.fleet_type = ePLAYER_BASE.FLEET_BASED;
         }
-        __last_base_location_turn_check = instance_exists(obj_controller) ? obj_controller.turn : 0 ;
+        __last_base_location_turn_check = instance_exists(obj_controller) ? obj_controller.turn : 0;
         return player_base;
-    }
-
-
+    };
 
     helpful_places_button = new UnitButtonObject({
         style: "pixel",
         label: "System Data",
     });
     helpful_places = noone;
-    static refresh_helpful_places = function(){
+
+    static refresh_helpful_places = function() {
         if (helpful_places != noone) {
             helpful_places = new HelpfulPlaces();
-        }        
-    }
+        }
+    };
 
-    static toggle_helpful_places = function(){  
+    static toggle_helpful_places = function() {
         helpful_places = helpful_places == noone ? new HelpfulPlaces() : noone;
-    }
-    static ensure_helpful_places = function(){
+    };
+
+    static ensure_helpful_places = function() {
         var _i = helpful_places == noone ? toggle_helpful_places() : refresh_helpful_places();
         return helpful_places;
-    }
+    };
 
-    static draw_helpful_places = function(){
+    static draw_helpful_places = function() {
         helpful_places_button.update({x1: 1451, y1: 62 + sprite_get_height(spr_new_banner)});
 
         if (helpful_places_button.draw()) {
@@ -156,14 +156,15 @@ function SectorHandler() constructor {
         }
         if (helpful_places_drawable()) {
             helpful_places.draw();
-        }        
-    }
+        }
+    };
 
-    static helpful_places_drawable = function(){return helpful_places != noone && !instances_exist_any([obj_turn_end, obj_ncombat, obj_fleet, obj_popup, obj_star_select])};
+    static helpful_places_drawable = function() {
+        return helpful_places != noone && !instances_exist_any([obj_turn_end, obj_ncombat, obj_fleet, obj_popup, obj_star_select]);
+    };
 
     LOGGER.info("SectorHandler successfully initialised");
 }
-
 
 function HelpfulPlaces() constructor {
     main_panel = new DataSlate({

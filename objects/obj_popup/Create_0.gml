@@ -122,46 +122,22 @@ get_unit_promotion_options = function() {
     // this area does the required exp for roles per company
     if (unit_role == _role_data[eROLE.TECHMARINE].role) {
         //techmarine
-        array_push(promote_roles, {
-            name: _role_data[eROLE.TECHMARINE].role,
-            exp: 5,
-            role_id: eROLE.TECHMARINE,
-        });
+        array_push(promote_roles, {name: _role_data[eROLE.TECHMARINE].role, exp: 5, role_id: eROLE.TECHMARINE});
         spec = 1;
     } else if (unit_role == _role_data[eROLE.APOTHECARY].role) {
         //apothecary
-        array_push(promote_roles, {
-            name: _role_data[eROLE.APOTHECARY].role,
-            exp: 5,
-            role_id: eROLE.APOTHECARY,
-        });
+        array_push(promote_roles, {name: _role_data[eROLE.APOTHECARY].role, exp: 5, role_id: eROLE.APOTHECARY});
         spec = 1;
     } else if (unit_role == _role_data[eROLE.CHAPLAIN].role && _role_data[eROLE.CHAPLAIN].available_to_player) {
         //chaplain
-        array_push(promote_roles, {
-            name: _role_data[eROLE.CHAPLAIN].role,
-            exp: 5,
-            role_id: eROLE.CHAPLAIN,
-        });
+        array_push(promote_roles, {name: _role_data[eROLE.CHAPLAIN].role, exp: 5, role_id: eROLE.CHAPLAIN});
         spec = 1;
     } else if (unit_role == _role_data[eROLE.LEXICANUM].role) {
-        array_push(promote_roles, {
-            name: _role_data[eROLE.LIBRARIAN].role,
-            exp: 125,
-            role_id: eROLE.LIBRARIAN,
-        });
+        array_push(promote_roles, {name: _role_data[eROLE.LIBRARIAN].role, exp: 125, role_id: eROLE.LIBRARIAN});
         spec = 1;
-        array_push(promote_roles, {
-            name: _role_data[eROLE.CODICIERY].role,
-            exp: 80,
-            role_id: eROLE.CODICIERY,
-        });
+        array_push(promote_roles, {name: _role_data[eROLE.CODICIERY].role, exp: 80, role_id: eROLE.CODICIERY});
     } else if (unit_role == _role_data[eROLE.CODICIERY].role) {
-        array_push(promote_roles, {
-            name: _role_data[eROLE.LIBRARIAN].role,
-            exp: 125,
-            role_id: eROLE.LIBRARIAN,
-        });
+        array_push(promote_roles, {name: _role_data[eROLE.LIBRARIAN].role, exp: 125, role_id: eROLE.LIBRARIAN});
         spec = 1;
     }
     if (target_comp > 0 && target_comp <= 10 && spec == 0) {
@@ -184,11 +160,7 @@ get_unit_promotion_options = function() {
             for (var s = 0; s < array_length(_singles); s++) {
                 var _r_data = _singles[s];
                 if (!_company_units.has_role(_r_data.role)) {
-                    array_push(promote_roles, {
-                        name: _role_data[_r_data.role].role,
-                        exp: _r_data.exp,
-                        role_id: _r_data.role,
-                    });
+                    array_push(promote_roles, {name: _role_data[_r_data.role].role, exp: _r_data.exp, role_id: _r_data.role});
                 }
             }
             array_push(promote_roles, {

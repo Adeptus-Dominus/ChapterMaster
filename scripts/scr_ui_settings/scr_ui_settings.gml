@@ -621,7 +621,7 @@ function scr_select_role_settings_ui() {
             instance_destroy();
         }
         instance_create(0, 0, obj_mass_equip);
-        obj_mass_equip.marines_with_role = collect_role_group("all", "", false, {role : settings}, true);
+        obj_mass_equip.marines_with_role = collect_role_group("all", "", false, {role: settings}, true);
     }
 }
 
@@ -716,7 +716,7 @@ function scr_draw_mass_equip_gui() {
             }
             draw_rectangle(114, 626, 560, 665, 0);
             draw_set_alpha(1);
-            if (mouse_button_clicked() && (all_good.allow_loadout)) {
+            if (mouse_button_clicked() && all_good.allow_loadout) {
                 engage = true;
                 refresh = true;
                 effect_create_depth(depth - 1, ef_firework, 800, 400, 5, c_yellow);
@@ -730,15 +730,15 @@ function scr_draw_mass_equip_gui() {
         var _draw_x = 1030;
         var _draw_y = 390;
         var _draw_step = 28;
-        for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++){
-            if (equipment_set[i] == ""){
+        for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
+            if (equipment_set[i] == "") {
                 continue;
             }
             draw_set_color(all_good.equipment_found_and_valid[i] ? CM_GREEN_COLOR : c_red);
             draw_text(1030, _draw_y + (i * _draw_step), equipment_set[i]);
         }
 
-        if (all_good.warning != ""){
+        if (all_good.warning != "") {
             draw_set_color(c_red);
             draw_text(1030, _draw_y + (STANDARD_EQUIP_SLOT_COUNT * _draw_step), all_good.warning);
         }

@@ -330,7 +330,7 @@ function draw_popup_equip(before_after_styling = true) {
     var _area_change = false;
     for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
         var _button = selectors[i];
-        if (i == eEQUIPMENT_SLOT.ARMOUR && equipment_recipient_type == eEQUIP_TARGET_TYPE.DREADNOUGHT){
+        if (i == eEQUIPMENT_SLOT.ARMOUR && equipment_recipient_type == eEQUIP_TARGET_TYPE.DREADNOUGHT) {
             _button.active = false;
             _button.draw();
             continue;
@@ -386,15 +386,15 @@ function draw_popup_equip(before_after_styling = true) {
             warning = "";
             needed_equipment[equipment_area] = item_name[top];
         }
-        if (equipment_recipient_type == eEQUIP_TARGET_TYPE.DREADNOUGHT){
-            needed_equipment[eEQUIPMENT_SLOT.ARMOUR] = "Assortment";//early exit checks for ease
+        if (equipment_recipient_type == eEQUIP_TARGET_TYPE.DREADNOUGHT) {
+            needed_equipment[eEQUIPMENT_SLOT.ARMOUR] = "Assortment"; //early exit checks for ease
         }
         var _equip_data = new UnitEquipment(needed_equipment);
         var _results = _equip_data.check_set_is_equipable(unit_count);
 
         equipment_found_and_valid = _results.equipment_found_and_valid;
-        if (equipment_recipient_type == eEQUIP_TARGET_TYPE.DREADNOUGHT){
-            equipment_found_and_valid[eEQUIPMENT_SLOT.ARMOUR] = true;//early exit checks for ease
+        if (equipment_recipient_type == eEQUIP_TARGET_TYPE.DREADNOUGHT) {
+            equipment_found_and_valid[eEQUIPMENT_SLOT.ARMOUR] = true; //early exit checks for ease
         }
         warning = _results.warning;
     }
@@ -448,7 +448,7 @@ function reequip_selection() {
             needed_equipment[i] = "";
         } else {
             var _tag = is_item_set(needed_equipment[i]);
-            if (_tag != -1){
+            if (_tag != -1) {
                 needed_equipment[i] = new TagSetItems(_tag);
                 needed_equipment[i].create_item_map();
             }
@@ -457,7 +457,7 @@ function reequip_selection() {
     var _unit_set = convert_equipment_array_into_struct(needed_equipment);
     for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
         var _item = needed_equipment[i];
-        if (_item == "Assortment"){
+        if (_item == "Assortment") {
             var _slot_key = global.unit_equip_slots[i];
             struct_remove(_unit_set, _slot_key);
         }

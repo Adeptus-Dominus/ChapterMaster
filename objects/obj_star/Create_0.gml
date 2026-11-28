@@ -163,31 +163,31 @@ problems_to_mission_log = function() {
 has_feature = function(_search_feature) {
     var sys_bool = false;
     for (var sys = 1; sys <= planets; sys++) {
-        if (planet_feature_bool(p_feature[sys], _search_feature)){
+        if (planet_feature_bool(p_feature[sys], _search_feature)) {
             return true;
         }
     }
     return false;
-}
+};
 
 //returns first found feature matching type
 get_feature = function(_search_feature, _only_one = true) {
     var _all_features = [];
     for (var sys = 1; sys <= planets; sys++) {
         var _features = get_planet_data(sys).get_features(_search_feature);
-        if (array_length(_features)){
-            if (_only_one){
+        if (array_length(_features)) {
+            if (_only_one) {
                 return _features[0];
             } else {
                 _all_features = array_join(_all_features, _features);
             }
         }
     }
-    if (_only_one){
+    if (_only_one) {
         return noone;
     }
     return _all_features;
-}
+};
 
 /// @self Asset.GMObject.obj_star
 has_orbiting_player_fleet = function() {
