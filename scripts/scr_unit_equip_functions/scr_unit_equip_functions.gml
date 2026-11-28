@@ -665,7 +665,7 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
 
     for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
         var _item = self.equipment[$ global.unit_equip_slots[i]];
-        if (_item.name != "") {
+        if (_item.name != "" && item.name != ITEM_NAME_NONE) {
             array_push(present_items, global.unit_equip_slots[i]);
         }
     }
@@ -868,7 +868,6 @@ function UnitEquipment(equipment_set, _unit = noone) constructor {
                         _found += 1;
                     }
                 }
-
 
                 if (_wanted_item == ITEM_NAME_NONE) {
                     _found += 1;
