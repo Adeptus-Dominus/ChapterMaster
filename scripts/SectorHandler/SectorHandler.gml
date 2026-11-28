@@ -73,15 +73,16 @@ function SectorHandler() constructor {
         player_base = noone;
         player_base_planet = 0;
         player_base_feature = noone;
+        var _handler = self;
         if (obj_ini.fleet_type != ePLAYER_BASE.PENITENT){
             with (obj_star){
                 var _mons = get_feature(eP_FEATURES.MONASTERY, false);
                 for (var i = 0; i < array_length(_mons); i++){
                     var _mon = _mons[i];
                     if (_mon.player_controlled()){
-                        player_base = id;
-                        player_base_planet = _mon.planet;
-                        player_base_feature = _mon;
+                        _handler.player_base = id;
+                        _handler.player_base_planet = _mon.planet;
+                        _handler.player_base_feature = _mon;
                         obj_ini.fleet_type = ePLAYER_BASE.HOME_WORLD;
                     }
                 }
@@ -92,13 +93,12 @@ function SectorHandler() constructor {
         }
 
         if (player_base == noone){
-            var _star_with_player_control = noone;
             with (obj_star) {
                 if (array_contains(p_owner, eFACTION.PLAYER)) {
-                    _star_with_player_control = id;
+                    _handler.player_base = id;
+                    break;
                 }
             }
-            player_base = _star_with_player_control;
         }
         if (player_base == noone){
             var _cm = cm_obj().get_struct();
