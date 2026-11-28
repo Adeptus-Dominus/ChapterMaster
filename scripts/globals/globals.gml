@@ -235,7 +235,7 @@ global.marine_equipment_getters = [
     "armour",
     "gear",
     "mobility_item",
-]
+];
 
 global.role_data_keys = [
     "wep1",
@@ -267,41 +267,41 @@ global.equipment_qualities = [
 
 global.equipment_tags = [
     {
-        name : "Heavy Ranged",
-        type : "weapon",
-        tag : "heavy_ranged"
+        name: "Heavy Ranged",
+        type: "weapon",
+        tag: "heavy_ranged",
     },
     {
-        name : STR_ANY_POWER_ARMOUR,
-        type : "armour",
-        tag :"power_armour"
+        name: STR_ANY_POWER_ARMOUR,
+        type: "armour",
+        tag: "power_armour",
     },
     {
-        name : STR_ANY_TERMINATOR_ARMOUR, 
-        type : "armour", 
-        tag : "terminator"
+        name: STR_ANY_TERMINATOR_ARMOUR,
+        type: "armour",
+        tag: "terminator",
     },
     {
-        name : "Pistols", 
-        type : "weapon",
-        tag : "pistol"
+        name: "Pistols",
+        type: "weapon",
+        tag: "pistol",
     },
     {
-        name : "Flame Weapons", 
-        type : "weapon",
-        tag : "flame"
+        name: "Flame Weapons",
+        type: "weapon",
+        tag: "flame",
     },
     {
-        name : "Power Weapons", 
-        type : "weapon",
-        tag : "power"
+        name: "Power Weapons",
+        type: "weapon",
+        tag: "power",
     },
     {
-        name : "Chain Weapons", 
-        type : "weapon",
-        tag : "chain"
+        name: "Chain Weapons",
+        type: "weapon",
+        tag: "chain",
     },
-]
+];
 
 // Tag sets are derived from equipment_tags, so a new set only needs one entry there.
 global.armour_tag_sets = [];

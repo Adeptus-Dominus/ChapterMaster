@@ -133,7 +133,7 @@ try {
     LOGGER.info($"default Distance : {xxx}");
     var _enemies_assigned = false;
 
-    var _fetch_enemy_organisation = function(){
+    var _fetch_enemy_organisation = function() {
         enemy_organisations = json_to_gamemaker(working_directory + "/data/battle_organisation_formats.json", json_parse);
 
         var _battle_string = $"{global.faction_names_en[enemy]}_force{threat}";
@@ -144,9 +144,9 @@ try {
             return enemy_organisations[$ _battle_string];
         }
         return undefined;
-    }
+    };
 
-    var _add_enemy_columns_to_battle = function(_cols){
+    var _add_enemy_columns_to_battle = function(_cols) {
         for (var i = 0; i < array_length(_cols); i++) {
             var _col = _cols[i];
             _u = instance_create(0, 240, obj_enunit);
@@ -173,7 +173,7 @@ try {
                 _nearest_player.engaged = true;
             }
         }
-    }
+    };
     if (is_undefined(battle_enemy_data) && battle_special != "") {
         enemy_organisations = json_to_gamemaker(working_directory + "/data/battle_organisation_specials.json", json_parse);
         if (struct_exists(enemy_organisations, battle_special)) {
@@ -199,12 +199,12 @@ try {
             _add_enemy_columns_to_battle(_cols);
             _enemies_assigned = true;
         }
-        if (!_enemies_assigned){
-            var _org_structure = _fetch_enemy_organisation();  
-            if (!is_undefined(_org_structure) && struct_exists(_org_structure, "cols")){
+        if (!_enemies_assigned) {
+            var _org_structure = _fetch_enemy_organisation();
+            if (!is_undefined(_org_structure) && struct_exists(_org_structure, "cols")) {
                 _add_enemy_columns_to_battle(_org_structure.cols);
                 _enemies_assigned = true;
-            }        
+            }
         }
     }
     if (!_enemies_assigned) {

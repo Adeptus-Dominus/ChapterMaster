@@ -761,7 +761,7 @@ if (defeat && !dropping) {
     if (monastery_count > 0) {
         var _monestary = _monastery_list[0];
         for (var mon = 0; mon < monastery_count; mon++) {
-            if (_monastery_list[mon].player_controlled()){
+            if (_monastery_list[mon].player_controlled()) {
                 if (obj_controller.und_gene_vaults == 0) {
                     _newline = $"Your Fortress Monastery has been raided.  {obj_controller.gene_seed} Gene-Seed has been destroyed or stolen.";
                 }

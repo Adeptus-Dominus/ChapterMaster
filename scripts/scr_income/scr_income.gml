@@ -13,7 +13,7 @@ function scr_income() {
     if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
         //bonus for having a fortress monestary
         income_home = 8;
-        with (obj_star){
+        with (obj_star) {
             var _distance_to_player_home = point_distance(x, y, _player_base.x, _player_base.y);
 
             // Nearby star system
@@ -59,19 +59,19 @@ function scr_income() {
         }
     }
 
-    if (training_apothecary > 0){
+    if (training_apothecary > 0) {
         income_training -= global.apothecary_training_costs[training_apothecary];
     }
 
-    if (training_chaplain > 0){
+    if (training_chaplain > 0) {
         income_training -= global.chaplain_training_costs[training_chaplain];
     }
 
-    if (training_psyker > 0){
+    if (training_psyker > 0) {
         income_training -= global.psyker_training_costs[training_psyker];
     }
 
-    if (training_techmarine > 0){
+    if (training_techmarine > 0) {
         income_training -= global.techmarine_training_costs[training_techmarine];
     }
 
@@ -85,7 +85,6 @@ function scr_income() {
             obj_controller.tau_stars += 1;
         }
     }
-
 
     with (obj_p_fleet) {
         if ((action == "") && (capital_number > 0)) {
@@ -102,7 +101,6 @@ function scr_income() {
             }
         }
     }
-
 
     with (obj_star) {
         for (var o = 1; o <= planets; o++) {

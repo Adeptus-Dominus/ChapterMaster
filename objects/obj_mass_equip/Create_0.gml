@@ -6,7 +6,6 @@ engage = false;
 total_roles = "";
 all_equip = "";
 
-
 item_name = [];
 
 cancel_button = new UnitButtonObject({

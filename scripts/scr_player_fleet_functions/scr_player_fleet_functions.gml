@@ -17,19 +17,22 @@ function fleet_has_roles(fleet, roles = []) {
     }
 }
 
-
-function find_ship_fleet(_index){
+function find_ship_fleet(_index) {
     var _fleet = noone;
-    with (obj_p_fleet){
-        var _arrays = [capital_num,frigate_num,escort_num];
-        for (var i=0;i<3;i++){
-            if (array_contains(_arrays[i], _index)){
+    with (obj_p_fleet) {
+        var _arrays = [
+            capital_num,
+            frigate_num,
+            escort_num,
+        ];
+        for (var i = 0; i < 3; i++) {
+            if (array_contains(_arrays[i], _index)) {
                 _fleet = id;
                 break;
             }
         }
-        if (_fleet !=noone){
-            break
+        if (_fleet != noone) {
+            break;
         }
     }
     return _fleet;
@@ -181,7 +184,7 @@ function merge_player_fleets(main_fleet, merge_fleet) {
     if (instance_exists(obj_turn_end)) {
         for (var _bi = 0; _bi < array_length(obj_turn_end.battles); _bi++) {
             var _battle = obj_turn_end.battles[_bi];
-            if (_battle.battle_type != eBATTLE_TYPES.FLEET){
+            if (_battle.battle_type != eBATTLE_TYPES.FLEET) {
                 continue;
             }
             var _player_fleet = _battle.pobject;
@@ -328,7 +331,7 @@ function player_retreat_from_fleet_combat(destination_star = noone) {
     try {
         var _battle = obj_turn_end.battles[obj_turn_end.current_battle];
         var _p_fleet = _battle.pobject;
-        var _loc_star = _battle.object
+        var _loc_star = _battle.object;
         var _battle_opponent = _battle.opponent;
 
         // Fleet strength comparison

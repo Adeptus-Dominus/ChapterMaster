@@ -9,17 +9,17 @@ function setup_promotion_popup() {
 
         var god = 0, nuuum = 0;
         for (var f = 0; f < array_length(display_unit); f++) {
-            if (!man_sel[f] || ma_promote[f] < 1 || obj_controller.man[f] != "man"){
+            if (!man_sel[f] || ma_promote[f] < 1 || obj_controller.man[f] != "man") {
                 continue;
             }
             var _unit = obj_controller.display_unit[f];
-            if (_unit.IsSpecialist(SPECIALISTS_RANK_AND_FILE) || _unit.IsSpecialist(SPECIALISTS_SQUAD_LEADERS) ) {
+            if (_unit.IsSpecialist(SPECIALISTS_RANK_AND_FILE) || _unit.IsSpecialist(SPECIALISTS_SQUAD_LEADERS)) {
                 if (pip.min_exp == 0) {
                     pip.min_exp = _unit.experience;
                 }
                 pip.min_exp = min(_unit.experience, pip.min_exp);
             }
-            if ((god == 0) ) {
+            if (god == 0) {
                 god = 1;
                 pip.unit_role = ma_role[f];
             }
@@ -28,7 +28,7 @@ function setup_promotion_popup() {
 
         with (pip) {
             units = selected_for_promotion.number();
-            if (units > 1){
+            if (units > 1) {
                 unit_role = "Marines";
             }
             promote_button = new UnitButtonObject({
@@ -38,7 +38,7 @@ function setup_promotion_popup() {
                 label: "Promote",
             });
             promote_button.bind_method = function() {
-                units_to_move = selected_for_promotion.get_from({"stat" : [["experience", min_exp, "inmore"]]}, true, false);
+                units_to_move = selected_for_promotion.get_from({"stat": [["experience", min_exp, "inmore"]]}, true, false);
                 // Gets the number of marines in the target company
                 var role_squad_equivilances = {}; //this is the only way to set variables as keys in gml
                 variable_struct_set(role_squad_equivilances, obj_ini.player_role_data[eROLE.TACTICAL].role, "tactical_squad");
@@ -58,7 +58,7 @@ function setup_promotion_popup() {
                 var _squads = units_to_move.count_squads("all", true);
                 units_to_move.move_to_company(target_comp, false);
 
-                var _target_role = promote_roles[target_role].name
+                var _target_role = promote_roles[target_role].name;
 
                 for (var i = 0; i < units_to_move.number(); i++) {
                     var _unit = units_to_move.units[i];
@@ -202,10 +202,10 @@ function draw_popup_promotion() {
                 if (point_and_click([1030 + role_x, 310 + role_y, 1180 + role_x, 330 + role_y])) {
                     if (min_exp >= _data.exp) {
                         target_role = r;
-                        var _r_data = variable_clone(obj_ini.player_role_data[_data.role_id])
+                        var _r_data = variable_clone(obj_ini.player_role_data[_data.role_id]);
                         equipment_set = convert_equipment_struct_into_array(_r_data);
                         var _equip_data = new UnitEquipment(equipment_set);
-                        all_good = _equip_data.check_set_is_equipable(units , selected_for_promotion);
+                        all_good = _equip_data.check_set_is_equipable(units, selected_for_promotion);
                     }
                 }
                 if (r % 3 == 0) {
@@ -227,15 +227,15 @@ function draw_popup_promotion() {
         var _draw_x = 1030;
         var _draw_y = 390;
         var _draw_step = 20;
-        for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++){
-            if (equipment_set[i] == ""){
+        for (var i = 0; i < STANDARD_EQUIP_SLOT_COUNT; i++) {
+            if (equipment_set[i] == "") {
                 continue;
             }
             draw_set_color(all_good.equipment_found_and_valid[i] ? CM_GREEN_COLOR : c_red);
             draw_text(1030, _draw_y + (i * _draw_step), equipment_set[i]);
         }
 
-        if (all_good.warning != ""){
+        if (all_good.warning != "") {
             draw_set_color(c_red);
             draw_text(1030, _draw_y + (STANDARD_EQUIP_SLOT_COUNT * _draw_step), all_good.warning);
         }

@@ -124,7 +124,6 @@ function SystemProblem(_name, _system = noone, _data = {}, _timer = -1) : Proble
     };
 
     static __hunt_inquisitor_init = function() {
-
         if (system == noone) {
             var _stars = scr_get_stars();
 

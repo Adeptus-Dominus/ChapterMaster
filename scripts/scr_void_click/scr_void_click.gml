@@ -36,7 +36,7 @@ function scr_void_click() {
         }
     } else {
         var _sec_handler = obj_ini.sector_handler;
-        if (_sec_handler.helpful_places_drawable()){
+        if (_sec_handler.helpful_places_drawable()) {
             good = !_sec_handler.helpful_places.entered();
         }
     }

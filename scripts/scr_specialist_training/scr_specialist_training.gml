@@ -109,12 +109,13 @@ function spec_data_set(specialist) {
         _search.role_tag = _data.name;
     }
     // TODO LOW SEARCH_OPTIONAL // Make this function handle optional search_params
-    var _roles = [obj_ini.player_role_data[eROLE.TACTICAL].role, obj_ini.player_role_data[eROLE.SERGEANT].role, obj_ini.player_role_data[eROLE.ASSAULT].role, obj_ini.player_role_data[eROLE.DEVASTATOR].role];
-    var random_marine = scr_random_marine(
-        _roles,
-        _data.min_exp,
-        _search
-    );
+    var _roles = [
+        obj_ini.player_role_data[eROLE.TACTICAL].role,
+        obj_ini.player_role_data[eROLE.SERGEANT].role,
+        obj_ini.player_role_data[eROLE.ASSAULT].role,
+        obj_ini.player_role_data[eROLE.DEVASTATOR].role,
+    ];
+    var random_marine = scr_random_marine(_roles, _data.min_exp, _search);
     return random_marine;
 }
 

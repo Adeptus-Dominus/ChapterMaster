@@ -27,9 +27,9 @@ function push_marine_ranged_weapons_item_names(_item_names) {
     array_resize(_item_names, _initial_size + item_count);
 
     var index = _initial_size;
-    _item_names[@ index++] = "Heavy Ranged"
-    _item_names[@ index++] = "Pistols"
-    _item_names[@ index++] = "Flame Weapons"
+    _item_names[@ index++] = "Heavy Ranged";
+    _item_names[@ index++] = "Pistols";
+    _item_names[@ index++] = "Flame Weapons";
     _item_names[@ index++] = "Archeotech Laspistol";
     _item_names[@ index++] = "Assault Cannon";
     _item_names[@ index++] = "Bolt Pistol";
@@ -71,8 +71,8 @@ function push_marine_melee_weapons_item_names(_item_names) {
 
     var index = _initial_size;
     _item_names[@ index++] = "Combat Knife";
-    _item_names[@ index++] = "Power Weapons"
-    _item_names[@ index++] = "Chain Weapons"
+    _item_names[@ index++] = "Power Weapons";
+    _item_names[@ index++] = "Chain Weapons";
     _item_names[@ index++] = "Chainsword";
     _item_names[@ index++] = "Chainaxe";
     _item_names[@ index++] = "Eviscerator";
@@ -447,7 +447,7 @@ function get_filtered_equipment_item_names(_item_names, _equip_category, _melee_
     var _matched_names = [];
     var _equipment_keys = variable_struct_get_names(obj_ini.equipment);
 
-    filter_item = function(_item, _melee_or_ranged, _required_tags, _excluded_tags){
+    filter_item = function(_item, _melee_or_ranged, _required_tags, _excluded_tags) {
         // Melee or ranged filter
         if (_melee_or_ranged != undefined) {
             var _is_ranged = _item.is_ranged();
@@ -458,44 +458,44 @@ function get_filtered_equipment_item_names(_item_names, _equip_category, _melee_
 
         // Required tags
         if (_required_tags != undefined) {
-            if (!_item.has_tags_all(_required_tags)){
+            if (!_item.has_tags_all(_required_tags)) {
                 return false;
             }
         }
 
         // Excluded tags
         if (_excluded_tags != undefined) {
-            if (_item.has_tags(_excluded_tags)){
+            if (_item.has_tags(_excluded_tags)) {
                 return false;
             }
         }
         return true;
-    }
+    };
     var _qual_string = _is_master_crafted ? "master_crafted" : "any";
     var _tags = [];
-    if (_equip_category == "weapon"){
-        _tags = global.weapon_tag_sets
-    } else if (_equip_category == "armour"){
-        _tags = global.armour_tag_sets
+    if (_equip_category == "weapon") {
+        _tags = global.weapon_tag_sets;
+    } else if (_equip_category == "armour") {
+        _tags = global.armour_tag_sets;
     }
     for (var i = 0; i < array_length(_tags); i++) {
         var _valid = true;
         var _set = new TagSetItems(is_item_set(_tags[i]));
         _set.create_item_map();
-        if (!is_undefined(_excluded_tags)){
+        if (!is_undefined(_excluded_tags)) {
             _set.kick_items_with_tag(_excluded_tags);
         }
-        for (var j = array_length(_set.items) - 1; j >= 0; j--){
+        for (var j = array_length(_set.items) - 1; j >= 0; j--) {
             var _item = _set.items[j];
             var _item_valid = filter_item(_item, _melee_or_ranged, _required_tags, _excluded_tags);
-            if (!_item_valid){
+            if (!_item_valid) {
                 _set.kick_item(j, false);
             }
         }
         _valid = _set.total_in_inventory() > 0;
-        if (_valid){
+        if (_valid) {
             array_push(_matched_names, _tags[i]);
-        }    
+        }
     }
     for (var i = 0; i < array_length(_equipment_keys); i++) {
         var _valid = true;
@@ -509,8 +509,7 @@ function get_filtered_equipment_item_names(_item_names, _equip_category, _melee_
         if (!is_struct(equip_data)) {
             continue;
         }
-        _valid = filter_item(equip_data, _melee_or_ranged, _required_tags, _excluded_tags)
-
+        _valid = filter_item(equip_data, _melee_or_ranged, _required_tags, _excluded_tags);
 
         if (_valid) {
             array_push(_matched_names, _item_name);
@@ -542,7 +541,7 @@ enum eENGAGEMENT {
 /// @param {number} _slot - The equipment slot number, 1-5; for primary weapon, secondary weapon, armour, gear/upgrade, and mobility/accessory.
 /// @returns {string} The name of the slot.
 function get_slot_name(_role, _slot) {
-    if (_role != eROLE.DREADNOUGHT && _role < eROLE.MARINEEND){
+    if (_role != eROLE.DREADNOUGHT && _role < eROLE.MARINEEND) {
         switch (_slot) {
             case eEQUIPMENT_SLOT.WEAPON_ONE:
                 return "First Weapon";
@@ -557,7 +556,7 @@ function get_slot_name(_role, _slot) {
             default:
                 return "Unknown";
         }
-    } else if (_role == eROLE.DREADNOUGHT){
+    } else if (_role == eROLE.DREADNOUGHT) {
         switch (_slot) {
             case 0:
                 return "First Weapon";
@@ -662,7 +661,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
 
     var _with_none_if_not_skip = _skip_none ? false : true;
 
-    if (_role != eROLE.DREADNOUGHT && _role < eROLE.MARINEEND){
+    if (_role != eROLE.DREADNOUGHT && _role < eROLE.MARINEEND) {
         switch (_slot) {
             case 0:
             case 1:
@@ -779,7 +778,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
                 return;
         }
         return;
-    } else if (_role == eROLE.DREADNOUGHT){
+    } else if (_role == eROLE.DREADNOUGHT) {
         switch (_slot) {
             case eEQUIPMENT_SLOT.WEAPON_ONE:
             case eEQUIPMENT_SLOT.WEAPON_TWO:
@@ -852,7 +851,7 @@ function scr_get_item_names(_item_names, _role, _slot, _engagement, _include_com
         return;
     }
 
-    switch(_role){
+    switch (_role) {
         case eROLE.LANDRAIDER:
             get_none_or_any_item_names(_item_names, _with_none_if_not_skip, false);
             switch (_slot) {

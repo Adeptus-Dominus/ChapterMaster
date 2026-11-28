@@ -1,5 +1,3 @@
-
-
 enum eBASE_TYPES {
     LAIR,
 }
@@ -10,9 +8,8 @@ enum ePLAYERFEATURESTATUS {
     UNOCCUPIED,
     DERELICT,
     DAMAGED,
-    DESTROYED
+    DESTROYED,
 }
-
 
 function PlayerForge() constructor {
     constructions = [];
@@ -22,8 +19,7 @@ function PlayerForge() constructor {
     vehicle_hanger = 0;
 }
 
-
-function PlayerUpgrade (_feature_type = eP_FEATURES.SECRET_BASE, _other_data = {}): PlanetFeature(_feature_type, _other_data) constructor {
+function PlayerUpgrade(_feature_type = eP_FEATURES.SECRET_BASE, _other_data = {}) : PlanetFeature(_feature_type, _other_data) constructor {
     switch (f_type) {
         case eP_FEATURES.ARSENAL:
             planet_display = "Arsenal";
@@ -35,40 +31,53 @@ function PlayerUpgrade (_feature_type = eP_FEATURES.SECRET_BASE, _other_data = {
     inquis_hidden = 1;
     player_hidden = 0;
     gene_banks = false;
-    built = !struct_exists(_other_data, "built") ? obj_controller.turn + 3: _other_data.built;
+    built = !struct_exists(_other_data, "built") ? obj_controller.turn + 3 : _other_data.built;
 }
 
-function FortressMonastery (_feature_type = eP_FEATURES.MONASTERY, _other_data = {}): PlayerUpgrade(_feature_type, _other_data) constructor {
+function FortressMonastery(_feature_type = eP_FEATURES.MONASTERY, _other_data = {}) : PlayerUpgrade(_feature_type, _other_data) constructor {
     planet_display = "Fortress Monastery";
     player_hidden = 0;
     forge = 0;
     inquis_hidden = 0;
     built = !struct_exists(_other_data, "built") ? 0 : _other_data.built;
-    if (!struct_exists(_other_data, "name")){
+    if (!struct_exists(_other_data, "name")) {
         name = global.name_generator.GenerateFromSet("imperial_ship");
     } else {
         name = _other_data.name;
     }
     status = ePLAYERFEATURESTATUS.UNCONTESTED;
 
-    static undamaged_states = [ePLAYERFEATURESTATUS.UNCONTESTED, ePLAYERFEATURESTATUS.CONTESTED, ePLAYERFEATURESTATUS.UNOCCUPIED];
-    static damaged_states = [ePLAYERFEATURESTATUS.DERELICT, ePLAYERFEATURESTATUS.DAMAGED, ePLAYERFEATURESTATUS.DESTROYED];
-    static player_controlled_states = [ePLAYERFEATURESTATUS.UNCONTESTED, ePLAYERFEATURESTATUS.CONTESTED];
-    static player_controlled = function(){
+    static undamaged_states = [
+        ePLAYERFEATURESTATUS.UNCONTESTED,
+        ePLAYERFEATURESTATUS.CONTESTED,
+        ePLAYERFEATURESTATUS.UNOCCUPIED,
+    ];
+    static damaged_states = [
+        ePLAYERFEATURESTATUS.DERELICT,
+        ePLAYERFEATURESTATUS.DAMAGED,
+        ePLAYERFEATURESTATUS.DESTROYED,
+    ];
+    static player_controlled_states = [
+        ePLAYERFEATURESTATUS.UNCONTESTED,
+        ePLAYERFEATURESTATUS.CONTESTED,
+    ];
+
+    static player_controlled = function() {
         return array_contains(player_controlled_states, status);
-    }
-    static raided = function(){
-        if (array_contains(undamaged_states, status)){
+    };
+
+    static raided = function() {
+        if (array_contains(undamaged_states, status)) {
             status = damaged_states[0];
-        } else if (array_contains(damaged_states, status)){
-            if (status < ePLAYERFEATURESTATUS.DESTROYED){
+        } else if (array_contains(damaged_states, status)) {
+            if (status < ePLAYERFEATURESTATUS.DESTROYED) {
                 status++;
             }
         }
-    }
+    };
 }
 
-function SecretBase (_feature_type = eP_FEATURES.SECRET_BASE, _other_data = {}): PlanetFeature(_feature_type, _other_data) constructor {
+function SecretBase(_feature_type = eP_FEATURES.SECRET_BASE, _other_data = {}) : PlanetFeature(_feature_type, _other_data) constructor {
     base_type = eBASE_TYPES.LAIR;
     inquis_hidden = 1;
     planet_display = "Hidden Secret Base";
@@ -90,7 +99,8 @@ function SecretBase (_feature_type = eP_FEATURES.SECRET_BASE, _other_data = {}):
     throne = 0;
     stasis = 0;
     swimming = 0;
-    stock = 0;    
+    stock = 0;
+
     static draw_base_info_page = function(_xx, _yy) {
         var button_label = "";
         var button_desc = "";
@@ -590,7 +600,6 @@ function SecretBase (_feature_type = eP_FEATURES.SECRET_BASE, _other_data = {}):
     };
 }
 
-
 /// @desc Displays information on secret lairs.
 /// @returns {Undefined}
 function scr_secret_lair_view() {
@@ -613,7 +622,6 @@ function scr_secret_lair_view() {
     var lair_struct = undefined;
 
     if (obj_temp_build.isnew) {
-
         draw_set_font(cjk_font(fnt_40k_14b));
         draw_text(xx + 312, yy + 45, localize("Select a Secret Lair style."));
         draw_set_halign(fa_left);
