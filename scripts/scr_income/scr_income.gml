@@ -4,14 +4,42 @@ function scr_income() {
 
     income_base = 32;
     income_tribute = 0;
-    if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
-        income_base = 40;
-    }
-
     income_home = 0;
+    income_forge = 0;
+    income_agri = 0;
+    income_training = 0;
+
+    var _player_base = obj_ini.sector_handler.player_base_location();
     if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
+        //bonus for having a fortress monestary
         income_home = 8;
-    } // Homeworld-based income
+        with (obj_star){
+            var _distance_to_player_home = point_distance(x, y, _player_base.x, _player_base.y);
+
+            // Nearby star system
+            if ((_distance_to_player_home > 10) && (_distance_to_player_home <= 180)) {
+                for (var i = 1; i <= planets; i++) {
+                    if ((p_type[i] == "Forge") && (p_owner[i] == eFACTION.MECHANICUS)) {
+                        obj_controller.income_forge += 6;
+                    }
+                    if ((p_type[i] == "Agri") && (p_owner[i] == eFACTION.IMPERIUM)) {
+                        obj_controller.income_agri += 3;
+                    }
+                }
+            }
+            var connected = determine_warp_join(_player_base, id);
+            if ((_player_base.owner == eFACTION.PLAYER) && (_distance_to_player_home > 180) && connected) {
+                for (var i = 1; i <= planets; i++) {
+                    if ((p_type[i] == "Forge") && (p_owner[i] == eFACTION.MECHANICUS)) {
+                        obj_controller.income_forge += 6;
+                    }
+                    if ((p_type[i] == "Agri") && (p_owner[i] == eFACTION.IMPERIUM)) {
+                        obj_controller.income_agri += 3;
+                    }
+                }
+            }
+        }
+    }
 
     income_fleet = 0;
     with (obj_p_fleet) {
@@ -19,13 +47,10 @@ function scr_income() {
         obj_controller.income_fleet -= frigate_number / 2;
         obj_controller.income_fleet -= escort_number / 10;
     }
+    //balance fleet chapters are better traders
     if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
         income_fleet = round(income_fleet / 2);
     }
-
-    income_forge = 0;
-    income_agri = 0;
-    income_training = 0;
 
     if (faction_status[eFACTION.MECHANICUS] != "War") {
         var _chapter_tech_count = scr_role_count(obj_ini.player_role_data[eROLE.TECHMARINE].role, "");
@@ -34,80 +59,20 @@ function scr_income() {
         }
     }
 
-    if (training_apothecary == 1) {
-        income_training -= 1;
-    }
-    if (training_apothecary == 2) {
-        income_training -= 2;
-    }
-    if (training_apothecary == 3) {
-        income_training -= 3;
-    }
-    if (training_apothecary == 4) {
-        income_training -= 4;
-    }
-    if (training_apothecary == 5) {
-        income_training -= 6;
-    }
-    if (training_apothecary == 6) {
-        income_training -= 12;
+    if (training_apothecary > 0){
+        income_training -= global.apothecary_training_costs[training_apothecary];
     }
 
-    if (training_chaplain == 1) {
-        income_training -= 1;
-    }
-    if (training_chaplain == 2) {
-        income_training -= 2;
-    }
-    if (training_chaplain == 3) {
-        income_training -= 3;
-    }
-    if (training_chaplain == 4) {
-        income_training -= 4;
-    }
-    if (training_chaplain == 5) {
-        income_training -= 6;
-    }
-    if (training_chaplain == 6) {
-        income_training -= 12;
+    if (training_chaplain > 0){
+        income_training -= global.chaplain_training_costs[training_chaplain];
     }
 
-    if (training_psyker == 1) {
-        income_training -= 1;
-    }
-    if (training_psyker == 2) {
-        income_training -= 2;
-    }
-    if (training_psyker == 3) {
-        income_training -= 3;
-    }
-    if (training_psyker == 4) {
-        income_training -= 4;
-    }
-    if (training_psyker == 5) {
-        income_training -= 6;
-    }
-    if (training_psyker == 6) {
-        income_training -= 12;
+    if (training_psyker > 0){
+        income_training -= global.psyker_training_costs[training_psyker];
     }
 
-    if (training_techmarine == 1) {
-        income_training -= 1;
-    }
-    if (training_techmarine == 2) {
-        income_training -= 2;
-    }
-    if (training_techmarine == 3) {
-        income_training -= 3;
-    }
-    if (training_techmarine == 4) {
-        income_training -= 4;
-    }
-    if (training_techmarine == 5) {
-        income_training -= 6;
-    }
-    if (training_techmarine == 6) {
-        income_training -= 12;
+    if (training_techmarine > 0){
+        income_training -= global.techmarine_training_costs[training_techmarine];
     }
 
     tau_stars = 0;
@@ -115,38 +80,29 @@ function scr_income() {
         tau_messenger += 1;
     }
 
-    if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
-        with (obj_star) {
-            for (var i = 1; i <= planets; i++) {
-                if (planet_feature_bool(p_feature[i], eP_FEATURES.MONASTERY)) {
-                    obj_controller.income_home += 10;
-                    instance_create(x, y, obj_temp1);
-                }
-            }
-            if (owner == eFACTION.TAU) {
-                obj_controller.tau_stars += 1;
-            }
-            alarm[2] = 1;
+    with (obj_star) {
+        if (owner == eFACTION.TAU) {
+            obj_controller.tau_stars += 1;
         }
     }
 
-    if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
-        with (obj_p_fleet) {
-            if ((action == "") && (capital_number > 0)) {
-                var mine = instance_nearest(x, y, obj_star);
-                for (var i = 1; i <= 4; i++) {
-                    if ((mine.p_owner[i] == eFACTION.IMPERIUM) || (mine.p_owner[i] == eFACTION.MECHANICUS)) {
-                        if ((mine.p_type[i] == "Desert") || (mine.p_type[i] == "Temperate")) {
-                            obj_controller.income_home += 2 * capital_number;
-                        }
-                        if ((mine.p_type[i] == "Forge") || (mine.p_type[i] == "Hive")) {
-                            obj_controller.income_home += 4 * capital_number;
-                        }
+
+    with (obj_p_fleet) {
+        if ((action == "") && (capital_number > 0)) {
+            var mine = instance_nearest(x, y, obj_star);
+            for (var i = 1; i <= 4; i++) {
+                if ((mine.p_owner[i] == eFACTION.IMPERIUM) || (mine.p_owner[i] == eFACTION.MECHANICUS)) {
+                    if ((mine.p_type[i] == "Desert") || (mine.p_type[i] == "Temperate")) {
+                        obj_controller.income_home += 2 * capital_number;
+                    }
+                    if ((mine.p_type[i] == "Forge") || (mine.p_type[i] == "Hive")) {
+                        obj_controller.income_home += 4 * capital_number;
                     }
                 }
             }
         }
     }
+
 
     with (obj_star) {
         for (var o = 1; o <= planets; o++) {

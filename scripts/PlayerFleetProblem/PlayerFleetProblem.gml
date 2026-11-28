@@ -266,13 +266,9 @@ function PlayerFleetProblem(_name, _timer = -1, _data = {}, _fleet = noone) : Fl
             _artifacts += 1;
         }
         if (_artifacts > 0) {
+            var _ship = fleet.full_ship_array()[0];
             repeat (_artifacts) {
-                if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
-                    scr_add_artifact("random", "", 4, obj_ini.home_name, -1);
-                }
-                if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
-                    scr_add_artifact("random", "", 4, obj_ini.ship[0], 0);
-                }
+                scr_add_artifact("random", "", 4, obj_ini.ship[_ship], _ship);
             }
         }
 

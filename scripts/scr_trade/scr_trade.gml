@@ -190,28 +190,47 @@ function TradeAttempt(diplomacy) constructor {
     };
 
     static find_trade_locations = function() {
-        var _stars_with_player_control = [];
-        with (obj_star) {
-            if (array_contains(p_owner, eFACTION.PLAYER)) {
-                array_push(_stars_with_player_control, id);
+        var _trade_loc = noone
+        var _loc = obj_ini.sector_handler.player_base_location();
+        if (_loc != noone){
+            if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD){
+                if (obj_ini.sector_handler.player_base_feature != noone){
+                    var _monestry = obj_ini.sector_handler.player_base_feature;
+                    if (_monestry.status == ePLAYERFEATURESTATUS.UNCONTESTED){
+                        _trade_loc = _loc;
+                    }
+                }
+            } else {
+                _trade_loc = _loc
             }
         }
 
-        var player_fleet_targets = [];
+        if (_trade_loc == noone){
+            var player_trade_objects = [];
+            with (obj_star) {
+                if (array_contains(p_owner, eFACTION.PLAYER)) {
+                    array_push(player_trade_objects, id);
+                }
+            }
 
-        if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD || !array_length(_stars_with_player_control)) {
             // with(obj_star){if (present_fleet[1]>0){x-=10000;y-=10000;}}
             with (obj_p_fleet) {
                 // Get the nearest star system that is viable for creating the trading fleet
                 if ((capital_number > 0 || frigate_number > 0) && action == "") {
-                    array_push(player_fleet_targets, id);
+                    array_push(player_trade_objects, id);
                 }
             }
-        }
 
-        // temp2: ideal trade target
-        // temp3: origin
-        // temp4: possible trade target
+            if (!array_length(player_trade_objects)) {
+                with (obj_controller) {
+                    scr_dialogue("trade_error_1");
+                    trading = false;
+                }
+                return false;
+            } else {
+                _trade_loc = array_random_element(player_trade_objects)
+            }
+        }
 
         var viable_faction_trade_stars = [];
         var _check_val = diplomacy_faction;
@@ -225,12 +244,11 @@ function TradeAttempt(diplomacy) constructor {
             }
             if (_check_val == 5) {
                 var ahuh = 0, q = 0;
-                repeat (planets) {
-                    q += 1;
-                    if (p_owner[q] == eFACTION.ECCLESIARCHY) {
-                        ahuh = 1;
+                for (var q = 1;q<=planets;q++) {
+                    if (p_owner[q] > eFACTION.ECCLESIARCHY){
+                        continue;
                     }
-                    if ((p_owner[q] <= eFACTION.ECCLESIARCHY) && (planet_feature_bool(p_feature[q], eP_FEATURES.SORORITAS_CATHEDRAL) == 1)) {
+                    if (p_owner[q] == eFACTION.ECCLESIARCHY || ((planet_feature_bool(p_feature[q], eP_FEATURES.SORORITAS_CATHEDRAL) == 1))) {
                         ahuh = 1;
                     }
                 }
@@ -240,13 +258,6 @@ function TradeAttempt(diplomacy) constructor {
             }
         }
 
-        if (!array_length(_stars_with_player_control) && !array_length(player_fleet_targets)) {
-            with (obj_controller) {
-                scr_dialogue("trade_error_1");
-                trading = false;
-            }
-            return false;
-        }
         if (!array_length(viable_faction_trade_stars)) {
             with (obj_controller) {
                 scr_dialogue("trade_error_2");
@@ -255,15 +266,9 @@ function TradeAttempt(diplomacy) constructor {
             return false;
         }
 
-        trade_from_star = array_random_element(viable_faction_trade_stars);
+        trade_from_star = nearest_from_array(_trade_loc.x,_trade_loc.y, viable_faction_trade_stars);
 
-        if (!array_length(_stars_with_player_control) || (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD && array_length(player_fleet_targets))) {
-            trade_to_obj = array_random_element(player_fleet_targets);
-        } else if (!array_length(player_fleet_targets)) {
-            trade_to_obj = array_random_element(_stars_with_player_control);
-        } else {
-            trade_to_obj = choose(array_random_element(_stars_with_player_control), array_random_element(player_fleet_targets));
-        }
+        trade_to_obj = _trade_loc;
         return true;
     };
 

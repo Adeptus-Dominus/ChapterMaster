@@ -331,13 +331,6 @@ menu_buttons = {
     "menu": new MainMenuButton(spr_ui_but_4, spr_ui_hov_4,,,, scr_in_game_menu),
 };
 
-helpful_places_button = new UnitButtonObject({
-    style: "pixel",
-    label: "System Data",
-});
-
-helpful_places = false;
-
 instance_create(x, y, obj_planet_map);
 new_button_highlight = "";
 new_buttons_hide = 0;
@@ -1052,7 +1045,6 @@ serialize = function() {
         "unit_manage_image",
         "chapter_master",
         "armamentarium",
-        "helpful_places_button",
         "lair_styles",
         "reclusiam_vars",
         "management_buttons",

@@ -643,9 +643,5 @@ try {
     ERROR_HANDLER.handle_exception(_exception);
 }
 
-if (helpful_places != false) {
-    helpful_places = new HelpfulPlaces();
-}
-
 instance_activate_object(obj_star);
 instance_activate_object(obj_en_fleet);

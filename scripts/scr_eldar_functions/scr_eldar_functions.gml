@@ -145,61 +145,21 @@ function elder_dialogue_useful_information() {
             array_push(obj_controller.useful_info, eUSEFULLINFORMATION.WEBWAYGATE);
             for (var i = 0; i < 5; i++) {
                 if (_found == 0) {
-                    instance_activate_object(obj_star);
-                    with (obj_temp6) {
-                        instance_destroy();
+                    var _player_base = obj_ini.sector_handler.player_base_location(false);
+                    var _star;
+                    if (_player_base != noone){
+                        _star = instance_nearest(_player_base.x, _player_base.y, obj_star);
+                    } else {
+                        _star = array_random_element(scr_get_stars(true));
                     }
-                    with (obj_temp5) {
-                        instance_destroy();
-                    }
-                    if (obj_ini.fleet_type == ePLAYER_BASE.HOME_WORLD) {
-                        with (obj_star) {
-                            if (owner == 1) {
-                                instance_create(x, y, obj_temp6);
-                            }
-                        }
-                    }
-                    if (obj_ini.fleet_type != ePLAYER_BASE.HOME_WORLD) {
-                        with (obj_p_fleet) {
-                            if (capital_number > 0) {
-                                instance_create(x, y, obj_temp6);
-                            }
-                        }
-                    }
+                    var _planet = irandom_range(1, _star.planets);
 
-                    with (obj_star) {
-                        if (owner != eFACTION.IMPERIUM) {
-                            instance_deactivate_object(id);
-                        }
-                        if ((owner == eFACTION.IMPERIUM) && (point_distance(x, y, obj_temp6.x, obj_temp6.y) > 250)) {
-                            instance_deactivate_object(id);
-                        }
-                        if ((owner == eFACTION.IMPERIUM) && (planets < 1)) {
-                            instance_deactivate_object(id);
-                        }
-                    }
-                    var _gate_planet_name = "";
-                    var that = instance_nearest(random(room_width), random(room_height), obj_star);
-                    for (var index = 0; index < 5; index++) {
-                        with (that) {
-                            var j = 0, onceh = 0;
-                            for (var k = 0; k < 10; k++) {
-                                j = floor(random(planets)) + 1;
-                                if ((array_length(p_feature[j]) == 0) && (onceh == 0)) {
-                                    onceh = j;
-                                }
-                            }
-                            if (onceh != 0) {
-                                get_planet_data(onceh).add_feature(eP_FEATURES.WEBWAY);
-                                _gate_planet_name = planet_numeral_name(onceh, that);
-                                break;
-                            }
-                        }
-                    }
-                    if (_gate_planet_name != "") {
-                        diplo_text = $"A series of labyrinthian corridors and veins connect the galaxy.  The planet you know as {_gate_planet_name} contains a dormant entrance to this realm.";
-                        _found = 1;
-                    }
+                    var _p_data = _star.get_planet_data(_planet);
+                    _p_data.add_feature(eP_FEATURES.WEBWAY);
+
+                    diplo_text = $"A series of labyrinthian corridors and veins connect the galaxy.  The planet you know as {_p_data.name()} contains a dormant entrance to this realm.";
+                    _found = 1;
+
                 }
             }
         } else if (!array_contains(obj_controller.useful_info, eUSEFULLINFORMATION.WEBWAYGATE_SECOND)) {

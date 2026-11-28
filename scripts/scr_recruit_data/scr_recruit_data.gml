@@ -64,6 +64,17 @@ global.chaplain_training_tiers = [
     2,
     4,
 ];
+
+global.librarian_training_tiers = [
+    0,
+    0.8,
+    0.9,
+    1,
+    1.5,
+    2,
+    4,
+];
+
 global.techmarine_training_tiers = [
     0,
     1,
