@@ -7,7 +7,7 @@ function SectorHandler() constructor {
     player_base = noone;
     player_base_planet = 0;
     player_base_feature = noone;
-    __last_base_location_turn_check = 0;;
+    __last_base_location_turn_check = 0;
 
     static date = function() {
         var _yf = "";
@@ -133,7 +133,7 @@ function SectorHandler() constructor {
         style: "pixel",
         label: "System Data",
     });
-    ] = noone;
+    helpful_places = noone;
     static refresh_helpful_places = function(){
         if (helpful_places != noone) {
             helpful_places = new HelpfulPlaces();
@@ -144,7 +144,7 @@ function SectorHandler() constructor {
         helpful_places = helpful_places == noone ? new HelpfulPlaces() : noone;
     }
     static ensure_helpful_places = function(){
-        helpful_places == noone ? toggle_helpful_places() : refresh_helpful_places();
+        helpful_places = helpful_places == noone ? toggle_helpful_places() : refresh_helpful_places();
         return helpful_places;
     }
 
@@ -152,14 +152,14 @@ function SectorHandler() constructor {
         helpful_places_button.update({x1: 1451, y1: 62 + sprite_get_height(spr_new_banner)});
 
         if (helpful_places_button.draw()) {
-            obj_ini.sector_handler.refresh_helpful_places();
+            obj_ini.sector_handler.toggle_helpful_places();
         }
         if (helpful_places_drawable()) {
             helpful_places.draw();
         }        
     }
 
-    static helpful_places_drawable = function(){helpful_places != noone && !instances_exist_any([obj_turn_end, obj_ncombat, obj_fleet, obj_popup, obj_star_select])}
+    static helpful_places_drawable = function(){helpful_places != noone && !instances_exist_any([obj_turn_end, obj_ncombat, obj_fleet, obj_popup, obj_star_select])};
 
     LOGGER.info("SectorHandler successfully initialised");
 }

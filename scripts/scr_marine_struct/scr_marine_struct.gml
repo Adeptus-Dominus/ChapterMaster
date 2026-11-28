@@ -2030,7 +2030,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data = {}
             var _handler = obj_ini.sector_handler;
             var _spawn_location_chosen = false;
             if (_loc.object_index == obj_star){
-                var _planet = _loc.id == _handler.player_base_location(true) ? _handler.player_base_planet ? 0;
+                var _planet = _loc.id == _handler.player_base_location(true) ? _handler.player_base_planet : 0;
                 if (_planet == 0){
                     var _imperium_war = obj_controller.faction_status[eFACTION.IMPERIUM] == "War";
                     for (var i = 1; i <= _loc.planets; i++) {
